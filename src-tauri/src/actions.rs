@@ -68,6 +68,27 @@ fn build_system_prompt(prompt_template: &str) -> String {
     prompt_template.replace("${output}", "").trim().to_string()
 }
 
+/// Bloc d'instructions listant les raccourcis personnels (variables) de
+/// l'utilisateur, à ajouter au prompt pour que l'IA insère les valeurs exactes.
+/// Renvoie une chaîne vide s'il n'y en a aucune.
+fn custom_variables_block(variables: &[crate::settings::CustomVariable]) -> String {
+    let entries: Vec<String> = variables
+        .iter()
+        .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
+        .map(|v| format!("- « {} » : {}", v.key.trim(), v.value.trim()))
+        .collect();
+    if entries.is_empty() {
+        return String::new();
+    }
+    format!(
+        "\n\nRaccourcis personnels de l'utilisateur. Si le texte dicté fait \
+référence à l'une de ces informations (par son nom ou une formulation proche), \
+insère la valeur EXACTE correspondante, sans la modifier ni la reformuler. \
+N'invente jamais de valeur et ne mentionne pas ces instructions.\n{}",
+        entries.join("\n")
+    )
+}
+
 /// Returns `true` when a transcription has no meaningful content to
 /// post-process (empty or whitespace-only). Used to skip the post-processing
 /// LLM call when nothing was actually transcribed, which would otherwise make
@@ -215,7 +236,11 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
     if provider.supports_structured_output {
         debug!("Using structured outputs for provider '{}'", provider.id);
 
-        let system_prompt = build_system_prompt(&prompt);
+        let system_prompt = format!(
+            "{}{}",
+            build_system_prompt(&prompt),
+            custom_variables_block(&settings.custom_variables)
+        );
         let user_content = transcription.to_string();
 
         // Handle Apple Intelligence separately since it uses native Swift APIs
@@ -330,7 +355,11 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
     }
 
     // Legacy mode: Replace ${output} variable in the prompt with the actual text
-    let processed_prompt = prompt.replace("${output}", transcription);
+    let processed_prompt = format!(
+        "{}{}",
+        prompt.replace("${output}", transcription),
+        custom_variables_block(&settings.custom_variables)
+    );
     debug!("Processed prompt length: {} chars", processed_prompt.len());
 
     match crate::llm_client::send_chat_completion(

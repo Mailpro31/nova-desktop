@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { RefreshCcw } from "lucide-react";
+import { invoke } from "@tauri-apps/api/core";
 import { commands } from "@/bindings";
+import { styleColor } from "../../../lib/styleColors";
 
 import { Alert } from "../../ui/Alert";
 import {
@@ -166,6 +168,14 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [draftName, setDraftName] = useState("");
   const [draftText, setDraftText] = useState("");
+  // Créer / modifier / supprimer des Styles est réservé à Nova Ultra.
+  const [canEditStyles, setCanEditStyles] = useState(true);
+
+  useEffect(() => {
+    invoke<{ features: Record<string, boolean> }>("get_license_status")
+      .then((s) => setCanEditStyles(s.features?.custom_styles ?? true))
+      .catch(() => setCanEditStyles(true));
+  }, []);
 
   const prompts = getSetting("post_process_prompts") || [];
   const selectedPromptId = getSetting("post_process_selected_prompt_id") || "";
@@ -274,8 +284,18 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
       grouped={true}
     >
       <div className="space-y-3">
-        <TierBadge feature="all_styles" />
-        <div className="flex gap-2 min-w-0">
+        <div className="flex items-center gap-2">
+          <TierBadge feature="all_styles" />
+          <TierBadge feature="custom_styles" />
+        </div>
+        <div className="flex gap-2 min-w-0 items-center">
+          {selectedPrompt && (
+            <span
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ background: styleColor(selectedPrompt.id) }}
+              aria-hidden="true"
+            />
+          )}
           <Dropdown
             selectedValue={selectedPromptId || null}
             options={prompts.map((p) => ({
@@ -293,15 +313,17 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
             }
             className="flex-1 min-w-0"
           />
-          <Button
-            onClick={handleStartCreate}
-            variant="primary"
-            size="md"
-            disabled={isCreating}
-            className="shrink-0"
-          >
-            {t("settings.postProcessing.prompts.createNew")}
-          </Button>
+          {canEditStyles && (
+            <Button
+              onClick={handleStartCreate}
+              variant="primary"
+              size="md"
+              disabled={isCreating}
+              className="shrink-0"
+            >
+              {t("settings.postProcessing.prompts.createNew")}
+            </Button>
+          )}
         </div>
 
         {!isCreating && hasPrompts && selectedPrompt && (
@@ -318,6 +340,7 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
                   "settings.postProcessing.prompts.promptLabelPlaceholder",
                 )}
                 variant="compact"
+                disabled={!canEditStyles}
               />
             </div>
 
@@ -331,6 +354,7 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
                 placeholder={t(
                   "settings.postProcessing.prompts.promptInstructionsPlaceholder",
                 )}
+                disabled={!canEditStyles}
               />
               <p className="text-xs text-mid-gray/70">
                 <Trans
@@ -340,24 +364,30 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex gap-2 pt-2">
-              <Button
-                onClick={handleUpdatePrompt}
-                variant="primary"
-                size="md"
-                disabled={!draftName.trim() || !draftText.trim() || !isDirty}
-              >
-                {t("settings.postProcessing.prompts.updatePrompt")}
-              </Button>
-              <Button
-                onClick={() => handleDeletePrompt(selectedPromptId)}
-                variant="secondary"
-                size="md"
-                disabled={!selectedPromptId || prompts.length <= 1}
-              >
-                {t("settings.postProcessing.prompts.deletePrompt")}
-              </Button>
-            </div>
+            {canEditStyles ? (
+              <div className="flex gap-2 pt-2">
+                <Button
+                  onClick={handleUpdatePrompt}
+                  variant="primary"
+                  size="md"
+                  disabled={!draftName.trim() || !draftText.trim() || !isDirty}
+                >
+                  {t("settings.postProcessing.prompts.updatePrompt")}
+                </Button>
+                <Button
+                  onClick={() => handleDeletePrompt(selectedPromptId)}
+                  variant="secondary"
+                  size="md"
+                  disabled={!selectedPromptId || prompts.length <= 1}
+                >
+                  {t("settings.postProcessing.prompts.deletePrompt")}
+                </Button>
+              </div>
+            ) : (
+              <p className="text-xs text-text-secondary pt-1">
+                {t("settings.postProcessing.prompts.ultraOnly")}
+              </p>
+            )}
           </div>
         )}
 

@@ -88,6 +88,15 @@ pub struct ShortcutBinding {
     pub current_binding: String,
 }
 
+/// Raccourci personnel (« variable ») : un mot-clé et sa valeur. Lors de la
+/// reformulation, l'IA insère la valeur exacte quand le texte dicté fait
+/// référence au mot-clé (ex. « mon IBAN » → FR76…).
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CustomVariable {
+    pub key: String,
+    pub value: String,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct LLMPrompt {
     pub id: String,
@@ -395,6 +404,9 @@ pub struct AppSettings {
     pub log_level: LogLevel,
     #[serde(default)]
     pub custom_words: Vec<String>,
+    /// Raccourcis personnels injectés dans la reformulation (mot-clé → valeur).
+    #[serde(default)]
+    pub custom_variables: Vec<CustomVariable>,
     #[serde(default)]
     pub model_unload_timeout: ModelUnloadTimeout,
     #[serde(default = "default_word_correction_threshold")]
@@ -958,6 +970,7 @@ pub fn get_default_settings() -> AppSettings {
         debug_mode: false,
         log_level: default_log_level(),
         custom_words: Vec::new(),
+        custom_variables: Vec::new(),
         model_unload_timeout: ModelUnloadTimeout::default(),
         word_correction_threshold: default_word_correction_threshold(),
         history_limit: default_history_limit(),

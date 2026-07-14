@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { TierBadge } from "../license/TierBadge";
+import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import {
   ORB_THEMES,
   DEFAULT_ORB_ID,
@@ -104,6 +105,8 @@ export const PersonalizationSettings: React.FC = () => {
           </div>
         </SettingContainer>
       </SettingsGroup>
+
+      <CustomVariablesSettings />
     </div>
   );
 };

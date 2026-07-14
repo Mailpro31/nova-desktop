@@ -762,6 +762,22 @@ pub fn update_custom_words(app: AppHandle, words: Vec<String>) -> Result<(), Str
 
 #[tauri::command]
 #[specta::specta]
+pub fn update_custom_variables(
+    app: AppHandle,
+    variables: Vec<settings::CustomVariable>,
+) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    // On ne garde que les entrées dont le mot-clé et la valeur sont renseignés.
+    settings.custom_variables = variables
+        .into_iter()
+        .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
+        .collect();
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub fn change_word_correction_threshold_setting(
     app: AppHandle,
     threshold: f64,
