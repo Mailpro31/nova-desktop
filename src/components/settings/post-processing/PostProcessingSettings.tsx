@@ -19,6 +19,7 @@ import { BaseUrlField } from "../PostProcessingSettingsApi/BaseUrlField";
 import { ApiKeyField } from "../PostProcessingSettingsApi/ApiKeyField";
 import { ModelSelect } from "../PostProcessingSettingsApi/ModelSelect";
 import { OllamaInstaller } from "../PostProcessingSettingsApi/OllamaInstaller";
+import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileSelector";
 import { TierBadge } from "../license/TierBadge";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { ShortcutInput } from "../ShortcutInput";
@@ -27,7 +28,7 @@ import { useSettings } from "../../../hooks/useSettings";
 const PostProcessingSettingsApiComponent: React.FC = () => {
   const { t } = useTranslation();
   const state = usePostProcessProviderState();
-  const { refreshSettings } = useSettings();
+  const { settings, refreshSettings } = useSettings();
 
   return (
     <>
@@ -49,7 +50,13 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
       </SettingContainer>
 
       {state.selectedProvider?.id === "ollama" && (
-        <OllamaInstaller onReady={refreshSettings} />
+        <>
+          <OllamaInstaller onReady={refreshSettings} />
+          <PowerProfileSelector
+            currentModel={settings?.post_process_models?.ollama}
+            onApplied={refreshSettings}
+          />
+        </>
       )}
 
       {state.isAppleProvider ? (
