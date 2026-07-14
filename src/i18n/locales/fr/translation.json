@@ -548,9 +548,9 @@
         "description": "Emplacement où Nova stocke ses données"
       },
       "sourceCode": {
-        "title": "Code source",
-        "description": "Voir le code source et contribuer",
-        "button": "Voir sur GitHub"
+        "title": "Site officiel",
+        "description": "Découvrir Nova et gérer votre abonnement",
+        "button": "Visiter novaspeak.app"
       },
       "supportDevelopment": {
         "title": "Soutenir le développement",
