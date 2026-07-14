@@ -1,0 +1,22 @@
+name: "Nova — build Windows (.exe)"
+
+# Build Windows x64 non signé, à la demande. Produit l'installeur NSIS
+# (Nova ..._x64-setup.exe) et le MSI en artefacts téléchargeables.
+# Non signé : pas de secrets de signature requis (sign-binaries: false), et
+# tauri.conf.json a désactivé signCommand + createUpdaterArtifacts.
+on:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "windows-latest"
+      target: "x86_64-pc-windows-msvc"
+      build-args: ""
+      sign-binaries: false
+      asset-prefix: "Nova"
+      upload-artifacts: true
+    secrets: inherit
