@@ -1,0 +1,77 @@
+name: "Nova — Release Windows (mise à jour auto)"
+
+# Publie une release Windows signée pour l'updater intégré :
+#   1. crée une release brouillon taguée v<version> (version lue dans tauri.conf.json) ;
+#   2. compile l'installeur NSIS + l'artefact updater signé (minisign) + latest.json,
+#      et les téléverse sur la release.
+#
+# L'app (endpoint updater → releases/latest/download/latest.json) détecte alors
+# la nouveauté et propose la mise à jour en un clic.
+#
+# Prérequis (secrets du dépôt) :
+#   - TAURI_SIGNING_PRIVATE_KEY          (clé privée minisign générée pour Nova)
+#   - TAURI_SIGNING_PRIVATE_KEY_PASSWORD (vide si la clé n'a pas de mot de passe)
+#
+# Pour livrer une version : bump la "version" dans src-tauri/tauri.conf.json
+# (+ package.json), pousse, puis lance ce workflow. Publie ensuite la release
+# brouillon pour la rendre visible de tous les clients.
+
+on: workflow_dispatch
+
+jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release-id: ${{ steps.create-release.outputs.result }}
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Get version from tauri.conf.json
+        id: get-version
+        shell: bash
+        run: |
+          VERSION=$(grep -o '"version": "[^"]*"' src-tauri/tauri.conf.json | cut -d'"' -f4)
+          echo "Nova version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create Draft Release
+        id: create-release
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${{ steps.get-version.outputs.version }}`,
+              name: `Nova v${{ steps.get-version.outputs.version }}`,
+              draft: true,
+              prerelease: false,
+              generate_release_notes: true
+            })
+            return data.id
+
+  publish-windows:
+    permissions:
+      contents: write
+    needs: create-release
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "windows-latest"
+      target: "x86_64-pc-windows-msvc"
+      # Active la génération des artefacts updater signés + latest.json pour CE
+      # build uniquement (la conf par défaut garde createUpdaterArtifacts=false,
+      # pour que les builds de test ne réclament pas la clé de signature).
+      build-args: '--config {"bundle":{"createUpdaterArtifacts":true}}'
+      # Signature de CODE Windows (Azure) non requise ici : seule la signature
+      # updater (minisign, via TAURI_SIGNING_PRIVATE_KEY) l'est.
+      sign-binaries: false
+      asset-prefix: "nova"
+      upload-artifacts: false
+      release-id: ${{ needs.create-release.outputs.release-id }}
+      # Une release part toujours d'une compilation propre.
+      no-cache: true
+    secrets: inherit
