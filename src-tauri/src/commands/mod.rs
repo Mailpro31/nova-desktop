@@ -1,5 +1,6 @@
 pub mod audio;
 pub mod history;
+pub mod license;
 pub mod models;
 pub mod ollama;
 pub mod transcription;

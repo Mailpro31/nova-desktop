@@ -9,6 +9,7 @@ mod clipboard;
 mod commands;
 mod helpers;
 mod input;
+mod licensing;
 mod llm_client;
 mod managers;
 mod overlay;
@@ -611,6 +612,9 @@ pub fn run(cli_args: CliArgs) {
             commands::models::cancel_download,
             commands::ollama::install_ollama_engine,
             commands::ollama::ollama_status,
+            commands::license::get_license_status,
+            commands::license::activate_license,
+            commands::license::clear_license,
             commands::models::set_active_model,
             commands::models::get_current_model,
             commands::models::get_transcription_model_status,

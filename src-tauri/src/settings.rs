@@ -425,6 +425,9 @@ pub struct AppSettings {
     pub post_process_prompts: Vec<LLMPrompt>,
     #[serde(default = "default_post_process_selected_prompt_id")]
     pub post_process_selected_prompt_id: Option<String>,
+    /// Clé de licence Nova (jeton NOVA1…). Vide = palier Free. Voir licensing.rs.
+    #[serde(default)]
+    pub license_key: Option<String>,
     #[serde(default)]
     pub mute_while_recording: bool,
     #[serde(default)]
@@ -970,6 +973,7 @@ pub fn get_default_settings() -> AppSettings {
         post_process_models: default_post_process_models(),
         post_process_prompts: default_post_process_prompts(),
         post_process_selected_prompt_id: default_post_process_selected_prompt_id(),
+        license_key: None,
         mute_while_recording: false,
         append_trailing_space: false,
         app_language: default_app_language(),
