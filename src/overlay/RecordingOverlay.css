@@ -263,20 +263,35 @@
   gap: 10px;
   justify-self: end;
 }
+/* Orbe « bille de verre » de Nova — identité de la marque, remplace le point. */
 .sdot {
-  width: 7px;
-  height: 7px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background: var(--s-accent);
   flex: none;
-  animation: sdot-pulse 1.9s infinite;
+  background:
+    radial-gradient(
+      circle at 34% 30%,
+      #ffffff 0%,
+      #dfe7fa 18%,
+      #aebeec 45%,
+      #93a6e0 72%,
+      #7e92d6 100%
+    );
+  box-shadow:
+    inset 0 0 3px rgba(255, 255, 255, 0.5),
+    0 0 6px rgba(126, 146, 214, 0.35);
+  animation: sorb-breath 2.4s ease-in-out infinite;
 }
-@keyframes sdot-pulse {
-  0% {
-    box-shadow: 0 0 0 0 var(--s-accent-soft);
+@keyframes sorb-breath {
+  0%,
+  100% {
+    transform: scale(0.94);
+    filter: brightness(0.97);
   }
-  70% {
-    box-shadow: 0 0 0 7px transparent;
+  50% {
+    transform: scale(1);
+    filter: brightness(1.05);
   }
 }
 .stimer {

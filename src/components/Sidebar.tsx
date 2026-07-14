@@ -76,6 +76,20 @@ export const SECTIONS_CONFIG = {
   },
 } as const satisfies Record<string, SectionConfig>;
 
+// Icônes carrées colorées façon macOS (Réglages système). Chaque catégorie a
+// sa couleur d'identité — ce ne sont PAS des actions (l'accent d'action unique
+// reste le bleu #0A84FF, réservé à la sélection). « general » affiche l'orbe
+// Nova directement, sans carré.
+const SECTION_COLORS: Record<string, string> = {
+  general: "",
+  models: "#5E5CE6",
+  advanced: "#8E8E93",
+  history: "#FF9F0A",
+  postprocessing: "#BF5AF2",
+  debug: "#30D158",
+  about: "#64D2FF",
+};
+
 interface SidebarProps {
   activeSection: SidebarSection;
   onSectionChange: (section: SidebarSection) => void;
@@ -93,24 +107,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
     .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
 
   return (
-    <div className="flex flex-col w-40 h-full border-e border-mid-gray/20 items-center px-2">
+    <div className="flex flex-col w-40 h-full bg-sidebar border-e border-hairline items-center px-2">
       <HandyTextLogo width={120} className="m-4" />
-      <div className="flex flex-col w-full items-center gap-1 pt-2 border-t border-mid-gray/20">
+      <div className="flex flex-col w-full items-center gap-0.5 pt-2 border-t border-hairline">
         {availableSections.map((section) => {
           const Icon = section.icon;
           const isActive = activeSection === section.id;
+          const color = SECTION_COLORS[section.id];
 
           return (
             <div
               key={section.id}
-              className={`flex gap-2 items-center p-2 w-full rounded-lg cursor-pointer transition-colors ${
+              className={`flex gap-2.5 items-center p-1.5 w-full rounded-lg cursor-pointer transition-colors ${
                 isActive
-                  ? "bg-logo-primary/80"
-                  : "hover:bg-mid-gray/20 hover:opacity-100 opacity-85"
+                  ? "bg-accent text-white"
+                  : "hover:bg-mid-gray/15 hover:opacity-100 opacity-90"
               }`}
               onClick={() => onSectionChange(section.id)}
             >
-              <Icon width={24} height={24} className="shrink-0" />
+              {section.id === "general" || !color ? (
+                <Icon width={26} height={26} className="shrink-0" />
+              ) : (
+                <span
+                  className="shrink-0 flex items-center justify-center rounded-[6px]"
+                  style={{ width: 26, height: 26, background: color }}
+                >
+                  <Icon width={16} height={16} className="text-white" />
+                </span>
+              )}
               <p
                 className="text-sm font-medium truncate"
                 title={t(section.labelKey)}
