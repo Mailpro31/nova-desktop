@@ -69,7 +69,10 @@ export const SECTIONS_CONFIG = {
     labelKey: "sidebar.postProcessing",
     icon: Sparkles,
     component: PostProcessingSettings,
-    enabled: (settings) => settings?.post_process_enabled ?? false,
+    // Les Styles sont au cœur de Nova : la section est toujours visible ;
+    // l'activation de la reformulation se fait via l'interrupteur en tête de
+    // la section (plus besoin de passer par Avancé pour la découvrir).
+    enabled: () => true,
   },
   personalization: {
     labelKey: "sidebar.personalization",

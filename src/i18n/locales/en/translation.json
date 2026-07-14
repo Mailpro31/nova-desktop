@@ -371,6 +371,9 @@
       }
     },
     "postProcessing": {
+      "enable": {
+        "title": "Reformulation"
+      },
       "hotkey": {
         "title": "Hotkey"
       },
