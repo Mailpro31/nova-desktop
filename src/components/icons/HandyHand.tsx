@@ -17,11 +17,11 @@ const HandyHand = ({
   >
     <defs>
       <radialGradient id="novaOrb" cx="34%" cy="30%" r="78%">
-        <stop offset="0%" stopColor="#FFFFFF" />
-        <stop offset="18%" stopColor="#DFE7FA" />
-        <stop offset="45%" stopColor="#AEBEEC" />
-        <stop offset="72%" stopColor="#93A6E0" />
-        <stop offset="100%" stopColor="#7E92D6" />
+        <stop offset="0%" stopColor="var(--orb-s0, #FFFFFF)" />
+        <stop offset="18%" stopColor="var(--orb-s1, #DFE7FA)" />
+        <stop offset="45%" stopColor="var(--orb-s2, #AEBEEC)" />
+        <stop offset="72%" stopColor="var(--orb-s3, #93A6E0)" />
+        <stop offset="100%" stopColor="var(--orb-s4, #7E92D6)" />
       </radialGradient>
       <radialGradient id="novaOrbHl" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />

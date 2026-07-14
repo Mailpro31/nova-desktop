@@ -65,4 +65,14 @@
   --color-success: var(--nova-success);
   --color-danger: var(--nova-danger);
   --color-ultra: var(--nova-ultra);
+
+  /* ---- Orbe « bille de verre » (personnalisable Nova Ultra) --------------
+     5 arrêts du dégradé (centre → bord) + halo. Ces défauts (bleu Nova) sont
+     surchargés au runtime par lib/orbTheme.ts selon le thème choisi. */
+  --orb-s0: #ffffff;
+  --orb-s1: #dfe7fa;
+  --orb-s2: #aebeec;
+  --orb-s3: #93a6e0;
+  --orb-s4: #7e92d6;
+  --orb-glow: 126, 146, 214;
 }

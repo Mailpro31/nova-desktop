@@ -7,6 +7,7 @@ import {
   getStoredTheme,
   syncThemeFromSettings,
 } from "./lib/utils/theme";
+import { initOrbTheme } from "./lib/orbTheme";
 
 // Set platform before render so CSS can scope per-platform (e.g. scrollbar styles)
 document.documentElement.dataset.platform = platform();
@@ -15,6 +16,10 @@ document.documentElement.dataset.platform = platform();
 // the wrong palette, then reconcile with the persisted setting once it loads.
 applyTheme(getStoredTheme());
 syncThemeFromSettings();
+
+// Applique la teinte d'orbe choisie (personnalisation Nova Ultra) et se
+// réabonne aux changements provenant des autres fenêtres.
+initOrbTheme();
 
 // Initialize i18n
 import "./i18n";
