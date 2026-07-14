@@ -609,6 +609,8 @@ pub fn run(cli_args: CliArgs) {
             commands::models::download_model,
             commands::models::delete_model,
             commands::models::cancel_download,
+            commands::ollama::install_ollama_engine,
+            commands::ollama::ollama_status,
             commands::models::set_active_model,
             commands::models::get_current_model,
             commands::models::get_transcription_model_status,
