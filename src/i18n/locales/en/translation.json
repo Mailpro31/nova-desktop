@@ -12,7 +12,7 @@
     "general": "General",
     "models": "Models",
     "advanced": "Advanced",
-    "postProcessing": "Post Process",
+    "postProcessing": "Styles",
     "history": "History",
     "debug": "Debug",
     "about": "About"
@@ -402,14 +402,14 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Styles",
         "selectedPrompt": {
-          "title": "Selected Prompt",
+          "title": "Active style",
           "description": "Select a template for refining transcriptions or create a new one. Use ${output} inside the prompt text to reference the captured transcript."
         },
-        "noPrompts": "No prompts available",
-        "selectPrompt": "Select a prompt",
-        "createNew": "Create New Prompt",
+        "noPrompts": "No style available",
+        "selectPrompt": "Select a style",
+        "createNew": "Create a style",
         "promptLabel": "Prompt Label",
         "promptLabelPlaceholder": "Enter prompt name",
         "promptInstructions": "Prompt Instructions",

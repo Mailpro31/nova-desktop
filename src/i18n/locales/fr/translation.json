@@ -12,7 +12,7 @@
     "general": "Général",
     "models": "Modèles",
     "advanced": "Avancé",
-    "postProcessing": "Post-traitement",
+    "postProcessing": "Styles",
     "history": "Historique",
     "debug": "Débogage",
     "about": "À propos"
@@ -374,10 +374,10 @@
         "title": "Raccourci clavier"
       },
       "api": {
-        "title": "API (Compatible OpenAI)",
+        "title": "Moteur de reformulation",
         "provider": {
-          "title": "Fournisseur",
-          "description": "Sélectionnez un fournisseur compatible OpenAI."
+          "title": "Moteur",
+          "description": "Choisissez le moteur : Turbo (en ligne) ou Intelligence privée (Ollama, 100 % local)."
         },
         "appleIntelligence": {
           "unavailable": "Apple Intelligence n'est pas disponible sur cet appareil. Nécessite un Mac Apple Silicon exécutant macOS Tahoe (26.0) ou une version ultérieure avec Apple Intelligence activé dans les Préférences Système."
@@ -402,24 +402,24 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Styles",
         "selectedPrompt": {
-          "title": "Prompt sélectionné",
-          "description": "Sélectionnez un modèle pour affiner les transcriptions ou créez-en un nouveau. Utilisez ${output} dans le texte du prompt pour référencer la transcription capturée."
+          "title": "Style actif",
+          "description": "Choisissez un Style de reformulation, ou créez le vôtre. Utilisez ${output} pour insérer le texte dicté."
         },
-        "noPrompts": "Aucun prompt disponible",
-        "selectPrompt": "Sélectionner un prompt",
-        "createNew": "Créer un nouveau prompt",
-        "promptLabel": "Libellé du prompt",
-        "promptLabelPlaceholder": "Entrez le nom du prompt",
+        "noPrompts": "Aucun Style disponible",
+        "selectPrompt": "Sélectionner un Style",
+        "createNew": "Créer un Style",
+        "promptLabel": "Nom du Style",
+        "promptLabelPlaceholder": "Entrez le nom du Style",
         "promptInstructions": "Instructions du prompt",
         "promptInstructionsPlaceholder": "Écrivez les instructions à exécuter après la transcription. Exemple : Améliorer la grammaire et la clarté du texte suivant : ${output}",
         "promptTip": "Astuce : Utilisez <code>${output}</code> pour insérer le texte transcrit dans votre prompt.",
-        "updatePrompt": "Mettre à jour le prompt",
-        "deletePrompt": "Supprimer le prompt",
-        "createPrompt": "Créer le prompt",
+        "updatePrompt": "Mettre à jour le Style",
+        "deletePrompt": "Supprimer le Style",
+        "createPrompt": "Créer le Style",
         "cancel": "Annuler",
-        "selectToEdit": "Sélectionnez un prompt ci-dessus pour voir et modifier ses détails.",
+        "selectToEdit": "Sélectionnez un Style ci-dessus pour le voir et le modifier.",
         "createFirst": "Cliquez sur 'Créer un nouveau prompt' ci-dessus pour créer votre premier prompt de post-traitement."
       }
     },
@@ -495,7 +495,7 @@
         "description": "Microphone à utiliser lorsque le couvercle du portable est fermé"
       },
       "postProcessingToggle": {
-        "label": "Post-traitement",
+        "label": "Reformulation par IA (Styles)",
         "description": "Activer l'affinage du texte par IA après la transcription"
       },
       "muteWhileRecording": {
