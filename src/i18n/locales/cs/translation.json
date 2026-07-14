@@ -100,7 +100,7 @@
     },
     "permissions": {
       "title": "Vyžadována oprávnění",
-      "description": "Handy potřebuje několik oprávnění pro správné fungování.",
+      "description": "Nova potřebuje několik oprávnění pro správné fungování.",
       "microphone": {
         "title": "Přístup k mikrofonu",
         "description": "Potřebný pro zachycení vašeho hlasu k přepisu."
@@ -172,13 +172,13 @@
       "searchPlaceholder": "Hledat modely podle názvu…",
       "rescan": {
         "label": "Znovu prohledat",
-        "tooltip": "Znovu prohledat modely přidané do složky modelů nebo mezipaměti Hugging Face mimo Handy"
+        "tooltip": "Znovu prohledat modely přidané do složky modelů nebo mezipaměti Hugging Face mimo Nova"
       }
     },
     "general": {
       "title": "Obecné",
       "shortcut": {
-        "title": "Zkratky Handy",
+        "title": "Zkratky Nova",
         "description": "Nastavte klávesové zkratky pro spuštění nahrávání řeči na text",
         "loading": "Načítám zkratky...",
         "none": "Žádné zkratky nejsou nastavené",
@@ -274,11 +274,11 @@
       },
       "autostart": {
         "label": "Spouštět při startu",
-        "description": "Automaticky spustit Handy po přihlášení do počítače."
+        "description": "Automaticky spustit Nova po přihlášení do počítače."
       },
       "showTrayIcon": {
         "label": "Zobrazit ikonu v systémové liště",
-        "description": "Zobrazit ikonu Handy v systémové liště."
+        "description": "Zobrazit ikonu Nova v systémové liště."
       },
       "overlay": {
         "style": {
@@ -461,7 +461,7 @@
       },
       "updateChecks": {
         "label": "Kontrolovat aktualizace",
-        "description": "Automaticky kontrolovat nové verze Handy"
+        "description": "Automaticky kontrolovat nové verze Nova"
       },
       "soundTheme": {
         "label": "Zvukový motiv",
@@ -540,11 +540,11 @@
       "title": "O aplikaci",
       "version": {
         "title": "Verze",
-        "description": "Aktuální verze Handy"
+        "description": "Aktuální verze Nova"
       },
       "appDataDirectory": {
         "title": "Adresář dat aplikace",
-        "description": "Umístění, kde Handy ukládá data"
+        "description": "Umístění, kde Nova ukládá data"
       },
       "sourceCode": {
         "title": "Zdrojový kód",
@@ -553,7 +553,7 @@
       },
       "supportDevelopment": {
         "title": "Podpořte vývoj",
-        "description": "Pomozte nám pokračovat ve vývoji Handy",
+        "description": "Pomozte nám pokračovat ve vývoji Nova",
         "button": "Přispět"
       },
       "acknowledgments": {
@@ -561,12 +561,12 @@
         "ggml": {
           "title": "ggml",
           "description": "Vysoce výkonné inferenční zpracování modelu automatického rozpoznávání řeči Whisper od OpenAI",
-          "details": "Handy používá ggml pro rychlé lokální zpracování řeči na text. Díky skvělé práci Georgiho Gerganova a přispěvatelů."
+          "details": "Nova používá ggml pro rychlé lokální zpracování řeči na text. Díky skvělé práci Georgiho Gerganova a přispěvatelů."
         }
       },
       "whatsNewUpdates": {
         "label": "Zobrazovat novinky",
-        "description": "Zobrazovat poznámky k vydání po aktualizacích Handy"
+        "description": "Zobrazovat poznámky k vydání po aktualizacích Nova"
       }
     }
   },
@@ -593,7 +593,7 @@
     "noOptionsFound": "Nenalezeny žádné možnosti"
   },
   "accessibility": {
-    "permissionsDescription": "Handy potřebuje oprávnění usnadnění přístupu, aby mohlo psát přepsaný text.",
+    "permissionsDescription": "Nova potřebuje oprávnění usnadnění přístupu, aby mohlo psát přepsaný text.",
     "openSettings": "Otevřít Nastavení systému"
   },
   "errors": {
@@ -616,11 +616,11 @@
   },
   "appLanguage": {
     "title": "Jazyk aplikace",
-    "description": "Změňte jazyk rozhraní Handy"
+    "description": "Změňte jazyk rozhraní Nova"
   },
   "theme": {
     "title": "Motiv aplikace",
-    "description": "Zvolte, zda má Handy sledovat motiv systému, nebo zůstat světlý či tmavý",
+    "description": "Zvolte, zda má Nova sledovat motiv systému, nebo zůstat světlý či tmavý",
     "options": {
       "system": "Systém",
       "light": "Světlý",
@@ -632,6 +632,6 @@
     "processing": "Zpracovávám..."
   },
   "whatsNew": {
-    "title": "Novinky v Handy v{{version}}"
+    "title": "Novinky v Nova v{{version}}"
   }
 }
