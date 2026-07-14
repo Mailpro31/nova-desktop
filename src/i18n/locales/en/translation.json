@@ -646,6 +646,7 @@
   },
   "overlay": {
     "transcribing": "Transcribing...",
-    "processing": "Processing..."
+    "processing": "Processing...",
+    "chooseStyle": "Choose a Style"
   }
 }

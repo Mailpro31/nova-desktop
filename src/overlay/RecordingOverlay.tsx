@@ -1,4 +1,5 @@
 import { listen } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/core";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./RecordingOverlay.css";
@@ -11,8 +12,16 @@ import type {
 } from "@/bindings";
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
+import { styleColor } from "@/lib/styleColors";
 
-type OverlayState = "recording" | "streaming" | "transcribing" | "processing";
+type OverlayState =
+  | "idle"
+  | "recording"
+  | "streaming"
+  | "transcribing"
+  | "processing";
+
+type StyleItem = { id: string; name: string };
 
 // Number of reactive bars in the waveform (the simple, smoothed style shared by
 // every overlay form). Mic levels arrive as 16 FFT buckets; we take the first N.
@@ -39,6 +48,57 @@ const RecordingOverlay: React.FC = () => {
   // True once live text overflows the cap. A top overlay fades its top edge only
   // while overflowing, so the resting first line stays crisp flush under the pill.
   const [overflowing, setOverflowing] = useState(false);
+  // État de repos (bulle « toujours affichée ») : liste des Styles + menu.
+  const [styles, setStyles] = useState<StyleItem[]>([]);
+  const [selectedStyleId, setSelectedStyleId] = useState<string>("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const fetchStyles = async () => {
+    try {
+      const s = await commands.getAppSettings();
+      if (s.status === "ok") {
+        setStyles(
+          (s.data.post_process_prompts ?? []).map((p) => ({
+            id: p.id,
+            name: p.name,
+          })),
+        );
+        setSelectedStyleId(s.data.post_process_selected_prompt_id ?? "");
+      }
+    } catch {
+      // Bulle purement décorative si les réglages ne se lisent pas.
+    }
+  };
+
+  // Hauteur d'une rangée de menu (px), doit rester en phase avec la CSS .smenu-item.
+  const MENU_ROW_H = 34;
+
+  const resizeForMenu = async (open: boolean, count: number) => {
+    const height = open ? 46 + count * MENU_ROW_H + 14 : 0;
+    try {
+      await invoke("set_overlay_menu_height", { height });
+    } catch {
+      // La fenêtre garde sa taille si le redimensionnement échoue.
+    }
+  };
+
+  const toggleMenu = async () => {
+    const next = !menuOpen;
+    if (next) await fetchStyles();
+    await resizeForMenu(next, styles.length || 1);
+    setMenuOpen(next);
+  };
+
+  const chooseStyle = async (id: string) => {
+    setSelectedStyleId(id);
+    setMenuOpen(false);
+    await resizeForMenu(false, 0);
+    try {
+      await commands.setPostProcessSelectedPrompt(id);
+    } catch {
+      // Ignore : la sélection reste locale si l'écriture échoue.
+    }
+  };
 
   const smoothedLevelsRef = useRef<number[]>(Array(16).fill(0));
   // Live-text scroll-back: the text region "sticks" to the newest line while the
@@ -66,6 +126,11 @@ const RecordingOverlay: React.FC = () => {
         }
         const overlayState = event.payload as OverlayState;
         setState(overlayState);
+        if (overlayState === "idle") {
+          void fetchStyles();
+        } else {
+          setMenuOpen(false);
+        }
         if (overlayState === "recording" || overlayState === "streaming") {
           setStreamText({ committed: "", tentative: "" });
         }
@@ -206,6 +271,86 @@ const RecordingOverlay: React.FC = () => {
       <div className="sbase-r">{showCancel && cancelBtn}</div>
     </div>
   );
+
+  // ---- Idle overlay: la bulle au repos, toujours affichée, avec un engrenage
+  // qui ouvre le menu de choix de Style (pastilles couleur). ----
+  if (state === "idle") {
+    const selected = styles.find((s) => s.id === selectedStyleId);
+    return (
+      <div
+        dir={direction}
+        className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+      >
+        <div className="sidle-col">
+        {menuOpen && (
+          <div className={`smenu ${position}`}>
+            {styles.map((s) => (
+              <button
+                key={s.id}
+                className={`smenu-item ${s.id === selectedStyleId ? "active" : ""}`}
+                onClick={() => chooseStyle(s.id)}
+              >
+                <span
+                  className="smenu-dot"
+                  style={{ background: styleColor(s.id) }}
+                />
+                <span className="smenu-name">{s.name}</span>
+                {s.id === selectedStyleId && (
+                  <svg
+                    className="smenu-check"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20 6 9 17l-5-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="scard sidle">
+          <span
+            className="sdot"
+            style={
+              selected
+                ? { background: styleColor(selected.id) }
+                : undefined
+            }
+          />
+          <button
+            className={`sgear ${menuOpen ? "open" : ""}`}
+            aria-label={t("overlay.chooseStyle")}
+            onClick={toggleMenu}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              />
+              <path
+                d="M19.4 13a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 17.3a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.7 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+        </div>
+      </div>
+    );
+  }
 
   // ---- Live overlay: a pill that sculpts open into a panel ----
   if (state === "streaming") {

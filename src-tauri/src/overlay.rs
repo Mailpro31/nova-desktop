@@ -313,6 +313,12 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
                 }
             }
 
+            // La bulle est traversante par défaut (les clics passent vers l'app
+            // en dessous). Le veilleur de survol ci-dessous la rend cliquable
+            // uniquement quand la souris est au-dessus (pour l'engrenage / annuler).
+            let _ = window.set_ignore_cursor_events(true);
+            start_overlay_hover_watcher(app_handle);
+
             debug!("Recording overlay window created successfully (hidden)");
         }
         Err(e) => {
@@ -427,6 +433,84 @@ pub fn show_processing_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "processing");
 }
 
+/// Affiche la bulle au repos (mode « toujours affichée »). Rendue au démarrage
+/// et après chaque dictée quand `persistent_overlay` est actif.
+pub fn show_idle_overlay(app_handle: &AppHandle) {
+    show_overlay_state(app_handle, "idle");
+}
+
+/// Agrandit (ou rétablit) la fenêtre de la bulle pour héberger le menu de choix
+/// de Style : la fenêtre idle fait 46 px, trop court pour un menu déroulant. On
+/// la ré-ancre au bord de l'écran après redimensionnement (ancrage bas → le menu
+/// s'étend vers le haut ; ancrage haut → vers le bas).
+#[tauri::command]
+#[specta::specta]
+pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String> {
+    if let Some(window) = app.get_webview_window("recording_overlay") {
+        let h = if height > OVERLAY_HEIGHT {
+            height
+        } else {
+            OVERLAY_HEIGHT
+        };
+        let _ = window.set_size(tauri::Size::Logical(tauri::LogicalSize {
+            width: OVERLAY_WIDTH,
+            height: h,
+        }));
+        if let Some((x, y)) = calculate_overlay_position(&app, OVERLAY_WIDTH, h) {
+            let _ = window
+                .set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
+        }
+        #[cfg(target_os = "windows")]
+        force_overlay_topmost(&window);
+    }
+    Ok(())
+}
+
+/// La souris est-elle au-dessus de la bulle ? (coordonnées logiques, comme
+/// `get_monitor_with_cursor`). Sert au veilleur de survol pour basculer le
+/// click-through.
+#[cfg(not(target_os = "macos"))]
+fn cursor_over_overlay(app: &AppHandle, window: &tauri::webview::WebviewWindow) -> Option<bool> {
+    let (cx, cy) = input::get_cursor_position(app)?;
+    let scale = window.scale_factor().ok()?;
+    let pos = window.outer_position().ok()?;
+    let size = window.outer_size().ok()?;
+    let x = pos.x as f64 / scale;
+    let y = pos.y as f64 / scale;
+    let w = size.width as f64 / scale;
+    let h = size.height as f64 / scale;
+    let (cx, cy) = (cx as f64, cy as f64);
+    Some(cx >= x && cx < x + w && cy >= y && cy < y + h)
+}
+
+/// Veilleur léger : rend la bulle cliquable seulement quand la souris la
+/// survole, sinon traversante (les clics passent vers l'app en dessous). Un
+/// seul thread pour la durée de vie de l'app ; ne fait un appel système que sur
+/// changement d'état de survol.
+#[cfg(not(target_os = "macos"))]
+fn start_overlay_hover_watcher(app_handle: &AppHandle) {
+    let app = app_handle.clone();
+    std::thread::spawn(move || {
+        let mut last_interactive: Option<bool> = None;
+        loop {
+            std::thread::sleep(std::time::Duration::from_millis(90));
+            let Some(window) = app.get_webview_window("recording_overlay") else {
+                continue;
+            };
+            // Traversante quand masquée ; sinon interactive uniquement au survol.
+            let interactive = if window.is_visible().unwrap_or(false) {
+                cursor_over_overlay(&app, &window).unwrap_or(false)
+            } else {
+                false
+            };
+            if last_interactive != Some(interactive) {
+                let _ = window.set_ignore_cursor_events(!interactive);
+                last_interactive = Some(interactive);
+            }
+        }
+    });
+}
+
 /// Updates the overlay window position based on current settings
 pub fn update_overlay_position(app_handle: &AppHandle) {
     if let Some(overlay_window) = app_handle.get_webview_window("recording_overlay") {
@@ -448,6 +532,14 @@ pub fn update_overlay_position(app_handle: &AppHandle) {
 
 /// Hides the recording overlay window with fade-out animation
 pub fn hide_recording_overlay(app_handle: &AppHandle) {
+    // Mode « bulle toujours affichée » : au lieu de masquer, on retourne à
+    // l'état de repos (la bulle reste à l'écran avec l'engrenage de Styles).
+    let settings = settings::get_settings(app_handle);
+    if settings.persistent_overlay && settings.overlay_style != OverlayStyle::None {
+        show_overlay_state(app_handle, "idle");
+        return;
+    }
+
     // Always hide the overlay regardless of settings - if setting was changed while recording,
     // we still want to hide it properly
     if let Some(overlay_window) = app_handle.get_webview_window("recording_overlay") {

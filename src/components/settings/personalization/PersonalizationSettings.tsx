@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
+import { ToggleSwitch } from "../../ui/ToggleSwitch";
 import { TierBadge } from "../license/TierBadge";
 import { CustomVariablesSettings } from "./CustomVariablesSettings";
+import { useSettings } from "../../../hooks/useSettings";
 import {
   ORB_THEMES,
   DEFAULT_ORB_ID,
@@ -51,12 +53,33 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
 export const PersonalizationSettings: React.FC = () => {
   const [selected, setSelected] = useState<string>(getOrbThemeId());
   const [canCustomize, setCanCustomize] = useState(true);
+  const { settings, refreshSettings } = useSettings();
+  // La bulle « toujours affichée » (champ absent des bindings tant que le build
+  // Rust n'a pas régénéré les types → lecture souple + écriture via invoke brut).
+  const [persistentOverlay, setPersistentOverlay] = useState(true);
 
   useEffect(() => {
     invoke<{ features: Record<string, boolean> }>("get_license_status")
       .then((s) => setCanCustomize(s.features?.orb_customization ?? true))
       .catch(() => setCanCustomize(true));
   }, []);
+
+  useEffect(() => {
+    const v = (
+      settings as unknown as { persistent_overlay?: boolean } | null
+    )?.persistent_overlay;
+    if (typeof v === "boolean") setPersistentOverlay(v);
+  }, [settings]);
+
+  const togglePersistentOverlay = async (enabled: boolean) => {
+    setPersistentOverlay(enabled);
+    try {
+      await invoke("change_persistent_overlay_setting", { enabled });
+      await refreshSettings();
+    } catch {
+      // La bulle garde son état si l'écriture échoue.
+    }
+  };
 
   const choose = (id: string) => {
     if (id !== DEFAULT_ORB_ID && !canCustomize) return;
@@ -104,6 +127,17 @@ export const PersonalizationSettings: React.FC = () => {
             </div>
           </div>
         </SettingContainer>
+      </SettingsGroup>
+
+      <SettingsGroup title="Bulle">
+        <ToggleSwitch
+          checked={persistentOverlay}
+          onChange={togglePersistentOverlay}
+          label="Bulle toujours affichée"
+          description="Garde la petite bulle Nova à l'écran en permanence, avec un engrenage pour choisir le Style. Elle laisse passer vos clics : elle ne devient cliquable que lorsque la souris la survole."
+          descriptionMode="inline"
+          grouped={true}
+        />
       </SettingsGroup>
 
       <CustomVariablesSettings />

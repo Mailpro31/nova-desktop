@@ -643,7 +643,8 @@
   },
   "overlay": {
     "transcribing": "Transcription...",
-    "processing": "Traitement..."
+    "processing": "Traitement...",
+    "chooseStyle": "Choisir un Style"
   },
   "whatsNew": {
     "title": "Nouveautés de Nova v{{version}}"

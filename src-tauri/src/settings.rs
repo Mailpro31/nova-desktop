@@ -488,6 +488,11 @@ pub struct AppSettings {
     /// `overlay_position` (position `none` → style `None`).
     #[serde(default = "default_overlay_style")]
     pub overlay_style: OverlayStyle,
+    /// Bulle (overlay) affichée en permanence à l'écran, même au repos, avec un
+    /// engrenage pour choisir le Style. Cochée par défaut. Sans effet si
+    /// `overlay_style` = None.
+    #[serde(default = "default_persistent_overlay")]
+    pub persistent_overlay: bool,
 }
 
 fn default_model() -> String {
@@ -540,6 +545,11 @@ fn default_overlay_position() -> OverlayPosition {
     // Position only matters when the overlay is shown; whether it shows at all is
     // `overlay_style` (Linux defaults that to None). So a single default suffices.
     OverlayPosition::Bottom
+}
+
+fn default_persistent_overlay() -> bool {
+    // La bulle Nova reste à l'écran par défaut (avec engrenage de choix de Style).
+    true
 }
 
 fn default_overlay_style() -> OverlayStyle {
@@ -1015,6 +1025,7 @@ pub fn get_default_settings() -> AppSettings {
         extra_recording_buffer_ms: 0,
         vad_enabled: default_vad_enabled(),
         overlay_style: default_overlay_style(),
+        persistent_overlay: default_persistent_overlay(),
     }
 }
 

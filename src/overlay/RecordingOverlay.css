@@ -382,3 +382,115 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* ============================================================
+   Bulle au repos (mode « toujours affichée ») + menu de choix de Style.
+   Orbe + engrenage ; le menu liste les Styles avec une pastille couleur.
+   Accent d'action bleu Apple (sélection / coche), identité orbe conservée.
+   ============================================================ */
+.sidle-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+/* Ancrage haut : le menu s'ouvre SOUS la pilule (pilule d'abord). */
+.ov-stage.top .sidle-col {
+  flex-direction: column-reverse;
+}
+
+.scard.sidle {
+  width: auto;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 12px;
+  height: var(--ov-base-h);
+  border-radius: 999px;
+}
+.scard.sidle .sdot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  flex: none;
+}
+.sgear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--s-muted);
+  cursor: pointer;
+  border-radius: 999px;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+.sgear:hover {
+  color: var(--color-text);
+  background: var(--s-hair);
+}
+.sgear.open {
+  color: var(--color-accent, #0a84ff);
+}
+.sgear svg {
+  width: 17px;
+  height: 17px;
+}
+
+.smenu {
+  width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--s-surface);
+  border: 1px solid var(--s-border);
+  border-radius: 12px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: scard-pop 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.smenu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 13px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+.smenu-item:hover {
+  background: var(--s-hair);
+}
+.smenu-item.active {
+  background: color-mix(in srgb, var(--color-accent, #0a84ff) 16%, transparent);
+}
+.smenu-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  flex: none;
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.45);
+}
+.smenu-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.smenu-check {
+  width: 15px;
+  height: 15px;
+  color: var(--color-accent, #0a84ff);
+  flex: none;
+}

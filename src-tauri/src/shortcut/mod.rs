@@ -621,6 +621,25 @@ pub fn change_overlay_style_setting(app: AppHandle, style: String) -> Result<(),
     Ok(())
 }
 
+/// Active/désactive la bulle « toujours affichée ». Montre immédiatement l'état
+/// de repos (ou masque la bulle) pour refléter le choix sans redémarrage.
+#[tauri::command]
+#[specta::specta]
+pub fn change_persistent_overlay_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.persistent_overlay = enabled;
+    let style_none = settings.overlay_style == OverlayStyle::None;
+    settings::write_settings(&app, settings);
+
+    if enabled && !style_none {
+        crate::overlay::show_idle_overlay(&app);
+    } else {
+        crate::overlay::hide_recording_overlay(&app);
+    }
+
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub fn change_debug_mode_setting(app: AppHandle, enabled: bool) -> Result<(), String> {

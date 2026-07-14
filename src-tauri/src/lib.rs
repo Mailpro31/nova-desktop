@@ -548,6 +548,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_selected_language_setting,
             shortcut::change_overlay_position_setting,
             shortcut::change_overlay_style_setting,
+            shortcut::change_persistent_overlay_setting,
             shortcut::change_debug_mode_setting,
             shortcut::change_word_correction_threshold_setting,
             shortcut::change_extra_recording_buffer_setting,
@@ -618,6 +619,7 @@ pub fn run(cli_args: CliArgs) {
             commands::license::activate_license,
             commands::license::clear_license,
             quota::get_quota_status,
+            overlay::set_overlay_menu_height,
             commands::models::set_active_model,
             commands::models::get_current_model,
             commands::models::get_transcription_model_status,
@@ -859,6 +861,15 @@ pub fn run(cli_args: CliArgs) {
             overlay::update_overlay_enabled_cache(
                 settings.overlay_style != settings::OverlayStyle::None,
             );
+
+            // Bulle « toujours affichée » : montre l'état de repos dès le
+            // démarrage (avec engrenage de choix de Style). Sans effet si
+            // l'overlay est désactivé (overlay_style = None).
+            if settings.persistent_overlay
+                && settings.overlay_style != settings::OverlayStyle::None
+            {
+                overlay::show_idle_overlay(&app_handle);
+            }
 
             // Pre-warm GPU/accelerator enumeration on a background thread. The first
             // get_available_accelerators call enumerates ORT execution providers and
