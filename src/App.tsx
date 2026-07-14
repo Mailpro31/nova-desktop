@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, type ReactNode } from "react";
 import { toast, Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { platform } from "@tauri-apps/plugin-os";
 import {
   checkAccessibilityPermission,
@@ -144,6 +145,26 @@ function App() {
     const unlisten = listen<string>("transcription-error", (event) => {
       toast.error(t("errors.transcriptionFailedTitle"), {
         description: event.payload,
+      });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  // Quota gratuit épuisé : la dictée a été bloquée côté Rust. On propose
+  // directement de passer à un palier supérieur.
+  useEffect(() => {
+    const unlisten = listen("quota-blocked", () => {
+      toast.error(t("quota.blockedTitle"), {
+        description: t("quota.blockedDescription"),
+        duration: 8000,
+        action: {
+          label: t("quota.upgrade"),
+          onClick: () => {
+            void openUrl("https://novaspeak.app");
+          },
+        },
       });
     });
     return () => {

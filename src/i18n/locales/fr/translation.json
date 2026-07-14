@@ -601,6 +601,15 @@
     "permissionsDescription": "Nova a besoin des autorisations d'accessibilité pour taper le texte transcrit.",
     "openSettings": "Ouvrir les Préférences Système"
   },
+  "quota": {
+    "weekUsage": "Utilisation gratuite cette semaine",
+    "count": "{{used}} / {{limit}} caractères",
+    "blockedInline": "Limite hebdomadaire atteinte. Passez à un palier supérieur pour continuer à dicter sans interruption.",
+    "resetsOn": "Réinitialisation le {{date}}.",
+    "blockedTitle": "Limite gratuite atteinte",
+    "blockedDescription": "Vous avez utilisé vos 2 500 caractères gratuits de la semaine. Passez à Nova pour dicter sans limite.",
+    "upgrade": "S'abonner"
+  },
   "errors": {
     "loadDirectory": "Erreur lors du chargement du répertoire : {{error}}",
     "micPermissionDeniedTitle": "Accès au microphone refusé",

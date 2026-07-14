@@ -14,6 +14,7 @@ mod llm_client;
 mod managers;
 mod overlay;
 pub mod portable;
+mod quota;
 mod settings;
 mod shortcut;
 mod signal_handle;
@@ -616,6 +617,7 @@ pub fn run(cli_args: CliArgs) {
             commands::license::get_license_status,
             commands::license::activate_license,
             commands::license::clear_license,
+            quota::get_quota_status,
             commands::models::set_active_model,
             commands::models::get_current_model,
             commands::models::get_transcription_model_status,

@@ -440,6 +440,13 @@ pub struct AppSettings {
     /// Clé de licence Nova (jeton NOVA1…). Vide = palier Free. Voir licensing.rs.
     #[serde(default)]
     pub license_key: Option<String>,
+    /// Quota Free : caractères insérés durant la semaine glissante en cours.
+    /// Réinitialisé au bout de 7 jours. Voir quota.rs.
+    #[serde(default)]
+    pub free_chars_used: u32,
+    /// Début (epoch secondes) de la semaine de quota courante. 0 = jamais amorcé.
+    #[serde(default)]
+    pub free_quota_week_start: i64,
     #[serde(default)]
     pub mute_while_recording: bool,
     #[serde(default)]
@@ -987,6 +994,8 @@ pub fn get_default_settings() -> AppSettings {
         post_process_prompts: default_post_process_prompts(),
         post_process_selected_prompt_id: default_post_process_selected_prompt_id(),
         license_key: None,
+        free_chars_used: 0,
+        free_quota_week_start: 0,
         mute_while_recording: false,
         append_trailing_space: false,
         app_language: default_app_language(),

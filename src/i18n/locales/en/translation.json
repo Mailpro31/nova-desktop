@@ -604,6 +604,15 @@
     "permissionsDescription": "Nova needs accessibility permissions to type transcribed text.",
     "openSettings": "Open System Settings"
   },
+  "quota": {
+    "weekUsage": "Free usage this week",
+    "count": "{{used}} / {{limit}} characters",
+    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
+    "resetsOn": "Resets on {{date}}.",
+    "blockedTitle": "Free limit reached",
+    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
+    "upgrade": "Subscribe"
+  },
   "errors": {
     "loadDirectory": "Error loading directory: {{error}}",
     "micPermissionDeniedTitle": "Microphone Access Denied",

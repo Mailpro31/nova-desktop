@@ -6,6 +6,7 @@ import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { invalidateLicense } from "./TierBadge";
+import { QuotaBar } from "./QuotaBar";
 
 type Tier = "free" | "pro" | "ultra" | "business";
 
@@ -107,6 +108,8 @@ export const LicenseSettings: React.FC = () => {
           {TIER_LABEL[tier]}
         </span>
       </SettingContainer>
+
+      <QuotaBar />
 
       {status?.licensed && status.email && (
         <SettingContainer

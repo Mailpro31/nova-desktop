@@ -519,6 +519,14 @@ pub(crate) async fn process_transcription_output(
 
 impl ShortcutAction for TranscribeAction {
     fn start(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
+        // Quota Free : au-delà de la limite hebdomadaire, on bloque AVANT tout
+        // enregistrement et on laisse le frontend proposer de s'abonner.
+        if crate::quota::is_blocked(app) {
+            debug!("Dictée bloquée : quota gratuit hebdomadaire atteint");
+            let _ = app.emit("quota-blocked", ());
+            return;
+        }
+
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
 
@@ -846,6 +854,8 @@ impl ShortcutAction for TranscribeAction {
                                 let ah_clone = ah.clone();
                                 let paste_time = Instant::now();
                                 let final_text = processed.final_text;
+                                // Compté dans le quota Free après un collage réussi.
+                                let paste_char_count = final_text.chars().count() as u32;
                                 let rm_for_paste = Arc::clone(&rm);
                                 ah.run_on_main_thread(move || {
                                     if rm_for_paste.was_cancelled_since(cancel_generation) {
@@ -856,10 +866,16 @@ impl ShortcutAction for TranscribeAction {
                                     }
 
                                     match utils::paste(final_text, ah_clone.clone()) {
-                                        Ok(()) => debug!(
-                                            "Text pasted successfully in {:?}",
-                                            paste_time.elapsed()
-                                        ),
+                                        Ok(()) => {
+                                            crate::quota::record_chars(
+                                                &ah_clone,
+                                                paste_char_count,
+                                            );
+                                            debug!(
+                                                "Text pasted successfully in {:?}",
+                                                paste_time.elapsed()
+                                            );
+                                        }
                                         Err(e) => {
                                             error!("Failed to paste transcription: {}", e);
                                             let _ = ah_clone.emit("paste-error", ());
