@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Nova — palette (langage visuel Apple / macOS « bleu nuit », premium)
+   --------------------------------------------------------------------------
+   Source de vérité des couleurs. L'app est SOMBRE par défaut (identité
+   « bleu nuit » de Nova). Chaque token nommé ci-dessous est référencé par les
+   utilitaires Tailwind (voir App.css `@theme inline`) et par les composants,
+   donc une valeur hex ne vit qu'à un seul endroit.
+
+   Accent d'ACTION unique : bleu Apple #0A84FF (boutons primaires,
+   interrupteurs actifs, sélections, focus). Jamais un autre accent pour une
+   action. Verrou « Ultra » : lilas #C9B6F0.
+   ========================================================================== */
+
+:root {
+  /* ---- Palette sombre Nova (la seule vraie palette) ---------------------- */
+  --nova-window: #1f1f22; /* fond de fenêtre           */
+  --nova-sidebar: #28282c; /* barre latérale            */
+  --nova-surface: #2c2c30; /* groupes / cartes          */
+  --nova-inset: #1a1a1d; /* champs / insets           */
+  --nova-text: #f2f2f4; /* texte principal           */
+  --nova-text-secondary: #98989f; /* texte secondaire / gris   */
+  --nova-hairline: rgba(255, 255, 255, 0.07);
+  --nova-accent: #0a84ff; /* bleu Apple — ACTION unique */
+  --nova-accent-hover: #3b9bff;
+  --nova-success: #30d158;
+  --nova-danger: #ff453a;
+  --nova-ultra: #c9b6f0; /* verrou Nova Ultra          */
+
+  /* ---- Paire claire/sombre (conservée pour compat data-theme) -----------
+     Nova n'a qu'une identité sombre : les deux versants pointent vers la même
+     palette « bleu nuit ». Le sélecteur de thème reste fonctionnel (le réglage
+     se sauvegarde), il ne bascule simplement pas vers un thème clair — décision
+     produit ferme (voir CLAUDE.md). */
+  --light-color-text: var(--nova-text);
+  --light-color-background: var(--nova-window);
+  --light-color-logo-primary: var(--nova-accent);
+  --light-color-logo-stroke: var(--nova-text);
+
+  --dark-color-text: var(--nova-text);
+  --dark-color-background: var(--nova-window);
+  --dark-color-logo-primary: var(--nova-accent);
+  --dark-color-logo-stroke: var(--nova-text);
+
+  /* ---- Tokens historiques référencés dans tout le code ------------------- */
+  /* #da5893 (rose Handy) -> bleu d'action Nova. C'est LA couleur des boutons
+     primaires et des interrupteurs actifs. */
+  --color-background-ui: var(--nova-accent);
+  --color-text-stroke: var(--nova-text);
+  --color-mid-gray: var(--nova-text-secondary);
+
+  /* ---- Tokens actifs (par défaut = sombre Nova) -------------------------- */
+  --color-text: var(--nova-text);
+  --color-background: var(--nova-window);
+  --color-logo-primary: var(--nova-accent);
+  --color-logo-stroke: var(--nova-text);
+
+  /* ---- Surfaces Nova exposées à Tailwind (voir App.css) ------------------ */
+  --color-surface: var(--nova-surface);
+  --color-sidebar: var(--nova-sidebar);
+  --color-inset: var(--nova-inset);
+  --color-text-secondary: var(--nova-text-secondary);
+  --color-hairline: var(--nova-hairline);
+  --color-accent: var(--nova-accent);
+  --color-accent-hover: var(--nova-accent-hover);
+  --color-success: var(--nova-success);
+  --color-danger: var(--nova-danger);
+  --color-ultra: var(--nova-ultra);
+}
