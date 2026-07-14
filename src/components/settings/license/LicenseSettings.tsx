@@ -5,6 +5,7 @@ import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
+import { invalidateLicense } from "./TierBadge";
 
 type Tier = "free" | "pro" | "ultra" | "business";
 
@@ -67,6 +68,7 @@ export const LicenseSettings: React.FC = () => {
       });
       setStatus(s);
       setKeyInput("");
+      invalidateLicense();
     } catch (e) {
       setError(typeof e === "string" ? e : "Clé invalide.");
     } finally {
@@ -79,6 +81,7 @@ export const LicenseSettings: React.FC = () => {
     setError(null);
     try {
       setStatus(await invoke<LicenseStatus>("clear_license"));
+      invalidateLicense();
     } finally {
       setBusy(false);
     }

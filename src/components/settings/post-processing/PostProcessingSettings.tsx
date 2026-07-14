@@ -19,6 +19,7 @@ import { BaseUrlField } from "../PostProcessingSettingsApi/BaseUrlField";
 import { ApiKeyField } from "../PostProcessingSettingsApi/ApiKeyField";
 import { ModelSelect } from "../PostProcessingSettingsApi/ModelSelect";
 import { OllamaInstaller } from "../PostProcessingSettingsApi/OllamaInstaller";
+import { TierBadge } from "../license/TierBadge";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { ShortcutInput } from "../ShortcutInput";
 import { useSettings } from "../../../hooks/useSettings";
@@ -38,6 +39,7 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
         grouped={true}
       >
         <div className="flex items-center gap-2">
+          <TierBadge feature="online_engine" />
           <ProviderSelect
             options={state.providerOptions}
             value={state.selectedProviderId}
@@ -264,6 +266,7 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
       grouped={true}
     >
       <div className="space-y-3">
+        <TierBadge feature="all_styles" />
         <div className="flex gap-2 min-w-0">
           <Dropdown
             selectedValue={selectedPromptId || null}

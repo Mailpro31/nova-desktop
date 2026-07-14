@@ -115,6 +115,17 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
         }
     };
 
+    // Palier : le moteur en ligne « Turbo » nécessite Nova Pro. Les moteurs
+    // locaux (Ollama, custom, Apple Intelligence) restent gratuits.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let is_local_engine = provider.id == "ollama"
+        || provider.id == "custom"
+        || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
+    if !is_local_engine && !crate::licensing::has("online_engine", license_key) {
+        debug!("Turbo (moteur en ligne) réservé à Nova Pro — reformulation ignorée");
+        return None;
+    }
+
     let model = settings
         .post_process_models
         .get(&provider.id)
@@ -150,6 +161,22 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
             );
             return None;
         }
+    };
+
+    // Palier : les Styles au-delà des gratuits nécessitent Nova Pro. Sinon on
+    // retombe sur le Style « Transcription améliorée » (gratuit) — la dictée est
+    // quand même nettoyée, jamais bloquée.
+    let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
+    let prompt = if !style_is_free && !crate::licensing::has("all_styles", license_key) {
+        debug!("Style '{}' réservé à Nova Pro — repli sur le Style gratuit", selected_prompt_id);
+        settings
+            .post_process_prompts
+            .iter()
+            .find(|p| p.id == "default_improve_transcriptions")
+            .map(|p| p.prompt.clone())
+            .unwrap_or(prompt)
+    } else {
+        prompt
     };
 
     if prompt.trim().is_empty() {
