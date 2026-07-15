@@ -54,12 +54,13 @@ impl Tier {
 /// Fonctionnalité → palier minimum requis. (Ajuster ici = changer l'offre.)
 pub fn feature_min_tier(feature: &str) -> Tier {
     match feature {
-        // Moteur en ligne « Turbo » + reformulation illimitée + les 7 Styles.
-        "online_engine" | "unlimited" | "all_styles" | "power_profiles"
-        | "custom_variables" => Tier::Pro,
-        // Ultra : meilleure IA + personnalisation avancée.
-        "best_models" | "custom_styles" | "custom_auto_rules" | "orb_customization"
-        | "custom_naming" | "priority_updates" => Tier::Ultra,
+        // Pro : reformulation illimitée + les 7 Styles + profils de puissance,
+        // le tout en LOCAL (Intelligence privée). Aucun cloud à ce palier.
+        "unlimited" | "all_styles" | "power_profiles" | "custom_variables" => Tier::Pro,
+        // Ultra : le CLOUD (moteur « Turbo » en ligne + STT en ligne) + meilleure
+        // IA + personnalisation avancée. Tout ce qui sort de la machine = Ultra.
+        "online_engine" | "best_models" | "custom_styles" | "custom_auto_rules"
+        | "orb_customization" | "custom_naming" | "priority_updates" => Tier::Ultra,
         _ => Tier::Free,
     }
 }

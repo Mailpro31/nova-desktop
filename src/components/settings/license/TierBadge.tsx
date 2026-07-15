@@ -31,7 +31,7 @@ export function invalidateLicense() {
 
 // Palier requis affiché par fonctionnalité.
 const TIER_FOR_FEATURE: Record<string, string> = {
-  online_engine: "NOVA PRO",
+  online_engine: "NOVA ULTRA",
   all_styles: "NOVA PRO",
   power_profiles: "NOVA PRO",
   custom_variables: "NOVA PRO",
