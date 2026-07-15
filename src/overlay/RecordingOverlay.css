@@ -403,26 +403,39 @@
   width: auto;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
-  padding: 0 8px 0 12px;
+  gap: 6px;
+  padding: 0 6px 0 11px;
   height: var(--ov-base-h);
   border-radius: 999px;
 }
 .scard.sidle .sdot {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 999px;
   flex: none;
 }
+/* Fin filet vertical entre l'orbe et l'engrenage, pour bien lire deux zones. */
+.scard.sidle .sgear::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 9px;
+  bottom: 9px;
+  width: 1px;
+  background: var(--s-border);
+}
 .sgear {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border: none;
   background: transparent;
-  color: var(--s-muted);
+  /* Assez clair pour rester lisible sur la pilule sombre (l'ancien gris se
+     confondait avec le fond). */
+  color: rgba(255, 255, 255, 0.72);
   cursor: pointer;
   border-radius: 999px;
   transition:
@@ -437,8 +450,14 @@
   color: var(--color-accent, #0a84ff);
 }
 .sgear svg {
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
+}
+/* En thème clair, l'engrenage doit rester sombre pour être lisible. */
+@media (prefers-color-scheme: light) {
+  .sgear {
+    color: rgba(0, 0, 0, 0.55);
+  }
 }
 
 .smenu {
