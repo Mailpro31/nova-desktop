@@ -77,6 +77,71 @@ pub fn activate_license(app: AppHandle, key: String) -> Result<LicenseStatus, St
     }
 }
 
+/// URL de la fonction edge d'activation (projet Supabase « nova-licences »).
+const ACTIVATION_URL: &str =
+    "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/license/activate";
+
+#[derive(Deserialize)]
+struct ActivateResp {
+    ok: bool,
+    token: Option<String>,
+    error: Option<String>,
+}
+
+/// Active une licence à partir du CODE d'achat (format NOVA-xxxx) : calcule
+/// l'empreinte machine, échange le code contre un jeton signé via la fonction
+/// edge, le vérifie localement, puis le stocke. Complète (sans remplacer)
+/// l'activation par jeton collé. Défensive : messages FR, jamais de panique.
+#[tauri::command]
+#[specta::specta]
+pub async fn activate_license_code(app: AppHandle, code: String) -> Result<LicenseStatus, String> {
+    let code = code.trim().to_uppercase();
+    if !code.starts_with("NOVA-") {
+        return Err("Le code d'achat doit commencer par NOVA-.".to_string());
+    }
+
+    let machine = crate::machine_id::fingerprint();
+
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(12))
+        .build()
+        .map_err(|_| "Impossible d'initialiser le réseau.".to_string())?;
+
+    let resp = client
+        .post(ACTIVATION_URL)
+        .json(&serde_json::json!({ "key": code, "machine": machine }))
+        .send()
+        .await
+        .map_err(|_| {
+            "Serveur d'activation injoignable — vérifiez votre connexion internet.".to_string()
+        })?;
+
+    let parsed: ActivateResp = resp
+        .json()
+        .await
+        .map_err(|_| "Réponse du serveur invalide.".to_string())?;
+
+    if !parsed.ok {
+        return Err(parsed
+            .error
+            .unwrap_or_else(|| "Activation refusée.".to_string()));
+    }
+
+    let token = parsed
+        .token
+        .ok_or_else(|| "Réponse du serveur incomplète.".to_string())?;
+
+    // Garde-fou : on ne stocke que si le jeton est valide localement.
+    if licensing::verify_key(&token).is_none() {
+        return Err("Le jeton reçu est invalide ou expiré.".to_string());
+    }
+
+    let mut settings = get_settings(&app);
+    settings.license_key = Some(token.clone());
+    write_settings(&app, settings);
+    Ok(build_status(&token))
+}
+
 /// Retire la licence enregistrée (retour au palier Free).
 #[tauri::command]
 #[specta::specta]

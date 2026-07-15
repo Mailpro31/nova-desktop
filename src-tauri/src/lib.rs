@@ -12,6 +12,7 @@ mod helpers;
 mod input;
 mod licensing;
 mod llm_client;
+mod machine_id;
 mod managers;
 mod overlay;
 pub mod portable;
@@ -620,6 +621,7 @@ pub fn run(cli_args: CliArgs) {
             commands::ollama::ollama_status,
             commands::license::get_license_status,
             commands::license::activate_license,
+            commands::license::activate_license_code,
             commands::license::clear_license,
             quota::get_quota_status,
             week_stats::get_week_stat,

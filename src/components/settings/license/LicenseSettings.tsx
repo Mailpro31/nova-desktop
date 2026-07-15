@@ -61,13 +61,17 @@ export const LicenseSettings: React.FC = () => {
   }, []);
 
   const activate = async () => {
-    if (!keyInput.trim()) return;
+    const value = keyInput.trim();
+    if (!value) return;
     setBusy(true);
     setError(null);
     try {
-      const s = await invoke<LicenseStatus>("activate_license", {
-        key: keyInput.trim(),
-      });
+      // Code d'achat NOVA-xxxx → échange en ligne contre un jeton lié à la
+      // machine ; sinon jeton NOVA1 collé → vérification hors-ligne.
+      const isPurchaseCode = value.toUpperCase().startsWith("NOVA-");
+      const s = isPurchaseCode
+        ? await invoke<LicenseStatus>("activate_license_code", { code: value })
+        : await invoke<LicenseStatus>("activate_license", { key: value });
       setStatus(s);
       setKeyInput("");
       invalidateLicense();
