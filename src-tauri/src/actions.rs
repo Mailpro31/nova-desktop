@@ -903,6 +903,10 @@ impl ShortcutAction for TranscribeAction {
                                                 &ah_clone,
                                                 paste_char_count,
                                             );
+                                            crate::week_stats::record_chars(
+                                                &ah_clone,
+                                                paste_char_count,
+                                            );
                                             debug!(
                                                 "Text pasted successfully in {:?}",
                                                 paste_time.elapsed()

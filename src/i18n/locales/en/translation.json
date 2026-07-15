@@ -623,6 +623,12 @@
     "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
     "upgrade": "Subscribe"
   },
+  "weekStat": {
+    "words_one": "{{count}} word dictated this week",
+    "words_other": "{{count}} words dictated this week",
+    "minutes_one": "≈ {{count}} minute of typing saved",
+    "minutes_other": "≈ {{count}} minutes of typing saved"
+  },
   "errors": {
     "loadDirectory": "Error loading directory: {{error}}",
     "micPermissionDeniedTitle": "Microphone Access Denied",

@@ -17,6 +17,7 @@ mod overlay;
 pub mod portable;
 mod quota;
 mod settings;
+mod week_stats;
 mod shortcut;
 mod signal_handle;
 mod transcription_coordinator;
@@ -621,6 +622,7 @@ pub fn run(cli_args: CliArgs) {
             commands::license::activate_license,
             commands::license::clear_license,
             quota::get_quota_status,
+            week_stats::get_week_stat,
             overlay::set_overlay_menu_height,
             commands::models::set_active_model,
             commands::models::get_current_model,

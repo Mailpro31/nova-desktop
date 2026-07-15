@@ -620,6 +620,12 @@
     "blockedDescription": "Vous avez utilisé vos 2 500 caractères gratuits de la semaine. Passez à Nova pour dicter sans limite.",
     "upgrade": "S'abonner"
   },
+  "weekStat": {
+    "words_one": "{{count}} mot dicté cette semaine",
+    "words_other": "{{count}} mots dictés cette semaine",
+    "minutes_one": "≈ {{count}} minute de frappe évitée",
+    "minutes_other": "≈ {{count}} minutes de frappe évitées"
+  },
   "errors": {
     "loadDirectory": "Erreur lors du chargement du répertoire : {{error}}",
     "micPermissionDeniedTitle": "Accès au microphone refusé",

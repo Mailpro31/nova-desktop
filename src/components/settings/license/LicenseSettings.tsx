@@ -7,6 +7,7 @@ import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { invalidateLicense } from "./TierBadge";
 import { QuotaBar } from "./QuotaBar";
+import { WeekStat } from "./WeekStat";
 
 type Tier = "free" | "pro" | "ultra" | "business";
 
@@ -110,6 +111,7 @@ export const LicenseSettings: React.FC = () => {
       </SettingContainer>
 
       <QuotaBar />
+      <WeekStat />
 
       {status?.licensed && status.email && (
         <SettingContainer

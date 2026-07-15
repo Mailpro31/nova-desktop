@@ -455,6 +455,13 @@ pub struct AppSettings {
     /// Début (epoch secondes) de la semaine de quota courante. 0 = jamais amorcé.
     #[serde(default)]
     pub free_quota_week_start: i64,
+    /// Statistique de valeur : caractères dictés durant la semaine glissante
+    /// (tous paliers). Voir week_stats.rs.
+    #[serde(default)]
+    pub week_chars_produced: u32,
+    /// Début (epoch secondes) de la semaine de statistique courante.
+    #[serde(default)]
+    pub week_stat_week_start: i64,
     #[serde(default)]
     pub mute_while_recording: bool,
     #[serde(default)]
@@ -1016,6 +1023,8 @@ pub fn get_default_settings() -> AppSettings {
         auto_style_blocklist: Vec::new(),
         free_chars_used: 0,
         free_quota_week_start: 0,
+        week_chars_produced: 0,
+        week_stat_week_start: 0,
         mute_while_recording: false,
         append_trailing_space: false,
         app_language: default_app_language(),
