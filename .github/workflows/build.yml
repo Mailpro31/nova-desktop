@@ -776,9 +776,9 @@ jobs:
           function Assert-PackageContents {
             param([string]$Root, [string]$Label)
 
-            $handy = Get-ChildItem $Root -Filter "handy.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
-            if (-not $handy) {
-              throw "$Label package is missing handy.exe"
+            $appExe = Get-ChildItem $Root -Filter "Nova.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+            if (-not $appExe) {
+              throw "$Label package is missing Nova.exe"
             }
             foreach ($dll in $stagedDlls) {
               if (-not (Get-ChildItem $Root -Filter $dll.Name -Recurse -ErrorAction SilentlyContinue)) {
@@ -786,9 +786,9 @@ jobs:
               }
             }
 
-            & $handy.FullName --list-devices | Out-Host
+            & $appExe.FullName --list-devices | Out-Host
             if ($LASTEXITCODE -ne 0) {
-              throw "$Label handy.exe --list-devices failed"
+              throw "$Label Nova.exe --list-devices failed"
             }
           }
 

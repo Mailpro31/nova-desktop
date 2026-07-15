@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Plus, Trash2 } from "lucide-react";
 import { SettingsGroup } from "../../ui/SettingsGroup";
@@ -17,6 +18,7 @@ type Variable = { key: string; value: string };
  * commande `update_custom_variables`. Réservé à Nova Pro.
  */
 export const CustomVariablesSettings: React.FC = () => {
+  const { t } = useTranslation();
   const { settings, refreshSettings } = useSettings();
   const [rows, setRows] = useState<Variable[]>([]);
   const [canUse, setCanUse] = useState(true);
@@ -26,8 +28,8 @@ export const CustomVariablesSettings: React.FC = () => {
   // build Rust n'a pas régénéré les types → lecture souple).
   useEffect(() => {
     const stored =
-      ((settings as unknown as { custom_variables?: Variable[] } | null)
-        ?.custom_variables) ?? [];
+      (settings as unknown as { custom_variables?: Variable[] } | null)
+        ?.custom_variables ?? [];
     setRows(stored.length ? stored : [{ key: "", value: "" }]);
   }, [settings]);
 
@@ -38,10 +40,16 @@ export const CustomVariablesSettings: React.FC = () => {
   }, []);
 
   const update = (i: number, patch: Partial<Variable>) =>
-    setRows((r) => r.map((row, idx) => (idx === i ? { ...row, ...patch } : row)));
+    setRows((r) =>
+      r.map((row, idx) => (idx === i ? { ...row, ...patch } : row)),
+    );
   const addRow = () => setRows((r) => [...r, { key: "", value: "" }]);
   const removeRow = (i: number) =>
-    setRows((r) => (r.length <= 1 ? [{ key: "", value: "" }] : r.filter((_, idx) => idx !== i)));
+    setRows((r) =>
+      r.length <= 1
+        ? [{ key: "", value: "" }]
+        : r.filter((_, idx) => idx !== i),
+    );
 
   const save = async () => {
     setSaving(true);
@@ -109,7 +117,7 @@ export const CustomVariablesSettings: React.FC = () => {
               disabled={!canUse}
             >
               <Plus className="w-4 h-4 mr-1" />
-              Ajouter
+              {t("settings.advanced.customWords.add")}
             </Button>
             <Button
               variant="primary"

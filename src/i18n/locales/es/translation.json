@@ -15,7 +15,8 @@
     "postProcessing": "Post Proceso",
     "history": "Historial",
     "debug": "Depuración",
-    "about": "Acerca de"
+    "about": "Acerca de",
+    "personalization": "Personalization"
   },
   "onboarding": {
     "subtitle": "Para comenzar, elige un modelo de transcripción",
@@ -399,6 +400,9 @@
           "placeholderWithOptions": "Buscar o seleccionar un modelo",
           "placeholderNoOptions": "Escribe un nombre de modelo",
           "refreshModels": "Actualizar modelos"
+        },
+        "turbo": {
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
         }
       },
       "prompts": {
@@ -420,7 +424,29 @@
         "createPrompt": "Crear Prompt",
         "cancel": "Cancelar",
         "selectToEdit": "Selecciona un prompt arriba para ver y editar sus detalles.",
-        "createFirst": "Haz clic en 'Crear Nuevo Prompt' arriba para crear tu primer prompt de post procesamiento."
+        "createFirst": "Haz clic en 'Crear Nuevo Prompt' arriba para crear tu primer prompt de post procesamiento.",
+        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+      },
+      "autoStyle": {
+        "addRule": "Add rule",
+        "blocklistLabel": "Ignored apps (privacy)",
+        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
+        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
+        "keywordPlaceholder": "Keyword (app or tab name)",
+        "option": "Automatic",
+        "rulesLabel": "Custom rules",
+        "save": "Save"
+      },
+      "enable": {
+        "title": "Reformulation"
+      },
+      "ollama": {
+        "installed": "Private intelligence installed",
+        "installTitle": "Install private intelligence (Ollama)",
+        "installDesc": "100% local reformulation, no key — installed in one click."
+      },
+      "powerProfile": {
+        "label": "Power profile"
       }
     },
     "history": {
@@ -629,9 +655,30 @@
   },
   "overlay": {
     "transcribing": "Transcribiendo...",
-    "processing": "Procesando..."
+    "processing": "Procesando...",
+    "chooseStyle": "Choose a Style"
   },
   "whatsNew": {
     "title": "Nuevo en Nova v{{version}}"
+  },
+  "quota": {
+    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
+    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
+    "blockedTitle": "Free limit reached",
+    "count": "{{used}} / {{limit}} characters",
+    "resetsOn": "Resets on {{date}}.",
+    "upgrade": "Subscribe",
+    "weekUsage": "Free usage this week"
+  },
+  "weekStat": {
+    "minutes_one": "≈ {{count}} minute of typing saved",
+    "minutes_other": "≈ {{count}} minutes of typing saved",
+    "words_one": "{{count}} word dictated this week",
+    "words_other": "{{count}} words dictated this week"
+  },
+  "license": {
+    "remove": "Remove",
+    "upgradeToUltra": "Upgrade to Nova Ultra",
+    "requiresTier": "Requires {{tier}}"
   }
 }

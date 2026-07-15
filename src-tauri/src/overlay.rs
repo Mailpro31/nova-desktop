@@ -457,8 +457,7 @@ pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String
             height: h,
         }));
         if let Some((x, y)) = calculate_overlay_position(&app, OVERLAY_WIDTH, h) {
-            let _ = window
-                .set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
+            let _ = window.set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
         }
         #[cfg(target_os = "windows")]
         force_overlay_topmost(&window);
@@ -527,6 +526,19 @@ pub fn update_overlay_position(app_handle: &AppHandle) {
             let _ = overlay_window
                 .set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
         }
+
+        // La position (haut/bas) est aussi lue par le webview pour ancrer la carte
+        // au bon bord de la fenêtre. `show-overlay` la synchronise à l'affichage,
+        // mais un changement Top↔Bottom pendant que la bulle est déjà visible
+        // (mode « toujours affichée », actif par défaut) ne repasse pas par là :
+        // sans cet événement, la fenêtre native bouge mais la carte reste ancrée
+        // au mauvais bord (décalage / menu du mauvais côté).
+        let settings = settings::get_settings(app_handle);
+        let position = match settings.overlay_position {
+            OverlayPosition::Top => "top",
+            OverlayPosition::Bottom => "bottom",
+        };
+        let _ = overlay_window.emit("overlay-position", position);
     }
 }
 

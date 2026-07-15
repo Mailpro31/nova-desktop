@@ -15,7 +15,8 @@
     "postProcessing": "後処理",
     "history": "履歴",
     "debug": "デバッグ",
-    "about": "概要"
+    "about": "概要",
+    "personalization": "Personalization"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -399,6 +400,9 @@
           "placeholderWithOptions": "モデルを検索または選択",
           "placeholderNoOptions": "モデル名を入力",
           "refreshModels": "モデルを更新"
+        },
+        "turbo": {
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
         }
       },
       "prompts": {
@@ -420,7 +424,29 @@
         "createPrompt": "プロンプトを作成",
         "cancel": "キャンセル",
         "selectToEdit": "上からプロンプトを選択して、詳細を表示・編集します。",
-        "createFirst": "上の「新しいプロンプトを作成」をクリックして、最初の後処理プロンプトを作成してください。"
+        "createFirst": "上の「新しいプロンプトを作成」をクリックして、最初の後処理プロンプトを作成してください。",
+        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+      },
+      "autoStyle": {
+        "addRule": "Add rule",
+        "blocklistLabel": "Ignored apps (privacy)",
+        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
+        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
+        "keywordPlaceholder": "Keyword (app or tab name)",
+        "option": "Automatic",
+        "rulesLabel": "Custom rules",
+        "save": "Save"
+      },
+      "enable": {
+        "title": "Reformulation"
+      },
+      "ollama": {
+        "installed": "Private intelligence installed",
+        "installTitle": "Install private intelligence (Ollama)",
+        "installDesc": "100% local reformulation, no key — installed in one click."
+      },
+      "powerProfile": {
+        "label": "Power profile"
       }
     },
     "history": {
@@ -629,9 +655,30 @@
   },
   "overlay": {
     "transcribing": "文字起こし中…",
-    "processing": "処理中…"
+    "processing": "処理中…",
+    "chooseStyle": "Choose a Style"
   },
   "whatsNew": {
     "title": "Nova v{{version}} の新機能"
+  },
+  "quota": {
+    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
+    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
+    "blockedTitle": "Free limit reached",
+    "count": "{{used}} / {{limit}} characters",
+    "resetsOn": "Resets on {{date}}.",
+    "upgrade": "Subscribe",
+    "weekUsage": "Free usage this week"
+  },
+  "weekStat": {
+    "minutes_one": "≈ {{count}} minute of typing saved",
+    "minutes_other": "≈ {{count}} minutes of typing saved",
+    "words_one": "{{count}} word dictated this week",
+    "words_other": "{{count}} words dictated this week"
+  },
+  "license": {
+    "remove": "Remove",
+    "upgradeToUltra": "Upgrade to Nova Ultra",
+    "requiresTier": "Requires {{tier}}"
   }
 }

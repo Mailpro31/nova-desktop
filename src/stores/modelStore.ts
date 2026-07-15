@@ -4,6 +4,13 @@ import { produce } from "immer";
 import { listen } from "@tauri-apps/api/event";
 import { commands, type ModelInfo } from "@/bindings";
 import { toast } from "sonner";
+import i18n from "@/i18n";
+import { applyNovaBranding } from "@/lib/modelBranding";
+
+// Re-label catalog models with the Nova signature scheme (hides real engine
+// names). Uses French copy for French, English otherwise — Nova ships FR-first.
+const brand = (models: ModelInfo[]): ModelInfo[] =>
+  applyNovaBranding(models, i18n.language?.startsWith("fr") ? "fr" : "en");
 
 interface DownloadProgress {
   model_id: string;
@@ -79,7 +86,7 @@ export const useModelStore = create<ModelsStore>()(
       try {
         const result = await commands.getAvailableModels();
         if (result.status === "ok") {
-          set({ models: result.data, error: null });
+          set({ models: brand(result.data), error: null });
 
           // Sync downloading state from backend
           set(

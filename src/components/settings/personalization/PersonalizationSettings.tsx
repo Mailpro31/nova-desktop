@@ -65,9 +65,8 @@ export const PersonalizationSettings: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const v = (
-      settings as unknown as { persistent_overlay?: boolean } | null
-    )?.persistent_overlay;
+    const v = (settings as unknown as { persistent_overlay?: boolean } | null)
+      ?.persistent_overlay;
     if (typeof v === "boolean") setPersistentOverlay(v);
   }, [settings]);
 
@@ -101,8 +100,7 @@ export const PersonalizationSettings: React.FC = () => {
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {ORB_THEMES.map((theme) => {
                 const active = selected === theme.id;
-                const locked =
-                  theme.id !== DEFAULT_ORB_ID && !canCustomize;
+                const locked = theme.id !== DEFAULT_ORB_ID && !canCustomize;
                 return (
                   <button
                     key={theme.id}

@@ -43,6 +43,7 @@ const HandyTextLogo = ({
         fill="url(#novaWmHl)"
         transform="rotate(-18 39 33)"
       />
+      {/* eslint-disable i18next/no-literal-string -- SVG brand wordmark, not translatable UI copy */}
       <text
         x="98"
         y="64"
@@ -54,6 +55,7 @@ const HandyTextLogo = ({
       >
         Nova
       </text>
+      {/* eslint-enable i18next/no-literal-string */}
     </svg>
   );
 };

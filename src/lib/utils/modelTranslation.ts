@@ -1,33 +1,32 @@
 import type { TFunction } from "i18next";
 import type { ModelInfo } from "@/bindings";
 
+// Model names/descriptions are already re-labelled with the Nova signature
+// scheme at the store level (see `lib/modelBranding.ts`), which is the single
+// source of truth and guarantees no real engine name is ever shown. These
+// helpers therefore just surface the (branded) fields; they no longer consult
+// the upstream `onboarding.models.*` i18n keys, which carried the real names.
+
 /**
- * Get the translated name for a model
- * @param model - The model info object
- * @param t - The translation function from useTranslation
- * @returns The translated model name, or the original name if no translation exists
+ * Get the display name for a model (already Nova-branded upstream).
  */
-export function getTranslatedModelName(model: ModelInfo, t: TFunction): string {
-  const translationKey = `onboarding.models.${model.id}.name`;
-  const translated = t(translationKey, { defaultValue: "" });
-  return translated !== "" ? translated : model.name;
+export function getTranslatedModelName(
+  model: ModelInfo,
+  _t: TFunction,
+): string {
+  return model.name;
 }
 
 /**
- * Get the translated description for a model
- * @param model - The model info object
- * @param t - The translation function from useTranslation
- * @returns The translated model description, or the original description if no translation exists
+ * Get the display description for a model. Custom (user-provided) models keep a
+ * generic localized description; catalog models use their Nova description.
  */
 export function getTranslatedModelDescription(
   model: ModelInfo,
   t: TFunction,
 ): string {
-  // Custom models use a generic translation key
   if (model.is_custom) {
     return t("onboarding.customModelDescription");
   }
-  const translationKey = `onboarding.models.${model.id}.description`;
-  const translated = t(translationKey, { defaultValue: "" });
-  return translated !== "" ? translated : model.description;
+  return model.description;
 }

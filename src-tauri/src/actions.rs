@@ -198,7 +198,10 @@ async fn post_process_transcription(
     // quand même nettoyée, jamais bloquée.
     let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
     let prompt = if !style_is_free && !crate::licensing::has("all_styles", license_key) {
-        debug!("Style '{}' réservé à Nova Pro — repli sur le Style gratuit", selected_prompt_id);
+        debug!(
+            "Style '{}' réservé à Nova Pro — repli sur le Style gratuit",
+            selected_prompt_id
+        );
         settings
             .post_process_prompts
             .iter()
@@ -906,10 +909,7 @@ impl ShortcutAction for TranscribeAction {
 
                                     match utils::paste(final_text, ah_clone.clone()) {
                                         Ok(()) => {
-                                            crate::quota::record_chars(
-                                                &ah_clone,
-                                                paste_char_count,
-                                            );
+                                            crate::quota::record_chars(&ah_clone, paste_char_count);
                                             crate::week_stats::record_chars(
                                                 &ah_clone,
                                                 paste_char_count,

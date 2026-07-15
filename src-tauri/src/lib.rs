@@ -2,8 +2,8 @@ mod actions;
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 mod apple_intelligence;
 mod audio_feedback;
-mod auto_style;
 pub mod audio_toolkit;
+mod auto_style;
 mod catalog;
 pub mod cli;
 mod clipboard;
@@ -18,13 +18,13 @@ mod overlay;
 pub mod portable;
 mod quota;
 mod settings;
-mod week_stats;
 mod shortcut;
 mod signal_handle;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
 mod utils;
+mod week_stats;
 
 pub use cli::CliArgs;
 #[cfg(debug_assertions)]
@@ -871,8 +871,7 @@ pub fn run(cli_args: CliArgs) {
             // Bulle « toujours affichée » : montre l'état de repos dès le
             // démarrage (avec engrenage de choix de Style). Sans effet si
             // l'overlay est désactivé (overlay_style = None).
-            if settings.persistent_overlay
-                && settings.overlay_style != settings::OverlayStyle::None
+            if settings.persistent_overlay && settings.overlay_style != settings::OverlayStyle::None
             {
                 overlay::show_idle_overlay(&app_handle);
             }

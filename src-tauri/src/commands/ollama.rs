@@ -108,7 +108,12 @@ pub async fn install_ollama_engine(app: AppHandle, model: Option<String>) -> Res
     }
 
     // Attendre que le service réponde (jusqu'à ~60 s).
-    emit_progress(&app, "starting", -1.0, "Démarrage de l'Intelligence privée…");
+    emit_progress(
+        &app,
+        "starting",
+        -1.0,
+        "Démarrage de l'Intelligence privée…",
+    );
     let mut up = false;
     for _ in 0..60 {
         if is_ollama_up().await {
@@ -152,8 +157,7 @@ async fn install_ollama_windows(app: &AppHandle) -> Result<(), String> {
     }
     let total = resp.content_length().unwrap_or(0);
     let tmp = std::env::temp_dir().join("NovaOllamaSetup.exe");
-    let mut file =
-        std::fs::File::create(&tmp).map_err(|e| format!("Fichier temporaire : {e}"))?;
+    let mut file = std::fs::File::create(&tmp).map_err(|e| format!("Fichier temporaire : {e}"))?;
     let mut downloaded: u64 = 0;
     let mut stream = resp.bytes_stream();
     let mut last = std::time::Instant::now();
@@ -191,7 +195,12 @@ async fn install_ollama_windows(app: &AppHandle) -> Result<(), String> {
 async fn pull_model(app: &AppHandle, model: &str) -> Result<(), String> {
     use futures_util::StreamExt;
 
-    emit_progress(app, "pulling", 0.0, format!("Téléchargement du modèle {model}…"));
+    emit_progress(
+        app,
+        "pulling",
+        0.0,
+        format!("Téléchargement du modèle {model}…"),
+    );
     let resp = reqwest::Client::new()
         .post(format!("{}/api/pull", OLLAMA_BASE))
         .json(&serde_json::json!({ "model": model, "stream": true }))

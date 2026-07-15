@@ -1206,10 +1206,7 @@ pub async fn fetch_post_process_models(
 
     // Skip fetching if no API key for providers that typically need one.
     // Les moteurs locaux (custom, Ollama) n'ont pas de clé.
-    if api_key.trim().is_empty()
-        && provider.id != "custom"
-        && provider.id != OLLAMA_PROVIDER_ID
-    {
+    if api_key.trim().is_empty() && provider.id != "custom" && provider.id != OLLAMA_PROVIDER_ID {
         return Err(format!(
             "API key is required for {}. Please add an API key to list available models.",
             provider.label

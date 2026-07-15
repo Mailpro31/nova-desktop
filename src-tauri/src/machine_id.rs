@@ -25,9 +25,10 @@ fn raw_machine_id() -> String {
     use winreg::RegKey;
 
     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    if let Ok(key) =
-        hklm.open_subkey_with_flags(r"SOFTWARE\Microsoft\Cryptography", KEY_READ | KEY_WOW64_64KEY)
-    {
+    if let Ok(key) = hklm.open_subkey_with_flags(
+        r"SOFTWARE\Microsoft\Cryptography",
+        KEY_READ | KEY_WOW64_64KEY,
+    ) {
         if let Ok(guid) = key.get_value::<String, _>("MachineGuid") {
             if !guid.trim().is_empty() {
                 return guid;

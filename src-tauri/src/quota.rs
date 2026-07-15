@@ -73,7 +73,11 @@ pub fn status(app: &AppHandle) -> QuotaStatus {
         return QuotaStatus::unlimited();
     }
     let now = now_secs();
-    let (used, week_start) = rolled(settings.free_chars_used, settings.free_quota_week_start, now);
+    let (used, week_start) = rolled(
+        settings.free_chars_used,
+        settings.free_quota_week_start,
+        now,
+    );
     if used != settings.free_chars_used || week_start != settings.free_quota_week_start {
         settings.free_chars_used = used;
         settings.free_quota_week_start = week_start;
@@ -104,7 +108,11 @@ pub fn record_chars(app: &AppHandle, n: u32) {
         return;
     }
     let now = now_secs();
-    let (used, week_start) = rolled(settings.free_chars_used, settings.free_quota_week_start, now);
+    let (used, week_start) = rolled(
+        settings.free_chars_used,
+        settings.free_quota_week_start,
+        now,
+    );
     settings.free_chars_used = used.saturating_add(n);
     settings.free_quota_week_start = week_start;
     settings::write_settings(app, settings);
