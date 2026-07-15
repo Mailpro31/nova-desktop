@@ -15,7 +15,8 @@
     "postProcessing": "पोस्ट प्रोसेस",
     "history": "हिस्ट्री",
     "debug": "डिबग",
-    "about": "बारेमा"
+    "about": "बारेमा",
+    "personalization": "Personalization"
   },
   "onboarding": {
     "subtitle": "सुरु गर्न, एउटा ट्रान्सक्रिप्सन मोडेल छान्नुहोस्",
@@ -399,6 +400,9 @@
           "placeholderWithOptions": "मोडेल खोज्नुहोस् वा चयन गर्नुहोस्",
           "placeholderNoOptions": "मोडेलको नाम टाइप गर्नुहोस्",
           "refreshModels": "मोडेलहरू रिफ्रेस गर्नुहोस्"
+        },
+        "turbo": {
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
         }
       },
       "prompts": {
@@ -420,7 +424,21 @@
         "createPrompt": "प्रम्प्ट बनाउनुहोस्",
         "cancel": "रद्द गर्नुहोस्",
         "selectToEdit": "विवरण हेर्न र सम्पादन गर्न माथिबाट प्रम्प्ट चयन गर्नुहोस्।",
-        "createFirst": "आफ्नो पहिलो पोस्ट-प्रोसेसिङ प्रम्प्ट बनाउन माथिको 'नयाँ प्रम्प्ट बनाउनुहोस्' क्लिक गर्नुहोस्।"
+        "createFirst": "आफ्नो पहिलो पोस्ट-प्रोसेसिङ प्रम्प्ट बनाउन माथिको 'नयाँ प्रम्प्ट बनाउनुहोस्' क्लिक गर्नुहोस्।",
+        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+      },
+      "autoStyle": {
+        "addRule": "Add rule",
+        "blocklistLabel": "Ignored apps (privacy)",
+        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
+        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
+        "keywordPlaceholder": "Keyword (app or tab name)",
+        "option": "Automatic",
+        "rulesLabel": "Custom rules",
+        "save": "Save"
+      },
+      "enable": {
+        "title": "Reformulation"
       }
     },
     "history": {
@@ -632,6 +650,22 @@
   },
   "overlay": {
     "transcribing": "ट्रान्सक्राइब गरिँदैछ...",
-    "processing": "प्रशोधन गरिँदैछ..."
+    "processing": "प्रशोधन गरिँदैछ...",
+    "chooseStyle": "Choose a Style"
+  },
+  "quota": {
+    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
+    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
+    "blockedTitle": "Free limit reached",
+    "count": "{{used}} / {{limit}} characters",
+    "resetsOn": "Resets on {{date}}.",
+    "upgrade": "Subscribe",
+    "weekUsage": "Free usage this week"
+  },
+  "weekStat": {
+    "minutes_one": "≈ {{count}} minute of typing saved",
+    "minutes_other": "≈ {{count}} minutes of typing saved",
+    "words_one": "{{count}} word dictated this week",
+    "words_other": "{{count}} words dictated this week"
   }
 }
