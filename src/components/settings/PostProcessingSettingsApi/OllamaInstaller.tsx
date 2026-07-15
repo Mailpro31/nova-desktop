@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { Button } from "../../ui/Button";
@@ -26,6 +27,7 @@ type OllamaStatus = {
 export const OllamaInstaller: React.FC<{ onReady?: () => void }> = ({
   onReady,
 }) => {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<OllamaStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<InstallProgress | null>(null);
@@ -93,7 +95,7 @@ export const OllamaInstaller: React.FC<{ onReady?: () => void }> = ({
             style={{ background: "var(--color-success)" }}
           />
           <span className="text-sm font-medium">
-            Intelligence privée installée
+            {t("settings.postProcessing.ollama.installed")}
           </span>
           {status && status.models.length > 0 && (
             <span className="text-xs text-text-secondary truncate">
@@ -106,10 +108,10 @@ export const OllamaInstaller: React.FC<{ onReady?: () => void }> = ({
           <div className="flex items-center justify-between gap-3">
             <div className="flex flex-col">
               <span className="text-sm font-medium">
-                Installer l'Intelligence privée (Ollama)
+                {t("settings.postProcessing.ollama.installTitle")}
               </span>
               <span className="text-xs text-text-secondary">
-                Reformulation 100 % locale, sans clé — installée en un clic.
+                {t("settings.postProcessing.ollama.installDesc")}
               </span>
             </div>
             <Button

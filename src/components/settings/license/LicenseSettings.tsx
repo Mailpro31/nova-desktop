@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { SettingsGroup } from "../../ui/SettingsGroup";
@@ -43,6 +44,7 @@ const FEATURE_ROWS: { key: string; label: string }[] = [
 ];
 
 export const LicenseSettings: React.FC = () => {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<LicenseStatus | null>(null);
   const [keyInput, setKeyInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -124,7 +126,7 @@ export const LicenseSettings: React.FC = () => {
           grouped={true}
         >
           <Button variant="ghost" size="sm" onClick={clear} disabled={busy}>
-            Retirer
+            {t("license.remove")}
           </Button>
         </SettingContainer>
       )}
@@ -137,12 +139,39 @@ export const LicenseSettings: React.FC = () => {
             <div key={f.key} className="flex items-center gap-2 text-sm">
               <span
                 className="w-4 h-4 flex items-center justify-center shrink-0"
-                style={{ color: ok ? "var(--color-success)" : "var(--color-text-secondary)" }}
+                style={{
+                  color: ok
+                    ? "var(--color-success)"
+                    : "var(--color-text-secondary)",
+                }}
               >
                 {ok ? (
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
                 ) : (
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="13"
+                    height="13"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
                 )}
               </span>
               <span className={ok ? "" : "text-text-secondary"}>{f.label}</span>
@@ -162,7 +191,7 @@ export const LicenseSettings: React.FC = () => {
             size="md"
             onClick={() => openUrl("https://novaspeak.app")}
           >
-            Passer à Nova Ultra
+            {t("license.upgradeToUltra")}
           </Button>
         </SettingContainer>
       )}
@@ -192,7 +221,10 @@ export const LicenseSettings: React.FC = () => {
       </SettingContainer>
 
       {error && (
-        <div className="px-4 pb-2 text-xs" style={{ color: "var(--color-danger)" }}>
+        <div
+          className="px-4 pb-2 text-xs"
+          style={{ color: "var(--color-danger)" }}
+        >
           {error}
         </div>
       )}

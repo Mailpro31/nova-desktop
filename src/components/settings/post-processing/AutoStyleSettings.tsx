@@ -60,7 +60,9 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
       { style: prompts[0]?.id ?? "nova_style_email", keyword: "" },
     ]);
   const updateRule = (i: number, patch: Partial<Rule>) =>
-    setRules((r) => r.map((row, idx) => (idx === i ? { ...row, ...patch } : row)));
+    setRules((r) =>
+      r.map((row, idx) => (idx === i ? { ...row, ...patch } : row)),
+    );
   const removeRule = (i: number) =>
     setRules((r) => r.filter((_, idx) => idx !== i));
 
@@ -79,7 +81,10 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
         .split(/[,\n]/)
         .map((s) => s.trim())
         .filter(Boolean);
-      await invoke("update_auto_style_config", { rules: grouped, blocklist: bl });
+      await invoke("update_auto_style_config", {
+        rules: grouped,
+        blocklist: bl,
+      });
       await refreshSettings();
     } finally {
       setSaving(false);

@@ -439,6 +439,14 @@
         "cancel": "Annuler",
         "selectToEdit": "Sélectionnez un Style ci-dessus pour le voir et le modifier.",
         "createFirst": "Cliquez sur 'Créer un nouveau prompt' ci-dessus pour créer votre premier prompt de post-traitement."
+      },
+      "ollama": {
+        "installed": "Intelligence privée installée",
+        "installTitle": "Installer l'Intelligence privée (Ollama)",
+        "installDesc": "Reformulation 100 % locale, sans clé — installée en un clic."
+      },
+      "powerProfile": {
+        "label": "Profil de puissance"
       }
     },
     "history": {
@@ -667,5 +675,10 @@
   },
   "whatsNew": {
     "title": "Nouveautés de Nova v{{version}}"
+  },
+  "license": {
+    "remove": "Retirer",
+    "upgradeToUltra": "Passer à Nova Ultra",
+    "requiresTier": "Nécessite {{tier}}"
   }
 }

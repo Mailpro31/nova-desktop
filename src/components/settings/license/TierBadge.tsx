@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 
 // Cache module partagé : le statut de licence ne change qu'à l'activation.
@@ -51,6 +52,7 @@ export const TierBadge: React.FC<{ feature: string; className?: string }> = ({
   feature,
   className = "",
 }) => {
+  const { t } = useTranslation();
   const [locked, setLocked] = useState(false);
 
   useEffect(() => {
@@ -73,7 +75,9 @@ export const TierBadge: React.FC<{ feature: string; className?: string }> = ({
       className={`inline-flex items-center gap-1 text-[10px] font-bold tracking-wide uppercase rounded-full px-2 py-0.5 border whitespace-nowrap ${className}`}
       style={{ color, borderColor: color }}
     >
-      Nécessite {TIER_FOR_FEATURE[feature] ?? "Nova Pro"}
+      {t("license.requiresTier", {
+        tier: TIER_FOR_FEATURE[feature] ?? "Nova Pro",
+      })}
     </span>
   );
 };

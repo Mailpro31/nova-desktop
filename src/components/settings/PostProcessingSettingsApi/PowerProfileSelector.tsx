@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { TierBadge } from "../license/TierBadge";
@@ -42,6 +43,7 @@ export const PowerProfileSelector: React.FC<{
   currentModel?: string;
   onApplied?: () => void;
 }> = ({ currentModel, onApplied }) => {
+  const { t } = useTranslation();
   const [busyId, setBusyId] = useState<string | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [canPro, setCanPro] = useState(true);
@@ -56,8 +58,7 @@ export const PowerProfileSelector: React.FC<{
     };
   }, []);
 
-  const activeId =
-    PROFILES.find((p) => p.model === currentModel)?.id ?? null;
+  const activeId = PROFILES.find((p) => p.model === currentModel)?.id ?? null;
 
   const apply = async (p: (typeof PROFILES)[number]) => {
     if (p.locked && !canPro) return;
@@ -90,7 +91,7 @@ export const PowerProfileSelector: React.FC<{
   return (
     <div className="mx-4 my-1 flex flex-col gap-2">
       <div className="text-[11px] font-semibold uppercase tracking-wide text-text-secondary">
-        Profil de puissance
+        {t("settings.postProcessing.powerProfile.label")}
       </div>
       <div className="grid grid-cols-3 gap-2">
         {PROFILES.map((p) => {

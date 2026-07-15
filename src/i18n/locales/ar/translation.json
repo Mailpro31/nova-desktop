@@ -418,6 +418,14 @@
       },
       "enable": {
         "title": "Reformulation"
+      },
+      "ollama": {
+        "installed": "Private intelligence installed",
+        "installTitle": "Install private intelligence (Ollama)",
+        "installDesc": "100% local reformulation, no key — installed in one click."
+      },
+      "powerProfile": {
+        "label": "Power profile"
       }
     },
     "history": {
@@ -667,5 +675,10 @@
     "minutes_other": "≈ {{count}} minutes of typing saved",
     "words_one": "{{count}} word dictated this week",
     "words_other": "{{count}} words dictated this week"
+  },
+  "license": {
+    "remove": "Remove",
+    "upgradeToUltra": "Upgrade to Nova Ultra",
+    "requiresTier": "Requires {{tier}}"
   }
 }
