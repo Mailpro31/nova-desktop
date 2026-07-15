@@ -69,6 +69,10 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
             {t("settings.postProcessing.api.appleIntelligence.unavailable")}
           </Alert>
         ) : null
+      ) : state.isNovaTurbo ? (
+        <div className="px-4 py-2 text-sm text-text-secondary">
+          {t("settings.postProcessing.api.turbo.managed")}
+        </div>
       ) : (
         <>
           {state.isCustomProvider && (
@@ -115,7 +119,7 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
         </>
       )}
 
-      {!state.isAppleProvider && (
+      {!state.isAppleProvider && !state.isNovaTurbo && (
         <SettingContainer
           title={t("settings.postProcessing.api.model.title")}
           description={

@@ -386,6 +386,9 @@
         "appleIntelligence": {
           "unavailable": "Apple Intelligence n'est pas disponible sur cet appareil. Nécessite un Mac Apple Silicon exécutant macOS Tahoe (26.0) ou une version ultérieure avec Apple Intelligence activé dans les Préférences Système."
         },
+        "turbo": {
+          "managed": "Turbo est géré par Nova : votre licence sert de clé, aucune configuration nécessaire."
+        },
         "baseUrl": {
           "title": "URL de base",
           "description": "URL de base de l'API pour le fournisseur sélectionné. Seul le fournisseur personnalisé peut être modifié.",

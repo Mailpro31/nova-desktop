@@ -219,11 +219,18 @@ async fn post_process_transcription(
         provider.id, model
     );
 
-    let api_key = settings
-        .post_process_api_keys
-        .get(&provider.id)
-        .cloned()
-        .unwrap_or_default();
+    // Turbo : la « clé » transmise est le jeton de licence — le serveur relaie
+    // vers le fournisseur avec SA propre clé (jamais exposée). Les autres
+    // fournisseurs utilisent la clé saisie par l'utilisateur.
+    let api_key = if provider.id == "nova_turbo" {
+        license_key.to_string()
+    } else {
+        settings
+            .post_process_api_keys
+            .get(&provider.id)
+            .cloned()
+            .unwrap_or_default()
+    };
 
     // Disable reasoning for providers where post-processing rarely benefits from it.
     // - custom: top-level reasoning_effort (works for local OpenAI-compat servers)

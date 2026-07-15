@@ -10,6 +10,7 @@ type PostProcessProviderState = {
   selectedProvider: PostProcessProvider | undefined;
   isCustomProvider: boolean;
   isAppleProvider: boolean;
+  isNovaTurbo: boolean;
   appleIntelligenceUnavailable: boolean;
   baseUrl: string;
   handleBaseUrlChange: (value: string) => void;
@@ -57,6 +58,9 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   }, [providers, selectedProviderId]);
 
   const isAppleProvider = selectedProvider?.id === APPLE_PROVIDER_ID;
+  // Turbo : moteur en ligne géré par Nova. Pas de clé API (le jeton de licence
+  // sert de clé côté serveur) ni de sélecteur de modèle (imposé côté serveur).
+  const isNovaTurbo = selectedProvider?.id === "nova_turbo";
   const [appleIntelligenceUnavailable, setAppleIntelligenceUnavailable] =
     useState(false);
 
@@ -216,6 +220,7 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
     selectedProvider,
     isCustomProvider,
     isAppleProvider,
+    isNovaTurbo,
     appleIntelligenceUnavailable,
     baseUrl,
     handleBaseUrlChange,

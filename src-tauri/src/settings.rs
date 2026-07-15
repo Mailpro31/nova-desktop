@@ -644,6 +644,21 @@ fn default_post_process_provider_id() -> String {
 
 fn default_post_process_providers() -> Vec<PostProcessProvider> {
     let mut providers = vec![
+        // Turbo — moteur de reformulation en ligne de Nova (payant). L'app relaie
+        // la requête chat via la fonction edge « turbo-chat » : la clé du
+        // fournisseur reste côté serveur, le modèle est imposé côté serveur, et le
+        // jeton de licence sert de clé (voir actions.rs). Pas d'endpoint /models
+        // (aucun sélecteur de modèle) ; sortie structurée désactivée (chemin
+        // ${output}, comme Groq).
+        PostProcessProvider {
+            id: "nova_turbo".to_string(),
+            label: "Turbo".to_string(),
+            base_url: "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/turbo-chat"
+                .to_string(),
+            allow_base_url_edit: false,
+            models_endpoint: None,
+            supports_structured_output: false,
+        },
         PostProcessProvider {
             id: "openai".to_string(),
             label: "OpenAI".to_string(),
@@ -757,6 +772,12 @@ fn default_post_process_api_keys() -> SecretMap {
 fn default_model_for_provider(provider_id: &str) -> String {
     if provider_id == APPLE_INTELLIGENCE_PROVIDER_ID {
         return APPLE_INTELLIGENCE_DEFAULT_MODEL_ID.to_string();
+    }
+    // Turbo : le modèle est choisi côté serveur ; on donne ici une valeur non
+    // vide (jamais affichée) pour que la reformulation ne soit pas ignorée faute
+    // de modèle configuré, et pour porter le champ `model` de la requête OpenAI.
+    if provider_id == "nova_turbo" {
+        return "nova-turbo".to_string();
     }
     String::new()
 }
