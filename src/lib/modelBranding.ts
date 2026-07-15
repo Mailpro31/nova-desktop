@@ -101,7 +101,9 @@ const describe = (m: ModelInfo, series: Series, lang: Lang): string => {
   if (series === "specialist") {
     const code = specialistLang(m)!;
     const name = LANGUAGE_NAMES[code][lang];
-    return lang === "fr" ? `Spécialisé pour ${name}.` : `Specialized for ${name}.`;
+    return lang === "fr"
+      ? `Spécialisé pour ${name}.`
+      : `Specialized for ${name}.`;
   }
   const count = m.supported_languages?.length ?? 0;
   switch (series) {
@@ -181,8 +183,7 @@ export const applyNovaBranding = (
         const code = specialistLang(m)!;
         const label = LANGUAGE_LABELS[code][lang];
         // Only number a language when it has more than one variant.
-        name =
-          list.length > 1 ? `Nova · ${label} ${rank}` : `Nova · ${label}`;
+        name = list.length > 1 ? `Nova · ${label} ${rank}` : `Nova · ${label}`;
       } else {
         name = `Nova ${SERIES_LABELS[s as Exclude<Series, "specialist">]} ${rank}`;
       }

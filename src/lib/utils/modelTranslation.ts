@@ -10,7 +10,10 @@ import type { ModelInfo } from "@/bindings";
 /**
  * Get the display name for a model (already Nova-branded upstream).
  */
-export function getTranslatedModelName(model: ModelInfo, _t: TFunction): string {
+export function getTranslatedModelName(
+  model: ModelInfo,
+  _t: TFunction,
+): string {
   return model.name;
 }
 

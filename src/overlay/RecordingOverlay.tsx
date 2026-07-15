@@ -293,71 +293,69 @@ const RecordingOverlay: React.FC = () => {
         className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
       >
         <div className="sidle-col">
-        {menuOpen && (
-          <div className={`smenu ${position}`}>
-            {styles.map((s) => (
-              <button
-                key={s.id}
-                className={`smenu-item ${s.id === selectedStyleId ? "active" : ""}`}
-                onClick={() => chooseStyle(s.id)}
-              >
-                <span
-                  className="smenu-dot"
-                  style={{ background: styleColor(s.id) }}
+          {menuOpen && (
+            <div className={`smenu ${position}`}>
+              {styles.map((s) => (
+                <button
+                  key={s.id}
+                  className={`smenu-item ${s.id === selectedStyleId ? "active" : ""}`}
+                  onClick={() => chooseStyle(s.id)}
+                >
+                  <span
+                    className="smenu-dot"
+                    style={{ background: styleColor(s.id) }}
+                  />
+                  <span className="smenu-name">{s.name}</span>
+                  {s.id === selectedStyleId && (
+                    <svg
+                      className="smenu-check"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M20 6 9 17l-5-5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="scard sidle">
+            <span
+              className="sdot"
+              style={
+                selected ? { background: styleColor(selected.id) } : undefined
+              }
+            />
+            <button
+              className={`sgear ${menuOpen ? "open" : ""}`}
+              aria-label={t("overlay.chooseStyle")}
+              onClick={toggleMenu}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
                 />
-                <span className="smenu-name">{s.name}</span>
-                {s.id === selectedStyleId && (
-                  <svg
-                    className="smenu-check"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M20 6 9 17l-5-5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </button>
-            ))}
+                <path
+                  d="M19.4 13a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 17.3a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.7 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </div>
-        )}
-        <div className="scard sidle">
-          <span
-            className="sdot"
-            style={
-              selected
-                ? { background: styleColor(selected.id) }
-                : undefined
-            }
-          />
-          <button
-            className={`sgear ${menuOpen ? "open" : ""}`}
-            aria-label={t("overlay.chooseStyle")}
-            onClick={toggleMenu}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-              />
-              <path
-                d="M19.4 13a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 17.3a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.7 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
         </div>
       </div>
     );
