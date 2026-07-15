@@ -457,8 +457,7 @@ pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String
             height: h,
         }));
         if let Some((x, y)) = calculate_overlay_position(&app, OVERLAY_WIDTH, h) {
-            let _ = window
-                .set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
+            let _ = window.set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
         }
         #[cfg(target_os = "windows")]
         force_overlay_topmost(&window);
