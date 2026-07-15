@@ -407,6 +407,14 @@ pub struct AppSettings {
     /// Raccourcis personnels injectés dans la reformulation (mot-clé → valeur).
     #[serde(default)]
     pub custom_variables: Vec<CustomVariable>,
+    /// Style « Automatique » : règles personnalisées (id de Style → repères
+    /// d'app/onglet), prioritaires sur les règles intégrées. Réservé Ultra.
+    #[serde(default)]
+    pub auto_style_rules: HashMap<String, Vec<String>>,
+    /// Style « Automatique » : liste noire de confidentialité (noms d'exécutables
+    /// jamais inspectés — banque, gestionnaire de mots de passe…).
+    #[serde(default)]
+    pub auto_style_blocklist: Vec<String>,
     #[serde(default)]
     pub model_unload_timeout: ModelUnloadTimeout,
     #[serde(default = "default_word_correction_threshold")]
@@ -1004,6 +1012,8 @@ pub fn get_default_settings() -> AppSettings {
         post_process_prompts: default_post_process_prompts(),
         post_process_selected_prompt_id: default_post_process_selected_prompt_id(),
         license_key: None,
+        auto_style_rules: HashMap::new(),
+        auto_style_blocklist: Vec::new(),
         free_chars_used: 0,
         free_quota_week_start: 0,
         mute_while_recording: false,

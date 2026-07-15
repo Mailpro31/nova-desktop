@@ -405,6 +405,16 @@
           "refreshModels": "Refresh models"
         }
       },
+      "autoStyle": {
+        "option": "Automatic",
+        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
+        "blocklistLabel": "Ignored apps (privacy)",
+        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
+        "rulesLabel": "Custom rules",
+        "keywordPlaceholder": "Keyword (app or tab name)",
+        "addRule": "Add rule",
+        "save": "Save"
+      },
       "prompts": {
         "title": "Styles",
         "selectedPrompt": {

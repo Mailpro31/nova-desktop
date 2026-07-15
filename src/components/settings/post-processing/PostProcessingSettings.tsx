@@ -24,6 +24,7 @@ import { ModelSelect } from "../PostProcessingSettingsApi/ModelSelect";
 import { OllamaInstaller } from "../PostProcessingSettingsApi/OllamaInstaller";
 import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileSelector";
 import { TierBadge } from "../license/TierBadge";
+import { AutoStyleSettings } from "./AutoStyleSettings";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { ShortcutInput } from "../ShortcutInput";
 import { useSettings } from "../../../hooks/useSettings";
@@ -289,19 +290,25 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
           <TierBadge feature="custom_styles" />
         </div>
         <div className="flex gap-2 min-w-0 items-center">
-          {selectedPrompt && (
+          {selectedPromptId && (
             <span
               className="w-3 h-3 rounded-full shrink-0"
-              style={{ background: styleColor(selectedPrompt.id) }}
+              style={{ background: styleColor(selectedPromptId) }}
               aria-hidden="true"
             />
           )}
           <Dropdown
             selectedValue={selectedPromptId || null}
-            options={prompts.map((p) => ({
-              value: p.id,
-              label: p.name,
-            }))}
+            options={[
+              {
+                value: "auto",
+                label: t("settings.postProcessing.autoStyle.option"),
+              },
+              ...prompts.map((p) => ({
+                value: p.id,
+                label: p.name,
+              })),
+            ]}
             onSelect={(value) => handlePromptSelect(value)}
             placeholder={
               prompts.length === 0
@@ -391,7 +398,13 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
           </div>
         )}
 
-        {!isCreating && !selectedPrompt && (
+        {!isCreating && selectedPromptId === "auto" && (
+          <AutoStyleSettings
+            prompts={prompts.map((p) => ({ id: p.id, name: p.name }))}
+          />
+        )}
+
+        {!isCreating && !selectedPrompt && selectedPromptId !== "auto" && (
           <div className="p-3 bg-mid-gray/5 rounded-md border border-mid-gray/20">
             <p className="text-sm text-mid-gray">
               {hasPrompts

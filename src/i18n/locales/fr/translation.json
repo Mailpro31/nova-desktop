@@ -405,6 +405,16 @@
           "refreshModels": "Actualiser les modèles"
         }
       },
+      "autoStyle": {
+        "option": "Automatique",
+        "description": "Nova choisit le Style tout seul selon l'application au premier plan (messagerie → E-mail, ChatGPT → Prompt, etc.). La fenêtre est lue au moment où vous dictez, puis oubliée — rien n'est enregistré.",
+        "blocklistLabel": "Applications ignorées (confidentialité)",
+        "blocklistTip": "Séparez par des virgules. Ces applications ne sont jamais inspectées (ex. banque, gestionnaire de mots de passe). Les gestionnaires courants le sont déjà par défaut.",
+        "rulesLabel": "Règles personnalisées",
+        "keywordPlaceholder": "Mot-clé (nom d'app ou d'onglet)",
+        "addRule": "Ajouter une règle",
+        "save": "Enregistrer"
+      },
       "prompts": {
         "title": "Styles",
         "selectedPrompt": {

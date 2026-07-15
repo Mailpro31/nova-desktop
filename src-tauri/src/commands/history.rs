@@ -93,8 +93,10 @@ pub async fn retry_history_entry_transcription(
         return Err("Recording contains no speech".to_string());
     }
 
+    // Rejeu d'historique : pas de détection auto (on ne re-lit pas la fenêtre).
     let processed =
-        process_transcription_output(&app, &transcription, entry.post_process_requested).await;
+        process_transcription_output(&app, &transcription, entry.post_process_requested, None)
+            .await;
     history_manager
         .update_transcription(
             id,

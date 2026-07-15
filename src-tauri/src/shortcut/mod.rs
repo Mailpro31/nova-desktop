@@ -779,6 +779,38 @@ pub fn update_custom_words(app: AppHandle, words: Vec<String>) -> Result<(), Str
     Ok(())
 }
 
+/// Met à jour la configuration du Style « Automatique » : règles personnalisées
+/// (id de Style → repères) et liste noire de confidentialité. Les entrées vides
+/// sont ignorées.
+#[tauri::command]
+#[specta::specta]
+pub fn update_auto_style_config(
+    app: AppHandle,
+    rules: std::collections::HashMap<String, Vec<String>>,
+    blocklist: Vec<String>,
+) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.auto_style_rules = rules
+        .into_iter()
+        .map(|(k, tokens)| {
+            let cleaned: Vec<String> = tokens
+                .into_iter()
+                .map(|t| t.trim().to_string())
+                .filter(|t| !t.is_empty())
+                .collect();
+            (k, cleaned)
+        })
+        .filter(|(_, tokens)| !tokens.is_empty())
+        .collect();
+    settings.auto_style_blocklist = blocklist
+        .into_iter()
+        .map(|b| b.trim().to_string())
+        .filter(|b| !b.is_empty())
+        .collect();
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub fn update_custom_variables(

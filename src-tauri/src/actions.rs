@@ -122,7 +122,11 @@ fn should_use_streaming_overlay(style: OverlayStyle, is_streaming: bool) -> bool
     style == OverlayStyle::Live && is_streaming
 }
 
-async fn post_process_transcription(settings: &AppSettings, transcription: &str) -> Option<String> {
+async fn post_process_transcription(
+    settings: &AppSettings,
+    transcription: &str,
+    auto_style_override: Option<&str>,
+) -> Option<String> {
     if is_blank_transcription(transcription) {
         debug!("Post-processing skipped because the transcription is empty");
         return None;
@@ -161,12 +165,17 @@ async fn post_process_transcription(settings: &AppSettings, transcription: &str)
         return None;
     }
 
-    let selected_prompt_id = match &settings.post_process_selected_prompt_id {
-        Some(id) => id.clone(),
-        None => {
-            debug!("Post-processing skipped because no prompt is selected");
-            return None;
-        }
+    // Style « Automatique » : l'id résolu au moment du `stop` (fenêtre au premier
+    // plan) prime sur le Style stocké. Sinon on garde le Style sélectionné.
+    let selected_prompt_id = match auto_style_override {
+        Some(id) => id.to_string(),
+        None => match &settings.post_process_selected_prompt_id {
+            Some(id) => id.clone(),
+            None => {
+                debug!("Post-processing skipped because no prompt is selected");
+                return None;
+            }
+        },
     };
 
     let prompt = match settings
@@ -475,6 +484,7 @@ pub(crate) async fn process_transcription_output(
     app: &AppHandle,
     transcription: &str,
     post_process: bool,
+    auto_style_override: Option<String>,
 ) -> ProcessedTranscription {
     let settings = get_settings(app);
     let mut final_text = transcription.to_string();
@@ -492,15 +502,21 @@ pub(crate) async fn process_transcription_output(
     }
 
     if post_process {
-        if let Some(processed_text) = post_process_transcription(&settings, &final_text).await {
+        if let Some(processed_text) =
+            post_process_transcription(&settings, &final_text, auto_style_override.as_deref()).await
+        {
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
 
-            if let Some(prompt_id) = &settings.post_process_selected_prompt_id {
+            // Style effectif (le Style auto résolu prime, pour l'historique).
+            let effective_id = auto_style_override
+                .as_deref()
+                .or(settings.post_process_selected_prompt_id.as_deref());
+            if let Some(prompt_id) = effective_id {
                 if let Some(prompt) = settings
                     .post_process_prompts
                     .iter()
-                    .find(|prompt| &prompt.id == prompt_id)
+                    .find(|prompt| prompt.id == prompt_id)
                 {
                     post_process_prompt = Some(prompt.prompt.clone());
                 }
@@ -712,6 +728,17 @@ impl ShortcutAction for TranscribeAction {
         let post_process = self.post_process;
         let cancel_generation = rm.cancel_generation();
 
+        // Style « Automatique » : on lit la fenêtre au premier plan MAINTENANT
+        // (au relâchement de la touche, là où l'utilisateur regarde) — plus
+        // fiable qu'au collage, car la transcription tourne en async ensuite.
+        // Un seul appel synchrone, défensif : renvoie None si l'auto n'est pas
+        // sélectionné ou si la lecture échoue (le Style choisi est alors gardé).
+        let auto_style_override = if post_process {
+            crate::auto_style::resolve_override(&get_settings(app))
+        } else {
+            None
+        };
+
         tauri::async_runtime::spawn(async move {
             let _guard = FinishGuard(ah.clone());
             debug!(
@@ -816,7 +843,12 @@ impl ShortcutAction for TranscribeAction {
                                 }
                             }
                             let Some(processed) = complete_unless_cancelled(
-                                process_transcription_output(&ah, &transcription, post_process),
+                                process_transcription_output(
+                                    &ah,
+                                    &transcription,
+                                    post_process,
+                                    auto_style_override.clone(),
+                                ),
                                 || rm.was_cancelled_since(cancel_generation),
                             )
                             .await

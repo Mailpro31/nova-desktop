@@ -7,6 +7,7 @@
 // au langage visuel Apple/Nova.
 
 const FIXED: Record<string, string> = {
+  auto: "#B8C0CC", // gris-bleu neutre : Style « Automatique »
   default_improve_transcriptions: "#AEBEEC", // bleu Nova (défaut)
   nova_style_email: "#F6BBC6", // rose
   nova_style_messages: "#AEE6D2", // menthe
