@@ -30,7 +30,9 @@ const DEFAULT_AUTO_STYLE_ID: &str = "default_improve_transcriptions";
 const BUILTIN_BLOCKLIST: &[&str] = &[
     "keepass",
     "keepassxc",
+    "keepassx",
     "1password",
+    "onepassword",
     "bitwarden",
     "lastpass",
     "dashlane",
@@ -38,63 +40,135 @@ const BUILTIN_BLOCKLIST: &[&str] = &[
     "nordpass",
     "enpass",
     "roboform",
+    "protonpass",
+    "proton pass",
+    "passwordsafe",
+    "stickypassword",
+    "truekey",
+    "psono",
+    "vaultwarden",
 ];
 
 /// Règles intégrées : (id de Style, repères de titre, repères de process).
 /// Repères de titre = correspondance MOT ENTIER (pas de sous-chaîne) ; repères
 /// de process = nom d'exécutable (correspondance simple, les exes sont distincts).
+// Règles intégrées, PRIORITÉ décroissante (première catégorie qui matche gagne) :
+// E-mail → Messages → Prompt → To-do → Notes.
+//
+// Prudence anti-faux-positifs : les repères de TITRE sont des noms de marque ou
+// des expressions multi-mots distinctives (jamais un mot courant isolé comme
+// « chat », « word », « note », « line », « height »…). Les mots trop génériques
+// sont, quand c'est possible, relégués aux repères de PROCESS (nom d'exe, borné
+// en mot entier : « line » matche « line.exe » mais pas « outline.exe »).
 const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
     (
         "nova_style_email",
         &[
-            "gmail", "outlook", "thunderbird", "proton mail", "protonmail",
-            "yahoo mail", "icloud mail", "fastmail", "superhuman", "hey.com",
-            "boîte de réception", "inbox", "courriel", "webmail", "roundcube",
-            "zimbra", "gmx", "zoho mail",
+            // Services / clients (EN)
+            "gmail", "google mail", "googlemail", "inbox", "outlook",
+            "outlook.com", "hotmail", "live mail", "microsoft outlook",
+            "office 365 mail", "thunderbird", "betterbird", "proton mail",
+            "protonmail", "tutanota", "tuta mail", "mailbox.org", "posteo",
+            "yahoo mail", "icloud mail", "aol mail", "gmx", "mail.com",
+            "web.de", "fastmail", "zoho mail", "superhuman", "spark mail",
+            "mailbird", "em client", "postbox", "canary mail",
+            "newton mail", "bluemail", "k-9 mail", "roundcube", "horde",
+            "squirrelmail", "zimbra", "rainloop", "yandex mail", "mail.ru",
+            "seznam",
+            // FR
+            "courriel", "courrier", "boîte de réception", "boite de reception",
+            "boîte mail", "messagerie", "webmail", "laposte.net",
+            "mail orange", "orange mail", "sfr mail", "bbox mail",
         ],
-        &["outlook", "thunderbird", "spark", "mailspring", "protonmail"],
+        &[
+            "outlook", "olk", "thunderbird", "betterbird", "protonmail",
+            "mailspring", "mailbird", "emclient", "postbox", "canary",
+            "bluemail", "spark", "spike",
+        ],
     ),
     (
         "nova_style_messages",
         &[
-            "whatsapp", "slack", "microsoft teams", "teams", "messenger",
-            "telegram", "discord", "google chat", "wechat", "imessage",
-            "google messages", "beeper", "mattermost", "rocket.chat", "viber",
-            "snapchat",
+            // Apps de messagerie / chat (marques)
+            "whatsapp", "whatsapp web", "messenger", "facebook messenger",
+            "telegram", "discord", "slack", "microsoft teams",
+            "teams", "google chat", "hangouts", "wechat", "weixin",
+            "kakaotalk", "viber", "snapchat", "instagram", "instagram direct",
+            "imessage", "google messages", "android messages", "skype",
+            "mattermost", "rocket.chat", "zulip", "threema",
+            "beeper", "gitter", "webex", "groupme", "kik",
+            "olvid", "tchap", "jami", "teamspeak", "guilded",
+            // FR
+            "messagerie instantanée", "messages privés",
         ],
         &[
-            "whatsapp", "slack", "teams", "ms-teams", "discord", "telegram",
-            "signal", "messenger", "wechat", "line", "skype", "beeper",
-            "element", "viber",
+            "whatsapp", "messenger", "telegram", "signal", "discord", "slack",
+            "teams", "ms-teams", "wechat", "line", "kakaotalk", "viber",
+            "snapchat", "instagram", "skype", "mattermost", "rocketchat",
+            "zulip", "element", "session", "wire", "threema", "beeper",
+            "webex", "groupme", "olvid", "tchap", "jami", "teamspeak",
+            "guilded", "revolt", "franz", "ferdium", "rambox", "caprine",
         ],
     ),
     (
         "nova_style_prompt",
         &[
-            "chatgpt", "chat gpt", "claude", "gemini", "perplexity", "copilot",
-            "mistral", "deepseek", "grok", "hugging face", "google ai studio",
-            "notebooklm",
+            "chatgpt", "chat gpt", "openai", "gpt-4", "gpt-4o", "gpt-5",
+            "claude", "claude.ai", "anthropic", "gemini", "google gemini",
+            "copilot", "microsoft copilot", "github copilot",
+            "perplexity", "mistral", "le chat mistral", "deepseek", "grok",
+            "character.ai", "character ai", "huggingface", "hugging face",
+            "huggingchat", "google ai studio", "ai studio", "notebooklm",
+            "phind", "you.com", "pi.ai", "meta ai", "qwen", "kimi", "doubao",
+            "jasper", "writesonic", "copy.ai", "notion ai", "cursor",
+            "windsurf", "codeium", "tabnine", "replit ai", "lovable",
+            "bolt.new", "v0.dev", "librechat", "openrouter",
         ],
-        &["chatgpt", "claude", "msty", "lm studio", "cursor", "windsurf"],
+        &[
+            "chatgpt", "claude", "msty", "lmstudio", "jan", "gpt4all",
+            "cursor", "windsurf", "librechat", "anythingllm", "ollama",
+        ],
     ),
     (
         "nova_style_todo",
         &[
             "todoist", "ticktick", "microsoft to do", "google tasks",
-            "omnifocus", "any.do", "trello", "asana", "clickup", "monday.com",
-            "linear",
+            "omnifocus", "things 3", "any.do", "remember the milk", "trello",
+            "asana", "clickup", "monday.com", "jira", "linear", "basecamp",
+            "wrike", "teamwork", "sunsama", "akiflow", "superlist", "taskade",
+            "meistertask", "github issues", "github projects", "gitlab issues",
+            "azure boards", "youtrack", "shortcut",
+            // FR / EN génériques mais sûrs (multi-mots)
+            "liste de tâches", "liste de taches", "to-do list", "to do list",
+            "mes tâches",
         ],
-        &["todoist", "ticktick", "omnifocus", "trello", "asana", "clickup", "linear"],
+        &[
+            "todoist", "ticktick", "omnifocus", "things3", "trello", "asana",
+            "clickup", "jira", "linear", "basecamp", "wrike", "sunsama",
+            "akiflow", "superlist", "taskade", "meistertask",
+        ],
     ),
     (
         "nova_style_notes",
         &[
-            "notion", "obsidian", "onenote", "evernote", "logseq", "joplin",
-            "google keep", "roam research", "craft docs", "anytype",
-            "google docs", "notepad", "bloc-notes", "simplenote",
-            "standard notes",
+            "notion", "obsidian", "onenote", "one note", "evernote", "logseq",
+            "joplin", "roam research", "craft docs", "anytype", "apple notes",
+            "google keep", "google docs", "microsoft word", "word online",
+            "dropbox paper", "coda", "confluence", "nuclino", "slite",
+            "standard notes", "simplenote", "zoho notebook", "samsung notes",
+            "notepad", "notepad++", "typora", "zettlr", "mem.ai",
+            "tana", "capacities", "amplenote", "supernotes", "workflowy",
+            "dynalist", "quip", "hackmd", "apple pages", "libreoffice writer",
+            "onlyoffice", "zoho writer",
+            // FR
+            "bloc-notes", "prise de notes",
         ],
-        &["notion", "obsidian", "onenote", "evernote", "logseq", "joplin", "anytype", "notepad", "simplenote"],
+        &[
+            "notion", "obsidian", "onenote", "evernote", "logseq", "joplin",
+            "anytype", "craft", "standardnotes", "simplenote", "notepad",
+            "typora", "zettlr", "tana", "capacities", "workflowy", "quip",
+            "winword", "soffice", "marktext", "ghostwriter",
+        ],
     ),
 ];
 
@@ -156,7 +230,7 @@ pub fn resolve_auto_style(
 
     for (style_id, title_tokens, proc_tokens) in BUILTIN_RULES {
         let hit = title_tokens.iter().any(|t| whole_word_contains(&title_l, t))
-            || proc_tokens.iter().any(|t| proc_l.contains(t));
+            || proc_tokens.iter().any(|t| whole_word_contains(&proc_l, t));
         if hit {
             return (*style_id).to_string();
         }
@@ -210,7 +284,7 @@ pub fn resolve_override(settings: &AppSettings) -> Option<String> {
 #[cfg(target_os = "windows")]
 fn current_foreground(user_blocklist: &[String]) -> (String, String) {
     use windows::core::PWSTR;
-    use windows::Win32::Foundation::{CloseHandle, FALSE};
+    use windows::Win32::Foundation::CloseHandle;
     use windows::Win32::System::Threading::{
         OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
         PROCESS_QUERY_LIMITED_INFORMATION,
@@ -230,7 +304,7 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
         GetWindowThreadProcessId(hwnd, Some(&mut pid as *mut u32));
         let mut process = String::new();
         if pid != 0 {
-            if let Ok(handle) = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid) {
+            if let Ok(handle) = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid) {
                 let mut buf = [0u16; 260];
                 let mut size = buf.len() as u32;
                 let ok =
@@ -326,6 +400,32 @@ mod tests {
     fn empty_context_falls_back_to_default() {
         assert_eq!(
             resolve_auto_style("", "", &no_rules()),
+            "default_improve_transcriptions"
+        );
+    }
+
+    #[test]
+    fn detects_notes_and_todo() {
+        assert_eq!(
+            resolve_auto_style("Mon document — Notion", "chrome.exe", &no_rules()),
+            "nova_style_notes"
+        );
+        assert_eq!(
+            resolve_auto_style("Aujourd'hui - Todoist", "chrome.exe", &no_rules()),
+            "nova_style_todo"
+        );
+    }
+
+    #[test]
+    fn process_matching_is_whole_word() {
+        // « line » (LINE messagerie) matche line.exe…
+        assert_eq!(
+            resolve_auto_style("", "line.exe", &no_rules()),
+            "nova_style_messages"
+        );
+        // …mais PAS outline.exe (pas de faux positif).
+        assert_eq!(
+            resolve_auto_style("Plan — Outline", "outline.exe", &no_rules()),
             "default_improve_transcriptions"
         );
     }
