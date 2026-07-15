@@ -147,6 +147,16 @@ const RecordingOverlay: React.FC = () => {
         setIsVisible(false);
       });
 
+      // Changement de placement (haut/bas) pendant que la bulle est déjà visible :
+      // la fenêtre native est déplacée côté Rust, mais la carte doit aussi ré-ancrer
+      // au bon bord. `show-overlay` ne repasse pas dans ce cas, d'où cet événement.
+      const unlistenPosition = await listen<string>(
+        "overlay-position",
+        (event) => {
+          setPosition(event.payload === "top" ? "top" : "bottom");
+        },
+      );
+
       const unlistenLevel = await listen<number[]>("mic-level", (event) => {
         const newLevels = event.payload as number[];
         // Exponential smoothing across the 16 buckets, then take the first N
@@ -172,6 +182,7 @@ const RecordingOverlay: React.FC = () => {
       return () => {
         unlistenShow();
         unlistenHide();
+        unlistenPosition();
         unlistenLevel();
         unlistenStream();
         unlistenPhase();
