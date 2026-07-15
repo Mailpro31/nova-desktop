@@ -1,4 +1,5 @@
 {
+  "mainBinaryName": "Nova",
   "bundle": {
     "resources": {
       "resources": "resources",
