@@ -22,9 +22,10 @@ ordinateur, sans envoyer votre voix sur Internet.
 - [Aperçu](#aperçu)
 - [Ce que fait Nova](#ce-que-fait-nova)
 - [Comment ça marche](#comment-ça-marche)
+- [Les modèles — collection Nova](#les-modèles--collection-nova)
 - [Les moteurs d'intelligence](#les-moteurs-dintelligence)
 - [Les Styles](#les-styles)
-- [Paliers](#paliers)
+- [Paliers & licence](#paliers--licence)
 - [Installation](#installation)
 - [Mises à jour automatiques](#mises-à-jour-automatiques)
 - [Confidentialité](#confidentialité)
@@ -41,12 +42,15 @@ Nova peut **reformuler** ce que vous dites selon l'endroit où vous écrivez :
 une phrase jetée à l'oral devient un e-mail soigné, un ticket structuré ou une
 liste de tâches — automatiquement.
 
+L'interface suit un langage visuel **Apple / macOS, minimaliste premium** :
+barre latérale à catégories, orbe « bille de verre », accent bleu unique.
+
 <div align="center">
-<img src=".github/assets/nova-bulle.png" alt="La bulle d'écoute Nova" width="440" />
+<img src=".github/assets/shot-general.png" alt="Réglages généraux de Nova" width="860" />
 </div>
 
-Une bulle discrète confirme que Nova vous écoute. Un clic sur l'orbe ouvre le
-menu des Styles ; la roue crantée ouvre les réglages.
+Réglages **Général** : raccourci de dictée, appuyer-pour-parler, langue de
+transcription, micro et signal sonore.
 
 ---
 
@@ -67,22 +71,37 @@ menu des Styles ; la roue crantée ouvre les réglages.
   raison quelconque, Nova colle le texte brut. Jamais de perte.
 - **Se lancer avec Windows** — Nova est prête dès l'ouverture de session.
 
-<div align="center">
-<img src=".github/assets/nova-styles-menu.png" alt="Le menu des Styles" width="380" />
-</div>
-
 ---
 
 ## Comment ça marche
 
-1. **Maintenez** votre touche de dictée (par défaut `F9`) — ou activez le mode
-   « appuyer une fois ».
-2. **Parlez** pendant que la touche est active. La bulle affiche « Je t'écoute… ».
+1. **Maintenez** votre touche de dictée (raccourci configurable) — ou activez
+   le mode « appuyer une fois ».
+2. **Parlez** pendant que la touche est active. Une bulle discrète confirme que
+   Nova vous écoute.
 3. **Relâchez.** Nova transcrit votre voix, applique le Style choisi (ou le
    détecte), puis **colle** le résultat dans le champ actif.
 
 Le silence est filtré automatiquement (détection d'activité vocale), de sorte
 que seul ce que vous dites réellement est transcrit.
+
+---
+
+## Les modèles — collection Nova
+
+Nova réunit une large **collection de modèles de transcription**, rebrandés en
+une gamme signature et classés par catégorie et par rang de qualité :
+**Nova Direct** (transcription au fil de la parole), **Nova Monde** (large
+couverture multilingue), **Nova Précision** (le texte au plus juste), et des
+spécialistes par langue. Chaque modèle affiche sa **précision** et sa
+**vitesse**, ses langues et sa taille — sans jamais exposer de nom technique.
+
+<div align="center">
+<img src=".github/assets/shot-models.png" alt="Collection de modèles Nova" width="860" />
+</div>
+
+Le catalogue s'adapte tout seul : un modèle ajouté est automatiquement nommé et
+classé selon ses caractéristiques.
 
 ---
 
@@ -93,16 +112,12 @@ Nova propose deux moteurs, choisis dans les réglages :
 | Moteur | Description |
 | --- | --- |
 | **Intelligence privée** | Transcription et reformulation **100 % locales**, hors ligne. Rien ne quitte votre ordinateur. |
-| **Turbo** | La vitesse maximale, via le réseau. Bascule automatiquement sur l'Intelligence privée si le réseau manque. |
+| **Turbo** | La vitesse maximale, via le réseau. Géré par Nova : votre licence sert de clé, aucune configuration. |
 
 Trois **profils de puissance** ajustent la qualité selon votre machine —
 **Nova Air** (léger et vif), **Nova Aura** (le meilleur équilibre) et
 **Nova Apex** (l'intelligence maximale). Les profils trop lourds pour la
 machine sont automatiquement verrouillés.
-
-<div align="center">
-<img src=".github/assets/nova-general.png" alt="Réglages généraux Nova" width="720" />
-</div>
 
 ---
 
@@ -110,14 +125,11 @@ machine sont automatiquement verrouillés.
 
 Un **Style** est une façon de reformuler votre dictée. Nova est livrée avec des
 Styles prêts à l'emploi (E-mail, Messages, Prompt IA, To-do list, Prise de
-notes, Normal) et vous pouvez créer les vôtres : un nom, des mots-clés
+notes…) et vous pouvez créer les vôtres : un nom, des mots-clés
 d'application/onglet, et une consigne de reformulation.
 
-> Exemple : sur Jira, chaque dictée est automatiquement reformulée en ticket
-> structuré ; sur votre CRM, en note commerciale.
-
 <div align="center">
-<img src=".github/assets/nova-styles-reglages.png" alt="Styles sur mesure" width="720" />
+<img src=".github/assets/shot-styles.png" alt="Styles et reformulation" width="860" />
 </div>
 
 Quand l'application ou l'onglet actif contient l'un de vos mots-clés, votre
@@ -125,24 +137,29 @@ consigne prend le relais — sans que vous ayez à choisir.
 
 ---
 
-## Paliers
+## Paliers & licence
+
+<div align="center">
+<img src=".github/assets/shot-license.png" alt="Abonnement Nova" width="860" />
+</div>
 
 | Palier | Inclus |
 | --- | --- |
 | **Gratuit** | Dictée locale illimitée · Styles E-mail, To-do list et Prompt IA · quota hebdomadaire de reformulation |
 | **Nova Pro** | Reformulation sans limite · tous les Styles · moteur Turbo |
-| **Nova Ultra** | Création et modification de Styles sur mesure · profil de puissance maximal · détection automatique avancée |
+| **Nova Ultra** | Création et modification de Styles sur mesure · profil de puissance maximal · détection automatique avancée · personnalisation complète |
 
-L'abonnement est géré en ligne ; votre licence débloque les fonctions
-correspondantes directement dans l'application.
+L'abonnement est géré en ligne ; votre licence (`NOVA1.…`) débloque les
+fonctions correspondantes directement dans l'application. L'écran d'abonnement
+affiche aussi une **statistique de valeur** : mots dictés et minutes de frappe
+économisées sur la semaine.
 
 ---
 
 ## Installation
 
-1. Téléchargez la dernière version depuis **[novaspeak.app](https://novaspeak.app)**
-   ou la [page des releases](https://github.com/Mailpro31/nova-desktop/releases/latest).
-2. Lancez l'installateur `Nova_x.y.z_x64-setup.exe`.
+1. Téléchargez la dernière version depuis **[novaspeak.app](https://novaspeak.app)**.
+2. Lancez l'installateur `Nova-Setup.exe`.
 3. Accordez à Nova l'accès au micro au premier lancement.
 4. Choisissez votre touche de dictée dans les réglages, et commencez.
 
