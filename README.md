@@ -109,10 +109,10 @@ classé selon ses caractéristiques.
 
 Nova propose deux moteurs, choisis dans les réglages :
 
-| Moteur | Description |
-| --- | --- |
-| **Intelligence privée** | Transcription et reformulation **100 % locales**, hors ligne. Rien ne quitte votre ordinateur. |
-| **Turbo** | La vitesse maximale, via le réseau. Géré par Nova : votre licence sert de clé, aucune configuration. |
+| Moteur                  | Description                                                                                          |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Intelligence privée** | Transcription et reformulation **100 % locales**, hors ligne. Rien ne quitte votre ordinateur.       |
+| **Turbo**               | La vitesse maximale, via le réseau. Géré par Nova : votre licence sert de clé, aucune configuration. |
 
 Trois **profils de puissance** ajustent la qualité selon votre machine —
 **Nova Air** (léger et vif), **Nova Aura** (le meilleur équilibre) et
@@ -143,10 +143,10 @@ consigne prend le relais — sans que vous ayez à choisir.
 <img src=".github/assets/shot-license.png" alt="Abonnement Nova" width="860" />
 </div>
 
-| Palier | Inclus |
-| --- | --- |
-| **Gratuit** | Dictée locale illimitée · Styles E-mail, To-do list et Prompt IA · quota hebdomadaire de reformulation |
-| **Nova Pro** | Reformulation sans limite · tous les Styles · moteur Turbo |
+| Palier         | Inclus                                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gratuit**    | Dictée locale illimitée · Styles E-mail, To-do list et Prompt IA · quota hebdomadaire de reformulation                                  |
+| **Nova Pro**   | Reformulation sans limite · tous les Styles · moteur Turbo                                                                              |
 | **Nova Ultra** | Création et modification de Styles sur mesure · profil de puissance maximal · détection automatique avancée · personnalisation complète |
 
 L'abonnement est géré en ligne ; votre licence (`NOVA1.…`) débloque les
