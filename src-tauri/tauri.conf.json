@@ -80,7 +80,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQ1RDRFOEI3MTEwNjFGQzYKUldUR0h3WVJ0K2pVUlZpR25xeFlDdHowc29JaHRYNFAzeHJEMDVQUnlTV0lhUFo0UzJjYkkxL1MK",
       "endpoints": [
-        "https://github.com/Mailpro31/nova-desktop/releases/latest/download/latest.json"
+        "https://github.com/Mailpro31/nova-releases/releases/latest/download/latest.json"
       ]
     }
   }
