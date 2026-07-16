@@ -28,6 +28,14 @@ on:
         required: false
         type: boolean
         default: false
+      releases-repo:
+        required: false
+        type: string
+        default: ""
+        # Quand renseigné (ex. "Mailpro31/nova-releases"), l'installeur Windows
+        # signé + latest.json sont publiés dans CE dépôt public dédié aux
+        # téléchargements (via le secret RELEASES_TOKEN), pour garder le code
+        # privé tout en laissant les téléchargements et l'auto-update publics.
       sign-binaries:
         required: false
         type: boolean
@@ -854,3 +862,47 @@ jobs:
             src-tauri/target/${{ inputs.target != '' && inputs.target != 'x86_64-pc-windows-msvc' && format('{0}/{1}', inputs.target, steps.build-profile.outputs.profile) || steps.build-profile.outputs.profile }}/bundle/msi/*.msi
             src-tauri/target/${{ inputs.target != '' && inputs.target != 'x86_64-pc-windows-msvc' && format('{0}/{1}', inputs.target, steps.build-profile.outputs.profile) || steps.build-profile.outputs.profile }}/bundle/nsis/*.exe
           retention-days: 30
+
+      # Publie l'installeur signé + latest.json dans le dépôt PUBLIC des
+      # téléchargements (RELEASES_REPO), via RELEASES_TOKEN. Le code peut ainsi
+      # rester privé tandis que téléchargement et auto-update restent publics.
+      # L'installeur est renommé « Nova-Setup.exe » (nom stable entre versions)
+      # pour que le lien du site ne casse jamais ; la signature reste valide car
+      # les octets ne changent pas. Ne s'exécute qu'après l'audit Windows (donc
+      # sur un build vérifié). La clé n'apparaît jamais dans les logs.
+      - name: Publier vers le dépôt public des téléchargements
+        if: inputs.releases-repo != '' && contains(inputs.platform, 'windows')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          RELEASES_REPO: ${{ inputs.releases-repo }}
+          VERSION: ${{ steps.get-version.outputs.version }}
+        run: |
+          set -euo pipefail
+          TAG="v$VERSION"
+          SETUP="$(find src-tauri/target -path '*/bundle/nsis/*-setup.exe' | head -1)"
+          SIG="$(find src-tauri/target -path '*/bundle/nsis/*-setup.exe.sig' | head -1)"
+          if [ -z "$SETUP" ] || [ -z "$SIG" ]; then
+            echo "ERROR: installeur ou signature updater introuvable" >&2
+            find src-tauri/target -path '*/bundle/nsis/*' >&2 || true
+            exit 1
+          fi
+          STABLE="$RUNNER_TEMP/Nova-Setup.exe"
+          cp "$SETUP" "$STABLE"
+          DL_URL="https://github.com/$RELEASES_REPO/releases/download/$TAG/Nova-Setup.exe"
+          PUB_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          jq -n \
+            --arg v "$VERSION" \
+            --arg d "$PUB_DATE" \
+            --arg s "$(cat "$SIG")" \
+            --arg u "$DL_URL" \
+            '{version: $v, pub_date: $d, platforms: {"windows-x86_64": {signature: $s, url: $u}}}' \
+            > "$RUNNER_TEMP/latest.json"
+          if ! gh release view "$TAG" -R "$RELEASES_REPO" >/dev/null 2>&1; then
+            gh release create "$TAG" -R "$RELEASES_REPO" \
+              --title "Nova $VERSION" \
+              --notes "Installeur Windows de Nova $VERSION."
+          fi
+          gh release upload "$TAG" "$STABLE" "$RUNNER_TEMP/latest.json" \
+            -R "$RELEASES_REPO" --clobber
+          echo "Publié Nova-Setup.exe + latest.json sur $RELEASES_REPO ($TAG)."
