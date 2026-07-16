@@ -44,6 +44,7 @@ const AccessibilityOnboarding: React.FC<AccessibilityOnboardingProps> = ({
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorCountRef = useRef<number>(0);
+  const hasCheckedRef = useRef(false);
   const MAX_POLLING_ERRORS = 3;
 
   const isMacOS = permissionPlatform === "macos";
@@ -76,6 +77,17 @@ const AccessibilityOnboarding: React.FC<AccessibilityOnboardingProps> = ({
 
   // Check platform and permission status on mount
   useEffect(() => {
+    // Ne lancer la détection plateforme + permissions qu'UNE seule fois au
+    // montage. Sans ce garde, l'effet se ré-exécute à chaque rendu de App :
+    // `onComplete` y est recréé à chaque rendu, et completeOnboarding() appelle
+    // refreshAudioDevices() qui met à jour le store — d'où un nouveau rendu de
+    // App (abonné via useSettings), un nouveau onComplete, et une ré-exécution
+    // de cet effet. La boucle « Maximum update depth exceeded » figeait alors le
+    // tout premier lancement. La mise à jour continue des permissions est déjà
+    // gérée par startPolling().
+    if (hasCheckedRef.current) return;
+    hasCheckedRef.current = true;
+
     const currentPlatform = platform();
     const nextPlatform: PermissionPlatform =
       currentPlatform === "macos"
