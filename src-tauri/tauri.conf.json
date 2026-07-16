@@ -78,7 +78,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQ1RDRFOEI3MTEwNjFGQzYKUldUR0h3WVJ0K2pVUlZpR25xeFlDdHowc29JaHRYNFAzeHJEMDVQUnlTV0lhUFo0UzJjYkkxL1MK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDlBNjkxNUVEM0JBRjkwQkUKUldTK2tLODc3UlZwbW5tN29tMEVndk1WaVdwS3ltNld5RHBsQUtJdGF5aG9jZXM0enNFc2RpQ3gK",
       "endpoints": [
         "https://github.com/Mailpro31/nova-releases/releases/latest/download/latest.json"
       ]
