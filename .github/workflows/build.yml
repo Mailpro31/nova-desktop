@@ -504,12 +504,21 @@ jobs:
       # tout espace, et TAURI_SIGNING_PRIVATE_KEY pointe sur ce fichier (tauri
       # accepte indifféremment le contenu de la clé ou un chemin vers elle). La
       # clé n'est jamais imprimée dans les logs.
-      - name: Normaliser la clé de signature updater
+      - name: Normaliser la clé + le mot de passe de signature updater
         shell: bash
         env:
           RAW_UPDATER_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          RAW_UPDATER_PW: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         run: |
+          # Clé : base64 sans espace (voir plus haut).
           printf '%s' "$RAW_UPDATER_KEY" | tr -d '[:space:]' > "$RUNNER_TEMP/nova-updater.key"
+          # Mot de passe : on retire un éventuel saut de ligne parasite (collage)
+          # sans toucher aux espaces internes, puis on le masque dans les logs et
+          # on l'expose aux étapes suivantes. tauri exige le mot de passe exact de
+          # la clé ; un \n parasite le ferait échouer (« Wrong password »).
+          PW_TRIMMED="$(printf '%s' "$RAW_UPDATER_PW" | tr -d '\r\n')"
+          echo "::add-mask::$PW_TRIMMED"
+          echo "NOVA_UPDATER_PW=$PW_TRIMMED" >> "$GITHUB_ENV"
 
       - name: Build with Tauri
         uses: tauri-apps/tauri-action@v0
@@ -530,7 +539,7 @@ jobs:
           # utilisée que lorsqu'un build active createUpdaterArtifacts (release) ;
           # les builds de test le laissent à false et ne signent donc rien.
           TAURI_SIGNING_PRIVATE_KEY: ${{ runner.temp }}/nova-updater.key
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ env.NOVA_UPDATER_PW }}
         with:
           tagName: ${{ inputs.release-id && format('v{0}', steps.get-version.outputs.version) || '' }}
           releaseName: ${{ inputs.release-id && format('v{0}', steps.get-version.outputs.version) || '' }}
