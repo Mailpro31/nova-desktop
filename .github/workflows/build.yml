@@ -489,6 +489,20 @@ jobs:
           sudo cp -vL "$LIBDIR"/libtranscribe.so* "$LIBDIR"/libggml*.so* /usr/local/lib/ 2>/dev/null || true
           sudo ldconfig
 
+      # La valeur du secret peut arriver avec un saut de ligne ou un espace
+      # parasite (collage manuel). tauri base64-décode la clé telle quelle et
+      # échoue sur tout caractère hors alphabet base64 (« Invalid symbol 10 » =
+      # un \n en fin de valeur). On écrit donc la clé dans un fichier en retirant
+      # tout espace, et TAURI_SIGNING_PRIVATE_KEY pointe sur ce fichier (tauri
+      # accepte indifféremment le contenu de la clé ou un chemin vers elle). La
+      # clé n'est jamais imprimée dans les logs.
+      - name: Normaliser la clé de signature updater
+        shell: bash
+        env:
+          RAW_UPDATER_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: |
+          printf '%s' "$RAW_UPDATER_KEY" | tr -d '[:space:]' > "$RUNNER_TEMP/nova-updater.key"
+
       - name: Build with Tauri
         uses: tauri-apps/tauri-action@v0
         env:
@@ -507,7 +521,7 @@ jobs:
           # ne concerne que la signature de CODE Windows/Apple). Elle n'est
           # utilisée que lorsqu'un build active createUpdaterArtifacts (release) ;
           # les builds de test le laissent à false et ne signent donc rien.
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ runner.temp }}/nova-updater.key
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ inputs.release-id && format('v{0}', steps.get-version.outputs.version) || '' }}
