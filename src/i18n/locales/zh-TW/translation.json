@@ -662,13 +662,13 @@
     "title": "Nova v{{version}} 新功能"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "今日免費改寫",
+    "count": "{{used}} / {{limit}} 次改寫",
+    "blockedInline": "已達每日上限——聽寫仍然無限制，文字將原樣貼上。升級即可無限改寫。",
+    "resetsOn": "將於 {{date}} 重設。",
+    "blockedTitle": "已達改寫上限",
+    "blockedDescription": "您已用完今日的 10 次免費改寫。聽寫仍然無限制——您的文字將原樣貼上。升級至 Nova 即可無限改寫。",
+    "upgrade": "訂閱"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

@@ -662,13 +662,13 @@
     "title": "Nova v{{version}}의 새 소식"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "오늘의 무료 다시 쓰기",
+    "count": "{{used}} / {{limit}} 회 다시 쓰기",
+    "blockedInline": "일일 한도에 도달했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 다시 쓰기는 업그레이드하세요.",
+    "resetsOn": "{{date}}에 초기화됩니다.",
+    "blockedTitle": "다시 쓰기 한도 도달",
+    "blockedDescription": "오늘의 무료 다시 쓰기 10회를 모두 사용했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 다시 쓰기를 원하면 Nova로 업그레이드하세요.",
+    "upgrade": "구독하기"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

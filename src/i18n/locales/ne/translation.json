@@ -662,13 +662,13 @@
     "chooseStyle": "Choose a Style"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "आजको निःशुल्क पुनर्लेखन",
+    "count": "{{used}} / {{limit}} पुनर्लेखन",
+    "blockedInline": "दैनिक सीमा पुगियो — श्रुतलेखन असीमित नै रहन्छ, पाठ जस्ताको तस्तै टाँसिन्छ। असीमित पुनर्लेखनका लागि अपग्रेड गर्नुहोस्।",
+    "resetsOn": "{{date}} मा रिसेट हुन्छ।",
+    "blockedTitle": "पुनर्लेखन सीमा पुगियो",
+    "blockedDescription": "तपाईंले आजको १० निःशुल्क पुनर्लेखन प्रयोग गरिसक्नुभयो। श्रुतलेखन असीमित नै रहन्छ — तपाईंको पाठ जस्ताको तस्तै टाँसिन्छ। असीमित पुनर्लेखनका लागि Nova मा अपग्रेड गर्नुहोस्।",
+    "upgrade": "सदस्यता लिनुहोस्"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

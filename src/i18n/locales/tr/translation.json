@@ -662,13 +662,13 @@
     "title": "Nova v{{version}} yenilikleri"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "Bugünkü ücretsiz yeniden yazımlar",
+    "count": "{{used}} / {{limit}} yeniden yazım",
+    "blockedInline": "Günlük sınıra ulaşıldı — dikte sınırsız kalır, metin olduğu gibi yapıştırılır. Sınırsız yeniden yazım için yükseltin.",
+    "resetsOn": "{{date}} tarihinde sıfırlanır.",
+    "blockedTitle": "Yeniden yazım sınırına ulaşıldı",
+    "blockedDescription": "Bugün için 10 ücretsiz yeniden yazımınızı kullandınız. Dikte sınırsız kalır — metniniz olduğu gibi yapıştırılır. Sınırsız yeniden yazım için Nova'ya geçin.",
+    "upgrade": "Abone ol"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

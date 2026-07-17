@@ -448,13 +448,13 @@ pub struct AppSettings {
     /// Clé de licence Nova (jeton NOVA1…). Vide = palier Free. Voir licensing.rs.
     #[serde(default)]
     pub license_key: Option<String>,
-    /// Quota Free : caractères insérés durant la semaine glissante en cours.
-    /// Réinitialisé au bout de 7 jours. Voir quota.rs.
+    /// Quota Free : reformulations (Styles) appliquées durant la journée
+    /// glissante en cours. Réinitialisé au bout de 24 h. Voir quota.rs.
     #[serde(default)]
-    pub free_chars_used: u32,
-    /// Début (epoch secondes) de la semaine de quota courante. 0 = jamais amorcé.
+    pub free_rewrites_used: u32,
+    /// Début (epoch secondes) de la journée de quota courante. 0 = jamais amorcé.
     #[serde(default)]
-    pub free_quota_week_start: i64,
+    pub free_quota_day_start: i64,
     /// Statistique de valeur : caractères dictés durant la semaine glissante
     /// (tous paliers). Voir week_stats.rs.
     #[serde(default)]
@@ -1042,8 +1042,8 @@ pub fn get_default_settings() -> AppSettings {
         license_key: None,
         auto_style_rules: HashMap::new(),
         auto_style_blocklist: Vec::new(),
-        free_chars_used: 0,
-        free_quota_week_start: 0,
+        free_rewrites_used: 0,
+        free_quota_day_start: 0,
         week_chars_produced: 0,
         week_stat_week_start: 0,
         mute_while_recording: false,
