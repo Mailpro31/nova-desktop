@@ -662,13 +662,13 @@
     "title": "Nova v{{version}} の新機能"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "本日の無料リライト",
+    "count": "{{used}} / {{limit}} 回のリライト",
+    "blockedInline": "本日の上限に達しました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限のリライトはアップグレードで。",
+    "resetsOn": "{{date}} にリセットされます。",
+    "blockedTitle": "リライトの上限に達しました",
+    "blockedDescription": "本日の無料リライト10回を使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限のリライトは Nova へのアップグレードで。",
+    "upgrade": "登録する"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

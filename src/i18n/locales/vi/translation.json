@@ -662,13 +662,13 @@
     "title": "Điểm mới trong Nova v{{version}}"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "Lượt viết lại miễn phí hôm nay",
+    "count": "{{used}} / {{limit}} lượt viết lại",
+    "blockedInline": "Đã đạt giới hạn hằng ngày — đọc chính tả vẫn không giới hạn, văn bản được dán nguyên trạng. Nâng cấp để viết lại không giới hạn.",
+    "resetsOn": "Đặt lại vào {{date}}.",
+    "blockedTitle": "Đã đạt giới hạn viết lại",
+    "blockedDescription": "Bạn đã dùng hết 10 lượt viết lại miễn phí hôm nay. Đọc chính tả vẫn không giới hạn — văn bản của bạn được dán nguyên trạng. Nâng cấp lên Nova để viết lại không giới hạn.",
+    "upgrade": "Đăng ký"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

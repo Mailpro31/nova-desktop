@@ -152,8 +152,8 @@ function App() {
     };
   }, [t]);
 
-  // Quota gratuit épuisé : la dictée a été bloquée côté Rust. On propose
-  // directement de passer à un palier supérieur.
+  // Quota gratuit de reformulations épuisé : le texte a été collé brut côté
+  // Rust. On informe et on propose de passer à un palier supérieur.
   useEffect(() => {
     const unlisten = listen("quota-blocked", () => {
       toast.error(t("quota.blockedTitle"), {

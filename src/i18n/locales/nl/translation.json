@@ -662,13 +662,13 @@
     "chooseStyle": "Choose a Style"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "Gratis herformuleringen vandaag",
+    "count": "{{used}} / {{limit}} herformuleringen",
+    "blockedInline": "Daglimiet bereikt — dicteren blijft onbeperkt, de tekst wordt ongewijzigd geplakt. Upgrade voor onbeperkte herformuleringen.",
+    "resetsOn": "Wordt opnieuw ingesteld op {{date}}.",
+    "blockedTitle": "Limiet voor herformuleringen bereikt",
+    "blockedDescription": "Je hebt je 10 gratis herformuleringen voor vandaag gebruikt. Dicteren blijft onbeperkt — je tekst wordt ongewijzigd geplakt. Ga over op Nova voor onbeperkte herformuleringen.",
+    "upgrade": "Abonneren"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

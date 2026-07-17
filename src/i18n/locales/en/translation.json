@@ -626,12 +626,12 @@
     "openSettings": "Open System Settings"
   },
   "quota": {
-    "weekUsage": "Free usage this week",
-    "count": "{{used}} / {{limit}} characters",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
+    "todayUsage": "Free rewrites today",
+    "count": "{{used}} / {{limit}} rewrites",
+    "blockedInline": "Daily limit reached — dictation stays unlimited, your text is pasted as-is. Upgrade for unlimited rewrites.",
     "resetsOn": "Resets on {{date}}.",
-    "blockedTitle": "Free limit reached",
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
+    "blockedTitle": "Rewrite limit reached",
+    "blockedDescription": "You've used your 10 free rewrites for today. Dictation stays unlimited — your text is pasted as-is. Upgrade to Nova for unlimited rewrites.",
     "upgrade": "Subscribe"
   },
   "weekStat": {

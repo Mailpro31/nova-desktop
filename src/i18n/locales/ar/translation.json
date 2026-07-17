@@ -662,13 +662,13 @@
     "title": "الجديد في Nova v{{version}}"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "إعادة الصياغة المجانية اليوم",
+    "count": "{{used}} / {{limit}} إعادة صياغة",
+    "blockedInline": "تم الوصول إلى الحد اليومي — يظل الإملاء بلا حدود، ويُلصق النص كما هو. قم بالترقية للحصول على إعادات صياغة غير محدودة.",
+    "resetsOn": "تُعاد التهيئة في {{date}}.",
+    "blockedTitle": "تم الوصول إلى حد إعادة الصياغة",
+    "blockedDescription": "لقد استخدمت إعادات الصياغة العشر المجانية لهذا اليوم. يظل الإملاء بلا حدود — يُلصق نصك كما هو. اشترك في Nova للحصول على إعادات صياغة غير محدودة.",
+    "upgrade": "اشترك"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

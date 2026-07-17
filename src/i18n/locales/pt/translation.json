@@ -662,13 +662,13 @@
     "title": "Novidades no Nova v{{version}}"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "Reformulações gratuitas hoje",
+    "count": "{{used}} / {{limit}} reformulações",
+    "blockedInline": "Limite diário atingido — o ditado continua ilimitado, o texto é colado tal como está. Faça upgrade para reformulações ilimitadas.",
+    "resetsOn": "Reinicia em {{date}}.",
+    "blockedTitle": "Limite de reformulações atingido",
+    "blockedDescription": "Você usou suas 10 reformulações gratuitas de hoje. O ditado continua ilimitado — seu texto é colado tal como está. Assine o Nova para reformulações sem limite.",
+    "upgrade": "Assinar"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

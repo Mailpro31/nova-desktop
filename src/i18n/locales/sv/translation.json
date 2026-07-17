@@ -662,13 +662,13 @@
     "title": "Nytt i Nova v{{version}}"
   },
   "quota": {
-    "blockedDescription": "You've used your 2,500 free characters for the week. Upgrade to Nova to dictate without limits.",
-    "blockedInline": "Weekly limit reached. Upgrade to keep dictating without interruption.",
-    "blockedTitle": "Free limit reached",
-    "count": "{{used}} / {{limit}} characters",
-    "resetsOn": "Resets on {{date}}.",
-    "upgrade": "Subscribe",
-    "weekUsage": "Free usage this week"
+    "todayUsage": "Gratis omformuleringar idag",
+    "count": "{{used}} / {{limit}} omformuleringar",
+    "blockedInline": "Daglig gräns nådd — diktering är fortfarande obegränsad, texten klistras in som den är. Uppgradera för obegränsade omformuleringar.",
+    "resetsOn": "Återställs den {{date}}.",
+    "blockedTitle": "Gräns för omformuleringar nådd",
+    "blockedDescription": "Du har använt dina 10 gratis omformuleringar för idag. Diktering är fortfarande obegränsad — din text klistras in som den är. Uppgradera till Nova för obegränsade omformuleringar.",
+    "upgrade": "Prenumerera"
   },
   "weekStat": {
     "minutes_one": "≈ {{count}} minute of typing saved",

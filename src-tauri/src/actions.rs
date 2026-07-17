@@ -512,11 +512,19 @@ pub(crate) async fn process_transcription_output(
     }
 
     if post_process {
-        if let Some(processed_text) =
+        // Quota Free : les reformulations sont plafonnées à 10/jour. Au-delà, on
+        // saute le Style et on colle le texte brut (jamais de curseur vide), en
+        // informant le frontend. La dictée, elle, n'est jamais bloquée.
+        if crate::quota::is_rewrite_blocked(app) {
+            debug!("Reformulation ignorée : quota gratuit quotidien atteint");
+            let _ = app.emit("quota-blocked", ());
+        } else if let Some(processed_text) =
             post_process_transcription(&settings, &final_text, auto_style_override.as_deref()).await
         {
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
+            // Une reformulation a réellement été appliquée : on la décompte.
+            crate::quota::record_rewrite(app);
 
             // Style effectif (le Style auto résolu prime, pour l'historique).
             let effective_id = auto_style_override
@@ -545,14 +553,9 @@ pub(crate) async fn process_transcription_output(
 
 impl ShortcutAction for TranscribeAction {
     fn start(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
-        // Quota Free : au-delà de la limite hebdomadaire, on bloque AVANT tout
-        // enregistrement et on laisse le frontend proposer de s'abonner.
-        if crate::quota::is_blocked(app) {
-            debug!("Dictée bloquée : quota gratuit hebdomadaire atteint");
-            let _ = app.emit("quota-blocked", ());
-            return;
-        }
-
+        // La dictée est TOUJOURS illimitée au palier gratuit. Seules les
+        // reformulations (Styles) sont plafonnées, plus bas dans
+        // `process_transcription_output` : jamais de blocage avant l'enregistrement.
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
 
@@ -909,7 +912,6 @@ impl ShortcutAction for TranscribeAction {
 
                                     match utils::paste(final_text, ah_clone.clone()) {
                                         Ok(()) => {
-                                            crate::quota::record_chars(&ah_clone, paste_char_count);
                                             crate::week_stats::record_chars(
                                                 &ah_clone,
                                                 paste_char_count,

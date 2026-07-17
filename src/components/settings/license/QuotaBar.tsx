@@ -14,9 +14,9 @@ type QuotaStatus = {
 };
 
 /**
- * Barre de progression du quota gratuit (2500 caractères / semaine). Ne s'affiche
- * qu'au palier Free (les paliers payants ne sont pas limités). Passe au rouge et
- * affiche une invite d'abonnement une fois la limite atteinte.
+ * Barre de progression du quota gratuit de reformulations (10 / jour). Ne
+ * s'affiche qu'au palier Free (les paliers payants ne sont pas limités). Passe au
+ * rouge une fois le crédit quotidien épuisé — la dictée, elle, reste illimitée.
  */
 export const QuotaBar: React.FC = () => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ export const QuotaBar: React.FC = () => {
 
   useEffect(() => {
     refresh();
-    // Rafraîchit quand la dictée vient d'être bloquée (le compteur a bougé).
+    // Rafraîchit quand une reformulation vient d'être plafonnée (compteur bougé).
     const unlisten = listen("quota-blocked", () => refresh());
     return () => {
       unlisten.then((fn) => fn());
@@ -51,7 +51,7 @@ export const QuotaBar: React.FC = () => {
     <div className="px-4 py-3 flex flex-col gap-2">
       <div className="flex items-baseline justify-between">
         <span className="text-sm text-text-primary">
-          {t("quota.weekUsage")}
+          {t("quota.todayUsage")}
         </span>
         <span
           className="text-[12px] tabular-nums"
