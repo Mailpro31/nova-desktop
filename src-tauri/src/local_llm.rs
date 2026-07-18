@@ -43,23 +43,29 @@ pub struct LlmProfileSpec {
 
 /// Nova Air / Aura / Apex — même vocabulaire que les profils de puissance
 /// existants ; ici, la taille du modèle de reformulation local embarqué.
+///
+/// Palier produit : Air est le seul profil du plan Free ; Aura et Apex
+/// nécessitent Nova Pro (et restent disponibles en Ultra). Air doit donc
+/// rester un moteur « normal », pas un modèle-jouet — d'où 1.5B plutôt que
+/// 0.5B malgré l'inférence 100 % CPU (pas de délestage GPU avec
+/// llama-server ici) : en dessous, la reformulation devient peu fiable.
 pub const PROFILES: &[LlmProfileSpec] = &[
     LlmProfileSpec {
         id: "air",
-        repo_id: "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
-        approx_size_mb: 400,
+        repo_id: "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+        approx_size_mb: 1000,
         min_ram_gb: 0,
     },
     LlmProfileSpec {
         id: "aura",
-        repo_id: "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
-        approx_size_mb: 1000,
+        repo_id: "Qwen/Qwen2.5-3B-Instruct-GGUF",
+        approx_size_mb: 2100,
         min_ram_gb: 8,
     },
     LlmProfileSpec {
         id: "apex",
-        repo_id: "Qwen/Qwen2.5-3B-Instruct-GGUF",
-        approx_size_mb: 2100,
+        repo_id: "Qwen/Qwen2.5-7B-Instruct-GGUF",
+        approx_size_mb: 4700,
         min_ram_gb: 16,
     },
 ];
