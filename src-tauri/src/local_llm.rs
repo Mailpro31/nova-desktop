@@ -47,8 +47,9 @@ pub struct LlmProfileSpec {
 /// Palier produit : Air est le seul profil du plan Free ; Aura et Apex
 /// nécessitent Nova Pro (et restent disponibles en Ultra). Air doit donc
 /// rester un moteur « normal », pas un modèle-jouet — d'où 1.5B plutôt que
-/// 0.5B malgré l'inférence 100 % CPU (pas de délestage GPU avec
-/// llama-server ici) : en dessous, la reformulation devient peu fiable.
+/// 0.5B, qui devenait peu fiable pour la reformulation. `ensure_server_running`
+/// délestage sur GPU (Vulkan) quand c'est possible pour rester rapide même sur
+/// Aura/Apex, avec repli CPU automatique sinon.
 pub const PROFILES: &[LlmProfileSpec] = &[
     LlmProfileSpec {
         id: "air",
@@ -260,8 +261,17 @@ pub async fn ensure_model_downloaded(app: &AppHandle, profile_id: &str) -> Resul
 }
 
 /// Trouve l'URL du dernier binaire Windows `llama-server` publié par le
-/// projet llama.cpp (build CPU portable — le plus compatible, aucun pilote
-/// GPU requis). Résolution dynamique via l'API GitHub, pas de version figée.
+/// projet llama.cpp. Résolution dynamique via l'API GitHub, pas de version
+/// figée.
+///
+/// Priorité au build Vulkan (accélération GPU multi-fournisseur — NVIDIA/AMD/
+/// Intel — même choix que `transcribe-cpp` pour la transcription dans ce
+/// projet, cf. Cargo.toml) : quand un GPU compatible est présent, la
+/// reformulation reste rapide même avec Aura/Apex. Repli sur le build CPU
+/// portable si l'asset Vulkan est absent d'une release, ou (au démarrage,
+/// voir `ensure_server_running`) si aucun GPU compatible ne répond. ARM64
+/// reste CPU-only : les pilotes Vulkan Adreno sont trop immatures, même
+/// motif que pour la transcription.
 #[cfg(windows)]
 async fn resolve_server_asset_url() -> Result<String, String> {
     let url = "https://api.github.com/repos/ggml-org/llama.cpp/releases/latest";
@@ -285,21 +295,26 @@ async fn resolve_server_asset_url() -> Result<String, String> {
         .ok_or("Réponse GitHub sans assets")?;
 
     let is_arm = cfg!(target_arch = "aarch64");
-    let want = if is_arm { "win-arm64" } else { "win-cpu-x64" };
+    let candidates: &[&str] = if is_arm {
+        &["win-arm64"]
+    } else {
+        &["win-vulkan-x64", "win-cpu-x64"]
+    };
 
-    assets
-        .iter()
-        .find_map(|a| {
+    for want in candidates {
+        if let Some(url) = assets.iter().find_map(|a| {
             let name = a.get("name")?.as_str()?;
-            if name.to_lowercase().contains(want) && name.to_lowercase().ends_with(".zip") {
+            let lname = name.to_lowercase();
+            if lname.contains(want) && lname.ends_with(".zip") {
                 a.get("browser_download_url")?.as_str().map(String::from)
             } else {
                 None
             }
-        })
-        .ok_or_else(|| {
-            "Aucun binaire Windows trouvé dans la dernière version de llama.cpp".to_string()
-        })
+        }) {
+            return Ok(url);
+        }
+    }
+    Err("Aucun binaire Windows trouvé dans la dernière version de llama.cpp".to_string())
 }
 
 /// Télécharge et extrait `llama-server.exe` s'il est absent. Extraction via
@@ -395,10 +410,55 @@ async fn is_server_up() -> bool {
         .unwrap_or(false)
 }
 
+#[cfg(windows)]
+fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result<Child> {
+    std::process::Command::new(binary)
+        .args([
+            "--model",
+            &model.to_string_lossy(),
+            "--host",
+            "127.0.0.1",
+            "--port",
+            &LOCAL_LLM_PORT.to_string(),
+            "-c",
+            "4096",
+            "-ngl",
+            ngl,
+        ])
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .spawn()
+}
+
+/// Attend que `child` réponde sur `/health`, jusqu'à `max_iters` × 500 ms.
+/// Vérifie aussi à chaque tour si le processus s'est déjà arrêté (échec de
+/// démarrage — typiquement un backend Vulkan sans GPU compatible, qui échoue
+/// en une fraction de seconde) pour sortir immédiatement plutôt que
+/// d'attendre inutilement toute la fenêtre.
+#[cfg(windows)]
+async fn wait_for_health(child: &mut Child, max_iters: u32) -> bool {
+    for _ in 0..max_iters {
+        if matches!(child.try_wait(), Ok(Some(_))) {
+            return false;
+        }
+        if is_server_up().await {
+            return true;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+    }
+    false
+}
+
 /// S'assure que `llama-server` tourne avec le bon profil chargé. Démarre (ou
 /// redémarre si le profil a changé) le sous-processus au besoin, attend qu'il
 /// réponde. Ne panique jamais ; toute erreur redescend proprement pour que
 /// l'appelant retombe sur le texte brut.
+///
+/// Vitesse : tente d'abord le délestage GPU complet (`-ngl 999`, build
+/// Vulkan). Sans GPU compatible, le processus s'arrête de lui-même en une
+/// fraction de seconde — `wait_for_health` le détecte au tour suivant plutôt
+/// que d'attendre toute la fenêtre — et on redémarre alors en pur CPU
+/// (`-ngl 0`).
 #[cfg(windows)]
 pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<(), String> {
     use tauri::Manager;
@@ -435,39 +495,34 @@ pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<
 
     let model = model_path(app, profile_id)?;
     let binary = server_binary_path(app)?;
-    let child = std::process::Command::new(&binary)
-        .args([
-            "--model",
-            &model.to_string_lossy(),
-            "--host",
-            "127.0.0.1",
-            "--port",
-            &LOCAL_LLM_PORT.to_string(),
-            "-c",
-            "4096",
-            "-ngl",
-            "0",
-        ])
-        .stdout(std::process::Stdio::null())
-        .stderr(std::process::Stdio::null())
-        .spawn()
+
+    let mut child = spawn_llama_server(&binary, &model, "999")
         .map_err(|e| format!("Démarrage du moteur local impossible : {e}"))?;
 
-    {
-        let mut guard = state
-            .0
-            .lock()
-            .map_err(|_| "État du moteur local corrompu")?;
-        *guard = Some((child, profile_id.to_string()));
+    // Fenêtre généreuse : un vrai chargement GPU (gros modèle, VRAM lente)
+    // peut prendre du temps, mais l'absence de GPU compatible fait échouer le
+    // processus quasi instantanément — détecté dès le prochain tour par
+    // `wait_for_health`, donc cette largeur ne coûte rien dans le cas courant
+    // sans GPU.
+    if !wait_for_health(&mut child, 40).await {
+        // Pas de GPU compatible (ou build CPU-only téléchargé) : repli CPU.
+        let _ = child.kill();
+        let _ = child.wait();
+        child = spawn_llama_server(&binary, &model, "0")
+            .map_err(|e| format!("Démarrage du moteur local impossible : {e}"))?;
+        if !wait_for_health(&mut child, 60).await {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err("Le moteur local n'a pas démarré à temps.".to_string());
+        }
     }
 
-    for _ in 0..60 {
-        if is_server_up().await {
-            return Ok(());
-        }
-        tokio::time::sleep(std::time::Duration::from_millis(500)).await;
-    }
-    Err("Le moteur local n'a pas démarré à temps.".to_string())
+    let mut guard = state
+        .0
+        .lock()
+        .map_err(|_| "État du moteur local corrompu")?;
+    *guard = Some((child, profile_id.to_string()));
+    Ok(())
 }
 
 #[cfg(not(windows))]
