@@ -6,6 +6,7 @@ import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
+import { Dialog } from "../../ui/Dialog";
 import { invalidateLicense } from "./TierBadge";
 import { QuotaBar } from "./QuotaBar";
 import { WeekStat } from "./WeekStat";
@@ -18,6 +19,8 @@ type LicenseStatus = {
   email: string;
   licensed: boolean;
   features: Record<string, boolean>;
+  trial_days_remaining: number;
+  trial_just_expired: boolean;
 };
 
 const TIER_LABEL: Record<Tier, string> = {
@@ -84,19 +87,18 @@ export const LicenseSettings: React.FC = () => {
     }
   };
 
-  const clear = async () => {
-    setBusy(true);
-    setError(null);
+  const acknowledgeTrialExpired = async () => {
     try {
-      setStatus(await invoke<LicenseStatus>("clear_license"));
-      invalidateLicense();
-    } finally {
-      setBusy(false);
+      setStatus(await invoke<LicenseStatus>("acknowledge_trial_expired"));
+    } catch {
+      // Défensif : l'invite disparaît au prochain lancement même en cas d'échec.
     }
   };
 
   const tier: Tier = status?.tier ?? "free";
   const isUltra = tier === "ultra";
+  const trialDaysRemaining = status?.trial_days_remaining ?? 0;
+  const onTrial = trialDaysRemaining > 0;
 
   return (
     <SettingsGroup title="Abonnement">
@@ -112,9 +114,27 @@ export const LicenseSettings: React.FC = () => {
             borderColor: TIER_COLOR[tier],
           }}
         >
-          {TIER_LABEL[tier]}
+          {onTrial ? t("license.trial.badge") : TIER_LABEL[tier]}
         </span>
       </SettingContainer>
+
+      {onTrial && (
+        <SettingContainer
+          title={t("license.trial.title")}
+          description={t("license.trial.description", {
+            count: trialDaysRemaining,
+          })}
+          grouped={true}
+        >
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => openUrl("https://novaspeak.app")}
+          >
+            {t("license.trial.subscribe")}
+          </Button>
+        </SettingContainer>
+      )}
 
       <QuotaBar />
       <WeekStat />
@@ -125,9 +145,9 @@ export const LicenseSettings: React.FC = () => {
           description={status.email}
           grouped={true}
         >
-          <Button variant="ghost" size="sm" onClick={clear} disabled={busy}>
-            {t("license.remove")}
-          </Button>
+          <span className="text-sm text-text-secondary">
+            {t("license.active")}
+          </span>
         </SettingContainer>
       )}
 
@@ -228,6 +248,40 @@ export const LicenseSettings: React.FC = () => {
           {error}
         </div>
       )}
+
+      <Dialog
+        open={status?.trial_just_expired ?? false}
+        onOpenChange={(open) => {
+          if (!open) void acknowledgeTrialExpired();
+        }}
+        title={t("license.trial.expiredTitle")}
+        closeLabel={t("license.trial.close")}
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => void acknowledgeTrialExpired()}
+            >
+              {t("license.trial.close")}
+            </Button>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => {
+                void openUrl("https://novaspeak.app");
+                void acknowledgeTrialExpired();
+              }}
+            >
+              {t("license.trial.subscribe")}
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-text-secondary">
+          {t("license.trial.expiredBody")}
+        </p>
+      </Dialog>
     </SettingsGroup>
   );
 };

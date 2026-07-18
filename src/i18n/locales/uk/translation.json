@@ -402,7 +402,11 @@
           "refreshModels": "Оновити моделі"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Увімкнути Turbo?",
+          "confirmDescription": "Turbo надсилає вашу диктовку до Nova для переформулювання онлайн — трохи менш приватно, ніж Intelligence privée, яка залишається повністю локальною. Ви можете повернутися до Intelligence privée в будь-який момент.",
+          "confirmEnable": "Увімкнути Turbo",
+          "cancel": "Скасувати"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Ліцензія активна",
+    "trial": {
+      "badge": "Пробний Pro",
+      "title": "Пробний період Nova Pro",
+      "description_one": "Залишився {{count}} день пробного періоду.",
+      "description_other": "Залишилося {{count}} днів пробного періоду.",
+      "subscribe": "Оформити підписку Nova Pro",
+      "expiredTitle": "Ваш пробний період Nova Pro завершився",
+      "expiredBody": "Ви повернулися до плану Nova Free. Оформіть підписку Nova Pro, щоб повернути всі стилі та профілі потужності.",
+      "close": "Закрити",
+      "toastTitle": "Пробний період Nova Pro активний",
+      "toastDescription_one": "Залишився {{count}} день — Turbo і всі стилі включені.",
+      "toastDescription_other": "Залишилося {{count}} днів — Turbo і всі стилі включені."
+    }
   }
 }

@@ -402,7 +402,11 @@
           "refreshModels": "重新整理模型"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "啟用 Turbo？",
+          "confirmDescription": "Turbo 會將您的聽寫傳送到 Nova 進行線上改寫——比完全在地的隱私智能略微降低隱私性。您可以隨時切換回隱私智能。",
+          "confirmEnable": "啟用 Turbo",
+          "cancel": "取消"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "授權已啟用",
+    "trial": {
+      "badge": "Pro 試用",
+      "title": "Nova Pro 試用",
+      "description_one": "試用還剩 {{count}} 天。",
+      "description_other": "試用還剩 {{count}} 天。",
+      "subscribe": "訂閱 Nova Pro",
+      "expiredTitle": "您的 Nova Pro 試用已結束",
+      "expiredBody": "您已回到 Nova Free 版本。訂閱 Nova Pro 即可恢復全部改寫風格與效能設定檔。",
+      "close": "關閉",
+      "toastTitle": "Nova Pro 試用已啟用",
+      "toastDescription_one": "還剩 {{count}} 天 — 包含 Turbo 和全部改寫風格。",
+      "toastDescription_other": "還剩 {{count}} 天 — 包含 Turbo 和全部改寫風格。"
+    }
   }
 }

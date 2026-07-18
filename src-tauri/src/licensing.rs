@@ -118,14 +118,8 @@ pub fn verify_key(key: &str) -> Option<LicenseInfo> {
     let data: serde_json::Value = serde_json::from_slice(&payload).ok()?;
     let tier = Tier::from_code(data.get("t")?.as_str()?)?;
     let expiry = data.get("x").and_then(|x| x.as_i64()).unwrap_or(0);
-    if expiry > 0 {
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|d| d.as_secs() as i64)
-            .unwrap_or(0);
-        if now > expiry {
-            return None; // expirée
-        }
+    if expiry > 0 && now_secs() > expiry {
+        return None; // expirée
     }
     // Verrou machine (`m`) volontairement ignoré ici.
     let email = data
@@ -141,7 +135,8 @@ pub fn verify_key(key: &str) -> Option<LicenseInfo> {
 }
 
 /// Palier courant d'après la clé stockée. Dormant → Ultra ; actif sans clé
-/// valide → Free ; sinon le palier de la licence.
+/// valide → Free ; sinon le palier de la licence. N'intègre PAS l'essai Pro
+/// automatique — voir `effective_tier` pour le palier réellement appliqué.
 pub fn current_tier(license_key: &str) -> Tier {
     if !enabled() {
         return Tier::Ultra; // dormant = tout débloqué
@@ -151,7 +146,47 @@ pub fn current_tier(license_key: &str) -> Tier {
         .unwrap_or(Tier::Free)
 }
 
-/// La fonctionnalité est-elle accessible au palier courant ?
-pub fn has(feature: &str, license_key: &str) -> bool {
-    current_tier(license_key).level() >= feature_min_tier(feature).level()
+fn now_secs() -> i64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0)
+}
+
+/// Durée de l'essai Nova Pro automatique offert à l'installation (jours).
+pub const TRIAL_DAYS: i64 = 14;
+const TRIAL_SECS: i64 = TRIAL_DAYS * 24 * 3600;
+
+/// Palier réellement appliqué : la licence prime ; à défaut (Free), l'essai
+/// Pro automatique de 14 jours depuis le tout premier lancement
+/// (`trial_started_at`, epoch secondes, 0 = jamais amorcé) ; sinon Free.
+/// `trial_started_at` est scellé une seule fois par `settings::get_settings`
+/// au premier lancement — il ne peut jamais être prolongé ni régénéré.
+pub fn effective_tier(license_key: &str, trial_started_at: i64) -> Tier {
+    let tier = current_tier(license_key);
+    if tier != Tier::Free {
+        return tier;
+    }
+    if trial_started_at > 0 && now_secs() - trial_started_at < TRIAL_SECS {
+        return Tier::Pro;
+    }
+    tier
+}
+
+/// Jours d'essai restants (0 si aucun essai en cours ou déjà expiré). Pour
+/// l'affichage (compte à rebours, invites d'abonnement).
+pub fn trial_days_remaining(trial_started_at: i64) -> i64 {
+    if trial_started_at <= 0 {
+        return 0;
+    }
+    let elapsed = now_secs() - trial_started_at;
+    if elapsed >= TRIAL_SECS {
+        return 0;
+    }
+    (TRIAL_SECS - elapsed + 86_399) / 86_400 // arrondi au jour supérieur
+}
+
+/// La fonctionnalité est-elle accessible, essai Pro automatique inclus ?
+pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
+    effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
 }

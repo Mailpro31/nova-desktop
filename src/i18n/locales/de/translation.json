@@ -402,7 +402,11 @@
           "refreshModels": "Modelle aktualisieren"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Turbo aktivieren?",
+          "confirmDescription": "Turbo sendet Ihr Diktat zur Online-Umformulierung an Nova — etwas weniger privat als die Intelligence privée, die vollständig lokal bleibt. Sie können jederzeit zur Intelligence privée zurückwechseln.",
+          "confirmEnable": "Turbo aktivieren",
+          "cancel": "Abbrechen"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Lizenz aktiv",
+    "trial": {
+      "badge": "Pro-Testversion",
+      "title": "Nova Pro Testversion",
+      "description_one": "Noch {{count}} Tag bis zum Ende der Testversion.",
+      "description_other": "Noch {{count}} Tage bis zum Ende der Testversion.",
+      "subscribe": "Nova Pro abonnieren",
+      "expiredTitle": "Ihre Nova Pro Testversion ist beendet",
+      "expiredBody": "Sie sind zurück auf dem Nova Free Tarif. Abonnieren Sie Nova Pro, um die vollständigen Styles und Leistungsprofile zurückzuerhalten.",
+      "close": "Schließen",
+      "toastTitle": "Nova Pro Testversion aktiv",
+      "toastDescription_one": "Noch {{count}} Tag — Turbo und alle Styles inklusive.",
+      "toastDescription_other": "Noch {{count}} Tage — Turbo und alle Styles inklusive."
+    }
   }
 }

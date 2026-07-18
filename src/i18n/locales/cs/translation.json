@@ -402,7 +402,11 @@
           "refreshModels": "Obnovit modely"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Aktivovat Turbo?",
+          "confirmDescription": "Turbo odesílá váš diktát do Nova k online přeformulování — o něco méně soukromé než Intelligence privée, která zůstává zcela lokální. Kdykoli se můžete vrátit k Intelligence privée.",
+          "confirmEnable": "Aktivovat Turbo",
+          "cancel": "Zrušit"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Licence aktivní",
+    "trial": {
+      "badge": "Zkušební Pro",
+      "title": "Zkušební verze Nova Pro",
+      "description_one": "Zbývá {{count}} den zkušební verze.",
+      "description_other": "Zbývá {{count}} dní zkušební verze.",
+      "subscribe": "Předplatit Nova Pro",
+      "expiredTitle": "Vaše zkušební verze Nova Pro skončila",
+      "expiredBody": "Jste zpět na úrovni Nova Free. Předplaťte si Nova Pro a získejte zpět všechny Styly a výkonové profily.",
+      "close": "Zavřít",
+      "toastTitle": "Zkušební verze Nova Pro aktivní",
+      "toastDescription_one": "Zbývá {{count}} den — Turbo a všechny Styly v ceně.",
+      "toastDescription_other": "Zbývá {{count}} dní — Turbo a všechny Styly v ceně."
+    }
   }
 }

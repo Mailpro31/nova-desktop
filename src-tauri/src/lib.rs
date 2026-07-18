@@ -620,6 +620,7 @@ pub fn run(cli_args: CliArgs) {
             commands::ollama::install_ollama_engine,
             commands::ollama::ollama_status,
             commands::license::get_license_status,
+            commands::license::acknowledge_trial_expired,
             commands::license::activate_license,
             commands::license::activate_license_code,
             commands::license::clear_license,

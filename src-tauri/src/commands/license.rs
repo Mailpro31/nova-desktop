@@ -11,7 +11,7 @@ use tauri::AppHandle;
 /// Statut d'abonnement renvoyé au frontend.
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct LicenseStatus {
-    /// Palier courant (free / pro / ultra / business).
+    /// Palier courant, essai Pro automatique inclus (free / pro / ultra / business).
     pub tier: Tier,
     /// Le système de licence est-il actif (clé publique configurée) ?
     pub active: bool,
@@ -19,8 +19,14 @@ pub struct LicenseStatus {
     pub email: String,
     /// Une clé est-elle enregistrée et valide ?
     pub licensed: bool,
-    /// Fonctionnalité → accessible au palier courant.
+    /// Fonctionnalité → accessible au palier courant (essai inclus).
     pub features: HashMap<String, bool>,
+    /// Jours restants de l'essai Pro automatique (0 = aucun essai en cours).
+    pub trial_days_remaining: i64,
+    /// L'essai vient-il de se terminer sans que l'utilisateur en ait déjà été
+    /// informé ? Le frontend doit afficher l'invite une fois puis appeler
+    /// `acknowledge_trial_expired`.
+    pub trial_just_expired: bool,
 }
 
 const KNOWN_FEATURES: &[&str] = &[
@@ -37,19 +43,24 @@ const KNOWN_FEATURES: &[&str] = &[
     "priority_updates",
 ];
 
-fn build_status(key: &str) -> LicenseStatus {
+fn build_status(key: &str, trial_started_at: i64, trial_expired_notified: bool) -> LicenseStatus {
     let info = licensing::verify_key(key);
-    let tier = licensing::current_tier(key);
+    let tier = licensing::effective_tier(key, trial_started_at);
     let features = KNOWN_FEATURES
         .iter()
-        .map(|f| (f.to_string(), licensing::has(f, key)))
+        .map(|f| (f.to_string(), licensing::has(f, key, trial_started_at)))
         .collect();
+    let trial_days_remaining = licensing::trial_days_remaining(trial_started_at);
     LicenseStatus {
         tier,
         active: licensing::enabled(),
         email: info.as_ref().map(|i| i.email.clone()).unwrap_or_default(),
         licensed: info.is_some(),
         features,
+        trial_days_remaining,
+        trial_just_expired: trial_started_at > 0
+            && trial_days_remaining == 0
+            && !trial_expired_notified,
     }
 }
 
@@ -58,7 +69,25 @@ fn build_status(key: &str) -> LicenseStatus {
 #[specta::specta]
 pub fn get_license_status(app: AppHandle) -> LicenseStatus {
     let settings = get_settings(&app);
-    build_status(settings.license_key.as_deref().unwrap_or(""))
+    build_status(
+        settings.license_key.as_deref().unwrap_or(""),
+        settings.trial_started_at,
+        settings.trial_expired_notified,
+    )
+}
+
+/// Marque la notification de fin d'essai comme vue (ne plus la réafficher).
+#[tauri::command]
+#[specta::specta]
+pub fn acknowledge_trial_expired(app: AppHandle) -> LicenseStatus {
+    let mut settings = get_settings(&app);
+    settings.trial_expired_notified = true;
+    write_settings(&app, settings.clone());
+    build_status(
+        settings.license_key.as_deref().unwrap_or(""),
+        settings.trial_started_at,
+        settings.trial_expired_notified,
+    )
 }
 
 /// Active une clé de licence (jeton NOVA1). Rejette une clé invalide/expirée.
@@ -70,8 +99,10 @@ pub fn activate_license(app: AppHandle, key: String) -> Result<LicenseStatus, St
         Some(_) => {
             let mut settings = get_settings(&app);
             settings.license_key = Some(key.clone());
+            let (trial_started_at, trial_expired_notified) =
+                (settings.trial_started_at, settings.trial_expired_notified);
             write_settings(&app, settings);
-            Ok(build_status(&key))
+            Ok(build_status(&key, trial_started_at, trial_expired_notified))
         }
         None => Err("Clé de licence invalide ou expirée.".to_string()),
     }
@@ -138,16 +169,28 @@ pub async fn activate_license_code(app: AppHandle, code: String) -> Result<Licen
 
     let mut settings = get_settings(&app);
     settings.license_key = Some(token.clone());
+    let (trial_started_at, trial_expired_notified) =
+        (settings.trial_started_at, settings.trial_expired_notified);
     write_settings(&app, settings);
-    Ok(build_status(&token))
+    Ok(build_status(
+        &token,
+        trial_started_at,
+        trial_expired_notified,
+    ))
 }
 
-/// Retire la licence enregistrée (retour au palier Free).
+/// Décision produit : une licence activée ne peut plus être retirée depuis
+/// l'app (protège contre un retour au palier Free non désiré). Reste
+/// disponible pour compat des bindings existants ; renvoie le statut
+/// INCHANGÉ sans jamais effacer `license_key`. Remplacer par une nouvelle
+/// clé reste possible via `activate_license`/`activate_license_code`.
 #[tauri::command]
 #[specta::specta]
 pub fn clear_license(app: AppHandle) -> LicenseStatus {
-    let mut settings = get_settings(&app);
-    settings.license_key = None;
-    write_settings(&app, settings);
-    build_status("")
+    let settings = get_settings(&app);
+    build_status(
+        settings.license_key.as_deref().unwrap_or(""),
+        settings.trial_started_at,
+        settings.trial_expired_notified,
+    )
 }

@@ -402,7 +402,11 @@
           "refreshModels": "Odśwież modele"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Włączyć Turbo?",
+          "confirmDescription": "Turbo wysyła Twoją dyktowaną treść do Nova w celu przeredagowania online — nieco mniej prywatne niż Intelligence privée, która pozostaje w pełni lokalna. Możesz w każdej chwili wrócić do Intelligence privée.",
+          "confirmEnable": "Włącz Turbo",
+          "cancel": "Anuluj"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Licencja aktywna",
+    "trial": {
+      "badge": "Okres próbny Pro",
+      "title": "Okres próbny Nova Pro",
+      "description_one": "Pozostał {{count}} dzień okresu próbnego.",
+      "description_other": "Pozostało {{count}} dni okresu próbnego.",
+      "subscribe": "Subskrybuj Nova Pro",
+      "expiredTitle": "Twój okres próbny Nova Pro się zakończył",
+      "expiredBody": "Wróciłeś do planu Nova Free. Subskrybuj Nova Pro, aby odzyskać wszystkie Style i profile mocy.",
+      "close": "Zamknij",
+      "toastTitle": "Okres próbny Nova Pro aktywny",
+      "toastDescription_one": "Pozostał {{count}} dzień — Turbo i wszystkie Style w zestawie.",
+      "toastDescription_other": "Pozostało {{count}} dni — Turbo i wszystkie Style w zestawie."
+    }
   }
 }

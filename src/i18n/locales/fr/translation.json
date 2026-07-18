@@ -387,7 +387,11 @@
           "unavailable": "Apple Intelligence n'est pas disponible sur cet appareil. Nécessite un Mac Apple Silicon exécutant macOS Tahoe (26.0) ou une version ultérieure avec Apple Intelligence activé dans les Préférences Système."
         },
         "turbo": {
-          "managed": "Turbo est géré par Nova : votre licence sert de clé, aucune configuration nécessaire."
+          "managed": "Turbo est géré par Nova : votre licence sert de clé, aucune configuration nécessaire.",
+          "confirmTitle": "Activer Turbo ?",
+          "confirmDescription": "Turbo envoie votre dictée à Nova pour la reformuler en ligne — un peu moins privé que l'Intelligence privée, qui reste 100 % locale. Vous pouvez repasser à l'Intelligence privée à tout moment.",
+          "confirmEnable": "Activer Turbo",
+          "cancel": "Annuler"
         },
         "baseUrl": {
           "title": "URL de base",
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Retirer",
     "upgradeToUltra": "Passer à Nova Ultra",
-    "requiresTier": "Nécessite {{tier}}"
+    "requiresTier": "Nécessite {{tier}}",
+    "active": "Licence active",
+    "trial": {
+      "badge": "Essai Pro",
+      "title": "Essai Nova Pro",
+      "description_one": "Encore {{count}} jour avant la fin de l'essai.",
+      "description_other": "Encore {{count}} jours avant la fin de l'essai.",
+      "subscribe": "S'abonner à Nova Pro",
+      "expiredTitle": "Votre essai Nova Pro est terminé",
+      "expiredBody": "Vous êtes repassé au palier Nova Free. Abonnez-vous à Nova Pro pour retrouver les Styles complets et les profils de puissance.",
+      "close": "Fermer",
+      "toastTitle": "Essai Nova Pro actif",
+      "toastDescription_one": "Encore {{count}} jour — Turbo et tous les Styles inclus.",
+      "toastDescription_other": "Encore {{count}} jours — Turbo et tous les Styles inclus."
+    }
   }
 }

@@ -402,7 +402,11 @@
           "refreshModels": "모델 새로고침"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Turbo를 활성화할까요?",
+          "confirmDescription": "Turbo는 받아쓰기를 온라인으로 다시 작성하기 위해 Nova로 전송합니다 — 완전히 로컬로 유지되는 Intelligence privée보다 프라이버시가 약간 낮습니다. 언제든지 Intelligence privée로 다시 전환할 수 있습니다.",
+          "confirmEnable": "Turbo 활성화",
+          "cancel": "취소"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "라이선스 활성",
+    "trial": {
+      "badge": "Pro 체험",
+      "title": "Nova Pro 체험판",
+      "description_one": "체험판 종료까지 {{count}}일 남았습니다.",
+      "description_other": "체험판 종료까지 {{count}}일 남았습니다.",
+      "subscribe": "Nova Pro 구독하기",
+      "expiredTitle": "Nova Pro 체험판이 종료되었습니다",
+      "expiredBody": "Nova Free 요금제로 돌아왔습니다. 모든 다시 쓰기 스타일과 파워 프로필을 되찾으려면 Nova Pro를 구독하세요.",
+      "close": "닫기",
+      "toastTitle": "Nova Pro 체험판 활성화됨",
+      "toastDescription_one": "{{count}}일 남음 — Turbo와 모든 스타일 포함.",
+      "toastDescription_other": "{{count}}일 남음 — Turbo와 모든 스타일 포함."
+    }
   }
 }

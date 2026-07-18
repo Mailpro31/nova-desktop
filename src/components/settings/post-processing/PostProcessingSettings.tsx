@@ -15,6 +15,7 @@ import {
 import { Button } from "../../ui/Button";
 import { ResetButton } from "../../ui/ResetButton";
 import { Input } from "../../ui/Input";
+import { Dialog } from "../../ui/Dialog";
 
 import { PostProcessingToggle } from "../PostProcessingToggle";
 import { ProviderSelect } from "../PostProcessingSettingsApi/ProviderSelect";
@@ -162,6 +163,29 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
           </div>
         </SettingContainer>
       )}
+
+      <Dialog
+        open={state.turboConfirmOpen}
+        onOpenChange={(open) => {
+          if (!open) state.cancelTurbo();
+        }}
+        title={t("settings.postProcessing.api.turbo.confirmTitle")}
+        closeLabel={t("settings.postProcessing.api.turbo.cancel")}
+        footer={
+          <>
+            <Button variant="secondary" size="md" onClick={state.cancelTurbo}>
+              {t("settings.postProcessing.api.turbo.cancel")}
+            </Button>
+            <Button variant="primary" size="md" onClick={state.confirmTurbo}>
+              {t("settings.postProcessing.api.turbo.confirmEnable")}
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-text-secondary">
+          {t("settings.postProcessing.api.turbo.confirmDescription")}
+        </p>
+      </Dialog>
     </>
   );
 };

@@ -402,7 +402,11 @@
           "refreshModels": "Modelleri Yenile"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Turbo etkinleştirilsin mi?",
+          "confirmDescription": "Turbo, dikteyi çevrimiçi olarak yeniden yazmak için Nova'ya gönderir — tamamen yerel kalan Intelligence privée'ye göre biraz daha az özel. İstediğiniz zaman Intelligence privée'ye geri dönebilirsiniz.",
+          "confirmEnable": "Turbo'yu etkinleştir",
+          "cancel": "İptal"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Lisans etkin",
+    "trial": {
+      "badge": "Pro deneme",
+      "title": "Nova Pro deneme sürümü",
+      "description_one": "Deneme süresinin bitmesine {{count}} gün kaldı.",
+      "description_other": "Deneme süresinin bitmesine {{count}} gün kaldı.",
+      "subscribe": "Nova Pro'ya abone ol",
+      "expiredTitle": "Nova Pro deneme sürümünüz sona erdi",
+      "expiredBody": "Nova Free planına geri döndünüz. Tüm Stilleri ve güç profillerini geri almak için Nova Pro'ya abone olun.",
+      "close": "Kapat",
+      "toastTitle": "Nova Pro deneme sürümü etkin",
+      "toastDescription_one": "{{count}} gün kaldı — Turbo ve tüm Stiller dahil.",
+      "toastDescription_other": "{{count}} gün kaldı — Turbo ve tüm Stiller dahil."
+    }
   }
 }
