@@ -448,6 +448,16 @@ pub struct AppSettings {
     /// Clé de licence Nova (jeton NOVA1…). Vide = palier Free. Voir licensing.rs.
     #[serde(default)]
     pub license_key: Option<String>,
+    /// Epoch (secondes) du tout premier lancement de l'app — amorce l'essai
+    /// Nova Pro automatique de 14 jours. Scellé UNE SEULE FOIS (voir
+    /// `get_settings`) ; 0 = jamais amorcé (installs migrées avant cette
+    /// fonctionnalité n'en profitent pas rétroactivement). Voir licensing.rs.
+    #[serde(default)]
+    pub trial_started_at: i64,
+    /// L'utilisateur a-t-il déjà vu la notification de fin d'essai ? Évite de
+    /// la répéter à chaque lancement une fois l'essai expiré.
+    #[serde(default)]
+    pub trial_expired_notified: bool,
     /// Quota Free : reformulations (Styles) appliquées durant la journée
     /// glissante en cours. Réinitialisé au bout de 24 h. Voir quota.rs.
     #[serde(default)]
@@ -639,7 +649,7 @@ fn default_show_tray_icon() -> bool {
 }
 
 fn default_post_process_provider_id() -> String {
-    "openai".to_string()
+    OLLAMA_PROVIDER_ID.to_string()
 }
 
 fn default_post_process_providers() -> Vec<PostProcessProvider> {
@@ -659,55 +669,13 @@ fn default_post_process_providers() -> Vec<PostProcessProvider> {
             models_endpoint: None,
             supports_structured_output: false,
         },
-        PostProcessProvider {
-            id: "openai".to_string(),
-            label: "OpenAI".to_string(),
-            base_url: "https://api.openai.com/v1".to_string(),
-            allow_base_url_edit: false,
-            models_endpoint: Some("/models".to_string()),
-            supports_structured_output: true,
-        },
-        PostProcessProvider {
-            id: "zai".to_string(),
-            label: "Z.AI".to_string(),
-            base_url: "https://api.z.ai/api/paas/v4".to_string(),
-            allow_base_url_edit: false,
-            models_endpoint: Some("/models".to_string()),
-            supports_structured_output: true,
-        },
-        PostProcessProvider {
-            id: "openrouter".to_string(),
-            label: "OpenRouter".to_string(),
-            base_url: "https://openrouter.ai/api/v1".to_string(),
-            allow_base_url_edit: false,
-            models_endpoint: Some("/models".to_string()),
-            supports_structured_output: true,
-        },
-        PostProcessProvider {
-            id: "anthropic".to_string(),
-            label: "Anthropic".to_string(),
-            base_url: "https://api.anthropic.com/v1".to_string(),
-            allow_base_url_edit: false,
-            models_endpoint: Some("/models".to_string()),
-            supports_structured_output: false,
-        },
-        PostProcessProvider {
-            id: "groq".to_string(),
-            label: "Groq".to_string(),
-            base_url: "https://api.groq.com/openai/v1".to_string(),
-            allow_base_url_edit: false,
-            models_endpoint: Some("/models".to_string()),
-            supports_structured_output: false,
-        },
-        PostProcessProvider {
-            id: "cerebras".to_string(),
-            label: "Cerebras".to_string(),
-            base_url: "https://api.cerebras.ai/v1".to_string(),
-            allow_base_url_edit: false,
-            models_endpoint: Some("/models".to_string()),
-            supports_structured_output: true,
-        },
     ];
+    // Décision produit : Nova propose exactement DEUX moteurs — « Intelligence
+    // privée » (Ollama, local) et « Turbo » (relais serveur, clé unique côté
+    // Nova). Aucun fournisseur à clé API personnalisée (OpenAI, Groq, etc.) :
+    // ni choix de fournisseur, ni champ de clé — la sécurité de la clé Turbo et
+    // le contrôle des coûts d'usage l'exigent. `ensure_post_process_defaults`
+    // purge ces fournisseurs des installs existantes.
 
     // Note: We always include Apple Intelligence on macOS ARM64 without checking availability
     // at startup. The availability check is deferred to when the user actually tries to use it
@@ -725,16 +693,6 @@ fn default_post_process_providers() -> Vec<PostProcessProvider> {
         });
     }
 
-    // AWS Bedrock via Mantle (OpenAI-compatible endpoint)
-    providers.push(PostProcessProvider {
-        id: "bedrock_mantle".to_string(),
-        label: "AWS Bedrock (Mantle)".to_string(),
-        base_url: "https://bedrock-mantle.us-east-1.api.aws/v1".to_string(),
-        allow_base_url_edit: false,
-        models_endpoint: Some("/models".to_string()),
-        supports_structured_output: true,
-    });
-
     // Ollama — « Intelligence privée » de Nova : moteur de reformulation 100 %
     // local, compatible OpenAI sur localhost:11434. Pas de clé API. On garde la
     // sortie structurée désactivée (les modèles locaux ne gèrent pas toujours
@@ -742,16 +700,6 @@ fn default_post_process_providers() -> Vec<PostProcessProvider> {
     providers.push(PostProcessProvider {
         id: OLLAMA_PROVIDER_ID.to_string(),
         label: "Intelligence privée (Ollama)".to_string(),
-        base_url: "http://localhost:11434/v1".to_string(),
-        allow_base_url_edit: true,
-        models_endpoint: Some("/models".to_string()),
-        supports_structured_output: false,
-    });
-
-    // Custom provider always comes last
-    providers.push(PostProcessProvider {
-        id: "custom".to_string(),
-        label: "Custom".to_string(),
         base_url: "http://localhost:11434/v1".to_string(),
         allow_base_url_edit: true,
         models_endpoint: Some("/models".to_string()),
@@ -923,6 +871,33 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
         }
     }
 
+    // Migration : purge les fournisseurs à clé API personnalisée retirés de
+    // l'offre (OpenAI, Groq, Anthropic, Custom…) — Nova ne propose plus que
+    // « Intelligence privée » (Ollama) et « Turbo » (relais géré). Efface aussi
+    // leurs clés/modèles stockés : on ne laisse pas traîner d'ancienne clé API
+    // en clair dans les réglages une fois le fournisseur retiré.
+    let allowed_ids: std::collections::HashSet<&str> =
+        default_post_process_providers().iter().map(|p| p.id.as_str()).collect();
+    let removed_ids: Vec<String> = settings
+        .post_process_providers
+        .iter()
+        .filter(|p| !allowed_ids.contains(p.id.as_str()))
+        .map(|p| p.id.clone())
+        .collect();
+    if !removed_ids.is_empty() {
+        settings
+            .post_process_providers
+            .retain(|p| allowed_ids.contains(p.id.as_str()));
+        for id in &removed_ids {
+            settings.post_process_api_keys.remove(id);
+            settings.post_process_models.remove(id);
+        }
+        if removed_ids.contains(&settings.post_process_provider_id) {
+            settings.post_process_provider_id = default_post_process_provider_id();
+        }
+        changed = true;
+    }
+
     // Migration : sème les Styles Nova manquants (par id) sans toucher aux
     // prompts créés par l'utilisateur. Ainsi une install existante récupère les
     // 7 Styles au prochain lancement.
@@ -1040,6 +1015,11 @@ pub fn get_default_settings() -> AppSettings {
         post_process_prompts: default_post_process_prompts(),
         post_process_selected_prompt_id: default_post_process_selected_prompt_id(),
         license_key: None,
+        // Non amorcé ici : seul un tout premier lancement (aucun store existant,
+        // voir `get_settings`) scelle l'essai. Les appels de `get_default_settings`
+        // pour une migration/un salvage ne doivent jamais (re)démarrer l'essai.
+        trial_started_at: 0,
+        trial_expired_notified: false,
         auto_style_rules: HashMap::new(),
         auto_style_blocklist: Vec::new(),
         free_rewrites_used: 0,
@@ -1143,7 +1123,15 @@ pub fn get_settings(app: &AppHandle) -> AppSettings {
 
         settings
     } else {
-        let default_settings = get_default_settings();
+        // Tout premier lancement (aucun store existant) : amorce l'essai Nova
+        // Pro automatique de 14 jours. Scellé ICI uniquement — jamais dans
+        // `get_default_settings()`, qui sert aussi de base à la migration/au
+        // salvage d'un store existant et ne doit jamais réamorcer l'essai.
+        let mut default_settings = get_default_settings();
+        default_settings.trial_started_at = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_secs() as i64)
+            .unwrap_or(0);
         store.set("settings", serde_json::to_value(&default_settings).unwrap());
         default_settings
     };

@@ -402,7 +402,11 @@
           "refreshModels": "モデルを更新"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Turboを有効にしますか？",
+          "confirmDescription": "Turboは口述をNovaに送信してオンラインでリライトします — 完全にローカルのIntelligence privéeよりもややプライバシー性が下がります。いつでもIntelligence privéeに戻せます。",
+          "confirmEnable": "Turboを有効にする",
+          "cancel": "キャンセル"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "ライセンス有効",
+    "trial": {
+      "badge": "Pro体験版",
+      "title": "Nova Pro 体験版",
+      "description_one": "体験版終了まで残り{{count}}日です。",
+      "description_other": "体験版終了まで残り{{count}}日です。",
+      "subscribe": "Nova Proに登録する",
+      "expiredTitle": "Nova Pro の体験版が終了しました",
+      "expiredBody": "Nova Free プランに戻りました。すべてのリライトスタイルとパワープロファイルを取り戻すには、Nova Pro に登録してください。",
+      "close": "閉じる",
+      "toastTitle": "Nova Pro 体験版が有効です",
+      "toastDescription_one": "残り{{count}}日 — Turbo とすべてのリライトスタイルが含まれます。",
+      "toastDescription_other": "残り{{count}}日 — Turbo とすべてのリライトスタイルが含まれます。"
+    }
   }
 }

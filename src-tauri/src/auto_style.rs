@@ -512,7 +512,11 @@ pub fn resolve_override(settings: &AppSettings) -> Option<String> {
     // n'utilise que les règles intégrées (l'auto fonctionne quand même).
     let license_key = settings.license_key.as_deref().unwrap_or("");
     let empty = HashMap::new();
-    let rules = if crate::licensing::has("custom_auto_rules", license_key) {
+    let rules = if crate::licensing::has(
+        "custom_auto_rules",
+        license_key,
+        settings.trial_started_at,
+    ) {
         &settings.auto_style_rules
     } else {
         &empty

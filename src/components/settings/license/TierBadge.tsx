@@ -7,12 +7,12 @@ import { invoke } from "@tauri-apps/api/core";
 let cache: LicenseStatus | null = null;
 let inflight: Promise<LicenseStatus | null> | null = null;
 
-type LicenseStatus = {
+export type LicenseStatus = {
   tier: string;
   features: Record<string, boolean>;
 };
 
-async function getStatus(): Promise<LicenseStatus | null> {
+export async function getStatus(): Promise<LicenseStatus | null> {
   if (cache) return cache;
   if (!inflight) {
     inflight = invoke<LicenseStatus>("get_license_status")

@@ -387,7 +387,11 @@
           "unavailable": "Apple Intelligence is not available on this device. Requires an Apple Silicon Mac running macOS Tahoe (26.0) or later with Apple Intelligence enabled in System Settings."
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Enable Turbo?",
+          "confirmDescription": "Turbo sends your dictation to Nova to rewrite it online — a bit less private than Intelligence privée, which stays fully local. You can switch back to Intelligence privée anytime.",
+          "confirmEnable": "Enable Turbo",
+          "cancel": "Cancel"
         },
         "baseUrl": {
           "title": "Base URL",
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "License active",
+    "trial": {
+      "badge": "Pro trial",
+      "title": "Nova Pro trial",
+      "description_one": "{{count}} day left in your trial.",
+      "description_other": "{{count}} days left in your trial.",
+      "subscribe": "Subscribe to Nova Pro",
+      "expiredTitle": "Your Nova Pro trial has ended",
+      "expiredBody": "You're back on the Nova Free tier. Subscribe to Nova Pro to get the full Styles and power profiles back.",
+      "close": "Close",
+      "toastTitle": "Nova Pro trial active",
+      "toastDescription_one": "{{count}} day left — Turbo and all Styles included.",
+      "toastDescription_other": "{{count}} days left — Turbo and all Styles included."
+    }
   }
 }

@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type PostProcessProvider } from "@/bindings";
 import type { ModelOption } from "./types";
 import type { DropdownOption } from "../../ui/Dropdown";
+import { getStatus } from "../license/TierBadge";
 
 type PostProcessProviderState = {
   providerOptions: DropdownOption[];
@@ -27,9 +28,16 @@ type PostProcessProviderState = {
   handleModelSelect: (value: string) => void;
   handleModelCreate: (value: string) => void;
   handleRefreshModels: () => void;
+  // Turbo envoie la dictée hors de l'appareil : réservé à Nova Ultra, et
+  // toujours confirmé explicitement (moins privé que l'Intelligence privée).
+  turboLocked: boolean;
+  turboConfirmOpen: boolean;
+  confirmTurbo: () => void;
+  cancelTurbo: () => void;
 };
 
 const APPLE_PROVIDER_ID = "apple_intelligence";
+const NOVA_TURBO_ID = "nova_turbo";
 
 export const usePostProcessProviderState = (): PostProcessProviderState => {
   const {
@@ -47,7 +55,7 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   const providers = settings?.post_process_providers || [];
 
   const selectedProviderId = useMemo(() => {
-    return settings?.post_process_provider_id || providers[0]?.id || "openai";
+    return settings?.post_process_provider_id || providers[0]?.id || "ollama";
   }, [providers, settings?.post_process_provider_id]);
 
   const selectedProvider = useMemo(() => {
@@ -60,9 +68,24 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   const isAppleProvider = selectedProvider?.id === APPLE_PROVIDER_ID;
   // Turbo : moteur en ligne géré par Nova. Pas de clé API (le jeton de licence
   // sert de clé côté serveur) ni de sélecteur de modèle (imposé côté serveur).
-  const isNovaTurbo = selectedProvider?.id === "nova_turbo";
+  const isNovaTurbo = selectedProvider?.id === NOVA_TURBO_ID;
   const [appleIntelligenceUnavailable, setAppleIntelligenceUnavailable] =
     useState(false);
+
+  // Turbo réservé à Nova Ultra (essai Pro inclus) : verrouillé tant que le
+  // statut de licence n'a pas confirmé l'accès. Défaut prudent = verrouillé.
+  const [turboLocked, setTurboLocked] = useState(true);
+  const [turboConfirmOpen, setTurboConfirmOpen] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    getStatus().then((s) => {
+      if (alive) setTurboLocked(!(s?.features?.online_engine ?? false));
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   // Use settings directly as single source of truth
   const baseUrl = selectedProvider?.base_url ?? "";
@@ -73,16 +96,14 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
     return providers.map((provider) => ({
       value: provider.id,
       label: provider.label,
+      disabled: provider.id === NOVA_TURBO_ID && turboLocked,
     }));
-  }, [providers]);
+  }, [providers, turboLocked]);
 
-  const handleProviderSelect = useCallback(
+  // Applique réellement le changement de fournisseur (après confirmation pour
+  // Turbo, immédiatement pour les autres).
+  const applyProviderSelect = useCallback(
     async (providerId: string) => {
-      // Clear error state on any selection attempt (allows dismissing the error)
-      setAppleIntelligenceUnavailable(false);
-
-      if (providerId === selectedProviderId) return;
-
       // Check Apple Intelligence availability before selecting
       if (providerId === APPLE_PROVIDER_ID) {
         const available = await commands.checkAppleIntelligenceAvailable();
@@ -111,14 +132,37 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
         }
       }
     },
-    [
-      selectedProviderId,
-      setPostProcessProvider,
-      fetchPostProcessModels,
-      providers,
-      settings,
-    ],
+    [setPostProcessProvider, fetchPostProcessModels, providers, settings],
   );
+
+  const handleProviderSelect = useCallback(
+    (providerId: string) => {
+      // Clear error state on any selection attempt (allows dismissing the error)
+      setAppleIntelligenceUnavailable(false);
+
+      if (providerId === selectedProviderId) return;
+
+      // Turbo envoie la dictée hors de l'appareil : toujours confirmé
+      // explicitement, jamais activé en un simple clic de menu déroulant.
+      if (providerId === NOVA_TURBO_ID) {
+        if (turboLocked) return; // verrouillé (option grisée) : no-op défensif
+        setTurboConfirmOpen(true);
+        return;
+      }
+
+      void applyProviderSelect(providerId);
+    },
+    [selectedProviderId, turboLocked, applyProviderSelect],
+  );
+
+  const confirmTurbo = useCallback(() => {
+    setTurboConfirmOpen(false);
+    void applyProviderSelect(NOVA_TURBO_ID);
+  }, [applyProviderSelect]);
+
+  const cancelTurbo = useCallback(() => {
+    setTurboConfirmOpen(false);
+  }, []);
 
   const handleBaseUrlChange = useCallback(
     (value: string) => {
@@ -237,5 +281,9 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
     handleModelSelect,
     handleModelCreate,
     handleRefreshModels,
+    turboLocked,
+    turboConfirmOpen,
+    confirmTurbo,
+    cancelTurbo,
   };
 };

@@ -402,7 +402,11 @@
           "refreshModels": "Modellen verversen"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Turbo activeren?",
+          "confirmDescription": "Turbo stuurt uw dictaat naar Nova om het online te herformuleren — iets minder privé dan Intelligence privée, dat volledig lokaal blijft. U kunt op elk moment terugschakelen naar Intelligence privée.",
+          "confirmEnable": "Turbo activeren",
+          "cancel": "Annuleren"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Licentie actief",
+    "trial": {
+      "badge": "Pro-proefperiode",
+      "title": "Nova Pro-proefperiode",
+      "description_one": "Nog {{count}} dag tot het einde van de proefperiode.",
+      "description_other": "Nog {{count}} dagen tot het einde van de proefperiode.",
+      "subscribe": "Abonneren op Nova Pro",
+      "expiredTitle": "Uw Nova Pro-proefperiode is afgelopen",
+      "expiredBody": "U bent terug op het Nova Free-niveau. Abonneer u op Nova Pro om alle Styles en vermogensprofielen terug te krijgen.",
+      "close": "Sluiten",
+      "toastTitle": "Nova Pro-proefperiode actief",
+      "toastDescription_one": "Nog {{count}} dag — Turbo en alle Styles inbegrepen.",
+      "toastDescription_other": "Nog {{count}} dagen — Turbo en alle Styles inbegrepen."
+    }
   }
 }

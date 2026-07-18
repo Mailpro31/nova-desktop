@@ -402,7 +402,11 @@
           "refreshModels": "Опресняване на моделите"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Активиране на Turbo?",
+          "confirmDescription": "Turbo изпраща вашата диктовка към Nova за преформулиране онлайн — малко по-малко поверително от Intelligence privée, което остава напълно локално. Можете да се върнете към Intelligence privée по всяко време.",
+          "confirmEnable": "Активирай Turbo",
+          "cancel": "Отказ"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Лицензът е активен",
+    "trial": {
+      "badge": "Пробен Pro",
+      "title": "Пробен период на Nova Pro",
+      "description_one": "Остава {{count}} ден от пробния период.",
+      "description_other": "Остават {{count}} дни от пробния период.",
+      "subscribe": "Абонирайте се за Nova Pro",
+      "expiredTitle": "Пробният ви период на Nova Pro приключи",
+      "expiredBody": "Върнахте се към плана Nova Free. Абонирайте се за Nova Pro, за да получите отново всички стилове и профили на мощността.",
+      "close": "Затвори",
+      "toastTitle": "Активен пробен период на Nova Pro",
+      "toastDescription_one": "Остава {{count}} ден — Turbo и всички стилове включени.",
+      "toastDescription_other": "Остават {{count}} дни — Turbo и всички стилове включени."
+    }
   }
 }

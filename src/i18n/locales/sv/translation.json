@@ -402,7 +402,11 @@
           "refreshModels": "Uppdatera modeller"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Aktivera Turbo?",
+          "confirmDescription": "Turbo skickar din diktering till Nova för omformulering online — lite mindre privat än Intelligence privée, som förblir helt lokal. Du kan när som helst växla tillbaka till Intelligence privée.",
+          "confirmEnable": "Aktivera Turbo",
+          "cancel": "Avbryt"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Licens aktiv",
+    "trial": {
+      "badge": "Pro-provperiod",
+      "title": "Nova Pro-provperiod",
+      "description_one": "{{count}} dag kvar av provperioden.",
+      "description_other": "{{count}} dagar kvar av provperioden.",
+      "subscribe": "Prenumerera på Nova Pro",
+      "expiredTitle": "Din Nova Pro-provperiod har avslutats",
+      "expiredBody": "Du är tillbaka på Nova Free-nivån. Prenumerera på Nova Pro för att få tillbaka alla Styles och effektprofiler.",
+      "close": "Stäng",
+      "toastTitle": "Nova Pro-provperiod aktiv",
+      "toastDescription_one": "{{count}} dag kvar — Turbo och alla Styles ingår.",
+      "toastDescription_other": "{{count}} dagar kvar — Turbo och alla Styles ingår."
+    }
   }
 }

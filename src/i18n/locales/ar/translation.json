@@ -381,7 +381,11 @@
           "refreshModels": "تحديث النماذج"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "تفعيل Turbo؟",
+          "confirmDescription": "يرسل Turbo إملاءك إلى Nova لإعادة صياغته عبر الإنترنت — أقل خصوصية قليلاً من Intelligence privée التي تبقى محلية بالكامل. يمكنك العودة إلى Intelligence privée في أي وقت.",
+          "confirmEnable": "تفعيل Turbo",
+          "cancel": "إلغاء"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "الترخيص نشط",
+    "trial": {
+      "badge": "تجربة Pro",
+      "title": "تجربة Nova Pro",
+      "description_one": "تبقى {{count}} يوم على انتهاء التجربة.",
+      "description_other": "تبقى {{count}} أيام على انتهاء التجربة.",
+      "subscribe": "الاشتراك في Nova Pro",
+      "expiredTitle": "انتهت تجربة Nova Pro الخاصة بك",
+      "expiredBody": "لقد عدت إلى باقة Nova Free. اشترك في Nova Pro لاستعادة جميع الأنماط وملفات الطاقة.",
+      "close": "إغلاق",
+      "toastTitle": "تجربة Nova Pro نشطة",
+      "toastDescription_one": "تبقى {{count}} يوم — Turbo وجميع الأنماط مشمولة.",
+      "toastDescription_other": "تبقى {{count}} أيام — Turbo وجميع الأنماط مشمولة."
+    }
   }
 }

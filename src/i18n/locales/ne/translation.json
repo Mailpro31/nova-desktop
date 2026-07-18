@@ -402,7 +402,11 @@
           "refreshModels": "मोडेलहरू रिफ्रेस गर्नुहोस्"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Turbo सक्रिय गर्ने?",
+          "confirmDescription": "Turbo ले तपाईंको श्रुतलेखन अनलाइन पुनर्लेखनका लागि Nova मा पठाउँछ — पूर्ण रूपमा स्थानीय रहने Intelligence privée भन्दा अलि कम निजी। तपाईं जुनसुकै बेला Intelligence privée मा फर्कन सक्नुहुन्छ।",
+          "confirmEnable": "Turbo सक्रिय गर्नुहोस्",
+          "cancel": "रद्द गर्नुहोस्"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "इजाजतपत्र सक्रिय",
+    "trial": {
+      "badge": "Pro परीक्षण",
+      "title": "Nova Pro परीक्षण",
+      "description_one": "परीक्षण अवधि सकिन {{count}} दिन बाँकी।",
+      "description_other": "परीक्षण अवधि सकिन {{count}} दिन बाँकी।",
+      "subscribe": "Nova Pro सदस्यता लिनुहोस्",
+      "expiredTitle": "तपाईंको Nova Pro परीक्षण अवधि सकियो",
+      "expiredBody": "तपाईं Nova Free योजनामा फर्किनुभयो। सबै पुनर्लेखन शैली र शक्ति प्रोफाइलहरू फिर्ता पाउन Nova Pro मा सदस्यता लिनुहोस्।",
+      "close": "बन्द गर्नुहोस्",
+      "toastTitle": "Nova Pro परीक्षण सक्रिय छ",
+      "toastDescription_one": "{{count}} दिन बाँकी — Turbo र सबै शैलीहरू सामेल।",
+      "toastDescription_other": "{{count}} दिन बाँकी — Turbo र सबै शैलीहरू सामेल।"
+    }
   }
 }

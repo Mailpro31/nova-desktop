@@ -402,7 +402,11 @@
           "refreshModels": "Làm mới mô hình"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed."
+          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "confirmTitle": "Kích hoạt Turbo?",
+          "confirmDescription": "Turbo gửi bản đọc chính tả của bạn đến Nova để viết lại trực tuyến — kém riêng tư hơn một chút so với Intelligence privée, vốn hoàn toàn cục bộ. Bạn có thể chuyển lại Intelligence privée bất cứ lúc nào.",
+          "confirmEnable": "Kích hoạt Turbo",
+          "cancel": "Hủy"
         }
       },
       "prompts": {
@@ -679,6 +683,20 @@
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}"
+    "requiresTier": "Requires {{tier}}",
+    "active": "Giấy phép đang hoạt động",
+    "trial": {
+      "badge": "Dùng thử Pro",
+      "title": "Dùng thử Nova Pro",
+      "description_one": "Còn {{count}} ngày dùng thử.",
+      "description_other": "Còn {{count}} ngày dùng thử.",
+      "subscribe": "Đăng ký Nova Pro",
+      "expiredTitle": "Thời gian dùng thử Nova Pro đã kết thúc",
+      "expiredBody": "Bạn đã quay lại gói Nova Free. Đăng ký Nova Pro để lấy lại đầy đủ các Kiểu viết lại và hồ sơ hiệu năng.",
+      "close": "Đóng",
+      "toastTitle": "Đang dùng thử Nova Pro",
+      "toastDescription_one": "Còn {{count}} ngày — Bao gồm Turbo và tất cả các Kiểu.",
+      "toastDescription_other": "Còn {{count}} ngày — Bao gồm Turbo và tất cả các Kiểu."
+    }
   }
 }

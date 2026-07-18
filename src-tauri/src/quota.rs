@@ -26,9 +26,12 @@ fn now_secs() -> i64 {
 }
 
 /// Le palier courant est-il soumis au quota (Free et licences actives) ?
+/// L'essai Pro automatique (voir licensing::effective_tier) lève le quota
+/// pendant sa durée, comme une vraie licence Pro.
 fn is_free(settings: &AppSettings) -> bool {
     let key = settings.license_key.as_deref().unwrap_or("");
-    licensing::enabled() && licensing::current_tier(key) == Tier::Free
+    licensing::enabled()
+        && licensing::effective_tier(key, settings.trial_started_at) == Tier::Free
 }
 
 /// Fenêtre glissante de 24 h : si la journée est écoulée (ou jamais
