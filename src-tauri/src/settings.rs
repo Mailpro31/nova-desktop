@@ -9,8 +9,6 @@ use tauri_plugin_store::StoreExt;
 
 pub const APPLE_INTELLIGENCE_PROVIDER_ID: &str = "apple_intelligence";
 pub const APPLE_INTELLIGENCE_DEFAULT_MODEL_ID: &str = "Apple Intelligence";
-/// Fournisseur Ollama (« Intelligence privée » locale de Nova).
-pub const OLLAMA_PROVIDER_ID: &str = "ollama";
 
 #[derive(Serialize, Debug, Clone, Copy, PartialEq, Eq, Type)]
 #[serde(rename_all = "lowercase")]
@@ -649,7 +647,7 @@ fn default_show_tray_icon() -> bool {
 }
 
 fn default_post_process_provider_id() -> String {
-    OLLAMA_PROVIDER_ID.to_string()
+    crate::local_llm::PROVIDER_ID.to_string()
 }
 
 fn default_post_process_providers() -> Vec<PostProcessProvider> {
@@ -671,10 +669,10 @@ fn default_post_process_providers() -> Vec<PostProcessProvider> {
         },
     ];
     // Décision produit : Nova propose exactement DEUX moteurs — « Intelligence
-    // privée » (Ollama, local) et « Turbo » (relais serveur, clé unique côté
-    // Nova). Aucun fournisseur à clé API personnalisée (OpenAI, Groq, etc.) :
-    // ni choix de fournisseur, ni champ de clé — la sécurité de la clé Turbo et
-    // le contrôle des coûts d'usage l'exigent. `ensure_post_process_defaults`
+    // privée » (embarquée, locale) et « Turbo » (relais serveur, clé unique
+    // côté Nova). Aucun fournisseur à clé API personnalisée (OpenAI, Groq,
+    // etc.) : ni choix de fournisseur, ni champ de clé — la sécurité de la clé
+    // Turbo et le contrôle des coûts d'usage l'exigent. `ensure_post_process_defaults`
     // purge ces fournisseurs des installs existantes.
 
     // Note: We always include Apple Intelligence on macOS ARM64 without checking availability
@@ -693,16 +691,18 @@ fn default_post_process_providers() -> Vec<PostProcessProvider> {
         });
     }
 
-    // Ollama — « Intelligence privée » de Nova : moteur de reformulation 100 %
-    // local, compatible OpenAI sur localhost:11434. Pas de clé API. On garde la
-    // sortie structurée désactivée (les modèles locaux ne gèrent pas toujours
-    // response_format=json_schema → chemin ${output} plus sûr).
+    // Intelligence privée — moteur de reformulation 100 % local et embarqué de
+    // Nova (llama-server, téléchargé automatiquement, aucune installation
+    // manuelle). Compatible OpenAI sur 127.0.0.1 uniquement. Pas de clé API,
+    // pas d'URL modifiable. On garde la sortie structurée désactivée (les
+    // petits modèles locaux ne gèrent pas toujours response_format=json_schema
+    // → chemin ${output} plus sûr).
     providers.push(PostProcessProvider {
-        id: OLLAMA_PROVIDER_ID.to_string(),
-        label: "Intelligence privée (Ollama)".to_string(),
-        base_url: "http://localhost:11434/v1".to_string(),
-        allow_base_url_edit: true,
-        models_endpoint: Some("/models".to_string()),
+        id: crate::local_llm::PROVIDER_ID.to_string(),
+        label: "Intelligence privée".to_string(),
+        base_url: format!("http://127.0.0.1:{}/v1", crate::local_llm::LOCAL_LLM_PORT),
+        allow_base_url_edit: false,
+        models_endpoint: None,
         supports_structured_output: false,
     });
 
@@ -726,6 +726,11 @@ fn default_model_for_provider(provider_id: &str) -> String {
     // de modèle configuré, et pour porter le champ `model` de la requête OpenAI.
     if provider_id == "nova_turbo" {
         return "nova-turbo".to_string();
+    }
+    // Intelligence privée : ce champ porte l'id du profil (Air/Aura/Apex), pas
+    // un nom de modèle — recommandé automatiquement selon la RAM détectée.
+    if provider_id == crate::local_llm::PROVIDER_ID {
+        return crate::local_llm::recommended_profile_id().to_string();
     }
     String::new()
 }
@@ -871,11 +876,12 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
         }
     }
 
-    // Migration : purge les fournisseurs à clé API personnalisée retirés de
-    // l'offre (OpenAI, Groq, Anthropic, Custom…) — Nova ne propose plus que
-    // « Intelligence privée » (Ollama) et « Turbo » (relais géré). Efface aussi
-    // leurs clés/modèles stockés : on ne laisse pas traîner d'ancienne clé API
-    // en clair dans les réglages une fois le fournisseur retiré.
+    // Migration : purge les fournisseurs retirés de l'offre — OpenAI, Groq,
+    // Anthropic, Custom… mais aussi l'ancien « Intelligence privée (Ollama) »,
+    // remplacé par le moteur local embarqué. Nova ne propose plus que
+    // « Intelligence privée » (embarquée) et « Turbo » (relais géré). Efface
+    // aussi les clés/modèles stockés : on ne laisse pas traîner d'ancienne clé
+    // API en clair, ni un profil Ollama fantôme, une fois le fournisseur retiré.
     let allowed_ids: std::collections::HashSet<String> = default_post_process_providers()
         .into_iter()
         .map(|p| p.id)

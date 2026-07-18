@@ -444,13 +444,12 @@
       "enable": {
         "title": "Reformulation"
       },
-      "ollama": {
-        "installed": "Private intelligence installed",
-        "installTitle": "Install private intelligence (Ollama)",
-        "installDesc": "100% local reformulation, no key — installed in one click."
-      },
       "powerProfile": {
-        "label": "Power profile"
+        "label": "Power profile",
+        "recommended": "Đề xuất",
+        "downloaded": "đã tải",
+        "downloadingModel": "Đang tải mô hình…",
+        "downloadingEngine": "Đang tải công cụ…"
       }
     },
     "history": {

@@ -123,6 +123,7 @@ fn should_use_streaming_overlay(style: OverlayStyle, is_streaming: bool) -> bool
 }
 
 async fn post_process_transcription(
+    app: &AppHandle,
     settings: &AppSettings,
     transcription: &str,
     auto_style_override: Option<&str>,
@@ -141,11 +142,11 @@ async fn post_process_transcription(
     };
 
     // Palier : le moteur en ligne « Turbo » nécessite Nova Ultra (essai Pro
-    // inclus, cf. licensing::has). Le moteur local (Ollama, Apple Intelligence)
-    // reste gratuit.
+    // inclus, cf. licensing::has). Le moteur local (Intelligence privée,
+    // Apple Intelligence) reste gratuit.
     let license_key = settings.license_key.as_deref().unwrap_or("");
-    let is_local_engine =
-        provider.id == "ollama" || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
+    let is_local_engine = provider.id == crate::local_llm::PROVIDER_ID
+        || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
     if !is_local_engine
         && !crate::licensing::has("online_engine", license_key, settings.trial_started_at)
     {
@@ -221,6 +222,17 @@ async fn post_process_transcription(
         return None;
     }
 
+    // Intelligence privée : démarre (ou confirme actif) le moteur local
+    // embarqué avec le profil sélectionné (`model` porte l'id du profil ici,
+    // pas un nom de modèle). Jamais bloquant pour la dictée : un échec ne
+    // fait qu'annuler la reformulation, le texte brut reste collé.
+    if provider.id == crate::local_llm::PROVIDER_ID {
+        if let Err(e) = crate::local_llm::ensure_server_running(app, &model).await {
+            debug!("Intelligence privée indisponible : {e}");
+            return None;
+        }
+    }
+
     debug!(
         "Starting LLM post-processing with provider '{}' (model: {})",
         provider.id, model
@@ -244,8 +256,9 @@ async fn post_process_transcription(
     // - openrouter: nested reasoning object; exclude:true also keeps reasoning text
     //   out of the response so it can't pollute structured-output JSON parsing
     let (reasoning_effort, reasoning) = match provider.id.as_str() {
-        // Moteurs locaux OpenAI-compatibles (custom / Ollama = Intelligence privée).
-        "custom" | "ollama" => (Some("none".to_string()), None),
+        // Moteurs locaux OpenAI-compatibles (custom / Intelligence privée).
+        "custom" => (Some("none".to_string()), None),
+        id if id == crate::local_llm::PROVIDER_ID => (Some("none".to_string()), None),
         "openrouter" => (
             None,
             Some(crate::llm_client::ReasoningConfig {
@@ -523,7 +536,8 @@ pub(crate) async fn process_transcription_output(
             debug!("Reformulation ignorée : quota gratuit quotidien atteint");
             let _ = app.emit("quota-blocked", ());
         } else if let Some(processed_text) =
-            post_process_transcription(&settings, &final_text, auto_style_override.as_deref()).await
+            post_process_transcription(app, &settings, &final_text, auto_style_override.as_deref())
+                .await
         {
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;

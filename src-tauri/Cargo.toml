@@ -87,6 +87,7 @@ tauri-plugin-dialog = "2.6"
 hf-hub = { git = "https://github.com/cjpais/hf-hub", branch = "cancellable-downloads", features = [
   "tokio",
 ] }
+sysinfo = "0.38.4"
 
 [target.'cfg(unix)'.dependencies]
 signal-hook = "0.3"

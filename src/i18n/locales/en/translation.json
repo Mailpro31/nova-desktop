@@ -444,13 +444,12 @@
         "selectToEdit": "Select a prompt above to view and edit its details.",
         "createFirst": "Click 'Create New Prompt' above to create your first post-processing prompt."
       },
-      "ollama": {
-        "installed": "Private intelligence installed",
-        "installTitle": "Install private intelligence (Ollama)",
-        "installDesc": "100% local reformulation, no key — installed in one click."
-      },
       "powerProfile": {
-        "label": "Power profile"
+        "label": "Power profile",
+        "recommended": "Recommended",
+        "downloaded": "downloaded",
+        "downloadingModel": "Downloading model…",
+        "downloadingEngine": "Downloading engine…"
       }
     },
     "history": {
