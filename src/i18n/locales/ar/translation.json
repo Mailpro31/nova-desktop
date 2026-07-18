@@ -423,13 +423,12 @@
       "enable": {
         "title": "Reformulation"
       },
-      "ollama": {
-        "installed": "Private intelligence installed",
-        "installTitle": "Install private intelligence (Ollama)",
-        "installDesc": "100% local reformulation, no key — installed in one click."
-      },
       "powerProfile": {
-        "label": "Power profile"
+        "label": "Power profile",
+        "recommended": "موصى به",
+        "downloaded": "تم التنزيل",
+        "downloadingModel": "جارٍ تنزيل النموذج…",
+        "downloadingEngine": "جارٍ تنزيل المحرك…"
       }
     },
     "history": {

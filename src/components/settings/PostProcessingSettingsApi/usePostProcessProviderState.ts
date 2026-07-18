@@ -34,10 +34,14 @@ type PostProcessProviderState = {
   turboConfirmOpen: boolean;
   confirmTurbo: () => void;
   cancelTurbo: () => void;
+  // Intelligence privée : moteur local embarqué, sélection pilotée par
+  // PowerProfileSelector (pas de champ URL/clé/modèle générique).
+  isLocalLlm: boolean;
 };
 
 const APPLE_PROVIDER_ID = "apple_intelligence";
 const NOVA_TURBO_ID = "nova_turbo";
+const LOCAL_LLM_PROVIDER_ID = "nova_local";
 
 export const usePostProcessProviderState = (): PostProcessProviderState => {
   const {
@@ -55,7 +59,11 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   const providers = settings?.post_process_providers || [];
 
   const selectedProviderId = useMemo(() => {
-    return settings?.post_process_provider_id || providers[0]?.id || "ollama";
+    return (
+      settings?.post_process_provider_id ||
+      providers[0]?.id ||
+      LOCAL_LLM_PROVIDER_ID
+    );
   }, [providers, settings?.post_process_provider_id]);
 
   const selectedProvider = useMemo(() => {
@@ -69,6 +77,10 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   // Turbo : moteur en ligne géré par Nova. Pas de clé API (le jeton de licence
   // sert de clé côté serveur) ni de sélecteur de modèle (imposé côté serveur).
   const isNovaTurbo = selectedProvider?.id === NOVA_TURBO_ID;
+  // Intelligence privée : moteur local embarqué, entièrement géré par l'app
+  // (PowerProfileSelector) — pas de clé, pas d'URL, pas de modèle en texte
+  // libre.
+  const isLocalLlm = selectedProvider?.id === LOCAL_LLM_PROVIDER_ID;
   const [appleIntelligenceUnavailable, setAppleIntelligenceUnavailable] =
     useState(false);
 
@@ -253,7 +265,7 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
     `post_process_models_fetch:${selectedProviderId}`,
   );
 
-  // « local » = moteur à URL de base éditable et sans clé API (Custom, Ollama).
+  // « local » = moteur à URL de base éditable et sans clé API (Custom).
   const isCustomProvider = selectedProvider?.allow_base_url_edit === true;
 
   // No automatic fetching - user must click refresh button
@@ -285,5 +297,6 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
     turboConfirmOpen,
     confirmTurbo,
     cancelTurbo,
+    isLocalLlm,
   };
 };

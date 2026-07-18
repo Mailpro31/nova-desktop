@@ -12,6 +12,7 @@ mod helpers;
 mod input;
 mod licensing;
 mod llm_client;
+mod local_llm;
 mod machine_id;
 mod managers;
 mod overlay;
@@ -186,6 +187,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(transcription_manager.clone());
     app_handle.manage(history_manager.clone());
     app_handle.manage(tray::CurrentTrayIconState::new());
+    app_handle.manage(local_llm::LocalLlmProcess::default());
 
     // Note: Shortcuts are NOT initialized here.
     // The frontend is responsible for calling the `initialize_shortcuts` command
@@ -617,8 +619,8 @@ pub fn run(cli_args: CliArgs) {
             commands::models::download_model,
             commands::models::delete_model,
             commands::models::cancel_download,
-            commands::ollama::install_ollama_engine,
-            commands::ollama::ollama_status,
+            commands::local_llm::get_local_llm_profiles,
+            commands::local_llm::activate_local_llm_profile,
             commands::license::get_license_status,
             commands::license::acknowledge_trial_expired,
             commands::license::activate_license,
@@ -948,6 +950,7 @@ pub fn run(cli_args: CliArgs) {
                 if let Some(tm) = app.try_state::<Arc<TranscriptionManager>>() {
                     let _ = tm.unload_model();
                 }
+                local_llm::shutdown(app);
             }
             _ => {}
         });

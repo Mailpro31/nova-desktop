@@ -22,7 +22,6 @@ import { ProviderSelect } from "../PostProcessingSettingsApi/ProviderSelect";
 import { BaseUrlField } from "../PostProcessingSettingsApi/BaseUrlField";
 import { ApiKeyField } from "../PostProcessingSettingsApi/ApiKeyField";
 import { ModelSelect } from "../PostProcessingSettingsApi/ModelSelect";
-import { OllamaInstaller } from "../PostProcessingSettingsApi/OllamaInstaller";
 import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileSelector";
 import { TierBadge } from "../license/TierBadge";
 import { AutoStyleSettings } from "./AutoStyleSettings";
@@ -54,14 +53,11 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
         </div>
       </SettingContainer>
 
-      {state.selectedProvider?.id === "ollama" && (
-        <>
-          <OllamaInstaller onReady={refreshSettings} />
-          <PowerProfileSelector
-            currentModel={settings?.post_process_models?.ollama}
-            onApplied={refreshSettings}
-          />
-        </>
+      {state.isLocalLlm && (
+        <PowerProfileSelector
+          currentModel={settings?.post_process_models?.nova_local}
+          onApplied={refreshSettings}
+        />
       )}
 
       {state.isAppleProvider ? (
@@ -70,11 +66,7 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
             {t("settings.postProcessing.api.appleIntelligence.unavailable")}
           </Alert>
         ) : null
-      ) : state.isNovaTurbo ? (
-        <div className="px-4 py-2 text-sm text-text-secondary">
-          {t("settings.postProcessing.api.turbo.managed")}
-        </div>
-      ) : (
+      ) : state.isNovaTurbo || state.isLocalLlm ? null : (
         <>
           {state.isCustomProvider && (
             <SettingContainer
@@ -120,7 +112,7 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
         </>
       )}
 
-      {!state.isAppleProvider && !state.isNovaTurbo && (
+      {!state.isAppleProvider && !state.isNovaTurbo && !state.isLocalLlm && (
         <SettingContainer
           title={t("settings.postProcessing.api.model.title")}
           description={

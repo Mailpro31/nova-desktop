@@ -24,7 +24,7 @@ use crate::settings::APPLE_INTELLIGENCE_DEFAULT_MODEL_ID;
 use crate::settings::{
     self, get_settings, AutoSubmitKey, ClipboardHandling, KeyboardImplementation, LLMPrompt,
     OverlayPosition, OverlayStyle, PasteMethod, ShortcutBinding, SoundTheme, Theme, TypingTool,
-    APPLE_INTELLIGENCE_PROVIDER_ID, OLLAMA_PROVIDER_ID,
+    APPLE_INTELLIGENCE_PROVIDER_ID,
 };
 use crate::tray;
 
@@ -1205,8 +1205,11 @@ pub async fn fetch_post_process_models(
         .unwrap_or_default();
 
     // Skip fetching if no API key for providers that typically need one.
-    // Les moteurs locaux (custom, Ollama) n'ont pas de clé.
-    if api_key.trim().is_empty() && provider.id != "custom" && provider.id != OLLAMA_PROVIDER_ID {
+    // Les moteurs locaux (custom, Intelligence privée) n'ont pas de clé.
+    if api_key.trim().is_empty()
+        && provider.id != "custom"
+        && provider.id != crate::local_llm::PROVIDER_ID
+    {
         return Err(format!(
             "API key is required for {}. Please add an API key to list available models.",
             provider.label
