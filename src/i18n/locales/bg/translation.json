@@ -610,7 +610,8 @@
     "checkForUpdates": "Проверка за актуализации",
     "portableUpdateTitle": "Необходима е ръчна актуализация",
     "portableUpdateMessage": "Преносимите инсталации не могат да бъдат актуализирани автоматично. За актуализация: изтеглете най-новия NSIS инсталатор от GitHub Releases, инсталирайте го в същата папка, след което копирайте папката Data/ (настройки, модели, записи) от старата версия в новата.",
-    "portableUpdateButton": "Отвори GitHub Releases"
+    "portableUpdateButton": "Отвори GitHub Releases",
+    "updateFailed": "Неуспешна актуализация — опитай пак"
   },
   "common": {
     "loading": "Зареждане...",

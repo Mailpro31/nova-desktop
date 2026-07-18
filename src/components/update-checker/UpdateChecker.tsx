@@ -20,6 +20,10 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
   const [isInstalling, setIsInstalling] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [showUpToDate, setShowUpToDate] = useState(false);
+  // Un échec de vérification ou d'installation doit rester visible (et
+  // réessayable) plutôt que de retomber silencieusement sur l'état de repos —
+  // sinon une mise à jour ratée est indiscernable d'un « rien à faire ».
+  const [showError, setShowError] = useState(false);
   const [showPortableUpdateDialog, setShowPortableUpdateDialog] =
     useState(false);
 
@@ -43,6 +47,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       setIsChecking(false);
       setUpdateAvailable(false);
       setShowUpToDate(false);
+      setShowError(false);
       return;
     }
 
@@ -67,6 +72,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
 
     try {
       setIsChecking(true);
+      setShowError(false);
       const update = await check();
 
       if (update) {
@@ -87,6 +93,12 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       }
     } catch (error) {
       console.error("Failed to check for updates:", error);
+      // On ne surface l'erreur que pour une vérification déclenchée par
+      // l'utilisateur : la vérification automatique au lancement peut échouer
+      // simplement parce que la machine est hors ligne, inutile d'alarmer.
+      if (isManualCheckRef.current) {
+        setShowError(true);
+      }
     } finally {
       setIsChecking(false);
       isManualCheckRef.current = false;
@@ -110,6 +122,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
 
     try {
       setIsInstalling(true);
+      setShowError(false);
       setDownloadProgress(0);
       downloadedBytesRef.current = 0;
       contentLengthRef.current = 0;
@@ -142,11 +155,26 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       await relaunch();
     } catch (error) {
       console.error("Failed to install update:", error);
+      // L'utilisateur a explicitement lancé l'installation : on montre
+      // toujours l'échec (avec réessai), jamais de retour silencieux.
+      setShowError(true);
     } finally {
       setIsInstalling(false);
       setDownloadProgress(0);
       downloadedBytesRef.current = 0;
       contentLengthRef.current = 0;
+    }
+  };
+
+  // Réessaie après un échec : relance l'installation si une mise à jour est
+  // connue, sinon relance une vérification. Efface d'abord l'état d'erreur.
+  const handleRetryAfterError = () => {
+    if (!updateChecksEnabled) return;
+    setShowError(false);
+    if (updateAvailable) {
+      installUpdate();
+    } else {
+      handleManualUpdateCheck();
     }
   };
 
@@ -166,12 +194,16 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     }
     if (isChecking) return t("footer.checkingUpdates");
     if (showUpToDate) return t("footer.upToDate");
+    // L'erreur prime sur « mise à jour disponible » : après un échec
+    // d'installation, `updateAvailable` reste vrai mais on veut montrer l'échec.
+    if (showError) return t("footer.updateFailed");
     if (updateAvailable) return t("footer.updateAvailableShort");
     return t("footer.checkForUpdates");
   };
 
   const getUpdateStatusAction = () => {
     if (!updateChecksEnabled) return undefined;
+    if (showError && !isChecking && !isInstalling) return handleRetryAfterError;
     if (updateAvailable && !isInstalling) return installUpdate;
     if (!isChecking && !isInstalling && !updateAvailable)
       return handleManualUpdateCheck;
@@ -180,7 +212,8 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
 
   const isUpdateDisabled = !updateChecksEnabled || isChecking || isInstalling;
   const isUpdateClickable =
-    !isUpdateDisabled && (updateAvailable || (!isChecking && !showUpToDate));
+    !isUpdateDisabled &&
+    (updateAvailable || showError || (!isChecking && !showUpToDate));
 
   return (
     <>
@@ -221,15 +254,21 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
             onClick={getUpdateStatusAction()}
             disabled={isUpdateDisabled}
             className={`transition-colors disabled:opacity-50 tabular-nums ${
-              updateAvailable
-                ? "text-logo-primary hover:text-logo-primary/80 font-medium"
-                : "text-text/60 hover:text-text/80"
+              showError
+                ? "text-red-400 hover:text-red-300 font-medium"
+                : updateAvailable
+                  ? "text-logo-primary hover:text-logo-primary/80 font-medium"
+                  : "text-text/60 hover:text-text/80"
             }`}
           >
             {getUpdateStatusText()}
           </button>
         ) : (
-          <span className="text-text/60 tabular-nums">
+          <span
+            className={`tabular-nums ${
+              showError ? "text-red-400 font-medium" : "text-text/60"
+            }`}
+          >
             {getUpdateStatusText()}
           </span>
         )}

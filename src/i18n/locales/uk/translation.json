@@ -610,7 +610,8 @@
     "checkForUpdates": "Перевірити оновлення",
     "portableUpdateTitle": "Потрібне ручне оновлення",
     "portableUpdateMessage": "Портативні встановлення не можна оновити автоматично. Щоб оновити: завантажте найновіший інсталятор NSIS зі сторінки GitHub Releases, установіть його в ту саму теку, а потім скопіюйте теку Data/ (налаштування, моделі, записи) зі старої версії до нової.",
-    "portableUpdateButton": "Відкрити GitHub Releases"
+    "portableUpdateButton": "Відкрити GitHub Releases",
+    "updateFailed": "Не вдалося оновити — повторити"
   },
   "common": {
     "loading": "Завантаження...",

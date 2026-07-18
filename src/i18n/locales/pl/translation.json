@@ -610,7 +610,8 @@
     "checkForUpdates": "Sprawdź aktualizacje",
     "portableUpdateTitle": "Wymagana ręczna aktualizacja",
     "portableUpdateMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Aby zaktualizować: pobierz najnowszy instalator NSIS z GitHub Releases, zainstaluj go w tym samym folderze, a następnie skopiuj swój folder Data/ (ustawienia, modele, nagrania) ze starej wersji do nowej.",
-    "portableUpdateButton": "Otwórz GitHub Releases"
+    "portableUpdateButton": "Otwórz GitHub Releases",
+    "updateFailed": "Aktualizacja nie powiodła się — ponów"
   },
   "common": {
     "loading": "Wczytywanie...",

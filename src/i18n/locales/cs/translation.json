@@ -610,7 +610,8 @@
     "checkForUpdates": "Zkontrolovat aktualizace",
     "portableUpdateTitle": "Vyžadována ruční aktualizace",
     "portableUpdateMessage": "Přenosné instalace nelze aktualizovat automaticky. Postup aktualizace: stáhněte nejnovější instalátor NSIS z GitHub Releases, nainstalujte jej do stejné složky a poté zkopírujte svou složku Data/ (nastavení, modely, nahrávky) ze staré verze do nové.",
-    "portableUpdateButton": "Otevřít GitHub Releases"
+    "portableUpdateButton": "Otevřít GitHub Releases",
+    "updateFailed": "Aktualizace selhala — zkusit znovu"
   },
   "common": {
     "loading": "Načítání...",
