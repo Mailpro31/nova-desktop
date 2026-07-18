@@ -610,7 +610,8 @@
     "checkForUpdates": "अपडेटहरू जाँच गर्नुहोस्",
     "portableUpdateTitle": "म्यानुअल अपडेट आवश्यक",
     "portableUpdateMessage": "पोर्टेबल इन्स्टलहरू स्वतः अपडेट गर्न सकिँदैन। अपडेट गर्न: GitHub Releases बाट पछिल्लो NSIS इन्स्टलर डाउनलोड गर्नुहोस्, उही फोल्डरमा इन्स्टल गर्नुहोस्, अनि पुरानो संस्करणबाट आफ्नो Data/ फोल्डर (सेटिङ, मोडेल, रेकर्डिङ) नयाँमा कपी गर्नुहोस्।",
-    "portableUpdateButton": "GitHub Releases खोल्नुहोस्"
+    "portableUpdateButton": "GitHub Releases खोल्नुहोस्",
+    "updateFailed": "अद्यावधिक असफल — पुनः प्रयास"
   },
   "whatsNew": {
     "title": "Nova v{{version}} मा नयाँ"

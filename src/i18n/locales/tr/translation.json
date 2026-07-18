@@ -610,7 +610,8 @@
     "checkForUpdates": "Güncellemeleri kontrol et",
     "portableUpdateTitle": "Manuel güncelleme gerekli",
     "portableUpdateMessage": "Taşınabilir kurulumlar otomatik olarak güncellenemez. Güncellemek için: GitHub Releases’ten en son NSIS yükleyicisini indirin, aynı klasöre kurun ve ardından Data/ klasörünüzü (ayarlar, modeller, kayıtlar) eski sürümden yenisine kopyalayın.",
-    "portableUpdateButton": "GitHub Releases’i aç"
+    "portableUpdateButton": "GitHub Releases’i aç",
+    "updateFailed": "Güncelleme başarısız — yeniden dene"
   },
   "common": {
     "loading": "Yükleniyor...",

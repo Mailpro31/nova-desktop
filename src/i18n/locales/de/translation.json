@@ -610,7 +610,8 @@
     "checkForUpdates": "Nach Updates suchen",
     "portableUpdateTitle": "Manuelles Update erforderlich",
     "portableUpdateMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Zum Aktualisieren: Lade den neuesten NSIS-Installer von GitHub Releases herunter, installiere ihn im selben Ordner und kopiere dann deinen Data/-Ordner (Einstellungen, Modelle, Aufnahmen) von der alten Version in die neue.",
-    "portableUpdateButton": "GitHub Releases öffnen"
+    "portableUpdateButton": "GitHub Releases öffnen",
+    "updateFailed": "Update fehlgeschlagen — erneut versuchen"
   },
   "common": {
     "loading": "Wird geladen...",
