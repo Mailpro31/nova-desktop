@@ -876,8 +876,10 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
     // « Intelligence privée » (Ollama) et « Turbo » (relais géré). Efface aussi
     // leurs clés/modèles stockés : on ne laisse pas traîner d'ancienne clé API
     // en clair dans les réglages une fois le fournisseur retiré.
-    let allowed_ids: std::collections::HashSet<&str> =
-        default_post_process_providers().iter().map(|p| p.id.as_str()).collect();
+    let allowed_ids: std::collections::HashSet<String> = default_post_process_providers()
+        .into_iter()
+        .map(|p| p.id)
+        .collect();
     let removed_ids: Vec<String> = settings
         .post_process_providers
         .iter()

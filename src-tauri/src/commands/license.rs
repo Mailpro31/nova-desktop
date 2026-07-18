@@ -172,7 +172,11 @@ pub async fn activate_license_code(app: AppHandle, code: String) -> Result<Licen
     let (trial_started_at, trial_expired_notified) =
         (settings.trial_started_at, settings.trial_expired_notified);
     write_settings(&app, settings);
-    Ok(build_status(&token, trial_started_at, trial_expired_notified))
+    Ok(build_status(
+        &token,
+        trial_started_at,
+        trial_expired_notified,
+    ))
 }
 
 /// Décision produit : une licence activée ne peut plus être retirée depuis

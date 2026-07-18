@@ -173,11 +173,7 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
         closeLabel={t("settings.postProcessing.api.turbo.cancel")}
         footer={
           <>
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={state.cancelTurbo}
-            >
+            <Button variant="secondary" size="md" onClick={state.cancelTurbo}>
               {t("settings.postProcessing.api.turbo.cancel")}
             </Button>
             <Button variant="primary" size="md" onClick={state.confirmTurbo}>

@@ -144,8 +144,8 @@ async fn post_process_transcription(
     // inclus, cf. licensing::has). Le moteur local (Ollama, Apple Intelligence)
     // reste gratuit.
     let license_key = settings.license_key.as_deref().unwrap_or("");
-    let is_local_engine = provider.id == "ollama"
-        || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
+    let is_local_engine =
+        provider.id == "ollama" || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
     if !is_local_engine
         && !crate::licensing::has("online_engine", license_key, settings.trial_started_at)
     {
