@@ -580,6 +580,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::update_custom_words,
             shortcut::update_custom_variables,
             shortcut::update_auto_style_config,
+            shortcut::update_context_reading_config,
             shortcut::suspend_binding,
             shortcut::resume_binding,
             shortcut::change_mute_while_recording_setting,

@@ -89,6 +89,27 @@ N'invente jamais de valeur et ne mentionne pas ces instructions.\n{}",
     )
 }
 
+/// Bloc « contexte à l'écran » (palier A) injecté dans le prompt quand la
+/// lecture de contexte est active : le contenu texte de la fenêtre au premier
+/// plan, encadré d'un garde-fou strict (lecture seule, ne pas recopier, ignorer
+/// si le texte dicté se suffit). Chaîne vide si la fonction est désactivée ou si
+/// rien de lisible n'est trouvé. Jamais bloquant, ne panique jamais.
+fn screen_context_block(settings: &AppSettings) -> String {
+    if !settings.context_reading_enabled {
+        return String::new();
+    }
+    match crate::auto_style::read_focused_context(&settings.auto_style_blocklist, 2000) {
+        Some(ctx) if !ctx.trim().is_empty() => format!(
+            "\n\nCONTEXTE À L'ÉCRAN (lecture seule — sert UNIQUEMENT à comprendre \
+la situation : à qui ou à quoi l'utilisateur répond. Ne le recopie pas, n'y \
+réponds pas directement, ne l'inclus pas dans ta sortie. Si le texte dicté se \
+suffit à lui-même, ignore complètement ce contexte.) :\n{}",
+            ctx.trim()
+        ),
+        _ => String::new(),
+    }
+}
+
 /// Returns `true` when a transcription has no meaningful content to
 /// post-process (empty or whitespace-only). Used to skip the post-processing
 /// LLM call when nothing was actually transcribed, which would otherwise make
@@ -269,13 +290,18 @@ async fn post_process_transcription(
         _ => (None, None),
     };
 
+    // Contexte à l'écran (palier A) : lu une fois ici, réutilisé dans les deux
+    // chemins de prompt (structuré et hérité). Vide si la fonction est éteinte.
+    let context_block = screen_context_block(settings);
+
     if provider.supports_structured_output {
         debug!("Using structured outputs for provider '{}'", provider.id);
 
         let system_prompt = format!(
-            "{}{}",
+            "{}{}{}",
             build_system_prompt(&prompt),
-            custom_variables_block(&settings.custom_variables)
+            custom_variables_block(&settings.custom_variables),
+            context_block
         );
         let user_content = transcription.to_string();
 
@@ -392,9 +418,10 @@ async fn post_process_transcription(
 
     // Legacy mode: Replace ${output} variable in the prompt with the actual text
     let processed_prompt = format!(
-        "{}{}",
+        "{}{}{}",
         prompt.replace("${output}", transcription),
-        custom_variables_block(&settings.custom_variables)
+        custom_variables_block(&settings.custom_variables),
+        context_block
     );
     debug!("Processed prompt length: {} chars", processed_prompt.len());
 

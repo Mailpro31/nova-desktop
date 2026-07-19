@@ -597,6 +597,79 @@ fn current_foreground(_user_blocklist: &[String]) -> (String, String) {
     (String::new(), String::new())
 }
 
+// ---------------------------------------------------------------------------
+// Lecture de contexte (palier A) — lit le CONTENU texte de l'élément au premier
+// plan via l'arbre d'accessibilité Windows (UI Automation), bien plus léger
+// qu'une capture d'écran + OCR. Sert à ancrer la reformulation dans la situation
+// (le mail auquel on répond, la conversation…). Repli `None` partout ailleurs.
+// ---------------------------------------------------------------------------
+
+/// Renvoie le texte de l'élément focalisé (champ de saisie, document ou zone
+/// lue), borné à `max_chars`. Respecte la liste noire de confidentialité (mêmes
+/// apps que la détection de Style : si bloquée, on n'inspecte RIEN). Défensif :
+/// renvoie `None` au moindre échec, ne panique jamais, ne bloque jamais la
+/// dictée. Lu à l'instant de la reformulation puis jeté (rien n'est conservé).
+#[cfg(target_os = "windows")]
+pub fn read_focused_context(user_blocklist: &[String], max_chars: usize) -> Option<String> {
+    use uiautomation::patterns::{UITextPattern, UIValuePattern};
+    use uiautomation::UIAutomation;
+
+    // Confidentialité : `current_foreground` renvoie un process vide si l'app est
+    // sur liste noire (ou indisponible) → on n'inspecte rien. Même barrière que
+    // la détection de Style.
+    let (_title, process) = current_foreground(user_blocklist);
+    if process.is_empty() {
+        return None;
+    }
+
+    // COM peut déjà être initialisé sur ce thread ; en cas d'échec on renonce
+    // simplement (pas de contexte), la dictée continue normalement.
+    let automation = UIAutomation::new().ok()?;
+    let element = automation.get_focused_element().ok()?;
+
+    let cap = max_chars.min(i32::MAX as usize) as i32;
+    let mut text = String::new();
+
+    // 1) TextPattern : documents, éditeurs, zones riches (le mail lu, la
+    //    conversation, le corps d'un doc) — la source la plus utile.
+    if let Ok(tp) = element.get_pattern::<UITextPattern>() {
+        if let Ok(range) = tp.get_document_range() {
+            if let Ok(s) = range.get_text(cap) {
+                text = s;
+            }
+        }
+    }
+
+    // 2) ValuePattern : champs simples (objet d'un mail, barre de recherche…).
+    if text.trim().is_empty() {
+        if let Ok(vp) = element.get_pattern::<UIValuePattern>() {
+            if let Ok(s) = vp.get_value() {
+                text = s;
+            }
+        }
+    }
+
+    // 3) Nom accessible : dernier recours (libellé du contrôle focalisé).
+    if text.trim().is_empty() {
+        if let Ok(name) = element.get_name() {
+            text = name;
+        }
+    }
+
+    let trimmed = text.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+
+    // Borne dure : `get_text` respecte déjà `cap`, mais Value/Name non.
+    Some(trimmed.chars().take(max_chars).collect())
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn read_focused_context(_user_blocklist: &[String], _max_chars: usize) -> Option<String> {
+    None
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
