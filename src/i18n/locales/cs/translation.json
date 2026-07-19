@@ -450,6 +450,16 @@
         "downloaded": "staženo",
         "downloadingModel": "Stahování modelu…",
         "downloadingEngine": "Stahování jádra…"
+      },
+      "contextReading": {
+        "title": "Context reading",
+        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
+        "enableLabel": "Read on-screen context",
+        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
+        "visualLabel": "Advanced visual reading",
+        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
+        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
+        "experimentalNote": "Experimental — off by default."
       }
     },
     "history": {

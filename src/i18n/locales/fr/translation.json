@@ -450,6 +450,16 @@
         "downloaded": "téléchargé",
         "downloadingModel": "Téléchargement du modèle…",
         "downloadingEngine": "Téléchargement du moteur…"
+      },
+      "contextReading": {
+        "title": "Lecture de contexte",
+        "description": "Nova lit ce qui est affiché — le mail auquel vous répondez, la conversation — pour rédiger une réponse en situation. Lu au moment de la dictée, puis oublié.",
+        "enableLabel": "Lire le contexte à l'écran",
+        "enableDescription": "Autorise Nova à lire le texte de la fenêtre active pour ancrer sa réponse. Rapide, et reste sur votre machine.",
+        "visualLabel": "Lecture visuelle avancée",
+        "visualDescription": "Quand le texte ne suffit pas, Nova analyse une image de l'écran via le moteur en ligne pour comprendre la situation.",
+        "privacyNote": "Les apps de votre liste noire de confidentialité ne sont jamais lues — pas même leur contenu.",
+        "experimentalNote": "Expérimental — désactivé par défaut."
       }
     },
     "history": {

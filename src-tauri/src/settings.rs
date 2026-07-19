@@ -413,6 +413,17 @@ pub struct AppSettings {
     /// jamais inspectés — banque, gestionnaire de mots de passe…).
     #[serde(default)]
     pub auto_style_blocklist: Vec<String>,
+    /// Lecture de contexte : Nova lit le CONTENU de la fenêtre active (le mail
+    /// auquel on répond, la conversation) pour ancrer la reformulation dans la
+    /// situation. Lu au moment de la dictée puis oublié ; `auto_style_blocklist`
+    /// s'y applique aussi (apps sensibles jamais lues). Désactivé par défaut.
+    #[serde(default)]
+    pub context_reading_enabled: bool,
+    /// Lecture visuelle avancée : quand le texte ne suffit pas, Nova analyse une
+    /// image de l'écran via le moteur en ligne (Turbo). Réservé Nova Ultra + en
+    /// ligne ; sans effet si `context_reading_enabled` est faux. Désactivé par défaut.
+    #[serde(default)]
+    pub context_visual_enabled: bool,
     #[serde(default)]
     pub model_unload_timeout: ModelUnloadTimeout,
     #[serde(default = "default_word_correction_threshold")]
@@ -1030,6 +1041,8 @@ pub fn get_default_settings() -> AppSettings {
         trial_expired_notified: false,
         auto_style_rules: HashMap::new(),
         auto_style_blocklist: Vec::new(),
+        context_reading_enabled: false,
+        context_visual_enabled: false,
         free_rewrites_used: 0,
         free_quota_day_start: 0,
         week_chars_produced: 0,

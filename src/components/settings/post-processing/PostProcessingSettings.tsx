@@ -25,6 +25,7 @@ import { ModelSelect } from "../PostProcessingSettingsApi/ModelSelect";
 import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileSelector";
 import { TierBadge } from "../license/TierBadge";
 import { AutoStyleSettings } from "./AutoStyleSettings";
+import { ContextReadingSettings } from "./ContextReadingSettings";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { ShortcutInput } from "../ShortcutInput";
 import { useSettings } from "../../../hooks/useSettings";
@@ -528,6 +529,8 @@ export const PostProcessingSettings: React.FC = () => {
       <SettingsGroup title={t("settings.postProcessing.prompts.title")}>
         <PostProcessingSettingsPrompts />
       </SettingsGroup>
+
+      <ContextReadingSettings />
     </div>
   );
 };

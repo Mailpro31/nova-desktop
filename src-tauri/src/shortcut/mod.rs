@@ -640,6 +640,24 @@ pub fn change_persistent_overlay_setting(app: AppHandle, enabled: bool) -> Resul
     Ok(())
 }
 
+/// Active/désactive la lecture de contexte (`enabled`) et la lecture visuelle
+/// avancée (`visual`). La lecture visuelle n'a d'effet que si la lecture de
+/// contexte est active — l'appelant garantit déjà cette cohérence, on persiste
+/// simplement les deux drapeaux.
+#[tauri::command]
+#[specta::specta]
+pub fn update_context_reading_config(
+    app: AppHandle,
+    enabled: bool,
+    visual: bool,
+) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.context_reading_enabled = enabled;
+    settings.context_visual_enabled = enabled && visual;
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub fn change_debug_mode_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
