@@ -132,14 +132,15 @@ mod imp {
     /// Capture GDI de la fenêtre au premier plan → (pixels RGB packés, w, h).
     fn capture_foreground() -> Option<(Vec<u8>, u32, u32)> {
         use windows::Win32::Foundation::RECT;
+        // Note windows-rs : GetWindowDC/ReleaseDC vivent dans Graphics::Gdi, et
+        // PrintWindow/PRINT_WINDOW_FLAGS dans Storage::Xps (et non WindowsAndMessaging).
         use windows::Win32::Graphics::Gdi::{
             CreateCompatibleBitmap, CreateCompatibleDC, DeleteDC, DeleteObject, GetDIBits,
-            SelectObject, BITMAPINFO, BITMAPINFOHEADER, BI_RGB, DIB_RGB_COLORS, HGDIOBJ,
+            GetWindowDC, ReleaseDC, SelectObject, BITMAPINFO, BITMAPINFOHEADER, BI_RGB,
+            DIB_RGB_COLORS, HDC, HGDIOBJ,
         };
-        use windows::Win32::UI::WindowsAndMessaging::{
-            GetForegroundWindow, GetWindowDC, GetWindowRect, PrintWindow, ReleaseDC,
-            PRINT_WINDOW_FLAGS,
-        };
+        use windows::Win32::Storage::Xps::{PrintWindow, PRINT_WINDOW_FLAGS};
+        use windows::Win32::UI::WindowsAndMessaging::{GetForegroundWindow, GetWindowRect};
 
         unsafe {
             let hwnd = GetForegroundWindow();
@@ -154,7 +155,7 @@ mod imp {
                 return None;
             }
 
-            let hdc_win = GetWindowDC(hwnd);
+            let hdc_win = GetWindowDC(Some(hwnd));
             if hdc_win.0.is_null() {
                 return None;
             }
@@ -164,15 +165,18 @@ mod imp {
                 if hdc_mem.0.is_null() {
                     return None;
                 }
+                // CreateCompatibleDC renvoie un CreatedHDC ; SelectObject/GetDIBits/
+                // PrintWindow attendent un HDC — même poignée, on l'enveloppe une fois.
+                let mem = HDC(hdc_mem.0);
                 let hbmp = CreateCompatibleBitmap(hdc_win, w, h);
                 if hbmp.0.is_null() {
                     let _ = DeleteDC(hdc_mem);
                     return None;
                 }
-                let old = SelectObject(hdc_mem, HGDIOBJ(hbmp.0));
+                let old = SelectObject(mem, HGDIOBJ(hbmp.0));
 
                 // PW_RENDERFULLCONTENT (2) : rendu correct des apps Chromium/Electron.
-                let printed = PrintWindow(hwnd, hdc_mem, PRINT_WINDOW_FLAGS(2)).as_bool();
+                let printed = PrintWindow(hwnd, mem, PRINT_WINDOW_FLAGS(2)).as_bool();
 
                 let mut bmi = BITMAPINFO::default();
                 bmi.bmiHeader = BITMAPINFOHEADER {
@@ -186,7 +190,7 @@ mod imp {
                 };
                 let mut bgra = vec![0u8; (w as usize) * (h as usize) * 4];
                 let lines = GetDIBits(
-                    hdc_mem,
+                    mem,
                     hbmp,
                     0,
                     h as u32,
@@ -195,7 +199,7 @@ mod imp {
                     DIB_RGB_COLORS,
                 );
 
-                SelectObject(hdc_mem, old);
+                SelectObject(mem, old);
                 let _ = DeleteObject(HGDIOBJ(hbmp.0));
                 let _ = DeleteDC(hdc_mem);
 

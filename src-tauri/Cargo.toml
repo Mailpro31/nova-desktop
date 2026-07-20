@@ -115,6 +115,7 @@ windows = { version = "0.61.3", features = [
   "Win32_UI_WindowsAndMessaging",
   "Win32_System_Threading",
   "Win32_Graphics_Gdi",
+  "Win32_Storage_Xps",
 ] }
 winreg = "0.55"
 # Lecture de contexte — palier B (repli OCR). Quand l'accessibilité (palier A)
@@ -123,7 +124,7 @@ winreg = "0.55"
 # 100 % en local. `ocrs`/`rten` = moteur d'inférence en Rust pur (aucune DLL
 # native à distribuer, contrairement à ONNX Runtime).
 ocrs = "0.10"
-rten = "0.20"
+rten = "0.21"
 # Lecture de contexte (palier A) : lit le CONTENU texte de la fenêtre active via
 # l'API Windows UI Automation (arbre d'accessibilité) — bien plus léger qu'une
 # capture d'écran + OCR. Utilisé uniquement quand `context_reading_enabled`.
