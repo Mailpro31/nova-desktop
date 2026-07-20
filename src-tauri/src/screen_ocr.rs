@@ -32,13 +32,16 @@ mod imp {
 
     use ocrs::{ImageSource, OcrEngine, OcrEngineParams};
 
-    // Poids OCR (format `.rten`) hébergés par Nova (novaspeak.app), avec repli
-    // sur le miroir amont officiel si le site est momentanément indisponible.
-    const DET_URLS: [&str; 2] = [
+    // Poids OCR (format `.rten`) hébergés par Nova : stockage R2 (egress
+    // gratuit) en premier, puis le site (novaspeak.app), puis le miroir amont
+    // officiel — on essaie chaque source dans l'ordre jusqu'au premier succès.
+    const DET_URLS: [&str; 3] = [
+        "https://pub-dcff32fb931445cda485f120f05d9b6a.r2.dev/text-detection.rten",
         "https://novaspeak.app/models/text-detection.rten",
         "https://ocrs-models.s3-accelerate.amazonaws.com/text-detection.rten",
     ];
-    const REC_URLS: [&str; 2] = [
+    const REC_URLS: [&str; 3] = [
+        "https://pub-dcff32fb931445cda485f120f05d9b6a.r2.dev/text-recognition.rten",
         "https://novaspeak.app/models/text-recognition.rten",
         "https://ocrs-models.s3-accelerate.amazonaws.com/text-recognition.rten",
     ];
