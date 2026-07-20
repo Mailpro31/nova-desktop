@@ -104,7 +104,22 @@ fn screen_context_block(settings: &AppSettings) -> String {
     if !crate::licensing::has("context_reading", license_key, settings.trial_started_at) {
         return String::new();
     }
-    match crate::auto_style::read_focused_context(&settings.auto_style_blocklist, 2000) {
+    // Cascade privacy-first : palier A (accessibilité) → palier B (OCR local),
+    // tous deux dans read_focused_context. Si rien n'est lisible localement :
+    // palier C (VLM local, inerte tant qu'aucun serveur vision local n'est
+    // configuré) → palier D (vision cloud, seulement si « Vision cloud » est
+    // activée ; réservé Nova Ultra, image jamais conservée).
+    let ctx = match crate::auto_style::read_focused_context(&settings.auto_style_blocklist, 2000) {
+        Some(ctx) if !ctx.trim().is_empty() => Some(ctx),
+        _ => crate::screen_vlm::describe_focused_window_local(2000).or_else(|| {
+            if settings.context_visual_enabled {
+                crate::screen_vision::describe_focused_window(license_key, 2000)
+            } else {
+                None
+            }
+        }),
+    };
+    match ctx {
         Some(ctx) if !ctx.trim().is_empty() => format!(
             "\n\nCONTEXTE À L'ÉCRAN (lecture seule — sert UNIQUEMENT à comprendre \
 la situation : à qui ou à quoi l'utilisateur répond. Ne le recopie pas, n'y \

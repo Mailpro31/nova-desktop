@@ -13,6 +13,10 @@
 
 #[cfg(target_os = "windows")]
 pub use imp::ocr_focused_window;
+// Réutilisé par le palier D (screen_vision) : même capture GDI de la fenêtre
+// active, encodée ensuite en PNG pour la vision cloud.
+#[cfg(target_os = "windows")]
+pub(crate) use imp::capture_foreground;
 
 #[cfg(not(target_os = "windows"))]
 pub fn ocr_focused_window(_max_chars: usize) -> Option<String> {
@@ -28,9 +32,16 @@ mod imp {
 
     use ocrs::{ImageSource, OcrEngine, OcrEngineParams};
 
-    // Modèles officiels ocrs (robertknight), format `.rten`.
-    const DET_URL: &str = "https://ocrs-models.s3-accelerate.amazonaws.com/text-detection.rten";
-    const REC_URL: &str = "https://ocrs-models.s3-accelerate.amazonaws.com/text-recognition.rten";
+    // Poids OCR (format `.rten`) hébergés par Nova (novaspeak.app), avec repli
+    // sur le miroir amont officiel si le site est momentanément indisponible.
+    const DET_URLS: [&str; 2] = [
+        "https://novaspeak.app/models/text-detection.rten",
+        "https://ocrs-models.s3-accelerate.amazonaws.com/text-detection.rten",
+    ];
+    const REC_URLS: [&str; 2] = [
+        "https://novaspeak.app/models/text-recognition.rten",
+        "https://ocrs-models.s3-accelerate.amazonaws.com/text-recognition.rten",
+    ];
 
     fn model_paths() -> Option<(PathBuf, PathBuf)> {
         let base = std::env::var("LOCALAPPDATA").ok()?;
@@ -63,6 +74,11 @@ mod imp {
         .is_some()
     }
 
+    // Essaie chaque miroir dans l'ordre (Nova puis amont) jusqu'au premier succès.
+    fn download_any(urls: &[&str], to: &Path) -> bool {
+        urls.iter().any(|u| download(u, to))
+    }
+
     // Un seul téléchargement en vol à la fois (évite de relancer à chaque dictée).
     static FETCHING: AtomicBool = AtomicBool::new(false);
 
@@ -73,10 +89,10 @@ mod imp {
         std::thread::spawn(|| {
             if let Some((det, rec)) = model_paths() {
                 if !det.exists() {
-                    let _ = download(DET_URL, &det);
+                    let _ = download_any(&DET_URLS, &det);
                 }
                 if !rec.exists() {
-                    let _ = download(REC_URL, &rec);
+                    let _ = download_any(&REC_URLS, &rec);
                 }
             }
             FETCHING.store(false, Ordering::SeqCst);
@@ -130,7 +146,7 @@ mod imp {
     }
 
     /// Capture GDI de la fenêtre au premier plan → (pixels RGB packés, w, h).
-    fn capture_foreground() -> Option<(Vec<u8>, u32, u32)> {
+    pub(crate) fn capture_foreground() -> Option<(Vec<u8>, u32, u32)> {
         use windows::Win32::Foundation::RECT;
         // Note windows-rs : GetWindowDC/ReleaseDC vivent dans Graphics::Gdi, et
         // PrintWindow/PRINT_WINDOW_FLAGS dans Storage::Xps (et non WindowsAndMessaging).

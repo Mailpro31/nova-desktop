@@ -125,6 +125,8 @@ winreg = "0.55"
 # native à distribuer, contrairement à ONNX Runtime).
 ocrs = "0.10"
 rten = "0.21"
+# Palier D (vision cloud) : encodage PNG de la capture avant envoi à turbo-vision.
+png = "0.17"
 # Lecture de contexte (palier A) : lit le CONTENU texte de la fenêtre active via
 # l'API Windows UI Automation (arbre d'accessibilité) — bien plus léger qu'une
 # capture d'écran + OCR. Utilisé uniquement quand `context_reading_enabled`.

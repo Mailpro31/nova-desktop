@@ -19,6 +19,8 @@ mod overlay;
 pub mod portable;
 mod quota;
 mod screen_ocr;
+mod screen_vision;
+mod screen_vlm;
 mod settings;
 mod shortcut;
 mod signal_handle;
