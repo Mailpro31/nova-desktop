@@ -18,6 +18,7 @@ mod managers;
 mod overlay;
 pub mod portable;
 mod quota;
+mod screen_ocr;
 mod settings;
 mod shortcut;
 mod signal_handle;
