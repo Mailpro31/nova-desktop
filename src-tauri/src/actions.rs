@@ -98,6 +98,12 @@ fn screen_context_block(settings: &AppSettings) -> String {
     if !settings.context_reading_enabled {
         return String::new();
     }
+    // Palier : la lecture de contexte est une fonctionnalité Nova Ultra (essai
+    // Pro inclus, cf. licensing::has). Sans le palier requis, on n'inspecte rien.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    if !crate::licensing::has("context_reading", license_key, settings.trial_started_at) {
+        return String::new();
+    }
     match crate::auto_style::read_focused_context(&settings.auto_style_blocklist, 2000) {
         Some(ctx) if !ctx.trim().is_empty() => format!(
             "\n\nCONTEXTE À L'ÉCRAN (lecture seule — sert UNIQUEMENT à comprendre \

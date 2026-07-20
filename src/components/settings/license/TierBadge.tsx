@@ -41,6 +41,7 @@ const TIER_FOR_FEATURE: Record<string, string> = {
   custom_auto_rules: "NOVA ULTRA",
   orb_customization: "NOVA ULTRA",
   custom_naming: "NOVA ULTRA",
+  context_reading: "NOVA ULTRA",
 };
 
 /**
