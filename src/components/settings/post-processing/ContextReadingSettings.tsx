@@ -22,6 +22,7 @@ export const ContextReadingSettings: React.FC = () => {
   const { settings, refreshSettings } = useSettings();
   const [enabled, setEnabled] = useState(false);
   const [visual, setVisual] = useState(false);
+  const [canRead, setCanRead] = useState(true);
   const [canVisual, setCanVisual] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -34,12 +35,13 @@ export const ContextReadingSettings: React.FC = () => {
     setVisual(s?.context_visual_enabled ?? false);
   }, [settings]);
 
-  // La lecture visuelle passe par le moteur en ligne (Turbo) → même verrou que
-  // la fonctionnalité `online_engine` (Nova Ultra).
+  // Lecture de contexte réservée à Nova Ultra ; la lecture visuelle avancée
+  // passe en plus par le moteur en ligne (`online_engine`, Ultra également).
   useEffect(() => {
-    getStatus().then((st) =>
-      setCanVisual(st ? (st.features?.online_engine ?? false) : true),
-    );
+    getStatus().then((st) => {
+      setCanRead(st ? (st.features?.context_reading ?? false) : true);
+      setCanVisual(st ? (st.features?.online_engine ?? false) : true);
+    });
   }, []);
 
   const persist = async (nextEnabled: boolean, nextVisual: boolean) => {
@@ -65,8 +67,9 @@ export const ContextReadingSettings: React.FC = () => {
         description={t("settings.postProcessing.contextReading.description")}
       >
         <ToggleSwitch
-          checked={enabled}
+          checked={enabled && canRead}
           onChange={(v) => persist(v, v ? visual : false)}
+          disabled={!canRead}
           isUpdating={saving}
           label={t("settings.postProcessing.contextReading.enableLabel")}
           description={t(
@@ -90,12 +93,9 @@ export const ContextReadingSettings: React.FC = () => {
       </SettingsGroup>
 
       <div className="px-4 space-y-1">
-        <TierBadge feature="online_engine" />
+        <TierBadge feature="context_reading" />
         <p className="text-xs text-mid-gray/70">
           {t("settings.postProcessing.contextReading.privacyNote")}
-        </p>
-        <p className="text-xs text-mid-gray/70">
-          {t("settings.postProcessing.contextReading.experimentalNote")}
         </p>
       </div>
     </div>

@@ -60,7 +60,10 @@ pub fn feature_min_tier(feature: &str) -> Tier {
         // Ultra : le CLOUD (moteur « Turbo » en ligne + STT en ligne) + meilleure
         // IA + personnalisation avancée. Tout ce qui sort de la machine = Ultra.
         "online_engine" | "best_models" | "custom_styles" | "custom_auto_rules"
-        | "orb_customization" | "custom_naming" | "priority_updates" => Tier::Ultra,
+        | "orb_customization" | "custom_naming" | "priority_updates"
+        // Lecture de contexte : Nova lit le contenu de la fenêtre active pour
+        // ancrer la reformulation dans la situation. Fonctionnalité phare Ultra.
+        | "context_reading" => Tier::Ultra,
         _ => Tier::Free,
     }
 }
