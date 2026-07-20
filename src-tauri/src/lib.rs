@@ -24,6 +24,7 @@ mod screen_vlm;
 mod settings;
 mod shortcut;
 mod signal_handle;
+mod telemetry;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
@@ -534,6 +535,11 @@ fn run_headless_transcription(app: &AppHandle, args: &CliArgs) -> i32 {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run(cli_args: CliArgs) {
+    // Rapport de plantage (dormant tant que NOVA_SENTRY_DSN est vide) — au plus
+    // tôt pour capturer même un panic au démarrage. Le garde vit jusqu'à la
+    // fermeture de l'app (run() ne rend la main qu'à la sortie).
+    let _sentry_guard = telemetry::init();
+
     // Detect portable mode before anything else
     portable::init();
 

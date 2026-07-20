@@ -88,6 +88,16 @@ hf-hub = { git = "https://github.com/cjpais/hf-hub", branch = "cancellable-downl
   "tokio",
 ] }
 sysinfo = "0.38.4"
+# Rapport de plantage optionnel (DORMANT tant que NOVA_SENTRY_DSN est vide).
+# rustls pour un transport sans dépendance TLS système (compile partout, y
+# compris le vendoring offline nix). Voir src/telemetry.rs.
+sentry = { version = "0.34", default-features = false, features = [
+  "backtrace",
+  "contexts",
+  "panic",
+  "reqwest",
+  "rustls",
+] }
 
 [target.'cfg(unix)'.dependencies]
 signal-hook = "0.3"
