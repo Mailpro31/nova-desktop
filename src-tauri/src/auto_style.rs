@@ -658,7 +658,9 @@ pub fn read_focused_context(user_blocklist: &[String], max_chars: usize) -> Opti
 
     let trimmed = text.trim();
     if trimmed.is_empty() {
-        return None;
+        // Palier B : accessibilité muette (apps Chromium/Electron, rendu canvas)
+        // → repli OCR local sur une capture de la fenêtre au premier plan.
+        return crate::screen_ocr::ocr_focused_window(max_chars);
     }
 
     // Borne dure : `get_text` respecte déjà `cap`, mais Value/Name non.

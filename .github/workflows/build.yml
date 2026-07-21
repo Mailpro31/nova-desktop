@@ -58,6 +58,10 @@ on:
 
 env:
   TSC_VERSION: "0.9.0"
+  # DSN Sentry (rapport de plantage) embarqué à la compilation via option_env!.
+  # Fourni par le secret dépôt NOVA_SENTRY_DSN (hérité, secrets: inherit) ; vide
+  # => telemetry reste dormant. Un DSN Sentry est côté client (envoi seul).
+  NOVA_SENTRY_DSN: ${{ secrets.NOVA_SENTRY_DSN }}
 
 jobs:
   build:
