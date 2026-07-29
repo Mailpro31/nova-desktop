@@ -668,8 +668,8 @@
     "recordingFailed": "Failed to start recording: {{error}}",
     "modelLoadFailed": "Failed to load model: {{model}}",
     "modelLoadFailedUnknown": "unknown model",
-    "pasteFailedTitle": "Failed to Paste Text",
-    "pasteFailed": "Text could not be pasted into the active application.",
+    "pasteFailedTitle": "Couldn't paste — text copied",
+    "pasteFailed": "The text couldn't be pasted automatically. It's on your clipboard: paste it with Ctrl+V. If this keeps happening, check that your dictation shortcut doesn't overlap Ctrl+V.",
     "transcriptionFailedTitle": "Transcription Failed"
   },
   "appLanguage": {
