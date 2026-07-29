@@ -92,6 +92,14 @@
   flex-direction: column-reverse;
   transform-origin: top center;
 }
+/* Exception : la pilule de REPOS (orbe + engrenage) reste une RANGÉE, même en
+   haut. La règle column-reverse ci-dessus ne vise que le panneau Live (empiler
+   la pilule au-dessus du texte) ; comme `.sidle` est aussi un `.scard`, elle
+   retournait par erreur l'orbe AU-DESSUS de l'engrenage au lieu de le laisser
+   À CÔTÉ. On garde le transform-origin (pop depuis le bord haut). */
+.ov-stage.top .scard.sidle {
+  flex-direction: row;
+}
 .ov-stage.top .stext-cap {
   /* Mirror of the bottom overlay (top: 12 / bottom: 0): the first line sits flush
      under the pill and the breathing room moves below the text. The top fade is
