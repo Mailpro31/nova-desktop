@@ -665,8 +665,8 @@
     "recordingFailed": "Échec du démarrage de l'enregistrement : {{error}}",
     "modelLoadFailed": "Échec du chargement du modèle : {{model}}",
     "modelLoadFailedUnknown": "modèle inconnu",
-    "pasteFailedTitle": "Échec du collage du texte",
-    "pasteFailed": "Le texte n'a pas pu être collé dans l'application active.",
+    "pasteFailedTitle": "Collage impossible — texte copié",
+    "pasteFailed": "Le texte n'a pas pu être collé automatiquement. Il est dans votre presse-papier : collez-le avec Ctrl+V. Si cela se répète, vérifiez que votre raccourci de dictée ne recouvre pas Ctrl+V.",
     "transcriptionFailedTitle": "Échec de la transcription"
   },
   "appLanguage": {

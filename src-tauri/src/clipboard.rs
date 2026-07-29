@@ -3,7 +3,7 @@ use crate::input::{self, EnigoState};
 use crate::settings::TypingTool;
 use crate::settings::{get_settings, AutoSubmitKey, ClipboardHandling, PasteMethod};
 use enigo::{Direction, Enigo, Key, Keyboard};
-use log::info;
+use log::{info, warn};
 use std::process::Command;
 use std::time::Duration;
 use tauri::{AppHandle, Manager};
@@ -22,7 +22,6 @@ fn paste_via_clipboard(
     paste_delay_after_ms: u64,
 ) -> Result<(), String> {
     let clipboard = app_handle.clipboard();
-    let clipboard_content = clipboard.read_text().unwrap_or_default();
 
     // Write text to clipboard first
     // On Wayland, prefer wl-copy for better compatibility (especially with umlauts)
@@ -64,17 +63,21 @@ fn paste_via_clipboard(
 
     std::thread::sleep(Duration::from_millis(paste_delay_after_ms));
 
-    // Restore original clipboard content
-    // On Wayland, prefer wl-copy for better compatibility
+    // Garde-fou « jamais de texte perdu » : on LAISSE la dictée dans le
+    // presse-papier (au lieu de restaurer l'ancien contenu). Si la frappe de
+    // collage a été interceptée — par ex. un raccourci global qui recouvre
+    // Ctrl+V, cas où le collage échouait silencieusement —, la dictée reste
+    // récupérable d'un simple Ctrl+V ou clic droit → Coller. On ré-écrit le
+    // texte ici pour garantir qu'il est bien présent après l'envoi de la frappe.
     #[cfg(target_os = "linux")]
     if is_wayland() && is_wl_copy_available() {
-        let _ = write_clipboard_via_wl_copy(&clipboard_content);
+        let _ = write_clipboard_via_wl_copy(text);
     } else {
-        let _ = clipboard.write_text(&clipboard_content);
+        let _ = clipboard.write_text(text);
     }
 
     #[cfg(not(target_os = "linux"))]
-    let _ = clipboard.write_text(&clipboard_content);
+    let _ = clipboard.write_text(text);
 
     Ok(())
 }
@@ -616,19 +619,27 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
         .lock()
         .map_err(|e| format!("Failed to lock Enigo: {}", e))?;
 
-    // Perform the paste operation
-    match paste_method {
+    // Effectue le collage. Garde-fou « jamais de texte perdu » : tout échec (ou
+    // la méthode « Aucun ») dépose la dictée dans le presse-papier pour qu'elle
+    // reste collable manuellement — le curseur ne repart jamais bredouille.
+    let paste_result: Result<(), String> = match paste_method {
         PasteMethod::None => {
-            info!("PasteMethod::None selected - skipping paste action");
+            // « Aucun » ne simule pas de frappe : on dépose au moins la dictée
+            // dans le presse-papier, sinon elle serait perdue silencieusement.
+            info!(
+                "PasteMethod::None — dépôt du texte dans le presse-papier (pas de collage simulé)"
+            );
+            app_handle
+                .clipboard()
+                .write_text(&text)
+                .map_err(|e| format!("Failed to copy to clipboard: {}", e))
         }
-        PasteMethod::Direct => {
-            paste_direct(
-                &mut enigo,
-                &text,
-                #[cfg(target_os = "linux")]
-                settings.typing_tool,
-            )?;
-        }
+        PasteMethod::Direct => paste_direct(
+            &mut enigo,
+            &text,
+            #[cfg(target_os = "linux")]
+            settings.typing_tool,
+        ),
         PasteMethod::CtrlV | PasteMethod::CtrlShiftV | PasteMethod::ShiftInsert => {
             paste_via_clipboard(
                 &mut enigo,
@@ -637,16 +648,24 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
                 &paste_method,
                 paste_delay_ms,
                 paste_delay_after_ms,
-            )?
+            )
         }
-        PasteMethod::ExternalScript => {
-            let script_path = settings
-                .external_script_path
-                .as_ref()
-                .filter(|p| !p.is_empty())
-                .ok_or("External script path is not configured")?;
-            paste_via_external_script(&text, script_path)?;
-        }
+        PasteMethod::ExternalScript => match settings
+            .external_script_path
+            .as_ref()
+            .filter(|p| !p.is_empty())
+        {
+            Some(script_path) => paste_via_external_script(&text, script_path),
+            None => Err("External script path is not configured".to_string()),
+        },
+    };
+
+    if let Err(e) = paste_result {
+        // Repli universel : ne JAMAIS perdre la dictée — on la laisse dans le
+        // presse-papier pour qu'elle reste collable à la main (Ctrl+V).
+        warn!("Collage échoué ({e}) — dépôt du texte dans le presse-papier en repli");
+        let _ = app_handle.clipboard().write_text(&text);
+        return Err(e);
     }
 
     if should_send_auto_submit(settings.auto_submit, paste_method) {
