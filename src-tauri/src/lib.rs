@@ -833,10 +833,15 @@ pub fn run(cli_args: CliArgs) {
             let mut win_builder =
                 tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("/".into()))
                     .title("Nova")
-                    .inner_size(680.0, 570.0)
-                    .min_inner_size(680.0, 570.0)
+                    // Fenêtre spacieuse par défaut : l'ancienne 680×570 tassait
+                    // tout et rendait les réglages illisibles. On garde un
+                    // minimum utilisable et on autorise l'agrandissement/plein
+                    // écran.
+                    .inner_size(1080.0, 800.0)
+                    .min_inner_size(760.0, 620.0)
                     .resizable(true)
-                    .maximizable(false)
+                    .maximizable(true)
+                    .center()
                     .visible(false);
 
             if let Some(data_dir) = portable::data_dir() {
