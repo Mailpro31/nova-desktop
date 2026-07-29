@@ -66,6 +66,26 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     };
   }, [settingsLoaded, updateChecksEnabled]);
 
+  // La requête vers GitHub (redirection releases/latest → asset, réseau
+  // mobile, coupure passagère) peut échouer ponctuellement : on réessaie
+  // quelques fois avec un léger délai avant de considérer la vérification en
+  // échec, pour ne pas afficher « Échec de la mise à jour » sur un simple
+  // hoquet réseau alors que l'app est en fait déjà à jour.
+  const checkWithRetry = async (attempts = 3) => {
+    let lastError: unknown;
+    for (let i = 0; i < attempts; i++) {
+      try {
+        return await check();
+      } catch (error) {
+        lastError = error;
+        if (i < attempts - 1) {
+          await new Promise((resolve) => setTimeout(resolve, 1200 * (i + 1)));
+        }
+      }
+    }
+    throw lastError;
+  };
+
   // Update checking functions
   const checkForUpdates = async () => {
     if (!updateChecksEnabled || isChecking) return;
@@ -73,7 +93,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     try {
       setIsChecking(true);
       setShowError(false);
-      const update = await check();
+      const update = await checkWithRetry();
 
       if (update) {
         setUpdateAvailable(true);
@@ -126,7 +146,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       setDownloadProgress(0);
       downloadedBytesRef.current = 0;
       contentLengthRef.current = 0;
-      const update = await check();
+      const update = await checkWithRetry();
 
       if (!update) {
         console.log("No update available during install attempt");
