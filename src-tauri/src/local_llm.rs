@@ -323,11 +323,16 @@ async fn resolve_server_asset_url() -> Result<String, String> {
 /// ponctuelle.
 #[cfg(windows)]
 pub async fn ensure_server_binary(app: &AppHandle) -> Result<(), String> {
+    let dir = local_llm_dir(app)?;
     let dest = server_binary_path(app)?;
-    if dest.is_file() {
+    // Déjà installé ET accompagné de ses DLL : rien à faire. On exige la
+    // présence d'au moins une DLL car les versions antérieures ne copiaient que
+    // `llama-server.exe` : un tel dossier fait échouer le démarrage (« Impossible
+    // d'exécuter le code, car llama-server-impl.dll est introuvable ») et doit
+    // être ré-extrait pour se réparer tout seul.
+    if dest.is_file() && dir_contains_dll(&dir) {
         return Ok(());
     }
-    let dir = local_llm_dir(app)?;
     let zip_url = resolve_server_asset_url().await?;
     let zip_path = dir.join("llama-server.zip");
     download_with_progress(app, &zip_url, &zip_path, "engine", "").await?;
@@ -356,12 +361,70 @@ pub async fn ensure_server_binary(app: &AppHandle) -> Result<(), String> {
     // L'archive peut contenir le binaire à la racine ou dans un sous-dossier :
     // on cherche `llama-server.exe` récursivement (une profondeur suffit en
     // pratique pour ces archives).
-    let found = find_file_recursive(&extract_dir, "llama-server.exe", 3);
-    let found = found.ok_or_else(|| "llama-server.exe introuvable dans l'archive.".to_string())?;
-    std::fs::copy(&found, &dest).map_err(|e| format!("Copie du binaire : {e}"))?;
+    let found = find_file_recursive(&extract_dir, "llama-server.exe", 3)
+        .ok_or_else(|| "llama-server.exe introuvable dans l'archive.".to_string())?;
+    // CRUCIAL : `llama-server.exe` ne démarre pas seul. Les builds récents de
+    // llama.cpp éclatent le moteur en DLL (`llama-server-impl.dll`, `ggml*.dll`,
+    // `llama.dll`…) livrées à côté de l'exe. On copie donc l'exe ET toutes les
+    // DLL de son dossier, pas seulement le binaire.
+    let bin_dir = found
+        .parent()
+        .ok_or_else(|| "Dossier du binaire introuvable dans l'archive.".to_string())?;
+    stage_engine_files(bin_dir, &dir)?;
 
     let _ = std::fs::remove_file(&zip_path);
     let _ = std::fs::remove_dir_all(&extract_dir);
+    Ok(())
+}
+
+/// Vrai si `dir` contient au moins un fichier `.dll`. Heuristique « moteur
+/// complet » : une install laissée par une version antérieure ne contient que
+/// `llama-server.exe` sans ses DLL, et doit être ré-extraite.
+#[cfg(windows)]
+fn dir_contains_dll(dir: &Path) -> bool {
+    std::fs::read_dir(dir)
+        .map(|entries| {
+            entries.flatten().any(|e| {
+                e.path()
+                    .extension()
+                    .map(|ext| ext.eq_ignore_ascii_case("dll"))
+                    .unwrap_or(false)
+            })
+        })
+        .unwrap_or(false)
+}
+
+/// Copie `llama-server.exe` et toutes les DLL du dossier du binaire extrait
+/// vers `dst` (à plat, côte à côte — Windows cherche les DLL dans le dossier de
+/// l'exe). On ignore les autres exécutables de l'archive (`llama-cli.exe`…),
+/// inutiles à Nova, pour ne pas gonfler le dossier.
+#[cfg(windows)]
+fn stage_engine_files(src_dir: &Path, dst: &Path) -> Result<(), String> {
+    let entries =
+        std::fs::read_dir(src_dir).map_err(|e| format!("Lecture du dossier moteur : {e}"))?;
+    let mut copied_exe = false;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if !path.is_file() {
+            continue;
+        }
+        let name = match path.file_name().and_then(|n| n.to_str()) {
+            Some(n) => n,
+            None => continue,
+        };
+        let is_dll = path
+            .extension()
+            .map(|ext| ext.eq_ignore_ascii_case("dll"))
+            .unwrap_or(false);
+        let is_server = name.eq_ignore_ascii_case("llama-server.exe");
+        if is_dll || is_server {
+            std::fs::copy(&path, dst.join(name)).map_err(|e| format!("Copie de {name} : {e}"))?;
+            copied_exe |= is_server;
+        }
+    }
+    if !copied_exe {
+        return Err("llama-server.exe introuvable dans l'archive.".to_string());
+    }
     Ok(())
 }
 

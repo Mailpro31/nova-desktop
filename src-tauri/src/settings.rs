@@ -644,7 +644,14 @@ fn default_theme() -> Theme {
 }
 
 fn default_post_process_enabled() -> bool {
-    false
+    // Les Styles sont au cœur de Nova : la reformulation est active dès la
+    // première installation. Elle est portée par un raccourci DÉDIÉ
+    // (`transcribe_with_post_process`, ctrl+shift+space par défaut) distinct de
+    // la dictée brute (`transcribe`, ctrl+space) — activer par défaut se
+    // contente d'enregistrer ce second raccourci et ne change jamais le
+    // comportement de la dictée brute. N'affecte que les installs neuves : les
+    // utilisateurs existants conservent leur valeur persistée.
+    true
 }
 
 fn default_app_language() -> String {
