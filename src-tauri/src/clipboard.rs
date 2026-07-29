@@ -626,7 +626,9 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
         PasteMethod::None => {
             // « Aucun » ne simule pas de frappe : on dépose au moins la dictée
             // dans le presse-papier, sinon elle serait perdue silencieusement.
-            info!("PasteMethod::None — dépôt du texte dans le presse-papier (pas de collage simulé)");
+            info!(
+                "PasteMethod::None — dépôt du texte dans le presse-papier (pas de collage simulé)"
+            );
             app_handle
                 .clipboard()
                 .write_text(&text)
