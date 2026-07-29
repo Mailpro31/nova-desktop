@@ -189,7 +189,85 @@ pub fn trial_days_remaining(trial_started_at: i64) -> i64 {
     (TRIAL_SECS - elapsed + 86_399) / 86_400 // arrondi au jour supérieur
 }
 
+/// Vérifie un jeton d'essai serveur « NOVAT1.<payload>.<sig> » signé par
+/// l'éditeur (même clé que les licences) et LIÉ à cette machine. → epoch
+/// (secondes) du début d'essai scellé côté serveur si la signature est valide,
+/// que `k` vaut "trial" et que l'empreinte `m` correspond à `machine`. Sinon
+/// None. Ne panique jamais. Dormant (clé publique vide) → None.
+pub fn verify_trial_token(token: &str, machine: &str) -> Option<i64> {
+    if !enabled() || token.trim().is_empty() {
+        return None;
+    }
+    let parts: Vec<&str> = token.trim().split('.').collect();
+    if parts.len() != 3 || parts[0] != "NOVAT1" {
+        return None;
+    }
+    let payload = b64url_decode(parts[1])?;
+    let sig_bytes = b64url_decode(parts[2])?;
+    let pub_bytes = base64::engine::general_purpose::STANDARD
+        .decode(PUBLIC_KEY_B64)
+        .ok()?;
+    let pub_arr: [u8; 32] = pub_bytes.as_slice().try_into().ok()?;
+    let sig_arr: [u8; 64] = sig_bytes.as_slice().try_into().ok()?;
+    let vk = VerifyingKey::from_bytes(&pub_arr).ok()?;
+    let sig = Signature::from_bytes(&sig_arr);
+    vk.verify_strict(&payload, &sig).ok()?;
+
+    let data: serde_json::Value = serde_json::from_slice(&payload).ok()?;
+    if data.get("k").and_then(|k| k.as_str()) != Some("trial") {
+        return None;
+    }
+    let m = data.get("m").and_then(|m| m.as_str())?;
+    if !m.eq_ignore_ascii_case(machine.trim()) {
+        return None; // jeton d'une autre machine
+    }
+    let s = data.get("s").and_then(|s| s.as_i64())?;
+    if s <= 0 {
+        return None;
+    }
+    Some(s)
+}
+
+/// Début d'essai « effectif » = la date la plus ANCIENNE connue entre la valeur
+/// locale et celle scellée côté serveur (jeton lié à `machine`). Ainsi :
+/// réinstaller (valeur locale remise à « maintenant ») ne rallonge PAS l'essai
+/// — le serveur se souvient de la vraie date ; et rester hors-ligne pour
+/// retarder le scellage serveur ne le rallonge pas non plus — le local fait foi.
+/// Sans jeton valide → la valeur locale inchangée (dormant / réversible).
+pub fn reconcile_trial_start(local: i64, trial_token: &str, machine: &str) -> i64 {
+    match verify_trial_token(trial_token, machine) {
+        Some(server) if local > 0 => local.min(server),
+        Some(server) => server,
+        None => local,
+    }
+}
+
 /// La fonctionnalité est-elle accessible, essai Pro automatique inclus ?
 pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
     effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
+}
+
+#[cfg(test)]
+mod trial_token_tests {
+    use super::*;
+
+    const MACHINE: &str = "04072e8c6df2321f59ee4d9de7cbe834";
+
+    #[test]
+    fn rejette_jeton_malforme_ou_mauvais_prefixe() {
+        assert_eq!(verify_trial_token("", MACHINE), None);
+        // Un jeton de LICENCE (préfixe NOVA1) n'est pas un jeton d'essai.
+        assert_eq!(verify_trial_token("NOVA1.a.b", MACHINE), None);
+        assert_eq!(verify_trial_token("NOVAT1.only-two-parts", MACHINE), None);
+        // Bon préfixe mais signature invalide → rejeté.
+        assert_eq!(verify_trial_token("NOVAT1.zzz.zzz", MACHINE), None);
+    }
+
+    #[test]
+    fn reconcile_sans_jeton_valide_garde_le_local() {
+        // Un jeton absent/invalide ne modifie jamais la valeur locale.
+        assert_eq!(reconcile_trial_start(1000, "", MACHINE), 1000);
+        assert_eq!(reconcile_trial_start(1000, "NOVAT1.x.y", MACHINE), 1000);
+        assert_eq!(reconcile_trial_start(0, "poubelle", MACHINE), 0);
+    }
 }

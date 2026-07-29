@@ -69,9 +69,17 @@ fn build_status(key: &str, trial_started_at: i64, trial_expired_notified: bool) 
 #[specta::specta]
 pub fn get_license_status(app: AppHandle) -> LicenseStatus {
     let settings = get_settings(&app);
+    // Fait respecter la date d'essai scellée côté serveur (jeton lié à cette
+    // machine), même hors-ligne, sans dépendre d'un rafraîchissement réseau.
+    // Sans jeton valide, renvoie la valeur locale inchangée.
+    let trial_start = licensing::reconcile_trial_start(
+        settings.trial_started_at,
+        &settings.trial_token,
+        &crate::machine_id::fingerprint(),
+    );
     build_status(
         settings.license_key.as_deref().unwrap_or(""),
-        settings.trial_started_at,
+        trial_start,
         settings.trial_expired_notified,
     )
 }
@@ -177,6 +185,78 @@ pub async fn activate_license_code(app: AppHandle, code: String) -> Result<Licen
         trial_started_at,
         trial_expired_notified,
     ))
+}
+
+/// URL de la fonction edge de scellage d'essai (projet « nova-licences »).
+const TRIAL_URL: &str = "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/trial-check";
+
+#[derive(Deserialize)]
+struct TrialResp {
+    ok: bool,
+    token: Option<String>,
+}
+
+/// Contacte le serveur pour SCELLER/LIRE la date de début d'essai de cette
+/// machine, puis :
+///   - stocke le jeton signé renvoyé (`trial_token`) ;
+///   - ramène `trial_started_at` à la date la plus ancienne connue
+///     (`reconcile_trial_start`) — empêche de rallonger l'essai par
+///     réinstallation.
+///
+/// Entièrement DÉFENSIF : réseau coupé, serveur muet, jeton invalide ou
+/// licensing dormant → aucun changement, l'essai local continue de faire foi.
+/// N'est PAS une commande : appelée en tâche de fond au démarrage.
+pub async fn fetch_and_seal_trial(app: AppHandle) {
+    // Rien à sceller si le licensing est dormant (tout est déjà débloqué).
+    if !licensing::enabled() {
+        return;
+    }
+    let machine = crate::machine_id::fingerprint();
+
+    let client = match reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(12))
+        .build()
+    {
+        Ok(c) => c,
+        Err(_) => return,
+    };
+
+    let resp = match client
+        .post(TRIAL_URL)
+        .json(&serde_json::json!({ "machine": machine }))
+        .send()
+        .await
+    {
+        Ok(r) => r,
+        Err(_) => return, // hors-ligne → on garde l'essai local
+    };
+
+    let parsed: TrialResp = match resp.json().await {
+        Ok(p) => p,
+        Err(_) => return,
+    };
+    if !parsed.ok {
+        return;
+    }
+    let token = match parsed.token {
+        Some(t) => t,
+        None => return,
+    };
+
+    // Le jeton doit être valide ET lié à CETTE machine, sinon on l'ignore.
+    let server_start = match licensing::verify_trial_token(&token, &machine) {
+        Some(s) => s,
+        None => return,
+    };
+
+    let mut settings = get_settings(&app);
+    settings.trial_token = token;
+    settings.trial_started_at = if settings.trial_started_at > 0 {
+        settings.trial_started_at.min(server_start)
+    } else {
+        server_start
+    };
+    write_settings(&app, settings);
 }
 
 /// Décision produit : une licence activée ne peut plus être retirée depuis

@@ -467,6 +467,13 @@ pub struct AppSettings {
     /// la répéter à chaque lancement une fois l'essai expiré.
     #[serde(default)]
     pub trial_expired_notified: bool,
+    /// Jeton d'essai signé par le serveur (« NOVAT1… »), lié à cette machine et
+    /// scellant la date de début d'essai côté serveur. Vide = serveur jamais
+    /// contacté (l'essai local fait alors foi). Permet de faire respecter la
+    /// date serveur même hors-ligne — voir `licensing::reconcile_trial_start`.
+    /// Défensif : sans jeton valide, aucun effet (dormant/réversible).
+    #[serde(default)]
+    pub trial_token: String,
     /// Quota Free : reformulations (Styles) appliquées durant la journée
     /// glissante en cours. Réinitialisé au bout de 24 h. Voir quota.rs.
     #[serde(default)]
@@ -1046,6 +1053,7 @@ pub fn get_default_settings() -> AppSettings {
         // pour une migration/un salvage ne doivent jamais (re)démarrer l'essai.
         trial_started_at: 0,
         trial_expired_notified: false,
+        trial_token: String::new(),
         auto_style_rules: HashMap::new(),
         auto_style_blocklist: Vec::new(),
         context_reading_enabled: false,
