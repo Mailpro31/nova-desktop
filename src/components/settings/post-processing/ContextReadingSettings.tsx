@@ -39,8 +39,8 @@ export const ContextReadingSettings: React.FC = () => {
   // passe en plus par le moteur en ligne (`online_engine`, Ultra également).
   useEffect(() => {
     getStatus().then((st) => {
-      setCanRead(st ? (st.features?.context_reading ?? false) : true);
-      setCanVisual(st ? (st.features?.online_engine ?? false) : true);
+      setCanRead(st ? (st.features?.context_reading ?? true) : true);
+      setCanVisual(st ? (st.features?.online_engine ?? true) : true);
     });
   }, []);
 

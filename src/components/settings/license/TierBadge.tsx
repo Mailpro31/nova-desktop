@@ -59,7 +59,7 @@ export const TierBadge: React.FC<{ feature: string; className?: string }> = ({
   useEffect(() => {
     let alive = true;
     getStatus().then((s) => {
-      if (alive) setLocked(s ? !(s.features?.[feature] ?? false) : false);
+      if (alive) setLocked(s ? !(s.features?.[feature] ?? true) : false);
     });
     return () => {
       alive = false;

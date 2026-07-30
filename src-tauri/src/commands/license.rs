@@ -41,6 +41,7 @@ const KNOWN_FEATURES: &[&str] = &[
     "orb_customization",
     "custom_naming",
     "priority_updates",
+    "context_reading",
 ];
 
 fn build_status(key: &str, trial_started_at: i64, trial_expired_notified: bool) -> LicenseStatus {

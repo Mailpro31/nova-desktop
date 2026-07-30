@@ -177,8 +177,8 @@
             "description": "The keyboard shortcut to cancel the current recording."
           },
           "transcribe_with_post_process": {
-            "name": "Post-Processing Hotkey",
-            "description": "Optional: A dedicated hotkey that always applies AI post-processing to your transcription."
+            "name": "Reformulation hotkey (optional)",
+            "description": "A second hotkey that always applies the selected Style, even when reformulation is turned off. Rarely needed: your main dictation already applies the Style when reformulation is on."
           }
         },
         "errors": {
