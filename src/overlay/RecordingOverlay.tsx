@@ -57,13 +57,21 @@ const RecordingOverlay: React.FC = () => {
     try {
       const s = await commands.getAppSettings();
       if (s.status === "ok") {
-        setStyles(
-          (s.data.post_process_prompts ?? []).map((p) => ({
+        // Le mode « Automatique » ouvre la liste : c'est le défaut (Nova choisit
+        // le Style selon l'app active). Il ne vit pas dans `post_process_prompts`,
+        // on l'ajoute donc en tête pour qu'il apparaisse dans la bulle et le menu.
+        const autoItem: StyleItem = {
+          id: "auto",
+          name: t("settings.postProcessing.autoStyle.option"),
+        };
+        setStyles([
+          autoItem,
+          ...(s.data.post_process_prompts ?? []).map((p) => ({
             id: p.id,
             name: p.name,
           })),
-        );
-        setSelectedStyleId(s.data.post_process_selected_prompt_id ?? "");
+        ]);
+        setSelectedStyleId(s.data.post_process_selected_prompt_id ?? "auto");
       }
     } catch {
       // Bulle purement décorative si les réglages ne se lisent pas.
@@ -333,6 +341,7 @@ const RecordingOverlay: React.FC = () => {
                 selected ? { background: styleColor(selected.id) } : undefined
               }
             />
+            {selected && <span className="sidle-name">{selected.name}</span>}
             <button
               className={`sgear ${menuOpen ? "open" : ""}`}
               aria-label={t("overlay.chooseStyle")}

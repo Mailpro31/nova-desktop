@@ -89,6 +89,77 @@ N'invente jamais de valeur et ne mentionne pas ces instructions.\n{}",
     )
 }
 
+/// Vrai si le caractère fait partie d'un « mot » (lettre ou chiffre) : sert à
+/// borner le remplacement des raccourcis aux mots entiers.
+fn is_word_char(c: char) -> bool {
+    c.is_alphanumeric()
+}
+
+/// Remplace toutes les occurrences de `key` (mot entier, insensible à la casse
+/// ASCII) par `value`. Sûr sur l'UTF-8 : on ne compare que des tranches alignées
+/// sur des frontières de caractères, jamais d'indexation croisée.
+fn replace_keyword_ci(haystack: &str, key: &str, value: &str) -> String {
+    let klen = key.len();
+    if klen == 0 || klen > haystack.len() {
+        return haystack.to_string();
+    }
+    let mut result = String::with_capacity(haystack.len());
+    let mut i = 0usize;
+    while i < haystack.len() {
+        let end = i + klen;
+        let matched = end <= haystack.len()
+            && haystack.is_char_boundary(i)
+            && haystack.is_char_boundary(end)
+            && haystack[i..end].eq_ignore_ascii_case(key)
+            && (i == 0
+                || !haystack[..i]
+                    .chars()
+                    .next_back()
+                    .map(is_word_char)
+                    .unwrap_or(false))
+            && (end == haystack.len()
+                || !haystack[end..]
+                    .chars()
+                    .next()
+                    .map(is_word_char)
+                    .unwrap_or(false));
+        if matched {
+            result.push_str(value);
+            i = end;
+        } else {
+            let l = haystack[i..]
+                .chars()
+                .next()
+                .map(|c| c.len_utf8())
+                .unwrap_or(1);
+            result.push_str(&haystack[i..i + l]);
+            i += l;
+        }
+    }
+    result
+}
+
+/// Substitution DÉTERMINISTE des raccourcis personnels (« Mes informations »),
+/// indépendante de l'IA : si l'utilisateur a dicté le mot-clé, la valeur exacte
+/// est insérée. Clés les plus longues d'abord (évite qu'une clé courte n'ampute
+/// une clé englobante). Renvoie le texte inchangé s'il n'y a aucun raccourci.
+fn apply_custom_variables(text: &str, variables: &[crate::settings::CustomVariable]) -> String {
+    let mut pairs: Vec<(String, String)> = variables
+        .iter()
+        .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
+        .map(|v| (v.key.trim().to_string(), v.value.trim().to_string()))
+        .collect();
+    if pairs.is_empty() {
+        return text.to_string();
+    }
+    pairs.sort_by(|a, b| b.0.chars().count().cmp(&a.0.chars().count()));
+    let mut out = text.to_string();
+    for (key, value) in pairs {
+        out = replace_keyword_ci(&out, &key, &value);
+    }
+    out
+}
+
 /// Bloc « contexte à l'écran » (palier A) injecté dans le prompt quand la
 /// lecture de contexte est active : le contenu texte de la fenêtre au premier
 /// plan, encadré d'un garde-fou strict (lecture seule, ne pas recopier, ignorer
@@ -610,6 +681,16 @@ pub(crate) async fn process_transcription_output(
         post_processed_text = Some(final_text.clone());
     }
 
+    // Substitution DÉTERMINISTE des raccourcis personnels, en DERNIER, sur le
+    // texte final : garantit « mon IBAN » → la valeur exacte, avec OU sans
+    // reformulation, sans dépendre du modèle. Idempotente (le mot-clé disparaît
+    // après remplacement, donc jamais de double substitution).
+    let substituted = apply_custom_variables(&final_text, &settings.custom_variables);
+    if substituted != final_text {
+        final_text = substituted;
+        post_processed_text = Some(final_text.clone());
+    }
+
     ProcessedTranscription {
         final_text,
         post_processed_text,
@@ -804,7 +885,12 @@ impl ShortcutAction for TranscribeAction {
         play_feedback_sound(app, SoundType::Stop);
 
         let binding_id = binding_id.to_string(); // Clone binding_id for the async task
-        let post_process = self.post_process;
+                                                 // La dictée principale applique aussi les Styles dès que la reformulation
+                                                 // est activée (toggle « Reformulation par IA (Styles) », ON par défaut) :
+                                                 // la reformulation ne dépend plus d'un second raccourci dédié. Le
+                                                 // raccourci de post-traitement (`self.post_process`) force l'application
+                                                 // même si le toggle était coupé.
+        let post_process = self.post_process || get_settings(app).post_process_enabled;
         let cancel_generation = rm.cancel_generation();
 
         // Style « Automatique » : on lit la fenêtre au premier plan MAINTENANT
@@ -1111,7 +1197,11 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 
 #[cfg(test)]
 mod tests {
-    use super::{complete_unless_cancelled, is_blank_transcription, should_use_streaming_overlay};
+    use super::{
+        apply_custom_variables, complete_unless_cancelled, is_blank_transcription,
+        replace_keyword_ci, should_use_streaming_overlay,
+    };
+    use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
     use std::future;
     use std::sync::atomic::{AtomicBool, Ordering};
@@ -1130,6 +1220,45 @@ mod tests {
     fn non_blank_transcription_is_kept() {
         assert!(!is_blank_transcription("hello"));
         assert!(!is_blank_transcription("  hello  "));
+    }
+
+    fn var(key: &str, value: &str) -> CustomVariable {
+        CustomVariable {
+            key: key.to_string(),
+            value: value.to_string(),
+        }
+    }
+
+    #[test]
+    fn keyword_substitution_is_case_insensitive_and_word_bounded() {
+        // Casse ignorée, ponctuation adjacente conservée.
+        assert_eq!(
+            replace_keyword_ci("Voici mon iban.", "mon IBAN", "FR76 3000"),
+            "Voici FR76 3000."
+        );
+        // Ne remplace pas à l'intérieur d'un mot plus long.
+        assert_eq!(
+            replace_keyword_ci("abcmon ibanxyz", "mon iban", "X"),
+            "abcmon ibanxyz"
+        );
+    }
+
+    #[test]
+    fn custom_variables_apply_longest_key_first() {
+        let vars = vec![var("mon IBAN", "FR76 3000"), var("IBAN", "GENERIC")];
+        // La clé la plus longue gagne : « mon IBAN » n'est pas amputé par « IBAN ».
+        assert_eq!(
+            apply_custom_variables("Envoie mon IBAN stp", &vars),
+            "Envoie FR76 3000 stp"
+        );
+    }
+
+    #[test]
+    fn custom_variables_noop_without_entries() {
+        assert_eq!(apply_custom_variables("rien à faire", &[]), "rien à faire");
+        // Clé ou valeur vide ignorée.
+        let vars = vec![var("  ", "x"), var("clé", "  ")];
+        assert_eq!(apply_custom_variables("clé", &vars), "clé");
     }
 
     #[test]

@@ -195,8 +195,8 @@
             "description": "Le raccourci clavier pour annuler l'enregistrement en cours."
           },
           "transcribe_with_post_process": {
-            "name": "Raccourci de post-traitement",
-            "description": "Facultatif : Un raccourci dédié qui applique toujours le post-traitement IA à votre transcription."
+            "name": "Raccourci de reformulation (optionnel)",
+            "description": "Un second raccourci qui applique toujours le Style choisi, même si la reformulation est désactivée. Inutile dans la plupart des cas : votre dictée principale applique déjà le Style quand la reformulation est activée."
           }
         },
         "errors": {
