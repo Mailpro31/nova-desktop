@@ -191,6 +191,15 @@ impl HandyKeysState {
         binding_id: &str,
         hotkey_string: &str,
     ) -> Result<(), String> {
+        // Guard against double-registration: if this binding already has a live
+        // hotkey, drop it first. Otherwise the old HotkeyId is orphaned (leaked,
+        // never unregistered) AND the manager fires BOTH ids on every keypress →
+        // two recordings/pastes per press.
+        if let Some(old_id) = binding_to_hotkey.remove(binding_id) {
+            let _ = manager.unregister(old_id);
+            hotkey_to_binding.remove(&old_id);
+        }
+
         let hotkey: Hotkey = hotkey_string
             .parse()
             .map_err(|e| format!("Failed to parse hotkey '{}': {}", hotkey_string, e))?;

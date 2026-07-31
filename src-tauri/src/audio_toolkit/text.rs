@@ -201,28 +201,35 @@ fn preserve_case_pattern(original: &str, replacement: &str) -> String {
     }
 }
 
-/// Extracts punctuation prefix and suffix from a word
+/// Extracts punctuation prefix and suffix from a word.
+///
+/// Works in BYTE offsets (not char counts): a char count used as a byte index
+/// slices mid-codepoint on any non-ASCII punctuation (French « » guillemets,
+/// « … » ellipsis, curly quotes) and panics — which, off the engine's
+/// catch_unwind, would lose the whole transcription and leave the cursor empty.
 fn extract_punctuation(word: &str) -> (&str, &str) {
-    let prefix_end = word.chars().take_while(|c| !c.is_alphanumeric()).count();
+    // Byte offset of the first alphanumeric char (end of the leading punctuation).
+    let prefix_end = word
+        .char_indices()
+        .find(|(_, c)| c.is_alphanumeric())
+        .map(|(i, _)| i)
+        .unwrap_or(word.len());
+    // Byte offset just after the last alphanumeric char (start of the trailing
+    // punctuation).
     let suffix_start = word
         .char_indices()
         .rev()
-        .take_while(|(_, c)| !c.is_alphanumeric())
-        .count();
+        .find(|(_, c)| c.is_alphanumeric())
+        .map(|(i, c)| i + c.len_utf8())
+        .unwrap_or(word.len());
 
-    let prefix = if prefix_end > 0 {
-        &word[..prefix_end]
-    } else {
-        ""
-    };
+    // No alphanumeric char at all → treat the whole token as prefix, empty
+    // suffix (avoids the two ranges overlapping).
+    if prefix_end >= suffix_start {
+        return (word, "");
+    }
 
-    let suffix = if suffix_start > 0 {
-        &word[word.len() - suffix_start..]
-    } else {
-        ""
-    };
-
-    (prefix, suffix)
+    (&word[..prefix_end], &word[suffix_start..])
 }
 
 /// Returns filler words appropriate for the given language code.

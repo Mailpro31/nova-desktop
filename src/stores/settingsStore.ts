@@ -13,6 +13,7 @@ interface SettingsStore {
   settings: Settings | null;
   defaultSettings: Settings | null;
   isLoading: boolean;
+  initialized: boolean;
   isUpdating: Record<string, boolean>;
   audioDevices: AudioDevice[];
   outputDevices: AudioDevice[];
@@ -171,6 +172,7 @@ export const useSettingsStore = create<SettingsStore>()(
     settings: null,
     defaultSettings: null,
     isLoading: true,
+    initialized: false,
     isUpdating: {},
     audioDevices: [],
     outputDevices: [],
@@ -583,6 +585,14 @@ export const useSettingsStore = create<SettingsStore>()(
 
     // Initialize everything
     initialize: async () => {
+      // Idempotency guard: useSettings() calls initialize() from EVERY consumer
+      // while isLoading is true, so without this each one would run the full
+      // init AND register its own "model-state-changed" listener → N duplicate
+      // refreshSettings() on every later model switch. Set synchronously (before
+      // any await) so concurrent callers in the same tick bail out here.
+      if (get().initialized) return;
+      set({ initialized: true });
+
       const { refreshSettings, checkCustomSounds, loadDefaultSettings } = get();
 
       // Note: Audio devices are NOT refreshed here. The frontend (App.tsx)
