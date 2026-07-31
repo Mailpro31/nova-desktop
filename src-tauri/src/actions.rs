@@ -474,6 +474,12 @@ async fn post_process_transcription(
                             json.get(TRANSCRIPTION_FIELD).and_then(|t| t.as_str())
                         {
                             let result = strip_invisible_chars(transcription_value);
+                            if result.trim().is_empty() {
+                                // Blank reformulation → fall back to raw text
+                                // (never leave the cursor empty).
+                                debug!("Structured output returned an empty transcription; falling back to raw text");
+                                return None;
+                            }
                             debug!(
                                 "Structured output post-processing succeeded for provider '{}'. Output length: {} chars",
                                 provider.id,
@@ -529,6 +535,11 @@ async fn post_process_transcription(
     {
         Ok(Some(content)) => {
             let content = strip_invisible_chars(&content);
+            if content.trim().is_empty() {
+                // Blank reformulation → fall back to raw text (never empty cursor).
+                debug!("LLM returned empty content; falling back to raw text");
+                return None;
+            }
             debug!(
                 "LLM post-processing succeeded for provider '{}'. Output length: {} chars",
                 provider.id,

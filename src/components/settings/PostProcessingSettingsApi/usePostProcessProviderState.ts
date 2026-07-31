@@ -92,7 +92,12 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   useEffect(() => {
     let alive = true;
     getStatus().then((s) => {
-      if (alive) setTurboLocked(!(s?.features?.online_engine ?? false));
+      // Fail-OPEN on an absent status (IPC teardown / transient null): the
+      // backend enforces online_engine regardless, so never grey out Turbo for
+      // an entitled user with no "requires Ultra" badge (TierBadge is fail-open
+      // too). Only lock when a PRESENT status says the feature is off.
+      if (alive)
+        setTurboLocked(s ? !(s.features?.online_engine ?? true) : false);
     });
     return () => {
       alive = false;

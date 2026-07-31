@@ -1320,12 +1320,10 @@ pub fn get_bindings(app: &AppHandle) -> HashMap<String, ShortcutBinding> {
     settings.bindings
 }
 
-pub fn get_stored_binding(app: &AppHandle, id: &str) -> ShortcutBinding {
-    let bindings = get_bindings(app);
-
-    let binding = bindings.get(id).unwrap().clone();
-
-    binding
+pub fn get_stored_binding(app: &AppHandle, id: &str) -> Option<ShortcutBinding> {
+    // Returns None for an unknown id (e.g. a stale/legacy id from the frontend)
+    // instead of panicking — reached from the reset_binding command.
+    get_bindings(app).get(id).cloned()
 }
 
 pub fn get_history_limit(app: &AppHandle) -> usize {

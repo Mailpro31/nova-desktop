@@ -159,27 +159,36 @@ pub fn change_binding(
         }
     }
 
-    // Unregister the existing binding
-    if let Err(e) = unregister_shortcut(&app, binding_to_modify.clone()) {
-        let error_msg = format!("Failed to unregister shortcut: {}", e);
-        error!("change_binding error: {}", error_msg);
-    }
-
-    // Validate the new shortcut for the current keyboard implementation
+    // Validate the new shortcut BEFORE touching the currently-registered one:
+    // a bad combo must never leave the user with a dead dictation hotkey.
     if let Err(e) = validate_shortcut_for_implementation(&binding, settings.keyboard_implementation)
     {
         warn!("change_binding validation error: {}", e);
         return Err(e);
     }
 
+    // Unregister the existing binding
+    if let Err(e) = unregister_shortcut(&app, binding_to_modify.clone()) {
+        let error_msg = format!("Failed to unregister shortcut: {}", e);
+        error!("change_binding error: {}", error_msg);
+    }
+
     // Create an updated binding
-    let mut updated_binding = binding_to_modify;
+    let mut updated_binding = binding_to_modify.clone();
     updated_binding.current_binding = binding;
 
     // Register the new binding
     if let Err(e) = register_shortcut(&app, updated_binding.clone()) {
         let error_msg = format!("Failed to register shortcut: {}", e);
         error!("change_binding error: {}", error_msg);
+        // Rollback: restore the previously-registered binding so dictation
+        // keeps working (otherwise the hotkey stays dead until an app restart).
+        if let Err(re) = register_shortcut(&app, binding_to_modify.clone()) {
+            error!(
+                "change_binding rollback failed to re-register old binding: {}",
+                re
+            );
+        }
         return Ok(BindingResponse {
             success: false,
             binding: None,
@@ -204,7 +213,8 @@ pub fn change_binding(
 #[tauri::command]
 #[specta::specta]
 pub fn reset_binding(app: AppHandle, id: String) -> Result<BindingResponse, String> {
-    let binding = settings::get_stored_binding(&app, &id);
+    let binding = settings::get_stored_binding(&app, &id)
+        .ok_or_else(|| format!("Unknown binding id: {}", id))?;
     change_binding(app, id, binding.default_binding)
 }
 
