@@ -76,6 +76,25 @@ pub const FREE_STYLE_IDS: &[&str] = &[
     "nova_style_voice_to_text",
 ];
 
+/// Styles INTÉGRÉS de Nova (presets d'origine). Doit rester synchronisé avec
+/// `settings::default_post_process_prompts`. Tout Style hors de cette liste est
+/// un Style PERSONNEL créé par l'utilisateur → nécessite `custom_styles`
+/// (Nova Ultra) pour être créé, modifié ou appliqué.
+pub const BUILTIN_STYLE_IDS: &[&str] = &[
+    "default_improve_transcriptions",
+    "nova_style_email",
+    "nova_style_messages",
+    "nova_style_prompt",
+    "nova_style_todo",
+    "nova_style_notes",
+    "nova_style_voice_to_text",
+];
+
+/// Un Style est-il un preset intégré (par opposition à un Style personnel) ?
+pub fn is_builtin_style(id: &str) -> bool {
+    BUILTIN_STYLE_IDS.contains(&id)
+}
+
 /// Infos extraites d'un jeton valide.
 #[derive(Debug, Clone)]
 pub struct LicenseInfo {
@@ -245,6 +264,32 @@ pub fn reconcile_trial_start(local: i64, trial_token: &str, machine: &str) -> i6
 /// La fonctionnalité est-elle accessible, essai Pro automatique inclus ?
 pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
     effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
+}
+
+#[cfg(test)]
+mod style_gating_tests {
+    use super::*;
+
+    #[test]
+    fn presets_are_builtin_custom_are_not() {
+        for id in BUILTIN_STYLE_IDS {
+            assert!(is_builtin_style(id), "{id} devrait être un preset intégré");
+        }
+        // Les Styles créés par l'utilisateur portent un id horodaté `prompt_…`.
+        assert!(!is_builtin_style("prompt_1712345678901"));
+        assert!(!is_builtin_style("mon_style_perso"));
+        assert!(!is_builtin_style(""));
+    }
+
+    #[test]
+    fn free_styles_are_all_builtin_presets() {
+        for id in FREE_STYLE_IDS {
+            assert!(
+                BUILTIN_STYLE_IDS.contains(id),
+                "{id} gratuit doit exister parmi les presets intégrés"
+            );
+        }
+    }
 }
 
 #[cfg(test)]

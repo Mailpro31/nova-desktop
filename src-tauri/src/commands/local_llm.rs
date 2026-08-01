@@ -21,5 +21,19 @@ pub fn get_local_llm_profiles(app: AppHandle) -> Vec<local_llm::LlmProfileStatus
 #[tauri::command]
 #[specta::specta]
 pub async fn activate_local_llm_profile(app: AppHandle, profile_id: String) -> Result<(), String> {
+    // Palier : Nova Air est gratuit ; les profils supérieurs (Nova Aura / Apex)
+    // nécessitent Nova Pro. On applique la barrière ici — le frontend grise déjà
+    // ces profils, mais l'enforcement doit vivre côté backend (non contournable).
+    // Défensif : en dormant, `has()` renvoie vrai partout → aucun blocage.
+    if profile_id != "air" {
+        let settings = crate::settings::get_settings(&app);
+        if !crate::licensing::has(
+            "power_profiles",
+            settings.license_key.as_deref().unwrap_or(""),
+            settings.trial_started_at,
+        ) {
+            return Err("Les profils Nova Aura et Nova Apex nécessitent Nova Pro.".to_string());
+        }
+    }
     local_llm::ensure_server_running(&app, &profile_id).await
 }
