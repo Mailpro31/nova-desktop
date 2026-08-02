@@ -28,11 +28,14 @@ impl CurrentTrayIconState {
     }
 
     pub fn get(&self) -> TrayIconState {
-        *self.0.lock().unwrap()
+        // Récupère l'état même si un autre thread a paniqué en tenant le verrou :
+        // la valeur protégée est un simple enum `Copy`, jamais laissée dans un
+        // état incohérent — inutile de propager l'empoisonnement en panique.
+        *self.0.lock().unwrap_or_else(|e| e.into_inner())
     }
 
     fn set(&self, state: TrayIconState) {
-        *self.0.lock().unwrap() = state;
+        *self.0.lock().unwrap_or_else(|e| e.into_inner()) = state;
     }
 }
 
@@ -168,6 +171,16 @@ fn version_label() -> String {
 }
 
 pub fn update_tray_menu(app: &AppHandle, locale: Option<&str>) {
+    // Reconstruire le menu est appelé à chaque changement d'état/de thème. Si
+    // Tauri refuse de créer un item (ressource système transitoire), « jamais de
+    // plantage » : on journalise et on conserve le menu précédent plutôt que de
+    // paniquer et faire tomber l'app entière.
+    if let Err(err) = try_update_tray_menu(app, locale) {
+        error!("Failed to rebuild tray menu: {err}");
+    }
+}
+
+fn try_update_tray_menu(app: &AppHandle, locale: Option<&str>) -> tauri::Result<()> {
     let state = app.state::<CurrentTrayIconState>().get();
     let settings = settings::get_settings(app);
 
@@ -182,36 +195,30 @@ pub fn update_tray_menu(app: &AppHandle, locale: Option<&str>) {
 
     // Create common menu items
     let version_label = version_label();
-    let version_i = MenuItem::with_id(app, "version", &version_label, false, None::<&str>)
-        .expect("failed to create version item");
+    let version_i = MenuItem::with_id(app, "version", &version_label, false, None::<&str>)?;
     let settings_i = MenuItem::with_id(
         app,
         "settings",
         &strings.settings,
         true,
         settings_accelerator,
-    )
-    .expect("failed to create settings item");
+    )?;
     let check_updates_i = MenuItem::with_id(
         app,
         "check_updates",
         &strings.check_updates,
         settings.update_checks_enabled,
         None::<&str>,
-    )
-    .expect("failed to create check updates item");
+    )?;
     let copy_last_transcript_i = MenuItem::with_id(
         app,
         "copy_last_transcript",
         &strings.copy_last_transcript,
         true,
         None::<&str>,
-    )
-    .expect("failed to create copy last transcript item");
+    )?;
     let model_loaded = app.state::<Arc<TranscriptionManager>>().is_model_loaded();
-    let quit_i = MenuItem::with_id(app, "quit", &strings.quit, true, quit_accelerator)
-        .expect("failed to create quit item");
-    let separator = || PredefinedMenuItem::separator(app).expect("failed to create separator");
+    let quit_i = MenuItem::with_id(app, "quit", &strings.quit, true, quit_accelerator)?;
 
     // Build model submenu — label is the active model name
     let model_manager = app.state::<Arc<ModelManager>>();
@@ -228,15 +235,13 @@ pub fn update_tray_menu(app: &AppHandle, locale: Option<&str>) {
         .unwrap_or_else(|| strings.model.clone());
 
     let model_submenu = {
-        let submenu = Submenu::with_id(app, "model_submenu", &submenu_label, true)
-            .expect("failed to create model submenu");
+        let submenu = Submenu::with_id(app, "model_submenu", &submenu_label, true)?;
 
         for model in &downloaded {
             let is_active = model.id == *current_model_id;
             let item_id = format!("model_select:{}", model.id);
             let item =
-                CheckMenuItem::with_id(app, &item_id, &model.name, true, is_active, None::<&str>)
-                    .expect("failed to create model item");
+                CheckMenuItem::with_id(app, &item_id, &model.name, true, is_active, None::<&str>)?;
             let _ = submenu.append(&item);
         }
 
@@ -249,53 +254,50 @@ pub fn update_tray_menu(app: &AppHandle, locale: Option<&str>) {
         &strings.unload_model,
         model_loaded,
         None::<&str>,
-    )
-    .expect("failed to create unload model item");
+    )?;
 
     let menu = match state {
         TrayIconState::Recording | TrayIconState::Transcribing => {
-            let cancel_i = MenuItem::with_id(app, "cancel", &strings.cancel, true, None::<&str>)
-                .expect("failed to create cancel item");
+            let cancel_i = MenuItem::with_id(app, "cancel", &strings.cancel, true, None::<&str>)?;
             Menu::with_items(
                 app,
                 &[
                     &version_i,
-                    &separator(),
+                    &PredefinedMenuItem::separator(app)?,
                     &cancel_i,
-                    &separator(),
+                    &PredefinedMenuItem::separator(app)?,
                     &copy_last_transcript_i,
-                    &separator(),
+                    &PredefinedMenuItem::separator(app)?,
                     &settings_i,
                     &check_updates_i,
-                    &separator(),
+                    &PredefinedMenuItem::separator(app)?,
                     &quit_i,
                 ],
-            )
-            .expect("failed to create menu")
+            )?
         }
         TrayIconState::Idle => Menu::with_items(
             app,
             &[
                 &version_i,
-                &separator(),
+                &PredefinedMenuItem::separator(app)?,
                 &copy_last_transcript_i,
-                &separator(),
+                &PredefinedMenuItem::separator(app)?,
                 &model_submenu,
                 &unload_model_i,
-                &separator(),
+                &PredefinedMenuItem::separator(app)?,
                 &settings_i,
                 &check_updates_i,
-                &separator(),
+                &PredefinedMenuItem::separator(app)?,
                 &quit_i,
             ],
-        )
-        .expect("failed to create menu"),
+        )?,
     };
 
     let tray = app.state::<TrayIcon>();
     let _ = tray.set_menu(Some(menu));
     let _ = tray.set_icon_as_template(true);
     let _ = tray.set_tooltip(Some(version_label));
+    Ok(())
 }
 
 fn last_transcript_text(entry: &HistoryEntry) -> &str {

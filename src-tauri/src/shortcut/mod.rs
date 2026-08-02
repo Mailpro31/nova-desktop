@@ -1131,6 +1131,16 @@ pub fn add_post_process_prompt(
 ) -> Result<LLMPrompt, String> {
     let mut settings = settings::get_settings(&app);
 
+    // Palier : créer un Style PERSONNEL nécessite Nova Ultra. Défensif : en
+    // dormant (`licensing` sans clé publique), `has()` renvoie vrai partout.
+    if !crate::licensing::has(
+        "custom_styles",
+        settings.license_key.as_deref().unwrap_or(""),
+        settings.trial_started_at,
+    ) {
+        return Err("La création de Styles personnalisés nécessite Nova Ultra.".to_string());
+    }
+
     // Generate unique ID using timestamp and random component
     let id = format!("prompt_{}", chrono::Utc::now().timestamp_millis());
 
@@ -1155,6 +1165,16 @@ pub fn update_post_process_prompt(
     prompt: String,
 ) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
+
+    // Palier : modifier un Style (preset intégré comme Style personnel) relève
+    // de la personnalisation avancée → Nova Ultra. Dormant → autorisé.
+    if !crate::licensing::has(
+        "custom_styles",
+        settings.license_key.as_deref().unwrap_or(""),
+        settings.trial_started_at,
+    ) {
+        return Err("La modification des Styles nécessite Nova Ultra.".to_string());
+    }
 
     if let Some(existing_prompt) = settings
         .post_process_prompts

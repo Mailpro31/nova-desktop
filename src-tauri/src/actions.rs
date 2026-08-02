@@ -309,16 +309,23 @@ async fn post_process_transcription(
         }
     };
 
-    // Palier : les Styles au-delà des gratuits nécessitent Nova Pro. Sinon on
-    // retombe sur le Style « Transcription améliorée » (gratuit) — la dictée est
-    // quand même nettoyée, jamais bloquée.
+    // Palier : les Styles au-delà des gratuits nécessitent Nova Pro ; les Styles
+    // PERSONNELS (créés par l'utilisateur, hors presets intégrés) nécessitent
+    // Nova Ultra (`custom_styles`). Sans le palier requis, on retombe sur le
+    // Style « Transcription améliorée » (gratuit) — la dictée est quand même
+    // nettoyée, jamais bloquée.
     let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
+    let required_feature = if crate::licensing::is_builtin_style(&selected_prompt_id) {
+        "all_styles"
+    } else {
+        "custom_styles"
+    };
     let prompt = if !style_is_free
-        && !crate::licensing::has("all_styles", license_key, settings.trial_started_at)
+        && !crate::licensing::has(required_feature, license_key, settings.trial_started_at)
     {
         debug!(
-            "Style '{}' réservé à Nova Pro — repli sur le Style gratuit",
-            selected_prompt_id
+            "Style '{}' réservé ({}) — repli sur le Style gratuit",
+            selected_prompt_id, required_feature
         );
         settings
             .post_process_prompts
