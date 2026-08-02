@@ -179,8 +179,16 @@ fn initialize_core_logic(app_handle: &AppHandle) {
         Arc::new(HistoryManager::new(app_handle).expect("Failed to initialize history manager"));
 
     // Initialize the transcribe-cpp native backend (logging + backend module
-    // registration) once, before any whisper model is loaded.
-    managers::transcription::init_transcribe_backend();
+    // registration) on a background thread. On some Windows machines a
+    // broken/buggy Vulkan driver makes native device enumeration inside this
+    // call hang or spin a CPU core forever; run synchronously here — inside
+    // Tauri's `.setup()`, before the event loop starts — that froze the
+    // ENTIRE app before any window or tray icon ever appeared (reported: CPU
+    // pegged on one core, nothing visible, no way back in). Code that
+    // actually needs the registered devices (model load, GPU device listing)
+    // waits for it with a bounded timeout instead of assuming it already ran
+    // — see `wait_for_transcribe_backend_ready` in managers/transcription.rs.
+    std::thread::spawn(managers::transcription::init_transcribe_backend);
 
     // Apply accelerator preferences before any model loads
     managers::transcription::apply_accelerator_settings(app_handle);

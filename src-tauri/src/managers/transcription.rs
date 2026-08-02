@@ -527,6 +527,18 @@ impl TranscriptionManager {
 
         let loaded_engine = match model_info.engine_type {
             EngineType::TranscribeCpp => {
+                // Backend init (see `init_transcribe_backend`) runs on a background
+                // thread and normally finishes well before the user's first
+                // dictation; wait for it (bounded) so `transcribe_cpp::devices()`
+                // below reflects the real hardware instead of an empty registry.
+                if !wait_for_transcribe_backend_ready() {
+                    warn!(
+                        "transcribe-cpp backend init still not finished after {:?} — \
+                         loading with whatever compute devices are currently \
+                         registered (possible slow/broken GPU driver)",
+                        TRANSCRIBE_BACKEND_READY_TIMEOUT
+                    );
+                }
                 // The whisper backend is chosen at load time (transcribe-cpp has
                 // no runtime global). With an explicit `device_index` (the
                 // --device-index flag) hard-select that registered device;
@@ -1665,11 +1677,51 @@ fn drain_until_finalize(rx: mpsc::Receiver<StreamCmd>) {
     }
 }
 
+/// Signaled once [`init_transcribe_backend`] has finished (success or
+/// failure). That call runs on a background thread (see its call site in
+/// `lib.rs`), so any code reading `transcribe_cpp::devices()` — model
+/// loading, GPU device listing — must wait on this (bounded, see
+/// [`wait_for_transcribe_backend_ready`]) instead of assuming it already ran,
+/// otherwise a slow-but-legitimate enumeration would look like "no GPU" and,
+/// for the `OnceLock`-cached device list, stay wrong for the process's whole
+/// lifetime.
+static TRANSCRIBE_BACKEND_READY: Mutex<bool> = Mutex::new(false);
+static TRANSCRIBE_BACKEND_READY_CVAR: Condvar = Condvar::new();
+
+/// How long a caller that needs `transcribe_cpp::devices()` will wait for
+/// backend init before proceeding anyway with whatever got registered so far.
+/// Bounded so a hung/broken GPU driver (see [`init_transcribe_backend`])
+/// degrades a single model load or the accelerator list instead of blocking
+/// indefinitely.
+const TRANSCRIBE_BACKEND_READY_TIMEOUT: Duration = Duration::from_secs(10);
+
+/// Blocks the calling thread until [`init_transcribe_backend`] has completed,
+/// or [`TRANSCRIBE_BACKEND_READY_TIMEOUT`] elapses — whichever comes first.
+/// Returns whether it's confirmed ready.
+fn wait_for_transcribe_backend_ready() -> bool {
+    let guard = TRANSCRIBE_BACKEND_READY.lock().unwrap();
+    if *guard {
+        return true;
+    }
+    let (guard, _timeout) = TRANSCRIBE_BACKEND_READY_CVAR
+        .wait_timeout_while(guard, TRANSCRIBE_BACKEND_READY_TIMEOUT, |ready| !*ready)
+        .unwrap();
+    *guard
+}
+
 /// Initialize the transcribe-cpp native backend once at startup: route native +
 /// ggml diagnostics into the `log` facade and register compute backend modules.
 /// In a static build (macOS Metal) `init_backends_default` is a harmless no-op;
 /// in a `dynamic-backends` build it loads the per-ISA CPU / GPU modules. Must run
 /// before the first model load.
+///
+/// Runs on a background thread from `lib.rs`: on some Windows machines a
+/// broken/buggy Vulkan driver makes native device enumeration inside
+/// `init_backends_default` hang or spin a CPU core forever. Called
+/// synchronously on the main thread (as this used to be), that froze the
+/// entire app before Tauri's `.setup()` returned — no window, no tray icon,
+/// ever. See [`wait_for_transcribe_backend_ready`] for how consumers cope
+/// with the backend not being ready yet.
 pub fn init_transcribe_backend() {
     transcribe_cpp::init_logging();
     match transcribe_cpp::init_backends_default() {
@@ -1687,6 +1739,11 @@ pub fn init_transcribe_backend() {
         }
         Err(e) => warn!("Failed to initialize transcribe-cpp backends: {}", e),
     }
+    // Signal readiness either way — consumers waiting on
+    // `wait_for_transcribe_backend_ready` proceed with whatever got
+    // registered, same as before this was backgrounded.
+    *TRANSCRIBE_BACKEND_READY.lock().unwrap() = true;
+    TRANSCRIBE_BACKEND_READY_CVAR.notify_all();
 }
 
 /// Human-readable list of the transcribe-cpp compute devices registered at
@@ -1846,6 +1903,17 @@ fn cached_gpu_devices() -> &'static [GpuDeviceOption] {
     // `total_vram_mb` is the backend-reported capacity, 0 when unreported (some
     // Metal/Vulkan drivers).
     GPU_DEVICES.get_or_init(|| {
+        // This result is cached for the process's whole lifetime (OnceLock) —
+        // wait (bounded) for backend init so a premature read doesn't lock in
+        // an empty/incomplete GPU list forever. See `init_transcribe_backend`.
+        if !wait_for_transcribe_backend_ready() {
+            warn!(
+                "transcribe-cpp backend init still not finished after {:?} when \
+                 listing GPU devices — the accelerator list may be incomplete \
+                 (possible slow/broken GPU driver)",
+                TRANSCRIBE_BACKEND_READY_TIMEOUT
+            );
+        }
         transcribe_cpp::devices()
             .into_iter()
             .filter(|d| d.kind != "cpu" && d.kind != "accel")
