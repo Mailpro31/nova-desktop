@@ -538,6 +538,25 @@ impl TranscriptionManager {
                          registered (possible slow/broken GPU driver)",
                         TRANSCRIBE_BACKEND_READY_TIMEOUT
                     );
+                    // Nothing registered at all yet (not even CPU) — the native
+                    // load call below would fail with a raw, dev-facing "backend
+                    // error (status N); dynamic-backends builds require backend
+                    // modules to be loaded before model load" instead of ever
+                    // reaching a useful error. This is the same broken/hung GPU
+                    // driver this backgrounding was built to survive (see
+                    // `init_transcribe_backend`) — the init thread never returns,
+                    // so it will never register anything for the rest of this
+                    // process's life. Fail fast with a clear, actionable message
+                    // instead of a cryptic native one.
+                    if transcribe_cpp::devices().is_empty() {
+                        let error_msg = "Le pilote graphique de cet ordinateur ne répond \
+                            pas (accélération GPU bloquée) — Nova ne peut pas charger de \
+                            modèle de transcription pour l'instant. Mettez à jour votre \
+                            pilote graphique, puis redémarrez l'ordinateur."
+                            .to_string();
+                        emit_loading_failed(&error_msg);
+                        return Err(anyhow::anyhow!(error_msg));
+                    }
                 }
                 // The whisper backend is chosen at load time (transcribe-cpp has
                 // no runtime global). With an explicit `device_index` (the
