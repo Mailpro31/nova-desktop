@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "כללי",
-    "models": "מודלים",
+    "models": "ביצועים",
     "advanced": "מתקדם",
     "postProcessing": "עיבוד משלים",
     "history": "היסטוריה",
     "debug": "ניפוי שגיאות",
     "about": "אודות",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "בית",
+    "configuration": "הגדרות",
+    "account": "חשבון"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "מה הבינה המלאכותית כותבת בהתאם להקשר."
     },
     "history": {
       "title": "היסטוריה",
@@ -607,6 +611,9 @@
         "label": "הצג מה חדש",
         "description": "הצג הערות גרסה לאחר עדכוני Nova"
       }
+    },
+    "home": {
+      "subtitle": "סקירה כללית של השימוש שלך ב-Nova."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "ניסיון Nova Pro פעיל",
       "toastDescription_one": "נותר {{count}} יום — Turbo וכל הניסוחים כלולים.",
       "toastDescription_other": "נותרו {{count}} ימים — Turbo וכל הניסוחים כלולים."
-    }
+    },
+    "manageSubscription": "ניהול המנוי שלי",
+    "comingSoon": "בקרוב",
+    "featureColumn": "תכונה"
   }
 }

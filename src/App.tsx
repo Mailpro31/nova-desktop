@@ -1,4 +1,10 @@
-import { useEffect, useState, useRef, type ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  type ReactNode,
+  type ComponentType,
+} from "react";
 import { toast, Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
@@ -23,9 +29,20 @@ import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
 
 type OnboardingStep = "accessibility" | "model" | "done";
 
-const renderSettingsContent = (section: SidebarSection) => {
+const renderSettingsContent = (
+  section: SidebarSection,
+  onNavigate: (section: SidebarSection) => void,
+) => {
+  // Accueil a besoin de naviguer vers d'autres sections (accès rapide) ; les
+  // autres composants de section n'attendent aucune prop.
+  if (section === "home") {
+    const HomeComponent = SECTIONS_CONFIG.home.component as ComponentType<{
+      onNavigate?: (section: SidebarSection) => void;
+    }>;
+    return <HomeComponent onNavigate={onNavigate} />;
+  }
   const ActiveComponent =
-    SECTIONS_CONFIG[section]?.component || SECTIONS_CONFIG.general.component;
+    SECTIONS_CONFIG[section]?.component || SECTIONS_CONFIG.home.component;
   return <ActiveComponent />;
 };
 
@@ -38,7 +55,7 @@ function App() {
   // (vs a new user who needs full onboarding including model selection)
   const [isReturningUser, setIsReturningUser] = useState(false);
   const [currentSection, setCurrentSection] =
-    useState<SidebarSection>("general");
+    useState<SidebarSection>("home");
   const { settings, updateSetting } = useSettings();
   const direction = getLanguageDirection(i18n.language);
   const refreshAudioDevices = useSettingsStore(
@@ -347,7 +364,7 @@ function App() {
             <div className="flex-1 overflow-y-auto">
               <div className="flex flex-col items-center p-4 gap-4">
                 <AccessibilityPermissions />
-                {renderSettingsContent(currentSection)}
+                {renderSettingsContent(currentSection, setCurrentSection)}
               </div>
             </div>
           </div>

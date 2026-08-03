@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Algemeen",
-    "models": "Modellen",
+    "models": "Prestaties",
     "advanced": "Geavanceerd",
     "postProcessing": "Naverwerking",
     "history": "Geschiedenis",
     "debug": "Probleemoplossing",
     "about": "Over Nova",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Start",
+    "configuration": "Configuratie",
+    "account": "Account"
   },
   "onboarding": {
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Wat de AI schrijft, afhankelijk van de context."
     },
     "history": {
       "title": "Geschiedenis",
@@ -607,6 +611,9 @@
           "details": "Nova's lokale spraak-naar-tekst is gebouwd op transcribe.cpp en ggml. Met dank aan het geweldige werk van Georgi Gerganov en alle bijdragers."
         }
       }
+    },
+    "home": {
+      "subtitle": "Een overzicht van uw Nova-gebruik."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Nova Pro-proefperiode actief",
       "toastDescription_one": "Nog {{count}} dag — Turbo en alle Styles inbegrepen.",
       "toastDescription_other": "Nog {{count}} dagen — Turbo en alle Styles inbegrepen."
-    }
+    },
+    "manageSubscription": "Mijn abonnement beheren",
+    "comingSoon": "Binnenkort beschikbaar",
+    "featureColumn": "Functie"
   }
 }

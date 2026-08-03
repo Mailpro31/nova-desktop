@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Obecné",
-    "models": "Modely",
+    "models": "Výkon",
     "advanced": "Pokročilé",
     "postProcessing": "Následné zpracování",
     "history": "Historie",
     "debug": "Ladění",
     "about": "O aplikaci",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Domů",
+    "configuration": "Konfigurace",
+    "account": "Účet"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Co AI píše podle kontextu."
     },
     "history": {
       "title": "Historie",
@@ -607,6 +611,9 @@
         "label": "Zobrazovat novinky",
         "description": "Zobrazovat poznámky k vydání po aktualizacích Nova"
       }
+    },
+    "home": {
+      "subtitle": "Přehled vašeho používání Nova."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Zkušební verze Nova Pro aktivní",
       "toastDescription_one": "Zbývá {{count}} den — Turbo a všechny Styly v ceně.",
       "toastDescription_other": "Zbývá {{count}} dní — Turbo a všechny Styly v ceně."
-    }
+    },
+    "manageSubscription": "Spravovat předplatné",
+    "comingSoon": "Již brzy",
+    "featureColumn": "Funkce"
   }
 }

@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Allgemein",
-    "models": "Modelle",
+    "models": "Leistung",
     "advanced": "Erweitert",
     "postProcessing": "Nachbearbeitung",
     "history": "Verlauf",
     "debug": "Debug",
     "about": "Info",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Startseite",
+    "configuration": "Konfiguration",
+    "account": "Konto"
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Was die KI je nach Kontext schreibt."
     },
     "history": {
       "title": "Verlauf",
@@ -607,6 +611,9 @@
         "label": "Neuerungen anzeigen",
         "description": "Versionshinweise nach Nova-Updates anzeigen"
       }
+    },
+    "home": {
+      "subtitle": "Ein Überblick über Ihre Nova-Nutzung."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Nova Pro Testversion aktiv",
       "toastDescription_one": "Noch {{count}} Tag — Turbo und alle Styles inklusive.",
       "toastDescription_other": "Noch {{count}} Tage — Turbo und alle Styles inklusive."
-    }
+    },
+    "manageSubscription": "Mein Abonnement verwalten",
+    "comingSoon": "Demnächst",
+    "featureColumn": "Funktion"
   }
 }

@@ -15,8 +15,11 @@
     "history": "السجل",
     "debug": "تصحيح الأخطاء",
     "about": "حول",
-    "models": "النماذج",
-    "personalization": "Personalization"
+    "models": "الأداء",
+    "personalization": "Personalization",
+    "home": "الرئيسية",
+    "configuration": "الإعدادات",
+    "account": "الحساب"
   },
   "onboarding": {
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
@@ -439,7 +442,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "ما تكتبه الذكاء الاصطناعي حسب السياق."
     },
     "history": {
       "title": "السجل",
@@ -607,6 +611,9 @@
         "label": "إعادة الفحص",
         "tooltip": "إعادة الفحص بحثًا عن النماذج المضافة إلى مجلد النماذج أو ذاكرة Hugging Face التخزينية المؤقتة خارج Nova"
       }
+    },
+    "home": {
+      "subtitle": "نظرة عامة على استخدامك لـ Nova."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "تجربة Nova Pro نشطة",
       "toastDescription_one": "تبقى {{count}} يوم — Turbo وجميع الأنماط مشمولة.",
       "toastDescription_other": "تبقى {{count}} أيام — Turbo وجميع الأنماط مشمولة."
-    }
+    },
+    "manageSubscription": "إدارة اشتراكي",
+    "comingSoon": "قريبًا",
+    "featureColumn": "الميزة"
   }
 }

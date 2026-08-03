@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "General",
-    "models": "Models",
+    "models": "Performance",
     "advanced": "Advanced",
     "postProcessing": "Styles",
     "personalization": "Personalization",
     "history": "History",
     "debug": "Debug",
-    "about": "About"
+    "about": "About",
+    "home": "Home",
+    "configuration": "Configuration",
+    "account": "Account"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -200,8 +203,8 @@
       }
     },
     "models": {
-      "title": "Transcription Models",
-      "description": "Select a transcription model or download additional models. Different models offer varying levels of accuracy and speed.",
+      "title": "Transcription Performance",
+      "description": "Choose the accuracy/speed balance for transcription, or download additional options. Higher-accuracy options ask more of your device.",
       "searchPlaceholder": "Search models by name…",
       "yourModels": "Downloaded Models",
       "availableModels": "Available to Download",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "What the AI writes, based on context."
     },
     "history": {
       "title": "History",
@@ -607,6 +611,9 @@
           "details": "Nova's local speech-to-text is built on transcribe.cpp and ggml. Thanks to the amazing work by Georgi Gerganov and contributors."
         }
       }
+    },
+    "home": {
+      "subtitle": "An overview of your Nova usage."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Nova Pro trial active",
       "toastDescription_one": "{{count}} day left — Turbo and all Styles included.",
       "toastDescription_other": "{{count}} days left — Turbo and all Styles included."
-    }
+    },
+    "manageSubscription": "Manage my subscription",
+    "comingSoon": "Coming soon",
+    "featureColumn": "Feature"
   }
 }

@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Général",
-    "models": "Modèles",
+    "models": "Performance",
     "advanced": "Avancé",
     "postProcessing": "Styles",
     "personalization": "Personnalisation",
     "history": "Historique",
     "debug": "Débogage",
-    "about": "À propos"
+    "about": "À propos",
+    "home": "Accueil",
+    "configuration": "Configuration",
+    "account": "Compte"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -159,8 +162,8 @@
       "title": "Paramètres de {{model}}"
     },
     "models": {
-      "title": "Modèles de Transcription",
-      "description": "Sélectionnez un modèle de transcription ou téléchargez des modèles supplémentaires. Différents modèles offrent différents niveaux de précision et de vitesse.",
+      "title": "Performance de la transcription",
+      "description": "Choisissez l'équilibre précision/vitesse de la transcription, ou téléchargez d'autres options. Les options les plus précises demandent plus de puissance à votre appareil.",
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer {{modelName}} ? Vous devrez le télécharger à nouveau pour l'utiliser.",
       "deleteActiveConfirm": "{{modelName}} est votre modèle actif. Le supprimer arrêtera les transcriptions jusqu'à ce que vous sélectionniez un nouveau modèle. Êtes-vous sûr ?",
       "deleteTitle": "Supprimer le modèle",
@@ -460,7 +463,8 @@
         "visualDescription": "Quand le texte ne suffit pas, Nova analyse une image de l'écran via le moteur en ligne pour comprendre la situation.",
         "privacyNote": "Les apps de votre liste noire de confidentialité ne sont jamais lues — pas même leur contenu.",
         "experimentalNote": "Expérimental — désactivé par défaut."
-      }
+      },
+      "subtitle": "Ce que l'IA écrit selon le contexte."
     },
     "history": {
       "title": "Historique",
@@ -607,6 +611,9 @@
         "label": "Afficher les nouveautés",
         "description": "Afficher les notes de version après les mises à jour de Nova"
       }
+    },
+    "home": {
+      "subtitle": "Un aperçu de votre utilisation de Nova."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Essai Nova Pro actif",
       "toastDescription_one": "Encore {{count}} jour — Turbo et tous les Styles inclus.",
       "toastDescription_other": "Encore {{count}} jours — Turbo et tous les Styles inclus."
-    }
+    },
+    "manageSubscription": "Gérer mon abonnement",
+    "comingSoon": "Bientôt disponible",
+    "featureColumn": "Fonctionnalité"
   }
 }

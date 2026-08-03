@@ -37,8 +37,10 @@ const TIER_COLOR: Record<Tier, string> = {
   business: "var(--color-accent)",
 };
 
-// Fonctions mises en avant (clé technique → libellé).
-const FEATURE_ROWS: { key: string; label: string }[] = [
+// Fonctions mises en avant (clé technique → libellé). Exporté : réutilisé
+// tel quel par le tableau comparatif des paliers (Compte) — source de vérité
+// unique, on ne fabrique pas une deuxième liste de fonctionnalités.
+export const FEATURE_ROWS: { key: string; label: string }[] = [
   { key: "online_engine", label: "Turbo — moteur de reformulation en ligne" },
   { key: "all_styles", label: "Les 7 Styles" },
   { key: "power_profiles", label: "Profils de puissance" },
@@ -116,6 +118,27 @@ export const LicenseSettings: React.FC = () => {
         >
           {onTrial ? t("license.trial.badge") : TIER_LABEL[tier]}
         </span>
+      </SettingContainer>
+
+      <SettingContainer
+        title={t("license.manageSubscription")}
+        description="Facturation, moyen de paiement, changement de palier."
+        grouped={true}
+      >
+        <div className="flex items-center gap-2">
+          <span
+            className="text-[10px] font-bold tracking-wide uppercase rounded-full px-2 py-0.5 border whitespace-nowrap"
+            style={{
+              color: "var(--color-text-secondary)",
+              borderColor: "var(--color-text-secondary)",
+            }}
+          >
+            {t("license.comingSoon")}
+          </span>
+          <Button variant="secondary" size="md" disabled>
+            {t("license.manageSubscription")}
+          </Button>
+        </div>
       </SettingContainer>
 
       {onTrial && (

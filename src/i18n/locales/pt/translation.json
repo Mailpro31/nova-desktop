@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Geral",
-    "models": "Modelos",
+    "models": "Desempenho",
     "advanced": "Avançado",
     "postProcessing": "Pós-Processamento",
     "history": "Histórico",
     "debug": "Depuração",
     "about": "Sobre",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Início",
+    "configuration": "Configuração",
+    "account": "Conta"
   },
   "onboarding": {
     "subtitle": "Para começar, escolha um modelo de transcrição",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "O que a IA escreve, de acordo com o contexto."
     },
     "history": {
       "title": "Histórico",
@@ -607,6 +611,9 @@
         "label": "Mostrar novidades",
         "description": "Mostrar notas de versão após atualizações do Nova"
       }
+    },
+    "home": {
+      "subtitle": "Uma visão geral do seu uso do Nova."
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Teste do Nova Pro ativo",
       "toastDescription_one": "Falta {{count}} dia — Turbo e todos os Estilos incluídos.",
       "toastDescription_other": "Faltam {{count}} dias — Turbo e todos os Estilos incluídos."
-    }
+    },
+    "manageSubscription": "Gerir a minha subscrição",
+    "comingSoon": "Brevemente",
+    "featureColumn": "Funcionalidade"
   }
 }

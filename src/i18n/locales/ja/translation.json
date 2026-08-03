@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "一般",
-    "models": "モデル",
+    "models": "パフォーマンス",
     "advanced": "詳細設定",
     "postProcessing": "後処理",
     "history": "履歴",
     "debug": "デバッグ",
     "about": "概要",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "ホーム",
+    "configuration": "設定",
+    "account": "アカウント"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "文脈に応じてAIが書く内容です。"
     },
     "history": {
       "title": "履歴",
@@ -607,6 +611,9 @@
         "label": "新機能を表示",
         "description": "Nova のアップデート後にリリースノートを表示"
       }
+    },
+    "home": {
+      "subtitle": "Nova の利用状況の概要です。"
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Nova Pro 体験版が有効です",
       "toastDescription_one": "残り{{count}}日 — Turbo とすべてのリライトスタイルが含まれます。",
       "toastDescription_other": "残り{{count}}日 — Turbo とすべてのリライトスタイルが含まれます。"
-    }
+    },
+    "manageSubscription": "サブスクリプションを管理",
+    "comingSoon": "近日公開",
+    "featureColumn": "機能"
   }
 }

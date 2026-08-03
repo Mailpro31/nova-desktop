@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "सामान्य",
-    "models": "मोडेलहरू",
+    "models": "प्रदर्शन",
     "advanced": "उन्नत",
     "postProcessing": "पोस्ट प्रोसेस",
     "history": "हिस्ट्री",
     "debug": "डिबग",
     "about": "बारेमा",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "गृहपृष्ठ",
+    "configuration": "सेटिङ",
+    "account": "खाता"
   },
   "onboarding": {
     "subtitle": "सुरु गर्न, एउटा ट्रान्सक्रिप्सन मोडेल छान्नुहोस्",
@@ -460,7 +463,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "सन्दर्भ अनुसार AI ले के लेख्छ।"
     },
     "history": {
       "title": "हिस्ट्री",
@@ -607,6 +611,9 @@
           "details": "Nova को स्थानीय स्पिच-टु-टेक्स्ट transcribe.cpp र ggml मा आधारित छ। Georgi Gerganov र योगदानकर्ताहरूको उत्कृष्ट कामका लागि धन्यवाद।"
         }
       }
+    },
+    "home": {
+      "subtitle": "तपाईंको Nova प्रयोगको सिंहावलोकन।"
     }
   },
   "footer": {
@@ -707,6 +714,9 @@
       "toastTitle": "Nova Pro परीक्षण सक्रिय छ",
       "toastDescription_one": "{{count}} दिन बाँकी — Turbo र सबै शैलीहरू सामेल।",
       "toastDescription_other": "{{count}} दिन बाँकी — Turbo र सबै शैलीहरू सामेल।"
-    }
+    },
+    "manageSubscription": "मेरो सदस्यता व्यवस्थापन गर्नुहोस्",
+    "comingSoon": "चाँडै आउँदैछ",
+    "featureColumn": "सुविधा"
   }
 }

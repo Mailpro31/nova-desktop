@@ -88,6 +88,11 @@ export const PersonalizationSettings: React.FC = () => {
 
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">
+      {/* eslint-disable-next-line i18next/no-literal-string */}
+      <p className="px-1 -mb-2 text-sm text-text-secondary">
+        L'apparence de Nova.
+      </p>
+
       <SettingsGroup title="Orbe">
         <SettingContainer
           title="Teinte de l'orbe"
