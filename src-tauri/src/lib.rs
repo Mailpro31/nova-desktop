@@ -923,6 +923,19 @@ pub fn run(cli_args: CliArgs) {
                 let _ = crate::managers::transcription::get_available_accelerators();
             });
 
+            // Préchauffe l'Intelligence privée (moteur local) en arrière-plan si
+            // c'est le moteur de reformulation actif et que son modèle est déjà
+            // téléchargé : `llama-server` charge alors le modèle pendant que
+            // l'utilisateur s'installe, plutôt qu'au moment de la première
+            // dictée. Best-effort, non bloquant, jamais de téléchargement ici.
+            {
+                let prewarm_handle = app_handle.clone();
+                let prewarm_settings = settings.clone();
+                tauri::async_runtime::spawn(async move {
+                    crate::local_llm::prewarm_if_selected(&prewarm_handle, &prewarm_settings).await;
+                });
+            }
+
             // Hide tray icon if --no-tray was passed
             if cli_args.no_tray {
                 tray::set_tray_visibility(&app_handle, false);
