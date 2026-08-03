@@ -38,6 +38,13 @@ struct ChatCompletionRequest {
     messages: Vec<ChatMessage>,
     #[serde(skip_serializing_if = "Option::is_none")]
     response_format: Option<ResponseFormat>,
+    // Échantillonnage. Omis (None) → le serveur garde son défaut (souvent ~0.8,
+    // trop « créatif » pour une reformulation fidèle). Renseigné uniquement pour
+    // les moteurs OpenAI-compatibles LOCAUX (Intelligence privée, custom) dont on
+    // connaît le modèle ; jamais pour Turbo (relais serveur au modèle inconnu :
+    // un modèle « reasoning » côté serveur peut refuser une température ≠ 1).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    temperature: Option<f32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     reasoning_effort: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -105,11 +112,13 @@ fn create_client(provider: &PostProcessProvider, api_key: &str) -> Result<reqwes
 /// Send a chat completion request to an OpenAI-compatible API
 /// Returns Ok(Some(content)) on success, Ok(None) if response has no content,
 /// or Err on actual errors (HTTP, parsing, etc.)
+#[allow(clippy::too_many_arguments)]
 pub async fn send_chat_completion(
     provider: &PostProcessProvider,
     api_key: String,
     model: &str,
     prompt: String,
+    temperature: Option<f32>,
     reasoning_effort: Option<String>,
     reasoning: Option<ReasoningConfig>,
 ) -> Result<Option<String>, String> {
@@ -120,6 +129,7 @@ pub async fn send_chat_completion(
         prompt,
         None,
         None,
+        temperature,
         reasoning_effort,
         reasoning,
     )
@@ -139,6 +149,7 @@ pub async fn send_chat_completion_with_schema(
     user_content: String,
     system_prompt: Option<String>,
     json_schema: Option<Value>,
+    temperature: Option<f32>,
     reasoning_effort: Option<String>,
     reasoning: Option<ReasoningConfig>,
 ) -> Result<Option<String>, String> {
@@ -180,6 +191,7 @@ pub async fn send_chat_completion_with_schema(
         model: model.to_string(),
         messages,
         response_format,
+        temperature,
         reasoning_effort,
         reasoning,
     };

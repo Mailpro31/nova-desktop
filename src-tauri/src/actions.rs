@@ -62,6 +62,114 @@ fn strip_invisible_chars(s: &str) -> String {
     s.replace(['\u{200B}', '\u{200C}', '\u{200D}', '\u{FEFF}'], "")
 }
 
+/// Retire un bloc de code Markdown ``` ... ``` qui engloberait TOUTE la réponse
+/// (les petits modèles en ajoutent parfois). La balise de langage optionnelle
+/// (```json…) est ignorée. Texte inchangé s'il n'y a pas de bloc englobant.
+fn strip_code_fence(t: &str) -> &str {
+    let t = t.trim();
+    if let Some(rest) = t.strip_prefix("```") {
+        if let Some(body_end) = rest.rfind("```") {
+            let after_lang = match rest.find('\n') {
+                Some(nl) if nl < body_end => &rest[nl + 1..body_end],
+                _ => &rest[..body_end],
+            };
+            return after_lang.trim_matches('\n').trim();
+        }
+    }
+    t
+}
+
+/// Retire un préambule méta explicite (« Voici le texte reformulé : », « Here is
+/// the rewritten text: »…) en tête de réponse. TRÈS conservateur : seules des
+/// formules qui référencent clairement l'acte de reformuler sont retirées, et
+/// uniquement si un « : » suit tôt sur la première ligne — pour ne JAMAIS amputer
+/// un vrai contenu (ex. « Voici le compte-rendu : … » est conservé tel quel).
+fn strip_leading_meta_preamble(t: &str) -> &str {
+    const METAS: &[&str] = &[
+        "voici le texte",
+        "voici la reformulation",
+        "voici votre texte",
+        "voici la version",
+        "voici le message",
+        "voici votre message",
+        "voici le résultat",
+        "voici ce que",
+        "here is the",
+        "here's the",
+        "here is your",
+        "sure, here",
+        "bien sûr, voici",
+    ];
+    let lower = t.to_lowercase();
+    if !METAS.iter().any(|m| lower.starts_with(m)) {
+        return t;
+    }
+    if let Some(colon) = t.find(':') {
+        let first_nl = t.find('\n').unwrap_or(t.len());
+        if colon < first_nl && colon <= 60 {
+            let after = t[colon + 1..].trim_start();
+            if !after.is_empty() {
+                return after;
+            }
+        }
+    }
+    t
+}
+
+/// Retire UNE paire de guillemets qui envelopperait toute la réponse (« … »,
+/// " … ", “ … ”…). Un guillemet interne (apostrophe de « l'équipe ») ne déclenche
+/// rien : on ne retire que si le PREMIER et le DERNIER caractère forment une paire.
+fn strip_wrapping_quotes(t: &str) -> &str {
+    let t = t.trim();
+    const PAIRS: &[(char, char)] = &[
+        ('"', '"'),
+        ('\'', '\''),
+        ('«', '»'),
+        ('\u{201C}', '\u{201D}'), // “ ”
+        ('\u{2018}', '\u{2019}'), // ‘ ’
+        ('\u{201E}', '\u{201C}'), // „ “
+        ('\u{300C}', '\u{300D}'), // 「 」
+    ];
+    if t.chars().count() < 2 {
+        return t;
+    }
+    if let (Some(f), Some(l)) = (t.chars().next(), t.chars().next_back()) {
+        for &(o, c) in PAIRS {
+            if f == o && l == c {
+                return t[f.len_utf8()..t.len() - l.len_utf8()].trim();
+            }
+        }
+    }
+    t
+}
+
+/// Nettoie la sortie brute d'un modèle de reformulation : caractères invisibles,
+/// bloc de code englobant, préambule méta, puis guillemets englobants. Sûr sur
+/// les deux moteurs (s'applique à la RÉPONSE, jamais à la requête).
+fn clean_llm_output(s: &str) -> String {
+    let s = strip_invisible_chars(s);
+    strip_wrapping_quotes(strip_leading_meta_preamble(strip_code_fence(s.trim())))
+        .trim()
+        .to_string()
+}
+
+/// Température d'échantillonnage selon le Style. Styles fidèles → 0 (sortie
+/// reproductible, fin du « incohérent d'une fois à l'autre ») ; styles qui
+/// restructurent (e-mail, notes, prompt, to-do, styles personnels) → un peu de
+/// liberté pour un rendu plus naturel.
+fn temperature_for_style(style_id: &str) -> f32 {
+    const FAITHFUL: &[&str] = &[
+        "default_improve_transcriptions",
+        "nova_style_messages",
+        "nova_style_voice_to_text",
+    ];
+    if FAITHFUL.contains(&style_id) {
+        0.0
+    } else {
+        0.4
+    }
+}
+
 /// Build a system prompt from the user's prompt template.
 /// Removes `${output}` placeholder since the transcription is sent as the user message.
 fn build_system_prompt(prompt_template: &str) -> String {
@@ -377,6 +485,9 @@ async fn post_process_transcription(
     } else {
         "custom_styles"
     };
+    // Style effectivement appliqué (après repli éventuel sur le gratuit) : sert à
+    // choisir la température (fidèle vs libre) cohérente avec le prompt réel.
+    let mut effective_style_id = selected_prompt_id.clone();
     let prompt = if !style_is_free
         && !crate::licensing::has(required_feature, license_key, settings.trial_started_at)
     {
@@ -384,6 +495,7 @@ async fn post_process_transcription(
             "Style '{}' réservé ({}) — repli sur le Style gratuit",
             selected_prompt_id, required_feature
         );
+        effective_style_id = "default_improve_transcriptions".to_string();
         settings
             .post_process_prompts
             .iter()
@@ -398,6 +510,17 @@ async fn post_process_transcription(
         debug!("Post-processing skipped because the selected prompt is empty");
         return None;
     }
+
+    // Température : seulement pour les moteurs OpenAI-compatibles LOCAUX
+    // (Intelligence privée / custom) dont on connaît le modèle et qui acceptent
+    // sûrement le champ. JAMAIS pour Turbo (relais au modèle serveur inconnu :
+    // certains modèles « reasoning » refusent une température ≠ 1). Voir le champ
+    // `temperature` de `ChatCompletionRequest`.
+    let temperature = if provider.id == crate::local_llm::PROVIDER_ID || provider.id == "custom" {
+        Some(temperature_for_style(&effective_style_id))
+    } else {
+        None
+    };
 
     // Intelligence privée : démarre (ou confirme actif) le moteur local
     // embarqué avec le profil sélectionné (`model` porte l'id du profil ici,
@@ -479,11 +602,11 @@ async fn post_process_transcription(
                     token_limit,
                 ) {
                     Ok(result) => {
+                        let result = clean_llm_output(&result);
                         if result.trim().is_empty() {
                             debug!("Apple Intelligence returned an empty response");
                             None
                         } else {
-                            let result = strip_invisible_chars(&result);
                             debug!(
                                 "Apple Intelligence post-processing succeeded. Output length: {} chars",
                                 result.len()
@@ -525,6 +648,7 @@ async fn post_process_transcription(
             user_content,
             Some(system_prompt),
             Some(json_schema),
+            temperature,
             reasoning_effort.clone(),
             reasoning.clone(),
         )
@@ -537,7 +661,7 @@ async fn post_process_transcription(
                         if let Some(transcription_value) =
                             json.get(TRANSCRIPTION_FIELD).and_then(|t| t.as_str())
                         {
-                            let result = strip_invisible_chars(transcription_value);
+                            let result = clean_llm_output(transcription_value);
                             if result.trim().is_empty() {
                                 // Blank reformulation → fall back to raw text
                                 // (never leave the cursor empty).
@@ -552,7 +676,7 @@ async fn post_process_transcription(
                             return Some(result);
                         } else {
                             error!("Structured output response missing 'transcription' field");
-                            return Some(strip_invisible_chars(&content));
+                            return Some(clean_llm_output(&content));
                         }
                     }
                     Err(e) => {
@@ -560,7 +684,7 @@ async fn post_process_transcription(
                             "Failed to parse structured output JSON: {}. Returning raw content.",
                             e
                         );
-                        return Some(strip_invisible_chars(&content));
+                        return Some(clean_llm_output(&content));
                     }
                 }
             }
@@ -592,13 +716,14 @@ async fn post_process_transcription(
         api_key,
         &model,
         processed_prompt,
+        temperature,
         reasoning_effort,
         reasoning,
     )
     .await
     {
         Ok(Some(content)) => {
-            let content = strip_invisible_chars(&content);
+            let content = clean_llm_output(&content);
             if content.trim().is_empty() {
                 // Blank reformulation → fall back to raw text (never empty cursor).
                 debug!("LLM returned empty content; falling back to raw text");
@@ -1287,9 +1412,9 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 #[cfg(test)]
 mod tests {
     use super::{
-        apply_custom_variables, complete_unless_cancelled, custom_variables_block,
-        is_blank_transcription, replace_keyword_ci, resolve_variable_tokens,
-        should_use_streaming_overlay,
+        apply_custom_variables, clean_llm_output, complete_unless_cancelled,
+        custom_variables_block, is_blank_transcription, replace_keyword_ci,
+        resolve_variable_tokens, should_use_streaming_overlay, temperature_for_style,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -1418,6 +1543,65 @@ mod tests {
             resolve_variable_tokens("réémettre → {{iban}} café", &vars),
             "réémettre → FR76 café"
         );
+    }
+
+    #[test]
+    fn clean_output_strips_wrapping_quotes() {
+        assert_eq!(clean_llm_output("\"Bonjour le monde\""), "Bonjour le monde");
+        assert_eq!(clean_llm_output("« Bonjour »"), "Bonjour");
+        assert_eq!(clean_llm_output("\u{201C}Salut\u{201D}"), "Salut");
+        // Apostrophe interne : NE déclenche PAS le retrait (1er car. n'est pas un guillemet).
+        assert_eq!(clean_llm_output("L'équipe est prête"), "L'équipe est prête");
+    }
+
+    #[test]
+    fn clean_output_strips_meta_preamble_but_keeps_real_content() {
+        assert_eq!(
+            clean_llm_output("Voici le texte reformulé : Bonjour à tous"),
+            "Bonjour à tous"
+        );
+        assert_eq!(
+            clean_llm_output("Here is the rewritten text: Hello there"),
+            "Hello there"
+        );
+        // Préambule méta PUIS guillemets englobants.
+        assert_eq!(
+            clean_llm_output("Voici le texte : \"Merci beaucoup\""),
+            "Merci beaucoup"
+        );
+        // NE DOIT PAS amputer un vrai contenu qui commence par « Voici … : ».
+        assert_eq!(
+            clean_llm_output("Voici le compte-rendu : réunion à 15h"),
+            "Voici le compte-rendu : réunion à 15h"
+        );
+    }
+
+    #[test]
+    fn clean_output_strips_code_fence() {
+        assert_eq!(clean_llm_output("```\ndu code\n```"), "du code");
+        assert_eq!(clean_llm_output("```json\n{\"a\":1}\n```"), "{\"a\":1}");
+    }
+
+    #[test]
+    fn clean_output_noop_on_plain_text_and_strips_zero_width() {
+        assert_eq!(
+            clean_llm_output("Un texte tout simple."),
+            "Un texte tout simple."
+        );
+        assert_eq!(clean_llm_output("a\u{200B}b"), "ab");
+    }
+
+    #[test]
+    fn temperature_is_zero_for_faithful_styles_else_creative() {
+        assert_eq!(temperature_for_style("default_improve_transcriptions"), 0.0);
+        assert_eq!(temperature_for_style("nova_style_messages"), 0.0);
+        assert_eq!(temperature_for_style("nova_style_voice_to_text"), 0.0);
+        assert_eq!(temperature_for_style("nova_style_email"), 0.4);
+        assert_eq!(temperature_for_style("nova_style_notes"), 0.4);
+        assert_eq!(temperature_for_style("nova_style_prompt"), 0.4);
+        assert_eq!(temperature_for_style("nova_style_todo"), 0.4);
+        // Style personnel inconnu → un peu de liberté par défaut.
+        assert_eq!(temperature_for_style("mon_style_perso"), 0.4);
     }
 
     #[test]
