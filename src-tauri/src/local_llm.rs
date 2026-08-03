@@ -473,8 +473,19 @@ async fn is_server_up() -> bool {
         .unwrap_or(false)
 }
 
+/// `CREATE_NO_WINDOW` : `llama-server.exe` est un binaire à sous-système
+/// console (hérité de llama.cpp). Sans ce flag, Windows lui alloue une
+/// fenêtre de terminal visible à chaque lancement — qui peut voler le focus
+/// pendant les quelques secondes de chargement du modèle, et donc casser le
+/// collage de la toute première reformulation (le collage cible la fenêtre
+/// au premier plan, qui n'est alors plus celle de l'utilisateur).
+#[cfg(windows)]
+const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+
 #[cfg(windows)]
 fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result<Child> {
+    use std::os::windows::process::CommandExt;
+
     std::process::Command::new(binary)
         .args([
             "--model",
@@ -490,6 +501,7 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
         ])
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null())
+        .creation_flags(CREATE_NO_WINDOW)
         .spawn()
 }
 
