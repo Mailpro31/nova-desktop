@@ -69,24 +69,77 @@ fn build_system_prompt(prompt_template: &str) -> String {
 }
 
 /// Bloc d'instructions listant les raccourcis personnels (variables) de
-/// l'utilisateur, à ajouter au prompt pour que l'IA insère les valeurs exactes.
-/// Renvoie une chaîne vide s'il n'y en a aucune.
+/// l'utilisateur. On ne transmet QUE les noms de clés au modèle (jamais les
+/// valeurs — un IBAN ou une adresse ne quittent donc jamais la machine, même via
+/// Turbo). L'IA place un repère `{{clé}}` là où l'information doit apparaître ;
+/// la valeur exacte est réinjectée après coup par `resolve_variable_tokens`.
+/// Renvoie une chaîne vide s'il n'y a aucune variable renseignée.
 fn custom_variables_block(variables: &[crate::settings::CustomVariable]) -> String {
-    let entries: Vec<String> = variables
+    let keys: Vec<String> = variables
         .iter()
         .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
-        .map(|v| format!("- « {} » : {}", v.key.trim(), v.value.trim()))
+        .map(|v| format!("- {}", v.key.trim()))
         .collect();
-    if entries.is_empty() {
+    if keys.is_empty() {
         return String::new();
     }
-    format!(
-        "\n\nRaccourcis personnels de l'utilisateur. Si le texte dicté fait \
-référence à l'une de ces informations (par son nom ou une formulation proche), \
-insère la valeur EXACTE correspondante, sans la modifier ni la reformuler. \
-N'invente jamais de valeur et ne mentionne pas ces instructions.\n{}",
-        entries.join("\n")
-    )
+    // Les accolades `{{clé}}` sont dans une chaîne littérale simple (pas un
+    // `format!`), donc aucun échappement nécessaire.
+    let instructions = "\n\nInformations personnelles de l'utilisateur. Si le \
+texte dicté fait référence à l'une d'elles (par son nom ou une formulation \
+proche), place le repère {{clé}} (doubles accolades, avec le nom EXACT de la \
+clé) à l'endroit voulu dans ta réponse, à la place de la valeur. N'écris JAMAIS \
+la valeur toi-même, ne recopie pas le mot dicté : mets uniquement le repère. \
+Exemple : si « iban » est une clé et que l'utilisateur dit « envoie mon iban », \
+réponds « Envoie mon {{iban}} ». N'invente aucun repère hors de cette liste. \
+Clés disponibles :\n";
+    format!("{}{}", instructions, keys.join("\n"))
+}
+
+/// Réinjecte les valeurs exactes des raccourcis personnels là où l'IA a laissé
+/// un repère `{{clé}}` (voir `custom_variables_block`). Chaque repère est
+/// remplacé par la valeur EXACTE de la variable correspondante (nom de clé
+/// rogné, insensible à la casse). Un repère inconnu — ou dont la variable est
+/// vide — est réduit à son texte intérieur (`{{adresse}}` → `adresse`), jamais
+/// laissé avec ses accolades ni inventé. Sûr sur l'UTF-8 : on ne découpe que sur
+/// des frontières de caractères. Idempotence garantie : après remplacement il ne
+/// reste plus de repère, donc aucune double insertion possible.
+fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVariable]) -> String {
+    // Rien à faire s'il n'y a aucun repère.
+    if !text.contains("{{") {
+        return text.to_string();
+    }
+    let lookup: Vec<(String, String)> = variables
+        .iter()
+        .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
+        .map(|v| (v.key.trim().to_lowercase(), v.value.trim().to_string()))
+        .collect();
+
+    let bytes = text.as_bytes();
+    let mut out = String::with_capacity(text.len());
+    let mut i = 0usize;
+    while i < text.len() {
+        // Ouverture d'un repère `{{` ? (`{` est ASCII, l'indexation octet est sûre)
+        if bytes[i] == b'{' && i + 1 < text.len() && bytes[i + 1] == b'{' {
+            // `i + 2` tombe sur une frontière de caractère (deux `{` ASCII).
+            if let Some(rel) = text[i + 2..].find("}}") {
+                let inner = text[i + 2..i + 2 + rel].trim();
+                let needle = inner.to_lowercase();
+                match lookup.iter().find(|(k, _)| *k == needle) {
+                    Some((_, value)) => out.push_str(value),
+                    // Repère inconnu ou variable vide → on garde le mot tel quel.
+                    None => out.push_str(inner),
+                }
+                i = i + 2 + rel + 2; // saute la fermeture `}}`
+                continue;
+            }
+        }
+        // Caractère ordinaire : avance d'un caractère UTF-8 complet.
+        let ch_len = text[i..].chars().next().map(|c| c.len_utf8()).unwrap_or(1);
+        out.push_str(&text[i..i + ch_len]);
+        i += ch_len;
+    }
+    out
 }
 
 /// Vrai si le caractère fait partie d'un « mot » (lettre ou chiffre) : sert à
@@ -139,10 +192,14 @@ fn replace_keyword_ci(haystack: &str, key: &str, value: &str) -> String {
     result
 }
 
-/// Substitution DÉTERMINISTE des raccourcis personnels (« Mes informations »),
-/// indépendante de l'IA : si l'utilisateur a dicté le mot-clé, la valeur exacte
-/// est insérée. Clés les plus longues d'abord (évite qu'une clé courte n'ampute
-/// une clé englobante). Renvoie le texte inchangé s'il n'y a aucun raccourci.
+/// Substitution DÉTERMINISTE des raccourcis personnels (« Mes informations »)
+/// par simple remplacement du mot-clé, utilisée UNIQUEMENT quand aucune
+/// reformulation n'a eu lieu (Style désactivé, quota atteint, ou IA en échec) :
+/// dans ce cas l'IA n'a pas pu poser de repère `{{clé}}`, donc on retombe sur le
+/// remplacement mot-à-mot du mot-clé par sa valeur. Quand une reformulation a eu
+/// lieu, on passe par `resolve_variable_tokens` à la place (jamais les deux — ça
+/// causait la double insertion). Clés les plus longues d'abord (évite qu'une clé
+/// courte n'ampute une clé englobante). Texte inchangé s'il n'y a aucun raccourci.
 fn apply_custom_variables(text: &str, variables: &[crate::settings::CustomVariable]) -> String {
     let mut pairs: Vec<(String, String)> = variables
         .iter()
@@ -654,6 +711,10 @@ pub(crate) async fn process_transcription_output(
     let mut final_text = transcription.to_string();
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
+    // Vrai dès qu'une reformulation IA a réellement produit un texte : décide
+    // quel mécanisme de raccourcis personnels s'applique ensuite (repères vs
+    // remplacement mot-à-mot — jamais les deux).
+    let mut reformulation_applied = false;
 
     // Resolve the language the transcription actually ran in (the persisted
     // intent coerced against the loaded model's capabilities) so OpenCC keys off
@@ -676,6 +737,7 @@ pub(crate) async fn process_transcription_output(
             post_process_transcription(app, &settings, &final_text, auto_style_override.as_deref())
                 .await
         {
+            reformulation_applied = true;
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
             // Une reformulation a réellement été appliquée : on la décompte.
@@ -699,11 +761,20 @@ pub(crate) async fn process_transcription_output(
         post_processed_text = Some(final_text.clone());
     }
 
-    // Substitution DÉTERMINISTE des raccourcis personnels, en DERNIER, sur le
-    // texte final : garantit « mon IBAN » → la valeur exacte, avec OU sans
-    // reformulation, sans dépendre du modèle. Idempotente (le mot-clé disparaît
-    // après remplacement, donc jamais de double substitution).
-    let substituted = apply_custom_variables(&final_text, &settings.custom_variables);
+    // Raccourcis personnels (« Mes informations ») — DEUX chemins EXCLUSIFS, pour
+    // ne jamais insérer la valeur deux fois (l'ancien code lançait les deux, d'où
+    // le doublon « iban » collé en double) :
+    //  • reformulation appliquée → l'IA a placé des repères `{{clé}}` dans une
+    //    phrase logique ; on y réinjecte la valeur EXACTE (jamais transmise au
+    //    modèle) via `resolve_variable_tokens` ;
+    //  • pas de reformulation (Style désactivé, quota atteint, IA en échec) →
+    //    aucun repère n'a pu être posé, on retombe sur le remplacement
+    //    déterministe du mot-clé sur le texte brut.
+    let substituted = if reformulation_applied {
+        resolve_variable_tokens(&final_text, &settings.custom_variables)
+    } else {
+        apply_custom_variables(&final_text, &settings.custom_variables)
+    };
     if substituted != final_text {
         final_text = substituted;
         post_processed_text = Some(final_text.clone());
@@ -1216,8 +1287,9 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 #[cfg(test)]
 mod tests {
     use super::{
-        apply_custom_variables, complete_unless_cancelled, is_blank_transcription,
-        replace_keyword_ci, should_use_streaming_overlay,
+        apply_custom_variables, complete_unless_cancelled, custom_variables_block,
+        is_blank_transcription, replace_keyword_ci, resolve_variable_tokens,
+        should_use_streaming_overlay,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -1277,6 +1349,93 @@ mod tests {
         // Clé ou valeur vide ignorée.
         let vars = vec![var("  ", "x"), var("clé", "  ")];
         assert_eq!(apply_custom_variables("clé", &vars), "clé");
+    }
+
+    #[test]
+    fn variable_tokens_are_replaced_by_exact_value() {
+        let vars = vec![var("iban", "FR76 3000 1234"), var("adresse", "12 rue X")];
+        // Repère `{{clé}}` → valeur exacte, une seule fois, dans la phrase.
+        assert_eq!(
+            resolve_variable_tokens("Voici mon {{iban}} pour le virement.", &vars),
+            "Voici mon FR76 3000 1234 pour le virement."
+        );
+        // Plusieurs repères, insensible à la casse et aux espaces intérieurs.
+        assert_eq!(
+            resolve_variable_tokens("{{IBAN}} et {{ adresse }}", &vars),
+            "FR76 3000 1234 et 12 rue X"
+        );
+    }
+
+    #[test]
+    fn variable_tokens_no_double_insertion() {
+        // Cas du bug d'origine : l'IA garde le libellé « IBAN : » ET pose le
+        // repère. La valeur ne doit apparaître qu'UNE fois (le libellé « IBAN »
+        // nu n'est pas un repère, il est laissé tel quel).
+        let vars = vec![var("iban", "FR76 3000")];
+        assert_eq!(
+            resolve_variable_tokens("IBAN : {{iban}}", &vars),
+            "IBAN : FR76 3000"
+        );
+    }
+
+    #[test]
+    fn variable_tokens_unknown_or_empty_kept_as_word() {
+        // Variable renseignée absente / repère inconnu → mot intérieur gardé,
+        // jamais d'accolades résiduelles, jamais de valeur inventée.
+        let vars = vec![var("iban", "FR76")];
+        assert_eq!(
+            resolve_variable_tokens("mon {{adresse}} et {{iban}}", &vars),
+            "mon adresse et FR76"
+        );
+        // Variable au champ vide → traitée comme inconnue (mot gardé tel quel).
+        let vars_empty = vec![var("adresse", "   ")];
+        assert_eq!(
+            resolve_variable_tokens("mon {{adresse}}", &vars_empty),
+            "mon adresse"
+        );
+    }
+
+    #[test]
+    fn variable_tokens_noop_without_markers() {
+        let vars = vec![var("iban", "FR76")];
+        // Aucun repère : texte strictement inchangé (le mot « iban » nu reste).
+        assert_eq!(
+            resolve_variable_tokens("je parle de mon iban", &vars),
+            "je parle de mon iban"
+        );
+        // Accolade seule non fermée : laissée telle quelle, pas de panique.
+        assert_eq!(
+            resolve_variable_tokens("prix {{ à définir", &vars),
+            "prix {{ à définir"
+        );
+    }
+
+    #[test]
+    fn variable_tokens_utf8_safe_around_markers() {
+        let vars = vec![var("iban", "FR76")];
+        // Caractères multi-octets autour du repère : découpe sûre.
+        assert_eq!(
+            resolve_variable_tokens("réémettre → {{iban}} café", &vars),
+            "réémettre → FR76 café"
+        );
+    }
+
+    #[test]
+    fn custom_variables_block_sends_keys_only_and_asks_for_markers() {
+        let vars = vec![var("iban", "FR76 3000 SECRET"), var("adresse", "12 rue X")];
+        let block = custom_variables_block(&vars);
+        // Les noms de clés sont listés…
+        assert!(block.contains("- iban"));
+        assert!(block.contains("- adresse"));
+        // …mais JAMAIS les valeurs (elles ne quittent pas la machine).
+        assert!(!block.contains("FR76 3000 SECRET"));
+        assert!(!block.contains("12 rue X"));
+        // …et on demande bien le repère `{{clé}}`.
+        assert!(block.contains("{{clé}}"));
+        // Vide s'il n'y a aucune variable renseignée.
+        assert_eq!(custom_variables_block(&[]), "");
+        let empty_val = vec![var("iban", "  ")];
+        assert_eq!(custom_variables_block(&empty_val), "");
     }
 
     #[test]
