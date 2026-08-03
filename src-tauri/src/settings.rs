@@ -1900,22 +1900,28 @@ mod tests {
 
     // --- Migration des prompts de Styles intégrés (étape 3 reformulation) ---
 
-    /// Chaque ancienne génération doit DIFFÉRER du nouveau défaut, sinon le
-    /// rafraîchissement ne se déclencherait jamais pour elle. Et les ids
-    /// doivent rester alignés.
+    /// Chaque ancienne génération doit avoir fait évoluer AU MOINS un prompt
+    /// par rapport au nouveau défaut (sinon le rafraîchissement n'aurait aucun
+    /// effet pour cette génération) — mais pas forcément tous : un Style dont
+    /// le texte n'a pas changé d'une génération à l'autre reste identique, et
+    /// `refresh_outdated_builtin_prompts` le laisse alors intact (no-op), ce
+    /// qui est correct. Les ids doivent rester alignés dans tous les cas.
     #[test]
     fn every_legacy_prompt_differs_from_new_default() {
         let neu = default_post_process_prompts();
         for leg in [legacy_prompts_v1(), legacy_prompts_v2()] {
             assert_eq!(neu.len(), leg.len());
+            let mut any_diff = false;
             for (n, l) in neu.iter().zip(leg.iter()) {
                 assert_eq!(n.id, l.id, "ids désalignés entre défaut et legacy");
-                assert_ne!(
-                    n.prompt, l.prompt,
-                    "legacy == nouveau défaut pour '{}' : le refresh serait inutile",
-                    n.id
-                );
+                if n.prompt != l.prompt {
+                    any_diff = true;
+                }
             }
+            assert!(
+                any_diff,
+                "aucun prompt ne diffère entre cette génération legacy et le nouveau défaut : le refresh serait inutile"
+            );
         }
     }
 
