@@ -298,7 +298,25 @@ export const useSettingsStore = create<SettingsStore>()(
 
         const updater = settingUpdaters[key];
         if (updater) {
-          await updater(value);
+          const result = await updater(value);
+          // Les commandes générées par tauri-specta pour un `Result<T, String>`
+          // Rust résolvent parfois en { status: "error", error } au lieu de
+          // rejeter la promesse (selon comment l'erreur traverse l'IPC) — sans
+          // cette vérification, un rejet backend silencieux (ex. id de Style
+          // invalide) laisse l'état optimiste affiché alors que rien n'a été
+          // sauvegardé, et ça revient à l'ancienne valeur seulement au
+          // prochain rafraîchissement, sans jamais prévenir l'utilisateur.
+          if (
+            result &&
+            typeof result === "object" &&
+            "status" in result &&
+            (result as { status: unknown }).status === "error"
+          ) {
+            const err = (result as { error?: unknown }).error;
+            throw new Error(
+              typeof err === "string" ? err : `Failed to update ${String(key)}`,
+            );
+          }
         } else if (key !== "bindings" && key !== "selected_model") {
           console.warn(`No handler for setting: ${String(key)}`);
         }

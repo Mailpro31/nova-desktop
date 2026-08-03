@@ -1252,16 +1252,18 @@ impl TranscriptionManager {
             let transcribe_result = catch_unwind(AssertUnwindSafe(|| -> Result<String> {
                 match &mut engine {
                     LoadedEngine::TranscribeCpp(session) => {
-                        // Custom words become the initial prompt ONLY for models
-                        // that accept one (whisper family). Attaching the
-                        // whisper run extension to a non-whisper arch is rejected
-                        // with INVALID_ARG, so skip it there and let the fuzzy
-                        // post-correction handle custom words instead.
-                        let family = if settings.custom_words.is_empty() || !model_is_whisper {
+                        // Custom words (+ raccourcis personnels, voir
+                        // asr_bias_words) become the initial prompt ONLY for
+                        // models that accept one (whisper family). Attaching
+                        // the whisper run extension to a non-whisper arch is
+                        // rejected with INVALID_ARG, so skip it there and let
+                        // the fuzzy post-correction handle custom words instead.
+                        let bias_words = asr_bias_words(&settings);
+                        let family = if bias_words.is_empty() || !model_is_whisper {
                             None
                         } else {
                             Some(RunExtension::Whisper(WhisperRunOptions {
-                                initial_prompt: Some(settings.custom_words.join(", ")),
+                                initial_prompt: Some(bias_words.join(", ")),
                                 ..Default::default()
                             }))
                         };
@@ -1632,17 +1634,33 @@ fn transcribe_cpp_run_plan(
     }
 }
 
+/// Vocabulaire à donner en indice au moteur de transcription (prompt initial
+/// whisper + correction floue post-ASR) : les mots personnalisés ET les noms
+/// des raccourcis personnels (« Mes informations », ex. iban, adresse) —
+/// JAMAIS leurs valeurs, qui ne doivent ni quitter la machine ni être traitées
+/// comme un mot de vocabulaire ordinaire. Sans ce biais, un acronyme dicté
+/// seul (« IBAN ») est facilement mal transcrit (ex. « I-B »), et le repère
+/// `{{clé}}` posé par la reformulation (voir actions.rs) ne peut alors plus
+/// jamais être détecté puisque le mot-clé n'apparaît plus dans le texte dicté.
+fn asr_bias_words(settings: &AppSettings) -> Vec<String> {
+    let mut words: Vec<String> = settings.custom_words.clone();
+    for variable in &settings.custom_variables {
+        let key = variable.key.trim();
+        if !key.is_empty() && !words.iter().any(|w| w.eq_ignore_ascii_case(key)) {
+            words.push(key.to_string());
+        }
+    }
+    words
+}
+
 fn post_process_transcription_text(
     raw: String,
     settings: &AppSettings,
     custom_words_already_prompted: bool,
 ) -> String {
-    let corrected = if !settings.custom_words.is_empty() && !custom_words_already_prompted {
-        apply_custom_words(
-            &raw,
-            &settings.custom_words,
-            settings.word_correction_threshold,
-        )
+    let bias_words = asr_bias_words(settings);
+    let corrected = if !bias_words.is_empty() && !custom_words_already_prompted {
+        apply_custom_words(&raw, &bias_words, settings.word_correction_threshold)
     } else {
         raw
     };
@@ -1980,6 +1998,50 @@ mod tests {
 
     fn languages(codes: &[&str]) -> Vec<String> {
         codes.iter().map(|code| (*code).to_string()).collect()
+    }
+
+    #[test]
+    fn asr_bias_words_includes_custom_variable_keys() {
+        let mut settings = crate::settings::get_default_settings();
+        settings.custom_words = vec!["Nova".to_string()];
+        settings.custom_variables = vec![crate::settings::CustomVariable {
+            key: "iban".to_string(),
+            value: "FR76 3000 SECRET".to_string(),
+        }];
+        let bias = asr_bias_words(&settings);
+        assert!(bias.iter().any(|w| w == "Nova"));
+        assert!(bias.iter().any(|w| w.eq_ignore_ascii_case("iban")));
+        // La VALEUR ne doit jamais apparaître dans le vocabulaire de biais.
+        assert!(!bias.iter().any(|w| w.contains("SECRET")));
+    }
+
+    #[test]
+    fn asr_bias_words_dedupes_case_insensitively_and_skips_empty() {
+        let mut settings = crate::settings::get_default_settings();
+        settings.custom_words = vec!["IBAN".to_string()];
+        settings.custom_variables = vec![
+            crate::settings::CustomVariable {
+                key: "iban".to_string(), // déjà présent (autre casse) : pas de doublon
+                value: "FR76".to_string(),
+            },
+            crate::settings::CustomVariable {
+                key: "  ".to_string(), // clé vide/blanche : ignorée
+                value: "x".to_string(),
+            },
+        ];
+        let bias = asr_bias_words(&settings);
+        assert_eq!(
+            bias.iter()
+                .filter(|w| w.eq_ignore_ascii_case("iban"))
+                .count(),
+            1
+        );
+    }
+
+    #[test]
+    fn asr_bias_words_empty_when_nothing_configured() {
+        let settings = crate::settings::get_default_settings();
+        assert!(asr_bias_words(&settings).is_empty());
     }
 
     #[test]

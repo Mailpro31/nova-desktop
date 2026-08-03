@@ -1272,8 +1272,14 @@ pub async fn fetch_post_process_models(
 pub fn set_post_process_selected_prompt(app: AppHandle, id: String) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
 
-    // Verify the prompt exists
-    if !settings.post_process_prompts.iter().any(|p| p.id == id) {
+    // "auto" (le Style « Automatique ») est un sentinel réservé, jamais un
+    // vrai LLMPrompt (voir auto_style::AUTO_STYLE_ID) : il ne doit pas être
+    // vérifié contre post_process_prompts, sinon la sélection est
+    // silencieusement rejetée et l'utilisateur ne peut plus jamais revenir en
+    // mode Automatique une fois passé sur un Style concret.
+    if id != crate::auto_style::AUTO_STYLE_ID
+        && !settings.post_process_prompts.iter().any(|p| p.id == id)
+    {
         return Err(format!("Prompt with id '{}' not found", id));
     }
 
