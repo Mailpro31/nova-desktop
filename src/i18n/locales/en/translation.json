@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Skip",
+      "continue": "Continue",
+      "finish": "Finish"
+    },
+    "style": {
+      "title": "Choose your Style",
+      "subtitle": "Nova can automatically adapt the Style to the active app, or always use the same one.",
+      "recommended": "Recommended",
+      "auto": {
+        "title": "Automatic",
+        "description": "Nova detects the active app and picks the most fitting Style for you."
+      },
+      "manual": {
+        "title": "One specific Style",
+        "description": "Nova always applies the same Style, whatever the app."
+      },
+      "errors": {
+        "save": "Failed to save the selected Style. You can change it later in settings."
+      }
+    },
+    "variables": {
+      "title": "Add your personal shortcuts",
+      "subtitle": "Link a keyword to something you dictate often — Nova inserts the exact value while reformulating. You can always edit these later in settings.",
+      "hint": "Optional — leave blank to skip. Nothing is stored unless you fill in a value.",
+      "presets": {
+        "fullName": {
+          "key": "my full name",
+          "placeholder": "Jane Doe"
+        },
+        "iban": {
+          "key": "my IBAN",
+          "placeholder": "FR76 3000 …"
+        },
+        "address": {
+          "key": "my address",
+          "placeholder": "12 Main Street, 75002 Paris"
+        }
+      },
+      "errors": {
+        "save": "Failed to save your shortcuts. You can add them later in settings."
+      }
+    },
+    "tutorial": {
+      "title": "Try Nova",
+      "subtitle": "A quick test to see Nova at work before you finish.",
+      "instructionsPushToTalk": "Hold {{shortcut}} while you speak, then release.",
+      "instructionsToggle": "Press {{shortcut}} to start, speak, then press it again to stop.",
+      "suggestion": "Try saying, for example: \"{{sentence}}\"",
+      "awaiting": "Waiting for your dictation…",
+      "polishing": "Applying the Style…",
+      "success": "It works!",
+      "originalWas": "Originally dictated: {{text}}",
+      "hint": "You can try again as many times as you like.",
+      "skip": "Skip this step",
+      "finishAnyway": "Finish setup"
+    },
     "permissions": {
       "title": "Permissions Required",
       "description": "Nova needs a couple of permissions to work properly.",

@@ -13,7 +13,12 @@ import { ModelStateEvent, RecordingErrorEvent } from "./lib/types/events";
 import "./App.css";
 import AccessibilityPermissions from "./components/AccessibilityPermissions";
 import Footer from "./components/footer";
-import Onboarding, { AccessibilityOnboarding } from "./components/onboarding";
+import Onboarding, {
+  AccessibilityOnboarding,
+  StyleOnboarding,
+  QuickVariablesOnboarding,
+  TutorialOnboarding,
+} from "./components/onboarding";
 import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
 import { useSettings } from "./hooks/useSettings";
@@ -21,7 +26,18 @@ import { useSettingsStore } from "./stores/settingsStore";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
 
-type OnboardingStep = "accessibility" | "model" | "done";
+type OnboardingStep =
+  | "accessibility"
+  | "model"
+  | "style"
+  | "variables"
+  | "tutorial"
+  | "done";
+
+// Étapes ajoutées après le modèle, dans l'ordre où elles s'enchaînent — sert
+// à calculer l'index/le total affichés par le repère de progression à
+// pastilles (`OnboardingStepShell`).
+const POST_MODEL_STEPS: OnboardingStep[] = ["style", "variables", "tutorial"];
 
 const renderSettingsContent = (section: SidebarSection) => {
   const ActiveComponent =
@@ -290,7 +306,21 @@ function App() {
   };
 
   const handleModelSelected = () => {
-    // Transition to main app - user has started a download
+    // Modèle choisi (téléchargement lancé) : enchaîne sur les étapes
+    // ajoutées — choix du Style, raccourcis personnels, puis mini-tutoriel —
+    // avant de basculer sur l'app principale.
+    setOnboardingStep("style");
+  };
+
+  const handleStyleDone = () => {
+    setOnboardingStep("variables");
+  };
+
+  const handleVariablesDone = () => {
+    setOnboardingStep("tutorial");
+  };
+
+  const handleTutorialDone = () => {
     setOnboardingStep("done");
   };
 
@@ -329,6 +359,30 @@ function App() {
     );
   } else if (onboardingStep === "model") {
     content = <Onboarding onModelSelected={handleModelSelected} />;
+  } else if (onboardingStep === "style") {
+    content = (
+      <StyleOnboarding
+        stepIndex={POST_MODEL_STEPS.indexOf("style")}
+        stepCount={POST_MODEL_STEPS.length}
+        onDone={handleStyleDone}
+      />
+    );
+  } else if (onboardingStep === "variables") {
+    content = (
+      <QuickVariablesOnboarding
+        stepIndex={POST_MODEL_STEPS.indexOf("variables")}
+        stepCount={POST_MODEL_STEPS.length}
+        onDone={handleVariablesDone}
+      />
+    );
+  } else if (onboardingStep === "tutorial") {
+    content = (
+      <TutorialOnboarding
+        stepIndex={POST_MODEL_STEPS.indexOf("tutorial")}
+        stepCount={POST_MODEL_STEPS.length}
+        onDone={handleTutorialDone}
+      />
+    );
   } else {
     content = (
       <div
