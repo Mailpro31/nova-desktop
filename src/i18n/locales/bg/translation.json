@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Общи",
-    "models": "Модели",
+    "models": "Производителност",
     "advanced": "Разширени",
     "postProcessing": "Постобработка",
     "history": "История",
     "debug": "Отстраняване",
     "about": "За приложението",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Начало",
+    "configuration": "Конфигурация",
+    "account": "Акаунт"
   },
   "onboarding": {
     "subtitle": "За да започнете, изберете модел за транскрипция",
@@ -517,7 +520,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Какво пише изкуственият интелект според контекста."
     },
     "history": {
       "title": "История",
@@ -664,6 +668,9 @@
         "label": "Показвай новостите",
         "description": "Показвай бележки към изданието след актуализации на Nova"
       }
+    },
+    "home": {
+      "subtitle": "Общ преглед на използването на Nova."
     }
   },
   "footer": {
@@ -764,6 +771,9 @@
       "toastTitle": "Активен пробен период на Nova Pro",
       "toastDescription_one": "Остава {{count}} ден — Turbo и всички стилове включени.",
       "toastDescription_other": "Остават {{count}} дни — Turbo и всички стилове включени."
-    }
+    },
+    "manageSubscription": "Управление на абонамента ми",
+    "comingSoon": "Очаквайте скоро",
+    "featureColumn": "Функция"
   }
 }

@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Genel",
-    "models": "Modeller",
+    "models": "Performans",
     "advanced": "Gelişmiş",
     "postProcessing": "Son İşlem",
     "history": "Geçmiş",
     "debug": "Hata Ayıklama",
     "about": "Hakkında",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Ana Sayfa",
+    "configuration": "Yapılandırma",
+    "account": "Hesap"
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
@@ -517,7 +520,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Yapay zekânın bağlama göre ne yazdığı."
     },
     "history": {
       "title": "Geçmiş",
@@ -664,6 +668,9 @@
         "label": "Yenilikleri Göster",
         "description": "Nova güncellemelerinden sonra sürüm notlarını göster"
       }
+    },
+    "home": {
+      "subtitle": "Nova kullanımınıza genel bir bakış."
     }
   },
   "footer": {
@@ -764,6 +771,9 @@
       "toastTitle": "Nova Pro deneme sürümü etkin",
       "toastDescription_one": "{{count}} gün kaldı — Turbo ve tüm Stiller dahil.",
       "toastDescription_other": "{{count}} gün kaldı — Turbo ve tüm Stiller dahil."
-    }
+    },
+    "manageSubscription": "Aboneliğimi yönet",
+    "comingSoon": "Yakında",
+    "featureColumn": "Özellik"
   }
 }

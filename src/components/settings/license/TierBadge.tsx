@@ -30,8 +30,9 @@ export function invalidateLicense() {
   inflight = null;
 }
 
-// Palier requis affiché par fonctionnalité.
-const TIER_FOR_FEATURE: Record<string, string> = {
+// Palier requis affiché par fonctionnalité. Exporté : source de vérité
+// réutilisée par le tableau comparatif des paliers (Compte).
+export const TIER_FOR_FEATURE: Record<string, string> = {
   online_engine: "NOVA ULTRA",
   all_styles: "NOVA PRO",
   power_profiles: "NOVA PRO",

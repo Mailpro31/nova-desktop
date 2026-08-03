@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Chung",
-    "models": "Mô hình",
+    "models": "Hiệu năng",
     "advanced": "Nâng cao",
     "postProcessing": "Xử lý sau",
     "history": "Lịch sử",
     "debug": "Gỡ lỗi",
     "about": "Giới thiệu",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Trang chủ",
+    "configuration": "Cấu hình",
+    "account": "Tài khoản"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -517,7 +520,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Nội dung AI viết ra, tùy theo ngữ cảnh."
     },
     "history": {
       "title": "Lịch sử",
@@ -664,6 +668,9 @@
         "label": "Hiển thị điểm mới",
         "description": "Hiển thị ghi chú phát hành sau khi Nova cập nhật"
       }
+    },
+    "home": {
+      "subtitle": "Tổng quan về việc sử dụng Nova của bạn."
     }
   },
   "footer": {
@@ -764,6 +771,9 @@
       "toastTitle": "Đang dùng thử Nova Pro",
       "toastDescription_one": "Còn {{count}} ngày — Bao gồm Turbo và tất cả các Kiểu.",
       "toastDescription_other": "Còn {{count}} ngày — Bao gồm Turbo và tất cả các Kiểu."
-    }
+    },
+    "manageSubscription": "Quản lý gói đăng ký của tôi",
+    "comingSoon": "Sắp ra mắt",
+    "featureColumn": "Tính năng"
   }
 }

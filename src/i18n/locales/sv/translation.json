@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Allmänt",
-    "models": "Modeller",
+    "models": "Prestanda",
     "advanced": "Avancerat",
     "postProcessing": "Efterbearbetning",
     "history": "Historik",
     "debug": "Felsökning",
     "about": "Om",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Hem",
+    "configuration": "Konfiguration",
+    "account": "Konto"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -517,7 +520,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Vad AI:n skriver, utifrån sammanhanget."
     },
     "history": {
       "title": "Historik",
@@ -664,6 +668,9 @@
         "label": "Visa nyheter",
         "description": "Visa versionsinformation efter Nova-uppdateringar"
       }
+    },
+    "home": {
+      "subtitle": "En översikt över din Nova-användning."
     }
   },
   "footer": {
@@ -764,6 +771,9 @@
       "toastTitle": "Nova Pro-provperiod aktiv",
       "toastDescription_one": "{{count}} dag kvar — Turbo och alla Styles ingår.",
       "toastDescription_other": "{{count}} dagar kvar — Turbo och alla Styles ingår."
-    }
+    },
+    "manageSubscription": "Hantera min prenumeration",
+    "comingSoon": "Kommer snart",
+    "featureColumn": "Funktion"
   }
 }

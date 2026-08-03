@@ -1,12 +1,17 @@
-// Settings section components
-export { GeneralSettings } from "./general/GeneralSettings";
-export { AdvancedSettings } from "./advanced/AdvancedSettings";
+// Settings section components (top-level sidebar sections)
+export { HomeSettings } from "./home/HomeSettings";
+export { ConfigurationSettings } from "./configuration/ConfigurationSettings";
 export { DebugSettings } from "./debug/DebugSettings";
 export { HistorySettings } from "./history/HistorySettings";
 export { AboutSettings } from "./about/AboutSettings";
 export { PostProcessingSettings } from "./post-processing/PostProcessingSettings";
-export { ModelsSettings } from "./models/ModelsSettings";
 export { PersonalizationSettings } from "./personalization/PersonalizationSettings";
+export { AccountSettings } from "./account/AccountSettings";
+
+// Sub-sections nested inside Configuration (not top-level sidebar entries)
+export { GeneralSettings } from "./general/GeneralSettings";
+export { AdvancedSettings } from "./advanced/AdvancedSettings";
+export { ModelsSettings } from "./models/ModelsSettings";
 
 // Individual setting components
 export { MicrophoneSelector } from "./MicrophoneSelector";

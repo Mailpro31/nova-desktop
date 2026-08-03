@@ -2,25 +2,25 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   Cog,
+  CreditCard,
   FlaskConical,
   History,
   Info,
   Sparkles,
-  Cpu,
   Palette,
 } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
 import {
-  GeneralSettings,
-  AdvancedSettings,
+  HomeSettings,
+  ConfigurationSettings,
   HistorySettings,
   DebugSettings,
   AboutSettings,
   PostProcessingSettings,
-  ModelsSettings,
   PersonalizationSettings,
+  AccountSettings,
 } from "./settings";
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
@@ -41,28 +41,18 @@ interface SectionConfig {
 }
 
 export const SECTIONS_CONFIG = {
-  general: {
-    labelKey: "sidebar.general",
+  home: {
+    labelKey: "sidebar.home",
     icon: HandyHand,
-    component: GeneralSettings,
+    component: HomeSettings,
     enabled: () => true,
   },
-  models: {
-    labelKey: "sidebar.models",
-    icon: Cpu,
-    component: ModelsSettings,
-    enabled: () => true,
-  },
-  advanced: {
-    labelKey: "sidebar.advanced",
+  configuration: {
+    labelKey: "sidebar.configuration",
     icon: Cog,
-    component: AdvancedSettings,
-    enabled: () => true,
-  },
-  history: {
-    labelKey: "sidebar.history",
-    icon: History,
-    component: HistorySettings,
+    // Regroupe les anciennes sections Général / Modèles / Avancé sous une
+    // seule entrée (sous-onglets internes, voir ConfigurationSettings).
+    component: ConfigurationSettings,
     enabled: () => true,
   },
   postprocessing: {
@@ -78,6 +68,20 @@ export const SECTIONS_CONFIG = {
     labelKey: "sidebar.personalization",
     icon: Palette,
     component: PersonalizationSettings,
+    enabled: () => true,
+  },
+  account: {
+    labelKey: "sidebar.account",
+    icon: CreditCard,
+    // Palier actif, licence, comparatif des paliers (anciennement au bas de
+    // la section À propos).
+    component: AccountSettings,
+    enabled: () => true,
+  },
+  history: {
+    labelKey: "sidebar.history",
+    icon: History,
+    component: HistorySettings,
     enabled: () => true,
   },
   debug: {
@@ -96,15 +100,15 @@ export const SECTIONS_CONFIG = {
 
 // Icônes carrées colorées façon macOS (Réglages système). Chaque catégorie a
 // sa couleur d'identité — ce ne sont PAS des actions (l'accent d'action unique
-// reste le bleu #0A84FF, réservé à la sélection). « general » affiche l'orbe
+// reste le bleu #0A84FF, réservé à la sélection). « home » affiche l'orbe
 // Nova directement, sans carré.
 const SECTION_COLORS: Record<string, string> = {
-  general: "",
-  models: "#5E5CE6",
-  advanced: "#8E8E93",
-  history: "#FF9F0A",
+  home: "",
+  configuration: "#8E8E93",
   postprocessing: "#BF5AF2",
   personalization: "#FF375F",
+  account: "#5E5CE6",
+  history: "#FF9F0A",
   debug: "#30D158",
   about: "#64D2FF",
 };
@@ -144,7 +148,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }`}
               onClick={() => onSectionChange(section.id)}
             >
-              {section.id === "general" || !color ? (
+              {section.id === "home" || !color ? (
                 <Icon width={26} height={26} className="shrink-0" />
               ) : (
                 <span

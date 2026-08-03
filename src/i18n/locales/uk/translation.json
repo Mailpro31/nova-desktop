@@ -10,13 +10,16 @@
   },
   "sidebar": {
     "general": "Загальні",
-    "models": "Моделі",
+    "models": "Продуктивність",
     "advanced": "Розширені",
     "postProcessing": "Постобробка",
     "history": "Історія",
     "debug": "Дебаг",
     "about": "Інфо",
-    "personalization": "Personalization"
+    "personalization": "Personalization",
+    "home": "Головна",
+    "configuration": "Конфігурація",
+    "account": "Обліковий запис"
   },
   "onboarding": {
     "subtitle": "Для початку оберіть модель транскрипції",
@@ -517,7 +520,8 @@
         "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
         "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
         "experimentalNote": "Experimental — off by default."
-      }
+      },
+      "subtitle": "Що ШІ пише залежно від контексту."
     },
     "history": {
       "title": "Історія",
@@ -664,6 +668,9 @@
         "label": "Показувати новини",
         "description": "Показувати примітки до випуску після оновлень Nova"
       }
+    },
+    "home": {
+      "subtitle": "Огляд використання Nova."
     }
   },
   "footer": {
@@ -764,6 +771,9 @@
       "toastTitle": "Пробний період Nova Pro активний",
       "toastDescription_one": "Залишився {{count}} день — Turbo і всі стилі включені.",
       "toastDescription_other": "Залишилося {{count}} днів — Turbo і всі стилі включені."
-    }
+    },
+    "manageSubscription": "Керувати підпискою",
+    "comingSoon": "Незабаром",
+    "featureColumn": "Функція"
   }
 }

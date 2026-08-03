@@ -510,6 +510,10 @@ export const PostProcessingSettings: React.FC = () => {
 
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">
+      <p className="px-1 -mb-2 text-sm text-text-secondary">
+        {t("settings.postProcessing.subtitle")}
+      </p>
+
       <SettingsGroup title={t("settings.postProcessing.enable.title")}>
         <PostProcessingToggle descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
