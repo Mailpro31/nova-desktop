@@ -39,7 +39,9 @@ export const ConfigurationSettings: React.FC = () => {
               aria-selected={active}
               onClick={() => setTab(item.id)}
               className={`px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors cursor-pointer ${
-                active ? "bg-accent text-white" : "text-text-secondary hover:text-text"
+                active
+                  ? "bg-accent text-white"
+                  : "text-text-secondary hover:text-text"
               }`}
             >
               {t(item.labelKey)}

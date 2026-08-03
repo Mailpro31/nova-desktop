@@ -13,7 +13,12 @@ const TIERS: { id: Tier; label: string; color: string }[] = [
   { id: "business", label: "Business", color: "var(--color-accent)" },
 ];
 
-const TIER_RANK: Record<Tier, number> = { free: 0, pro: 1, ultra: 2, business: 3 };
+const TIER_RANK: Record<Tier, number> = {
+  free: 0,
+  pro: 1,
+  ultra: 2,
+  business: 3,
+};
 
 // Palier minimum requis par fonctionnalité (déduit de TIER_FOR_FEATURE, la
 // même source que le badge de verrouillage — on ne fabrique aucune donnée).

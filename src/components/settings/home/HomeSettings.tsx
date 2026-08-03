@@ -37,7 +37,12 @@ interface QuickNavCardProps {
   onClick: () => void;
 }
 
-const QuickNavCard: React.FC<QuickNavCardProps> = ({ icon: Icon, color, label, onClick }) => (
+const QuickNavCard: React.FC<QuickNavCardProps> = ({
+  icon: Icon,
+  color,
+  label,
+  onClick,
+}) => (
   <button
     type="button"
     onClick={onClick}
@@ -81,7 +86,9 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
     <div className="max-w-3xl w-full mx-auto space-y-6">
       <div className="px-1">
         <h1 className="text-xl font-semibold mb-1">{t("sidebar.home")}</h1>
-        <p className="text-sm text-text-secondary">{t("settings.home.subtitle")}</p>
+        <p className="text-sm text-text-secondary">
+          {t("settings.home.subtitle")}
+        </p>
       </div>
 
       <div className="rounded-lg border border-mid-gray/20 bg-background divide-y divide-mid-gray/20">
