@@ -102,9 +102,18 @@ const RecordingOverlay: React.FC = () => {
     setMenuOpen(false);
     await resizeForMenu(false, 0);
     try {
-      await commands.setPostProcessSelectedPrompt(id);
+      const result = await commands.setPostProcessSelectedPrompt(id);
+      // tauri-specta résout parfois une erreur Rust en { status: "error" }
+      // plutôt que de rejeter la promesse — sans ce contrôle, un échec
+      // d'écriture backend laisserait la bulle afficher un Style qui n'a en
+      // réalité jamais été sauvegardé, jusqu'au prochain fetchStyles().
+      if (result.status === "error") {
+        await fetchStyles();
+      }
     } catch {
-      // Ignore : la sélection reste locale si l'écriture échoue.
+      // La sélection locale a pu diverger du backend : on se resynchronise
+      // plutôt que de laisser un état stale dans la bulle.
+      await fetchStyles();
     }
   };
 
