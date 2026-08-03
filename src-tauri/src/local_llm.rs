@@ -473,8 +473,19 @@ async fn is_server_up() -> bool {
         .unwrap_or(false)
 }
 
+/// `CREATE_NO_WINDOW` : `llama-server.exe` est un binaire à sous-système
+/// console (hérité de llama.cpp). Sans ce flag, Windows lui alloue une
+/// fenêtre de terminal visible à chaque lancement — qui peut voler le focus
+/// pendant les quelques secondes de chargement du modèle, et donc casser le
+/// collage de la toute première reformulation (le collage cible la fenêtre
+/// au premier plan, qui n'est alors plus celle de l'utilisateur).
+#[cfg(windows)]
+const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+
 #[cfg(windows)]
 fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result<Child> {
+    use std::os::windows::process::CommandExt;
+
     std::process::Command::new(binary)
         .args([
             "--model",
@@ -488,8 +499,16 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
             "-ngl",
             ngl,
         ])
+        // `--cache-reuse` : réutilise le préfixe déjà en cache KV d'une requête à
+        // l'autre. Chaque Style renvoie un bloc de consignes quasi identique en
+        // tête de prompt ; sans ce flag, ce préfixe est réévalué à chaque
+        // reformulation. Purement une optimisation de vitesse, sans effet sur la
+        // sortie.
+        .arg("--cache-reuse")
+        .arg("256")
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null())
+        .creation_flags(CREATE_NO_WINDOW)
         .spawn()
 }
 
@@ -592,6 +611,43 @@ pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<
 pub async fn ensure_server_running(_app: &AppHandle, _profile_id: &str) -> Result<(), String> {
     Err("L'Intelligence privée locale n'est disponible que sous Windows.".to_string())
 }
+
+/// Préchauffage au démarrage. Si l'Intelligence privée est le moteur de
+/// reformulation ACTIF et que son modèle est DÉJÀ téléchargé, démarre
+/// `llama-server` en arrière-plan pour que la toute première reformulation ne
+/// paie pas le coût de démarrage + chargement du modèle (plusieurs secondes).
+/// Best-effort et non bloquant : toute erreur est ignorée (la reformulation
+/// démarrera le serveur à la demande comme avant). Ne télécharge JAMAIS le
+/// modèle ici — un téléchargement de plusieurs Go ne doit se déclencher que sur
+/// une action explicite de l'utilisateur, pas silencieusement au lancement.
+#[cfg(windows)]
+pub async fn prewarm_if_selected(app: &AppHandle, settings: &crate::settings::AppSettings) {
+    if !settings.post_process_enabled {
+        return;
+    }
+    match settings.active_post_process_provider() {
+        Some(p) if p.id == PROVIDER_ID => {}
+        _ => return,
+    }
+    let profile_id = match settings.post_process_models.get(PROVIDER_ID) {
+        Some(id) if !id.trim().is_empty() => id.clone(),
+        _ => return,
+    };
+    // Modèle déjà présent sur le disque ? Sinon, pas de préchauffage (pas de
+    // téléchargement surprise au lancement).
+    if !model_path(app, &profile_id)
+        .map(|p| p.is_file())
+        .unwrap_or(false)
+    {
+        return;
+    }
+    if let Err(e) = ensure_server_running(app, &profile_id).await {
+        log::debug!("Préchauffage Intelligence privée ignoré : {e}");
+    }
+}
+
+#[cfg(not(windows))]
+pub async fn prewarm_if_selected(_app: &AppHandle, _settings: &crate::settings::AppSettings) {}
 
 /// Arrête le sous-processus `llama-server`, s'il tourne. Appelé à la
 /// fermeture de l'app (voir `lib.rs`, `RunEvent::Exit`) — jamais de processus
