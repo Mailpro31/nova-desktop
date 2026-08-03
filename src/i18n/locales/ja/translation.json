@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "モデルの選択に失敗しました"
     },
+    "step": {
+      "skip": "スキップ",
+      "continue": "次へ",
+      "finish": "完了"
+    },
+    "style": {
+      "title": "スタイルを選択",
+      "subtitle": "Novaはアクティブなアプリに合わせてスタイルを自動的に切り替えることも、常に同じスタイルを使うこともできます。",
+      "recommended": "おすすめ",
+      "auto": {
+        "title": "自動",
+        "description": "Novaがアクティブなアプリを検出し、最適なスタイルを自動的に選びます。"
+      },
+      "manual": {
+        "title": "特定のスタイルを1つ",
+        "description": "アプリに関係なく、Novaは常に同じスタイルを適用します。"
+      },
+      "errors": {
+        "save": "選択したスタイルを保存できませんでした。後で設定から変更できます。"
+      }
+    },
+    "variables": {
+      "title": "よく使う情報のショートカットを追加",
+      "subtitle": "キーワードとよく話す内容を結び付けておくと、文章を整える際にNovaが正確な値を挿入します。後からいつでも設定で編集できます。",
+      "hint": "任意項目です。スキップする場合は空欄のままにしてください。値を入力しない限り何も保存されません。",
+      "presets": {
+        "fullName": {
+          "key": "氏名",
+          "placeholder": "山田太郎"
+        },
+        "iban": {
+          "key": "IBANコード",
+          "placeholder": "JP00 0000 …"
+        },
+        "address": {
+          "key": "住所",
+          "placeholder": "東京都千代田区丸の内1-1-1"
+        }
+      },
+      "errors": {
+        "save": "ショートカットの保存に失敗しました。後で設定から追加できます。"
+      }
+    },
+    "tutorial": {
+      "title": "Novaを試す",
+      "subtitle": "完了する前に、Novaの動作を確認する簡単なテストです。",
+      "instructionsPushToTalk": "{{shortcut}}を押しながら話し、話し終えたら離してください。",
+      "instructionsToggle": "{{shortcut}}を押して開始し、話した後もう一度押して停止してください。",
+      "suggestion": "例えば次のように話してみてください:「{{sentence}}」",
+      "awaiting": "音声入力を待っています…",
+      "polishing": "スタイルを適用中…",
+      "success": "うまくいきました！",
+      "originalWas": "元の音声入力: {{text}}",
+      "hint": "何度でも試すことができます。",
+      "skip": "この手順をスキップ",
+      "finishAnyway": "設定を完了"
+    },
     "permissions": {
       "title": "権限が必要です",
       "description": "Nova が正常に動作するにはいくつかの権限が必要です。",

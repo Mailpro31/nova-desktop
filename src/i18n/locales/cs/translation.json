@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Přeskočit",
+      "continue": "Pokračovat",
+      "finish": "Dokončit"
+    },
+    "style": {
+      "title": "Vyberte svůj Styl",
+      "subtitle": "Nova dokáže automaticky přizpůsobit Styl aktivní aplikaci, nebo vždy používat stejný.",
+      "recommended": "Doporučeno",
+      "auto": {
+        "title": "Automaticky",
+        "description": "Nova rozpozná aktivní aplikaci a zvolí za vás nejvhodnější Styl."
+      },
+      "manual": {
+        "title": "Jeden konkrétní Styl",
+        "description": "Nova vždy použije stejný Styl, bez ohledu na aplikaci."
+      },
+      "errors": {
+        "save": "Vybraný Styl se nepodařilo uložit. Můžete jej později změnit v nastavení."
+      }
+    },
+    "variables": {
+      "title": "Přidejte své osobní zkratky",
+      "subtitle": "Propojte klíčové slovo s něčím, co často diktujete — Nova při přeformulování vloží přesnou hodnotu. Kdykoli je můžete později upravit v nastavení.",
+      "hint": "Nepovinné — ponechte prázdné pro přeskočení. Dokud nevyplníte hodnotu, nic se neukládá.",
+      "presets": {
+        "fullName": {
+          "key": "moje celé jméno",
+          "placeholder": "Jan Novák"
+        },
+        "iban": {
+          "key": "moje IBAN",
+          "placeholder": "CZ65 0800 …"
+        },
+        "address": {
+          "key": "moje adresa",
+          "placeholder": "Václavské náměstí 1, 110 00 Praha"
+        }
+      },
+      "errors": {
+        "save": "Vaše zkratky se nepodařilo uložit. Můžete je později přidat v nastavení."
+      }
+    },
+    "tutorial": {
+      "title": "Vyzkoušejte Nova",
+      "subtitle": "Rychlý test, který vám ukáže Nova v akci, než dokončíte nastavení.",
+      "instructionsPushToTalk": "Podržte {{shortcut}} během mluvení a poté uvolněte.",
+      "instructionsToggle": "Stiskněte {{shortcut}} pro spuštění, mluvte a poté stiskněte znovu pro zastavení.",
+      "suggestion": "Zkuste například říct: „{{sentence}}“",
+      "awaiting": "Čekání na vaši diktovanou zprávu…",
+      "polishing": "Používá se Styl…",
+      "success": "Funguje to!",
+      "originalWas": "Původně nadiktováno: {{text}}",
+      "hint": "Můžete to zkusit znovu, kolikrát budete chtít.",
+      "skip": "Přeskočit tento krok",
+      "finishAnyway": "Dokončit nastavení"
+    },
     "permissions": {
       "title": "Vyžadována oprávnění",
       "description": "Nova potřebuje několik oprávnění pro správné fungování.",

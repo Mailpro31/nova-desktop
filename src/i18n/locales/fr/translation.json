@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Passer",
+      "continue": "Continuer",
+      "finish": "Terminer"
+    },
+    "style": {
+      "title": "Choisissez votre Style",
+      "subtitle": "Nova peut adapter automatiquement le Style à l'application active, ou toujours utiliser le même.",
+      "recommended": "Recommandé",
+      "auto": {
+        "title": "Automatique",
+        "description": "Nova détecte l'application active et choisit le Style le plus adapté à votre place."
+      },
+      "manual": {
+        "title": "Un Style précis",
+        "description": "Nova applique toujours le même Style, quelle que soit l'application."
+      },
+      "errors": {
+        "save": "Échec de l'enregistrement du Style choisi. Vous pourrez le changer plus tard dans les réglages."
+      }
+    },
+    "variables": {
+      "title": "Ajoutez vos raccourcis personnels",
+      "subtitle": "Associez un mot-clé à une information que vous dictez souvent : Nova insère la valeur exacte pendant la reformulation. Vous pourrez toujours les modifier plus tard dans les réglages.",
+      "hint": "Facultatif — laissez vide pour passer. Rien n'est enregistré tant qu'une valeur n'est pas renseignée.",
+      "presets": {
+        "fullName": {
+          "key": "mon nom complet",
+          "placeholder": "Jean Dupont"
+        },
+        "iban": {
+          "key": "mon IBAN",
+          "placeholder": "FR76 3000 …"
+        },
+        "address": {
+          "key": "mon adresse",
+          "placeholder": "12 rue de la Paix, 75002 Paris"
+        }
+      },
+      "errors": {
+        "save": "Échec de l'enregistrement de vos raccourcis. Vous pourrez les ajouter plus tard dans les réglages."
+      }
+    },
+    "tutorial": {
+      "title": "Essayez Nova",
+      "subtitle": "Un test rapide pour voir Nova à l'œuvre avant de terminer.",
+      "instructionsPushToTalk": "Maintenez {{shortcut}} enfoncé pendant que vous parlez, puis relâchez.",
+      "instructionsToggle": "Appuyez sur {{shortcut}} pour démarrer, parlez, puis appuyez à nouveau pour arrêter.",
+      "suggestion": "Essayez de dire par exemple : « {{sentence}} »",
+      "awaiting": "En attente de votre dictée…",
+      "polishing": "Application du Style…",
+      "success": "Ça marche !",
+      "originalWas": "Dicté à l'origine : {{text}}",
+      "hint": "Vous pouvez réessayer autant de fois que vous voulez.",
+      "skip": "Passer cette étape",
+      "finishAnyway": "Terminer la configuration"
+    },
     "permissions": {
       "title": "Autorisations requises",
       "description": "Nova a besoin de quelques autorisations pour fonctionner correctement.",

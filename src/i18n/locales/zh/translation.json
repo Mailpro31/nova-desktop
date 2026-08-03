@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "跳过",
+      "continue": "继续",
+      "finish": "完成"
+    },
+    "style": {
+      "title": "选择您的风格",
+      "subtitle": "Nova 可以根据当前使用的应用自动调整风格，也可以始终使用同一种风格。",
+      "recommended": "推荐",
+      "auto": {
+        "title": "自动",
+        "description": "Nova 会检测当前使用的应用，并为您选择最合适的风格。"
+      },
+      "manual": {
+        "title": "固定使用一种风格",
+        "description": "无论使用什么应用，Nova 都会始终应用同一种风格。"
+      },
+      "errors": {
+        "save": "所选风格保存失败。您可以稍后在设置中更改。"
+      }
+    },
+    "variables": {
+      "title": "添加您的个人快捷短语",
+      "subtitle": "将一个关键词与您经常口述的内容关联起来 — Nova 会在润色时插入准确的值。您可以随时在设置中修改。",
+      "hint": "可选 — 留空即可跳过。只要未填写值，就不会保存任何内容。",
+      "presets": {
+        "fullName": {
+          "key": "我的全名",
+          "placeholder": "张伟"
+        },
+        "iban": {
+          "key": "我的国际银行账号（IBAN）",
+          "placeholder": "CN12 3456 …"
+        },
+        "address": {
+          "key": "我的地址",
+          "placeholder": "北京市朝阳区建国路12号"
+        }
+      },
+      "errors": {
+        "save": "您的快捷短语保存失败。您可以稍后在设置中添加。"
+      }
+    },
+    "tutorial": {
+      "title": "试用 Nova",
+      "subtitle": "在完成之前，快速体验一下 Nova 的实际效果。",
+      "instructionsPushToTalk": "说话时按住 {{shortcut}}，说完后松开。",
+      "instructionsToggle": "按下 {{shortcut}} 开始，说话后再按一次以停止。",
+      "suggestion": "试着说，例如：“{{sentence}}”",
+      "awaiting": "正在等待您的口述…",
+      "polishing": "正在应用风格…",
+      "success": "成功了！",
+      "originalWas": "原始口述内容：{{text}}",
+      "hint": "您可以随意重试，次数不限。",
+      "skip": "跳过此步骤",
+      "finishAnyway": "完成设置"
+    },
     "permissions": {
       "title": "需要权限",
       "description": "Nova 需要一些权限才能正常工作。",

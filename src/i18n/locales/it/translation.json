@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Impossibile selezionare il modello"
     },
+    "step": {
+      "skip": "Salta",
+      "continue": "Continua",
+      "finish": "Fine"
+    },
+    "style": {
+      "title": "Scegli il tuo Stile",
+      "subtitle": "Nova può adattare automaticamente lo Stile all'app attiva, oppure usare sempre lo stesso.",
+      "recommended": "Consigliato",
+      "auto": {
+        "title": "Automatico",
+        "description": "Nova rileva l'app attiva e sceglie per te lo Stile più adatto."
+      },
+      "manual": {
+        "title": "Uno Stile specifico",
+        "description": "Nova applica sempre lo stesso Stile, qualunque sia l'app."
+      },
+      "errors": {
+        "save": "Impossibile salvare lo Stile selezionato. Potrai cambiarlo più tardi nelle impostazioni."
+      }
+    },
+    "variables": {
+      "title": "Aggiungi le tue scorciatoie personali",
+      "subtitle": "Collega una parola chiave a qualcosa che detti spesso: Nova inserisce il valore esatto durante la riformulazione. Potrai sempre modificarle più tardi nelle impostazioni.",
+      "hint": "Facoltativo — lascia vuoto per saltare. Non viene salvato nulla finché non inserisci un valore.",
+      "presets": {
+        "fullName": {
+          "key": "il mio nome completo",
+          "placeholder": "Mario Rossi"
+        },
+        "iban": {
+          "key": "il mio IBAN",
+          "placeholder": "IT60 X054 …"
+        },
+        "address": {
+          "key": "il mio indirizzo",
+          "placeholder": "Via Roma 12, 00184 Roma"
+        }
+      },
+      "errors": {
+        "save": "Impossibile salvare le tue scorciatoie. Potrai aggiungerle più tardi nelle impostazioni."
+      }
+    },
+    "tutorial": {
+      "title": "Prova Nova",
+      "subtitle": "Un test rapido per vedere Nova all'opera prima di terminare.",
+      "instructionsPushToTalk": "Tieni premuto {{shortcut}} mentre parli, poi rilascia.",
+      "instructionsToggle": "Premi {{shortcut}} per iniziare, parla, poi premi di nuovo per fermarti.",
+      "suggestion": "Prova a dire, ad esempio: «{{sentence}}»",
+      "awaiting": "In attesa del tuo dettato…",
+      "polishing": "Applicazione dello Stile…",
+      "success": "Funziona!",
+      "originalWas": "Dettato originariamente: {{text}}",
+      "hint": "Puoi riprovare tutte le volte che vuoi.",
+      "skip": "Salta questo passaggio",
+      "finishAnyway": "Termina la configurazione"
+    },
     "permissions": {
       "title": "Permessi Richiesti",
       "description": "Nova ha bisogno di alcuni permessi per funzionare correttamente.",

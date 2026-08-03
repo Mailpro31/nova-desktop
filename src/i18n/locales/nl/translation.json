@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Model selecteren mislukt"
     },
+    "step": {
+      "skip": "Overslaan",
+      "continue": "Doorgaan",
+      "finish": "Voltooien"
+    },
+    "style": {
+      "title": "Kies je Stijl",
+      "subtitle": "Nova kan de Stijl automatisch aanpassen aan de actieve app, of altijd dezelfde gebruiken.",
+      "recommended": "Aanbevolen",
+      "auto": {
+        "title": "Automatisch",
+        "description": "Nova herkent de actieve app en kiest de best passende Stijl voor je."
+      },
+      "manual": {
+        "title": "Eén specifieke Stijl",
+        "description": "Nova past altijd dezelfde Stijl toe, ongeacht de app."
+      },
+      "errors": {
+        "save": "De geselecteerde Stijl kon niet worden opgeslagen. Je kunt dit later wijzigen in de instellingen."
+      }
+    },
+    "variables": {
+      "title": "Voeg je persoonlijke snelkoppelingen toe",
+      "subtitle": "Koppel een trefwoord aan iets dat je vaak dicteert — Nova voegt de exacte waarde in tijdens het herformuleren. Je kunt ze later altijd bewerken in de instellingen.",
+      "hint": "Optioneel — laat leeg om over te slaan. Er wordt niets opgeslagen zolang je geen waarde invult.",
+      "presets": {
+        "fullName": {
+          "key": "mijn volledige naam",
+          "placeholder": "Jan Jansen"
+        },
+        "iban": {
+          "key": "mijn IBAN",
+          "placeholder": "NL91 ABNA …"
+        },
+        "address": {
+          "key": "mijn adres",
+          "placeholder": "Kalverstraat 12, 1012 Amsterdam"
+        }
+      },
+      "errors": {
+        "save": "Je snelkoppelingen konden niet worden opgeslagen. Je kunt ze later toevoegen in de instellingen."
+      }
+    },
+    "tutorial": {
+      "title": "Probeer Nova",
+      "subtitle": "Een korte test om Nova in actie te zien voordat je klaar bent.",
+      "instructionsPushToTalk": "Houd {{shortcut}} ingedrukt terwijl je spreekt en laat daarna los.",
+      "instructionsToggle": "Druk op {{shortcut}} om te starten, spreek, en druk er nogmaals op om te stoppen.",
+      "suggestion": "Probeer bijvoorbeeld te zeggen: „{{sentence}}”",
+      "awaiting": "Wachten op je dictaat…",
+      "polishing": "Stijl wordt toegepast…",
+      "success": "Het werkt!",
+      "originalWas": "Oorspronkelijk gedicteerd: {{text}}",
+      "hint": "Je kunt zo vaak opnieuw proberen als je wilt.",
+      "skip": "Deze stap overslaan",
+      "finishAnyway": "Instellen voltooien"
+    },
     "permissions": {
       "title": "Machtigingen vereist",
       "description": "Nova heeft een aantal machtigingen nodig om goed te kunnen werken.",

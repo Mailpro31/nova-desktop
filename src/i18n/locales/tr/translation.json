@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Atla",
+      "continue": "Devam",
+      "finish": "Bitir"
+    },
+    "style": {
+      "title": "Stilinizi seçin",
+      "subtitle": "Nova, Stili etkin uygulamaya göre otomatik olarak uyarlayabilir veya her zaman aynısını kullanabilir.",
+      "recommended": "Önerilen",
+      "auto": {
+        "title": "Otomatik",
+        "description": "Nova etkin uygulamayı algılar ve sizin için en uygun Stili seçer."
+      },
+      "manual": {
+        "title": "Tek bir Stil",
+        "description": "Nova, uygulama ne olursa olsun her zaman aynı Stili uygular."
+      },
+      "errors": {
+        "save": "Seçilen Stil kaydedilemedi. Daha sonra ayarlardan değiştirebilirsiniz."
+      }
+    },
+    "variables": {
+      "title": "Kişisel kısayollarınızı ekleyin",
+      "subtitle": "Sık sık söylediğiniz bir bilgiyi bir anahtar kelimeyle ilişkilendirin — Nova yeniden ifade ederken tam değeri ekler. Bunları daha sonra ayarlardan her zaman düzenleyebilirsiniz.",
+      "hint": "İsteğe bağlı — atlamak için boş bırakın. Bir değer girmediğiniz sürece hiçbir şey kaydedilmez.",
+      "presets": {
+        "fullName": {
+          "key": "adım soyadım",
+          "placeholder": "Ahmet Yılmaz"
+        },
+        "iban": {
+          "key": "IBAN'ım",
+          "placeholder": "TR33 0006 …"
+        },
+        "address": {
+          "key": "adresim",
+          "placeholder": "İstiklal Caddesi No:12, 34430 İstanbul"
+        }
+      },
+      "errors": {
+        "save": "Kısayollarınız kaydedilemedi. Daha sonra ayarlardan ekleyebilirsiniz."
+      }
+    },
+    "tutorial": {
+      "title": "Nova'yı deneyin",
+      "subtitle": "Bitirmeden önce Nova'yı iş başında görmek için hızlı bir test.",
+      "instructionsPushToTalk": "Konuşurken {{shortcut}} tuşunu basılı tutun, sonra bırakın.",
+      "instructionsToggle": "Başlamak için {{shortcut}} tuşuna basın, konuşun, sonra durdurmak için tekrar basın.",
+      "suggestion": "Örneğin şunu söylemeyi deneyin: \"{{sentence}}\"",
+      "awaiting": "Dikteniz bekleniyor…",
+      "polishing": "Stil uygulanıyor…",
+      "success": "İşe yarıyor!",
+      "originalWas": "Aslında söylenen: {{text}}",
+      "hint": "İstediğiniz kadar tekrar deneyebilirsiniz.",
+      "skip": "Bu adımı atla",
+      "finishAnyway": "Kurulumu bitir"
+    },
     "permissions": {
       "title": "İzinler Gerekli",
       "description": "Nova'nin düzgün çalışabilmesi için birkaç izne ihtiyacı var.",

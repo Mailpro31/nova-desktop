@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Omitir",
+      "continue": "Continuar",
+      "finish": "Finalizar"
+    },
+    "style": {
+      "title": "Elige tu Estilo",
+      "subtitle": "Nova puede adaptar automáticamente el Estilo a la aplicación activa, o usar siempre el mismo.",
+      "recommended": "Recomendado",
+      "auto": {
+        "title": "Automático",
+        "description": "Nova detecta la aplicación activa y elige el Estilo más adecuado por ti."
+      },
+      "manual": {
+        "title": "Un Estilo concreto",
+        "description": "Nova aplica siempre el mismo Estilo, sea cual sea la aplicación."
+      },
+      "errors": {
+        "save": "No se pudo guardar el Estilo seleccionado. Podrás cambiarlo más tarde en los ajustes."
+      }
+    },
+    "variables": {
+      "title": "Añade tus atajos personales",
+      "subtitle": "Vincula una palabra clave con algo que dictas a menudo: Nova inserta el valor exacto al reformular. Siempre podrás editarlos más tarde en los ajustes.",
+      "hint": "Opcional — déjalo en blanco para omitirlo. No se guarda nada mientras no introduzcas un valor.",
+      "presets": {
+        "fullName": {
+          "key": "mi nombre completo",
+          "placeholder": "Juan Pérez"
+        },
+        "iban": {
+          "key": "mi IBAN",
+          "placeholder": "ES91 2100 …"
+        },
+        "address": {
+          "key": "mi dirección",
+          "placeholder": "Calle Mayor 12, 28013 Madrid"
+        }
+      },
+      "errors": {
+        "save": "No se pudieron guardar tus atajos. Podrás añadirlos más tarde en los ajustes."
+      }
+    },
+    "tutorial": {
+      "title": "Prueba Nova",
+      "subtitle": "Una prueba rápida para ver a Nova en acción antes de terminar.",
+      "instructionsPushToTalk": "Mantén pulsado {{shortcut}} mientras hablas y luego suéltalo.",
+      "instructionsToggle": "Pulsa {{shortcut}} para empezar, habla y vuelve a pulsarlo para detener.",
+      "suggestion": "Intenta decir, por ejemplo: «{{sentence}}»",
+      "awaiting": "Esperando tu dictado…",
+      "polishing": "Aplicando el Estilo…",
+      "success": "¡Funciona!",
+      "originalWas": "Dictado originalmente: {{text}}",
+      "hint": "Puedes volver a intentarlo tantas veces como quieras.",
+      "skip": "Omitir este paso",
+      "finishAnyway": "Finalizar configuración"
+    },
     "permissions": {
       "title": "Permisos Requeridos",
       "description": "Nova necesita algunos permisos para funcionar correctamente.",
