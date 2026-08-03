@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Pomiń",
+      "continue": "Dalej",
+      "finish": "Zakończ"
+    },
+    "style": {
+      "title": "Wybierz swój Styl",
+      "subtitle": "Nova może automatycznie dopasowywać Styl do aktywnej aplikacji lub zawsze używać tego samego.",
+      "recommended": "Polecane",
+      "auto": {
+        "title": "Automatyczny",
+        "description": "Nova rozpoznaje aktywną aplikację i wybiera za Ciebie najbardziej odpowiedni Styl."
+      },
+      "manual": {
+        "title": "Jeden konkretny Styl",
+        "description": "Nova zawsze stosuje ten sam Styl, niezależnie od aplikacji."
+      },
+      "errors": {
+        "save": "Nie udało się zapisać wybranego Stylu. Możesz go później zmienić w ustawieniach."
+      }
+    },
+    "variables": {
+      "title": "Dodaj swoje osobiste skróty",
+      "subtitle": "Powiąż słowo kluczowe z czymś, co często dyktujesz — Nova wstawi dokładną wartość podczas przeformułowywania. Zawsze możesz je później edytować w ustawieniach.",
+      "hint": "Opcjonalne — zostaw puste, aby pominąć. Nic nie zostanie zapisane, dopóki nie wpiszesz wartości.",
+      "presets": {
+        "fullName": {
+          "key": "moje imię i nazwisko",
+          "placeholder": "Jan Kowalski"
+        },
+        "iban": {
+          "key": "mój IBAN",
+          "placeholder": "PL61 1090 …"
+        },
+        "address": {
+          "key": "mój adres",
+          "placeholder": "ul. Marszałkowska 12, 00-590 Warszawa"
+        }
+      },
+      "errors": {
+        "save": "Nie udało się zapisać Twoich skrótów. Możesz je później dodać w ustawieniach."
+      }
+    },
+    "tutorial": {
+      "title": "Wypróbuj Nova",
+      "subtitle": "Szybki test, aby zobaczyć Nova w akcji przed zakończeniem.",
+      "instructionsPushToTalk": "Przytrzymaj {{shortcut}} podczas mówienia, a następnie puść.",
+      "instructionsToggle": "Naciśnij {{shortcut}}, aby rozpocząć, mów, a następnie naciśnij ponownie, aby zatrzymać.",
+      "suggestion": "Spróbuj powiedzieć na przykład: „{{sentence}}”",
+      "awaiting": "Oczekiwanie na Twoją dyktowaną wypowiedź…",
+      "polishing": "Stosowanie Stylu…",
+      "success": "Działa!",
+      "originalWas": "Pierwotnie podyktowano: {{text}}",
+      "hint": "Możesz spróbować ponownie tyle razy, ile chcesz.",
+      "skip": "Pomiń ten krok",
+      "finishAnyway": "Zakończ konfigurację"
+    },
     "permissions": {
       "title": "Wymagane uprawnienia",
       "description": "Nova potrzebuje kilku uprawnień, aby działać poprawnie.",

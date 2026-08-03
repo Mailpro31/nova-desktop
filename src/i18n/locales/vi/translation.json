@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Bỏ qua",
+      "continue": "Tiếp tục",
+      "finish": "Hoàn tất"
+    },
+    "style": {
+      "title": "Chọn Phong cách của bạn",
+      "subtitle": "Nova có thể tự động điều chỉnh Phong cách theo ứng dụng đang hoạt động, hoặc luôn dùng một Phong cách duy nhất.",
+      "recommended": "Đề xuất",
+      "auto": {
+        "title": "Tự động",
+        "description": "Nova phát hiện ứng dụng đang hoạt động và chọn Phong cách phù hợp nhất giúp bạn."
+      },
+      "manual": {
+        "title": "Một Phong cách cụ thể",
+        "description": "Nova luôn áp dụng cùng một Phong cách, bất kể ứng dụng nào."
+      },
+      "errors": {
+        "save": "Không thể lưu Phong cách đã chọn. Bạn có thể thay đổi sau trong phần cài đặt."
+      }
+    },
+    "variables": {
+      "title": "Thêm các phím tắt cá nhân của bạn",
+      "subtitle": "Liên kết một từ khóa với điều bạn thường nói — Nova sẽ chèn đúng giá trị khi diễn đạt lại. Bạn luôn có thể chỉnh sửa sau trong phần cài đặt.",
+      "hint": "Không bắt buộc — để trống để bỏ qua. Không có gì được lưu cho đến khi bạn nhập giá trị.",
+      "presets": {
+        "fullName": {
+          "key": "họ tên đầy đủ của tôi",
+          "placeholder": "Nguyễn Văn An"
+        },
+        "iban": {
+          "key": "IBAN của tôi",
+          "placeholder": "VN89 0070 …"
+        },
+        "address": {
+          "key": "địa chỉ của tôi",
+          "placeholder": "12 Đường Lê Lợi, Quận 1, TP. Hồ Chí Minh"
+        }
+      },
+      "errors": {
+        "save": "Không thể lưu các phím tắt của bạn. Bạn có thể thêm sau trong phần cài đặt."
+      }
+    },
+    "tutorial": {
+      "title": "Dùng thử Nova",
+      "subtitle": "Một bài kiểm tra nhanh để xem Nova hoạt động trước khi hoàn tất.",
+      "instructionsPushToTalk": "Giữ {{shortcut}} trong khi bạn nói, rồi thả ra.",
+      "instructionsToggle": "Nhấn {{shortcut}} để bắt đầu, nói, rồi nhấn lại để dừng.",
+      "suggestion": "Hãy thử nói, ví dụ: \"{{sentence}}\"",
+      "awaiting": "Đang chờ bạn nói…",
+      "polishing": "Đang áp dụng Phong cách…",
+      "success": "Nó hoạt động!",
+      "originalWas": "Nội dung đã nói ban đầu: {{text}}",
+      "hint": "Bạn có thể thử lại bao nhiêu lần tùy thích.",
+      "skip": "Bỏ qua bước này",
+      "finishAnyway": "Hoàn tất thiết lập"
+    },
     "permissions": {
       "title": "Cần cấp quyền",
       "description": "Nova cần một số quyền để hoạt động bình thường.",

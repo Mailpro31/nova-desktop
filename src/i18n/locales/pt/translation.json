@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Pular",
+      "continue": "Continuar",
+      "finish": "Concluir"
+    },
+    "style": {
+      "title": "Escolha seu Estilo",
+      "subtitle": "O Nova pode adaptar automaticamente o Estilo ao aplicativo ativo, ou sempre usar o mesmo.",
+      "recommended": "Recomendado",
+      "auto": {
+        "title": "Automático",
+        "description": "O Nova detecta o aplicativo ativo e escolhe o Estilo mais adequado para você."
+      },
+      "manual": {
+        "title": "Um Estilo específico",
+        "description": "O Nova sempre aplica o mesmo Estilo, seja qual for o aplicativo."
+      },
+      "errors": {
+        "save": "Não foi possível salvar o Estilo selecionado. Você pode alterá-lo mais tarde nas configurações."
+      }
+    },
+    "variables": {
+      "title": "Adicione seus atalhos pessoais",
+      "subtitle": "Vincule uma palavra-chave a algo que você dita com frequência — o Nova insere o valor exato durante a reformulação. Você sempre pode editá-los depois nas configurações.",
+      "hint": "Opcional — deixe em branco para pular. Nada é salvo até que você preencha um valor.",
+      "presets": {
+        "fullName": {
+          "key": "meu nome completo",
+          "placeholder": "João Silva"
+        },
+        "iban": {
+          "key": "meu IBAN",
+          "placeholder": "BR97 0036 …"
+        },
+        "address": {
+          "key": "meu endereço",
+          "placeholder": "Av. Paulista 1000, São Paulo"
+        }
+      },
+      "errors": {
+        "save": "Não foi possível salvar seus atalhos. Você pode adicioná-los depois nas configurações."
+      }
+    },
+    "tutorial": {
+      "title": "Experimente o Nova",
+      "subtitle": "Um teste rápido para ver o Nova em ação antes de concluir.",
+      "instructionsPushToTalk": "Mantenha {{shortcut}} pressionado enquanto fala e depois solte.",
+      "instructionsToggle": "Pressione {{shortcut}} para começar, fale e pressione novamente para parar.",
+      "suggestion": "Tente dizer, por exemplo: \"{{sentence}}\"",
+      "awaiting": "Aguardando seu ditado…",
+      "polishing": "Aplicando o Estilo…",
+      "success": "Funcionou!",
+      "originalWas": "Ditado originalmente: {{text}}",
+      "hint": "Você pode tentar novamente quantas vezes quiser.",
+      "skip": "Pular esta etapa",
+      "finishAnyway": "Concluir configuração"
+    },
     "permissions": {
       "title": "Permissões Necessárias",
       "description": "O Nova precisa de algumas permissões para funcionar corretamente.",

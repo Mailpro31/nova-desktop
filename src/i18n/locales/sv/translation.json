@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Hoppa över",
+      "continue": "Fortsätt",
+      "finish": "Slutför"
+    },
+    "style": {
+      "title": "Välj din Stil",
+      "subtitle": "Nova kan automatiskt anpassa Stilen efter den aktiva appen, eller alltid använda samma.",
+      "recommended": "Rekommenderas",
+      "auto": {
+        "title": "Automatisk",
+        "description": "Nova känner av den aktiva appen och väljer den mest passande Stilen åt dig."
+      },
+      "manual": {
+        "title": "En specifik Stil",
+        "description": "Nova använder alltid samma Stil, oavsett app."
+      },
+      "errors": {
+        "save": "Det gick inte att spara den valda Stilen. Du kan ändra den senare i inställningarna."
+      }
+    },
+    "variables": {
+      "title": "Lägg till dina personliga genvägar",
+      "subtitle": "Koppla ett nyckelord till något du ofta dikterar — Nova infogar det exakta värdet vid omformulering. Du kan alltid redigera dem senare i inställningarna.",
+      "hint": "Valfritt — lämna tomt för att hoppa över. Inget sparas förrän du fyller i ett värde.",
+      "presets": {
+        "fullName": {
+          "key": "mitt fullständiga namn",
+          "placeholder": "Anna Andersson"
+        },
+        "iban": {
+          "key": "mitt IBAN",
+          "placeholder": "SE45 5000 …"
+        },
+        "address": {
+          "key": "min adress",
+          "placeholder": "Storgatan 12, 111 51 Stockholm"
+        }
+      },
+      "errors": {
+        "save": "Det gick inte att spara dina genvägar. Du kan lägga till dem senare i inställningarna."
+      }
+    },
+    "tutorial": {
+      "title": "Prova Nova",
+      "subtitle": "Ett snabbt test för att se Nova i praktiken innan du slutför.",
+      "instructionsPushToTalk": "Håll {{shortcut}} nedtryckt medan du pratar och släpp sedan.",
+      "instructionsToggle": "Tryck på {{shortcut}} för att starta, prata, och tryck igen för att stoppa.",
+      "suggestion": "Prova att säga till exempel: ”{{sentence}}”",
+      "awaiting": "Väntar på din diktering…",
+      "polishing": "Tillämpar Stilen…",
+      "success": "Det fungerar!",
+      "originalWas": "Ursprungligen dikterat: {{text}}",
+      "hint": "Du kan försöka igen så många gånger du vill.",
+      "skip": "Hoppa över det här steget",
+      "finishAnyway": "Slutför installationen"
+    },
     "permissions": {
       "title": "Behörigheter krävs",
       "description": "Nova behöver ett par behörigheter för att fungera korrekt.",

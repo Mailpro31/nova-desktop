@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "Überspringen",
+      "continue": "Weiter",
+      "finish": "Fertig"
+    },
+    "style": {
+      "title": "Wähle deinen Stil",
+      "subtitle": "Nova kann den Stil automatisch an die aktive App anpassen oder immer denselben verwenden.",
+      "recommended": "Empfohlen",
+      "auto": {
+        "title": "Automatisch",
+        "description": "Nova erkennt die aktive App und wählt den passendsten Stil für dich."
+      },
+      "manual": {
+        "title": "Ein bestimmter Stil",
+        "description": "Nova wendet immer denselben Stil an, unabhängig von der App."
+      },
+      "errors": {
+        "save": "Der ausgewählte Stil konnte nicht gespeichert werden. Du kannst ihn später in den Einstellungen ändern."
+      }
+    },
+    "variables": {
+      "title": "Füge deine persönlichen Kürzel hinzu",
+      "subtitle": "Verknüpfe ein Schlüsselwort mit etwas, das du oft diktierst — Nova fügt beim Umformulieren den genauen Wert ein. Du kannst sie später jederzeit in den Einstellungen bearbeiten.",
+      "hint": "Optional — leer lassen, um zu überspringen. Es wird nichts gespeichert, solange du keinen Wert einträgst.",
+      "presets": {
+        "fullName": {
+          "key": "mein vollständiger Name",
+          "placeholder": "Max Mustermann"
+        },
+        "iban": {
+          "key": "meine IBAN",
+          "placeholder": "DE89 3704 …"
+        },
+        "address": {
+          "key": "meine Adresse",
+          "placeholder": "Musterstraße 12, 10115 Berlin"
+        }
+      },
+      "errors": {
+        "save": "Deine Kürzel konnten nicht gespeichert werden. Du kannst sie später in den Einstellungen hinzufügen."
+      }
+    },
+    "tutorial": {
+      "title": "Probiere Nova aus",
+      "subtitle": "Ein kurzer Test, um Nova in Aktion zu sehen, bevor du fertig bist.",
+      "instructionsPushToTalk": "Halte {{shortcut}} gedrückt, während du sprichst, und lasse es dann los.",
+      "instructionsToggle": "Drücke {{shortcut}}, um zu starten, sprich, und drücke dann erneut, um zu stoppen.",
+      "suggestion": "Versuche zum Beispiel zu sagen: „{{sentence}}“",
+      "awaiting": "Warten auf deine Diktion…",
+      "polishing": "Stil wird angewendet…",
+      "success": "Es funktioniert!",
+      "originalWas": "Ursprünglich diktiert: {{text}}",
+      "hint": "Du kannst es so oft wiederholen, wie du möchtest.",
+      "skip": "Diesen Schritt überspringen",
+      "finishAnyway": "Einrichtung abschließen"
+    },
     "permissions": {
       "title": "Berechtigungen erforderlich",
       "description": "Nova benötigt einige Berechtigungen, um richtig zu funktionieren.",

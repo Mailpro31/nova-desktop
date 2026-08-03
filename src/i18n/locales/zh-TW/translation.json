@@ -99,6 +99,63 @@
     "errors": {
       "selectModel": "Failed to select model"
     },
+    "step": {
+      "skip": "略過",
+      "continue": "繼續",
+      "finish": "完成"
+    },
+    "style": {
+      "title": "選擇您的風格",
+      "subtitle": "Nova 可以根據目前使用的應用程式自動調整風格，也可以一律使用同一種風格。",
+      "recommended": "建議",
+      "auto": {
+        "title": "自動",
+        "description": "Nova 會偵測目前使用的應用程式，並為您選擇最合適的風格。"
+      },
+      "manual": {
+        "title": "固定使用一種風格",
+        "description": "無論使用什麼應用程式，Nova 都會一律套用同一種風格。"
+      },
+      "errors": {
+        "save": "所選風格儲存失敗。您可以稍後在設定中變更。"
+      }
+    },
+    "variables": {
+      "title": "新增您的個人快捷用語",
+      "subtitle": "將關鍵字與您經常口述的內容建立關聯 — Nova 會在潤飾時插入正確的值。您可以隨時在設定中編輯。",
+      "hint": "選填 — 留空即可略過。只要尚未填入值，就不會儲存任何內容。",
+      "presets": {
+        "fullName": {
+          "key": "我的全名",
+          "placeholder": "王小明"
+        },
+        "iban": {
+          "key": "我的國際銀行帳號（IBAN）",
+          "placeholder": "TW12 3456 …"
+        },
+        "address": {
+          "key": "我的地址",
+          "placeholder": "台北市信義區松仁路12號"
+        }
+      },
+      "errors": {
+        "save": "您的快捷用語儲存失敗。您可以稍後在設定中新增。"
+      }
+    },
+    "tutorial": {
+      "title": "試用 Nova",
+      "subtitle": "在完成之前，快速體驗 Nova 的實際效果。",
+      "instructionsPushToTalk": "說話時按住 {{shortcut}}，說完後放開。",
+      "instructionsToggle": "按下 {{shortcut}} 開始，說話後再按一次以停止。",
+      "suggestion": "試著說，例如：「{{sentence}}」",
+      "awaiting": "正在等待您的口述…",
+      "polishing": "正在套用風格…",
+      "success": "成功了！",
+      "originalWas": "原始口述內容：{{text}}",
+      "hint": "您可以隨意重試，次數不限。",
+      "skip": "略過此步驟",
+      "finishAnyway": "完成設定"
+    },
     "permissions": {
       "title": "需要權限",
       "description": "Nova 需要一些權限才能正常運作",
