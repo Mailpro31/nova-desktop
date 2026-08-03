@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Không thể chọn mô hình."
     },
     "step": {
       "skip": "Bỏ qua",

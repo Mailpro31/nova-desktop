@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Não foi possível selecionar o modelo."
     },
     "step": {
       "skip": "Pular",
