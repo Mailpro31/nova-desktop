@@ -30,7 +30,9 @@ fn now_secs() -> i64 {
 /// pendant sa durée, comme une vraie licence Pro.
 fn is_free(settings: &AppSettings) -> bool {
     let key = settings.license_key.as_deref().unwrap_or("");
-    licensing::enabled() && licensing::effective_tier(key, settings.trial_started_at) == Tier::Free
+    licensing::enabled()
+        && licensing::effective_tier(key, crate::licensing::effective_trial_start(&settings))
+            == Tier::Free
 }
 
 /// Fenêtre glissante de 24 h : si la journée est écoulée (ou jamais
@@ -39,6 +41,11 @@ fn is_free(settings: &AppSettings) -> bool {
 fn rolled(used: u32, day_start: i64, now: i64) -> (u32, i64) {
     if day_start == 0 || now.saturating_sub(day_start) >= DAY_SECS {
         (0, now)
+    } else if day_start > now {
+        // day_start dans le FUTUR : horloge avancée puis reculée (triche pour
+        // geler le compteur à 0). On recale la fenêtre sur maintenant SANS
+        // remise à zéro — le compteur honnête est conservé.
+        (used, now)
     } else {
         (used, day_start)
     }
