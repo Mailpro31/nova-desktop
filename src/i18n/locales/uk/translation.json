@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Не вдалося вибрати модель."
     },
     "step": {
       "skip": "Пропустити",

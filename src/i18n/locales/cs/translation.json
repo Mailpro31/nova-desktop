@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Model se nepodařilo vybrat."
     },
     "step": {
       "skip": "Přeskočit",

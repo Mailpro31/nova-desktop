@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Modell konnte nicht ausgewählt werden."
     },
     "step": {
       "skip": "Überspringen",

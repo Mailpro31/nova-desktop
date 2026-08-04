@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "모델을 선택하지 못했습니다."
     },
     "step": {
       "skip": "건너뛰기",

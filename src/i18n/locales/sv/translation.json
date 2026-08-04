@@ -100,7 +100,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Det gick inte att välja modellen."
     },
     "step": {
       "skip": "Hoppa över",
