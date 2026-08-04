@@ -317,6 +317,12 @@
         "description": "Giữ luồng micro mở trong 30 giây sau khi dừng ghi âm, giảm độ trễ khi phiên âm liên tiếp. Có thể làm giảm chất lượng âm thanh Bluetooth khi đang hoạt động."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Chế độ chỉ CPU",
+          "description": "Trình điều khiển đồ họa đã làm treo một lần khởi động trước, nên tăng tốc GPU đã bị tắt. Sau khi cập nhật trình điều khiển, hãy thử lại GPU — có hiệu lực ở lần khởi động ứng dụng tiếp theo.",
+          "retry": "Thử lại GPU ở lần khởi động tới",
+          "retryDone": "Sẽ thử lại ở lần khởi động tới ✓"
+        },
         "transcribe": {
           "title": "Tăng tốc Whisper",
           "description": "Tăng tốc phần cứng cho các mô hình Whisper. Chế độ tự động sử dụng GPU nếu có (Metal trên macOS, Vulkan trên Windows/Linux)."
@@ -701,6 +707,8 @@
     "openSettings": "Mở Cài đặt Hệ thống"
   },
   "errors": {
+    "cpuOnlyModeTitle": "Đã tắt tăng tốc GPU",
+    "cpuOnlyMode": "Trình điều khiển đồ họa đã làm treo engine của Nova ở lần khởi động trước, nên việc phiên âm hiện chạy trên CPU — chậm hơn nhưng vẫn hoạt động. Hãy cập nhật trình điều khiển đồ họa rồi bật lại GPU trong Cài đặt → Cấu hình → Nâng cao.",
     "loadDirectory": "Lỗi khi tải thư mục: {{error}}",
     "micPermissionDeniedTitle": "Quyền truy cập micrô bị từ chối",
     "micPermissionDenied": {

@@ -317,6 +317,12 @@
         "description": "录音停止后保持麦克风流开启30秒，减少连续转录时的延迟。激活时可能会降低蓝牙音频质量。"
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "仅 CPU 模式",
+          "description": "上次启动时显卡驱动程序卡死,因此已禁用 GPU 加速。更新驱动程序后可重试 GPU,将在下次启动应用时生效。",
+          "retry": "下次启动时重试 GPU",
+          "retryDone": "将在下次启动时重试 ✓"
+        },
         "transcribe": {
           "title": "Whisper 加速",
           "description": "Whisper 模型的硬件加速。自动模式在可用时使用 GPU（macOS 上使用 Metal，Windows/Linux 上使用 Vulkan）。"
@@ -701,6 +707,8 @@
     "openSettings": "打开系统设置"
   },
   "errors": {
+    "cpuOnlyModeTitle": "GPU 加速已禁用",
+    "cpuOnlyMode": "上次启动时显卡驱动程序导致 Nova 引擎卡死,因此转写现在使用 CPU 运行——速度较慢但可正常使用。请更新显卡驱动程序,然后在 设置 → 配置 → 高级 中重新启用 GPU。",
     "loadDirectory": "加载目录时出错: {{error}}",
     "micPermissionDeniedTitle": "麦克风访问被拒绝",
     "micPermissionDenied": {

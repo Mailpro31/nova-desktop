@@ -38,3 +38,23 @@ pub fn unload_model_manually(
         .unload_model()
         .map_err(|e| format!("Failed to unload model: {}", e))
 }
+
+/// Whether startup skipped the GPU backend modules because a previous native
+/// backend init hung on a broken graphics driver (see
+/// `managers::transcription::init_transcribe_backend`). The frontend shows a
+/// degraded-mode notice when this is true.
+#[tauri::command]
+#[specta::specta]
+pub fn is_transcribe_cpu_only_mode() -> bool {
+    crate::managers::transcription::is_transcribe_cpu_only_mode()
+}
+
+/// Clear the broken-GPU-driver blacklist so the NEXT launch retries the full
+/// (GPU-enabled) backend init — e.g. after a graphics driver update. Only
+/// takes effect after an app restart.
+#[tauri::command]
+#[specta::specta]
+pub fn clear_transcribe_gpu_blacklist(app: AppHandle) -> Result<(), String> {
+    crate::managers::transcription::clear_transcribe_gpu_blacklist(&app)
+        .map_err(|e| format!("Failed to clear GPU blacklist: {}", e))
+}

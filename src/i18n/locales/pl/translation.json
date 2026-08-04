@@ -317,6 +317,12 @@
         "description": "Utrzymuje strumień mikrofonu otwarty przez 30 sekund po zatrzymaniu nagrywania, zmniejszając opóźnienie przy kolejnych transkrypcjach. Może pogorszyć jakość dźwięku Bluetooth."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Tryb tylko CPU",
+          "description": "Sterownik graficzny zablokował poprzednie uruchomienie, więc akceleracja GPU została wyłączona. Po aktualizacji sterownika spróbuj ponownie użyć GPU — zmiana zadziała przy następnym starcie aplikacji.",
+          "retry": "Spróbuj ponownie GPU przy następnym starcie",
+          "retryDone": "Ponowna próba przy następnym starcie ✓"
+        },
         "transcribe": {
           "title": "Akceleracja Whisper",
           "description": "Akceleracja sprzętowa dla modeli Whisper. Tryb automatyczny używa GPU, jeśli jest dostępny (Metal na macOS, Vulkan na Windows/Linux)."
@@ -701,6 +707,8 @@
     "openSettings": "Otwórz ustawienia systemowe"
   },
   "errors": {
+    "cpuOnlyModeTitle": "Akceleracja GPU wyłączona",
+    "cpuOnlyMode": "Sterownik graficzny zablokował silnik Nova podczas poprzedniego uruchomienia, więc transkrypcja działa teraz na CPU — wolniej, ale działa. Zaktualizuj sterownik graficzny i ponownie włącz GPU w Ustawienia → Konfiguracja → Zaawansowane.",
     "loadDirectory": "Błąd wczytywania katalogu: {{error}}",
     "micPermissionDeniedTitle": "Odmowa dostępu do mikrofonu",
     "micPermissionDenied": {

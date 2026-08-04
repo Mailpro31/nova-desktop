@@ -317,6 +317,12 @@
         "description": "Houdt de microfoonstream tot 30 seconden open nadat een opname stopt. Dit vermindert de vertraging bij opeenvolgende opnames, maar kan de Bluetooth-audiokwaliteit tijdelijk verminderen."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Alleen-CPU-modus",
+          "description": "Het grafische stuurprogramma blokkeerde een eerdere start, dus is GPU-versnelling uitgeschakeld. Probeer de GPU na een stuurprogramma-update opnieuw — actief bij de volgende app-start.",
+          "retry": "GPU opnieuw proberen bij volgende start",
+          "retryDone": "Wordt bij volgende start opnieuw geprobeerd ✓"
+        },
         "transcribe": {
           "title": "transcribe.cpp-versnelling",
           "description": "Hardwareversnelling voor transcribe.cpp-modellen (Whisper-familie). 'Automatisch' gebruikt de GPU indien beschikbaar (Metal op macOS, Vulkan op Windows/Linux)."
@@ -704,6 +710,8 @@
     "openSettings": "Systeeminstellingen openen"
   },
   "errors": {
+    "cpuOnlyModeTitle": "GPU-versnelling uitgeschakeld",
+    "cpuOnlyMode": "Het grafische stuurprogramma blokkeerde de engine van Nova bij een eerdere start, dus draait transcriptie nu op de CPU — langzamer, maar werkend. Werk het stuurprogramma bij en schakel de GPU weer in via Instellingen → Configuratie → Geavanceerd.",
     "loadDirectory": "Fout bij laden van map: {{error}}",
     "micPermissionDeniedTitle": "Microfoontoegang geweigerd",
     "micPermissionDenied": {
