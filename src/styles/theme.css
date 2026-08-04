@@ -12,7 +12,7 @@
    ========================================================================== */
 
 :root {
-  /* ---- Palette sombre Nova (la seule vraie palette) ---------------------- */
+  /* ---- Palette sombre Nova (identité « bleu nuit », défaut) --------------- */
   --nova-window: #1f1f22; /* fond de fenêtre           */
   --nova-sidebar: #28282c; /* barre latérale            */
   --nova-surface: #2c2c30; /* groupes / cartes          */
@@ -26,15 +26,29 @@
   --nova-danger: #ff453a;
   --nova-ultra: #c9b6f0; /* verrou Nova Ultra          */
 
-  /* ---- Paire claire/sombre (conservée pour compat data-theme) -----------
-     Nova n'a qu'une identité sombre : les deux versants pointent vers la même
-     palette « bleu nuit ». Le sélecteur de thème reste fonctionnel (le réglage
-     se sauvegarde), il ne bascule simplement pas vers un thème clair — décision
-     produit ferme (voir CLAUDE.md). */
-  --light-color-text: var(--nova-text);
-  --light-color-background: var(--nova-window);
+  /* ---- Palette claire Nova (Apple « light ») -------------------------------
+     Vraie palette claire : fenêtre gris perle, cartes blanches, texte encre.
+     L'accent d'action reste le bleu Apple #0A84FF ; les couleurs de statut
+     sont assombries pour garder le contraste sur fond clair. */
+  --nova-light-window: #f5f5f7;
+  --nova-light-sidebar: #ececee;
+  --nova-light-surface: #ffffff;
+  --nova-light-inset: #ececee;
+  --nova-light-text: #1d1d1f;
+  --nova-light-text-secondary: #6e6e73;
+  --nova-light-hairline: rgba(0, 0, 0, 0.08);
+  --nova-light-accent-hover: #0066cc;
+  --nova-light-success: #248a3d;
+  --nova-light-danger: #d70015;
+  --nova-light-ultra: #7a5cba; /* lilas Ultra assombri : lisible sur blanc */
+
+  /* ---- Paire claire/sombre (consommée par App.css data-theme) --------------
+     Le sélecteur de thème bascule réellement : sombre = identité « bleu
+     nuit », clair = palette Apple ci-dessus. */
+  --light-color-text: var(--nova-light-text);
+  --light-color-background: var(--nova-light-window);
   --light-color-logo-primary: var(--nova-accent);
-  --light-color-logo-stroke: var(--nova-text);
+  --light-color-logo-stroke: var(--nova-light-text);
 
   --dark-color-text: var(--nova-text);
   --dark-color-background: var(--nova-window);

@@ -79,18 +79,50 @@
   }
 }
 
+/* Palette claire complète — factorisée en mixin-like pour les deux déclencheurs
+   (choix explicite « clair » et préférence OS quand le réglage est « system »).
+   Les deux blocs doivent rester strictement identiques. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-text: var(--nova-light-text);
+    --color-background: var(--nova-light-window);
+    --color-logo-primary: var(--nova-accent);
+    --color-logo-stroke: var(--nova-light-text);
+    --color-surface: var(--nova-light-surface);
+    --color-sidebar: var(--nova-light-sidebar);
+    --color-inset: var(--nova-light-inset);
+    --color-text-secondary: var(--nova-light-text-secondary);
+    --color-hairline: var(--nova-light-hairline);
+    --color-accent-hover: var(--nova-light-accent-hover);
+    --color-success: var(--nova-light-success);
+    --color-danger: var(--nova-light-danger);
+    --color-ultra: var(--nova-light-ultra);
+    --color-log-surface: color-mix(in srgb, var(--color-background), black 4%);
+  }
+}
+
 /*
  * Explicit theme override, driven by the `theme` setting via
  * `document.documentElement.dataset.theme`. When set, the higher-specificity
  * attribute selectors win over the `prefers-color-scheme` media query above,
- * so a user can keep Handy light or dark regardless of the OS setting.
+ * so a user can keep Nova light or dark regardless of the OS setting.
  * `system` (or no attribute) leaves the OS in charge.
  */
 :root[data-theme="light"] {
-  --color-text: var(--light-color-text);
-  --color-background: var(--light-color-background);
-  --color-logo-primary: var(--light-color-logo-primary);
-  --color-logo-stroke: var(--light-color-logo-stroke);
+  --color-text: var(--nova-light-text);
+  --color-background: var(--nova-light-window);
+  --color-logo-primary: var(--nova-accent);
+  --color-logo-stroke: var(--nova-light-text);
+  --color-surface: var(--nova-light-surface);
+  --color-sidebar: var(--nova-light-sidebar);
+  --color-inset: var(--nova-light-inset);
+  --color-text-secondary: var(--nova-light-text-secondary);
+  --color-hairline: var(--nova-light-hairline);
+  --color-accent-hover: var(--nova-light-accent-hover);
+  --color-success: var(--nova-light-success);
+  --color-danger: var(--nova-light-danger);
+  --color-ultra: var(--nova-light-ultra);
+  --color-log-surface: color-mix(in srgb, var(--color-background), black 4%);
 }
 
 :root[data-theme="dark"] {
