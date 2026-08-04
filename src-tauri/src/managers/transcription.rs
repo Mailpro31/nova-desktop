@@ -10,6 +10,7 @@ use log::{debug, error, info, warn};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::panic::{catch_unwind, AssertUnwindSafe};
+use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{mpsc, Arc, Condvar, Mutex, MutexGuard, OnceLock};
 use std::thread;
@@ -550,9 +551,10 @@ impl TranscriptionManager {
                     // instead of a cryptic native one.
                     if transcribe_cpp::devices().is_empty() {
                         let error_msg = "Le pilote graphique de cet ordinateur ne répond \
-                            pas (accélération GPU bloquée) — Nova ne peut pas charger de \
-                            modèle de transcription pour l'instant. Mettez à jour votre \
-                            pilote graphique, puis redémarrez l'ordinateur."
+                            pas (accélération GPU bloquée). Redémarrez simplement Nova : \
+                            il basculera automatiquement sur le processeur (CPU) et la \
+                            transcription fonctionnera à nouveau, un peu plus lentement. \
+                            Pensez aussi à mettre à jour votre pilote graphique."
                             .to_string();
                         emit_loading_failed(&error_msg);
                         return Err(anyhow::anyhow!(error_msg));
@@ -1746,6 +1748,138 @@ fn wait_for_transcribe_backend_ready() -> bool {
     *guard
 }
 
+/// Marker files (in the app data dir) driving the broken-GPU-driver recovery:
+///
+/// * `transcribe-backend-init.pending` — written right before the native
+///   backend init runs, removed as soon as it returns. Still present at the
+///   next startup ⇒ the previous init never came back (hung driver), so the
+///   GPU modules must be skipped from now on.
+/// * `transcribe-gpu-blacklisted` — persistent record of that verdict. While
+///   it exists, startup initializes CPU compute modules only, so a broken
+///   Vulkan driver never gets a chance to hang the process again. Deleted
+///   via the `clear_transcribe_gpu_blacklist` command when the user wants to
+///   retry the GPU (e.g. after a driver update) on the next launch.
+const TRANSCRIBE_INIT_PENDING_MARKER: &str = "transcribe-backend-init.pending";
+const TRANSCRIBE_GPU_BLACKLIST_MARKER: &str = "transcribe-gpu-blacklisted";
+
+/// Set once startup determined that GPU backend modules must be skipped for
+/// this process (see the markers above). Read by the frontend through the
+/// `is_transcribe_cpu_only_mode` command to surface the degraded mode.
+static TRANSCRIBE_CPU_ONLY_MODE: AtomicBool = AtomicBool::new(false);
+
+pub fn is_transcribe_cpu_only_mode() -> bool {
+    TRANSCRIBE_CPU_ONLY_MODE.load(Ordering::Acquire)
+}
+
+fn marker_path(app: &AppHandle, name: &str) -> Option<PathBuf> {
+    crate::portable::app_data_dir(app)
+        .ok()
+        .map(|d| d.join(name))
+}
+
+/// Delete the GPU blacklist marker so the NEXT launch retries the full
+/// (GPU-enabled) backend init — e.g. after a graphics driver update. Takes
+/// effect only after an app restart; the current process keeps whatever was
+/// initialized at startup (native backend init is not retryable in-process).
+pub fn clear_transcribe_gpu_blacklist(app: &AppHandle) -> Result<()> {
+    if let Some(path) = marker_path(app, TRANSCRIBE_GPU_BLACKLIST_MARKER) {
+        match std::fs::remove_file(&path) {
+            Ok(()) => info!("Removed transcribe GPU blacklist marker {}", path.display()),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+            Err(e) => {
+                return Err(anyhow::anyhow!(
+                    "Failed to remove GPU blacklist marker {}: {}",
+                    path.display(),
+                    e
+                ))
+            }
+        }
+    }
+    Ok(())
+}
+
+/// Copy the CPU compute modules (`ggml-cpu*`) shipped with the app into an
+/// app-data dir of their own, so `init_backends` can load from a directory
+/// that contains NO GPU module (ggml-vulkan): device enumeration then only
+/// touches the CPU and cannot hang on a broken graphics driver.
+///
+/// Returns the prepared directory, or None when no CPU module is found
+/// (static build — e.g. macOS Metal — where there is nothing to isolate).
+/// The dir is recreated from scratch each call so a stale DLL from a
+/// previous app version can never be picked up (native ABI moves with the
+/// shipped ggml build).
+fn prepare_cpu_only_module_dir(app: &AppHandle) -> Option<PathBuf> {
+    let exe_dir = std::env::current_exe().ok()?.parent()?.to_path_buf();
+    // Installed Windows app: modules sit next to the exe. Bundled Linux:
+    // exe/../lib (deb/rpm/AppImage layout). Dev runs: the build script's
+    // staging dir.
+    let candidates = [
+        exe_dir.clone(),
+        exe_dir.join("transcribe-libs"),
+        exe_dir.join("../lib"),
+        exe_dir.join("../../transcribe-libs"),
+    ];
+    let is_cpu_module = |name: &str| {
+        (name.starts_with("ggml-cpu") && name.ends_with(".dll"))
+            || (name.starts_with("libggml-cpu") && name.contains(".so"))
+    };
+    let mut modules: Vec<PathBuf> = Vec::new();
+    for dir in &candidates {
+        if let Ok(entries) = std::fs::read_dir(dir) {
+            modules = entries
+                .flatten()
+                .map(|e| e.path())
+                .filter(|p| {
+                    p.file_name()
+                        .and_then(|s| s.to_str())
+                        .is_some_and(is_cpu_module)
+                })
+                .collect();
+            if !modules.is_empty() {
+                break;
+            }
+        }
+    }
+    if modules.is_empty() {
+        return None;
+    }
+
+    let dest = crate::portable::app_data_dir(app)
+        .ok()?
+        .join("transcribe-cpu-backends");
+    if let Err(e) = std::fs::remove_dir_all(&dest) {
+        if e.kind() != std::io::ErrorKind::NotFound {
+            warn!(
+                "Failed to clean CPU backend module dir {}: {}",
+                dest.display(),
+                e
+            );
+            return None;
+        }
+    }
+    if let Err(e) = std::fs::create_dir_all(&dest) {
+        warn!(
+            "Failed to create CPU backend module dir {}: {}",
+            dest.display(),
+            e
+        );
+        return None;
+    }
+    for src in &modules {
+        let target = dest.join(src.file_name()?);
+        if let Err(e) = std::fs::copy(src, &target) {
+            warn!(
+                "Failed to copy CPU backend module {} -> {}: {}",
+                src.display(),
+                target.display(),
+                e
+            );
+            return None;
+        }
+    }
+    Some(dest)
+}
+
 /// Initialize the transcribe-cpp native backend once at startup: route native +
 /// ggml diagnostics into the `log` facade and register compute backend modules.
 /// In a static build (macOS Metal) `init_backends_default` is a harmless no-op;
@@ -1759,14 +1893,82 @@ fn wait_for_transcribe_backend_ready() -> bool {
 /// entire app before Tauri's `.setup()` returned — no window, no tray icon,
 /// ever. See [`wait_for_transcribe_backend_ready`] for how consumers cope
 /// with the backend not being ready yet.
-pub fn init_transcribe_backend() {
+///
+/// Hang recovery (see the marker docs above): native backend init is NOT
+/// retryable in-process — once the Vulkan enumeration hangs, the ggml backend
+/// registry stays locked by the hung thread for the rest of the process, so
+/// no second init attempt could ever succeed. The only way out is the NEXT
+/// launch skipping GPU modules entirely; the pending/blacklist markers
+/// implement exactly that.
+pub fn init_transcribe_backend(app: &AppHandle) {
     transcribe_cpp::init_logging();
-    match transcribe_cpp::init_backends_default() {
+
+    let pending = marker_path(app, TRANSCRIBE_INIT_PENDING_MARKER);
+    let blacklisted = marker_path(app, TRANSCRIBE_GPU_BLACKLIST_MARKER);
+
+    // A leftover pending marker means the previous init never returned (hung
+    // GPU driver): blacklist GPU modules and run CPU-only from now on.
+    let mut cpu_only = blacklisted.as_ref().is_some_and(|p| p.exists());
+    if !cpu_only && pending.as_ref().is_some_and(|p| p.exists()) {
+        warn!(
+            "transcribe-cpp backend init never completed on the previous run \
+             (hung GPU driver) — switching to CPU-only compute modules"
+        );
+        if let Some(path) = &blacklisted {
+            if let Err(e) = std::fs::write(path, b"gpu driver hang detected\n") {
+                warn!(
+                    "Failed to persist GPU blacklist marker {}: {}",
+                    path.display(),
+                    e
+                );
+            }
+        }
+        cpu_only = true;
+    }
+    TRANSCRIBE_CPU_ONLY_MODE.store(cpu_only, Ordering::Release);
+
+    // Mark init as in-progress; removed as soon as the native call returns.
+    if let Some(path) = &pending {
+        if let Err(e) = std::fs::write(path, b"init in progress\n") {
+            warn!(
+                "Failed to write backend-init pending marker {}: {}",
+                path.display(),
+                e
+            );
+        }
+    }
+
+    let result = if cpu_only {
+        match prepare_cpu_only_module_dir(app) {
+            Some(dir) => {
+                info!(
+                    "Initializing transcribe-cpp with CPU-only modules from {}",
+                    dir.display()
+                );
+                transcribe_cpp::init_backends(&dir)
+            }
+            None => {
+                // Static build or nothing to isolate: no choice but the default path.
+                warn!("No isolatable CPU compute modules found; using default backend init");
+                transcribe_cpp::init_backends_default()
+            }
+        }
+    } else {
+        transcribe_cpp::init_backends_default()
+    };
+
+    // The native call returned — no hang this time.
+    if let Some(path) = &pending {
+        let _ = std::fs::remove_file(path);
+    }
+
+    match result {
         Ok(()) => {
             let devices = transcribe_cpp::devices();
             info!(
-                "transcribe-cpp initialized with {} compute device(s): [{}]",
+                "transcribe-cpp initialized with {} compute device(s){}: [{}]",
                 devices.len(),
+                if cpu_only { " (CPU-only mode)" } else { "" },
                 devices
                     .iter()
                     .map(|d| format!("{} ({})", d.name, d.kind))

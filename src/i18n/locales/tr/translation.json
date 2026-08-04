@@ -317,6 +317,12 @@
         "description": "Kayıt durdurulduktan sonra mikrofon akışını 30 saniye açık tutar, ardışık transkripsiyonlarda gecikmeyi azaltır. Etkinken Bluetooth ses kalitesini düşürebilir."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Yalnızca CPU modu",
+          "description": "Grafik sürücüsü önceki açılışı kilitlediği için GPU hızlandırma devre dışı bırakıldı. Sürücüyü güncelledikten sonra GPU'yu yeniden deneyin — değişiklik uygulamanın bir sonraki açılışında geçerli olur.",
+          "retry": "GPU'yu bir sonraki açılışta yeniden dene",
+          "retryDone": "Bir sonraki açılışta yeniden denenecek ✓"
+        },
         "transcribe": {
           "title": "Whisper Hızlandırma",
           "description": "Whisper modelleri için donanım hızlandırma. Otomatik mod, mevcutsa GPU kullanır (macOS'ta Metal, Windows/Linux'ta Vulkan)."
@@ -701,6 +707,8 @@
     "openSettings": "Sistem Ayarlarını Aç"
   },
   "errors": {
+    "cpuOnlyModeTitle": "GPU hızlandırma devre dışı",
+    "cpuOnlyMode": "Grafik sürücüsü önceki bir açılışta Nova'nın motorunu kilitledi; bu yüzden transkripsiyon artık CPU üzerinde çalışıyor — daha yavaş ama çalışıyor. Grafik sürücünüzü güncelleyip GPU'yu Ayarlar → Yapılandırma → Gelişmiş altında yeniden etkinleştirin.",
     "loadDirectory": "Dizin yüklenirken hata oluştu: {{error}}",
     "micPermissionDeniedTitle": "Mikrofon erişimi reddedildi",
     "micPermissionDenied": {

@@ -2,6 +2,7 @@ import { type FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SettingContainer } from "../ui/SettingContainer";
 import { Dropdown, type DropdownOption } from "../ui/Dropdown";
+import { Button } from "../ui/Button";
 import { useSettings } from "../../hooks/useSettings";
 import { commands } from "@/bindings";
 import type {
@@ -61,6 +62,19 @@ export const AccelerationSelector: FC<AccelerationSelectorProps> = ({
     [],
   );
   const [ortOptions, setOrtOptions] = useState<DropdownOption[]>([]);
+  // Mode CPU forcé : une init précédente du moteur a gelé sur un pilote GPU
+  // défaillant, Nova a blacklisté les modules GPU (voir
+  // init_transcribe_backend côté Rust). Le bouton lève le blacklist pour le
+  // prochain démarrage.
+  const [cpuOnlyMode, setCpuOnlyMode] = useState(false);
+  const [gpuRetryArmed, setGpuRetryArmed] = useState(false);
+
+  useEffect(() => {
+    commands
+      .isTranscribeCpuOnlyMode()
+      .then(setCpuOnlyMode)
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     commands.getAvailableAccelerators().then((available) => {
@@ -132,6 +146,31 @@ export const AccelerationSelector: FC<AccelerationSelectorProps> = ({
           }
         />
       </SettingContainer>
+      {cpuOnlyMode && (
+        <SettingContainer
+          title={t("settings.advanced.acceleration.cpuOnly.title")}
+          description={t("settings.advanced.acceleration.cpuOnly.description")}
+          descriptionMode={descriptionMode}
+          grouped={grouped}
+          layout="horizontal"
+        >
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={gpuRetryArmed}
+            onClick={async () => {
+              const result = await commands.clearTranscribeGpuBlacklist();
+              if (result.status === "ok") {
+                setGpuRetryArmed(true);
+              }
+            }}
+          >
+            {gpuRetryArmed
+              ? t("settings.advanced.acceleration.cpuOnly.retryDone")
+              : t("settings.advanced.acceleration.cpuOnly.retry")}
+          </Button>
+        </SettingContainer>
+      )}
       {ortOptions.length > 2 && (
         <SettingContainer
           title={t("settings.advanced.acceleration.ort.title")}

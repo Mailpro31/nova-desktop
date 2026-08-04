@@ -317,6 +317,12 @@
         "description": "録音停止後マイクを30秒間有効なままにし、連続した文字起こしの遅延を軽減します。Bluetooth 音声品質に影響する場合があります。"
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "CPUのみモード",
+          "description": "前回の起動時にグラフィックドライバーがハングしたため、GPUアクセラレーションが無効化されました。ドライバー更新後にGPUを再試行できます。次回アプリ起動時に反映されます。",
+          "retry": "次回起動時にGPUを再試行",
+          "retryDone": "次回起動時に再試行します ✓"
+        },
         "transcribe": {
           "title": "transcribe.cpp アクセラレーション",
           "description": "transcribe.cpp (Whisper 系) モデルのハードウェアアクセラレーション。「自動」では利用可能な場合 GPU を使用します (macOS では Metal、Windows/Linux では Vulkan)。"
@@ -701,6 +707,8 @@
     "openSettings": "システム設定を開く"
   },
   "errors": {
+    "cpuOnlyModeTitle": "GPUアクセラレーションが無効です",
+    "cpuOnlyMode": "前回の起動時にグラフィックドライバーがNovaのエンジンをハングさせたため、文字起こしは現在CPUで動作しています(低速ですが利用可能です)。グラフィックドライバーを更新し、設定 → 構成 → 詳細 でGPUを再有効化してください。",
     "loadDirectory": "ディレクトリの読み込みエラー: {{error}}",
     "micPermissionDeniedTitle": "マイクへのアクセスが拒否されました",
     "micPermissionDenied": {

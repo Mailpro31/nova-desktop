@@ -188,7 +188,12 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     // actually needs the registered devices (model load, GPU device listing)
     // waits for it with a bounded timeout instead of assuming it already ran
     // — see `wait_for_transcribe_backend_ready` in managers/transcription.rs.
-    std::thread::spawn(managers::transcription::init_transcribe_backend);
+    // If the previous run's init never returned, this launch skips the GPU
+    // modules and initializes CPU compute only (hang recovery markers).
+    {
+        let handle = app_handle.clone();
+        std::thread::spawn(move || managers::transcription::init_transcribe_backend(&handle));
+    }
 
     // Apply accelerator preferences before any model loads
     managers::transcription::apply_accelerator_settings(app_handle);
@@ -670,6 +675,8 @@ pub fn run(cli_args: CliArgs) {
             commands::transcription::set_model_unload_timeout,
             commands::transcription::get_model_load_status,
             commands::transcription::unload_model_manually,
+            commands::transcription::is_transcribe_cpu_only_mode,
+            commands::transcription::clear_transcribe_gpu_blacklist,
             commands::history::get_history_entries,
             commands::history::toggle_history_entry_saved,
             commands::history::get_audio_file_path,
@@ -812,7 +819,7 @@ pub fn run(cli_args: CliArgs) {
                 );
                 app_handle.manage(model_manager);
                 app_handle.manage(transcription_manager);
-                managers::transcription::init_transcribe_backend();
+                managers::transcription::init_transcribe_backend(&app_handle);
                 managers::transcription::apply_accelerator_settings(&app_handle);
 
                 let handle = app_handle.clone();

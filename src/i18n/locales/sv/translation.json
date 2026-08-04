@@ -317,6 +317,12 @@
         "description": "Håller mikrofonströmmen öppen i 30 sekunder efter att inspelningen avslutats, vilket minskar latensen för transkriptioner efter varandra. Kan försämra Bluetooth-ljudkvaliteten medan den är aktiv."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Endast CPU-läge",
+          "description": "Grafikdrivrutinen låste en tidigare start, så GPU-accelerationen stängdes av. Efter en drivrutinsuppdatering kan du försöka igen — ändringen gäller vid nästa appstart.",
+          "retry": "Försök med GPU igen vid nästa start",
+          "retryDone": "Försöker igen vid nästa start ✓"
+        },
         "transcribe": {
           "title": "Whisper-acceleration",
           "description": "Hårdvaruacceleration för Whisper-modeller. Auto använder GPU om tillgängligt (Metal på macOS, Vulkan på Windows/Linux)."
@@ -701,6 +707,8 @@
     "openSettings": "Öppna systeminställningar"
   },
   "errors": {
+    "cpuOnlyModeTitle": "GPU-acceleration avstängd",
+    "cpuOnlyMode": "Grafikdrivrutinen låste Novas motor vid en tidigare start, så transkriberingen kör nu på CPU:n — långsammare men fungerande. Uppdatera grafikdrivrutinen och aktivera GPU:n igen under Inställningar → Konfiguration → Avancerat.",
     "loadDirectory": "Fel vid laddning av mapp: {{error}}",
     "micPermissionDeniedTitle": "Mikrofonåtkomst nekad",
     "micPermissionDenied": {

@@ -228,6 +228,23 @@ function App() {
       .catch(() => {});
   }, [t]);
 
+  // Mode CPU forcé (le pilote graphique a bloqué l'init du moteur lors d'un
+  // lancement précédent) : informer une fois par ouverture de l'app, avec le
+  // chemin de réactivation du GPU.
+  useEffect(() => {
+    commands
+      .isTranscribeCpuOnlyMode()
+      .then((cpuOnly) => {
+        if (cpuOnly) {
+          toast.warning(t("errors.cpuOnlyModeTitle"), {
+            description: t("errors.cpuOnlyMode"),
+            duration: 10000,
+          });
+        }
+      })
+      .catch(() => {});
+  }, [t]);
+
   // Listen for model loading failures and show a toast
   useEffect(() => {
     const unlisten = listen<ModelStateEvent>("model-state-changed", (event) => {

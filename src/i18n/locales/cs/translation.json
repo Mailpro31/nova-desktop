@@ -317,6 +317,12 @@
         "description": "Ponechá stream mikrofonu otevřený po dobu 30 sekund po zastavení nahrávání, čímž se sníží latence při opakovaném přepisu. Může zhoršit kvalitu zvuku Bluetooth."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Režim pouze CPU",
+          "description": "Ovladač grafiky zablokoval minulé spuštění, proto byla akcelerace GPU vypnuta. Po aktualizaci ovladače zkuste GPU znovu — změna se projeví při příštím spuštění aplikace.",
+          "retry": "Zkusit GPU znovu při příštím spuštění",
+          "retryDone": "Zkusí se znovu při příštím spuštění ✓"
+        },
         "transcribe": {
           "title": "Akcelerace Whisper",
           "description": "Hardwarová akcelerace pro modely Whisper. Automatický režim používá GPU, pokud je k dispozici (Metal na macOS, Vulkan na Windows/Linux)."
@@ -701,6 +707,8 @@
     "openSettings": "Otevřít Nastavení systému"
   },
   "errors": {
+    "cpuOnlyModeTitle": "Akcelerace GPU vypnuta",
+    "cpuOnlyMode": "Ovladač grafiky zablokoval engine Novy při minulém spuštění, takže přepis nyní běží na CPU — pomaleji, ale funkčně. Aktualizujte grafický ovladač a pak GPU znovu povolte v Nastavení → Konfigurace → Pokročilé.",
     "loadDirectory": "Chyba při načítání adresáře: {{error}}",
     "micPermissionDeniedTitle": "Přístup k mikrofonu byl odepřen",
     "micPermissionDenied": {

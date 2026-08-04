@@ -317,6 +317,12 @@
         "description": "녹음 중지 후 30초 동안 마이크 스트림을 열어 두어 연속 전사 시 지연을 줄입니다. 활성화 중 블루투스 오디오 품질이 저하될 수 있습니다."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "CPU 전용 모드",
+          "description": "이전 실행에서 그래픽 드라이버가 멈춰 GPU 가속이 비활성화되었습니다. 드라이버 업데이트 후 GPU를 다시 시도하세요. 다음 앱 시작 시 적용됩니다.",
+          "retry": "다음 시작 시 GPU 다시 시도",
+          "retryDone": "다음 시작 시 다시 시도합니다 ✓"
+        },
         "transcribe": {
           "title": "Whisper 가속",
           "description": "Whisper 모델의 하드웨어 가속. 자동 모드는 GPU를 사용합니다 (macOS에서는 Metal, Windows/Linux에서는 Vulkan)."
@@ -701,6 +707,8 @@
     "openSettings": "시스템 설정 열기"
   },
   "errors": {
+    "cpuOnlyModeTitle": "GPU 가속이 비활성화됨",
+    "cpuOnlyMode": "이전 실행에서 그래픽 드라이버가 Nova 엔진을 멈추게 해 현재 전사가 CPU에서 실행됩니다(느리지만 작동함). 그래픽 드라이버를 업데이트한 후 설정 → 구성 → 고급에서 GPU를 다시 활성화하세요.",
     "loadDirectory": "디렉토리 로딩 오류: {{error}}",
     "micPermissionDeniedTitle": "마이크 접근이 거부되었습니다",
     "micPermissionDenied": {

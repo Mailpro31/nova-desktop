@@ -317,6 +317,12 @@
         "description": "Maintient le flux du microphone ouvert pendant 30 secondes après l'arrêt de l'enregistrement, réduisant la latence pour les transcriptions consécutives. Peut dégrader la qualité audio Bluetooth."
       },
       "acceleration": {
+        "cpuOnly": {
+          "title": "Mode CPU forcé",
+          "description": "Le pilote graphique a bloqué un lancement précédent : l'accélération GPU est désactivée. Après avoir mis à jour le pilote, réessayez le GPU — l'effet a lieu au prochain démarrage de Nova.",
+          "retry": "Réessayer le GPU au prochain démarrage",
+          "retryDone": "Réessai prévu au prochain démarrage ✓"
+        },
         "transcribe": {
           "title": "Accélération Whisper",
           "description": "Accélération matérielle pour les modèles Whisper. Auto utilise le GPU si disponible (Metal sur macOS, Vulkan sur Windows/Linux)."
@@ -716,6 +722,8 @@
     "minutes_other": "≈ {{count}} minutes de frappe évitées"
   },
   "errors": {
+    "cpuOnlyModeTitle": "Accélération GPU désactivée",
+    "cpuOnlyMode": "Le pilote graphique a bloqué le moteur de Nova lors d'un lancement précédent : la transcription fonctionne désormais sur le processeur (CPU), plus lentement. Mettez à jour votre pilote graphique, puis réactivez le GPU dans Réglages → Configuration → Avancé.",
     "loadDirectory": "Erreur lors du chargement du répertoire : {{error}}",
     "micPermissionDeniedTitle": "Accès au microphone refusé",
     "micPermissionDenied": {
