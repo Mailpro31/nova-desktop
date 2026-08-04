@@ -42,3 +42,8 @@ blob-report/
 
 # Nix build output
 result
+
+# Artefacts de build locaux (tsc -b / vite)
+tsconfig*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
