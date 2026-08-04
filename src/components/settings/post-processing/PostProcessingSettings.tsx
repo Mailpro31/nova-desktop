@@ -27,7 +27,6 @@ import { TierBadge } from "../license/TierBadge";
 import { AutoStyleSettings } from "./AutoStyleSettings";
 import { ContextReadingSettings } from "./ContextReadingSettings";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
-import { ShortcutInput } from "../ShortcutInput";
 import { useSettings } from "../../../hooks/useSettings";
 
 const PostProcessingSettingsApiComponent: React.FC = () => {
@@ -510,20 +509,12 @@ export const PostProcessingSettings: React.FC = () => {
 
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">
-      <p className="px-1 -mb-2 text-sm text-text-secondary">
+      <p className="px-1 -mb-1 text-sm text-text-secondary">
         {t("settings.postProcessing.subtitle")}
       </p>
 
       <SettingsGroup title={t("settings.postProcessing.enable.title")}>
         <PostProcessingToggle descriptionMode="tooltip" grouped={true} />
-      </SettingsGroup>
-
-      <SettingsGroup title={t("settings.postProcessing.hotkey.title")}>
-        <ShortcutInput
-          shortcutId="transcribe_with_post_process"
-          descriptionMode="tooltip"
-          grouped={true}
-        />
       </SettingsGroup>
 
       <SettingsGroup title={t("settings.postProcessing.api.title")}>

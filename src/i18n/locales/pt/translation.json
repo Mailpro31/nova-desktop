@@ -769,6 +769,7 @@
     "active": "Licença ativa",
     "trial": {
       "badge": "Teste Pro",
+      "badgeDays": "Teste Pro · {{count}} d",
       "title": "Teste do Nova Pro",
       "description_one": "Falta {{count}} dia para o fim do teste.",
       "description_other": "Faltam {{count}} dias para o fim do teste.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Gerir a minha subscrição",
     "comingSoon": "Brevemente",
-    "featureColumn": "Funcionalidade"
+    "featureColumn": "Funcionalidade",
+    "yourPlan": "O seu plano"
   }
 }

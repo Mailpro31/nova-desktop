@@ -769,6 +769,7 @@
     "active": "Licence aktivní",
     "trial": {
       "badge": "Zkušební Pro",
+      "badgeDays": "Zkušební Pro · {{count}} d",
       "title": "Zkušební verze Nova Pro",
       "description_one": "Zbývá {{count}} den zkušební verze.",
       "description_other": "Zbývá {{count}} dní zkušební verze.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Spravovat předplatné",
     "comingSoon": "Již brzy",
-    "featureColumn": "Funkce"
+    "featureColumn": "Funkce",
+    "yourPlan": "Váš plán"
   }
 }

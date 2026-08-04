@@ -769,6 +769,7 @@
     "active": "Giấy phép đang hoạt động",
     "trial": {
       "badge": "Dùng thử Pro",
+      "badgeDays": "Dùng thử Pro · {{count}} ng",
       "title": "Dùng thử Nova Pro",
       "description_one": "Còn {{count}} ngày dùng thử.",
       "description_other": "Còn {{count}} ngày dùng thử.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Quản lý gói đăng ký của tôi",
     "comingSoon": "Sắp ra mắt",
-    "featureColumn": "Tính năng"
+    "featureColumn": "Tính năng",
+    "yourPlan": "Gói của bạn"
   }
 }

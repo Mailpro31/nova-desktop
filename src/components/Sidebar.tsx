@@ -141,7 +141,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <div
               key={section.id}
-              className={`flex gap-2.5 items-center p-1.5 w-full rounded-lg cursor-pointer transition-colors ${
+              className={`flex gap-2.5 items-center p-1.5 w-full rounded-[10px] cursor-pointer transition-colors ${
                 isActive
                   ? "bg-accent text-white"
                   : "hover:bg-mid-gray/15 hover:opacity-100 opacity-90"

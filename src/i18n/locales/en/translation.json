@@ -769,6 +769,7 @@
     "active": "License active",
     "trial": {
       "badge": "Pro trial",
+      "badgeDays": "Pro trial · {{count}} d",
       "title": "Nova Pro trial",
       "description_one": "{{count}} day left in your trial.",
       "description_other": "{{count}} days left in your trial.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Manage my subscription",
     "comingSoon": "Coming soon",
-    "featureColumn": "Feature"
+    "featureColumn": "Feature",
+    "yourPlan": "Your plan"
   }
 }

@@ -769,6 +769,7 @@
     "active": "Lisans etkin",
     "trial": {
       "badge": "Pro deneme",
+      "badgeDays": "Pro deneme · {{count}} g",
       "title": "Nova Pro deneme sürümü",
       "description_one": "Deneme süresinin bitmesine {{count}} gün kaldı.",
       "description_other": "Deneme süresinin bitmesine {{count}} gün kaldı.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Aboneliğimi yönet",
     "comingSoon": "Yakında",
-    "featureColumn": "Özellik"
+    "featureColumn": "Özellik",
+    "yourPlan": "Planınız"
   }
 }

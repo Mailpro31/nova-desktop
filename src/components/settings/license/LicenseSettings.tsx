@@ -7,7 +7,7 @@ import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { Dialog } from "../../ui/Dialog";
-import { invalidateLicense } from "./TierBadge";
+import { invalidateLicense, TIER_FOR_FEATURE } from "./TierBadge";
 import { QuotaBar } from "./QuotaBar";
 import { WeekStat } from "./WeekStat";
 
@@ -30,13 +30,6 @@ const TIER_LABEL: Record<Tier, string> = {
   business: "Nova Business",
 };
 
-const TIER_COLOR: Record<Tier, string> = {
-  free: "var(--color-text-secondary)",
-  pro: "var(--color-accent)",
-  ultra: "var(--color-ultra)",
-  business: "var(--color-accent)",
-};
-
 // Fonctions mises en avant (clé technique → libellé). Exporté : réutilisé
 // tel quel par le tableau comparatif des paliers (Compte) — source de vérité
 // unique, on ne fabrique pas une deuxième liste de fonctionnalités.
@@ -47,6 +40,84 @@ export const FEATURE_ROWS: { key: string; label: string }[] = [
   { key: "best_models", label: "Meilleure IA / qualité maximale" },
   { key: "orb_customization", label: "Personnalisation (orbe, noms, modes)" },
 ];
+
+/**
+ * Pilule de palier, volontairement très différenciée : Free gris neutre,
+ * Pro bleu Apple (l'accent d'action), Ultra lilas en dégradé (le « premium »
+ * visuel de Nova), Business bleu. L'essai Pro affiche le compte à rebours.
+ */
+const TierPill: React.FC<{ tier: Tier; onTrial: boolean; days: number }> = ({
+  tier,
+  onTrial,
+  days,
+}) => {
+  const { t } = useTranslation();
+  if (onTrial) {
+    return (
+      <span
+        className="text-xs font-bold tracking-wide uppercase rounded-full px-3 py-1 border whitespace-nowrap"
+        style={{
+          color: "var(--color-accent)",
+          borderColor: "var(--color-accent)",
+          background:
+            "color-mix(in srgb, var(--color-accent) 10%, transparent)",
+        }}
+      >
+        {t("license.trial.badgeDays", { count: days })}
+      </span>
+    );
+  }
+  if (tier === "ultra") {
+    return (
+      <span
+        className="text-xs font-bold tracking-wide uppercase rounded-full px-3 py-1 whitespace-nowrap"
+        style={{
+          background:
+            "linear-gradient(135deg, #D9C8F7 0%, var(--color-ultra) 45%, #9F86D9 100%)",
+          color: "#1F1F22",
+          boxShadow: "0 2px 10px rgba(159, 134, 217, .35)",
+        }}
+      >
+        {TIER_LABEL[tier]}
+      </span>
+    );
+  }
+  const color =
+    tier === "free" ? "var(--color-text-secondary)" : "var(--color-accent)";
+  return (
+    <span
+      className="text-xs font-bold tracking-wide uppercase rounded-full px-3 py-1 border whitespace-nowrap"
+      style={{
+        color,
+        borderColor: color,
+        background:
+          tier === "free"
+            ? "transparent"
+            : "color-mix(in srgb, var(--color-accent) 10%, transparent)",
+      }}
+    >
+      {TIER_LABEL[tier]}
+    </span>
+  );
+};
+
+/** Chip « NOVA PRO » / « NOVA ULTRA » marquant le palier d'une fonction. */
+const TierChip: React.FC<{ tierLabel: string }> = ({ tierLabel }) => {
+  const isUltra = tierLabel.includes("ULTRA");
+  const color = isUltra ? "var(--color-ultra)" : "var(--color-accent)";
+  return (
+    <span
+      className="text-[9px] font-bold tracking-wider rounded-full px-1.5 py-px border whitespace-nowrap"
+      style={{
+        color,
+        borderColor: color,
+        background: `color-mix(in srgb, ${color} 12%, transparent)`,
+      }}
+    >
+      {tierLabel}
+    </span>
+  );
+};
 
 export const LicenseSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -104,82 +175,25 @@ export const LicenseSettings: React.FC = () => {
 
   return (
     <SettingsGroup title="Abonnement">
-      <SettingContainer
-        title="Votre plan"
-        description="Palier Nova actif sur cet appareil."
-        grouped={true}
-      >
-        <span
-          className="text-sm font-semibold px-2.5 py-1 rounded-full border"
-          style={{
-            color: TIER_COLOR[tier],
-            borderColor: TIER_COLOR[tier],
-          }}
-        >
-          {onTrial ? t("license.trial.badge") : TIER_LABEL[tier]}
-        </span>
-      </SettingContainer>
-
-      <SettingContainer
-        title={t("license.manageSubscription")}
-        description="Facturation, moyen de paiement, changement de palier."
-        grouped={true}
-      >
-        <div className="flex items-center gap-2">
-          <span
-            className="text-[10px] font-bold tracking-wide uppercase rounded-full px-2 py-0.5 border whitespace-nowrap"
-            style={{
-              color: "var(--color-text-secondary)",
-              borderColor: "var(--color-text-secondary)",
-            }}
-          >
-            {t("license.comingSoon")}
-          </span>
-          <Button variant="secondary" size="md" disabled>
-            {t("license.manageSubscription")}
-          </Button>
+      {/* 1. Le plan ACTUEL d'abord — toujours au-dessus de toute promo. */}
+      <div className="px-4 py-3.5 flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-sm font-medium">{t("license.yourPlan")}</h3>
+          <p className="text-xs text-text-secondary mt-0.5">
+            {status?.licensed && status.email
+              ? status.email
+              : "Palier Nova actif sur cet appareil."}
+          </p>
         </div>
-      </SettingContainer>
+        <TierPill tier={tier} onTrial={onTrial} days={trialDaysRemaining} />
+      </div>
 
-      {onTrial && (
-        <SettingContainer
-          title={t("license.trial.title")}
-          description={t("license.trial.description", {
-            count: trialDaysRemaining,
-          })}
-          grouped={true}
-        >
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => openUrl("https://novaspeak.app")}
-          >
-            {t("license.trial.subscribe")}
-          </Button>
-        </SettingContainer>
-      )}
-
-      <QuotaBar />
-      <WeekStat />
-
-      {status?.licensed && status.email && (
-        <SettingContainer
-          title="Licence"
-          description={status.email}
-          grouped={true}
-        >
-          <span className="text-sm text-text-secondary">
-            {t("license.active")}
-          </span>
-        </SettingContainer>
-      )}
-
-      {/* Fonctions incluses / verrouillées au palier courant */}
-      <div className="px-4 py-2 flex flex-col gap-1.5">
+      {/* 2. Ce que le palier donne — chaque fonction marquée de SON palier. */}
+      <div className="px-4 py-3 flex flex-col gap-2 border-t border-mid-gray/20">
         {FEATURE_ROWS.map((f) => {
           const ok = status?.features?.[f.key] ?? false;
           return (
-            <div key={f.key} className="flex items-center gap-2 text-sm">
+            <div key={f.key} className="flex items-center gap-2.5 text-sm">
               <span
                 className="w-4 h-4 flex items-center justify-center shrink-0"
                 style={{
@@ -217,12 +231,41 @@ export const LicenseSettings: React.FC = () => {
                   </svg>
                 )}
               </span>
-              <span className={ok ? "" : "text-text-secondary"}>{f.label}</span>
+              <span className={`flex-1 ${ok ? "" : "text-text-secondary"}`}>
+                {f.label}
+              </span>
+              {TIER_FOR_FEATURE[f.key] && (
+                <TierChip tierLabel={TIER_FOR_FEATURE[f.key]} />
+              )}
             </div>
           );
         })}
       </div>
 
+      {/* 3. Utilisation (quota Free / statistique de la semaine). */}
+      <QuotaBar />
+      <WeekStat />
+
+      {/* 4. Promo d'essai — SOUS le plan et les fonctions. */}
+      {onTrial && (
+        <SettingContainer
+          title={t("license.trial.title")}
+          description={t("license.trial.description", {
+            count: trialDaysRemaining,
+          })}
+          grouped={true}
+        >
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => openUrl("https://novaspeak.app")}
+          >
+            {t("license.trial.subscribe")}
+          </Button>
+        </SettingContainer>
+      )}
+
+      {/* 5. Montée de palier. */}
       {!isUltra && (
         <SettingContainer
           title="Passer à un palier supérieur"
@@ -240,8 +283,30 @@ export const LicenseSettings: React.FC = () => {
       )}
 
       <SettingContainer
+        title={t("license.manageSubscription")}
+        description="Facturation, moyen de paiement, changement de palier."
+        grouped={true}
+      >
+        <div className="flex items-center gap-2">
+          <span
+            className="text-[10px] font-bold tracking-wide uppercase rounded-full px-2 py-0.5 border whitespace-nowrap"
+            style={{
+              color: "var(--color-text-secondary)",
+              borderColor: "var(--color-text-secondary)",
+            }}
+          >
+            {t("license.comingSoon")}
+          </span>
+          <Button variant="secondary" size="md" disabled>
+            {t("license.manageSubscription")}
+          </Button>
+        </div>
+      </SettingContainer>
+
+      {/* 6. Activation d'une clé. */}
+      <SettingContainer
         title="Entrer ma licence"
-        description="Collez votre clé NOVA1 reçue après achat."
+        description="Collez votre clé NOVA1 ou votre code d'achat NOVA-… reçu après paiement."
         grouped={true}
         layout="stacked"
       >
@@ -249,7 +314,7 @@ export const LicenseSettings: React.FC = () => {
           <Input
             value={keyInput}
             onChange={(e) => setKeyInput(e.target.value)}
-            placeholder="NOVA1.…"
+            placeholder="NOVA1.… ou NOVA-…"
             className="flex-1"
           />
           <Button

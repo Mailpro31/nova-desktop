@@ -769,6 +769,7 @@
     "active": "Licencia activa",
     "trial": {
       "badge": "Prueba Pro",
+      "badgeDays": "Prueba Pro · {{count}} d",
       "title": "Prueba de Nova Pro",
       "description_one": "Queda {{count}} día de prueba.",
       "description_other": "Quedan {{count}} días de prueba.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Gestionar mi suscripción",
     "comingSoon": "Próximamente",
-    "featureColumn": "Función"
+    "featureColumn": "Función",
+    "yourPlan": "Tu plan"
   }
 }

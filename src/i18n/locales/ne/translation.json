@@ -769,6 +769,7 @@
     "active": "इजाजतपत्र सक्रिय",
     "trial": {
       "badge": "Pro परीक्षण",
+      "badgeDays": "Pro परीक्षण · {{count}} दिन",
       "title": "Nova Pro परीक्षण",
       "description_one": "परीक्षण अवधि सकिन {{count}} दिन बाँकी।",
       "description_other": "परीक्षण अवधि सकिन {{count}} दिन बाँकी।",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "मेरो सदस्यता व्यवस्थापन गर्नुहोस्",
     "comingSoon": "चाँडै आउँदैछ",
-    "featureColumn": "सुविधा"
+    "featureColumn": "सुविधा",
+    "yourPlan": "तपाईंको योजना"
   }
 }
