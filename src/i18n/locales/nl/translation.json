@@ -769,6 +769,7 @@
     "active": "Licentie actief",
     "trial": {
       "badge": "Pro-proefperiode",
+      "badgeDays": "Pro-proef · {{count}} d",
       "title": "Nova Pro-proefperiode",
       "description_one": "Nog {{count}} dag tot het einde van de proefperiode.",
       "description_other": "Nog {{count}} dagen tot het einde van de proefperiode.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Mijn abonnement beheren",
     "comingSoon": "Binnenkort beschikbaar",
-    "featureColumn": "Functie"
+    "featureColumn": "Functie",
+    "yourPlan": "Je abonnement"
   }
 }

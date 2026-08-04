@@ -4,6 +4,9 @@ import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
 import { TierBadge } from "../license/TierBadge";
+import { ThemeSelector } from "../ThemeSelector";
+import { AppLanguageSelector } from "../AppLanguageSelector";
+import { ShowOverlay } from "../ShowOverlay";
 import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import { useSettings } from "../../../hooks/useSettings";
 import {
@@ -93,6 +96,11 @@ export const PersonalizationSettings: React.FC = () => {
         L'apparence de Nova.
       </p>
 
+      <SettingsGroup title="Apparence">
+        <ThemeSelector descriptionMode="tooltip" grouped={true} />
+        <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
+      </SettingsGroup>
+
       <SettingsGroup title="Orbe">
         <SettingContainer
           title="Teinte de l'orbe"
@@ -141,6 +149,7 @@ export const PersonalizationSettings: React.FC = () => {
           descriptionMode="inline"
           grouped={true}
         />
+        <ShowOverlay descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
 
       <CustomVariablesSettings />

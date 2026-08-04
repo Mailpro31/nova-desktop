@@ -769,6 +769,7 @@
     "active": "ライセンス有効",
     "trial": {
       "badge": "Pro体験版",
+      "badgeDays": "Proトライアル · 残り{{count}}日",
       "title": "Nova Pro 体験版",
       "description_one": "体験版終了まで残り{{count}}日です。",
       "description_other": "体験版終了まで残り{{count}}日です。",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "サブスクリプションを管理",
     "comingSoon": "近日公開",
-    "featureColumn": "機能"
+    "featureColumn": "機能",
+    "yourPlan": "ご利用プラン"
   }
 }

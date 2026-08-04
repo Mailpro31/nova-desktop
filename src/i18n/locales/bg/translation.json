@@ -769,6 +769,7 @@
     "active": "Лицензът е активен",
     "trial": {
       "badge": "Пробен Pro",
+      "badgeDays": "Пробен Pro · {{count}} дн.",
       "title": "Пробен период на Nova Pro",
       "description_one": "Остава {{count}} ден от пробния период.",
       "description_other": "Остават {{count}} дни от пробния период.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Управление на абонамента ми",
     "comingSoon": "Очаквайте скоро",
-    "featureColumn": "Функция"
+    "featureColumn": "Функция",
+    "yourPlan": "Вашият план"
   }
 }

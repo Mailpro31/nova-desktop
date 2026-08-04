@@ -769,6 +769,7 @@
     "active": "Licencja aktywna",
     "trial": {
       "badge": "Okres próbny Pro",
+      "badgeDays": "Wersja próbna Pro · {{count}} d",
       "title": "Okres próbny Nova Pro",
       "description_one": "Pozostał {{count}} dzień okresu próbnego.",
       "description_other": "Pozostało {{count}} dni okresu próbnego.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Zarządzaj subskrypcją",
     "comingSoon": "Wkrótce",
-    "featureColumn": "Funkcja"
+    "featureColumn": "Funkcja",
+    "yourPlan": "Twój plan"
   }
 }

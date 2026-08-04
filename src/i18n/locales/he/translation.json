@@ -769,6 +769,7 @@
     "active": "הרישיון פעיל",
     "trial": {
       "badge": "ניסיון Pro",
+      "badgeDays": "ניסיון Pro · {{count}} ימים",
       "title": "ניסיון Nova Pro",
       "description_one": "נותר {{count}} יום לניסיון.",
       "description_other": "נותרו {{count}} ימים לניסיון.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "ניהול המנוי שלי",
     "comingSoon": "בקרוב",
-    "featureColumn": "תכונה"
+    "featureColumn": "תכונה",
+    "yourPlan": "המנוי שלך"
   }
 }

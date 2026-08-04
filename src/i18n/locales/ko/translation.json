@@ -769,6 +769,7 @@
     "active": "라이선스 활성",
     "trial": {
       "badge": "Pro 체험",
+      "badgeDays": "Pro 체험 · {{count}}일",
       "title": "Nova Pro 체험판",
       "description_one": "체험판 종료까지 {{count}}일 남았습니다.",
       "description_other": "체험판 종료까지 {{count}}일 남았습니다.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "구독 관리",
     "comingSoon": "출시 예정",
-    "featureColumn": "기능"
+    "featureColumn": "기능",
+    "yourPlan": "내 요금제"
   }
 }

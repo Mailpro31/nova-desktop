@@ -769,6 +769,7 @@
     "active": "Licens aktiv",
     "trial": {
       "badge": "Pro-provperiod",
+      "badgeDays": "Prova Pro · {{count}} d",
       "title": "Nova Pro-provperiod",
       "description_one": "{{count}} dag kvar av provperioden.",
       "description_other": "{{count}} dagar kvar av provperioden.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Hantera min prenumeration",
     "comingSoon": "Kommer snart",
-    "featureColumn": "Funktion"
+    "featureColumn": "Funktion",
+    "yourPlan": "Din plan"
   }
 }

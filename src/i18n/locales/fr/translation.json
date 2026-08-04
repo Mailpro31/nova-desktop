@@ -769,6 +769,7 @@
     "active": "Licence active",
     "trial": {
       "badge": "Essai Pro",
+      "badgeDays": "Essai Pro · {{count}} j",
       "title": "Essai Nova Pro",
       "description_one": "Encore {{count}} jour avant la fin de l'essai.",
       "description_other": "Encore {{count}} jours avant la fin de l'essai.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Gérer mon abonnement",
     "comingSoon": "Bientôt disponible",
-    "featureColumn": "Fonctionnalité"
+    "featureColumn": "Fonctionnalité",
+    "yourPlan": "Votre plan"
   }
 }

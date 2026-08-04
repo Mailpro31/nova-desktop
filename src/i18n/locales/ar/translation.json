@@ -769,6 +769,7 @@
     "active": "الترخيص نشط",
     "trial": {
       "badge": "تجربة Pro",
+      "badgeDays": "تجربة Pro · {{count}} ي",
       "title": "تجربة Nova Pro",
       "description_one": "تبقى {{count}} يوم على انتهاء التجربة.",
       "description_other": "تبقى {{count}} أيام على انتهاء التجربة.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "إدارة اشتراكي",
     "comingSoon": "قريبًا",
-    "featureColumn": "الميزة"
+    "featureColumn": "الميزة",
+    "yourPlan": "خطتك"
   }
 }

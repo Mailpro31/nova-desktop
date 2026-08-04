@@ -769,6 +769,7 @@
     "active": "Ліцензія активна",
     "trial": {
       "badge": "Пробний Pro",
+      "badgeDays": "Пробний Pro · {{count}} дн.",
       "title": "Пробний період Nova Pro",
       "description_one": "Залишився {{count}} день пробного періоду.",
       "description_other": "Залишилося {{count}} днів пробного періоду.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Керувати підпискою",
     "comingSoon": "Незабаром",
-    "featureColumn": "Функція"
+    "featureColumn": "Функція",
+    "yourPlan": "Ваш тариф"
   }
 }

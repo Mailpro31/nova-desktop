@@ -769,6 +769,7 @@
     "active": "Lizenz aktiv",
     "trial": {
       "badge": "Pro-Testversion",
+      "badgeDays": "Pro-Test · {{count}} T.",
       "title": "Nova Pro Testversion",
       "description_one": "Noch {{count}} Tag bis zum Ende der Testversion.",
       "description_other": "Noch {{count}} Tage bis zum Ende der Testversion.",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "Mein Abonnement verwalten",
     "comingSoon": "Demnächst",
-    "featureColumn": "Funktion"
+    "featureColumn": "Funktion",
+    "yourPlan": "Ihr Plan"
   }
 }

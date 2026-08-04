@@ -769,6 +769,7 @@
     "active": "授權已啟用",
     "trial": {
       "badge": "Pro 試用",
+      "badgeDays": "Pro 試用 · {{count}} 天",
       "title": "Nova Pro 試用",
       "description_one": "試用還剩 {{count}} 天。",
       "description_other": "試用還剩 {{count}} 天。",
@@ -782,6 +783,7 @@
     },
     "manageSubscription": "管理我的訂閱",
     "comingSoon": "即將推出",
-    "featureColumn": "功能"
+    "featureColumn": "功能",
+    "yourPlan": "您的方案"
   }
 }
