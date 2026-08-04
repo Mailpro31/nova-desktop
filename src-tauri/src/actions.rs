@@ -337,7 +337,11 @@ fn screen_context_block(settings: &AppSettings) -> String {
     // Palier : la lecture de contexte est une fonctionnalité Nova Ultra (essai
     // Pro inclus, cf. licensing::has). Sans le palier requis, on n'inspecte rien.
     let license_key = settings.license_key.as_deref().unwrap_or("");
-    if !crate::licensing::has("context_reading", license_key, settings.trial_started_at) {
+    if !crate::licensing::has(
+        "context_reading",
+        license_key,
+        crate::licensing::effective_trial_start(&settings),
+    ) {
         return String::new();
     }
     // Cascade privacy-first : palier A (accessibilité) → palier B (OCR local),
@@ -426,7 +430,11 @@ async fn post_process_transcription(
     let is_local_engine = provider.id == crate::local_llm::PROVIDER_ID
         || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
     if !is_local_engine
-        && !crate::licensing::has("online_engine", license_key, settings.trial_started_at)
+        && !crate::licensing::has(
+            "online_engine",
+            license_key,
+            crate::licensing::effective_trial_start(&settings),
+        )
     {
         debug!("Turbo (moteur en ligne) réservé à Nova Ultra — reformulation ignorée");
         return None;
@@ -489,8 +497,11 @@ async fn post_process_transcription(
     // choisir la température (fidèle vs libre) cohérente avec le prompt réel.
     let mut effective_style_id = selected_prompt_id.clone();
     let prompt = if !style_is_free
-        && !crate::licensing::has(required_feature, license_key, settings.trial_started_at)
-    {
+        && !crate::licensing::has(
+            required_feature,
+            license_key,
+            crate::licensing::effective_trial_start(&settings),
+        ) {
         debug!(
             "Style '{}' réservé ({}) — repli sur le Style gratuit",
             selected_prompt_id, required_feature

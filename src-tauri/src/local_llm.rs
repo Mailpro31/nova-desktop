@@ -245,6 +245,29 @@ async fn download_with_progress(
     Ok(())
 }
 
+/// SHA-256 annoncé par Hugging Face pour un fichier LFS (en-tête
+/// `x-linked-etag` sur l'URL resolve). Sert à vérifier l'intégrité du GGUF
+/// après téléchargement — indisponible → None (l'appelant journalise et
+/// poursuit, pour ne pas bloquer le téléchargement si HF change son API).
+async fn gguf_expected_sha256(repo_id: &str, filename: &str) -> Option<String> {
+    let url = format!("https://huggingface.co/{repo_id}/resolve/main/{filename}");
+    let resp = reqwest::Client::new()
+        .head(&url)
+        .timeout(std::time::Duration::from_secs(15))
+        .send()
+        .await
+        .ok()?;
+    let raw = resp
+        .headers()
+        .get("x-linked-etag")
+        .or_else(|| resp.headers().get("etag"))?
+        .to_str()
+        .ok()?
+        .trim_matches('"')
+        .to_lowercase();
+    (raw.len() == 64 && raw.chars().all(|c| c.is_ascii_hexdigit())).then_some(raw)
+}
+
 /// Télécharge le modèle GGUF du profil demandé s'il est absent.
 pub async fn ensure_model_downloaded(app: &AppHandle, profile_id: &str) -> Result<(), String> {
     let spec = spec(profile_id).ok_or_else(|| format!("Profil inconnu : {profile_id}"))?;
@@ -253,16 +276,71 @@ pub async fn ensure_model_downloaded(app: &AppHandle, profile_id: &str) -> Resul
         return Ok(());
     }
     let filename = resolve_gguf_filename(spec.repo_id).await?;
+    let expected = gguf_expected_sha256(spec.repo_id, &filename).await;
+    if expected.is_none() {
+        log::warn!(
+            "SHA-256 Hugging Face indisponible pour {} — téléchargement non vérifié",
+            spec.repo_id
+        );
+    }
     let url = format!(
         "https://huggingface.co/{}/resolve/main/{}",
         spec.repo_id, filename
     );
-    download_with_progress(app, &url, &dest, "model", profile_id).await
+    download_with_progress(app, &url, &dest, "model", profile_id).await?;
+    // Intégrité du GGUF (hash publié par Hugging Face) : un fichier corrompu
+    // ou altéré est supprimé et signalé au lieu de casser le moteur au chargement.
+    if let Some(hash) = expected {
+        verify_file_sha256(&dest, &hash, "du modèle")?;
+    }
+    Ok(())
 }
 
-/// Trouve l'URL du dernier binaire Windows `llama-server` publié par le
-/// projet llama.cpp. Résolution dynamique via l'API GitHub, pas de version
-/// figée.
+/// Version de llama.cpp ÉPINGLÉE + SHA-256 des archives : le binaire téléchargé
+/// est exécuté — jamais de « latest » flottant ni d'archive non vérifiée
+/// (risque supply-chain : une release compromise ne doit pas devenir une RCE
+/// chez tous les utilisateurs). Pour monter de version : changer le tag,
+/// télécharger les assets correspondants et recalculer les hash (sha256sum).
+#[cfg(windows)]
+const LLAMA_CPP_TAG: &str = "b10273";
+#[cfg(windows)]
+const LLAMA_CPP_SHA256: &[(&str, &str)] = &[
+    (
+        "win-vulkan-x64",
+        "e6d270513205133d8f026dd5aa26670c992278ce2707f2acdef21dd9c3804da0",
+    ),
+    (
+        "win-cpu-x64",
+        "8791c5e11cac85b0192b147350731c18bc3621c13a07f4c3932c2ea86c949596",
+    ),
+];
+
+/// SHA-256 hex d'un fichier, en streaming (les archives font des dizaines de Mo).
+fn file_sha256_hex(path: &Path) -> Result<String, String> {
+    use sha2::{Digest, Sha256};
+    let mut f =
+        std::fs::File::open(path).map_err(|e| format!("Lecture pour vérification : {e}"))?;
+    let mut h = Sha256::new();
+    std::io::copy(&mut f, &mut h).map_err(|e| format!("Hash du fichier : {e}"))?;
+    Ok(format!("{:x}", h.finalize()))
+}
+
+/// Vérifie le SHA-256 de `path` ; en cas de divergence, supprime le fichier
+/// (prochaine tentative repart propre) et renvoie une erreur.
+fn verify_file_sha256(path: &Path, expected: &str, what: &str) -> Result<(), String> {
+    let actual = file_sha256_hex(path)?;
+    if actual != expected {
+        let _ = std::fs::remove_file(path);
+        return Err(format!(
+            "Vérification d'intégrité échouée pour {what} (SHA-256 inattendu). \
+             Le fichier a été supprimé — réessayez."
+        ));
+    }
+    Ok(())
+}
+
+/// Trouve l'URL du binaire Windows `llama-server` à la version ÉPINGLÉE
+/// ([`LLAMA_CPP_TAG`]) et son SHA-256 attendu.
 ///
 /// Priorité au build Vulkan (accélération GPU multi-fournisseur — NVIDIA/AMD/
 /// Intel — même choix que `transcribe-cpp` pour la transcription dans ce
@@ -273,8 +351,9 @@ pub async fn ensure_model_downloaded(app: &AppHandle, profile_id: &str) -> Resul
 /// reste CPU-only : les pilotes Vulkan Adreno sont trop immatures, même
 /// motif que pour la transcription.
 #[cfg(windows)]
-async fn resolve_server_asset_url() -> Result<String, String> {
-    let url = "https://api.github.com/repos/ggml-org/llama.cpp/releases/latest";
+async fn resolve_server_asset_url() -> Result<(String, String), String> {
+    let url =
+        format!("https://api.github.com/repos/ggml-org/llama.cpp/releases/tags/{LLAMA_CPP_TAG}");
     let resp = reqwest::Client::new()
         .get(url)
         .header("User-Agent", "nova-desktop")
@@ -311,10 +390,17 @@ async fn resolve_server_asset_url() -> Result<String, String> {
                 None
             }
         }) {
-            return Ok(url);
+            let expected = LLAMA_CPP_SHA256
+                .iter()
+                .find(|(key, _)| key == want)
+                .map(|(_, h)| h.to_string())
+                .ok_or_else(|| format!("Pas de SHA-256 épinglé pour l'asset {want}"))?;
+            return Ok((url, expected));
         }
     }
-    Err("Aucun binaire Windows trouvé dans la dernière version de llama.cpp".to_string())
+    Err(format!(
+        "Aucun binaire Windows trouvé dans llama.cpp {LLAMA_CPP_TAG}"
+    ))
 }
 
 /// Télécharge et extrait `llama-server.exe` s'il est absent. Extraction via
@@ -333,14 +419,21 @@ pub async fn ensure_server_binary(app: &AppHandle) -> Result<(), String> {
     if dest.is_file() && dir_contains_dll(&dir) {
         return Ok(());
     }
-    let zip_url = resolve_server_asset_url().await?;
+    let (zip_url, zip_sha256) = resolve_server_asset_url().await?;
     let zip_path = dir.join("llama-server.zip");
     download_with_progress(app, &zip_url, &zip_path, "engine", "").await?;
+    // Intégrité AVANT extraction/exécution (supply-chain) : archive supprimée
+    // et erreur remontée si le SHA-256 ne correspond pas à l'épinglé.
+    verify_file_sha256(&zip_path, &zip_sha256, "du moteur local")?;
 
     let extract_dir = dir.join("engine-extract");
     let _ = std::fs::remove_dir_all(&extract_dir);
     std::fs::create_dir_all(&extract_dir).map_err(|e| format!("Dossier d'extraction : {e}"))?;
 
+    // Les chemins dérivent du profil utilisateur, qui peut contenir une
+    // apostrophe (comptes AD « O'Brien »…) : on double les quotes simples,
+    // seule échappement valide dans une chaîne PowerShell à quotes simples.
+    let ps_quote = |p: &Path| p.display().to_string().replace('\'', "''");
     let status = std::process::Command::new("powershell")
         .args([
             "-NoProfile",
@@ -348,8 +441,8 @@ pub async fn ensure_server_binary(app: &AppHandle) -> Result<(), String> {
             "-Command",
             &format!(
                 "Expand-Archive -LiteralPath '{}' -DestinationPath '{}' -Force",
-                zip_path.display(),
-                extract_dir.display()
+                ps_quote(&zip_path),
+                ps_quote(&extract_dir)
             ),
         ])
         .status()

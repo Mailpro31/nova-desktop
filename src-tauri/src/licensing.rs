@@ -189,7 +189,10 @@ pub fn effective_tier(license_key: &str, trial_started_at: i64) -> Tier {
     if tier != Tier::Free {
         return tier;
     }
-    if trial_started_at > 0 && now_secs() - trial_started_at < TRIAL_SECS {
+    // elapsed NÉGATIF = horloge reculée avant le début d'essai (triche
+    // classique) → on n'offre rien, au lieu de valider l'essai à jamais.
+    let elapsed = now_secs() - trial_started_at;
+    if trial_started_at > 0 && elapsed >= 0 && elapsed < TRIAL_SECS {
         return Tier::Pro;
     }
     tier
@@ -202,7 +205,7 @@ pub fn trial_days_remaining(trial_started_at: i64) -> i64 {
         return 0;
     }
     let elapsed = now_secs() - trial_started_at;
-    if elapsed >= TRIAL_SECS {
+    if elapsed < 0 || elapsed >= TRIAL_SECS {
         return 0;
     }
     (TRIAL_SECS - elapsed + 86_399) / 86_400 // arrondi au jour supérieur
@@ -259,6 +262,18 @@ pub fn reconcile_trial_start(local: i64, trial_token: &str, machine: &str) -> i6
         Some(server) => server,
         None => local,
     }
+}
+
+/// Début d'essai réconcilié (local ∧ serveur) pour TOUTES les portes. Les
+/// gates doivent utiliser cette valeur plutôt que le `trial_started_at` brut
+/// des settings : une date forgée dans le JSON local ne fait plus effet dès
+/// qu'un jeton serveur valide existe (la date la plus ancienne fait foi).
+pub fn effective_trial_start(settings: &crate::settings::AppSettings) -> i64 {
+    reconcile_trial_start(
+        settings.trial_started_at,
+        &settings.trial_token,
+        &crate::machine_id::fingerprint(),
+    )
 }
 
 /// La fonctionnalité est-elle accessible, essai Pro automatique inclus ?
