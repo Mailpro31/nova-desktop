@@ -495,7 +495,13 @@
         "cancel": "ביטול",
         "selectToEdit": "בחר פרומפט למעלה כדי לצפות בפרטים שלו ולערוך אותם.",
         "createFirst": "לחץ על 'צור פרומפט חדש' למעלה כדי ליצור את פרומפט העיבוד הראשון שלך.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "אוטומטי",
+        "badgeBuiltin": "מובנה",
+        "badgeCustom": "מותאם",
+        "duplicate": "שכפל",
+        "edit": "ערוך",
+        "copySuffix": "עותק"
       },
       "autoStyle": {
         "addRule": "Add rule",

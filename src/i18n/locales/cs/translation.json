@@ -495,7 +495,13 @@
         "cancel": "Zrušit",
         "selectToEdit": "Vyberte výše prompt, abyste zobrazili a upravili jeho podrobnosti.",
         "createFirst": "Klikněte nahoře na 'Vytvořit nový prompt' a vytvořte svůj první prompt pro následné zpracování.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Automatický",
+        "badgeBuiltin": "Vestavěný",
+        "badgeCustom": "Vlastní",
+        "duplicate": "Duplikovat",
+        "edit": "Upravit",
+        "copySuffix": "kopie"
       },
       "autoStyle": {
         "addRule": "Add rule",

@@ -495,7 +495,13 @@
         "cancel": "Скасувати",
         "selectToEdit": "Оберіть промпт вище для перегляду та редагування його деталей.",
         "createFirst": "Натисніть «Створити новий промпт» вище, щоб створити ваш перший промпт постобробки.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Автоматично",
+        "badgeBuiltin": "Вбудований",
+        "badgeCustom": "Власний",
+        "duplicate": "Дублювати",
+        "edit": "Редагувати",
+        "copySuffix": "копія"
       },
       "autoStyle": {
         "addRule": "Add rule",

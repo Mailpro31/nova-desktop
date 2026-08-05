@@ -508,7 +508,13 @@
         "createPrompt": "Créer le Style",
         "cancel": "Annuler",
         "selectToEdit": "Sélectionnez un Style ci-dessus pour le voir et le modifier.",
-        "createFirst": "Cliquez sur 'Créer un nouveau prompt' ci-dessus pour créer votre premier prompt de post-traitement."
+        "createFirst": "Cliquez sur 'Créer un nouveau prompt' ci-dessus pour créer votre premier prompt de post-traitement.",
+        "badgeAuto": "Automatique",
+        "badgeBuiltin": "Intégré",
+        "badgeCustom": "Personnel",
+        "duplicate": "Dupliquer",
+        "edit": "Modifier",
+        "copySuffix": "copie"
       },
       "powerProfile": {
         "label": "Profil de puissance",

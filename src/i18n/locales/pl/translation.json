@@ -495,7 +495,13 @@
         "cancel": "Anuluj",
         "selectToEdit": "Wybierz prompt powyżej, aby zobaczyć i edytować jego szczegóły.",
         "createFirst": "Kliknij 'Utwórz nowy prompt' powyżej, aby utworzyć pierwszy prompt postprocessingu.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Automatyczny",
+        "badgeBuiltin": "Wbudowany",
+        "badgeCustom": "Własny",
+        "duplicate": "Duplikuj",
+        "edit": "Edytuj",
+        "copySuffix": "kopia"
       },
       "autoStyle": {
         "addRule": "Add rule",

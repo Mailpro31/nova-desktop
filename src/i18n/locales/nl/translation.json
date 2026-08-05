@@ -495,7 +495,13 @@
         "cancel": "Annuleren",
         "selectToEdit": "Selecteer hierboven een prompt om de details te bekijken en te bewerken.",
         "createFirst": "Klik hierboven op 'Nieuwe prompt maken' om je eerste naverwerkingsprompt aan te maken.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Automatisch",
+        "badgeBuiltin": "Ingebouwd",
+        "badgeCustom": "Eigen",
+        "duplicate": "Dupliceren",
+        "edit": "Bewerken",
+        "copySuffix": "kopie"
       },
       "autoStyle": {
         "addRule": "Add rule",

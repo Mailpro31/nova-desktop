@@ -495,7 +495,13 @@
         "cancel": "キャンセル",
         "selectToEdit": "上からプロンプトを選択して、詳細を表示・編集します。",
         "createFirst": "上の「新しいプロンプトを作成」をクリックして、最初の後処理プロンプトを作成してください。",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "自動",
+        "badgeBuiltin": "内蔵",
+        "badgeCustom": "カスタム",
+        "duplicate": "複製",
+        "edit": "編集",
+        "copySuffix": "コピー"
       },
       "autoStyle": {
         "addRule": "Add rule",

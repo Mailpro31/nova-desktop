@@ -508,7 +508,13 @@
         "createPrompt": "Create Prompt",
         "cancel": "Cancel",
         "selectToEdit": "Select a prompt above to view and edit its details.",
-        "createFirst": "Click 'Create New Prompt' above to create your first post-processing prompt."
+        "createFirst": "Click 'Create New Prompt' above to create your first post-processing prompt.",
+        "badgeAuto": "Automatic",
+        "badgeBuiltin": "Built-in",
+        "badgeCustom": "Custom",
+        "duplicate": "Duplicate",
+        "edit": "Edit",
+        "copySuffix": "copy"
       },
       "powerProfile": {
         "label": "Power profile",

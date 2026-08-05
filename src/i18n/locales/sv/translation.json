@@ -495,7 +495,13 @@
         "cancel": "Avbryt",
         "selectToEdit": "Välj en prompt ovan för att visa och redigera dess detaljer.",
         "createFirst": "Klicka på 'Skapa ny prompt' ovan för att skapa din första prompt för efterbearbetning.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Automatisk",
+        "badgeBuiltin": "Inbyggd",
+        "badgeCustom": "Egen",
+        "duplicate": "Duplicera",
+        "edit": "Redigera",
+        "copySuffix": "kopia"
       },
       "autoStyle": {
         "addRule": "Add rule",

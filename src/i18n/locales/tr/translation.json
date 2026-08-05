@@ -495,7 +495,13 @@
         "cancel": "İptal",
         "selectToEdit": "Ayrıntılarını görüntülemek ve düzenlemek için yukarıdan bir prompt seçin.",
         "createFirst": "İlk son işlem prompt'unuzu oluşturmak için yukarıdaki “Yeni Prompt Oluştur” seçeneğine tıklayın.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Otomatik",
+        "badgeBuiltin": "Yerleşik",
+        "badgeCustom": "Özel",
+        "duplicate": "Çoğalt",
+        "edit": "Düzenle",
+        "copySuffix": "kopya"
       },
       "autoStyle": {
         "addRule": "Add rule",
