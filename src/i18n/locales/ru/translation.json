@@ -789,7 +789,7 @@
     "comingSoon": "Скоро",
     "featureColumn": "Функция",
     "yourPlan": "Ваш тариф",
-    "onlineEngineLockedTitle": "Turbo доступен только в Nova Ultra",
-    "onlineEngineLocked": "Онлайн-движок доступен только в Nova Ultra — текст вставлен без переформулировки."
+    "onlineEngineLockedTitle": "Turbo требует подписки Nova",
+    "onlineEngineLocked": "Онлайн-движок доступен в Nova Pro и Ultra — текст вставлен без переформулировки."
   }
 }

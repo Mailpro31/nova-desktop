@@ -34,7 +34,7 @@ const TIER_LABEL: Record<Tier, string> = {
 // tel quel par le tableau comparatif des paliers (Compte) — source de vérité
 // unique, on ne fabrique pas une deuxième liste de fonctionnalités.
 export const FEATURE_ROWS: { key: string; label: string }[] = [
-  { key: "online_engine", label: "Turbo — moteur de reformulation en ligne" },
+  { key: "cloud_styles", label: "Turbo — moteur de reformulation en ligne" },
   { key: "all_styles", label: "Les 7 Styles" },
   { key: "power_profiles", label: "Profils de puissance" },
   { key: "best_models", label: "Meilleure IA / qualité maximale" },

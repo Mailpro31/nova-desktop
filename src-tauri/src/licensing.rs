@@ -55,10 +55,11 @@ impl Tier {
 pub fn feature_min_tier(feature: &str) -> Tier {
     match feature {
         // Pro : reformulation illimitée + les 7 Styles + profils de puissance,
-        // le tout en LOCAL (Intelligence privée). Aucun cloud à ce palier.
-        "unlimited" | "all_styles" | "power_profiles" | "custom_variables" => Tier::Pro,
-        // Ultra : le CLOUD (moteur « Turbo » en ligne + STT en ligne) + meilleure
-        // IA + personnalisation avancée. Tout ce qui sort de la machine = Ultra.
+        // et la reformulation en ligne « Turbo » (relais serveur Anthropic,
+        // zéro rétention) — le local reste le repli automatique.
+        "unlimited" | "all_styles" | "power_profiles" | "custom_variables"
+        | "cloud_styles" => Tier::Pro,
+        // Ultra : meilleure IA + personnalisation avancée.
         "online_engine" | "best_models" | "custom_styles" | "custom_auto_rules"
         | "orb_customization" | "custom_naming" | "priority_updates"
         // Lecture de contexte : Nova lit le contenu de la fenêtre active pour

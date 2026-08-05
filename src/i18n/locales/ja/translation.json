@@ -789,7 +789,7 @@
     "comingSoon": "近日公開",
     "featureColumn": "機能",
     "yourPlan": "ご利用プラン",
-    "onlineEngineLockedTitle": "TurboはNova Ultra限定です",
-    "onlineEngineLocked": "オンラインエンジンはNova Ultra限定のため、リフォーミュレーションなしで貼り付けられました。"
+    "onlineEngineLockedTitle": "TurboにはNovaサブスクリプションが必要です",
+    "onlineEngineLocked": "オンラインエンジンはNova ProとUltra限定のため、リフォーミュレーションなしで貼り付けられました。"
   }
 }

@@ -84,8 +84,9 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   const [appleIntelligenceUnavailable, setAppleIntelligenceUnavailable] =
     useState(false);
 
-  // Turbo réservé à Nova Ultra (essai Pro inclus) : verrouillé tant que le
-  // statut de licence n'a pas confirmé l'accès. Défaut prudent = verrouillé.
+  // Turbo réservé aux abonnés Nova (Pro/Ultra, essai Pro inclus) : verrouillé
+  // tant que le statut de licence n'a pas confirmé l'accès. Défaut prudent =
+  // verrouillé.
   const [turboLocked, setTurboLocked] = useState(true);
   const [turboConfirmOpen, setTurboConfirmOpen] = useState(false);
 
@@ -93,11 +94,11 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
     let alive = true;
     getStatus().then((s) => {
       // Fail-OPEN on an absent status (IPC teardown / transient null): the
-      // backend enforces online_engine regardless, so never grey out Turbo for
-      // an entitled user with no "requires Ultra" badge (TierBadge is fail-open
+      // backend enforces cloud_styles regardless, so never grey out Turbo for
+      // an entitled user with no "requires Pro" badge (TierBadge is fail-open
       // too). Only lock when a PRESENT status says the feature is off.
       if (alive)
-        setTurboLocked(s ? !(s.features?.online_engine ?? true) : false);
+        setTurboLocked(s ? !(s.features?.cloud_styles ?? true) : false);
     });
     return () => {
       alive = false;

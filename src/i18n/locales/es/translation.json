@@ -789,7 +789,7 @@
     "comingSoon": "Próximamente",
     "featureColumn": "Función",
     "yourPlan": "Tu plan",
-    "onlineEngineLockedTitle": "Turbo es exclusivo de Nova Ultra",
-    "onlineEngineLocked": "El motor en línea está reservado a Nova Ultra — el texto se pegó sin reformular."
+    "onlineEngineLockedTitle": "Turbo requiere una suscripción Nova",
+    "onlineEngineLocked": "El motor en línea está reservado a Nova Pro y Ultra — el texto se pegó sin reformular."
   }
 }

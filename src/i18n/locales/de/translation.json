@@ -789,7 +789,7 @@
     "comingSoon": "Demnächst",
     "featureColumn": "Funktion",
     "yourPlan": "Ihr Plan",
-    "onlineEngineLockedTitle": "Turbo ist Nova Ultra vorbehalten",
-    "onlineEngineLocked": "Die Online-Engine ist Nova Ultra vorbehalten — Ihr Text wurde ohne Umformulierung eingefügt."
+    "onlineEngineLockedTitle": "Turbo erfordert ein Nova-Abo",
+    "onlineEngineLocked": "Die Online-Engine ist Nova Pro und Ultra vorbehalten — Ihr Text wurde ohne Umformulierung eingefügt."
   }
 }

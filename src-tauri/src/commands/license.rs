@@ -31,6 +31,7 @@ pub struct LicenseStatus {
 
 const KNOWN_FEATURES: &[&str] = &[
     "online_engine",
+    "cloud_styles",
     "all_styles",
     "power_profiles",
     "custom_variables",

@@ -427,26 +427,78 @@ async fn post_process_transcription(
         }
     };
 
-    // Palier : le moteur en ligne « Turbo » nécessite Nova Ultra (essai Pro
-    // inclus, cf. licensing::has). Le moteur local (Intelligence privée,
-    // Apple Intelligence) reste gratuit.
+    // Palier : le moteur en ligne « Turbo » nécessite un abonnement Nova
+    // (Pro ou Ultra, essai Pro inclus, cf. licensing::has). Le moteur local
+    // (Intelligence privée, Apple Intelligence) reste gratuit.
     let license_key = settings.license_key.as_deref().unwrap_or("");
     let is_local_engine = provider.id == crate::local_llm::PROVIDER_ID
         || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
     if !is_local_engine
         && !crate::licensing::has(
-            "online_engine",
+            "cloud_styles",
             license_key,
             crate::licensing::effective_trial_start(&settings),
         )
     {
-        debug!("Turbo (moteur en ligne) réservé à Nova Ultra — reformulation ignorée");
+        debug!("Turbo (moteur en ligne) réservé aux abonnés — reformulation ignorée");
         // Le repli sur le texte brut doit être VISIBLE : sans ce signal,
         // l'utilisateur croyait la reformulation « cassée » alors qu'elle est
-        // simplement réservée à Nova Ultra.
+        // simplement réservée aux abonnés.
         let _ = app.emit("online-engine-locked", ());
         return None;
     }
+
+    let result =
+        post_process_with_provider(app, settings, transcription, auto_style_override, &provider)
+            .await;
+
+    // Bascule automatique : le moteur en ligne a échoué (réseau, quota,
+    // fournisseur) → on retente en INTELLIGENCE PRIVÉE si un modèle local est
+    // déjà téléchargé. Le texte brut n'est collé qu'en dernier recours.
+    if result.is_none() && !is_local_engine {
+        let local_id = crate::local_llm::PROVIDER_ID;
+        let profile = settings
+            .post_process_models
+            .get(local_id)
+            .cloned()
+            .unwrap_or_default();
+        let downloaded = !profile.trim().is_empty()
+            && crate::local_llm::profiles_status(app)
+                .iter()
+                .any(|p| p.id == profile && p.is_downloaded);
+        if downloaded {
+            if let Some(local_provider) = settings
+                .post_process_providers
+                .iter()
+                .find(|p| p.id == local_id)
+                .cloned()
+            {
+                log::warn!(
+                    "Moteur en ligne en échec — bascule sur Intelligence privée ({})",
+                    profile
+                );
+                return post_process_with_provider(
+                    app,
+                    settings,
+                    transcription,
+                    auto_style_override,
+                    &local_provider,
+                )
+                .await;
+            }
+        }
+    }
+    result
+}
+
+async fn post_process_with_provider(
+    app: &AppHandle,
+    settings: &AppSettings,
+    transcription: &str,
+    auto_style_override: Option<&str>,
+    provider: &crate::settings::PostProcessProvider,
+) -> Option<String> {
+    let license_key = settings.license_key.as_deref().unwrap_or("");
 
     let model = settings
         .post_process_models
@@ -661,7 +713,7 @@ async fn post_process_transcription(
         });
 
         match crate::llm_client::send_chat_completion_with_schema(
-            &provider,
+            provider,
             api_key.clone(),
             &model,
             user_content,
@@ -731,7 +783,7 @@ async fn post_process_transcription(
     debug!("Processed prompt length: {} chars", processed_prompt.len());
 
     match crate::llm_client::send_chat_completion(
-        &provider,
+        provider,
         api_key,
         &model,
         processed_prompt,

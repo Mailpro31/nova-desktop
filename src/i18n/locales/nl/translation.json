@@ -789,7 +789,7 @@
     "comingSoon": "Binnenkort beschikbaar",
     "featureColumn": "Functie",
     "yourPlan": "Je abonnement",
-    "onlineEngineLockedTitle": "Turbo is voorbehouden aan Nova Ultra",
-    "onlineEngineLocked": "De online engine is voorbehouden aan Nova Ultra — je tekst is zonder herformulering geplakt."
+    "onlineEngineLockedTitle": "Turbo vereist een Nova-abonnement",
+    "onlineEngineLocked": "De online engine is voorbehouden aan Nova Pro en Ultra — je tekst is zonder herformulering geplakt."
   }
 }

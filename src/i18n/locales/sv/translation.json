@@ -789,7 +789,7 @@
     "comingSoon": "Kommer snart",
     "featureColumn": "Funktion",
     "yourPlan": "Din plan",
-    "onlineEngineLockedTitle": "Turbo är reserverat för Nova Ultra",
-    "onlineEngineLocked": "Onlinemotorn är reserverad för Nova Ultra — texten klistrades in utan omformulering."
+    "onlineEngineLockedTitle": "Turbo kräver en Nova-prenumeration",
+    "onlineEngineLocked": "Onlinemotorn är reserverad för Nova Pro och Ultra — texten klistrades in utan omformulering."
   }
 }

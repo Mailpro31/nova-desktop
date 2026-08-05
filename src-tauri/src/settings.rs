@@ -683,16 +683,16 @@ fn default_post_process_provider_id() -> String {
 
 fn default_post_process_providers() -> Vec<PostProcessProvider> {
     let mut providers = vec![
-        // Turbo — moteur de reformulation en ligne de Nova (payant). L'app relaie
-        // la requête chat via la fonction edge « turbo-chat » : la clé du
-        // fournisseur reste côté serveur, le modèle est imposé côté serveur, et le
-        // jeton de licence sert de clé (voir actions.rs). Pas d'endpoint /models
-        // (aucun sélecteur de modèle) ; sortie structurée désactivée (chemin
-        // ${output}, comme Groq).
+        // Turbo — moteur de reformulation en ligne de Nova (Pro/Ultra). L'app
+        // relaie la requête chat via la fonction edge « styles-chat » : le
+        // fournisseur (Anthropic) et sa clé restent côté serveur, le modèle est
+        // imposé côté serveur, et le jeton de licence sert de clé (voir
+        // actions.rs). Zéro rétention côté serveur (RGPD). Pas d'endpoint
+        // /models ; sortie structurée désactivée (chemin ${output}).
         PostProcessProvider {
             id: "nova_turbo".to_string(),
             label: "Turbo".to_string(),
-            base_url: "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/turbo-chat"
+            base_url: "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/styles-chat"
                 .to_string(),
             allow_base_url_edit: false,
             models_endpoint: None,
@@ -1065,6 +1065,13 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
                         provider.supports_structured_output
                     );
                     existing.supports_structured_output = provider.supports_structured_output;
+                    changed = true;
+                }
+                // Migration 1.0.24 : « Turbo » pointe désormais sur le relais
+                // « styles-chat » (Anthropic côté serveur, Pro/Ultra). Les
+                // installs existantes conservaient l'ancienne URL « turbo-chat ».
+                if existing.id == "nova_turbo" && existing.base_url != provider.base_url {
+                    existing.base_url = provider.base_url.clone();
                     changed = true;
                 }
             }
