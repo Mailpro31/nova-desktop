@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "Přepisuji...",
     "processing": "Zpracovávám...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Otevřít nastavení"
   },
   "whatsNew": {
     "title": "Novinky v Nova v{{version}}"

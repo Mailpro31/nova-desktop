@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "...جاري التفريغ",
     "processing": "...جاري المعالجة",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "فتح الإعدادات"
   },
   "whatsNew": {
     "title": "الجديد في Nova v{{version}}"

@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "文字起こし中…",
     "processing": "処理中…",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "設定を開く"
   },
   "whatsNew": {
     "title": "Nova v{{version}} の新機能"

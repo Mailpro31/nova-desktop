@@ -749,7 +749,8 @@
   "overlay": {
     "transcribing": "Transcriberen...",
     "processing": "Verwerken...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Instellingen openen"
   },
   "quota": {
     "todayUsage": "Gratis herformuleringen vandaag",

@@ -300,10 +300,9 @@ const RecordingOverlay: React.FC = () => {
     </div>
   );
 
-  // ---- Idle overlay: la bulle au repos, toujours affichée, avec un engrenage
-  // qui ouvre le menu de choix de Style (pastilles couleur). ----
+  // ---- Idle overlay: la bulle au repos, toujours affichée.
+  // [engrenage → réglages] [orbe Nova] [étoile → menu des Styles] ----
   if (state === "idle") {
-    const selected = styles.find((s) => s.id === selectedStyleId);
     return (
       <div
         dir={direction}
@@ -344,17 +343,12 @@ const RecordingOverlay: React.FC = () => {
             </div>
           )}
           <div className="scard sidle">
-            <span
-              className="sdot"
-              style={
-                selected ? { background: styleColor(selected.id) } : undefined
-              }
-            />
-            {selected && <span className="sidle-name">{selected.name}</span>}
             <button
-              className={`sgear ${menuOpen ? "open" : ""}`}
-              aria-label={t("overlay.chooseStyle")}
-              onClick={toggleMenu}
+              className="sgear"
+              aria-label={t("overlay.openSettings")}
+              onClick={() => {
+                commands.showMainWindowCommand().catch(() => {});
+              }}
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
@@ -364,10 +358,27 @@ const RecordingOverlay: React.FC = () => {
                   strokeWidth="1.6"
                 />
                 <path
-                  d="M19.4 13a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 17.3a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.7 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"
+                  d="M19.4 13a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 17.3a1.6 1.6 0 0 0-1.8.3l-.1-.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.7 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <span className="sdot" />
+            <button
+              className={`sgear sstar ${menuOpen ? "open" : ""}`}
+              aria-label={t("overlay.chooseStyle")}
+              onClick={toggleMenu}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 3.6l2.5 5.2 5.7.7-4.2 3.9 1.1 5.6-5.1-2.8-5.1 2.8 1.1-5.6L3.8 9.5l5.7-.7L12 3.6Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />

@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "Đang chuyển đổi...",
     "processing": "Đang xử lý...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Mở cài đặt"
   },
   "whatsNew": {
     "title": "Điểm mới trong Nova v{{version}}"

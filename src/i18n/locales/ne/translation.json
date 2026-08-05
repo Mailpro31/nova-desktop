@@ -749,7 +749,8 @@
   "overlay": {
     "transcribing": "ट्रान्सक्राइब गरिँदैछ...",
     "processing": "प्रशोधन गरिँदैछ...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "सेटिङ खोल्नुहोस्"
   },
   "quota": {
     "todayUsage": "आजको निःशुल्क पुनर्लेखन",
