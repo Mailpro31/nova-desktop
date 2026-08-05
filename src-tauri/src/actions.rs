@@ -10,9 +10,7 @@ use crate::managers::transcription::TranscriptionManager;
 use crate::settings::{get_settings, AppSettings, OverlayStyle, APPLE_INTELLIGENCE_PROVIDER_ID};
 use crate::shortcut;
 use crate::tray::{change_tray_icon, TrayIconState};
-use crate::utils::{
-    self, show_processing_overlay, show_recording_overlay, show_transcribing_overlay,
-};
+use crate::utils::{self, show_recording_overlay, show_transcribing_overlay};
 use crate::TranscriptionCoordinator;
 use ferrous_opencc::{config::BuiltinConfig, OpenCC};
 use log::{debug, error, warn};
@@ -609,11 +607,17 @@ async fn post_process_with_provider(
         provider.id, model
     );
 
-    // Turbo : la « clé » transmise est le jeton de licence — le serveur relaie
-    // vers le fournisseur avec SA propre clé (jamais exposée). Les autres
-    // fournisseurs utilisent la clé saisie par l'utilisateur.
+    // Turbo : la « clé » transmise est le jeton de licence (NOVA1) — ou, en
+    // période d'essai (pas encore de licence), le jeton d'essai NOVAT1 scellé
+    // par le serveur. Sans ce repli, un utilisateur en essai obtenait un 401
+    // muet puis basculait sur le moteur local (lent) : le cloud semblait
+    // « ne pas marcher ». Les autres fournisseurs utilisent la clé saisie.
     let api_key = if provider.id == "nova_turbo" {
-        license_key.to_string()
+        if license_key.is_empty() {
+            settings.trial_token.clone()
+        } else {
+            license_key.to_string()
+        }
     } else {
         settings
             .post_process_api_keys
@@ -1308,12 +1312,21 @@ impl ShortcutAction for TranscribeAction {
                                 transcription
                             );
 
+                            // Modèle SANS streaming : la bulle n'a montré que la
+                            // waveform pendant la dictée. On affiche maintenant le
+                            // texte transcrit dans la bulle (panneau Live), le
+                            // temps de la reformulation — l'utilisateur voit ce
+                            // qu'il a dit AVANT le collage, sur tous les modèles.
+                            if !use_streaming_overlay {
+                                utils::show_streaming_overlay(&ah);
+                                tm.emit_final_text(&transcription);
+                            }
+
                             if post_process {
-                                if use_streaming_overlay {
-                                    tm.emit_stream_working(StreamWorkKind::Polishing);
-                                } else {
-                                    show_processing_overlay(&ah);
-                                }
+                                // Phase « reformulation » du panneau Live :
+                                // spinner sous le texte, qu'on soit en streaming
+                                // natif ou en affichage final (ci-dessus).
+                                tm.emit_stream_working(StreamWorkKind::Polishing);
                             }
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
