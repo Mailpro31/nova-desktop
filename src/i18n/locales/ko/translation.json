@@ -495,7 +495,13 @@
         "cancel": "취소",
         "selectToEdit": "세부 정보를 보고 편집하려면 위에서 프롬프트를 선택하세요.",
         "createFirst": "첫 번째 후처리 프롬프트를 만들려면 위의 '새 프롬프트 만들기'를 클릭하세요.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "자동",
+        "badgeBuiltin": "기본 제공",
+        "badgeCustom": "사용자 지정",
+        "duplicate": "복제",
+        "edit": "편집",
+        "copySuffix": "사본"
       },
       "autoStyle": {
         "addRule": "Add rule",

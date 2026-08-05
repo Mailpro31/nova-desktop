@@ -1181,6 +1181,15 @@ pub fn update_post_process_prompt(
         .iter_mut()
         .find(|p| p.id == id)
     {
+        // Les presets intégrés ne se modifient pas : l'utilisateur DUPLIQUE
+        // puis personnalise la copie. Sinon la moindre retouche cassait le
+        // Style par défaut sans retour possible.
+        if crate::licensing::is_builtin_style(&id) {
+            return Err(
+                "Les Styles intégrés ne sont pas modifiables — dupliquez-les pour les personnaliser."
+                    .to_string(),
+            );
+        }
         existing_prompt.name = name;
         existing_prompt.prompt = prompt;
         settings::write_settings(&app, settings);
@@ -1198,6 +1207,12 @@ pub fn delete_post_process_prompt(app: AppHandle, id: String) -> Result<(), Stri
     // Don't allow deleting the last prompt
     if settings.post_process_prompts.len() <= 1 {
         return Err("Cannot delete the last prompt".to_string());
+    }
+
+    // Les presets intégrés ne se suppriment pas (ils font partie de l'offre
+    // Free/Pro ; seuls les Styles personnels sont jetables).
+    if crate::licensing::is_builtin_style(&id) {
+        return Err("Les Styles intégrés ne peuvent pas être supprimés.".to_string());
     }
 
     // Find and remove the prompt

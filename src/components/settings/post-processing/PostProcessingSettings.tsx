@@ -4,6 +4,7 @@ import { RefreshCcw } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { commands } from "@/bindings";
 import { styleColor } from "../../../lib/styleColors";
+import { BUILTIN_STYLE_IDS } from "../../../lib/builtinStyles";
 
 import { Alert } from "../../ui/Alert";
 import {
@@ -184,9 +185,9 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
 
 const PostProcessingSettingsPromptsComponent: React.FC = () => {
   const { t } = useTranslation();
-  const { getSetting, updateSetting, isUpdating, refreshSettings } =
-    useSettings();
-  const [isCreating, setIsCreating] = useState(false);
+  const { getSetting, updateSetting, refreshSettings } = useSettings();
+  // null = pas d'édition ; "new" = création ; sinon id du Style en édition
+  const [editing, setEditing] = useState<string | null>(null);
   const [draftName, setDraftName] = useState("");
   const [draftText, setDraftText] = useState("");
   // Créer / modifier / supprimer des Styles est réservé à Nova Ultra.
@@ -200,99 +201,171 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
 
   const prompts = getSetting("post_process_prompts") || [];
   const selectedPromptId = getSetting("post_process_selected_prompt_id") || "";
-  const selectedPrompt =
-    prompts.find((prompt) => prompt.id === selectedPromptId) || null;
+  const isBuiltin = (id: string) => BUILTIN_STYLE_IDS.includes(id);
 
-  useEffect(() => {
-    if (isCreating) return;
-
-    if (selectedPrompt) {
-      setDraftName(selectedPrompt.name);
-      setDraftText(selectedPrompt.prompt);
-    } else {
-      setDraftName("");
-      setDraftText("");
-    }
-  }, [
-    isCreating,
-    selectedPromptId,
-    selectedPrompt?.name,
-    selectedPrompt?.prompt,
-  ]);
-
-  const handlePromptSelect = (promptId: string | null) => {
-    if (!promptId) return;
-    updateSetting("post_process_selected_prompt_id", promptId);
-    setIsCreating(false);
+  const startEdit = (id: string) => {
+    const p = prompts.find((prompt) => prompt.id === id);
+    if (!p) return;
+    setEditing(id);
+    setDraftName(p.name);
+    setDraftText(p.prompt);
   };
 
-  const handleCreatePrompt = async () => {
+  const startCreate = () => {
+    setEditing("new");
+    setDraftName("");
+    setDraftText("");
+  };
+
+  const startDuplicate = (id: string) => {
+    const p = prompts.find((prompt) => prompt.id === id);
+    if (!p) return;
+    setEditing("new");
+    setDraftName(
+      `${p.name} (${t("settings.postProcessing.prompts.copySuffix")})`,
+    );
+    setDraftText(p.prompt);
+  };
+
+  const cancelEdit = () => setEditing(null);
+
+  const handleSelect = (id: string) => {
+    updateSetting("post_process_selected_prompt_id", id);
+  };
+
+  const handleSave = async () => {
     if (!draftName.trim() || !draftText.trim()) return;
-
     try {
-      const result = await commands.addPostProcessPrompt(
-        draftName.trim(),
-        draftText.trim(),
-      );
-      if (result.status === "ok") {
+      if (editing === "new") {
+        const result = await commands.addPostProcessPrompt(
+          draftName.trim(),
+          draftText.trim(),
+        );
+        if (result.status === "ok") {
+          await refreshSettings();
+          updateSetting("post_process_selected_prompt_id", result.data.id);
+        }
+      } else if (editing) {
+        await commands.updatePostProcessPrompt(
+          editing,
+          draftName.trim(),
+          draftText.trim(),
+        );
         await refreshSettings();
-        updateSetting("post_process_selected_prompt_id", result.data.id);
-        setIsCreating(false);
       }
+      setEditing(null);
     } catch (error) {
-      console.error("Failed to create prompt:", error);
+      console.error("Failed to save prompt:", error);
     }
   };
 
-  const handleUpdatePrompt = async () => {
-    if (!selectedPromptId || !draftName.trim() || !draftText.trim()) return;
-
+  const handleDelete = async (id: string) => {
     try {
-      await commands.updatePostProcessPrompt(
-        selectedPromptId,
-        draftName.trim(),
-        draftText.trim(),
-      );
+      await commands.deletePostProcessPrompt(id);
       await refreshSettings();
-    } catch (error) {
-      console.error("Failed to update prompt:", error);
-    }
-  };
-
-  const handleDeletePrompt = async (promptId: string) => {
-    if (!promptId) return;
-
-    try {
-      await commands.deletePostProcessPrompt(promptId);
-      await refreshSettings();
-      setIsCreating(false);
+      if (editing === id) setEditing(null);
     } catch (error) {
       console.error("Failed to delete prompt:", error);
     }
   };
 
-  const handleCancelCreate = () => {
-    setIsCreating(false);
-    if (selectedPrompt) {
-      setDraftName(selectedPrompt.name);
-      setDraftText(selectedPrompt.prompt);
-    } else {
-      setDraftName("");
-      setDraftText("");
-    }
+  // Carte d'un Style : pastille couleur + nom + badge + coche sur l'actif.
+  const StyleCard: React.FC<{
+    id: string;
+    name: string;
+    kind: "auto" | "builtin" | "custom";
+  }> = ({ id, name, kind }) => {
+    const active = selectedPromptId === id;
+    const badge =
+      kind === "auto"
+        ? t("settings.postProcessing.prompts.badgeAuto")
+        : kind === "builtin"
+          ? t("settings.postProcessing.prompts.badgeBuiltin")
+          : t("settings.postProcessing.prompts.badgeCustom");
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        aria-pressed={active}
+        onClick={() => handleSelect(id)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") handleSelect(id);
+        }}
+        className={`flex items-center gap-3 rounded-[9px] border px-3 py-2.5 cursor-pointer transition-colors ${
+          active
+            ? "border-accent bg-accent/10"
+            : "border-mid-gray/20 hover:bg-mid-gray/10"
+        }`}
+      >
+        <span
+          className="w-3 h-3 rounded-full shrink-0"
+          style={{ background: styleColor(id) }}
+          aria-hidden="true"
+        />
+        <span className="flex-1 min-w-0 text-sm font-medium truncate">
+          {name}
+        </span>
+        <span className="text-[9px] font-bold tracking-wider uppercase rounded-full px-1.5 py-px border text-text-secondary border-mid-gray/40 whitespace-nowrap">
+          {badge}
+        </span>
+        {canEditStyles && kind !== "auto" && (
+          <span className="flex items-center gap-1">
+            {kind === "builtin" ? (
+              <button
+                type="button"
+                className="text-xs text-accent hover:underline px-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startDuplicate(id);
+                }}
+              >
+                {t("settings.postProcessing.prompts.duplicate")}
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="text-xs text-accent hover:underline px-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startEdit(id);
+                  }}
+                >
+                  {t("settings.postProcessing.prompts.edit")}
+                </button>
+                <button
+                  type="button"
+                  className="text-xs text-danger hover:underline px-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void handleDelete(id);
+                  }}
+                >
+                  {t("settings.postProcessing.prompts.deletePrompt")}
+                </button>
+              </>
+            )}
+          </span>
+        )}
+        {active && (
+          <svg
+            viewBox="0 0 24 24"
+            width="15"
+            height="15"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-accent shrink-0"
+            aria-hidden="true"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        )}
+      </div>
+    );
   };
-
-  const handleStartCreate = () => {
-    setIsCreating(true);
-    setDraftName("");
-    setDraftText("");
-  };
-
-  const hasPrompts = prompts.length > 0;
-  const isDirty =
-    !!selectedPrompt &&
-    (draftName.trim() !== selectedPrompt.name ||
-      draftText.trim() !== selectedPrompt.prompt.trim());
 
   return (
     <SettingContainer
@@ -309,135 +382,41 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
           <TierBadge feature="all_styles" />
           <TierBadge feature="custom_styles" />
         </div>
-        <div className="flex gap-2 min-w-0 items-center">
-          {selectedPromptId && (
-            <span
-              className="w-3 h-3 rounded-full shrink-0"
-              style={{ background: styleColor(selectedPromptId) }}
-              aria-hidden="true"
-            />
-          )}
-          <Dropdown
-            selectedValue={selectedPromptId || null}
-            options={[
-              {
-                value: "auto",
-                label: t("settings.postProcessing.autoStyle.option"),
-              },
-              ...prompts.map((p) => ({
-                value: p.id,
-                label: p.name,
-              })),
-            ]}
-            onSelect={(value) => handlePromptSelect(value)}
-            placeholder={
-              prompts.length === 0
-                ? t("settings.postProcessing.prompts.noPrompts")
-                : t("settings.postProcessing.prompts.selectPrompt")
-            }
-            disabled={
-              isUpdating("post_process_selected_prompt_id") || isCreating
-            }
-            className="flex-1 min-w-0"
+
+        <div className="flex flex-col gap-2">
+          <StyleCard
+            id="auto"
+            name={t("settings.postProcessing.autoStyle.option")}
+            kind="auto"
           />
-          {canEditStyles && (
-            <Button
-              onClick={handleStartCreate}
-              variant="primary"
-              size="md"
-              disabled={isCreating}
-              className="shrink-0"
-            >
-              {t("settings.postProcessing.prompts.createNew")}
-            </Button>
-          )}
+          {prompts.map((p) => (
+            <StyleCard
+              key={p.id}
+              id={p.id}
+              name={p.name}
+              kind={isBuiltin(p.id) ? "builtin" : "custom"}
+            />
+          ))}
         </div>
 
-        {!isCreating && hasPrompts && selectedPrompt && (
-          <div className="space-y-3">
+        {canEditStyles ? (
+          editing === null && (
+            <div>
+              <Button onClick={startCreate} variant="primary" size="md">
+                {t("settings.postProcessing.prompts.createNew")}
+              </Button>
+            </div>
+          )
+        ) : (
+          <p className="text-xs text-text-secondary pt-1">
+            {t("settings.postProcessing.prompts.ultraOnly")}
+          </p>
+        )}
+
+        {editing !== null && (
+          <div className="space-y-3 rounded-[9px] border border-mid-gray/20 p-3">
             <div className="space-y-2 flex flex-col">
               <label className="text-sm font-semibold">
-                {t("settings.postProcessing.prompts.promptLabel")}
-              </label>
-              <Input
-                type="text"
-                value={draftName}
-                onChange={(e) => setDraftName(e.target.value)}
-                placeholder={t(
-                  "settings.postProcessing.prompts.promptLabelPlaceholder",
-                )}
-                variant="compact"
-                disabled={!canEditStyles}
-              />
-            </div>
-
-            <div className="space-y-2 flex flex-col">
-              <label className="text-sm font-semibold">
-                {t("settings.postProcessing.prompts.promptInstructions")}
-              </label>
-              <Textarea
-                value={draftText}
-                onChange={(e) => setDraftText(e.target.value)}
-                placeholder={t(
-                  "settings.postProcessing.prompts.promptInstructionsPlaceholder",
-                )}
-                disabled={!canEditStyles}
-              />
-              <p className="text-xs text-mid-gray/70">
-                <Trans
-                  i18nKey="settings.postProcessing.prompts.promptTip"
-                  components={{ code: <code /> }}
-                />
-              </p>
-            </div>
-
-            {canEditStyles ? (
-              <div className="flex gap-2 pt-2">
-                <Button
-                  onClick={handleUpdatePrompt}
-                  variant="primary"
-                  size="md"
-                  disabled={!draftName.trim() || !draftText.trim() || !isDirty}
-                >
-                  {t("settings.postProcessing.prompts.updatePrompt")}
-                </Button>
-                <Button
-                  onClick={() => handleDeletePrompt(selectedPromptId)}
-                  variant="secondary"
-                  size="md"
-                  disabled={!selectedPromptId || prompts.length <= 1}
-                >
-                  {t("settings.postProcessing.prompts.deletePrompt")}
-                </Button>
-              </div>
-            ) : (
-              <p className="text-xs text-text-secondary pt-1">
-                {t("settings.postProcessing.prompts.ultraOnly")}
-              </p>
-            )}
-          </div>
-        )}
-
-        {!isCreating && selectedPromptId === "auto" && (
-          <AutoStyleSettings
-            prompts={prompts.map((p) => ({ id: p.id, name: p.name }))}
-          />
-        )}
-
-        {!isCreating && !selectedPrompt && selectedPromptId !== "auto" && (
-          <div className="p-3 bg-mid-gray/5 rounded-md border border-mid-gray/20">
-            <p className="text-sm text-mid-gray">
-              {hasPrompts
-                ? t("settings.postProcessing.prompts.selectToEdit")
-                : t("settings.postProcessing.prompts.createFirst")}
-            </p>
-          </div>
-        )}
-
-        {isCreating && (
-          <div className="space-y-3">
-            <div className="space-y-2 block flex flex-col">
-              <label className="text-sm font-semibold text-text">
                 {t("settings.postProcessing.prompts.promptLabel")}
               </label>
               <Input
@@ -472,22 +451,26 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
 
             <div className="flex gap-2 pt-2">
               <Button
-                onClick={handleCreatePrompt}
+                onClick={handleSave}
                 variant="primary"
                 size="md"
                 disabled={!draftName.trim() || !draftText.trim()}
               >
-                {t("settings.postProcessing.prompts.createPrompt")}
+                {editing === "new"
+                  ? t("settings.postProcessing.prompts.createPrompt")
+                  : t("settings.postProcessing.prompts.updatePrompt")}
               </Button>
-              <Button
-                onClick={handleCancelCreate}
-                variant="secondary"
-                size="md"
-              >
+              <Button onClick={cancelEdit} variant="secondary" size="md">
                 {t("settings.postProcessing.prompts.cancel")}
               </Button>
             </div>
           </div>
+        )}
+
+        {selectedPromptId === "auto" && editing === null && (
+          <AutoStyleSettings
+            prompts={prompts.map((p) => ({ id: p.id, name: p.name }))}
+          />
         )}
       </div>
     </SettingContainer>

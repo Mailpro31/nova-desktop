@@ -495,7 +495,13 @@
         "cancel": "Отказ",
         "selectToEdit": "Изберете подкана по-горе, за да видите и редактирате подробностите ѝ.",
         "createFirst": "Натиснете „Нова подкана“ по-горе, за да създадете първата си подкана за постобработка.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Автоматичен",
+        "badgeBuiltin": "Вграден",
+        "badgeCustom": "Собствен",
+        "duplicate": "Дублирай",
+        "edit": "Редактирай",
+        "copySuffix": "копие"
       },
       "autoStyle": {
         "addRule": "Add rule",

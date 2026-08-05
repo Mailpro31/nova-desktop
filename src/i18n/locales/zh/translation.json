@@ -495,7 +495,13 @@
         "cancel": "取消",
         "selectToEdit": "选择上方的提示词以查看和编辑其详细信息。",
         "createFirst": "点击上方的「创建新提示词」来创建您的第一个后处理提示词。",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "自动",
+        "badgeBuiltin": "内置",
+        "badgeCustom": "自定义",
+        "duplicate": "复制",
+        "edit": "编辑",
+        "copySuffix": "副本"
       },
       "autoStyle": {
         "addRule": "Add rule",

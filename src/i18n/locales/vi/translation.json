@@ -495,7 +495,13 @@
         "cancel": "Hủy",
         "selectToEdit": "Chọn một prompt ở trên để xem và chỉnh sửa chi tiết.",
         "createFirst": "Nhấn 'Tạo Prompt mới' ở trên để tạo prompt xử lý sau đầu tiên của bạn.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Tự động",
+        "badgeBuiltin": "Tích hợp",
+        "badgeCustom": "Tùy chỉnh",
+        "duplicate": "Nhân bản",
+        "edit": "Sửa",
+        "copySuffix": "bản sao"
       },
       "autoStyle": {
         "addRule": "Add rule",

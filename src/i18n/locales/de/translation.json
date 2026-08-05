@@ -495,7 +495,13 @@
         "cancel": "Abbrechen",
         "selectToEdit": "Wähle oben einen Prompt aus, um dessen Details anzuzeigen und zu bearbeiten.",
         "createFirst": "Klicke oben auf 'Neuen Prompt erstellen', um deinen ersten Nachbearbeitungs-Prompt zu erstellen.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "Automatisch",
+        "badgeBuiltin": "Integriert",
+        "badgeCustom": "Eigen",
+        "duplicate": "Duplizieren",
+        "edit": "Bearbeiten",
+        "copySuffix": "Kopie"
       },
       "autoStyle": {
         "addRule": "Add rule",

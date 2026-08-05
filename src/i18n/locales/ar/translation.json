@@ -474,7 +474,13 @@
         "cancel": "إلغاء",
         "selectToEdit": ".اختر مطالبة أعلاه لعرض وتعديل تفاصيلها",
         "createFirst": ".انقر على 'إنشاء مطالبة جديدة' أعلاه لإنشاء أول مطالبة معالجة لاحقة لك",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra."
+        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "badgeAuto": "تلقائي",
+        "badgeBuiltin": "مدمج",
+        "badgeCustom": "مخصص",
+        "duplicate": "تكرار",
+        "edit": "تعديل",
+        "copySuffix": "نسخة"
       },
       "autoStyle": {
         "addRule": "Add rule",
