@@ -234,8 +234,8 @@
             "description": ".اختصار لوحة المفاتيح لإلغاء التسجيل الحالي"
           },
           "transcribe_with_post_process": {
-            "name": "مفتاح المعالجة اللاحقة",
-            "description": "اختياري: مفتاح اختصار مخصص يطبق دائماً المعالجة اللاحقة بالذكاء الاصطناعي على التفريغ الصوتي."
+            "name": "إملاء بنمط",
+            "description": "يسجل ويطبق النمط المختار حتى لو كانت إعادة الصياغة معطلة."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "نموذج غير معروف",
     "pasteFailedTitle": "فشل لصق النص",
     "pasteFailed": "تعذر لصق النص في التطبيق النشط.",
-    "transcriptionFailedTitle": "فشل التفريغ النصي"
+    "transcriptionFailedTitle": "فشل التفريغ النصي",
+    "postProcessTimeoutTitle": "استغرقت إعادة الصياغة وقتاً طويلاً",
+    "postProcessTimeout": "استغرق الذكاء الاصطناعي وقتاً طويلاً — تم لصق النص الخام بدلاً منه.",
+    "microphoneNotFoundTitle": "الميكروفون غير موجود",
+    "microphoneNotFound": "«{name}» غير متاح — يُستخدم الميكروفون الافتراضي بدلاً منه."
   },
   "appLanguage": {
     "title": "لغة التطبيق",
@@ -784,6 +788,8 @@
     "manageSubscription": "إدارة اشتراكي",
     "comingSoon": "قريبًا",
     "featureColumn": "الميزة",
-    "yourPlan": "خطتك"
+    "yourPlan": "خطتك",
+    "onlineEngineLockedTitle": "Turbo مخصص لـ Nova Ultra",
+    "onlineEngineLocked": "المحرك عبر الإنترنت مخصص لـ Nova Ultra — تم لصق النص دون إعادة صياغة."
   }
 }

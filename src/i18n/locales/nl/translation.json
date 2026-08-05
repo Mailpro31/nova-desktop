@@ -237,8 +237,8 @@
             "description": "De sneltoets om de huidige opname te annuleren."
           },
           "transcribe_with_post_process": {
-            "name": "Sneltoets voor naverwerking",
-            "description": "Optioneel: Een specifieke sneltoets die altijd AI-naverwerking toepast op je transcriptie."
+            "name": "Dicteren met Stijl",
+            "description": "Neemt op en past de gekozen Stijl toe, ook als herformulering uitstaat."
           }
         },
         "errors": {
@@ -727,7 +727,11 @@
     "modelLoadFailedUnknown": "onbekend model",
     "pasteFailedTitle": "Tekst plakken mislukt",
     "pasteFailed": "Tekst kon niet worden geplakt in de actieve applicatie.",
-    "transcriptionFailedTitle": "Transcriptie mislukt"
+    "transcriptionFailedTitle": "Transcriptie mislukt",
+    "postProcessTimeoutTitle": "Herformulering te traag",
+    "postProcessTimeout": "De AI deed er te lang over — de ruwe tekst is geplakt.",
+    "microphoneNotFoundTitle": "Microfoon niet gevonden",
+    "microphoneNotFound": "\"{name}\" is niet beschikbaar — de standaardmicrofoon wordt gebruikt."
   },
   "appLanguage": {
     "title": "Interfacetaal",
@@ -784,6 +788,8 @@
     "manageSubscription": "Mijn abonnement beheren",
     "comingSoon": "Binnenkort beschikbaar",
     "featureColumn": "Functie",
-    "yourPlan": "Je abonnement"
+    "yourPlan": "Je abonnement",
+    "onlineEngineLockedTitle": "Turbo is voorbehouden aan Nova Ultra",
+    "onlineEngineLocked": "De online engine is voorbehouden aan Nova Ultra — je tekst is zonder herformulering geplakt."
   }
 }

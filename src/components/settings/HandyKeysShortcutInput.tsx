@@ -64,6 +64,10 @@ export const HandyKeysShortcutInput: React.FC<HandyKeysShortcutInputProps> = ({
         console.error("Failed to restore original binding:", error);
         toast.error(t("settings.general.shortcut.errors.restore"));
       }
+    } else {
+      // Pas de raccourci d'origine à restaurer : le binding est resté suspendu
+      // depuis startRecording, on le réenregistre tel quel.
+      await commands.resumeBinding(shortcutId).catch(console.error);
     }
 
     setIsRecording(false);
@@ -176,6 +180,11 @@ export const HandyKeysShortcutInput: React.FC<HandyKeysShortcutInputProps> = ({
     // Store the original binding to restore if canceled
     setOriginalBinding(bindings[shortcutId]?.current_binding || "");
 
+    // Suspend le raccourci actif pendant la capture : sinon appuyer sur
+    // l'ancien raccourci déclenchait la dictée en plein enregistrement.
+    // (Le commit via updateBinding réenregistre le nouveau raccourci.)
+    await commands.suspendBinding(shortcutId).catch(console.error);
+
     // Start backend recording
     try {
       await commands.startHandyKeysRecording(shortcutId);
@@ -184,6 +193,7 @@ export const HandyKeysShortcutInput: React.FC<HandyKeysShortcutInputProps> = ({
       currentKeysRef.current = "";
     } catch (error) {
       console.error("Failed to start recording:", error);
+      await commands.resumeBinding(shortcutId).catch(console.error);
       toast.error(
         t("settings.general.shortcut.errors.set", { error: String(error) }),
       );

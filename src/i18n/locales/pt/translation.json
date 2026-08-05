@@ -237,8 +237,8 @@
             "description": "O atalho de teclado para cancelar a gravação atual."
           },
           "transcribe_with_post_process": {
-            "name": "Tecla de Pós-Processamento",
-            "description": "Opcional: Uma tecla de atalho dedicada que sempre aplica pós-processamento com IA à sua transcrição."
+            "name": "Ditado com Estilo",
+            "description": "Grava e aplica o Estilo escolhido, mesmo com a reformulação desativada."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "modelo desconhecido",
     "pasteFailedTitle": "Falha ao colar o texto",
     "pasteFailed": "Não foi possível colar o texto no aplicativo ativo.",
-    "transcriptionFailedTitle": "Falha na transcrição"
+    "transcriptionFailedTitle": "Falha na transcrição",
+    "postProcessTimeoutTitle": "Reformulação demorada",
+    "postProcessTimeout": "A IA demorou demais — o texto bruto foi colado.",
+    "microphoneNotFoundTitle": "Microfone não encontrado",
+    "microphoneNotFound": "\"{name}\" não está disponível — o microfone padrão é usado."
   },
   "appLanguage": {
     "title": "Idioma da Aplicação",
@@ -784,6 +788,8 @@
     "manageSubscription": "Gerir a minha subscrição",
     "comingSoon": "Brevemente",
     "featureColumn": "Funcionalidade",
-    "yourPlan": "O seu plano"
+    "yourPlan": "O seu plano",
+    "onlineEngineLockedTitle": "Turbo é exclusivo do Nova Ultra",
+    "onlineEngineLocked": "O motor online é reservado ao Nova Ultra — o texto foi colado sem reformulação."
   }
 }

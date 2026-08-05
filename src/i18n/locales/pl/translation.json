@@ -255,8 +255,8 @@
             "description": "Skrót klawiaturowy do anulowania bieżącego nagrywania."
           },
           "transcribe_with_post_process": {
-            "name": "Skrót postprocessingu",
-            "description": "Opcjonalnie: Dedykowany skrót klawiszowy, który zawsze stosuje postprocessing AI do transkrypcji."
+            "name": "Dyktowanie ze stylem",
+            "description": "Nagrywa i stosuje wybrany styl, nawet gdy reformulacja jest wyłączona."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "nieznany model",
     "pasteFailedTitle": "Nie udało się wkleić tekstu",
     "pasteFailed": "Nie można było wkleić tekstu do aktywnej aplikacji.",
-    "transcriptionFailedTitle": "Transkrypcja nie powiodła się"
+    "transcriptionFailedTitle": "Transkrypcja nie powiodła się",
+    "postProcessTimeoutTitle": "Reformulacja trwała zbyt długo",
+    "postProcessTimeout": "AI odpowiadała zbyt długo — wklejono surowy tekst.",
+    "microphoneNotFoundTitle": "Nie znaleziono mikrofonu",
+    "microphoneNotFound": "„{name}” jest niedostępny — używany jest domyślny mikrofon."
   },
   "appLanguage": {
     "title": "Język aplikacji",
@@ -784,6 +788,8 @@
     "manageSubscription": "Zarządzaj subskrypcją",
     "comingSoon": "Wkrótce",
     "featureColumn": "Funkcja",
-    "yourPlan": "Twój plan"
+    "yourPlan": "Twój plan",
+    "onlineEngineLockedTitle": "Turbo jest zarezerwowane dla Nova Ultra",
+    "onlineEngineLocked": "Silnik online jest zarezerwowany dla Nova Ultra — tekst wklejono bez reformulacji."
   }
 }

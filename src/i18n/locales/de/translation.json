@@ -255,8 +255,8 @@
             "description": "Das Tastenkürzel zum Abbrechen der aktuellen Aufnahme."
           },
           "transcribe_with_post_process": {
-            "name": "Nachbearbeitungs-Tastenkürzel",
-            "description": "Optional: Ein dediziertes Tastenkürzel, das immer die KI-Nachbearbeitung auf deine Transkription anwendet."
+            "name": "Diktat mit Stil",
+            "description": "Nimmt auf und wendet den gewählten Stil an, auch wenn die Umformulierung deaktiviert ist."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "unbekanntes Modell",
     "pasteFailedTitle": "Text konnte nicht eingefügt werden",
     "pasteFailed": "Der Text konnte nicht in die aktive Anwendung eingefügt werden.",
-    "transcriptionFailedTitle": "Transkription fehlgeschlagen"
+    "transcriptionFailedTitle": "Transkription fehlgeschlagen",
+    "postProcessTimeoutTitle": "Umformulierung zu langsam",
+    "postProcessTimeout": "Die KI hat zu lange gebraucht — stattdessen wurde Ihr Rohtext eingefügt.",
+    "microphoneNotFoundTitle": "Mikrofon nicht gefunden",
+    "microphoneNotFound": "„{name}“ ist nicht verfügbar — stattdessen wird das Standardmikrofon verwendet."
   },
   "appLanguage": {
     "title": "Anwendungssprache",
@@ -784,6 +788,8 @@
     "manageSubscription": "Mein Abonnement verwalten",
     "comingSoon": "Demnächst",
     "featureColumn": "Funktion",
-    "yourPlan": "Ihr Plan"
+    "yourPlan": "Ihr Plan",
+    "onlineEngineLockedTitle": "Turbo ist Nova Ultra vorbehalten",
+    "onlineEngineLocked": "Die Online-Engine ist Nova Ultra vorbehalten — Ihr Text wurde ohne Umformulierung eingefügt."
   }
 }

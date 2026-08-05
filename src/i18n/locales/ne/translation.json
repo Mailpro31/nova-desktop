@@ -237,8 +237,8 @@
             "description": "हालको रेकर्डिङ रद्द गर्ने किबोर्ड सर्टकट।"
           },
           "transcribe_with_post_process": {
-            "name": "पोस्ट-प्रोसेसिङ हटकी",
-            "description": "वैकल्पिक: तपाईंको ट्रान्सक्रिप्सनमा सधैँ AI पोस्ट-प्रोसेसिङ लागू गर्ने छुट्टै हटकी।"
+            "name": "शैलीसहित श्रुतलेख",
+            "description": "पुनःप्रणयन बन्द भए पनि छानिएको शैली लागू गरेर रेकर्ड गर्छ।"
           }
         },
         "errors": {
@@ -727,7 +727,11 @@
     "modelLoadFailedUnknown": "अज्ञात मोडेल",
     "pasteFailedTitle": "टेक्स्ट पेस्ट गर्न सकिएन",
     "pasteFailed": "सक्रिय एपमा टेक्स्ट पेस्ट गर्न सकिएन।",
-    "transcriptionFailedTitle": "ट्रान्सक्रिप्सन गर्न सकिएन"
+    "transcriptionFailedTitle": "ट्रान्सक्रिप्सन गर्न सकिएन",
+    "postProcessTimeoutTitle": "पुनःप्रणयन धेरै लामो भयो",
+    "postProcessTimeout": "AI ले धेरै समय लियो — कच्चा पाठ नै टाँसियो।",
+    "microphoneNotFoundTitle": "माइक्रोफोन फेला परेन",
+    "microphoneNotFound": "\"{name}\" उपलब्ध छैन — पूर्वनिर्धारित माइक्रोफोन प्रयोग हुन्छ।"
   },
   "appLanguage": {
     "title": "एपको भाषा",
@@ -784,6 +788,8 @@
     "manageSubscription": "मेरो सदस्यता व्यवस्थापन गर्नुहोस्",
     "comingSoon": "चाँडै आउँदैछ",
     "featureColumn": "सुविधा",
-    "yourPlan": "तपाईंको योजना"
+    "yourPlan": "तपाईंको योजना",
+    "onlineEngineLockedTitle": "Turbo Nova Ultra को लागि मात्र",
+    "onlineEngineLocked": "अनलाइन इन्जिन Nova Ultra मा सीमित छ — तपाईंको पाठ पुनःप्रणयन बिना टाँसियो।"
   }
 }

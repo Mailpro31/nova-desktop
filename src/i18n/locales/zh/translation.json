@@ -255,8 +255,8 @@
             "description": "用于取消当前录制的键盘快捷键。"
           },
           "transcribe_with_post_process": {
-            "name": "后处理快捷键",
-            "description": "可选：一个专用快捷键，始终对您的转录应用 AI 后处理。"
+            "name": "带样式的听写",
+            "description": "即使改写已关闭，也会录音并应用所选样式。"
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "未知模型",
     "pasteFailedTitle": "粘贴文本失败",
     "pasteFailed": "无法将文本粘贴到当前活动的应用程序中。",
-    "transcriptionFailedTitle": "转录失败"
+    "transcriptionFailedTitle": "转录失败",
+    "postProcessTimeoutTitle": "改写超时",
+    "postProcessTimeout": "AI 响应时间过长——已改为粘贴原始文本。",
+    "microphoneNotFoundTitle": "找不到麦克风",
+    "microphoneNotFound": "“{name}”不可用——已改用默认麦克风。"
   },
   "appLanguage": {
     "title": "应用语言",
@@ -784,6 +788,8 @@
     "manageSubscription": "管理我的订阅",
     "comingSoon": "即将推出",
     "featureColumn": "功能",
-    "yourPlan": "您的方案"
+    "yourPlan": "您的方案",
+    "onlineEngineLockedTitle": "Turbo 为 Nova Ultra 专享",
+    "onlineEngineLocked": "在线引擎仅限 Nova Ultra——文本未经过改写即被粘贴。"
   }
 }

@@ -237,8 +237,8 @@
             "description": "קיצור המקלדת לביטול ההקלטה הנוכחית."
           },
           "transcribe_with_post_process": {
-            "name": "קיצור לעיבוד משלים",
-            "description": "אופציונלי: קיצור מקשים ייעודי שתמיד מפעיל עיבוד AI על התמלול."
+            "name": "הכתבה עם סגנון",
+            "description": "מקליט ומחיל את הסגנון הנבחר גם כשהניסוח מחדש כבוי."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "מודל לא ידוע",
     "pasteFailedTitle": "ההדבקה נכשלה",
     "pasteFailed": "לא ניתן היה להדביק את הטקסט ביישום הפעיל.",
-    "transcriptionFailedTitle": "התמלול נכשל"
+    "transcriptionFailedTitle": "התמלול נכשל",
+    "postProcessTimeoutTitle": "הניסוח מחדש ארך זמן רב מדי",
+    "postProcessTimeout": "ה-AI איחר — הודבק הטקסט הגולמי במקום.",
+    "microphoneNotFoundTitle": "המיקרופון לא נמצא",
+    "microphoneNotFound": "\"{name}\" אינו זמין — נעשה שימוש במיקרופון ברירת המחדל."
   },
   "appLanguage": {
     "title": "שפת האפליקציה",
@@ -784,6 +788,8 @@
     "manageSubscription": "ניהול המנוי שלי",
     "comingSoon": "בקרוב",
     "featureColumn": "תכונה",
-    "yourPlan": "המנוי שלך"
+    "yourPlan": "המנוי שלך",
+    "onlineEngineLockedTitle": "Turbo שמור ל-Nova Ultra",
+    "onlineEngineLocked": "המנוע המקוון שמור ל-Nova Ultra — הטקסט הודבק ללא ניסוח מחדש."
   }
 }

@@ -237,8 +237,8 @@
             "description": "Kortkommandot för att avbryta den aktuella inspelningen."
           },
           "transcribe_with_post_process": {
-            "name": "Snabbkommando för efterbearbetning",
-            "description": "Valfritt: En dedikerad snabbknapp som alltid tillämpar AI-efterbearbetning på din transkription."
+            "name": "Diktering med stil",
+            "description": "Spelar in och tillämpar vald stil även när omformulering är avstängd."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "noInputDevice": "Ingen ljudenhet hittades. Anslut en mikrofon eller ett headset och försök igen.",
     "pasteFailedTitle": "Det gick inte att klistra in texten",
     "pasteFailed": "Texten kunde inte klistras in i det aktiva programmet.",
-    "transcriptionFailedTitle": "Transkriptionen misslyckades"
+    "transcriptionFailedTitle": "Transkriptionen misslyckades",
+    "postProcessTimeoutTitle": "Omformuleringen tog för lång tid",
+    "postProcessTimeout": "AI:n svarade för långsamt — den råa texten klistrades in.",
+    "microphoneNotFoundTitle": "Mikrofonen hittades inte",
+    "microphoneNotFound": "\"{name}\" är inte tillgänglig — standardmikrofonen används istället."
   },
   "appLanguage": {
     "title": "Applikationsspråk",
@@ -784,6 +788,8 @@
     "manageSubscription": "Hantera min prenumeration",
     "comingSoon": "Kommer snart",
     "featureColumn": "Funktion",
-    "yourPlan": "Din plan"
+    "yourPlan": "Din plan",
+    "onlineEngineLockedTitle": "Turbo är reserverat för Nova Ultra",
+    "onlineEngineLocked": "Onlinemotorn är reserverad för Nova Ultra — texten klistrades in utan omformulering."
   }
 }

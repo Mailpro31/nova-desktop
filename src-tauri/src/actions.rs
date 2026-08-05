@@ -26,6 +26,10 @@ use tauri::{AppHandle, Emitter};
 
 const CANCELLATION_POLL_INTERVAL: Duration = Duration::from_millis(25);
 
+/// Borne dure de toute la reformulation (démarrage du moteur + appel LLM).
+/// Au-delà, on colle le texte brut : l'utilisateur ne reste jamais bloqué.
+const POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(60);
+
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
     error_type: String,
@@ -437,6 +441,10 @@ async fn post_process_transcription(
         )
     {
         debug!("Turbo (moteur en ligne) réservé à Nova Ultra — reformulation ignorée");
+        // Le repli sur le texte brut doit être VISIBLE : sans ce signal,
+        // l'utilisateur croyait la reformulation « cassée » alors qu'elle est
+        // simplement réservée à Nova Ultra.
+        let _ = app.emit("online-engine-locked", ());
         return None;
     }
 
@@ -869,27 +877,50 @@ pub(crate) async fn process_transcription_output(
         if crate::quota::is_rewrite_blocked(app) {
             debug!("Reformulation ignorée : quota gratuit quotidien atteint");
             let _ = app.emit("quota-blocked", ());
-        } else if let Some(processed_text) =
-            post_process_transcription(app, &settings, &final_text, auto_style_override.as_deref())
-                .await
-        {
-            reformulation_applied = true;
-            post_processed_text = Some(processed_text.clone());
-            final_text = processed_text;
-            // Une reformulation a réellement été appliquée : on la décompte.
-            crate::quota::record_rewrite(app);
+        } else {
+            // Filet de sécurité global : quoi qu'il arrive côté moteur (serveur
+            // local qui pend, réseau mort, modèle en chargement), la
+            // reformulation ne peut pas dépasser POST_PROCESS_TIMEOUT. Au-delà,
+            // on colle le texte brut et on informe — jamais de spinner infini.
+            match tokio::time::timeout(
+                POST_PROCESS_TIMEOUT,
+                post_process_transcription(
+                    app,
+                    &settings,
+                    &final_text,
+                    auto_style_override.as_deref(),
+                ),
+            )
+            .await
+            {
+                Ok(Some(processed_text)) => {
+                    reformulation_applied = true;
+                    post_processed_text = Some(processed_text.clone());
+                    final_text = processed_text;
+                    // Une reformulation a réellement été appliquée : on la décompte.
+                    crate::quota::record_rewrite(app);
 
-            // Style effectif (le Style auto résolu prime, pour l'historique).
-            let effective_id = auto_style_override
-                .as_deref()
-                .or(settings.post_process_selected_prompt_id.as_deref());
-            if let Some(prompt_id) = effective_id {
-                if let Some(prompt) = settings
-                    .post_process_prompts
-                    .iter()
-                    .find(|prompt| prompt.id == prompt_id)
-                {
-                    post_process_prompt = Some(prompt.prompt.clone());
+                    // Style effectif (le Style auto résolu prime, pour l'historique).
+                    let effective_id = auto_style_override
+                        .as_deref()
+                        .or(settings.post_process_selected_prompt_id.as_deref());
+                    if let Some(prompt_id) = effective_id {
+                        if let Some(prompt) = settings
+                            .post_process_prompts
+                            .iter()
+                            .find(|prompt| prompt.id == prompt_id)
+                        {
+                            post_process_prompt = Some(prompt.prompt.clone());
+                        }
+                    }
+                }
+                Ok(None) => {}
+                Err(_) => {
+                    log::warn!(
+                        "Reformulation abandonnée après {:?} — texte brut collé",
+                        POST_PROCESS_TIMEOUT
+                    );
+                    let _ = app.emit("post-process-timeout", ());
                 }
             }
         }
