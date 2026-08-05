@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "텍스트로 변환 중...",
     "processing": "처리 중...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "설정 열기"
   },
   "whatsNew": {
     "title": "Nova v{{version}}의 새 소식"

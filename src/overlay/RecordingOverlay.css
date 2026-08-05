@@ -410,40 +410,38 @@
   width: auto;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
-  padding: 0 6px 0 11px;
+  gap: 2px;
+  padding: 0 8px;
   height: var(--ov-base-h);
   border-radius: 999px;
 }
+/* Orbe centrale de la bulle : plus grande que dans la pilule d'écoute, c'est
+   l'identité Nova au repos (bille de verre qui respire, cf. @keyframes sorb-breath). */
 .scard.sidle .sdot {
-  width: 14px;
-  height: 14px;
+  width: 17px;
+  height: 17px;
   border-radius: 999px;
   flex: none;
+  margin: 0 3px;
 }
-/* Nom du Style actif dans la bulle de repos : l'utilisateur voit d'un coup
-   d'œil le mode courant (ex. « Automatique »), sans ouvrir le menu. Typographie
-   Nova (13 px, letter-spacing serré), tronqué proprement si trop long. */
-.scard.sidle .sidle-name {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--color-text, #f2f2f4);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 132px;
-  padding-right: 4px;
-}
-/* Fin filet vertical entre l'orbe et l'engrenage, pour bien lire deux zones. */
-.scard.sidle .sgear::before {
+/* Fins filets verticaux séparant les trois zones (engrenage | orbe | étoile). */
+.scard.sidle .sdot::before,
+.scard.sidle .sdot::after {
   content: "";
   position: absolute;
-  left: -4px;
-  top: 9px;
-  bottom: 9px;
+  top: 10px;
+  bottom: 10px;
   width: 1px;
   background: var(--s-border);
+}
+.scard.sidle .sdot {
+  position: relative;
+}
+.scard.sidle .sdot::before {
+  left: -5px;
+}
+.scard.sidle .sdot::after {
+  right: -5px;
 }
 .sgear {
   position: relative;
@@ -471,10 +469,16 @@
   color: var(--color-accent, #0a84ff);
 }
 .sgear svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
 }
-/* En thème clair, l'engrenage doit rester sombre pour être lisible. */
+/* Étoile (menu des Styles) : même gabarit que l'engrenage, trait plein au
+   survol pour marquer l'action. */
+.sstar:hover svg path {
+  fill: currentColor;
+  fill-opacity: 0.18;
+}
+/* En thème clair, les icônes doivent rester sombres pour être lisibles. */
 @media (prefers-color-scheme: light) {
   .sgear {
     color: rgba(0, 0, 0, 0.55);

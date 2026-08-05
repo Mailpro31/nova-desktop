@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "Transkribe ediliyor...",
     "processing": "İşleniyor...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Ayarları aç"
   },
   "whatsNew": {
     "title": "Nova v{{version}} yenilikleri"

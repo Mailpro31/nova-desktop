@@ -764,7 +764,8 @@
   "overlay": {
     "transcribing": "Transcribing...",
     "processing": "Processing...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Open settings"
   },
   "license": {
     "remove": "Remove",

@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "מתמלל...",
     "processing": "מעבד...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "פתח הגדרות"
   },
   "whatsNew": {
     "title": "חדש ב-Nova v{{version}}"

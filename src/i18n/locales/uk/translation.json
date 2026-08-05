@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "Обробка...",
     "processing": "Постобробка...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Відкрити налаштування"
   },
   "whatsNew": {
     "title": "Нове в Nova v{{version}}"

@@ -746,7 +746,8 @@
   "overlay": {
     "transcribing": "Transkribiere...",
     "processing": "Verarbeite...",
-    "chooseStyle": "Choose a Style"
+    "chooseStyle": "Choose a Style",
+    "openSettings": "Einstellungen öffnen"
   },
   "whatsNew": {
     "title": "Neu in Nova v{{version}}"
