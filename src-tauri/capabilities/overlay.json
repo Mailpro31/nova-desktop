@@ -2,10 +2,6 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "overlay",
   "description": "Capabilities de la fenêtre overlay d'enregistrement : le strict minimum (événements, fenêtre). Aucune permission updater/process/fs/opener — une compromission de cette webview ne doit rien pouvoir faire.",
-  "windows": [
-    "recording_overlay"
-  ],
-  "permissions": [
-    "core:default"
-  ]
+  "windows": ["recording_overlay"],
+  "permissions": ["core:default"]
 }
