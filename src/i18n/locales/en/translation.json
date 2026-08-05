@@ -789,7 +789,7 @@
     "comingSoon": "Coming soon",
     "featureColumn": "Feature",
     "yourPlan": "Your plan",
-    "onlineEngineLockedTitle": "Turbo is a Nova Ultra feature",
-    "onlineEngineLocked": "The online engine is reserved for Nova Ultra — your text was pasted without reformulation."
+    "onlineEngineLockedTitle": "Turbo requires a Nova subscription",
+    "onlineEngineLocked": "The online engine is reserved for Nova Pro and Ultra — your text was pasted without reformulation."
   }
 }

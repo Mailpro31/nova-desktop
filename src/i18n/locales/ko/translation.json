@@ -789,7 +789,7 @@
     "comingSoon": "출시 예정",
     "featureColumn": "기능",
     "yourPlan": "내 요금제",
-    "onlineEngineLockedTitle": "Turbo는 Nova Ultra 전용입니다",
-    "onlineEngineLocked": "온라인 엔진은 Nova Ultra 전용이라 리포뮬레이션 없이 붙여넣어졌습니다."
+    "onlineEngineLockedTitle": "Turbo는 Nova 구독이 필요합니다",
+    "onlineEngineLocked": "온라인 엔진은 Nova Pro와 Ultra 전용이라 리포뮬레이션 없이 붙여넣어졌습니다."
   }
 }

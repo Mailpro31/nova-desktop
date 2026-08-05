@@ -34,6 +34,7 @@ export function invalidateLicense() {
 // réutilisée par le tableau comparatif des paliers (Compte).
 export const TIER_FOR_FEATURE: Record<string, string> = {
   online_engine: "NOVA ULTRA",
+  cloud_styles: "NOVA PRO",
   all_styles: "NOVA PRO",
   power_profiles: "NOVA PRO",
   custom_variables: "NOVA PRO",

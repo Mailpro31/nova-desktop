@@ -789,7 +789,7 @@
     "comingSoon": "即将推出",
     "featureColumn": "功能",
     "yourPlan": "您的方案",
-    "onlineEngineLockedTitle": "Turbo 为 Nova Ultra 专享",
-    "onlineEngineLocked": "在线引擎仅限 Nova Ultra——文本未经过改写即被粘贴。"
+    "onlineEngineLockedTitle": "Turbo 需要 Nova 订阅",
+    "onlineEngineLocked": "在线引擎仅限 Nova Pro 和 Ultra——文本未经过改写即被粘贴。"
   }
 }

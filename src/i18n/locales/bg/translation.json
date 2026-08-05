@@ -789,7 +789,7 @@
     "comingSoon": "Очаквайте скоро",
     "featureColumn": "Функция",
     "yourPlan": "Вашият план",
-    "onlineEngineLockedTitle": "Turbo е запазено за Nova Ultra",
-    "onlineEngineLocked": "Онлайн двигателят е запазен за Nova Ultra — текстът е поставен без преформулиране."
+    "onlineEngineLockedTitle": "Turbo изисква абонамент за Nova",
+    "onlineEngineLocked": "Онлайн двигателят е запазен за Nova Pro и Ultra — текстът е поставен без преформулиране."
   }
 }
