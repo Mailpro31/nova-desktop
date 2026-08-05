@@ -173,6 +173,24 @@ export const LicenseSettings: React.FC = () => {
   const trialDaysRemaining = status?.trial_days_remaining ?? 0;
   const onTrial = trialDaysRemaining > 0;
 
+  // Liens de paiement Stripe — MENSUELS (l'utilisateur choisit l'annuel sur le
+  // site s'il préfère ; les mêmes liens que la landing novaspeak.app).
+  const PRO_MONTHLY_URL = "https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09";
+  const ULTRA_MONTHLY_URL = "https://buy.stripe.com/4gM28qfN8aL0cgL4pgefC0b";
+
+  const [portalBusy, setPortalBusy] = useState(false);
+  const openPortal = async () => {
+    setPortalBusy(true);
+    setError(null);
+    try {
+      await invoke("open_billing_portal");
+    } catch (e) {
+      setError(typeof e === "string" ? e : "Portail indisponible.");
+    } finally {
+      setPortalBusy(false);
+    }
+  };
+
   return (
     <SettingsGroup title="Abonnement">
       {/* 1. Le plan ACTUEL d'abord — toujours au-dessus de toute promo. */}
@@ -258,50 +276,54 @@ export const LicenseSettings: React.FC = () => {
           <Button
             variant="primary"
             size="md"
-            onClick={() => openUrl("https://novaspeak.app")}
+            onClick={() => openUrl(PRO_MONTHLY_URL)}
           >
             {t("license.trial.subscribe")}
           </Button>
         </SettingContainer>
       )}
 
-      {/* 5. Montée de palier. */}
+      {/* 5. Montée de palier — checkout Stripe MENSUEL direct. */}
       {!isUltra && (
         <SettingContainer
           title="Passer à un palier supérieur"
-          description="Débloquez Turbo, les 7 Styles et la personnalisation."
+          description={
+            tier === "pro"
+              ? "Débloquez la lecture de contexte, les Styles sur mesure et la personnalisation complète."
+              : "Débloquez Turbo, les 7 Styles et la personnalisation."
+          }
           grouped={true}
         >
           <Button
             variant="primary"
             size="md"
-            onClick={() => openUrl("https://novaspeak.app")}
+            onClick={() =>
+              openUrl(tier === "pro" ? ULTRA_MONTHLY_URL : PRO_MONTHLY_URL)
+            }
           >
-            {t("license.upgradeToUltra")}
+            {tier === "pro"
+              ? t("license.upgradeToUltra")
+              : t("license.trial.subscribe")}
           </Button>
         </SettingContainer>
       )}
 
-      <SettingContainer
-        title={t("license.manageSubscription")}
-        description="Facturation, moyen de paiement, changement de palier."
-        grouped={true}
-      >
-        <div className="flex items-center gap-2">
-          <span
-            className="text-[10px] font-bold tracking-wide uppercase rounded-full px-2 py-0.5 border whitespace-nowrap"
-            style={{
-              color: "var(--color-text-secondary)",
-              borderColor: "var(--color-text-secondary)",
-            }}
+      {status?.licensed && (
+        <SettingContainer
+          title={t("license.manageSubscription")}
+          description="Résiliation, changement de palier (la différence est calculée au prorata), moyen de paiement et factures — portail sécurisé Stripe."
+          grouped={true}
+        >
+          <Button
+            variant="secondary"
+            size="md"
+            disabled={portalBusy}
+            onClick={openPortal}
           >
-            {t("license.comingSoon")}
-          </span>
-          <Button variant="secondary" size="md" disabled>
             {t("license.manageSubscription")}
           </Button>
-        </div>
-      </SettingContainer>
+        </SettingContainer>
+      )}
 
       {/* 6. Activation d'une clé. */}
       <SettingContainer
@@ -357,7 +379,7 @@ export const LicenseSettings: React.FC = () => {
               variant="primary"
               size="md"
               onClick={() => {
-                void openUrl("https://novaspeak.app");
+                void openUrl(PRO_MONTHLY_URL);
                 void acknowledgeTrialExpired();
               }}
             >

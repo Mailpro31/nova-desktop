@@ -276,3 +276,60 @@ pub fn clear_license(app: AppHandle) -> LicenseStatus {
         settings.trial_expired_notified,
     )
 }
+
+/// URL de la fonction edge du portail de facturation (projet « nova-licences »).
+const BILLING_PORTAL_URL: &str =
+    "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/billing-portal";
+
+#[derive(Deserialize)]
+struct PortalResp {
+    ok: bool,
+    url: Option<String>,
+    error: Option<String>,
+}
+
+/// Ouvre le portail client Stripe (résiliation, changement de palier avec
+/// prorata, moyen de paiement, factures) dans le navigateur. L'app envoie son
+/// jeton de licence — jamais la clé d'achat — ; le serveur résout le client
+/// Stripe et renvoie une URL de session éphémère.
+#[tauri::command]
+#[specta::specta]
+pub async fn open_billing_portal(app: AppHandle) -> Result<(), String> {
+    let settings = get_settings(&app);
+    let token = settings
+        .license_key
+        .clone()
+        .filter(|k| !k.trim().is_empty())
+        .ok_or_else(|| "Aucune licence active sur cet appareil.".to_string())?;
+
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(15))
+        .build()
+        .map_err(|_| "Impossible d'initialiser le réseau.".to_string())?;
+
+    let resp = client
+        .post(BILLING_PORTAL_URL)
+        .bearer_auth(&token)
+        .send()
+        .await
+        .map_err(|_| {
+            "Serveur de facturation injoignable — vérifiez votre connexion.".to_string()
+        })?;
+
+    let parsed: PortalResp = resp
+        .json()
+        .await
+        .map_err(|_| "Réponse du serveur invalide.".to_string())?;
+    if !parsed.ok {
+        return Err(parsed
+            .error
+            .unwrap_or_else(|| "Portail indisponible.".to_string()));
+    }
+    let url = parsed
+        .url
+        .filter(|u| u.starts_with("https://"))
+        .ok_or_else(|| "Réponse du serveur incomplète.".to_string())?;
+
+    tauri_plugin_opener::open_url(url, None::<&str>)
+        .map_err(|_| "Impossible d'ouvrir le navigateur.".to_string())
+}

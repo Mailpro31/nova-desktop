@@ -242,7 +242,7 @@ function App() {
         action: {
           label: t("quota.upgrade"),
           onClick: () => {
-            void openUrl("https://novaspeak.app");
+            void openUrl("https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09");
           },
         },
       });
@@ -266,7 +266,7 @@ function App() {
             action: {
               label: t("license.trial.subscribe"),
               onClick: () => {
-                void openUrl("https://novaspeak.app");
+                void openUrl("https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09");
               },
             },
           });
