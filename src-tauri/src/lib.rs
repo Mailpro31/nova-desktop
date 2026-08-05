@@ -649,6 +649,7 @@ pub fn run(cli_args: CliArgs) {
             commands::license::activate_license,
             commands::license::activate_license_code,
             commands::license::clear_license,
+            commands::license::open_billing_portal,
             quota::get_quota_status,
             week_stats::get_week_stat,
             overlay::set_overlay_menu_height,
