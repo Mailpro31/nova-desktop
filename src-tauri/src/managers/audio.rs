@@ -193,6 +193,9 @@ pub struct AudioRecordingManager {
     /// so the retry re-enumerates. The system-default case is never cached —
     /// the recorder resolves the current default itself, cheaply.
     cached_device: Arc<Mutex<Option<(String, cpal::Device)>>>,
+    /// Dernier nom de micro signalé comme introuvable — évite de spammer le
+    /// toast « micro introuvable » à chaque dictée.
+    warned_missing_device: Arc<Mutex<Option<String>>>,
 }
 
 impl AudioRecordingManager {
@@ -222,6 +225,7 @@ impl AudioRecordingManager {
             cancel_generation: Arc::new(AtomicU64::new(0)),
             stream_router,
             cached_device: Arc::new(Mutex::new(None)),
+            warned_missing_device: Arc::new(Mutex::new(None)),
         };
 
         // Always-on?  Open immediately.
@@ -293,7 +297,25 @@ impl AudioRecordingManager {
             device.is_some()
         );
         if let Some(d) = &device {
-            *self.cached_device.lock().unwrap() = Some((device_name, d.clone()));
+            *self.cached_device.lock().unwrap() = Some((device_name.clone(), d.clone()));
+            *self.warned_missing_device.lock().unwrap() = None;
+        } else {
+            // Le micro choisi n'existe plus (débranché, pilote renommé) : on
+            // replie sur le défaut système, mais l'utilisateur doit le SAVOIR —
+            // sinon il croit dicter sur le bon micro. Une seule notification
+            // par nom de micro manquant.
+            let mut warned = self.warned_missing_device.lock().unwrap();
+            if warned.as_deref() != Some(device_name.as_str()) {
+                log::warn!(
+                    "Micro configuré « {} » introuvable — repli sur le micro par défaut",
+                    device_name
+                );
+                *warned = Some(device_name.clone());
+                use tauri::Emitter;
+                let _ = self
+                    .app_handle
+                    .emit("microphone-not-found", device_name.clone());
+            }
         }
         device
     }

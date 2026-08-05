@@ -90,9 +90,14 @@ function App() {
     initializeRTL(i18n.language);
   }, [i18n.language]);
 
-  // Initialize Enigo, shortcuts, and refresh audio devices when main app loads
+  // Initialize Enigo, shortcuts, and refresh audio devices when main app loads.
+  // Les raccourcis sont enregistrés dès l'étape « tutorial » (et pas seulement
+  // à « done ») : sans ça, la dictée-test du premier lancement et toute
+  // saisie de raccourci pendant l'onboarding échouaient silencieusement.
   useEffect(() => {
-    if (onboardingStep === "done" && !hasCompletedPostOnboardingInit.current) {
+    const needsInit =
+      onboardingStep === "tutorial" || onboardingStep === "done";
+    if (needsInit && !hasCompletedPostOnboardingInit.current) {
       hasCompletedPostOnboardingInit.current = true;
       Promise.all([
         commands.initializeEnigo(),
@@ -178,6 +183,48 @@ function App() {
     const unlisten = listen<string>("transcription-error", (event) => {
       toast.error(t("errors.transcriptionFailedTitle"), {
         description: event.payload,
+      });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  // Reformulation trop longue (moteur local ou réseau bloqué) : le texte brut
+  // a été collé côté Rust après POST_PROCESS_TIMEOUT. On le signale.
+  useEffect(() => {
+    const unlisten = listen("post-process-timeout", () => {
+      toast.warning(t("errors.postProcessTimeoutTitle"), {
+        description: t("errors.postProcessTimeout"),
+      });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  // Le moteur en ligne est réservé à Nova Ultra : la reformulation a été
+  // ignorée silencieusement côté Rust — on explique au lieu de laisser croire
+  // à un bug.
+  useEffect(() => {
+    const unlisten = listen("online-engine-locked", () => {
+      toast.info(t("license.onlineEngineLockedTitle"), {
+        description: t("license.onlineEngineLocked"),
+        duration: 8000,
+      });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  // Le micro choisi dans les réglages n'existe plus : le micro par défaut est
+  // utilisé à la place. Sans ce toast, le repli était invisible.
+  useEffect(() => {
+    const unlisten = listen<string>("microphone-not-found", (event) => {
+      toast.warning(t("errors.microphoneNotFoundTitle"), {
+        description: t("errors.microphoneNotFound", { name: event.payload }),
+        duration: 8000,
       });
     });
     return () => {

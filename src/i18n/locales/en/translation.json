@@ -237,8 +237,8 @@
             "description": "The keyboard shortcut to cancel the current recording."
           },
           "transcribe_with_post_process": {
-            "name": "Reformulation hotkey (optional)",
-            "description": "A second hotkey that always applies the selected Style, even when reformulation is turned off. Rarely needed: your main dictation already applies the Style when reformulation is on."
+            "name": "Dictation with Style",
+            "description": "Records and applies the selected Style, even when reformulation is turned off."
           }
         },
         "errors": {
@@ -742,7 +742,11 @@
     "modelLoadFailedUnknown": "unknown model",
     "pasteFailedTitle": "Couldn't paste — text copied",
     "pasteFailed": "The text couldn't be pasted automatically. It's on your clipboard: paste it with Ctrl+V. If this keeps happening, check that your dictation shortcut doesn't overlap Ctrl+V.",
-    "transcriptionFailedTitle": "Transcription Failed"
+    "transcriptionFailedTitle": "Transcription Failed",
+    "postProcessTimeoutTitle": "Reformulation timed out",
+    "postProcessTimeout": "The AI took too long — your raw text was pasted instead.",
+    "microphoneNotFoundTitle": "Microphone not found",
+    "microphoneNotFound": "\"{name}\" is unavailable — the default microphone is used instead."
   },
   "appLanguage": {
     "title": "Application Language",
@@ -784,6 +788,8 @@
     "manageSubscription": "Manage my subscription",
     "comingSoon": "Coming soon",
     "featureColumn": "Feature",
-    "yourPlan": "Your plan"
+    "yourPlan": "Your plan",
+    "onlineEngineLockedTitle": "Turbo is a Nova Ultra feature",
+    "onlineEngineLocked": "The online engine is reserved for Nova Ultra — your text was pasted without reformulation."
   }
 }

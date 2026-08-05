@@ -255,8 +255,8 @@
             "description": "Mevcut kaydı iptal etmek için klavye kısayolu."
           },
           "transcribe_with_post_process": {
-            "name": "Son İşlem Kısayolu",
-            "description": "İsteğe bağlı: Transkripsiyonunuza her zaman AI son işleme uygulayan özel bir kısayol tuşu."
+            "name": "Stil ile dikte",
+            "description": "Yeniden biçimlendirme kapalıyken bile seçili Stili uygulayarak kaydeder."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "bilinmeyen model",
     "pasteFailedTitle": "Metin yapıştırılamadı",
     "pasteFailed": "Metin etkin uygulamaya yapıştırılamadı.",
-    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu"
+    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu",
+    "postProcessTimeoutTitle": "Yeniden biçimlendirme çok uzun sürdü",
+    "postProcessTimeout": "Yapay zekâ çok uzun sürdü — ham metniniz yapıştırıldı.",
+    "microphoneNotFoundTitle": "Mikrofon bulunamadı",
+    "microphoneNotFound": "\"{name}\" kullanılamıyor — varsayılan mikrofon kullanılıyor."
   },
   "appLanguage": {
     "title": "Uygulama Dili",
@@ -784,6 +788,8 @@
     "manageSubscription": "Aboneliğimi yönet",
     "comingSoon": "Yakında",
     "featureColumn": "Özellik",
-    "yourPlan": "Planınız"
+    "yourPlan": "Planınız",
+    "onlineEngineLockedTitle": "Turbo, Nova Ultra'ya özeldir",
+    "onlineEngineLocked": "Çevrimiçi motor Nova Ultra'ya özeldir — metniniz yeniden biçimlendirilmeden yapıştırıldı."
   }
 }

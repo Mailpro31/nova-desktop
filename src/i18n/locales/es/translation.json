@@ -255,8 +255,8 @@
             "description": "El atajo de teclado para cancelar la grabación actual."
           },
           "transcribe_with_post_process": {
-            "name": "Tecla de Post Procesamiento",
-            "description": "Opcional: Una tecla de acceso rápido dedicada que siempre aplica post procesamiento con IA a tu transcripción."
+            "name": "Dictado con Estilo",
+            "description": "Graba y aplica el Estilo elegido, aunque la reformulación esté desactivada."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "modelo desconocido",
     "pasteFailedTitle": "Error al pegar el texto",
     "pasteFailed": "No se pudo pegar el texto en la aplicación activa.",
-    "transcriptionFailedTitle": "Error de transcripción"
+    "transcriptionFailedTitle": "Error de transcripción",
+    "postProcessTimeoutTitle": "Reformulación demasiado lenta",
+    "postProcessTimeout": "La IA tardó demasiado — se pegó el texto sin procesar.",
+    "microphoneNotFoundTitle": "Micrófono no encontrado",
+    "microphoneNotFound": "«{name}» no está disponible — se usa el micrófono predeterminado."
   },
   "appLanguage": {
     "title": "Idioma de la aplicación",
@@ -784,6 +788,8 @@
     "manageSubscription": "Gestionar mi suscripción",
     "comingSoon": "Próximamente",
     "featureColumn": "Función",
-    "yourPlan": "Tu plan"
+    "yourPlan": "Tu plan",
+    "onlineEngineLockedTitle": "Turbo es exclusivo de Nova Ultra",
+    "onlineEngineLocked": "El motor en línea está reservado a Nova Ultra — el texto se pegó sin reformular."
   }
 }

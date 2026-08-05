@@ -255,8 +255,8 @@
             "description": "Klávesová zkratka pro zrušení aktuálního nahrávání."
           },
           "transcribe_with_post_process": {
-            "name": "Klávesa pro následné zpracování",
-            "description": "Volitelné: Vyhrazená klávesová zkratka, která vždy použije AI následné zpracování na váš přepis."
+            "name": "Diktování se stylem",
+            "description": "Nahraje a použije zvolený styl, i když je přeformulování vypnuté."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "neznámý model",
     "pasteFailedTitle": "Vložení textu se nezdařilo",
     "pasteFailed": "Text nebylo možné vložit do aktivní aplikace.",
-    "transcriptionFailedTitle": "Přepis selhal"
+    "transcriptionFailedTitle": "Přepis selhal",
+    "postProcessTimeoutTitle": "Přeformulování trvalo příliš dlouho",
+    "postProcessTimeout": "AI trvala příliš dlouho — vložen původní text.",
+    "microphoneNotFoundTitle": "Mikrofon nenalezen",
+    "microphoneNotFound": "„{name}“ není dostupný — používá se výchozí mikrofon."
   },
   "appLanguage": {
     "title": "Jazyk aplikace",
@@ -784,6 +788,8 @@
     "manageSubscription": "Spravovat předplatné",
     "comingSoon": "Již brzy",
     "featureColumn": "Funkce",
-    "yourPlan": "Váš plán"
+    "yourPlan": "Váš plán",
+    "onlineEngineLockedTitle": "Turbo je vyhrazeno pro Nova Ultra",
+    "onlineEngineLocked": "Online engine je vyhrazen pro Nova Ultra — text byl vložen bez přeformulování."
   }
 }

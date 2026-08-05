@@ -433,6 +433,9 @@ pub async fn ensure_server_binary(app: &AppHandle) -> Result<(), String> {
     // Les chemins dérivent du profil utilisateur, qui peut contenir une
     // apostrophe (comptes AD « O'Brien »…) : on double les quotes simples,
     // seule échappement valide dans une chaîne PowerShell à quotes simples.
+    // CREATE_NO_WINDOW : sans lui, l'extraction ouvrait une fenêtre console
+    // PowerShell visible (et voleuse de focus) en pleine dictée.
+    use std::os::windows::process::CommandExt;
     let ps_quote = |p: &Path| p.display().to_string().replace('\'', "''");
     let status = std::process::Command::new("powershell")
         .args([
@@ -445,6 +448,7 @@ pub async fn ensure_server_binary(app: &AppHandle) -> Result<(), String> {
                 ps_quote(&extract_dir)
             ),
         ])
+        .creation_flags(CREATE_NO_WINDOW)
         .status()
         .map_err(|e| format!("Extraction impossible : {e}"))?;
     if !status.success() {

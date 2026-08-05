@@ -255,8 +255,8 @@
             "description": "Сочетание клавиш для отмены текущей записи."
           },
           "transcribe_with_post_process": {
-            "name": "Горячая клавиша постобработки",
-            "description": "Специальное сочетание клавиш для ИИ-постобработки вашей транскрипции."
+            "name": "Диктовка со стилем",
+            "description": "Записывает и применяет выбранный стиль, даже если переформулировка отключена."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "неизвестная модель",
     "pasteFailedTitle": "Не удалось вставить текст",
     "pasteFailed": "Не удалось вставить текст в активное приложение.",
-    "transcriptionFailedTitle": "Ошибка транскрипции"
+    "transcriptionFailedTitle": "Ошибка транскрипции",
+    "postProcessTimeoutTitle": "Переформулировка заняла слишком много времени",
+    "postProcessTimeout": "ИИ не ответил вовремя — вставлен исходный текст.",
+    "microphoneNotFoundTitle": "Микрофон не найден",
+    "microphoneNotFound": "«{name}» недоступен — используется микрофон по умолчанию."
   },
   "appLanguage": {
     "title": "Язык приложения",
@@ -784,6 +788,8 @@
     "manageSubscription": "Управление подпиской",
     "comingSoon": "Скоро",
     "featureColumn": "Функция",
-    "yourPlan": "Ваш тариф"
+    "yourPlan": "Ваш тариф",
+    "onlineEngineLockedTitle": "Turbo доступен только в Nova Ultra",
+    "onlineEngineLocked": "Онлайн-движок доступен только в Nova Ultra — текст вставлен без переформулировки."
   }
 }

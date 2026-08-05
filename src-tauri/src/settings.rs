@@ -1504,6 +1504,12 @@ pub fn write_settings(app: &AppHandle, settings: AppSettings) {
         .expect("Failed to initialize store");
 
     store.set("settings", serde_json::to_value(&settings).unwrap());
+    // Persistance immédiate : sans save(), l'écriture disque n'était garantie
+    // qu'à la fermeture propre de l'app — un kill/plantage perdait les
+    // derniers réglages (raccourcis saisis, micro choisi…).
+    if let Err(e) = store.save() {
+        log::warn!("Échec de la sauvegarde immédiate des réglages : {e}");
+    }
 }
 
 pub fn get_bindings(app: &AppHandle) -> HashMap<String, ShortcutBinding> {

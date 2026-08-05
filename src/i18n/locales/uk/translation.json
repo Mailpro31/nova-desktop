@@ -237,8 +237,8 @@
             "description": "Комбінація клавіш для скасування поточного запису."
           },
           "transcribe_with_post_process": {
-            "name": "Гаряча клавіша постобробки",
-            "description": "Необов'язково: Спеціальна гаряча клавіша, яка завжди застосовує AI-постобробку до вашої транскрипції."
+            "name": "Диктування зі стилем",
+            "description": "Записує та застосовує вибраний стиль, навіть якщо переформулювання вимкнено."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "невідома модель",
     "pasteFailedTitle": "Не вдалося вставити текст",
     "pasteFailed": "Не вдалося вставити текст до активної програми.",
-    "transcriptionFailedTitle": "Помилка транскрипції"
+    "transcriptionFailedTitle": "Помилка транскрипції",
+    "postProcessTimeoutTitle": "Переформулювання надто довге",
+    "postProcessTimeout": "ШІ відповідав надто довго — вставлено сирий текст.",
+    "microphoneNotFoundTitle": "Мікрофон не знайдено",
+    "microphoneNotFound": "«{name}» недоступний — використовується мікрофон за замовчуванням."
   },
   "appLanguage": {
     "title": "Мова інтерфейсу",
@@ -784,6 +788,8 @@
     "manageSubscription": "Керувати підпискою",
     "comingSoon": "Незабаром",
     "featureColumn": "Функція",
-    "yourPlan": "Ваш тариф"
+    "yourPlan": "Ваш тариф",
+    "onlineEngineLockedTitle": "Turbo доступний лише в Nova Ultra",
+    "onlineEngineLocked": "Онлайн-рушій лише для Nova Ultra — текст вставлено без переформулювання."
   }
 }

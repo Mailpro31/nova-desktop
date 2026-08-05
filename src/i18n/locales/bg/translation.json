@@ -237,8 +237,8 @@
             "description": "Клавишната комбинация за отмяна на текущия запис."
           },
           "transcribe_with_post_process": {
-            "name": "Бърз клавиш за постобработка",
-            "description": "По избор: отделна комбинация, която винаги прилага ИИ постобработка върху транскрипцията."
+            "name": "Диктовка със стил",
+            "description": "Записва и прилага избрания стил, дори при изключено преформулиране."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "неизвестен модел",
     "pasteFailedTitle": "Неуспешно поставяне на текст",
     "pasteFailed": "Текстът не можа да бъде поставен в активното приложение.",
-    "transcriptionFailedTitle": "Неуспешна транскрипция"
+    "transcriptionFailedTitle": "Неуспешна транскрипция",
+    "postProcessTimeoutTitle": "Преформулирането отне твърде много време",
+    "postProcessTimeout": "ИИ закъсня — поставен е суровият текст.",
+    "microphoneNotFoundTitle": "Микрофонът не е намерен",
+    "microphoneNotFound": "„{name}“ не е наличен — използва се микрофонът по подразбиране."
   },
   "appLanguage": {
     "title": "Език на приложението",
@@ -784,6 +788,8 @@
     "manageSubscription": "Управление на абонамента ми",
     "comingSoon": "Очаквайте скоро",
     "featureColumn": "Функция",
-    "yourPlan": "Вашият план"
+    "yourPlan": "Вашият план",
+    "onlineEngineLockedTitle": "Turbo е запазено за Nova Ultra",
+    "onlineEngineLocked": "Онлайн двигателят е запазен за Nova Ultra — текстът е поставен без преформулиране."
   }
 }

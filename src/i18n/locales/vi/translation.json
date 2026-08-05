@@ -255,8 +255,8 @@
             "description": "Phím tắt để hủy bản ghi hiện tại."
           },
           "transcribe_with_post_process": {
-            "name": "Phím tắt xử lý sau",
-            "description": "Tùy chọn: Phím tắt chuyên dụng luôn áp dụng xử lý sau bằng AI cho bản chuyển đổi của bạn."
+            "name": "Đọc chính tả với Kiểu",
+            "description": "Ghi âm và áp dụng Kiểu đã chọn, kể cả khi tắt diễn đạt lại."
           }
         },
         "errors": {
@@ -724,7 +724,11 @@
     "modelLoadFailedUnknown": "mô hình không xác định",
     "pasteFailedTitle": "Không thể dán văn bản",
     "pasteFailed": "Không thể dán văn bản vào ứng dụng đang hoạt động.",
-    "transcriptionFailedTitle": "Phiên âm thất bại"
+    "transcriptionFailedTitle": "Phiên âm thất bại",
+    "postProcessTimeoutTitle": "Diễn đạt lại quá lâu",
+    "postProcessTimeout": "AI mất quá nhiều thởi gian — văn bản thô đã được dán.",
+    "microphoneNotFoundTitle": "Không tìm thấy micrô",
+    "microphoneNotFound": "\"{name}\" không khả dụng — micrô mặc định được dùng thay thế."
   },
   "appLanguage": {
     "title": "Ngôn ngữ ứng dụng",
@@ -784,6 +788,8 @@
     "manageSubscription": "Quản lý gói đăng ký của tôi",
     "comingSoon": "Sắp ra mắt",
     "featureColumn": "Tính năng",
-    "yourPlan": "Gói của bạn"
+    "yourPlan": "Gói của bạn",
+    "onlineEngineLockedTitle": "Turbo dành riêng cho Nova Ultra",
+    "onlineEngineLocked": "Công cụ trực tuyến dành riêng cho Nova Ultra — văn bản đã được dán mà không diễn đạt lại."
   }
 }
