@@ -1061,6 +1061,7 @@ impl ShortcutAction for TranscribeAction {
         // `process_transcription_output` : jamais de blocage avant l'enregistrement.
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
+        crate::input::remember_text_target();
 
         // Load model in the background
         let tm = app.state::<Arc<TranscriptionManager>>();
@@ -1418,7 +1419,9 @@ impl ShortcutAction for TranscribeAction {
                                         return;
                                     }
 
-                                    match utils::paste(final_text, ah_clone.clone()) {
+                                    let paste_fallback_text = final_text.clone();
+                                    let paste_result = utils::paste(final_text, ah_clone.clone());
+                                    match &paste_result {
                                         Ok(()) => {
                                             crate::week_stats::record_chars(
                                                 &ah_clone,
@@ -1432,9 +1435,15 @@ impl ShortcutAction for TranscribeAction {
                                         Err(e) => {
                                             error!("Failed to paste transcription: {}", e);
                                             let _ = ah_clone.emit("paste-error", ());
+                                            crate::overlay::show_paste_fallback(
+                                                &ah_clone,
+                                                &paste_fallback_text,
+                                            );
                                         }
                                     }
-                                    utils::hide_recording_overlay(&ah_clone);
+                                    if paste_result.is_ok() {
+                                        utils::hide_recording_overlay(&ah_clone);
+                                    }
                                     change_tray_icon(&ah_clone, TrayIconState::Idle);
                                 })
                                 .unwrap_or_else(|e| {

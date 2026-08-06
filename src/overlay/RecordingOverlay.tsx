@@ -19,7 +19,8 @@ type OverlayState =
   | "recording"
   | "streaming"
   | "transcribing"
-  | "processing";
+  | "processing"
+  | "paste-fallback";
 
 type StyleItem = { id: string; name: string };
 
@@ -39,6 +40,7 @@ const RecordingOverlay: React.FC = () => {
   const [phase, setPhase] = useState<StreamPhase>("listening");
   const [workKind, setWorkKind] = useState<StreamWorkKind>("transcribing");
   const [elapsed, setElapsed] = useState(0);
+  const [fallbackText, setFallbackText] = useState("");
   // Bumped on each new streaming session so the Live card remounts fresh (replays
   // the pop-in, and never animates in from the previous panel's open size).
   const [session, setSession] = useState(0);
@@ -176,11 +178,13 @@ const RecordingOverlay: React.FC = () => {
 
       const unlistenLevel = await listen<number[]>("mic-level", (event) => {
         const newLevels = event.payload as number[];
-        // Exponential smoothing across the 16 buckets, then take the first N
-        // bars for the shared waveform.
+        // Lift quiet speech aggressively, with a quick attack and slower release.
+        // This only changes the visual meter; the recorded samples stay untouched.
         const smoothed = smoothedLevelsRef.current.map((prev, i) => {
-          const target = newLevels[i] || 0;
-          return prev * 0.7 + target * 0.3;
+          const raw = Math.max(0, newLevels[i] || 0);
+          const target = Math.min(1, Math.pow(raw, 0.45) * 1.65);
+          const alpha = target > prev ? 0.72 : 0.24;
+          return prev + (target - prev) * alpha;
         });
         smoothedLevelsRef.current = smoothed;
         setLevels(smoothed.slice(0, WAVE_BARS));
@@ -196,6 +200,15 @@ const RecordingOverlay: React.FC = () => {
         if (payload.kind) setWorkKind(payload.kind);
       });
 
+      const unlistenPasteFallback = await listen<string>(
+        "paste-fallback",
+        (event) => {
+          setFallbackText(event.payload);
+          setState("paste-fallback");
+          setIsVisible(true);
+        },
+      );
+
       return () => {
         unlistenShow();
         unlistenHide();
@@ -203,6 +216,7 @@ const RecordingOverlay: React.FC = () => {
         unlistenLevel();
         unlistenStream();
         unlistenPhase();
+        unlistenPasteFallback();
       };
     };
 
@@ -259,7 +273,7 @@ const RecordingOverlay: React.FC = () => {
   const cancelBtn = (
     <button
       className="sx"
-      aria-label="cancel"
+      aria-label={t("tray.cancel")}
       onClick={() => commands.cancelOperation()}
     >
       <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -273,17 +287,34 @@ const RecordingOverlay: React.FC = () => {
     </button>
   );
 
+  const finishBtn = (
+    <button
+      className="sx sfinish"
+      aria-label={t("onboarding.step.finish")}
+      onClick={() => commands.finishRecording()}
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path
+          d="M3.2 8.2 6.5 11.4 12.9 4.8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+
   // dot (left) | waveform (center) | timer + cancel (right) — same structure for
   // pill & panel, so the Live morph is a pure width change.
-  const listeningRow = (showTimer: boolean, showCancel: boolean) => (
+  const listeningRow = (showTimer: boolean) => (
     <div className="sbase">
-      <div className="sbase-l">
-        <span className="sdot" />
-      </div>
+      <div className="sbase-l">{cancelBtn}</div>
       {waveform}
       <div className="sbase-r">
         {showTimer && <span className="stimer">{fmtTime(elapsed)}</span>}
-        {showCancel && cancelBtn}
+        {finishBtn}
       </div>
     </div>
   );
@@ -436,7 +467,7 @@ const RecordingOverlay: React.FC = () => {
                   : t("overlay.transcribing"),
                 true,
               )
-            : listeningRow(open, true)}
+            : listeningRow(open)}
         </div>
       </div>
     );
@@ -451,6 +482,47 @@ const RecordingOverlay: React.FC = () => {
       ? t("overlay.processing")
       : t("overlay.transcribing");
 
+  if (state === "paste-fallback") {
+    return (
+      <div
+        dir={direction}
+        className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+      >
+        <div className="scard sfallback">
+          <div className="sfallback-head">
+            <span className="sfallback-info" aria-hidden="true" />
+            <strong>{t("tray.copyLastTranscript")}</strong>
+            <button
+              className="sfallback-close"
+              aria-label={t("common.close")}
+              onClick={() => commands.dismissRecordingOverlay()}
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M4 4 L12 12 M12 4 L4 12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <p className="sfallback-text">{fallbackText}</p>
+          <button
+            className="sfallback-copy"
+            onClick={async () => {
+              await commands.copyTranscription(fallbackText);
+              await commands.dismissRecordingOverlay();
+            }}
+          >
+            {t("common.copy")}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       dir={direction}
@@ -459,7 +531,7 @@ const RecordingOverlay: React.FC = () => {
       <div
         className={`scard compact ${working && isVisible ? "cworking" : ""}`}
       >
-        {working ? workingRow(workLabel, true) : listeningRow(false, true)}
+        {working ? workingRow(workLabel, true) : listeningRow(false)}
       </div>
     </div>
   );

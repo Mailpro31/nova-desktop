@@ -610,6 +610,11 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
         paste_method, paste_delay_ms, paste_delay_after_ms
     );
 
+    if !input::restore_text_target() {
+        let _ = app_handle.clipboard().write_text(&text);
+        return Err("The original text insertion target is no longer available".to_string());
+    }
+
     // Get the managed Enigo instance
     let enigo_state = app_handle
         .try_state::<EnigoState>()

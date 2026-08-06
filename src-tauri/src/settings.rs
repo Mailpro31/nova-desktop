@@ -546,14 +546,14 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 1;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 2;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
 }
 
 fn default_push_to_talk() -> bool {
-    true
+    false
 }
 
 fn default_always_on_microphone() -> bool {
@@ -1480,8 +1480,17 @@ fn apply_settings_migrations(
             settings.transcribe_accelerator = TranscribeAcceleratorSetting::Auto;
             settings.transcribe_gpu_device = default_transcribe_gpu_device();
         }
-        settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
         updated = true;
+    }
+    if stored_schema_version < 2 {
+        // Nova now defaults to tap-to-start / tap-to-finish. Existing installs
+        // receive the new interaction once, while the setting remains available
+        // for users who deliberately want hold-to-talk afterward.
+        settings.push_to_talk = false;
+        updated = true;
+    }
+    if stored_schema_version < CURRENT_SETTINGS_SCHEMA_VERSION as u64 {
+        settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
     }
 
     // One-time overlay migration (only while the new key is absent): the retired
@@ -1555,7 +1564,7 @@ mod tests {
     fn empty_store_parses_with_defaults() {
         let settings: AppSettings = serde_json::from_value(serde_json::json!({}))
             .expect("all AppSettings fields need serde defaults");
-        assert!(settings.push_to_talk);
+        assert!(!settings.push_to_talk);
         assert!(!settings.audio_feedback);
         // Bindings default to empty; the load path merges the real defaults in.
         assert!(settings.bindings.is_empty());
@@ -1675,8 +1684,12 @@ mod tests {
         assert_eq!(settings.log_level, LogLevel::Debug);
         assert_eq!(settings.sound_theme, SoundTheme::Pop);
 
-        // A current-format store must not be rewritten on every read.
-        assert!(!apply_settings_migrations(&mut settings, &stored));
+        assert!(apply_settings_migrations(&mut settings, &stored));
+        assert!(!settings.push_to_talk);
+        assert_eq!(
+            settings.settings_schema_version,
+            CURRENT_SETTINGS_SCHEMA_VERSION
+        );
     }
 
     #[test]

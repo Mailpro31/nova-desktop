@@ -487,6 +487,20 @@ async showMainWindowCommand() : Promise<Result<null, string>> {
 async cancelOperation() : Promise<void> {
     await TAURI_INVOKE("cancel_operation");
 },
+async finishRecording() : Promise<void> {
+    await TAURI_INVOKE("finish_recording");
+},
+async copyTranscription(text: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("copy_transcription", { text }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async dismissRecordingOverlay() : Promise<void> {
+    await TAURI_INVOKE("dismiss_recording_overlay");
+},
 async isPortable() : Promise<boolean> {
     return await TAURI_INVOKE("is_portable");
 },

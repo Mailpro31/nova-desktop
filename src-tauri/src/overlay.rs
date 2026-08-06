@@ -52,7 +52,7 @@ const OVERLAY_STREAM_HEIGHT: f64 = 120.0;
 
 /// Overlay window size (logical) for a given UI state.
 fn overlay_dimensions(state: &str) -> (f64, f64) {
-    if state == "streaming" {
+    if state == "streaming" || state == "paste-fallback" {
         (OVERLAY_STREAM_WIDTH, OVERLAY_STREAM_HEIGHT)
     } else {
         (OVERLAY_WIDTH, OVERLAY_HEIGHT)
@@ -433,6 +433,14 @@ pub fn show_processing_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "processing");
 }
 
+/// Keep the last transcription available when Nova cannot paste it safely.
+pub fn show_paste_fallback(app_handle: &AppHandle, text: &str) {
+    show_overlay_state(app_handle, "paste-fallback");
+    if let Some(window) = app_handle.get_webview_window("recording_overlay") {
+        let _ = window.emit("paste-fallback", text);
+    }
+}
+
 /// Affiche la bulle au repos (mode « toujours affichée »). Rendue au démarrage
 /// et après chaque dictée quand `persistent_overlay` est actif.
 pub fn show_idle_overlay(app_handle: &AppHandle) {
@@ -492,7 +500,7 @@ fn start_overlay_hover_watcher(app_handle: &AppHandle) {
     std::thread::spawn(move || {
         let mut last_interactive: Option<bool> = None;
         loop {
-            std::thread::sleep(std::time::Duration::from_millis(90));
+            std::thread::sleep(std::time::Duration::from_millis(25));
             let Some(window) = app.get_webview_window("recording_overlay") else {
                 continue;
             };
