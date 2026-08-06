@@ -181,6 +181,12 @@ pub async fn send_chat_completion_with_schema(
 
     let client = create_client(provider, &api_key)?;
 
+    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
+    // Determine this while the request text is still available. It is moved
+    // into the user message below, so calculating it in the request literal
+    // would borrow a moved String.
+    let max_tokens = is_local.then(|| local_max_tokens(&user_content));
+
     // Build messages vector
     let mut messages = Vec::new();
 
@@ -208,7 +214,6 @@ pub async fn send_chat_completion_with_schema(
         },
     });
 
-    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
     let request_body = ChatCompletionRequest {
         model: model.to_string(),
         messages,
@@ -217,7 +222,7 @@ pub async fn send_chat_completion_with_schema(
         reasoning_effort,
         reasoning,
         cache_prompt: is_local.then_some(true),
-        max_tokens: is_local.then_some(local_max_tokens(&user_content)),
+        max_tokens,
     };
 
     let response = client
