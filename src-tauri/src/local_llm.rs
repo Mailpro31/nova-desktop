@@ -45,29 +45,29 @@ pub struct LlmProfileSpec {
 /// existants ; ici, la taille du modèle de reformulation local embarqué.
 ///
 /// Palier produit : Air est le seul profil du plan Free ; Aura et Apex
-/// nécessitent Nova Pro (et restent disponibles en Ultra). Air doit donc
-/// rester un moteur « normal », pas un modèle-jouet — d'où 1.5B plutôt que
-/// 0.5B, qui devenait peu fiable pour la reformulation. `ensure_server_running`
-/// délestage sur GPU (Vulkan) quand c'est possible pour rester rapide même sur
-/// Aura/Apex, avec repli CPU automatique sinon.
+/// nécessitent Nova Pro (et restent disponibles en Ultra). Air vise aussi les
+/// PC d'entrée de gamme (8 Go, CPU seul) : le 0.5B privilégie donc une latence
+/// bornée et s'appuie sur le nettoyage déterministe déjà effectué avant le LLM.
+/// Aura/Apex conservent les modèles plus expressifs. `ensure_server_running`
+/// déleste sur GPU (Vulkan) quand c'est possible, avec repli CPU automatique.
 pub const PROFILES: &[LlmProfileSpec] = &[
     LlmProfileSpec {
         id: "air",
-        repo_id: "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
-        approx_size_mb: 1000,
+        repo_id: "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+        approx_size_mb: 400,
         min_ram_gb: 0,
     },
     LlmProfileSpec {
         id: "aura",
         repo_id: "Qwen/Qwen2.5-3B-Instruct-GGUF",
         approx_size_mb: 2100,
-        min_ram_gb: 8,
+        min_ram_gb: 12,
     },
     LlmProfileSpec {
         id: "apex",
         repo_id: "Qwen/Qwen2.5-7B-Instruct-GGUF",
         approx_size_mb: 4700,
-        min_ram_gb: 16,
+        min_ram_gb: 24,
     },
 ];
 
@@ -107,7 +107,15 @@ fn local_llm_dir(app: &AppHandle) -> Result<PathBuf, String> {
 }
 
 fn model_path(app: &AppHandle, profile_id: &str) -> Result<PathBuf, String> {
-    Ok(local_llm_dir(app)?.join(format!("{profile_id}.gguf")))
+    // `air.gguf` désignait le Qwen 1.5B dans les versions précédentes. Un nom
+    // distinct empêche de prendre silencieusement cet ancien modèle lourd pour
+    // le nouveau profil Air 0.5B après une mise à jour.
+    let filename = if profile_id == "air" {
+        "air-qwen2.5-0.5b.gguf".to_string()
+    } else {
+        format!("{profile_id}.gguf")
+    };
+    Ok(local_llm_dir(app)?.join(filename))
 }
 
 #[cfg(windows)]
@@ -592,7 +600,7 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
             "--port",
             &LOCAL_LLM_PORT.to_string(),
             "-c",
-            "4096",
+            "1536",
             "-ngl",
             ngl,
         ])
@@ -602,7 +610,7 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
         // reformulation. Purement une optimisation de vitesse, sans effet sur la
         // sortie.
         .arg("--cache-reuse")
-        .arg("256")
+        .arg("128")
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null())
         .creation_flags(CREATE_NO_WINDOW)

@@ -28,7 +28,9 @@ const CANCELLATION_POLL_INTERVAL: Duration = Duration::from_millis(25);
 
 /// Borne dure de toute la reformulation (démarrage du moteur + appel LLM).
 /// Au-delà, on colle le texte brut : l'utilisateur ne reste jamais bloqué.
-const POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(60);
+const LOCAL_AIR_POST_PROCESS_TIMEOUT: Duration = Duration::from_millis(1500);
+const LOCAL_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
+const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(8);
 
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
@@ -177,7 +179,27 @@ fn temperature_for_style(style_id: &str) -> f32 {
 /// Build a system prompt from the user's prompt template.
 /// Removes `${output}` placeholder since the transcription is sent as the user message.
 fn build_system_prompt(prompt_template: &str) -> String {
-    prompt_template.replace("${output}", "").trim().to_string()
+    prompt_template
+        .replace("<transcript>\n${output}\n</transcript>", "")
+        .replace("${output}", "")
+        .trim()
+        .to_string()
+}
+
+fn post_process_timeout(settings: &AppSettings) -> Duration {
+    match settings.active_post_process_provider() {
+        Some(provider) if provider.id == crate::local_llm::PROVIDER_ID => {
+            match settings
+                .post_process_models
+                .get(crate::local_llm::PROVIDER_ID)
+                .map(String::as_str)
+            {
+                Some("air") => LOCAL_AIR_POST_PROCESS_TIMEOUT,
+                _ => LOCAL_POST_PROCESS_TIMEOUT,
+            }
+        }
+        _ => REMOTE_POST_PROCESS_TIMEOUT,
+    }
 }
 
 /// Bloc d'instructions listant les raccourcis personnels (variables) de
@@ -353,11 +375,17 @@ fn screen_context_block(settings: &AppSettings) -> String {
     // palier C (VLM local, inerte tant qu'aucun serveur vision local n'est
     // configuré) → palier D (vision cloud, seulement si « Vision cloud » est
     // activée ; réservé Nova Ultra, image jamais conservée).
-    let ctx = match crate::auto_style::read_focused_context(&settings.auto_style_blocklist, 2000) {
+    // Le contexte enrichit la reformulation, mais ne doit pas saturer le petit
+    // contexte du profil Air ni monopoliser le CPU d'une machine de 8 Go.
+    const FAST_CONTEXT_CHARS: usize = 600;
+    let ctx = match crate::auto_style::read_focused_context(
+        &settings.auto_style_blocklist,
+        FAST_CONTEXT_CHARS,
+    ) {
         Some(ctx) if !ctx.trim().is_empty() => Some(ctx),
-        _ => crate::screen_vlm::describe_focused_window_local(2000).or_else(|| {
+        _ => crate::screen_vlm::describe_focused_window_local(FAST_CONTEXT_CHARS).or_else(|| {
             if settings.context_visual_enabled {
-                crate::screen_vision::describe_focused_window(license_key, 2000)
+                crate::screen_vision::describe_focused_window(license_key, FAST_CONTEXT_CHARS)
             } else {
                 None
             }
@@ -598,9 +626,25 @@ async fn post_process_with_provider(
     // pas un nom de modèle). Jamais bloquant pour la dictée : un échec ne
     // fait qu'annuler la reformulation, le texte brut reste collé.
     if provider.id == crate::local_llm::PROVIDER_ID {
-        if let Err(e) = crate::local_llm::ensure_server_running(app, &model).await {
-            debug!("Intelligence privée indisponible : {e}");
-            return None;
+        // Le démarrage vit dans sa propre tâche : si le délai Air expire pendant
+        // un premier chargement, la tâche continue et enregistre proprement le
+        // processus. Abandonner directement `ensure_server_running` laisserait
+        // sinon un enfant llama-server vivant mais absent de l'état Tauri.
+        let warmup_app = app.clone();
+        let warmup_model = model.clone();
+        let warmup = tauri::async_runtime::spawn(async move {
+            crate::local_llm::ensure_server_running(&warmup_app, &warmup_model).await
+        });
+        match warmup.await {
+            Ok(Ok(())) => {}
+            Ok(Err(e)) => {
+                debug!("Intelligence privée indisponible : {e}");
+                return None;
+            }
+            Err(e) => {
+                debug!("Tâche Intelligence privée interrompue : {e}");
+                return None;
+            }
         }
     }
 
@@ -773,20 +817,23 @@ async fn post_process_with_provider(
         }
     }
 
-    // Legacy mode: Replace ${output} variable in the prompt with the actual text
-    let processed_prompt = format!(
+    // Même sans JSON Schema, garder les instructions dans un message système
+    // stable permet à llama-server de réutiliser le cache KV entre deux dictées.
+    let system_prompt = format!(
         "{}{}{}",
-        prompt.replace("${output}", transcription),
+        build_system_prompt(&prompt),
         custom_variables_block(&settings.custom_variables),
         context_block
     );
-    debug!("Processed prompt length: {} chars", processed_prompt.len());
+    debug!("System prompt length: {} chars", system_prompt.len());
 
-    match crate::llm_client::send_chat_completion(
+    match crate::llm_client::send_chat_completion_with_schema(
         provider,
         api_key,
         &model,
-        processed_prompt,
+        transcription.to_string(),
+        Some(system_prompt),
+        None,
         temperature,
         reasoning_effort,
         reasoning,
@@ -932,10 +979,11 @@ pub(crate) async fn process_transcription_output(
         } else {
             // Filet de sécurité global : quoi qu'il arrive côté moteur (serveur
             // local qui pend, réseau mort, modèle en chargement), la
-            // reformulation ne peut pas dépasser POST_PROCESS_TIMEOUT. Au-delà,
+            // reformulation ne peut pas dépasser le délai du moteur. Au-delà,
             // on colle le texte brut et on informe — jamais de spinner infini.
+            let timeout = post_process_timeout(&settings);
             match tokio::time::timeout(
-                POST_PROCESS_TIMEOUT,
+                timeout,
                 post_process_transcription(
                     app,
                     &settings,
@@ -970,7 +1018,7 @@ pub(crate) async fn process_transcription_output(
                 Err(_) => {
                     log::warn!(
                         "Reformulation abandonnée après {:?} — texte brut collé",
-                        POST_PROCESS_TIMEOUT
+                        timeout
                     );
                     let _ = app.emit("post-process-timeout", ());
                 }
@@ -1506,7 +1554,7 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 #[cfg(test)]
 mod tests {
     use super::{
-        apply_custom_variables, clean_llm_output, complete_unless_cancelled,
+        apply_custom_variables, build_system_prompt, clean_llm_output, complete_unless_cancelled,
         custom_variables_block, is_blank_transcription, replace_keyword_ci,
         resolve_variable_tokens, should_use_streaming_overlay, temperature_for_style,
     };
@@ -1696,6 +1744,23 @@ mod tests {
         assert_eq!(temperature_for_style("nova_style_todo"), 0.4);
         // Style personnel inconnu → un peu de liberté par défaut.
         assert_eq!(temperature_for_style("mon_style_perso"), 0.4);
+    }
+
+    #[test]
+    fn system_prompt_keeps_transcription_out_of_the_cached_prefix() {
+        let template = "Règles fixes\n<transcript>\n${output}\n</transcript>";
+        let prompt = build_system_prompt(template);
+        assert_eq!(prompt, "Règles fixes");
+        assert!(!prompt.contains("${output}"));
+        assert!(!prompt.contains("<transcript>"));
+    }
+
+    #[test]
+    fn system_prompt_removes_legacy_placeholder_without_wrapper() {
+        assert_eq!(
+            build_system_prompt("Corrige ce texte : ${output}"),
+            "Corrige ce texte :"
+        );
     }
 
     #[test]

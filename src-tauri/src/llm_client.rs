@@ -55,6 +55,14 @@ struct ChatCompletionRequest {
     reasoning_effort: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     reasoning: Option<ReasoningConfig>,
+    /// Extension llama-server : conserve le préfixe stable dans le cache KV.
+    /// Omise pour les fournisseurs distants qui pourraient refuser ce champ.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    cache_prompt: Option<bool>,
+    /// Une dictée doit produire un texte de taille comparable. Borner la sortie
+    /// évite qu'un petit modèle boucle et dépasse le budget de latence.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_tokens: Option<u32>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -65,11 +73,17 @@ struct ChatCompletionResponse {
 #[derive(Debug, Deserialize)]
 struct ChatChoice {
     message: ChatMessageResponse,
+    finish_reason: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
 struct ChatMessageResponse {
     content: Option<String>,
+}
+
+fn local_max_tokens(user_content: &str) -> u32 {
+    let estimated_input_tokens = user_content.chars().count().div_ceil(3) as u32;
+    (estimated_input_tokens + 24).clamp(48, 192)
 }
 
 /// Build headers for API requests based on provider type
@@ -194,6 +208,7 @@ pub async fn send_chat_completion_with_schema(
         },
     });
 
+    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
     let request_body = ChatCompletionRequest {
         model: model.to_string(),
         messages,
@@ -201,6 +216,8 @@ pub async fn send_chat_completion_with_schema(
         temperature,
         reasoning_effort,
         reasoning,
+        cache_prompt: is_local.then_some(true),
+        max_tokens: is_local.then_some(local_max_tokens(&user_content)),
     };
 
     let response = client
@@ -227,10 +244,25 @@ pub async fn send_chat_completion_with_schema(
         .await
         .map_err(|e| format!("Failed to parse API response: {}", e))?;
 
-    Ok(completion
-        .choices
-        .first()
-        .and_then(|choice| choice.message.content.clone()))
+    let Some(choice) = completion.choices.first() else {
+        return Ok(None);
+    };
+    if choice.finish_reason.as_deref() == Some("length") {
+        return Err("LLM output reached its token limit".to_string());
+    }
+    Ok(choice.message.content.clone())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::local_max_tokens;
+
+    #[test]
+    fn local_output_budget_is_bounded_and_scales_with_input() {
+        assert_eq!(local_max_tokens(""), 48);
+        assert_eq!(local_max_tokens(&"a".repeat(300)), 124);
+        assert_eq!(local_max_tokens(&"a".repeat(1_000)), 192);
+    }
 }
 
 /// Fetch available models from an OpenAI-compatible API
