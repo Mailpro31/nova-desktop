@@ -8,7 +8,6 @@ import type {
   StreamPhase,
   StreamPhaseEvent,
   StreamTextEvent,
-  StreamWorkKind,
 } from "@/bindings";
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
@@ -38,7 +37,7 @@ const RecordingOverlay: React.FC = () => {
     tentative: "",
   });
   const [phase, setPhase] = useState<StreamPhase>("listening");
-  const [workKind, setWorkKind] = useState<StreamWorkKind>("transcribing");
+  const [thinkingProgress, setThinkingProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [fallbackText, setFallbackText] = useState("");
   // Bumped on each new streaming session so the Live card remounts fresh (replays
@@ -152,10 +151,13 @@ const RecordingOverlay: React.FC = () => {
         }
         if (overlayState === "recording" || overlayState === "streaming") {
           setStreamText({ committed: "", tentative: "" });
+          setThinkingProgress(0);
+        }
+        if (overlayState === "transcribing") {
+          setThinkingProgress(4);
         }
         if (overlayState === "streaming") {
           setPhase("listening");
-          setWorkKind("transcribing");
           setElapsed(0);
           setSession((s) => s + 1); // remount the card fresh for this session
         }
@@ -197,7 +199,11 @@ const RecordingOverlay: React.FC = () => {
       const unlistenPhase = await events.streamPhaseEvent.listen((event) => {
         const payload: StreamPhaseEvent = event.payload;
         setPhase(payload.phase);
-        if (payload.kind) setWorkKind(payload.kind);
+        if (payload.phase === "working") setThinkingProgress(4);
+      });
+
+      const unlistenThinkingComplete = await listen("thinking-complete", () => {
+        setThinkingProgress(100);
       });
 
       const unlistenPasteFallback = await listen<string>(
@@ -216,6 +222,7 @@ const RecordingOverlay: React.FC = () => {
         unlistenLevel();
         unlistenStream();
         unlistenPhase();
+        unlistenThinkingComplete();
         unlistenPasteFallback();
       };
     };
@@ -229,6 +236,23 @@ const RecordingOverlay: React.FC = () => {
     const id = setInterval(() => setElapsed((e) => e + 1), 1000);
     return () => clearInterval(id);
   }, [state, isVisible]);
+
+  // Progression volontairement asymptotique : elle avance vite pendant le
+  // traitement sans annoncer une fin prématurée, puis le backend envoie 100 %
+  // juste avant de coller le texte.
+  useEffect(() => {
+    const working =
+      state === "transcribing" ||
+      state === "processing" ||
+      (state === "streaming" && phase === "working");
+    if (!working || !isVisible || thinkingProgress >= 100) return;
+    const id = setInterval(() => {
+      setThinkingProgress((current) =>
+        Math.min(92, current + Math.max(0.35, (92 - current) * 0.045)),
+      );
+    }, 80);
+    return () => clearInterval(id);
+  }, [state, phase, isVisible, thinkingProgress]);
 
   // Stick to the bottom as text streams in — but only while pinned, so a user who
   // has scrolled up to read history isn't yanked back down by the next chunk.
@@ -322,12 +346,15 @@ const RecordingOverlay: React.FC = () => {
   // spinner (left) | label (center) | cancel (right) — same 3-zone grid as the
   // listening row, so the label is centered.
   const workingRow = (label: string, showCancel: boolean) => (
-    <div className="sbase">
+    <div className="sbase sworking-base">
       <div className="sbase-l">
         <span className="sspinner" />
       </div>
       <span className="swork-label">{label}</span>
       <div className="sbase-r">{showCancel && cancelBtn}</div>
+      <div className="sthinking-track" aria-hidden="true">
+        <i style={{ width: `${thinkingProgress}%` }} />
+      </div>
     </div>
   );
 
@@ -461,12 +488,7 @@ const RecordingOverlay: React.FC = () => {
             </div>
           </div>
           {working
-            ? workingRow(
-                workKind === "polishing"
-                  ? t("overlay.processing")
-                  : t("overlay.transcribing"),
-                true,
-              )
+            ? workingRow(t("overlay.processing"), true)
             : listeningRow(open)}
         </div>
       </div>
@@ -477,10 +499,7 @@ const RecordingOverlay: React.FC = () => {
   // spinner + label (transcribing / processing). Never both. The pill animates its
   // width between them; the cancel button is in both rows so it stays put.
   const working = state === "transcribing" || state === "processing";
-  const workLabel =
-    state === "processing"
-      ? t("overlay.processing")
-      : t("overlay.transcribing");
+  const workLabel = t("overlay.processing");
 
   if (state === "paste-fallback") {
     return (

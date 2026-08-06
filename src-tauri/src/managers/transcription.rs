@@ -1914,10 +1914,18 @@ pub fn init_transcribe_backend(app: &AppHandle) {
 
     let pending = marker_path(app, TRANSCRIBE_INIT_PENDING_MARKER);
     let blacklisted = marker_path(app, TRANSCRIBE_GPU_BLACKLIST_MARKER);
+    let cpu_requested =
+        get_settings(app).transcribe_accelerator == TranscribeAcceleratorSetting::Cpu;
 
     // A leftover pending marker means the previous init never returned (hung
     // GPU driver): blacklist GPU modules and run CPU-only from now on.
-    let mut cpu_only = blacklisted.as_ref().is_some_and(|p| p.exists());
+    // Respect a CPU preference before native backend initialization. Loading
+    // the Vulkan module first defeated the setting and could hang before a CPU
+    // model ever became usable.
+    let mut cpu_only = cpu_requested || blacklisted.as_ref().is_some_and(|p| p.exists());
+    if cpu_requested {
+        info!("CPU transcription requested - skipping GPU backend modules");
+    }
     if !cpu_only && pending.as_ref().is_some_and(|p| p.exists()) {
         warn!(
             "transcribe-cpp backend init never completed on the previous run \

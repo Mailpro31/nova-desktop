@@ -897,18 +897,6 @@ pub fn run(cli_args: CliArgs) {
 
             initialize_core_logic(&app_handle);
 
-            // Scellage serveur de l'essai Pro (empreinte machine) en tâche de
-            // fond : contacte trial-check pour figer la vraie date de début et
-            // empêcher l'essai « infini » par réinstallation. Entièrement
-            // défensif (hors-ligne / dormant → l'essai local continue de faire
-            // foi), non bloquant pour le démarrage.
-            {
-                let trial_handle = app_handle.clone();
-                tauri::async_runtime::spawn(async move {
-                    commands::license::fetch_and_seal_trial(trial_handle).await;
-                });
-            }
-
             // Populate the overlay-enabled cache from initial settings so the
             // audio path (overlay::emit_levels, called ~24 Hz during recording)
             // can do a single atomic load instead of reading the Tauri store.

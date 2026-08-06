@@ -7,7 +7,6 @@ import {
 } from "react";
 import { toast, Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
-import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { platform } from "@tauri-apps/plugin-os";
@@ -250,29 +249,6 @@ function App() {
     return () => {
       unlisten.then((fn) => fn());
     };
-  }, [t]);
-
-  // Essai Nova Pro automatique en cours : rappel discret au lancement, avec
-  // invite à s'abonner. N'apparaît qu'une fois par ouverture de l'app.
-  useEffect(() => {
-    invoke<{ trial_days_remaining: number }>("get_license_status")
-      .then((status) => {
-        if (status.trial_days_remaining > 0) {
-          toast.info(t("license.trial.toastTitle"), {
-            description: t("license.trial.toastDescription", {
-              count: status.trial_days_remaining,
-            }),
-            duration: 8000,
-            action: {
-              label: t("license.trial.subscribe"),
-              onClick: () => {
-                void openUrl("https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09");
-              },
-            },
-          });
-        }
-      })
-      .catch(() => {});
   }, [t]);
 
   // Mode CPU forcé (le pilote graphique a bloqué l'init du moteur lors d'un

@@ -30,7 +30,10 @@ const CANCELLATION_POLL_INTERVAL: Duration = Duration::from_millis(25);
 /// Au-delà, on colle le texte brut : l'utilisateur ne reste jamais bloqué.
 const LOCAL_AIR_POST_PROCESS_TIMEOUT: Duration = Duration::from_millis(1500);
 const LOCAL_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
-const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(8);
+/// Anthropic/Turbo gets a short first chance; the remaining budget is reserved
+/// for the compatible local fallback instead of leaving the bubble spinning.
+const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_millis(1800);
+const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_millis(3800);
 
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
@@ -187,6 +190,10 @@ fn build_system_prompt(prompt_template: &str) -> String {
 }
 
 fn post_process_timeout(settings: &AppSettings) -> Duration {
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    if crate::licensing::has("cloud_styles", license_key, 0) {
+        return REMOTE_POST_PROCESS_TIMEOUT;
+    }
     match settings.active_post_process_provider() {
         Some(provider) if provider.id == crate::local_llm::PROVIDER_ID => {
             match settings
@@ -360,14 +367,10 @@ fn screen_context_block(settings: &AppSettings) -> String {
     if !settings.context_reading_enabled {
         return String::new();
     }
-    // Palier : la lecture de contexte est une fonctionnalité Nova Ultra (essai
-    // Pro inclus, cf. licensing::has). Sans le palier requis, on n'inspecte rien.
+    // Palier : la lecture de contexte est une fonctionnalité Nova Ultra.
+    // Sans le palier requis, on n'inspecte rien.
     let license_key = settings.license_key.as_deref().unwrap_or("");
-    if !crate::licensing::has(
-        "context_reading",
-        license_key,
-        crate::licensing::effective_trial_start(&settings),
-    ) {
+    if !crate::licensing::has("context_reading", license_key, 0) {
         return String::new();
     }
     // Cascade privacy-first : palier A (accessibilité) → palier B (OCR local),
@@ -447,7 +450,7 @@ async fn post_process_transcription(
         return None;
     }
 
-    let provider = match settings.active_post_process_provider().cloned() {
+    let selected_provider = match settings.active_post_process_provider().cloned() {
         Some(provider) => provider,
         None => {
             debug!("Post-processing enabled but no provider is selected");
@@ -455,19 +458,23 @@ async fn post_process_transcription(
         }
     };
 
-    // Palier : le moteur en ligne « Turbo » nécessite un abonnement Nova
-    // (Pro ou Ultra, essai Pro inclus, cf. licensing::has). Le moteur local
-    // (Intelligence privée, Apple Intelligence) reste gratuit.
+    // Pro/Ultra : Anthropic via le relais Turbo est toujours le chemin primaire.
+    // La clé Anthropic reste côté serveur. Free conserve le moteur local choisi.
     let license_key = settings.license_key.as_deref().unwrap_or("");
+    let can_use_turbo = crate::licensing::has("cloud_styles", license_key, 0);
+    let provider = if can_use_turbo {
+        settings
+            .post_process_providers
+            .iter()
+            .find(|provider| provider.id == "nova_turbo")
+            .cloned()
+            .unwrap_or(selected_provider)
+    } else {
+        selected_provider
+    };
     let is_local_engine = provider.id == crate::local_llm::PROVIDER_ID
         || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
-    if !is_local_engine
-        && !crate::licensing::has(
-            "cloud_styles",
-            license_key,
-            crate::licensing::effective_trial_start(&settings),
-        )
-    {
+    if !is_local_engine && !crate::licensing::has("cloud_styles", license_key, 0) {
         debug!("Turbo (moteur en ligne) réservé aux abonnés — reformulation ignorée");
         // Le repli sur le texte brut doit être VISIBLE : sans ce signal,
         // l'utilisateur croyait la reformulation « cassée » alors qu'elle est
@@ -476,9 +483,32 @@ async fn post_process_transcription(
         return None;
     }
 
-    let result =
+    let result = if is_local_engine {
         post_process_with_provider(app, settings, transcription, auto_style_override, &provider)
-            .await;
+            .await
+    } else {
+        match tokio::time::timeout(
+            REMOTE_PRIMARY_TIMEOUT,
+            post_process_with_provider(
+                app,
+                settings,
+                transcription,
+                auto_style_override,
+                &provider,
+            ),
+        )
+        .await
+        {
+            Ok(result) => result,
+            Err(_) => {
+                warn!(
+                    "Turbo/Anthropic sans réponse après {:?} — tentative locale",
+                    REMOTE_PRIMARY_TIMEOUT
+                );
+                None
+            }
+        }
+    };
 
     // Bascule automatique : le moteur en ligne a échoué (réseau, quota,
     // fournisseur) → on retente en INTELLIGENCE PRIVÉE si un modèle local est
@@ -491,6 +521,7 @@ async fn post_process_transcription(
             .cloned()
             .unwrap_or_default();
         let downloaded = !profile.trim().is_empty()
+            && crate::local_llm::profile_is_supported(&profile)
             && crate::local_llm::profiles_status(app)
                 .iter()
                 .any(|p| p.id == profile && p.is_downloaded);
@@ -584,12 +615,7 @@ async fn post_process_with_provider(
     // Style effectivement appliqué (après repli éventuel sur le gratuit) : sert à
     // choisir la température (fidèle vs libre) cohérente avec le prompt réel.
     let mut effective_style_id = selected_prompt_id.clone();
-    let prompt = if !style_is_free
-        && !crate::licensing::has(
-            required_feature,
-            license_key,
-            crate::licensing::effective_trial_start(&settings),
-        ) {
+    let prompt = if !style_is_free && !crate::licensing::has(required_feature, license_key, 0) {
         debug!(
             "Style '{}' réservé ({}) — repli sur le Style gratuit",
             selected_prompt_id, required_feature
@@ -1405,6 +1431,11 @@ impl ShortcutAction for TranscribeAction {
                                 utils::hide_recording_overlay(&ah);
                                 change_tray_icon(&ah, TrayIconState::Idle);
                             } else {
+                                // L'overlay atteint visiblement 100 % avant que le
+                                // texte apparaisse au curseur, sans ralentir le
+                                // traitement lui-même.
+                                let _ = ah.emit("thinking-complete", ());
+                                tokio::time::sleep(Duration::from_millis(120)).await;
                                 let ah_clone = ah.clone();
                                 let paste_time = Instant::now();
                                 let final_text = processed.final_text;

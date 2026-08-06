@@ -463,6 +463,26 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.sworking-base {
+  position: relative;
+}
+.sthinking-track {
+  position: absolute;
+  left: 38px;
+  right: 38px;
+  bottom: 4px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--s-hair);
+}
+.sthinking-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--s-accent);
+  transition: width 100ms linear;
+}
 
 /* ============================================================
    Bulle au repos (mode « toujours affichée ») + menu de choix de Style.

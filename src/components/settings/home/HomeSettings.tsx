@@ -9,7 +9,6 @@ type Tier = "free" | "pro" | "ultra" | "business";
 
 type LicenseStatus = {
   tier: Tier;
-  trial_days_remaining: number;
 };
 
 const TIER_LABEL: Record<Tier, string> = {
@@ -78,7 +77,6 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
   }, []);
 
   const tier: Tier = status?.tier ?? "free";
-  const onTrial = (status?.trial_days_remaining ?? 0) > 0;
 
   const go = (section: SidebarSection) => onNavigate?.(section);
 
@@ -99,7 +97,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
             className="text-sm font-semibold px-2.5 py-1 rounded-full border"
             style={{ color: TIER_COLOR[tier], borderColor: TIER_COLOR[tier] }}
           >
-            {onTrial ? t("license.trial.badge") : TIER_LABEL[tier]}
+            {TIER_LABEL[tier]}
           </span>
         </div>
         <WeekStat />

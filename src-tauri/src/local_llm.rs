@@ -55,7 +55,7 @@ pub const PROFILES: &[LlmProfileSpec] = &[
         id: "air",
         repo_id: "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
         approx_size_mb: 400,
-        min_ram_gb: 0,
+        min_ram_gb: 4,
     },
     LlmProfileSpec {
         id: "aura",
@@ -75,12 +75,24 @@ fn spec(profile_id: &str) -> Option<&'static LlmProfileSpec> {
     PROFILES.iter().find(|p| p.id == profile_id)
 }
 
+fn total_ram_gb() -> u64 {
+    let mut sys = sysinfo::System::new();
+    sys.refresh_memory();
+    sys.total_memory() / (1024 * 1024 * 1024)
+}
+
+/// Whether the machine has enough physical memory for this local profile.
+/// Unknown profiles are never considered compatible.
+pub fn profile_is_supported(profile_id: &str) -> bool {
+    spec(profile_id)
+        .map(|profile| total_ram_gb() >= profile.min_ram_gb)
+        .unwrap_or(false)
+}
+
 /// Détecte la RAM totale et recommande le plus gros profil que la machine
 /// peut raisonnablement faire tourner. Défensif : RAM inconnue → "air".
 pub fn recommended_profile_id() -> &'static str {
-    let mut sys = sysinfo::System::new();
-    sys.refresh_memory();
-    let total_ram_gb = sys.total_memory() / (1024 * 1024 * 1024);
+    let total_ram_gb = total_ram_gb();
 
     PROFILES
         .iter()
@@ -94,8 +106,10 @@ pub fn recommended_profile_id() -> &'static str {
 pub struct LlmProfileStatus {
     pub id: String,
     pub approx_size_mb: u64,
+    pub required_ram_gb: u64,
     pub is_downloaded: bool,
     pub is_recommended: bool,
+    pub is_supported: bool,
 }
 
 fn local_llm_dir(app: &AppHandle) -> Result<PathBuf, String> {
@@ -131,10 +145,12 @@ pub fn profiles_status(app: &AppHandle) -> Vec<LlmProfileStatus> {
         .map(|p| LlmProfileStatus {
             id: p.id.to_string(),
             approx_size_mb: p.approx_size_mb,
+            required_ram_gb: p.min_ram_gb,
             is_downloaded: model_path(app, p.id)
                 .map(|path| path.is_file())
                 .unwrap_or(false),
             is_recommended: p.id == recommended,
+            is_supported: profile_is_supported(p.id),
         })
         .collect()
 }
@@ -649,6 +665,14 @@ async fn wait_for_health(child: &mut Child, max_iters: u32) -> bool {
 #[cfg(windows)]
 pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<(), String> {
     use tauri::Manager;
+
+    let profile = spec(profile_id).ok_or_else(|| format!("Profil inconnu : {profile_id}"))?;
+    if !profile_is_supported(profile_id) {
+        return Err(format!(
+            "Ce PC n'a pas assez de mémoire pour Nova {} ({} Go de RAM requis).",
+            profile_id, profile.min_ram_gb
+        ));
+    }
 
     let state = app.state::<LocalLlmProcess>();
     let already_running_same_profile = {

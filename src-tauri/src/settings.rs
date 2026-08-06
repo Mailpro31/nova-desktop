@@ -463,21 +463,14 @@ pub struct AppSettings {
     /// Clé de licence Nova (jeton NOVA1…). Vide = palier Free. Voir licensing.rs.
     #[serde(default)]
     pub license_key: Option<String>,
-    /// Epoch (secondes) du tout premier lancement de l'app — amorce l'essai
-    /// Nova Pro automatique de 14 jours. Scellé UNE SEULE FOIS (voir
-    /// `get_settings`) ; 0 = jamais amorcé (installs migrées avant cette
-    /// fonctionnalité n'en profitent pas rétroactivement). Voir licensing.rs.
+    /// Ancien champ d'essai conservé uniquement pour désérialiser sans perte
+    /// les réglages créés avant la suppression de l'essai Pro. Toujours ignoré.
     #[serde(default)]
     pub trial_started_at: i64,
-    /// L'utilisateur a-t-il déjà vu la notification de fin d'essai ? Évite de
-    /// la répéter à chaque lancement une fois l'essai expiré.
+    /// Ancien indicateur d'essai, conservé pour compatibilité du store.
     #[serde(default)]
     pub trial_expired_notified: bool,
-    /// Jeton d'essai signé par le serveur (« NOVAT1… »), lié à cette machine et
-    /// scellant la date de début d'essai côté serveur. Vide = serveur jamais
-    /// contacté (l'essai local fait alors foi). Permet de faire respecter la
-    /// date serveur même hors-ligne — voir `licensing::reconcile_trial_start`.
-    /// Défensif : sans jeton valide, aucun effet (dormant/réversible).
+    /// Ancien jeton d'essai, conservé pour compatibilité du store. Jamais lu.
     #[serde(default)]
     pub trial_token: String,
     /// Quota Free : reformulations (Styles) appliquées durant la journée
@@ -1274,9 +1267,7 @@ pub fn get_default_settings() -> AppSettings {
         post_process_selected_prompt_id: default_post_process_selected_prompt_id(),
         auto_default_migrated: true,
         license_key: None,
-        // Non amorcé ici : seul un tout premier lancement (aucun store existant,
-        // voir `get_settings`) scelle l'essai. Les appels de `get_default_settings`
-        // pour une migration/un salvage ne doivent jamais (re)démarrer l'essai.
+        // Anciens champs d'essai conservés à zéro pour compatibilité des stores.
         trial_started_at: 0,
         trial_expired_notified: false,
         trial_token: String::new(),
@@ -1385,15 +1376,9 @@ pub fn get_settings(app: &AppHandle) -> AppSettings {
 
         settings
     } else {
-        // Tout premier lancement (aucun store existant) : amorce l'essai Nova
-        // Pro automatique de 14 jours. Scellé ICI uniquement — jamais dans
-        // `get_default_settings()`, qui sert aussi de base à la migration/au
-        // salvage d'un store existant et ne doit jamais réamorcer l'essai.
-        let mut default_settings = get_default_settings();
-        default_settings.trial_started_at = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|d| d.as_secs() as i64)
-            .unwrap_or(0);
+        // Nouvelle installation : aucun essai Pro automatique. Les anciens
+        // champs d'essai restent sérialisables uniquement pour compatibilité.
+        let default_settings = get_default_settings();
         store.set("settings", serde_json::to_value(&default_settings).unwrap());
         default_settings
     };

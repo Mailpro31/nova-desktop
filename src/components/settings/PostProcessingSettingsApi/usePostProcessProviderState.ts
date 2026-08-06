@@ -84,7 +84,7 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   const [appleIntelligenceUnavailable, setAppleIntelligenceUnavailable] =
     useState(false);
 
-  // Turbo réservé aux abonnés Nova (Pro/Ultra, essai Pro inclus) : verrouillé
+  // Turbo réservé aux abonnés Nova (Pro/Ultra) : verrouillé
   // tant que le statut de licence n'a pas confirmé l'accès. Défaut prudent =
   // verrouillé.
   const [turboLocked, setTurboLocked] = useState(true);
