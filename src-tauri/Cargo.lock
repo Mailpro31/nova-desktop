@@ -2522,7 +2522,7 @@ dependencies = [
 
 [[package]]
 name = "handy"
-version = "1.0.25"
+version = "1.0.26"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
