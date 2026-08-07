@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type PostProcessProvider } from "@/bindings";
 import type { ModelOption } from "./types";
 import type { DropdownOption } from "../../ui/Dropdown";
-import { getStatus } from "../license/TierBadge";
 
 type PostProcessProviderState = {
   providerOptions: DropdownOption[];
@@ -84,26 +83,9 @@ export const usePostProcessProviderState = (): PostProcessProviderState => {
   const [appleIntelligenceUnavailable, setAppleIntelligenceUnavailable] =
     useState(false);
 
-  // Turbo réservé aux abonnés Nova (Pro/Ultra) : verrouillé
-  // tant que le statut de licence n'a pas confirmé l'accès. Défaut prudent =
-  // verrouillé.
-  const [turboLocked, setTurboLocked] = useState(true);
+  // Free includes ten daily Turbo rewrites; Pro/Ultra remove that cap.
+  const turboLocked = false;
   const [turboConfirmOpen, setTurboConfirmOpen] = useState(false);
-
-  useEffect(() => {
-    let alive = true;
-    getStatus().then((s) => {
-      // Fail-OPEN on an absent status (IPC teardown / transient null): the
-      // backend enforces cloud_styles regardless, so never grey out Turbo for
-      // an entitled user with no "requires Pro" badge (TierBadge is fail-open
-      // too). Only lock when a PRESENT status says the feature is off.
-      if (alive)
-        setTurboLocked(s ? !(s.features?.cloud_styles ?? true) : false);
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
 
   // Use settings directly as single source of truth
   const baseUrl = selectedProvider?.base_url ?? "";

@@ -45,7 +45,6 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
         grouped={true}
       >
         <div className="flex items-center gap-2">
-          <TierBadge feature="cloud_styles" />
           <ProviderSelect
             options={state.providerOptions}
             value={state.selectedProviderId}

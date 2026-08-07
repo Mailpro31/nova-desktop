@@ -547,7 +547,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 2;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 3;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -683,7 +683,9 @@ fn default_show_tray_icon() -> bool {
 }
 
 fn default_post_process_provider_id() -> String {
-    crate::local_llm::PROVIDER_ID.to_string()
+    // The ten daily Free rewrites use Nova Turbo (Anthropic) by default.
+    // Users can still explicitly select the private local engine.
+    "nova_turbo".to_string()
 }
 
 fn default_post_process_providers() -> Vec<PostProcessProvider> {
@@ -1494,6 +1496,16 @@ fn apply_settings_migrations(
         settings.push_to_talk = false;
         updated = true;
     }
+    if stored_schema_version < 3 {
+        // Free now includes ten daily Anthropic rewrites through Nova Turbo.
+        // Move existing installs from the former local default once so upgrades
+        // receive the same default as fresh installs. The user can select the
+        // private local engine again afterward and that choice is preserved.
+        if settings.post_process_provider_id == crate::local_llm::PROVIDER_ID {
+            settings.post_process_provider_id = default_post_process_provider_id();
+        }
+        updated = true;
+    }
     if stored_schema_version < CURRENT_SETTINGS_SCHEMA_VERSION as u64 {
         settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
     }
@@ -1571,6 +1583,7 @@ mod tests {
             .expect("all AppSettings fields need serde defaults");
         assert!(!settings.push_to_talk);
         assert!(!settings.audio_feedback);
+        assert_eq!(settings.post_process_provider_id, "nova_turbo");
         // Bindings default to empty; the load path merges the real defaults in.
         assert!(settings.bindings.is_empty());
     }
@@ -1898,6 +1911,40 @@ mod tests {
             TranscribeAcceleratorSetting::Gpu
         );
         assert_eq!(settings.transcribe_gpu_device, 2);
+    }
+
+    #[test]
+    fn v3_migration_moves_the_former_local_default_to_turbo_once() {
+        let mut settings = get_default_settings();
+        settings.settings_schema_version = 2;
+        settings.post_process_provider_id = crate::local_llm::PROVIDER_ID.to_string();
+
+        let raw = serde_json::json!({
+            "settings_schema_version": 2,
+            "onboarding_completed": false,
+            "whats_new_last_seen_version": default_whats_new_last_seen_version(),
+            "overlay_style": "live",
+            "post_process_provider_id": crate::local_llm::PROVIDER_ID
+        });
+
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert_eq!(settings.post_process_provider_id, "nova_turbo");
+        assert_eq!(settings.settings_schema_version, 3);
+
+        // Once migrated, a deliberate switch back to local must be preserved.
+        settings.post_process_provider_id = crate::local_llm::PROVIDER_ID.to_string();
+        let current = serde_json::json!({
+            "settings_schema_version": CURRENT_SETTINGS_SCHEMA_VERSION,
+            "onboarding_completed": false,
+            "whats_new_last_seen_version": default_whats_new_last_seen_version(),
+            "overlay_style": "live",
+            "post_process_provider_id": crate::local_llm::PROVIDER_ID
+        });
+        assert!(!apply_settings_migrations(&mut settings, &current));
+        assert_eq!(
+            settings.post_process_provider_id,
+            crate::local_llm::PROVIDER_ID
+        );
     }
 
     #[test]

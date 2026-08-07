@@ -275,7 +275,14 @@ async fn download_with_progress(
 /// poursuit, pour ne pas bloquer le téléchargement si HF change son API).
 async fn gguf_expected_sha256(repo_id: &str, filename: &str) -> Option<String> {
     let url = format!("https://huggingface.co/{repo_id}/resolve/main/{filename}");
-    let resp = reqwest::Client::new()
+    // Read the LFS metadata from Hugging Face's redirect response. Following
+    // the redirect loses `x-linked-etag` and exposes the Xet/CDN object ETag
+    // instead; that value is not the file SHA-256 and rejects valid models.
+    let client = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .ok()?;
+    let resp = client
         .head(&url)
         .timeout(std::time::Duration::from_secs(15))
         .send()
