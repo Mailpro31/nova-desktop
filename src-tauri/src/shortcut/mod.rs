@@ -1136,7 +1136,7 @@ pub fn add_post_process_prompt(
     if !crate::licensing::has(
         "custom_styles",
         settings.license_key.as_deref().unwrap_or(""),
-        crate::licensing::effective_trial_start(&settings),
+        0,
     ) {
         return Err("La création de Styles personnalisés nécessite Nova Ultra.".to_string());
     }
@@ -1171,7 +1171,7 @@ pub fn update_post_process_prompt(
     if !crate::licensing::has(
         "custom_styles",
         settings.license_key.as_deref().unwrap_or(""),
-        crate::licensing::effective_trial_start(&settings),
+        0,
     ) {
         return Err("La modification des Styles nécessite Nova Ultra.".to_string());
     }

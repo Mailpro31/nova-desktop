@@ -30,7 +30,7 @@ pub async fn activate_local_llm_profile(app: AppHandle, profile_id: String) -> R
         if !crate::licensing::has(
             "power_profiles",
             settings.license_key.as_deref().unwrap_or(""),
-            crate::licensing::effective_trial_start(&settings),
+            0,
         ) {
             return Err("Les profils Nova Aura et Nova Apex nécessitent Nova Pro.".to_string());
         }

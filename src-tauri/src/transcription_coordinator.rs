@@ -34,6 +34,7 @@ enum Command {
     Cancel {
         recording_was_active: bool,
     },
+    FinishCurrent,
     ProcessingFinished,
 }
 
@@ -199,6 +200,13 @@ impl TranscriptionCoordinator {
                                 stage = Stage::Idle;
                             }
                         }
+                        Command::FinishCurrent => {
+                            pending_release = None;
+                            if let Stage::Recording(binding_id) = &stage {
+                                let binding_id = binding_id.clone();
+                                stop(&app, &mut stage, &binding_id, "overlay");
+                            }
+                        }
                         Command::ProcessingFinished => {
                             stage = Stage::Idle;
                         }
@@ -245,6 +253,14 @@ impl TranscriptionCoordinator {
             })
             .is_err()
         {
+            warn!("Transcription coordinator channel closed");
+        }
+    }
+
+    /// Finish the active recording from a UI control, using the same serialized
+    /// lifecycle as the keyboard shortcut.
+    pub fn finish_current(&self) {
+        if self.tx.send(Command::FinishCurrent).is_err() {
             warn!("Transcription coordinator channel closed");
         }
     }

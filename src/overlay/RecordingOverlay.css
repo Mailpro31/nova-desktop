@@ -328,7 +328,7 @@
   max-height: 18px;
   border-radius: 2px;
   background: var(--s-accent);
-  transition: height 80ms linear;
+  transition: height 45ms linear;
 }
 .sx {
   width: 22px;
@@ -363,6 +363,80 @@
 .sx:active {
   transform: scale(0.95);
 }
+.sfinish {
+  color: var(--color-background);
+  background: var(--color-text);
+}
+.sfinish:hover {
+  color: var(--color-background);
+  background: color-mix(in srgb, var(--color-text) 84%, transparent);
+}
+
+/* Paste fallback: compact, actionable, and kept inside the non-activating
+   overlay so clicking Copy never steals the original insertion target. */
+.scard.sfallback {
+  width: var(--ov-open-w);
+  min-height: 104px;
+  border-radius: 14px;
+  padding: 13px 16px 12px;
+  gap: 8px;
+  color: var(--color-text);
+}
+.sfallback-head {
+  display: grid;
+  grid-template-columns: 18px 1fr 22px;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.sfallback-info {
+  display: inline-grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--s-accent);
+  border-radius: 50%;
+  color: var(--s-accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+.sfallback-info::before {
+  content: "i";
+}
+.sfallback-close {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--s-faint);
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+.sfallback-close svg {
+  width: 13px;
+  height: 13px;
+}
+.sfallback-text {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--s-muted);
+  font-size: 13px;
+}
+.sfallback-copy {
+  align-self: center;
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 13px;
+  background: var(--s-hair);
+  color: var(--color-text);
+  font: 600 12px var(--s-font);
+  cursor: pointer;
+}
+.sfallback-copy:hover {
+  background: var(--s-accent-soft);
+}
 
 /* working state (transcribing / polishing) — spinner + label */
 .sspinner {
@@ -388,6 +462,26 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.sworking-base {
+  position: relative;
+}
+.sthinking-track {
+  position: absolute;
+  left: 38px;
+  right: 38px;
+  bottom: 4px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--s-hair);
+}
+.sthinking-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--s-accent);
+  transition: width 100ms linear;
 }
 
 /* ============================================================

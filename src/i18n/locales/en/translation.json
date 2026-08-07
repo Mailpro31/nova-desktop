@@ -769,7 +769,7 @@
   },
   "overlay": {
     "transcribing": "Transcribing...",
-    "processing": "Processing...",
+    "processing": "Thinking",
     "chooseStyle": "Choose a Style",
     "openSettings": "Open settings"
   },

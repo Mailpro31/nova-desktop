@@ -8,12 +8,35 @@ pub mod transcription;
 use crate::settings::{get_settings, write_settings, AppSettings, LogLevel};
 use crate::utils::cancel_current_operation;
 use tauri::{AppHandle, Manager};
+use tauri_plugin_clipboard_manager::ClipboardExt;
 use tauri_plugin_opener::OpenerExt;
 
 #[tauri::command]
 #[specta::specta]
 pub fn cancel_operation(app: AppHandle) {
     cancel_current_operation(&app);
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn finish_recording(app: AppHandle) {
+    if let Some(coordinator) = app.try_state::<crate::TranscriptionCoordinator>() {
+        coordinator.finish_current();
+    }
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn copy_transcription(app: AppHandle, text: String) -> Result<(), String> {
+    app.clipboard()
+        .write_text(text)
+        .map_err(|error| format!("Failed to copy transcription: {error}"))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn dismiss_recording_overlay(app: AppHandle) {
+    crate::overlay::hide_recording_overlay(&app);
 }
 
 #[tauri::command]
