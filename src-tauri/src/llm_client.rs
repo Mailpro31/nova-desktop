@@ -198,6 +198,9 @@ pub async fn send_chat_completion_with_schema(
         });
     }
 
+    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
+    let local_max_tokens = is_local.then(|| local_max_tokens(&user_content));
+
     // Add user message
     messages.push(ChatMessage {
         role: "user".to_string(),
