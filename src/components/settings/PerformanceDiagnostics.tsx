@@ -54,7 +54,7 @@ export const PerformanceDiagnostics: React.FC = () => {
 
   useEffect(() => {
     const enabled = (
-      settings as (typeof settings & { adaptive_performance_enabled?: boolean })
+      settings as typeof settings & { adaptive_performance_enabled?: boolean }
     )?.adaptive_performance_enabled;
     setAdaptive(enabled ?? false);
   }, [settings]);
@@ -124,9 +124,7 @@ export const PerformanceDiagnostics: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <Metric
                 label={t("performanceOptimizer.profile")}
-                value={t(
-                  `performanceOptimizer.classes.${report.device.class}`,
-                )}
+                value={t(`performanceOptimizer.classes.${report.device.class}`)}
               />
               <Metric
                 label={t("performanceOptimizer.memory")}
@@ -153,13 +151,17 @@ export const PerformanceDiagnostics: React.FC = () => {
                     <Icon
                       className={`w-4 h-4 mt-0.5 shrink-0 ${STATUS_COLOR[check.status]}`}
                     />
-                    <span className="text-text-secondary flex-1">{check.detail}</span>
+                    <span className="text-text-secondary flex-1">
+                      {check.detail}
+                    </span>
                     {check.id === "microphone" && check.status === "error" && (
                       <Button
                         type="button"
                         size="sm"
                         variant="ghost"
-                        onClick={() => invoke("open_microphone_privacy_settings")}
+                        onClick={() =>
+                          invoke("open_microphone_privacy_settings")
+                        }
                       >
                         {t("performanceOptimizer.openMicrophone")}
                       </Button>
@@ -170,7 +172,9 @@ export const PerformanceDiagnostics: React.FC = () => {
                           type="button"
                           size="sm"
                           variant="ghost"
-                          onClick={() => invoke("clear_transcribe_gpu_blacklist")}
+                          onClick={() =>
+                            invoke("clear_transcribe_gpu_blacklist")
+                          }
                         >
                           {t("performanceOptimizer.retryGpu")}
                         </Button>
@@ -192,8 +196,14 @@ export const PerformanceDiagnostics: React.FC = () => {
                       className="grid grid-cols-[1fr_auto_auto] gap-3 rounded-md bg-mid-gray/5 px-2.5 py-1.5"
                     >
                       <span>{entry.stage.split("_").join(" ")}</span>
-                      <span>{t("performanceOptimizer.median", { value: entry.median_ms })}</span>
-                      <span>{t("performanceOptimizer.p95", { value: entry.p95_ms })}</span>
+                      <span>
+                        {t("performanceOptimizer.median", {
+                          value: entry.median_ms,
+                        })}
+                      </span>
+                      <span>
+                        {t("performanceOptimizer.p95", { value: entry.p95_ms })}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -206,7 +216,10 @@ export const PerformanceDiagnostics: React.FC = () => {
   );
 };
 
-const Metric: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+const Metric: React.FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => (
   <div className="rounded-lg bg-mid-gray/5 px-3 py-2">
     <div className="text-text-secondary">{label}</div>
     <div className="font-semibold text-sm mt-0.5 truncate">{value}</div>

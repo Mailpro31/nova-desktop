@@ -20,7 +20,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({
 
   useEffect(() => {
     const value = (
-      settings as (typeof settings & { voice_commands_enabled?: boolean })
+      settings as typeof settings & { voice_commands_enabled?: boolean }
     )?.voice_commands_enabled;
     setEnabled(value ?? true);
   }, [settings]);
