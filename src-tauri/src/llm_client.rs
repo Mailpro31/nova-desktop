@@ -192,6 +192,9 @@ pub async fn send_chat_completion_with_schema(
         });
     }
 
+    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
+    let local_max_tokens = is_local.then(|| local_max_tokens(&user_content));
+
     // Add user message
     messages.push(ChatMessage {
         role: "user".to_string(),
@@ -208,7 +211,6 @@ pub async fn send_chat_completion_with_schema(
         },
     });
 
-    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
     let request_body = ChatCompletionRequest {
         model: model.to_string(),
         messages,
@@ -217,7 +219,7 @@ pub async fn send_chat_completion_with_schema(
         reasoning_effort,
         reasoning,
         cache_prompt: is_local.then_some(true),
-        max_tokens: is_local.then_some(local_max_tokens(&user_content)),
+        max_tokens: local_max_tokens,
     };
 
     let response = client
