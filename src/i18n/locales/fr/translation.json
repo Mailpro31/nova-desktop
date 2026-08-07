@@ -773,6 +773,34 @@
   "whatsNew": {
     "title": "Nouveautés de Nova v{{version}}"
   },
+  "performanceOptimizer": {
+    "title": "Optimisation automatique",
+    "description": "Adapte Nova à cet ordinateur et inspecte le vrai parcours de transcription.",
+    "autoLabel": "Mode performance Auto",
+    "autoDescription": "Choisit une accélération sûre et la gestion mémoire des modèles selon la RAM, le processeur et les GPU compatibles.",
+    "diagnosticsDescription": "Vérifie le micro, le modèle, la reformulation, la mémoire et l’accélération.",
+    "run": "Lancer le diagnostic",
+    "running": "Vérification…",
+    "profile": "Profil",
+    "memory": "Mémoire",
+    "cpu": "Threads CPU",
+    "acceleration": "Accélération",
+    "latency": "Latence mesurée",
+    "median": "médiane {{value}} ms",
+    "p95": "p95 {{value}} ms",
+    "openMicrophone": "Ouvrir les réglages du micro",
+    "retryGpu": "Réessayer le GPU après redémarrage",
+    "classes": {
+      "low_memory": "Mémoire limitée",
+      "balanced": "Équilibré",
+      "performance": "Performance"
+    }
+  },
+  "voiceCommands": {
+    "title": "Commandes vocales",
+    "description": "Comprend nouveau paragraphe, à la ligne, point d’interrogation et les commandes Nova explicites pour les notes, listes, réunions ou l’annulation de la dictée.",
+    "added": "{{word}} a été ajouté au dictionnaire personnel"
+  },
   "license": {
     "remove": "Retirer",
     "upgradeToUltra": "Passer à Nova Ultra",

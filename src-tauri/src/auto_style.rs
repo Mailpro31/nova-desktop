@@ -62,6 +62,19 @@ const BUILTIN_BLOCKLIST: &[&str] = &[
 // en mot entier : « line » matche « line.exe » mais pas « outline.exe »).
 const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
     (
+        "nova_style_meeting",
+        &[
+            "zoom meeting",
+            "google meet",
+            "teams meeting",
+            "réunion microsoft teams",
+            "webex meeting",
+            "réunion webex",
+            "jitsi meet",
+        ],
+        &["zoom", "zoommeeting", "gotomeeting", "jitsi"],
+    ),
+    (
         "nova_style_email",
         &[
             // Services / clients (EN)
@@ -738,6 +751,22 @@ mod tests {
         assert_eq!(
             resolve_auto_style("Aujourd'hui - Todoist", "chrome.exe", &no_rules()),
             "nova_style_todo"
+        );
+    }
+
+    #[test]
+    fn detects_meeting_before_generic_messaging() {
+        assert_eq!(
+            resolve_auto_style(
+                "Réunion Microsoft Teams — Projet Nova",
+                "teams.exe",
+                &no_rules()
+            ),
+            "nova_style_meeting"
+        );
+        assert_eq!(
+            resolve_auto_style("Zoom Meeting", "zoom.exe", &no_rules()),
+            "nova_style_meeting"
         );
     }
 

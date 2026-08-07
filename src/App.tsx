@@ -4,6 +4,7 @@ import {
   useRef,
   type ReactNode,
   type ComponentType,
+  Suspense,
 } from "react";
 import { toast, Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -183,6 +184,15 @@ function App() {
       toast.error(t("errors.transcriptionFailedTitle"), {
         description: event.payload,
       });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  useEffect(() => {
+    const unlisten = listen<string>("dictionary-word-added", (event) => {
+      toast.success(t("voiceCommands.added", { word: event.payload }));
     });
     return () => {
       unlisten.then((fn) => fn());
@@ -457,7 +467,15 @@ function App() {
             <div className="flex-1 overflow-y-auto">
               <div className="flex flex-col items-center p-4 gap-4">
                 <AccessibilityPermissions />
-                {renderSettingsContent(currentSection, setCurrentSection)}
+                <Suspense
+                  fallback={
+                    <div className="flex justify-center py-16" role="status">
+                      <div className="w-7 h-7 border-2 border-logo-primary border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  }
+                >
+                  {renderSettingsContent(currentSection, setCurrentSection)}
+                </Suspense>
               </div>
             </div>
           </div>

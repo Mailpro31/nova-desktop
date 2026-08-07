@@ -773,6 +773,34 @@
     "words_one": "{{count}} word dictated this week",
     "words_other": "{{count}} words dictated this week"
   },
+  "performanceOptimizer": {
+    "title": "Automatic optimization",
+    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
+    "autoLabel": "Auto performance mode",
+    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
+    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
+    "run": "Run diagnostic",
+    "running": "Checking…",
+    "profile": "Profile",
+    "memory": "Memory",
+    "cpu": "CPU threads",
+    "acceleration": "Acceleration",
+    "latency": "Measured latency",
+    "median": "median {{value}} ms",
+    "p95": "p95 {{value}} ms",
+    "openMicrophone": "Open microphone settings",
+    "retryGpu": "Retry GPU after restart",
+    "classes": {
+      "low_memory": "Low memory",
+      "balanced": "Balanced",
+      "performance": "Performance"
+    }
+  },
+  "voiceCommands": {
+    "title": "Voice commands",
+    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
+    "added": "{{word}} was added to the personal dictionary"
+  },
   "license": {
     "remove": "Remove",
     "upgradeToUltra": "Upgrade to Nova Ultra",

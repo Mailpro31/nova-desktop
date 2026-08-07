@@ -976,8 +976,37 @@ pub(crate) async fn process_transcription_output(
     post_process: bool,
     auto_style_override: Option<String>,
 ) -> ProcessedTranscription {
-    let settings = get_settings(app);
-    let mut final_text = transcription.to_string();
+    let mut settings = get_settings(app);
+    let voice_command =
+        crate::voice_commands::apply(transcription, settings.voice_commands_enabled);
+    if let Some(word) = voice_command.dictionary_word.as_ref() {
+        if !settings
+            .custom_words
+            .iter()
+            .any(|existing| existing.eq_ignore_ascii_case(word))
+        {
+            settings.custom_words.push(word.clone());
+            crate::settings::write_settings(app, settings);
+            let _ = app.emit("dictionary-word-added", word);
+        }
+        return ProcessedTranscription {
+            final_text: String::new(),
+            post_processed_text: None,
+            post_process_prompt: None,
+        };
+    }
+    if voice_command.cancelled {
+        debug!("Transcription discarded by an explicit voice command");
+        return ProcessedTranscription {
+            final_text: String::new(),
+            post_processed_text: None,
+            post_process_prompt: None,
+        };
+    }
+    // An explicit "Nova …" style command wins over automatic app detection for
+    // this transcription only; it never mutates the persisted selected style.
+    let effective_style_override = voice_command.style_override.or(auto_style_override);
+    let mut final_text = voice_command.text;
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
     // Vrai dès qu'une reformulation IA a réellement produit un texte : décide
@@ -990,7 +1019,7 @@ pub(crate) async fn process_transcription_output(
     // the effective language rather than a possibly-stale intent.
     let effective_language = resolve_effective_language(app, &settings);
     if let Some(converted_text) =
-        maybe_convert_chinese_variant(&effective_language, transcription).await
+        maybe_convert_chinese_variant(&effective_language, &final_text).await
     {
         final_text = converted_text;
     }
@@ -1014,7 +1043,7 @@ pub(crate) async fn process_transcription_output(
                     app,
                     &settings,
                     &final_text,
-                    auto_style_override.as_deref(),
+                    effective_style_override.as_deref(),
                 ),
             )
             .await
@@ -1027,7 +1056,7 @@ pub(crate) async fn process_transcription_output(
                     crate::quota::record_rewrite(app);
 
                     // Style effectif (le Style auto résolu prime, pour l'historique).
-                    let effective_id = auto_style_override
+                    let effective_id = effective_style_override
                         .as_deref()
                         .or(settings.post_process_selected_prompt_id.as_deref());
                     if let Some(prompt_id) = effective_id {
@@ -1232,6 +1261,7 @@ impl ShortcutAction for TranscribeAction {
             "TranscribeAction::start completed in {:?}",
             start_time.elapsed()
         );
+        crate::performance::record_latency("hotkey_to_recording_ready", start_time.elapsed());
     }
 
     fn stop(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
@@ -1300,6 +1330,10 @@ impl ShortcutAction for TranscribeAction {
                     "Recording stopped and samples retrieved in {:?}, sample count: {}",
                     stop_recording_time.elapsed(),
                     samples.len()
+                );
+                crate::performance::record_latency(
+                    "stop_to_audio_ready",
+                    stop_recording_time.elapsed(),
                 );
 
                 if rm.was_cancelled_since(cancel_generation) {
@@ -1382,6 +1416,10 @@ impl ShortcutAction for TranscribeAction {
                                 transcription_time.elapsed(),
                                 transcription
                             );
+                            crate::performance::record_latency(
+                                "audio_to_transcript",
+                                transcription_time.elapsed(),
+                            );
 
                             if post_process {
                                 if use_streaming_overlay {
@@ -1390,6 +1428,7 @@ impl ShortcutAction for TranscribeAction {
                                     show_processing_overlay(&ah);
                                 }
                             }
+                            let output_processing_time = Instant::now();
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
                                     &ah,
@@ -1406,6 +1445,14 @@ impl ShortcutAction for TranscribeAction {
                                 change_tray_icon(&ah, TrayIconState::Idle);
                                 return;
                             };
+                            crate::performance::record_latency(
+                                if post_process {
+                                    "transcript_to_rewrite"
+                                } else {
+                                    "transcript_to_output"
+                                },
+                                output_processing_time.elapsed(),
+                            );
 
                             if rm.was_cancelled_since(cancel_generation) {
                                 debug!("Transcription operation cancelled before paste");
@@ -1434,8 +1481,7 @@ impl ShortcutAction for TranscribeAction {
                                 // L'overlay atteint visiblement 100 % avant que le
                                 // texte apparaisse au curseur, sans ralentir le
                                 // traitement lui-même.
-                                let _ = ah.emit("thinking-complete", ());
-                                tokio::time::sleep(Duration::from_millis(120)).await;
+                                crate::performance::wait_for_thinking_frame(&ah).await;
                                 let ah_clone = ah.clone();
                                 let paste_time = Instant::now();
                                 let final_text = processed.final_text;
@@ -1461,6 +1507,10 @@ impl ShortcutAction for TranscribeAction {
                                             debug!(
                                                 "Text pasted successfully in {:?}",
                                                 paste_time.elapsed()
+                                            );
+                                            crate::performance::record_latency(
+                                                "paste",
+                                                paste_time.elapsed(),
                                             );
                                         }
                                         Err(e) => {

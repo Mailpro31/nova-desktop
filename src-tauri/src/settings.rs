@@ -533,6 +533,14 @@ pub struct AppSettings {
     /// `overlay_style` = None.
     #[serde(default = "default_persistent_overlay")]
     pub persistent_overlay: bool,
+    /// Let Nova choose conservative CPU/GPU and model-lifetime settings from
+    /// this device's RAM, CPU count, and usable accelerators.
+    #[serde(default)]
+    pub adaptive_performance_enabled: bool,
+    /// Deterministic spoken editing commands. They only transform the current
+    /// transcript and never execute an external action.
+    #[serde(default = "default_voice_commands_enabled")]
+    pub voice_commands_enabled: bool,
 }
 
 fn default_model() -> String {
@@ -589,6 +597,10 @@ fn default_overlay_position() -> OverlayPosition {
 
 fn default_persistent_overlay() -> bool {
     // La bulle Nova reste à l'écran par défaut (avec engrenage de choix de Style).
+    true
+}
+
+fn default_voice_commands_enabled() -> bool {
     true
 }
 
@@ -853,6 +865,12 @@ fn default_post_process_prompts() -> Vec<LLMPrompt> {
             "nova_style_notes",
             "Notes",
             "Transforme la dictée en notes structurées au format Markdown : des titres (## ou ###) pour regrouper les sujets, des puces (« - ») pour les listes, du **gras** pour les points clés. Phrases concises, information organisée logiquement. Conserve TOUTES les informations importantes, n'en supprime aucune.",
+        ),
+        // Longue prise de notes : synthèse structurée et éléments actionnables.
+        style(
+            "nova_style_meeting",
+            "Réunion",
+            "Transforme la transcription de réunion en compte rendu Markdown fidèle et exploitable. Organise la sortie avec les sections ## Résumé, ## Points clés, ## Décisions et ## Actions. Pour chaque action, indique le responsable et l'échéance uniquement s'ils sont réellement mentionnés ; sinon n'en invente pas. Conserve les désaccords, nombres, dates et noms importants. Ne prétends jamais identifier les intervenants si la transcription ne les identifie pas.",
         ),
         // Très fidèle : mise au propre uniquement.
         style(
@@ -1299,6 +1317,8 @@ pub fn get_default_settings() -> AppSettings {
         vad_enabled: default_vad_enabled(),
         overlay_style: default_overlay_style(),
         persistent_overlay: default_persistent_overlay(),
+        adaptive_performance_enabled: false,
+        voice_commands_enabled: default_voice_commands_enabled(),
     }
 }
 
@@ -1921,10 +1941,12 @@ mod tests {
     fn every_legacy_prompt_differs_from_new_default() {
         let neu = default_post_process_prompts();
         for leg in [legacy_prompts_v1(), legacy_prompts_v2()] {
-            assert_eq!(neu.len(), leg.len());
             let mut any_diff = false;
-            for (n, l) in neu.iter().zip(leg.iter()) {
-                assert_eq!(n.id, l.id, "ids désalignés entre défaut et legacy");
+            for l in &leg {
+                let n = neu
+                    .iter()
+                    .find(|candidate| candidate.id == l.id)
+                    .unwrap_or_else(|| panic!("Style legacy '{}' supprimé des défauts", l.id));
                 if n.prompt != l.prompt {
                     any_diff = true;
                 }
@@ -1946,8 +1968,8 @@ mod tests {
             settings.post_process_prompts = legacy;
 
             assert!(
-                refresh_outdated_builtin_prompts(&mut settings),
-                "les anciens défauts auraient dû être rafraîchis"
+                ensure_post_process_defaults(&mut settings),
+                "les anciens défauts et les nouveaux Styles auraient dû être migrés"
             );
             let neu = default_post_process_prompts();
             for def in &neu {
@@ -1959,8 +1981,8 @@ mod tests {
                 assert_eq!(&stored.prompt, &def.prompt, "'{}' non rafraîchi", def.id);
             }
             assert!(
-                !refresh_outdated_builtin_prompts(&mut settings),
-                "le refresh doit être idempotent"
+                !ensure_post_process_defaults(&mut settings),
+                "la migration complète doit être idempotente"
             );
         }
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Cog,
@@ -12,16 +12,51 @@ import {
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
-import {
-  HomeSettings,
-  ConfigurationSettings,
-  HistorySettings,
-  DebugSettings,
-  AboutSettings,
-  PostProcessingSettings,
-  PersonalizationSettings,
-  AccountSettings,
-} from "./settings";
+
+const HomeSettings = lazy(() =>
+  import("./settings/home/HomeSettings").then((module) => ({
+    default: module.HomeSettings,
+  })),
+);
+const ConfigurationSettings = lazy(() =>
+  import("./settings/configuration/ConfigurationSettings").then((module) => ({
+    default: module.ConfigurationSettings,
+  })),
+);
+const PostProcessingSettings = lazy(() =>
+  import("./settings/post-processing/PostProcessingSettings").then(
+    (module) => ({
+      default: module.PostProcessingSettings,
+    }),
+  ),
+);
+const PersonalizationSettings = lazy(() =>
+  import("./settings/personalization/PersonalizationSettings").then(
+    (module) => ({
+      default: module.PersonalizationSettings,
+    }),
+  ),
+);
+const AccountSettings = lazy(() =>
+  import("./settings/account/AccountSettings").then((module) => ({
+    default: module.AccountSettings,
+  })),
+);
+const HistorySettings = lazy(() =>
+  import("./settings/history/HistorySettings").then((module) => ({
+    default: module.HistorySettings,
+  })),
+);
+const DebugSettings = lazy(() =>
+  import("./settings/debug/DebugSettings").then((module) => ({
+    default: module.DebugSettings,
+  })),
+);
+const AboutSettings = lazy(() =>
+  import("./settings/about/AboutSettings").then((module) => ({
+    default: module.AboutSettings,
+  })),
+);
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
 

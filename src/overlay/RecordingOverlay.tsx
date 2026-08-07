@@ -202,9 +202,20 @@ const RecordingOverlay: React.FC = () => {
         if (payload.phase === "working") setThinkingProgress(4);
       });
 
-      const unlistenThinkingComplete = await listen("thinking-complete", () => {
-        setThinkingProgress(100);
-      });
+      const unlistenThinkingComplete = await listen<number>(
+        "thinking-complete",
+        (event) => {
+          setThinkingProgress(100);
+          // Acknowledge after React committed and the browser had one chance to
+          // paint the completed progress bar. The backend can then paste without
+          // an unconditional delay on every transcription.
+          requestAnimationFrame(() => {
+            invoke("acknowledge_thinking_frame", { id: event.payload }).catch(
+              () => {},
+            );
+          });
+        },
+      );
 
       const unlistenPasteFallback = await listen<string>(
         "paste-fallback",

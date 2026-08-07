@@ -88,6 +88,7 @@ pub const BUILTIN_STYLE_IDS: &[&str] = &[
     "nova_style_prompt",
     "nova_style_todo",
     "nova_style_notes",
+    "nova_style_meeting",
     "nova_style_voice_to_text",
 ];
 

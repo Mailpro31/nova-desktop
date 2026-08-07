@@ -16,6 +16,7 @@ mod local_llm;
 mod machine_id;
 mod managers;
 mod overlay;
+mod performance;
 pub mod portable;
 mod quota;
 mod screen_ocr;
@@ -29,6 +30,7 @@ mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
 mod utils;
+mod voice_commands;
 mod week_stats;
 
 pub use cli::CliArgs;
@@ -161,6 +163,8 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     // The frontend is responsible for calling the `initialize_enigo` command
     // after onboarding completes. This avoids triggering permission dialogs
     // on macOS before the user is ready.
+
+    performance::apply_startup_policy_if_enabled(app_handle);
 
     // Initialize the managers. The audio recorder receives the streaming router
     // explicitly, so always-on microphone startup can wire live-preview frames
@@ -609,6 +613,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_append_trailing_space_setting,
             shortcut::change_lazy_stream_close_setting,
             shortcut::change_vad_enabled_setting,
+            shortcut::change_voice_commands_setting,
             shortcut::change_app_language_setting,
             shortcut::change_update_checks_setting,
             shortcut::change_show_whats_new_on_update_setting,
@@ -681,6 +686,11 @@ pub fn run(cli_args: CliArgs) {
             commands::transcription::unload_model_manually,
             commands::transcription::is_transcribe_cpu_only_mode,
             commands::transcription::clear_transcribe_gpu_blacklist,
+            performance::run_performance_diagnostics,
+            performance::apply_adaptive_performance,
+            performance::change_adaptive_performance_setting,
+            performance::clear_performance_history,
+            performance::acknowledge_thinking_frame,
             commands::history::get_history_entries,
             commands::history::toggle_history_entry_saved,
             commands::history::get_audio_file_path,
