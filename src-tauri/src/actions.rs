@@ -28,12 +28,16 @@ const CANCELLATION_POLL_INTERVAL: Duration = Duration::from_millis(25);
 
 /// Borne dure de toute la reformulation (démarrage du moteur + appel LLM).
 /// Au-delà, on colle le texte brut : l'utilisateur ne reste jamais bloqué.
-const LOCAL_AIR_POST_PROCESS_TIMEOUT: Duration = Duration::from_millis(1500);
+// Air is fast once warm, but longer dictations can exceed 1.5 s on low-memory
+// CPUs. Keep the same bounded fallback as the other local profiles so valid
+// reformulations are not discarded just before completion.
+const LOCAL_AIR_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
 const LOCAL_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
 /// Anthropic/Turbo gets a short first chance; the remaining budget is reserved
 /// for the compatible local fallback instead of leaving the bubble spinning.
-const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_millis(1800);
-const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_millis(3800);
+const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_secs(5);
+// Includes the remote attempt and enough room for the local Air fallback.
+const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(10);
 
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
@@ -190,10 +194,6 @@ fn build_system_prompt(prompt_template: &str) -> String {
 }
 
 fn post_process_timeout(settings: &AppSettings) -> Duration {
-    let license_key = settings.license_key.as_deref().unwrap_or("");
-    if crate::licensing::has("cloud_styles", license_key, 0) {
-        return REMOTE_POST_PROCESS_TIMEOUT;
-    }
     match settings.active_post_process_provider() {
         Some(provider) if provider.id == crate::local_llm::PROVIDER_ID => {
             match settings
@@ -458,28 +458,20 @@ async fn post_process_transcription(
         }
     };
 
-    // Pro/Ultra : Anthropic via le relais Turbo est toujours le chemin primaire.
-    // La clé Anthropic reste côté serveur. Free conserve le moteur local choisi.
+    // Turbo is available to Pro/Ultra without the Free cap. Free receives ten
+    // daily cloud rewrites, enforced both locally and by the relay. The user's
+    // explicit engine choice remains authoritative (private local or Turbo).
     let license_key = settings.license_key.as_deref().unwrap_or("");
-    let can_use_turbo = crate::licensing::has("cloud_styles", license_key, 0);
-    let provider = if can_use_turbo {
-        settings
-            .post_process_providers
-            .iter()
-            .find(|provider| provider.id == "nova_turbo")
-            .cloned()
-            .unwrap_or(selected_provider)
-    } else {
-        selected_provider
-    };
+    let paid_turbo = crate::licensing::has("cloud_styles", license_key, 0);
+    let free_turbo = crate::licensing::effective_tier(license_key, 0)
+        == crate::licensing::Tier::Free
+        && !crate::quota::is_rewrite_blocked(app);
+    let provider = selected_provider;
     let is_local_engine = provider.id == crate::local_llm::PROVIDER_ID
         || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
-    if !is_local_engine && !crate::licensing::has("cloud_styles", license_key, 0) {
-        debug!("Turbo (moteur en ligne) réservé aux abonnés — reformulation ignorée");
-        // Le repli sur le texte brut doit être VISIBLE : sans ce signal,
-        // l'utilisateur croyait la reformulation « cassée » alors qu'elle est
-        // simplement réservée aux abonnés.
-        let _ = app.emit("online-engine-locked", ());
+    if provider.id == "nova_turbo" && !(paid_turbo || free_turbo) {
+        debug!("Turbo indisponible : quota gratuit atteint");
+        let _ = app.emit("quota-blocked", ());
         return None;
     }
 
@@ -679,11 +671,14 @@ async fn post_process_with_provider(
         provider.id, model
     );
 
-    // Turbo : la « clé » transmise est le jeton de licence — le serveur relaie
-    // vers le fournisseur avec SA propre clé (jamais exposée). Les autres
-    // fournisseurs utilisent la clé saisie par l'utilisateur.
+    // Turbo receives either the paid license token or the bounded NOVAFREE
+    // device token. The relay owns the Anthropic key and enforces its quota.
     let api_key = if provider.id == "nova_turbo" {
-        license_key.to_string()
+        if crate::licensing::has("cloud_styles", license_key, 0) {
+            license_key.to_string()
+        } else {
+            format!("NOVAFREE.{}", crate::machine_id::fingerprint())
+        }
     } else {
         settings
             .post_process_api_keys
