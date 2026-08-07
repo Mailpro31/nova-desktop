@@ -188,6 +188,15 @@ entièrement automatisée par GitHub Actions (`.github/workflows/nova-release.ym
   pouvez en ajouter.
 - Aucun enregistrement audio n'est conservé après transcription.
 
+### Latence sur les PC sans GPU
+
+Le profil **Nova Air** utilise un modèle local Qwen 0,5B quantifié et un contexte
+réduit pour les machines de 8 Go. Avant la reformulation, Nova applique déjà ses
+règles locales de nettoyage (hésitations, répétitions et espaces). La génération
+Air est limitée à 1,5 seconde : si elle ne termine pas, le texte nettoyé est collé
+immédiatement. Les instructions de Style restent dans un préfixe stable afin que
+`llama-server` puisse réutiliser son cache entre deux dictées.
+
 ---
 
 ## Développement
