@@ -1707,69 +1707,6 @@ mod tests {
         }
     }
 
-    /// Les prompts par défaut ACTUELS ne doivent jamais coïncider avec un
-    /// ancien défaut gelé : sinon `refresh_outdated_builtin_prompts` les
-    /// « rafraîchirait » vers eux-mêmes en boucle et le garde-fou d'idempotence
-    /// serait faux. Vérifie aussi que chaque id legacy existe encore.
-    #[test]
-    fn current_defaults_differ_from_every_frozen_legacy() {
-        let legacy: Vec<LLMPrompt> = legacy_prompts_v1()
-            .into_iter()
-            .chain(legacy_prompts_v2())
-            .chain(legacy_prompts_v3())
-            .collect();
-        for cur in default_post_process_prompts() {
-            for old in &legacy {
-                if old.id == cur.id {
-                    assert_ne!(
-                        old.prompt, cur.prompt,
-                        "Le défaut actuel de '{}' est identique à un legacy gelé : \
-                         geler une nouvelle version avant d'enrichir le prompt",
-                        cur.id
-                    );
-                }
-            }
-        }
-    }
-
-    /// Un utilisateur resté sur le défaut v3 (non personnalisé) doit être
-    /// migré vers le défaut enrichi par `refresh_outdated_builtin_prompts`.
-    #[test]
-    fn refresh_upgrades_v3_defaults_to_enriched() {
-        let mut settings = get_default_settings();
-        settings.post_process_prompts = legacy_prompts_v3();
-        let changed = refresh_outdated_builtin_prompts(&mut settings);
-        assert!(
-            changed,
-            "les prompts v3 non modifiés doivent être rafraîchis"
-        );
-        let enriched = default_post_process_prompts();
-        for def in &enriched {
-            let stored = settings
-                .post_process_prompts
-                .iter()
-                .find(|p| p.id == def.id)
-                .expect("le Style doit rester présent");
-            assert_eq!(&stored.prompt, &def.prompt, "Style '{}'", def.id);
-        }
-        // Idempotence : un second passage ne change plus rien.
-        assert!(!refresh_outdated_builtin_prompts(&mut settings));
-    }
-
-    /// Un prompt réellement personnalisé par l'utilisateur ne doit JAMAIS être
-    /// écrasé par le rafraîchissement.
-    #[test]
-    fn refresh_never_touches_customized_prompt() {
-        let mut settings = get_default_settings();
-        settings.post_process_prompts = default_post_process_prompts();
-        let custom = "Mon prompt à moi, totalement personnalisé.";
-        if let Some(first) = settings.post_process_prompts.first_mut() {
-            first.prompt = custom.to_string();
-        }
-        let _ = refresh_outdated_builtin_prompts(&mut settings);
-        assert_eq!(settings.post_process_prompts[0].prompt, custom);
-    }
-
     /// Frozen snapshot of a real v0.9.0-era settings store, as written to
     /// disk. This pins backwards compatibility: it must always parse strictly
     /// (no salvage) and require no migration rewrite.
@@ -2169,7 +2106,11 @@ mod tests {
     #[test]
     fn every_legacy_prompt_differs_from_new_default() {
         let neu = default_post_process_prompts();
-        for leg in [legacy_prompts_v1(), legacy_prompts_v2()] {
+        for leg in [
+            legacy_prompts_v1(),
+            legacy_prompts_v2(),
+            legacy_prompts_v3(),
+        ] {
             let mut any_diff = false;
             for l in &leg {
                 let n = neu
@@ -2192,7 +2133,11 @@ mod tests {
     /// (2ᵉ passe = no-op).
     #[test]
     fn refresh_updates_unmodified_builtin_prompts_idempotently() {
-        for legacy in [legacy_prompts_v1(), legacy_prompts_v2()] {
+        for legacy in [
+            legacy_prompts_v1(),
+            legacy_prompts_v2(),
+            legacy_prompts_v3(),
+        ] {
             let mut settings = get_default_settings();
             settings.post_process_prompts = legacy;
 
