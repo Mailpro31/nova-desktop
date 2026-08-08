@@ -1,0 +1,798 @@
+{
+  "meta": {
+    "lang": "en",
+    "version": 1,
+    "description": "Real English dictations to validate meaning-level understanding and spoken self-corrections, with no preset voice commands. Idiomatic English, not a translation of the French corpus."
+  },
+  "cases": [
+    {
+      "id": "en-autocorrection-001",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "I need to buy three carrots, two heads of lettuce, then get the pool cleaned... oh wait, actually clean the pool first",
+      "expected": "- Clean the pool\n- Buy 3 carrots\n- Buy 2 heads of lettuce",
+      "must_include": ["Clean the pool", "3 carrots"],
+      "must_exclude": ["oh wait", "actually", "then get the pool cleaned"],
+      "notes": "Reference case: spoken reordering, pool moves to first, no hesitation left."
+    },
+    {
+      "id": "en-autocorrection-002",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "let's meet at 2, no wait make it 3, in front of the theater",
+      "expected": "Let's meet at 3 in front of the theater.",
+      "must_include": ["3", "theater"],
+      "must_exclude": ["at 2", "no wait"],
+      "notes": "Time correction, final value wins."
+    },
+    {
+      "id": "en-autocorrection-003",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "send the file to Mark, actually scratch that, send it to Julie, she's handling it this week",
+      "expected": "Send the file to Julie, she's handling it this week.",
+      "must_include": ["Julie"],
+      "must_exclude": ["Mark", "scratch that", "actually"],
+      "notes": "\"scratch that\" is understood by meaning, never treated as a keyword command."
+    },
+    {
+      "id": "en-autocorrection-004",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "the budget is five thousand dollars, sorry my mistake, it's eight thousand for the quarter",
+      "expected": "Budget: $8,000 for the quarter.",
+      "must_include": ["8,000", "quarter"],
+      "must_exclude": ["5,000", "five thousand", "my mistake"],
+      "notes": "Amount correction."
+    },
+    {
+      "id": "en-autocorrection-005",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "book the room for Monday, no hold on, Tuesday works better, and give the team a heads up",
+      "expected": "- Book the room for Tuesday\n- Give the team a heads up",
+      "must_include": ["Tuesday", "team"],
+      "must_exclude": ["Monday", "hold on"],
+      "notes": "Day correction inside a task."
+    },
+    {
+      "id": "en-autocorrection-006",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "hi, confirming our meeting on Thursday, sorry I mean Friday at 10 a.m. at our office",
+      "expected": "Hi,\n\nConfirming our meeting on Friday at 10 a.m. at our office.\n\nBest regards,",
+      "must_include": ["Friday", "10 a.m."],
+      "must_exclude": ["Thursday", "I mean"],
+      "notes": "Day correction in a formal email."
+    },
+    {
+      "id": "en-autocorrection-007",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "call the plumber, follow up with the client, oh forget the plumber that's already sorted",
+      "expected": "- Follow up with the client",
+      "must_include": ["Follow up with the client"],
+      "must_exclude": ["plumber", "forget", "already sorted"],
+      "notes": "Task dropped because it's done, expressed naturally."
+    },
+    {
+      "id": "en-autocorrection-008",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "I'll be there in five, well more like ten, gotta wrap something up",
+      "expected": "I'll be there in 10, gotta wrap something up.",
+      "must_include": ["10"],
+      "must_exclude": ["in five", "more like"],
+      "notes": "Duration correction, casual tone kept."
+    },
+    {
+      "id": "en-autocorrection-009",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "the meeting is about marketing, no actually about sales, mostly the north region",
+      "expected": "Meeting about sales, mainly the north region.",
+      "must_include": ["sales", "north region"],
+      "must_exclude": ["marketing", "no actually"],
+      "notes": "Topic correction."
+    },
+    {
+      "id": "en-autocorrection-010",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "I'm attaching the quote, wait no not the quote, the final invoice is attached",
+      "expected": "Hi,\n\nPlease find the final invoice attached.\n\nBest regards,",
+      "must_include": ["final invoice", "attached"],
+      "must_exclude": ["quote", "wait no"],
+      "notes": "Document name correction."
+    },
+    {
+      "id": "en-autocorrection-011",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "grab bread, milk, butter, oh and throw eggs at the top that's the most important one",
+      "expected": "- Buy eggs\n- Buy bread\n- Buy milk\n- Buy butter",
+      "must_include": ["eggs", "bread", "milk", "butter"],
+      "must_exclude": ["throw eggs at the top", "most important"],
+      "notes": "Item inserted at the top after the fact."
+    },
+    {
+      "id": "en-autocorrection-012",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "meet at the coffee shop by the station, actually let's do the pub across the street it's quieter",
+      "expected": "Let's meet at the pub across the street, it's quieter.",
+      "must_include": ["pub"],
+      "must_exclude": ["coffee shop", "actually let's"],
+      "notes": "Location correction."
+    },
+    {
+      "id": "en-autocorrection-013",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "we ship on March fifteenth, uh no March twentieth, need to lock the demo before that",
+      "expected": "Project ships on March 20. Lock the demo before that.",
+      "must_include": ["March 20", "demo"],
+      "must_exclude": ["fifteenth", "March 15", "uh no"],
+      "notes": "Date correction."
+    },
+    {
+      "id": "en-autocorrection-014",
+      "category": "auto-correction",
+      "style": "nova_style_prompt",
+      "dictation": "write a poem about autumn, no on second thought about winter, four stanzas, melancholic tone",
+      "expected": "Write a poem about winter, four stanzas, in a melancholic tone.",
+      "must_include": ["winter", "four stanzas", "melancholic"],
+      "must_exclude": ["autumn", "second thought"],
+      "notes": "Prompt topic correction."
+    },
+    {
+      "id": "en-autocorrection-015",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "prep the presentation, book the train to Boston, wait no it's Chicago",
+      "expected": "- Prep the presentation\n- Book the train to Chicago",
+      "must_include": ["presentation", "Chicago"],
+      "must_exclude": ["Boston", "wait no"],
+      "notes": "Destination correction inside a task."
+    },
+    {
+      "id": "en-autocorrection-016",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "the client is Mr. Johnson, sorry Mr. Jackson, he runs a mid-size logistics firm",
+      "expected": "Client: Mr. Jackson, runs a mid-size logistics firm.",
+      "must_include": ["Jackson", "logistics"],
+      "must_exclude": ["Johnson", "sorry"],
+      "notes": "Proper-noun correction."
+    },
+    {
+      "id": "en-autocorrection-017",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "order two pizzas, one margherita one pepperoni, actually make it three we've got more people coming",
+      "expected": "Order 3 pizzas: one margherita, one pepperoni.",
+      "must_include": ["3 pizzas", "margherita", "pepperoni"],
+      "must_exclude": ["two pizzas", "actually make it three"],
+      "notes": "Quantity correction, already-dictated details stay valid."
+    },
+    {
+      "id": "en-autocorrection-018",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "I'll be out next week Monday through Wednesday, actually Tuesday through Thursday",
+      "expected": "Hi,\n\nI'll be out of office next week from Tuesday through Thursday.\n\nBest regards,",
+      "must_include": ["Tuesday", "Thursday"],
+      "must_exclude": ["Monday", "Wednesday", "actually Tuesday"],
+      "notes": "Date-range correction."
+    },
+    {
+      "id": "en-autocorrection-019",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "review chapter two, no let's start with chapter one it makes more sense, then two",
+      "expected": "- Review chapter 1\n- Review chapter 2",
+      "must_include": ["chapter 1", "chapter 2"],
+      "must_exclude": ["no let's start", "makes more sense"],
+      "notes": "Spoken reordering."
+    },
+    {
+      "id": "en-autocorrection-020",
+      "category": "auto-correction",
+      "style": "nova_style_voice_to_text",
+      "dictation": "the door code is A as in Alpha one two three four, no sorry B as in Bravo one two three four",
+      "expected": "The door code is B1234.",
+      "must_include": ["B1234"],
+      "must_exclude": ["Alpha", "sorry", "A as in"],
+      "notes": "Spelled-out code correction, phonetic alphabet not echoed."
+    },
+    {
+      "id": "en-hesitation-021",
+      "category": "hesitation",
+      "style": "nova_style_voice_to_text",
+      "dictation": "so um I think that uh we should like revisit the schedule before Friday",
+      "expected": "I think we should revisit the schedule before Friday.",
+      "must_include": ["revisit the schedule", "Friday"],
+      "must_exclude": ["um", "uh"],
+      "notes": "Filler removal."
+    },
+    {
+      "id": "en-hesitation-022",
+      "category": "hesitation",
+      "style": "nova_style_messages",
+      "dictation": "hmm yeah I dunno really, let's just see tomorrow I guess",
+      "expected": "Yeah, I'm not really sure, let's just see tomorrow I guess.",
+      "must_include": ["tomorrow"],
+      "must_exclude": ["hmm"],
+      "notes": "Cleaned hesitant message, meaning intact."
+    },
+    {
+      "id": "en-reordering-023",
+      "category": "reordering",
+      "style": "nova_style_todo",
+      "dictation": "send the newsletter, but before that we need to get the copy approved by leadership",
+      "expected": "- Get the copy approved by leadership\n- Send the newsletter",
+      "must_include": ["approved by leadership", "Send the newsletter"],
+      "notes": "Logical dependency (\"before that\") reorders the tasks."
+    },
+    {
+      "id": "en-reordering-024",
+      "category": "reordering",
+      "style": "nova_style_todo",
+      "dictation": "take out the trash, do the groceries, oh the first thing is drop the kids at school",
+      "expected": "- Drop the kids at school\n- Take out the trash\n- Do the groceries",
+      "must_include": ["Drop the kids", "trash", "groceries"],
+      "must_exclude": ["the first thing is"],
+      "notes": "Item explicitly placed first afterward."
+    },
+    {
+      "id": "en-slang-025",
+      "category": "slang",
+      "style": "nova_style_messages",
+      "dictation": "this bug is so janky, works on my machine but totally craps out on the client's box",
+      "expected": "This bug is really flaky: it works on my machine but completely fails on the client's box.",
+      "must_include": ["bug", "client"],
+      "notes": "Slang (janky, craps out) rendered in plain register, meaning kept."
+    },
+    {
+      "id": "en-slang-026",
+      "category": "slang",
+      "style": "nova_style_messages",
+      "dictation": "not gonna lie last night's dinner was fire, we gotta go back",
+      "expected": "Not gonna lie, last night's dinner was amazing, we have to go back.",
+      "must_include": ["dinner", "go back"],
+      "notes": "Slang (fire) transposed, friendly tone preserved."
+    },
+    {
+      "id": "en-idiom-027",
+      "category": "idiom",
+      "style": "nova_style_notes",
+      "dictation": "we're kind of boiling the ocean here, let's just nail down the MVP and ship it",
+      "expected": "We're trying to do too much at once. Let's focus on nailing down the MVP and shipping it.",
+      "must_include": ["MVP"],
+      "notes": "Idiom (boiling the ocean) unpacked to plain meaning."
+    },
+    {
+      "id": "en-idiom-028",
+      "category": "idiom",
+      "style": "nova_style_messages",
+      "dictation": "let's touch base early next week and circle back on the numbers once accounting weighs in",
+      "expected": "Let's check in early next week and revisit the numbers once accounting weighs in.",
+      "must_include": ["next week", "numbers", "accounting"],
+      "notes": "Business idioms kept understandable."
+    },
+    {
+      "id": "en-incomplete-029",
+      "category": "incomplete",
+      "style": "nova_style_todo",
+      "dictation": "I need to remember to... anyway, I need to call the client tomorrow",
+      "expected": "- Call the client tomorrow",
+      "must_include": ["Call the client tomorrow"],
+      "must_exclude": ["remember to...", "anyway"],
+      "notes": "Abandoned false start, then the real task, one line out."
+    },
+    {
+      "id": "en-incomplete-030",
+      "category": "incomplete",
+      "style": "nova_style_messages",
+      "dictation": "hang on I... never mind what I said, let's just talk tomorrow it's easier",
+      "expected": "Never mind, let's just talk tomorrow, it's easier.",
+      "must_include": ["tomorrow"],
+      "must_exclude": ["hang on I", "what I said"],
+      "notes": "Self-cancelled false start."
+    },
+    {
+      "id": "en-oral-punctuation-031",
+      "category": "oral-punctuation",
+      "style": "nova_style_voice_to_text",
+      "dictation": "dear customer comma we have received your request period we will get back to you shortly period",
+      "expected": "Dear customer, we have received your request. We will get back to you shortly.",
+      "must_include": ["Dear customer,", "your request."],
+      "must_exclude": ["comma", "period"],
+      "notes": "Spoken punctuation converted to symbols."
+    },
+    {
+      "id": "en-oral-punctuation-032",
+      "category": "oral-punctuation",
+      "style": "nova_style_messages",
+      "dictation": "can you make it tomorrow question mark otherwise we push to next week",
+      "expected": "Can you make it tomorrow? Otherwise we push to next week.",
+      "must_include": ["tomorrow?"],
+      "must_exclude": ["question mark"],
+      "notes": "\"question mark\" -> \"?\"."
+    },
+    {
+      "id": "en-oral-punctuation-033",
+      "category": "oral-punctuation",
+      "style": "nova_style_todo",
+      "dictation": "to do new line buy the tickets new line book the hotel",
+      "expected": "To do:\n- Buy the tickets\n- Book the hotel",
+      "must_include": ["Buy the tickets", "Book the hotel"],
+      "must_exclude": ["new line"],
+      "notes": "\"new line\" understood as formatting intent, never pasted literally."
+    },
+    {
+      "id": "en-numbers-034",
+      "category": "numbers",
+      "style": "nova_style_voice_to_text",
+      "dictation": "the meeting is on June eleventh twenty twenty nine at three thirty pm",
+      "expected": "The meeting is on June 11, 2029 at 3:30 p.m.",
+      "must_include": ["June 11", "2029", "3:30"],
+      "must_exclude": ["eleventh", "twenty twenty nine"],
+      "notes": "Numbers and dates as digits."
+    },
+    {
+      "id": "en-numbers-035",
+      "category": "numbers",
+      "style": "nova_style_notes",
+      "dictation": "conversion went from three point two percent to four point eight percent quarter over quarter",
+      "expected": "Conversion went from 3.2% to 4.8% quarter over quarter.",
+      "must_include": ["3.2%", "4.8%"],
+      "must_exclude": ["three point two", "percent"],
+      "notes": "Decimals and percentages."
+    },
+    {
+      "id": "en-email-036",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "tell the support team ticket 4821 is resolved and they can close it out thanks",
+      "expected": "Hi,\n\nTicket 4821 is resolved, you can close it out.\n\nThanks,\nBest regards,",
+      "must_include": ["4821"],
+      "notes": "Short structured email from a spoken instruction."
+    },
+    {
+      "id": "en-email-037",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "reply to the customer that we're sorry for the delay, the order ships Monday at the latest, and we'll cover shipping",
+      "expected": "Hi,\n\nWe're sorry for the delay. Your order will ship Monday at the latest, and we'll cover the shipping cost.\n\nBest regards,",
+      "must_include": ["delay", "Monday", "shipping"],
+      "notes": "Apology email, all substance kept."
+    },
+    {
+      "id": "en-meeting-038",
+      "category": "meeting",
+      "style": "nova_style_meeting",
+      "dictation": "so we talked about the launch, Paul thinks we're ready, Mary disagrees she wants more testing, we decided to push a week, Paul will notify clients before Friday",
+      "expected": "## Summary\nDiscussion about the product launch.\n\n## Key points\n- Paul believes the team is ready to launch\n- Mary wants more testing\n\n## Decisions\n- Launch pushed by one week\n\n## Action items\n- Paul: notify clients before Friday",
+      "must_include": ["Paul", "Mary", "push", "Friday"],
+      "notes": "Structured minutes: disagreement kept, action assigned."
+    },
+    {
+      "id": "en-prompt-039",
+      "category": "prompt",
+      "style": "nova_style_prompt",
+      "dictation": "I want a follow up email for an unpaid invoice, firm but polite tone, in english, keep it short",
+      "expected": "Write a follow-up email for an unpaid invoice. Tone: firm but polite. Language: English. Constraint: keep it short.",
+      "must_include": ["follow-up email", "unpaid invoice", "firm", "polite"],
+      "notes": "Prompt structured from a spoken request."
+    },
+    {
+      "id": "en-autocorrection-040",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "gross margin is twenty percent, wait I'm mixing them up, twenty percent is net, gross is thirty five",
+      "expected": "Net margin: 20%. Gross margin: 35%.",
+      "must_include": ["20%", "35%"],
+      "must_exclude": ["mixing them up", "wait"],
+      "notes": "User reassigns values: understand the re-mapping."
+    },
+    {
+      "id": "en-autocorrection-041",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "take exit twelve, no thirteen, the one after the gas station",
+      "expected": "Take exit 13, the one after the gas station.",
+      "must_include": ["exit 13", "gas station"],
+      "must_exclude": ["twelve", "exit 12", "no thirteen"],
+      "notes": "Exit number correction."
+    },
+    {
+      "id": "en-autocorrection-042",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "current version is 2.3, oh wait we already moved to 2.4 yesterday",
+      "expected": "Current version: 2.4 (as of yesterday).",
+      "must_include": ["2.4"],
+      "must_exclude": ["2.3", "oh wait"],
+      "notes": "Version number correction."
+    },
+    {
+      "id": "en-autocorrection-043",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "the deliverable is due end of March, no we agreed end of April in the contract, so end of April",
+      "expected": "Hi,\n\nThe deliverable is due at the end of April, as agreed in the contract.\n\nBest regards,",
+      "must_include": ["end of April"],
+      "must_exclude": ["end of March", "no we agreed"],
+      "notes": "Correction referencing the contract."
+    },
+    {
+      "id": "en-autocorrection-044",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "I'll email it to you, actually no I'll text it that's faster",
+      "expected": "I'll text it to you, that's faster.",
+      "must_include": ["text it"],
+      "must_exclude": ["email it", "actually no"],
+      "notes": "Channel correction."
+    },
+    {
+      "id": "en-autocorrection-045",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "water the plants every day, no every other day is fine in winter",
+      "expected": "- Water the plants every other day (in winter)",
+      "must_include": ["every other day"],
+      "must_exclude": ["every day,", "no every other"],
+      "notes": "Frequency correction."
+    },
+    {
+      "id": "en-autocorrection-046",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "book a table for four, actually we'll be six, my sister's bringing her boyfriend",
+      "expected": "Book a table for 6, my sister's bringing her boyfriend.",
+      "must_include": ["6"],
+      "must_exclude": ["for four", "for 4", "actually we'll be six"],
+      "notes": "Party-size correction with reason."
+    },
+    {
+      "id": "en-autocorrection-047",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "the server's been down since this morning, actually no since last night per the logs",
+      "expected": "The server has been down since last night (per the logs).",
+      "must_include": ["last night", "logs"],
+      "must_exclude": ["this morning", "actually no"],
+      "notes": "Sourced temporal correction."
+    },
+    {
+      "id": "en-autocorrection-048",
+      "category": "auto-correction",
+      "style": "nova_style_prompt",
+      "dictation": "summarize this text in five bullets, no three is enough, bullet points",
+      "expected": "Summarize this text in three bullet points.",
+      "must_include": ["three", "bullet"],
+      "must_exclude": ["five", "no three"],
+      "notes": "Correction of requested bullet count."
+    },
+    {
+      "id": "en-autocorrection-049",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "push the update to all machines, start with accounting, no start with customer support they're more urgent",
+      "expected": "- Push the update first to customer support machines\n- Push the update to accounting machines",
+      "must_include": ["customer support", "accounting"],
+      "must_exclude": ["no start with", "more urgent"],
+      "notes": "Rollout order corrected out loud."
+    },
+    {
+      "id": "en-autocorrection-050",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "confirm the order for one hundred units, actually two hundred, demand went up",
+      "expected": "Hi,\n\nI'm confirming the order for 200 units, as demand has increased.\n\nBest regards,",
+      "must_include": ["200 units"],
+      "must_exclude": ["one hundred", "100 units", "actually two hundred"],
+      "notes": "Order-quantity correction."
+    },
+    {
+      "id": "en-autocorrection-051",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "meet at the main entrance, oh wait the main entrance is closed on Sundays, the parking side then",
+      "expected": "Let's meet on the parking side, the main entrance is closed on Sundays.",
+      "must_include": ["parking side", "Sundays"],
+      "must_exclude": [
+        "oh wait the main entrance is closed on Sundays, the parking"
+      ],
+      "notes": "Meeting-point correction with reason."
+    },
+    {
+      "id": "en-autocorrection-052",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "the review is in room B, sorry room C, the projector in room B is broken",
+      "expected": "Review in room C (the room B projector is broken).",
+      "must_include": ["room C"],
+      "must_exclude": ["review is in room B", "sorry room C, the"],
+      "notes": "Room correction with justification."
+    },
+    {
+      "id": "en-autocorrection-053",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "send the signed contract, chase the supplier, oh the contract is more urgent put it first",
+      "expected": "- Send the signed contract\n- Chase the supplier",
+      "must_include": ["signed contract", "supplier"],
+      "must_exclude": ["oh the contract", "put it first"],
+      "notes": "Prioritization stated afterward."
+    },
+    {
+      "id": "en-autocorrection-054",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "we target eighteen to twenty five year olds, actually twenty to thirty, urban professionals",
+      "expected": "Target: 20 to 30 year olds, urban professionals.",
+      "must_include": ["20 to 30", "urban professionals"],
+      "must_exclude": ["eighteen", "18", "25", "actually twenty"],
+      "notes": "Age-range correction."
+    },
+    {
+      "id": "en-autocorrection-055",
+      "category": "auto-correction",
+      "style": "nova_style_voice_to_text",
+      "dictation": "my address is twelve Maple Street, no fourteen Maple Street, apartment three",
+      "expected": "My address is 14 Maple Street, apartment 3.",
+      "must_include": ["14 Maple Street", "apartment 3"],
+      "must_exclude": ["twelve", "12 Maple", "no fourteen"],
+      "notes": "Street-number correction."
+    },
+    {
+      "id": "en-autocorrection-056",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "book a dentist appointment, and a doctor's one too, actually drop the dentist it's too soon",
+      "expected": "- Book a doctor's appointment",
+      "must_include": ["doctor"],
+      "must_exclude": ["dentist", "drop the", "too soon"],
+      "notes": "Task dropped, expressed naturally (\"drop the\")."
+    },
+    {
+      "id": "en-meeting-057",
+      "category": "meeting",
+      "style": "nova_style_meeting",
+      "dictation": "budget approved at fifty grand, design is behind, we need to chase the vendor, no deadline set yet",
+      "expected": "## Summary\nBudget and design check-in.\n\n## Decisions\n- Budget approved at $50,000\n\n## Key points\n- Design is behind schedule\n\n## Action items\n- Chase the vendor (deadline TBD)",
+      "must_include": ["50,000", "vendor"],
+      "must_exclude": ["fifty grand"],
+      "notes": "Do not invent a missing deadline."
+    },
+    {
+      "id": "en-default-058",
+      "category": "cleanup",
+      "style": "default_improve_transcriptions",
+      "dictation": "so yeah um I wanted to tell you the report is almost done just missing the conclusion and uh the appendices",
+      "expected": "So yeah, I wanted to tell you the report is almost done, just missing the conclusion and the appendices.",
+      "must_include": ["report", "conclusion", "appendices"],
+      "must_exclude": ["um", "uh"],
+      "notes": "Default style: faithful cleanup, order preserved, no rewrite."
+    },
+    {
+      "id": "en-default-059",
+      "category": "cleanup",
+      "style": "default_improve_transcriptions",
+      "dictation": "can you call me back when you get five minutes it's about the contract",
+      "expected": "Can you call me back when you get 5 minutes? It's about the contract.",
+      "must_include": ["5 minutes", "contract"],
+      "notes": "Cleanup plus punctuation, no paraphrase."
+    },
+    {
+      "id": "en-prompt-060",
+      "category": "prompt",
+      "style": "nova_style_prompt",
+      "dictation": "explain photosynthesis like I'm ten with one simple example",
+      "expected": "Explain photosynthesis as if to a 10-year-old, with one simple example.",
+      "must_include": ["photosynthesis", "example"],
+      "notes": "Explainer prompt."
+    },
+    {
+      "id": "en-slang-061",
+      "category": "slang",
+      "style": "nova_style_messages",
+      "dictation": "yo what's the move for tonight, movie or nah",
+      "expected": "Hey, what's the plan for tonight? Movie or not?",
+      "must_include": ["tonight", "movie"],
+      "notes": "Slang transposed to plain register, friendly tone kept."
+    },
+    {
+      "id": "en-idiom-062",
+      "category": "idiom",
+      "style": "nova_style_notes",
+      "dictation": "the project's a bit of a moving target right now, we need to lock scope and stop gold plating",
+      "expected": "The project scope keeps shifting right now: we need to lock the scope and stop over-engineering.",
+      "must_include": ["scope"],
+      "notes": "Idioms (moving target, gold plating) unpacked."
+    },
+    {
+      "id": "en-incomplete-063",
+      "category": "incomplete",
+      "style": "nova_style_todo",
+      "dictation": "note to self... right, back up the database before the migration",
+      "expected": "- Back up the database before the migration",
+      "must_include": ["Back up the database", "migration"],
+      "must_exclude": ["note to self..."],
+      "notes": "Abandoned opener, then the real task."
+    },
+    {
+      "id": "en-numbers-064",
+      "category": "numbers",
+      "style": "nova_style_messages",
+      "dictation": "it's twenty three fifty each, there's five of us so a hundred seventeen fifty total",
+      "expected": "It's $23.50 each, there are 5 of us, so $117.50 total.",
+      "must_include": ["23.50", "117.50"],
+      "must_exclude": ["twenty three", "a hundred seventeen"],
+      "notes": "Money amounts with cents."
+    },
+    {
+      "id": "en-email-065",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "thank the candidate for yesterday's interview and say we'll get back to them by end of week",
+      "expected": "Hi,\n\nThank you for yesterday's interview. We'll get back to you by the end of the week.\n\nBest regards,",
+      "must_include": ["interview", "end of the week"],
+      "notes": "Courteous recruiting email."
+    },
+    {
+      "id": "en-autocorrection-066",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "I'll grab the red one, no the blue one goes better with the couch",
+      "expected": "I'll grab the blue one, it goes better with the couch.",
+      "must_include": ["blue", "couch"],
+      "must_exclude": ["red one", "no the blue"],
+      "notes": "Choice correction."
+    },
+    {
+      "id": "en-autocorrection-067",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "estimated headcount is one fifty, actually the venue holds two hundred so let's aim for two hundred",
+      "expected": "Target attendance: 200 (venue capacity).",
+      "must_include": ["200"],
+      "must_exclude": ["one fifty", "150"],
+      "notes": "Estimate revised with reason."
+    },
+    {
+      "id": "en-autocorrection-068",
+      "category": "auto-correction",
+      "style": "nova_style_prompt",
+      "dictation": "make a table with three columns, no four columns: first name, last name, age and city",
+      "expected": "Create a table with four columns: first name, last name, age, and city.",
+      "must_include": [
+        "four columns",
+        "first name",
+        "last name",
+        "age",
+        "city"
+      ],
+      "must_exclude": ["three columns", "no four"],
+      "notes": "Column-count correction confirmed by the list that follows."
+    },
+    {
+      "id": "en-hesitation-069",
+      "category": "hesitation",
+      "style": "nova_style_email",
+      "dictation": "hi um I'm just uh following up on our uh conversation from last week",
+      "expected": "Hi,\n\nI'm following up on our conversation from last week.\n\nBest regards,",
+      "must_include": ["following up", "last week"],
+      "must_exclude": ["um", "uh"],
+      "notes": "Email stripped of fillers."
+    },
+    {
+      "id": "en-oral-punctuation-070",
+      "category": "oral-punctuation",
+      "style": "nova_style_notes",
+      "dictation": "goals colon grow sales open paren ten percent close paren and improve retention",
+      "expected": "Goals: grow sales (10%) and improve retention.",
+      "must_include": ["Goals:", "(10%)"],
+      "must_exclude": ["colon", "open paren", "close paren"],
+      "notes": "Spoken colon and parentheses."
+    },
+    {
+      "id": "en-autocorrection-071",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "do a sync with finance, actually cancel the finance sync I'll just handle it myself",
+      "expected": "- Handle the finance sync myself",
+      "must_exclude": ["cancel the finance sync", "actually"],
+      "notes": "User \"cancels\" out loud but folds the intent back in: understand the real intent, not the word \"cancel\"."
+    },
+    {
+      "id": "en-autocorrection-072",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "we'll drive there, no actually the train is better with the traffic, leaving from Union Station",
+      "expected": "We'll take the train, it's better with the traffic. Leaving from Union Station.",
+      "must_include": ["train", "Union Station"],
+      "must_exclude": ["drive there", "no actually the"],
+      "notes": "Transport-mode correction."
+    },
+    {
+      "id": "en-autocorrection-073",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "the project lead is Tom, oh Tom left, it's Sarah now",
+      "expected": "Project lead: Sarah (Tom left).",
+      "must_include": ["Sarah"],
+      "must_exclude": ["project lead is Tom", "oh Tom left, it's"],
+      "notes": "Lead correction, former lead stays as context."
+    },
+    {
+      "id": "en-autocorrection-074",
+      "category": "auto-correction",
+      "style": "nova_style_voice_to_text",
+      "dictation": "the password is hello thirty two, no sorry hello forty two all one word",
+      "expected": "The password is hello42, all one word.",
+      "must_include": ["hello42"],
+      "must_exclude": ["thirty two", "32", "sorry"],
+      "notes": "Technical fragment correction."
+    },
+    {
+      "id": "en-slang-075",
+      "category": "slang",
+      "style": "nova_style_notes",
+      "dictation": "the whole thing is kind of held together with duct tape right now, we should refactor before it bites us",
+      "expected": "The setup is fragile right now: we should refactor it before it causes problems.",
+      "must_include": ["refactor"],
+      "notes": "Idiomatic/slang (held together with duct tape) unpacked."
+    },
+    {
+      "id": "en-email-076",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "let the vendor know we approve the quote and ask them to send an invoice with net thirty terms",
+      "expected": "Hi,\n\nWe approve the quote. Please send an invoice with net-30 terms.\n\nBest regards,",
+      "must_include": ["quote", "net-30"],
+      "notes": "Approval email with a specific term."
+    },
+    {
+      "id": "en-reordering-077",
+      "category": "reordering",
+      "style": "nova_style_todo",
+      "dictation": "deploy to production, but first run the full test suite and get sign off from QA",
+      "expected": "- Run the full test suite\n- Get sign-off from QA\n- Deploy to production",
+      "must_include": ["test suite", "QA", "Deploy to production"],
+      "notes": "Dependencies reorder the deploy to last."
+    },
+    {
+      "id": "en-incomplete-078",
+      "category": "incomplete",
+      "style": "nova_style_notes",
+      "dictation": "the main risk is... right, the main risk is depending on a single supplier",
+      "expected": "Main risk: dependency on a single supplier.",
+      "must_include": ["single supplier"],
+      "notes": "Restart after a false start."
+    },
+    {
+      "id": "en-autocorrection-079",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "let's kick off the meeting at nine, actually not everyone's free, let's say ten",
+      "expected": "Hi,\n\nLet's start the meeting at 10 a.m. so everyone can attend.\n\nBest regards,",
+      "must_include": ["10"],
+      "must_exclude": ["at nine", "at 9", "actually not everyone"],
+      "notes": "Start-time correction with justification."
+    },
+    {
+      "id": "en-autocorrection-080",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "I paid forty bucks, well no it was eighty with the tip",
+      "expected": "I paid $80 with the tip.",
+      "must_include": ["80", "tip"],
+      "must_exclude": ["forty", "40", "well no"],
+      "notes": "Amount correction with added detail."
+    }
+  ]
+}
