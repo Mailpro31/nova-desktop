@@ -424,9 +424,9 @@
         }
       },
       "customWords": {
-        "title": "Custom Words",
-        "description": "Add words that are often misheard or misspelled during transcription. The system will automatically correct similar-sounding words to match your list.",
-        "placeholder": "Add a word",
+        "title": "Personal Lexicon",
+        "description": "Add words and multi-word terms (brand names, proper nouns, technical terms like \"repo GitHub\") that are often misheard or misspelled. Nova corrects similar-sounding speech to match your list and keeps these terms intact while rewriting.",
+        "placeholder": "Add a word or term",
         "add": "Add",
         "remove": "Remove {{word}}",
         "duplicate": "\"{{word}}\" already exists"
@@ -826,5 +826,14 @@
     "yourPlan": "Your plan",
     "onlineEngineLockedTitle": "Turbo requires a Nova subscription",
     "onlineEngineLocked": "The online engine is reserved for Nova Pro and Ultra — your text was pasted without reformulation."
+  },
+  "lexiconLearning": {
+    "title": "Learn my vocabulary",
+    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
+    "suggestionTitle": "Did you mean “{{term}}”?",
+    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "add": "Add",
+    "ignore": "Ignore",
+    "added": "“{{term}}” was added to your lexicon."
   }
 }

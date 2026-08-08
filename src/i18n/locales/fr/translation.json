@@ -424,9 +424,9 @@
         }
       },
       "customWords": {
-        "title": "Mots personnalisés",
-        "description": "Ajoutez des mots souvent mal entendus ou mal orthographiés lors de la transcription. Le système corrigera automatiquement les mots similaires pour correspondre à votre liste.",
-        "placeholder": "Ajouter un mot",
+        "title": "Lexique personnel",
+        "description": "Ajoutez des mots et des termes de plusieurs mots (marques, noms propres, termes techniques comme « repo GitHub ») souvent mal entendus ou mal orthographiés. Nova corrige les tournures proches pour coller à votre liste et préserve ces termes intacts pendant la reformulation.",
+        "placeholder": "Ajouter un mot ou un terme",
         "add": "Ajouter",
         "remove": "Supprimer {{word}}",
         "duplicate": "\"{{word}}\" existe déjà"
@@ -826,5 +826,14 @@
     "yourPlan": "Votre plan",
     "onlineEngineLockedTitle": "Turbo nécessite un abonnement Nova",
     "onlineEngineLocked": "Le moteur en ligne est réservé à Nova Pro et Ultra — votre texte a été collé sans reformulation."
+  },
+  "lexiconLearning": {
+    "title": "Apprendre mon vocabulaire",
+    "description": "Quand Nova repère un nom ou un terme que vous dictez souvent, il vous propose de l’ajouter à votre lexique personnel. Rien n’est jamais ajouté sans votre confirmation.",
+    "suggestionTitle": "Vouliez-vous dire « {{term}} » ?",
+    "suggestionDescription": "Ajoutez-le à votre lexique personnel pour améliorer sa reconnaissance.",
+    "add": "Ajouter",
+    "ignore": "Ignorer",
+    "added": "« {{term}} » a été ajouté à votre lexique."
   }
 }

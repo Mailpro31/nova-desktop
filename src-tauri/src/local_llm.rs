@@ -748,14 +748,99 @@ pub async fn ensure_server_running(_app: &AppHandle, _profile_id: &str) -> Resul
     Err("L'Intelligence privée locale n'est disponible que sous Windows.".to_string())
 }
 
+/// Profil local à préparer par défaut : celui déjà configuré pour
+/// l'Intelligence privée s'il est valide, sinon le profil recommandé selon la
+/// RAM détectée (aucune décision de l'utilisateur requise). Volontairement
+/// INDÉPENDANT DU PALIER : la qualité/vitesse du moteur local ne dépend jamais
+/// du plan (seul Turbo, en ligne, reste réservé).
+#[cfg(windows)]
+fn default_provision_profile_id(settings: &crate::settings::AppSettings) -> String {
+    settings
+        .post_process_models
+        .get(PROVIDER_ID)
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty() && spec(s).is_some())
+        .unwrap_or_else(|| recommended_profile_id().to_string())
+}
+
+#[cfg(windows)]
+fn mark_autoprovision_done(app: &AppHandle) {
+    let mut settings = crate::settings::get_settings(app);
+    if !settings.local_model_autoprovision_done {
+        settings.local_model_autoprovision_done = true;
+        crate::settings::write_settings(app, settings);
+    }
+}
+
+/// Prépare, EN ARRIÈRE-PLAN et sans JAMAIS bloquer le démarrage, le moteur local
+/// et le modèle recommandé dès le premier lancement — pour que la première
+/// reformulation via l'Intelligence privée soit immédiate, sans aucune action ni
+/// compréhension requise de l'utilisateur, et à l'identique sur tous les paliers.
+///
+/// Remplace l'ancien comportement paresseux (téléchargement au premier usage).
+/// « Jamais de plantage » : en cas d'échec (réseau absent…), on retente quelques
+/// fois avec un délai croissant puis on abandonne — le prochain lancement
+/// retentera (le drapeau `local_model_autoprovision_done` reste faux). Aucune
+/// erreur ne remonte ni ne bloque le premier lancement. Réutilise la plomberie
+/// existante (`ensure_server_binary`, `ensure_model_downloaded`, vérif SHA-256).
+#[cfg(windows)]
+pub async fn provision_default_model_in_background(app: &AppHandle) {
+    let settings = crate::settings::get_settings(app);
+    if settings.local_model_autoprovision_done {
+        return;
+    }
+    let profile_id = default_provision_profile_id(&settings);
+
+    // Déjà présent : rien à télécharger, on note l'installation comme faite.
+    if model_path(app, &profile_id)
+        .map(|p| p.is_file())
+        .unwrap_or(false)
+    {
+        mark_autoprovision_done(app);
+        return;
+    }
+
+    // Tentatives espacées (tâche de fond déjà détachée) : le réseau peut
+    // manquer au tout premier lancement puis revenir.
+    const DELAYS_SECS: [u64; 3] = [0, 60, 300];
+    for (attempt, delay) in DELAYS_SECS.iter().enumerate() {
+        if *delay > 0 {
+            tokio::time::sleep(std::time::Duration::from_secs(*delay)).await;
+        }
+        let result = async {
+            ensure_server_binary(app).await?;
+            ensure_model_downloaded(app, &profile_id).await?;
+            Ok::<(), String>(())
+        }
+        .await;
+        match result {
+            Ok(()) => {
+                mark_autoprovision_done(app);
+                log::info!("Intelligence privée : modèle « {profile_id} » prêt (installation automatique).");
+                return;
+            }
+            Err(e) => {
+                log::debug!(
+                    "Installation automatique du modèle local (tentative {}/{}) échouée : {e}",
+                    attempt + 1,
+                    DELAYS_SECS.len()
+                );
+            }
+        }
+    }
+}
+
+#[cfg(not(windows))]
+pub async fn provision_default_model_in_background(_app: &AppHandle) {}
+
 /// Préchauffage au démarrage. Si l'Intelligence privée est le moteur de
 /// reformulation ACTIF et que son modèle est DÉJÀ téléchargé, démarre
 /// `llama-server` en arrière-plan pour que la toute première reformulation ne
 /// paie pas le coût de démarrage + chargement du modèle (plusieurs secondes).
 /// Best-effort et non bloquant : toute erreur est ignorée (la reformulation
-/// démarrera le serveur à la demande comme avant). Ne télécharge JAMAIS le
-/// modèle ici — un téléchargement de plusieurs Go ne doit se déclencher que sur
-/// une action explicite de l'utilisateur, pas silencieusement au lancement.
+/// démarrera le serveur à la demande comme avant). Ne télécharge PAS le modèle
+/// ici : le téléchargement initial est pris en charge séparément, au premier
+/// lancement et en arrière-plan, par `provision_default_model_in_background`.
 #[cfg(windows)]
 pub async fn prewarm_if_selected(app: &AppHandle, settings: &crate::settings::AppSettings) {
     if !settings.post_process_enabled {

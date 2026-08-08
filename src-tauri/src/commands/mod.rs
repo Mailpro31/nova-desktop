@@ -66,6 +66,31 @@ pub fn get_default_settings() -> Result<AppSettings, String> {
     Ok(crate::settings::get_default_settings())
 }
 
+/// Termes récurrents que l'apprentissage progressif propose d'ajouter au
+/// lexique personnel. Vide tant qu'aucun candidat n'a atteint le seuil de
+/// récurrence (ou si l'apprentissage est désactivé). Voir `lexicon_learning.rs`.
+#[tauri::command]
+#[specta::specta]
+pub fn get_lexicon_suggestions(app: AppHandle) -> Vec<String> {
+    crate::lexicon_learning::pending_suggestions(&get_settings(&app))
+}
+
+/// L'utilisateur accepte une suggestion : le terme rejoint le lexique personnel.
+#[tauri::command]
+#[specta::specta]
+pub fn accept_lexicon_suggestion(app: AppHandle, term: String) -> Result<(), String> {
+    crate::lexicon_learning::accept(&app, &term);
+    Ok(())
+}
+
+/// L'utilisateur ignore une suggestion : le terme ne sera plus jamais reproposé.
+#[tauri::command]
+#[specta::specta]
+pub fn dismiss_lexicon_suggestion(app: AppHandle, term: String) -> Result<(), String> {
+    crate::lexicon_learning::dismiss(&app, &term);
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub fn get_log_dir_path(app: AppHandle) -> Result<String, String> {
