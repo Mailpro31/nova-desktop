@@ -95,6 +95,20 @@ pub struct CustomVariable {
     pub value: String,
 }
 
+/// Terme pressenti pour le lexique personnel, observé au fil des dictées
+/// (apprentissage progressif — voir `lexicon_learning.rs`). Un candidat n'est
+/// JAMAIS ajouté automatiquement : il est seulement compté ; une fois qu'il
+/// revient assez souvent, il est proposé à l'utilisateur, qui seul décide de
+/// l'ajouter au lexique (`term` recopié dans `custom_words`) ou de l'ignorer
+/// définitivement (`dismissed`).
+#[derive(Serialize, Deserialize, Debug, Clone, Type, PartialEq)]
+pub struct LexiconCandidate {
+    pub term: String,
+    pub count: u32,
+    #[serde(default)]
+    pub dismissed: bool,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct LLMPrompt {
     pub id: String,
@@ -541,6 +555,23 @@ pub struct AppSettings {
     /// transcript and never execute an external action.
     #[serde(default = "default_voice_commands_enabled")]
     pub voice_commands_enabled: bool,
+    /// Apprentissage progressif du lexique : Nova repère les noms propres et
+    /// termes techniques récurrents des dictées et les PROPOSE (jamais en
+    /// silence) pour enrichir le lexique personnel. Voir `lexicon_learning.rs`.
+    #[serde(default = "default_lexicon_learning_enabled")]
+    pub lexicon_learning_enabled: bool,
+    /// Observations accumulées (comptes) des candidats au lexique. Purement un
+    /// tampon d'apprentissage : rien n'est appliqué sans l'accord explicite de
+    /// l'utilisateur.
+    #[serde(default)]
+    pub lexicon_candidates: Vec<LexiconCandidate>,
+    /// Vrai une fois que le modèle d'Intelligence privée recommandé a été
+    /// téléchargé automatiquement (dès le premier lancement, en arrière-plan).
+    /// Empêche de re-tenter à chaque démarrage une fois l'installation réussie ;
+    /// tant que c'est faux, l'app retente en arrière-plan au lancement suivant.
+    /// Voir `local_llm::provision_default_model_in_background`.
+    #[serde(default)]
+    pub local_model_autoprovision_done: bool,
 }
 
 fn default_model() -> String {
@@ -597,6 +628,10 @@ fn default_overlay_position() -> OverlayPosition {
 
 fn default_persistent_overlay() -> bool {
     // La bulle Nova reste à l'écran par défaut (avec engrenage de choix de Style).
+    true
+}
+
+fn default_lexicon_learning_enabled() -> bool {
     true
 }
 
@@ -1415,6 +1450,9 @@ pub fn get_default_settings() -> AppSettings {
         persistent_overlay: default_persistent_overlay(),
         adaptive_performance_enabled: false,
         voice_commands_enabled: default_voice_commands_enabled(),
+        lexicon_learning_enabled: default_lexicon_learning_enabled(),
+        lexicon_candidates: Vec::new(),
+        local_model_autoprovision_done: false,
     }
 }
 

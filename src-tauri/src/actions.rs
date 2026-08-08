@@ -1093,6 +1093,13 @@ pub(crate) async fn process_transcription_output(
     let mut final_text = voice_command.text;
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
+
+    // Apprentissage progressif du lexique : on observe (sans jamais rien ajouter
+    // ni exécuter) les noms propres/acronymes récurrents de la dictée pour, le
+    // cas échéant, les PROPOSER plus tard à l'utilisateur. Best-effort ;
+    // n'affecte jamais le collage.
+    crate::lexicon_learning::observe_dictation(app, transcription);
+
     // Vrai dès qu'une reformulation IA a réellement produit un texte : décide
     // quel mécanisme de raccourcis personnels s'applique ensuite (repères vs
     // remplacement mot-à-mot — jamais les deux).

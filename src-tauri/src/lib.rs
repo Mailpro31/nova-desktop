@@ -10,6 +10,7 @@ mod clipboard;
 mod commands;
 mod helpers;
 mod input;
+mod lexicon_learning;
 mod licensing;
 mod llm_client;
 mod local_llm;
@@ -614,6 +615,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_lazy_stream_close_setting,
             shortcut::change_vad_enabled_setting,
             shortcut::change_voice_commands_setting,
+            shortcut::change_lexicon_learning_setting,
             shortcut::change_app_language_setting,
             shortcut::change_update_checks_setting,
             shortcut::change_show_whats_new_on_update_setting,
@@ -637,6 +639,9 @@ pub fn run(cli_args: CliArgs) {
             commands::get_app_dir_path,
             commands::get_app_settings,
             commands::get_default_settings,
+            commands::get_lexicon_suggestions,
+            commands::accept_lexicon_suggestion,
+            commands::dismiss_lexicon_suggestion,
             commands::get_log_dir_path,
             commands::set_log_level,
             commands::open_recordings_folder,
@@ -942,6 +947,20 @@ pub fn run(cli_args: CliArgs) {
                 let prewarm_settings = settings.clone();
                 tauri::async_runtime::spawn(async move {
                     crate::local_llm::prewarm_if_selected(&prewarm_handle, &prewarm_settings).await;
+                });
+            }
+
+            // Installe l'Intelligence privée (moteur + modèle recommandé) dès le
+            // premier lancement, en arrière-plan : la première reformulation
+            // locale est ainsi immédiate, sans aucune action de l'utilisateur, et
+            // à l'identique sur tous les paliers. Non bloquant et défensif — un
+            // échec (réseau absent…) laisse le premier lancement se poursuivre et
+            // sera réessayé au lancement suivant.
+            {
+                let provision_handle = app_handle.clone();
+                tauri::async_runtime::spawn(async move {
+                    crate::local_llm::provision_default_model_in_background(&provision_handle)
+                        .await;
                 });
             }
 

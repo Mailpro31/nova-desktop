@@ -826,5 +826,14 @@
     "yourPlan": "המנוי שלך",
     "onlineEngineLockedTitle": "Turbo דורש מנוי Nova",
     "onlineEngineLocked": "המנוע המקוון שמור ל-Nova Pro ו-Ultra — הטקסט הודבק ללא ניסוח מחדש."
+  },
+  "lexiconLearning": {
+    "title": "Learn my vocabulary",
+    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
+    "suggestionTitle": "Did you mean “{{term}}”?",
+    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "add": "Add",
+    "ignore": "Ignore",
+    "added": "“{{term}}” was added to your lexicon."
   }
 }

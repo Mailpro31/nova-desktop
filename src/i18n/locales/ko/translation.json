@@ -826,5 +826,14 @@
     "yourPlan": "내 요금제",
     "onlineEngineLockedTitle": "Turbo는 Nova 구독이 필요합니다",
     "onlineEngineLocked": "온라인 엔진은 Nova Pro와 Ultra 전용이라 리포뮬레이션 없이 붙여넣어졌습니다."
+  },
+  "lexiconLearning": {
+    "title": "Learn my vocabulary",
+    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
+    "suggestionTitle": "Did you mean “{{term}}”?",
+    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "add": "Add",
+    "ignore": "Ignore",
+    "added": "“{{term}}” was added to your lexicon."
   }
 }

@@ -186,6 +186,115 @@ pub fn apply_custom_words(text: &str, custom_words: &[String], threshold: f64) -
     result.join(" ")
 }
 
+/// True if `core` is already covered by the personal lexicon — either an exact
+/// normalized match, or close enough that the fuzzy corrector
+/// ([`apply_custom_words`]) would already map spoken variants onto an existing
+/// custom word. Reuses the SAME n-gram/Levenshtein/Soundex machinery as the
+/// corrector so the learning loop never proposes a term the lexicon effectively
+/// already handles.
+fn is_covered_by_lexicon(
+    core: &str,
+    custom_words: &[String],
+    custom_word_match_keys: &[CustomWordMatchKey],
+    threshold: f64,
+) -> bool {
+    let core_key = build_match_key(core);
+    if core_key.is_empty() {
+        return true; // nothing matchable → never a candidate
+    }
+    if custom_word_match_keys.iter().any(|k| k.key == core_key) {
+        return true;
+    }
+    find_best_match(&core_key, custom_words, custom_word_match_keys, threshold).is_some()
+}
+
+/// Whether a single dictated token (already stripped of surrounding
+/// punctuation) looks like a proper noun or acronym worth PROPOSING for the
+/// personal lexicon. Deliberately conservative: it is only a *signal*, and
+/// nothing is ever added without the user's explicit confirmation (see
+/// `lexicon_learning.rs`). We only accept mid-sentence tokens so ordinary
+/// sentence-initial capitalization is never mistaken for a proper noun.
+fn looks_like_lexicon_candidate(core: &str, at_sentence_start: bool) -> bool {
+    if at_sentence_start {
+        return false;
+    }
+    let chars: Vec<char> = core.chars().collect();
+    let len = chars.len();
+    if !(3..=30).contains(&len) {
+        return false;
+    }
+    // Letters only — terms with digits/hyphens (GPT-4, H2O) are almost always
+    // added explicitly and would be noisier to learn automatically.
+    if !chars.iter().all(|c| c.is_alphabetic()) {
+        return false;
+    }
+    let first_upper = chars[0].is_uppercase();
+    let all_upper = chars.iter().all(|c| c.is_uppercase());
+    let has_lower = chars.iter().any(|c| c.is_lowercase());
+
+    // Acronym (IBAN, SNCF): all caps, bounded length.
+    if all_upper && (3..=8).contains(&len) {
+        return true;
+    }
+    // Proper noun (Nova, ChargeBee, Berlin): capitalized with at least one
+    // lowercase letter, appearing away from a sentence boundary.
+    first_upper && has_lower
+}
+
+/// Scans a finished dictation for proper-noun / technical-term candidates that
+/// are NOT yet covered by the personal lexicon. This is the INPUT SIGNAL of the
+/// progressive learning loop — recurring candidates are counted elsewhere and
+/// only surfaced to the user for explicit confirmation before anything is
+/// durably added. Never mutates state and never decides on its own.
+///
+/// * `text` — a single dictation's text.
+/// * `custom_words` — the existing personal lexicon (to exclude already-covered
+///   terms, reusing the fuzzy matcher as the coverage test).
+/// * `threshold` — the same correction threshold used by [`apply_custom_words`].
+pub fn detect_lexicon_candidates(
+    text: &str,
+    custom_words: &[String],
+    threshold: f64,
+) -> Vec<String> {
+    let custom_word_match_keys: Vec<CustomWordMatchKey> = custom_words
+        .iter()
+        .enumerate()
+        .flat_map(|(index, word)| build_custom_word_match_keys(word, index))
+        .collect();
+
+    let mut out: Vec<String> = Vec::new();
+    let mut at_sentence_start = true;
+
+    for raw in text.split_whitespace() {
+        let (prefix, suffix) = extract_punctuation(raw);
+        // Core = the token with its leading/trailing punctuation removed.
+        let core = &raw[prefix.len()..raw.len() - suffix.len()];
+
+        if !core.is_empty()
+            && looks_like_lexicon_candidate(core, at_sentence_start)
+            && !is_covered_by_lexicon(
+                core,
+                custom_words,
+                &custom_word_match_keys,
+                threshold,
+            )
+            // Case-insensitive dedup within this dictation.
+            && !out.iter().any(|w| w.eq_ignore_ascii_case(core))
+        {
+            out.push(core.to_string());
+        }
+
+        // A token that ends a clause makes the NEXT token a sentence start.
+        at_sentence_start = raw
+            .chars()
+            .last()
+            .map(|c| matches!(c, '.' | '!' | '?' | '…' | ':' | ';'))
+            .unwrap_or(false);
+    }
+
+    out
+}
+
 /// Preserves the case pattern of the original word when applying a replacement
 fn preserve_case_pattern(original: &str, replacement: &str) -> String {
     if original.chars().all(|c| c.is_uppercase()) {
@@ -625,5 +734,70 @@ mod tests {
         let custom_words = vec!["R&D".to_string()];
         let result = apply_custom_words(text, &custom_words, 0.18);
         assert_eq!(result, "send it to R&D for review");
+    }
+
+    #[test]
+    fn test_detect_candidates_proper_noun_mid_sentence() {
+        let text = "we shipped the new ChargeBee integration today";
+        let got = detect_lexicon_candidates(text, &[], 0.18);
+        assert_eq!(got, vec!["ChargeBee".to_string()]);
+    }
+
+    #[test]
+    fn test_detect_candidates_ignores_sentence_initial_capital() {
+        // "Today" is capitalized only because it starts the sentence — not a
+        // proper noun, must never be proposed.
+        let text = "Today we met the client.";
+        let got = detect_lexicon_candidates(text, &[], 0.18);
+        assert!(got.is_empty(), "unexpected candidates: {got:?}");
+    }
+
+    #[test]
+    fn test_detect_candidates_acronym() {
+        let text = "please wire it to my IBAN before noon";
+        let got = detect_lexicon_candidates(text, &[], 0.18);
+        assert_eq!(got, vec!["IBAN".to_string()]);
+    }
+
+    #[test]
+    fn test_detect_candidates_excludes_existing_lexicon() {
+        // Already in the lexicon (exact) → not re-proposed.
+        let text = "the Nova release is out";
+        let got = detect_lexicon_candidates(text, &["Nova".to_string()], 0.18);
+        assert!(got.is_empty(), "unexpected candidates: {got:?}");
+    }
+
+    #[test]
+    fn test_detect_candidates_excludes_fuzzy_covered() {
+        // A near-spelling the fuzzy corrector already maps to an existing custom
+        // word should not be surfaced as a brand-new candidate.
+        let text = "the ChargeB integration";
+        let got = detect_lexicon_candidates(text, &["ChargeBee".to_string()], 0.34);
+        assert!(got.is_empty(), "unexpected candidates: {got:?}");
+    }
+
+    #[test]
+    fn test_detect_candidates_dedup_within_dictation() {
+        let text = "Berlin then Berlin again in Berlin";
+        let got = detect_lexicon_candidates(text, &[], 0.18);
+        assert_eq!(got, vec!["Berlin".to_string()]);
+    }
+
+    #[test]
+    fn test_detect_candidates_skips_short_and_lowercase() {
+        let text = "just some ordinary lowercase words here";
+        let got = detect_lexicon_candidates(text, &[], 0.18);
+        assert!(got.is_empty(), "unexpected candidates: {got:?}");
+    }
+
+    #[test]
+    fn test_detect_candidates_after_period_is_sentence_start() {
+        // "Marseille" is mid-sentence (a real proper noun), "Ensuite" is a
+        // sentence start after the period and must be ignored.
+        let text = "on part de Marseille. Ensuite direction Lyon";
+        let got = detect_lexicon_candidates(text, &[], 0.18);
+        assert!(got.contains(&"Marseille".to_string()));
+        assert!(got.contains(&"Lyon".to_string()));
+        assert!(!got.contains(&"Ensuite".to_string()));
     }
 }

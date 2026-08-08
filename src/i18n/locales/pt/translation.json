@@ -826,5 +826,14 @@
     "yourPlan": "O seu plano",
     "onlineEngineLockedTitle": "Turbo requer uma assinatura Nova",
     "onlineEngineLocked": "O motor online é reservado ao Nova Pro e Ultra — o texto foi colado sem reformulação."
+  },
+  "lexiconLearning": {
+    "title": "Learn my vocabulary",
+    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
+    "suggestionTitle": "Did you mean “{{term}}”?",
+    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "add": "Add",
+    "ignore": "Ignore",
+    "added": "“{{term}}” was added to your lexicon."
   }
 }

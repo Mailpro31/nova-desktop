@@ -826,5 +826,14 @@
     "yourPlan": "तपाईंको योजना",
     "onlineEngineLockedTitle": "Turbo को लागि Nova सदस्यता चाहिन्छ",
     "onlineEngineLocked": "अनलाइन इन्जिन Nova Pro र Ultra मा सीमित छ — तपाईंको पाठ पुनःप्रणयन बिना टाँसियो।"
+  },
+  "lexiconLearning": {
+    "title": "Learn my vocabulary",
+    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
+    "suggestionTitle": "Did you mean “{{term}}”?",
+    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "add": "Add",
+    "ignore": "Ignore",
+    "added": "“{{term}}” was added to your lexicon."
   }
 }

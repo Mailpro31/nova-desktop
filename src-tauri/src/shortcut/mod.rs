@@ -1350,6 +1350,15 @@ pub fn change_voice_commands_setting(app: AppHandle, enabled: bool) -> Result<()
 
 #[tauri::command]
 #[specta::specta]
+pub fn change_lexicon_learning_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.lexicon_learning_enabled = enabled;
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub fn change_app_language_setting(app: AppHandle, language: String) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     settings.app_language = language.clone();
