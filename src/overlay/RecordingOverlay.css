@@ -445,12 +445,34 @@
   border-radius: 50%;
   border: 2px solid var(--s-hair);
   border-top-color: var(--s-accent);
-  animation: sspin 0.7s linear infinite;
+  /* Rotation ADOUCIE : une révolution qui accélère puis ralentit en douceur
+     (au lieu d'un « linear » mécanique à 0.7 s), doublée d'une respiration
+     d'opacité calée sur la même période que l'orbe au repos (sorb-breath 2.4 s).
+     La pilule « réfléchit » sobrement, visible du coin de l'œil sans happer le
+     regard — cohérent avec l'identité Apple/Nova. */
+  animation:
+    sspin 1.15s cubic-bezier(0.66, 0, 0.34, 1) infinite,
+    sspin-breath 2.4s ease-in-out infinite;
   flex: none;
 }
 @keyframes sspin {
   to {
     transform: rotate(1turn);
+  }
+}
+@keyframes sspin-breath {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Accessibilité : pas de rotation, seulement la respiration douce. */
+  .sspinner {
+    animation: sspin-breath 2.4s ease-in-out infinite;
   }
 }
 .swork-label {
