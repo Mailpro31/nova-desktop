@@ -424,9 +424,9 @@
         }
       },
       "customWords": {
-        "title": "Mots personnalisés",
-        "description": "Ajoutez des mots souvent mal entendus ou mal orthographiés lors de la transcription. Le système corrigera automatiquement les mots similaires pour correspondre à votre liste.",
-        "placeholder": "Ajouter un mot",
+        "title": "Lexique personnel",
+        "description": "Ajoutez des mots et des termes de plusieurs mots (marques, noms propres, termes techniques comme « repo GitHub ») souvent mal entendus ou mal orthographiés. Nova corrige les tournures proches pour coller à votre liste et préserve ces termes intacts pendant la reformulation.",
+        "placeholder": "Ajouter un mot ou un terme",
         "add": "Ajouter",
         "remove": "Supprimer {{word}}",
         "duplicate": "\"{{word}}\" existe déjà"

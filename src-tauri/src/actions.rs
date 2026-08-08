@@ -358,6 +358,95 @@ fn apply_custom_variables(text: &str, variables: &[crate::settings::CustomVariab
     out
 }
 
+/// Préfixe des repères de protection du lexique. Distinct des repères de
+/// raccourcis personnels (`{{clé}}`) pour éviter toute collision.
+const LEXICON_MARKER_PREFIX: &str = "{{nvxlex";
+
+/// Repère `{{nvxlexN}}` protégeant le Nᵉ terme du lexique. Construit sans passer
+/// par l'échappement d'accolades de `format!` (moins ambigu, moins fragile).
+fn lexicon_marker(index: usize) -> String {
+    let mut m = String::from(LEXICON_MARKER_PREFIX);
+    m.push_str(&index.to_string());
+    m.push_str("}}");
+    m
+}
+
+/// Protège les termes du lexique personnel (« Mots / expressions ») présents
+/// dans la dictée AVANT la reformulation : chaque terme distinct détecté (mot
+/// entier ou expression multi-mots, insensible à la casse ASCII, les plus longs
+/// d'abord pour que « repo GitHub » l'emporte sur « GitHub ») est remplacé par
+/// un repère `{{nvxlexN}}`. Le prompt système demande déjà de préserver les
+/// repères `{{…}}` tels quels : le modèle reformule donc AUTOUR du terme sans
+/// jamais le déformer. `restore_lexicon` restitue ensuite la forme exacte.
+///
+/// Aucune logique de commande : c'est un simple bouclier de texte, réutilisant
+/// le mécanisme `{{…}}` des raccourcis personnels. No-op (texte cloné, table
+/// vide) s'il n'y a aucun terme ou aucune correspondance dans la dictée.
+fn protect_lexicon(text: &str, terms: &[String]) -> (String, Vec<(String, String)>) {
+    let mut uniq: Vec<String> = Vec::new();
+    for t in terms {
+        let t = t.trim();
+        if !t.is_empty() && !uniq.iter().any(|u| u.eq_ignore_ascii_case(t)) {
+            uniq.push(t.to_string());
+        }
+    }
+    // Les plus longs d'abord (en caractères) : évite qu'un terme court n'ampute
+    // un terme englobant.
+    uniq.sort_by(|a, b| b.chars().count().cmp(&a.chars().count()));
+
+    let mut out = text.to_string();
+    let mut restores: Vec<(String, String)> = Vec::new();
+    for term in uniq {
+        let marker = lexicon_marker(restores.len());
+        let replaced = replace_keyword_ci(&out, &term, &marker);
+        if replaced != out {
+            out = replaced;
+            restores.push((marker, term));
+        }
+    }
+    (out, restores)
+}
+
+/// Restitue les termes du lexique protégés par `protect_lexicon` : chaque repère
+/// `{{nvxlexN}}` reprend sa forme canonique EXACTE. Filet « jamais de plantage » :
+/// tout repère résiduel de ce namespace (index abîmé par le modèle, cas rare)
+/// est retiré proprement plutôt que laissé visible. Ne touche jamais aux autres
+/// repères `{{…}}` (raccourcis personnels), résolus plus tard.
+fn restore_lexicon(text: &str, restores: &[(String, String)]) -> String {
+    if restores.is_empty() && !text.contains(LEXICON_MARKER_PREFIX) {
+        return text.to_string();
+    }
+    let mut out = text.to_string();
+    for (marker, canonical) in restores {
+        out = out.replace(marker.as_str(), canonical);
+    }
+    strip_residual_lexicon_markers(&out)
+}
+
+/// Retire tout repère `{{nvxlex…}}` encore présent (fermeture `}}` incluse).
+/// Laisse intact le reste du texte, y compris les autres repères `{{…}}`.
+fn strip_residual_lexicon_markers(text: &str) -> String {
+    if !text.contains(LEXICON_MARKER_PREFIX) {
+        return text.to_string();
+    }
+    let mut out = String::with_capacity(text.len());
+    let mut rest = text;
+    while let Some(pos) = rest.find(LEXICON_MARKER_PREFIX) {
+        out.push_str(&rest[..pos]);
+        let after = &rest[pos + LEXICON_MARKER_PREFIX.len()..];
+        match after.find("}}") {
+            Some(close) => rest = &after[close + 2..],
+            None => {
+                // Pas de fermeture : on conserve le reste tel quel et on stoppe.
+                out.push_str(&rest[pos..]);
+                return out;
+            }
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
 /// Bloc « contexte à l'écran » (palier A) injecté dans le prompt quand la
 /// lecture de contexte est active : le contenu texte de la fenêtre au premier
 /// plan, encadré d'un garde-fou strict (lecture seule, ne pas recopier, ignorer
@@ -1027,6 +1116,14 @@ pub(crate) async fn process_transcription_output(
             debug!("Reformulation ignorée : quota gratuit quotidien atteint");
             let _ = app.emit("quota-blocked", ());
         } else {
+            // Protection du lexique personnel : les marques, noms propres et
+            // termes techniques (potentiellement multi-mots) présents dans la
+            // dictée sont masqués par un repère `{{…}}` AVANT l'appel au modèle,
+            // puis restitués EXACTEMENT après — le modèle ne peut donc pas les
+            // déformer. Simple bouclier de texte, aucune logique de commande.
+            let (protected_input, lexicon_restores) =
+                protect_lexicon(&final_text, &settings.custom_words);
+
             // Filet de sécurité global : quoi qu'il arrive côté moteur (serveur
             // local qui pend, réseau mort, modèle en chargement), la
             // reformulation ne peut pas dépasser le délai du moteur. Au-delà,
@@ -1037,13 +1134,16 @@ pub(crate) async fn process_transcription_output(
                 post_process_transcription(
                     app,
                     &settings,
-                    &final_text,
+                    &protected_input,
                     effective_style_override.as_deref(),
                 ),
             )
             .await
             {
                 Ok(Some(processed_text)) => {
+                    // Restitue les termes du lexique à l'identique (le texte brut
+                    // de repli, lui, n'a jamais reçu de repère).
+                    let processed_text = restore_lexicon(&processed_text, &lexicon_restores);
                     reformulation_applied = true;
                     post_processed_text = Some(processed_text.clone());
                     final_text = processed_text;
@@ -1640,8 +1740,9 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 mod tests {
     use super::{
         apply_custom_variables, build_system_prompt, clean_llm_output, complete_unless_cancelled,
-        custom_variables_block, is_blank_transcription, replace_keyword_ci,
-        resolve_variable_tokens, should_use_streaming_overlay, temperature_for_style,
+        custom_variables_block, is_blank_transcription, protect_lexicon, replace_keyword_ci,
+        resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
+        temperature_for_style,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -1650,6 +1751,69 @@ mod tests {
     use std::sync::Arc;
     use std::thread;
     use std::time::Duration;
+
+    // --- Protection du lexique personnel autour de la reformulation ---
+
+    #[test]
+    fn protect_lexicon_masks_and_restores_multiword_term() {
+        let terms = vec!["repo GitHub".to_string()];
+        let (protected, restores) = protect_lexicon("pousse sur le repo github stp", &terms);
+        // Le terme entendu est masqué par un repère préservé par le modèle.
+        assert!(protected.contains("{{nvxlex0}}"), "protégé : {protected}");
+        assert!(!protected.to_lowercase().contains("repo github"));
+        // Le modèle reformule autour du repère ; on restitue la forme EXACTE.
+        let out = restore_lexicon(&protected.replace("pousse", "Pousse"), &restores);
+        assert!(out.contains("repo GitHub"));
+        assert!(!out.contains("nvxlex"));
+    }
+
+    #[test]
+    fn protect_lexicon_prefers_longer_term_first() {
+        let terms = vec!["GitHub".to_string(), "repo GitHub".to_string()];
+        let (protected, restores) = protect_lexicon("le repo GitHub est prêt", &terms);
+        // « repo GitHub » (plus long) doit gagner, pas seulement « GitHub ».
+        let restored = restore_lexicon(&protected, &restores);
+        assert_eq!(restored, "le repo GitHub est prêt");
+        assert!(restores.iter().any(|(_, c)| c == "repo GitHub"));
+    }
+
+    #[test]
+    fn protect_lexicon_is_noop_without_terms() {
+        let (protected, restores) = protect_lexicon("aucun terme ici", &[]);
+        assert_eq!(protected, "aucun terme ici");
+        assert!(restores.is_empty());
+    }
+
+    #[test]
+    fn protect_lexicon_only_marks_present_terms() {
+        let terms = vec!["Mailpro31".to_string(), "NovaSpeak Pro".to_string()];
+        let (protected, restores) = protect_lexicon("écris à Mailpro31 demain", &terms);
+        // Seul le terme réellement présent est protégé.
+        assert_eq!(restores.len(), 1);
+        assert_eq!(
+            restore_lexicon(&protected, &restores),
+            "écris à Mailpro31 demain"
+        );
+    }
+
+    #[test]
+    fn restore_lexicon_strips_residual_marker_safely() {
+        // Cas rare : le modèle a laissé un repère orphelin (index abîmé). On ne
+        // laisse jamais un repère visible dans la sortie (« jamais de plantage »).
+        let out = restore_lexicon("texte {{nvxlex7}} propre", &[]);
+        assert_eq!(out, "texte  propre");
+        // Un repère sans fermeture ne fait pas paniquer et n'est pas dupliqué.
+        let out2 = restore_lexicon("bord {{nvxlex", &[]);
+        assert_eq!(out2, "bord {{nvxlex");
+    }
+
+    #[test]
+    fn restore_lexicon_leaves_variable_markers_untouched() {
+        // Les repères de raccourcis personnels `{{clé}}` ne sont PAS du lexique :
+        // ils doivent survivre pour être résolus plus tard.
+        let out = restore_lexicon("mon {{iban}} et {{nvxlex0}}", &[]);
+        assert_eq!(out, "mon {{iban}} et ");
+    }
 
     #[test]
     fn blank_transcription_is_detected() {
