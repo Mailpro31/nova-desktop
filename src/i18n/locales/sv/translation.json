@@ -754,7 +754,12 @@
     "transcribing": "Transkriberar...",
     "processing": "Bearbetar...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Öppna inställningar"
+    "openSettings": "Öppna inställningar",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Nytt i Nova v{{version}}"

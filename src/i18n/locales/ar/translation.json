@@ -754,7 +754,12 @@
     "transcribing": "...جاري التفريغ",
     "processing": "...جاري المعالجة",
     "chooseStyle": "Choose a Style",
-    "openSettings": "فتح الإعدادات"
+    "openSettings": "فتح الإعدادات",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "الجديد في Nova v{{version}}"

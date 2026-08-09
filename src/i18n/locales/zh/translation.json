@@ -754,7 +754,12 @@
     "transcribing": "正在转录...",
     "processing": "处理中...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "打开设置"
+    "openSettings": "打开设置",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Nova v{{version}} 新功能"

@@ -754,7 +754,12 @@
     "transcribing": "מתמלל...",
     "processing": "מעבד...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "פתח הגדרות"
+    "openSettings": "פתח הגדרות",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "חדש ב-Nova v{{version}}"

@@ -754,7 +754,12 @@
     "transcribing": "Đang chuyển đổi...",
     "processing": "Đang xử lý...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Mở cài đặt"
+    "openSettings": "Mở cài đặt",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Điểm mới trong Nova v{{version}}"

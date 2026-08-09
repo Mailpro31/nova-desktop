@@ -754,7 +754,12 @@
     "transcribing": "Přepisuji...",
     "processing": "Zpracovávám...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Otevřít nastavení"
+    "openSettings": "Otevřít nastavení",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Novinky v Nova v{{version}}"

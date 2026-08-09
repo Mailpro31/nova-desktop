@@ -754,7 +754,12 @@
     "transcribing": "Transcrevendo...",
     "processing": "Processando...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Abrir definições"
+    "openSettings": "Abrir definições",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Novidades no Nova v{{version}}"

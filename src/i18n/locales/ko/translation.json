@@ -754,7 +754,12 @@
     "transcribing": "텍스트로 변환 중...",
     "processing": "처리 중...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "설정 열기"
+    "openSettings": "설정 열기",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Nova v{{version}}의 새 소식"

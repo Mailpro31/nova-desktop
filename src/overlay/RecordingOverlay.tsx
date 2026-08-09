@@ -28,6 +28,47 @@ type StyleItem = { id: string; name: string };
 // every overlay form). Mic levels arrive as 16 FFT buckets; we take the first N.
 const WAVE_BARS = 9;
 
+// ---- Suggestion de Style contextuelle discrète (point 5) ----
+// Toute la mémoire/décision vit côté frontend (aucun churn de réglages) et
+// PERSISTE dans le localStorage de l'overlay. Seuil volontairement bas mais pas
+// immédiat : on ne propose qu'après quelques dictées dans la MÊME app avec un
+// Style fixe qui ne colle pas, et jamais deux fois une paire « ne plus afficher ».
+const SUGGEST_THRESHOLD = 3;
+const SUGGEST_COUNTS_KEY = "nova.styleSuggest.counts";
+const SUGGEST_DISMISSED_KEY = "nova.styleSuggest.dismissed";
+// Hauteur de fenêtre overlay (px) pour loger la carte de suggestion au repos,
+// via le même mécanisme que le menu des Styles (`set_overlay_menu_height`).
+const SUGGEST_OVERLAY_HEIGHT = 150;
+// Styles génériques qu'il n'y a aucun intérêt à suggérer.
+const SUGGEST_SKIP_STYLES = new Set(["auto", "default_improve_transcriptions"]);
+
+function readSuggestStore<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+function writeSuggestStore(key: string, value: unknown): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // localStorage indisponible : la suggestion reste éphémère, jamais de crash.
+  }
+}
+// Libellé lisible d'un exécutable (« outlook.exe » → « Outlook »).
+function friendlyAppLabel(process: string): string {
+  const base = (
+    process
+      .replace(/\.exe$/i, "")
+      .split(/[\\/]/)
+      .pop() ?? process
+  ).trim();
+  if (!base) return process;
+  return base.charAt(0).toUpperCase() + base.slice(1);
+}
+
 const RecordingOverlay: React.FC = () => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
@@ -139,6 +180,100 @@ const RecordingOverlay: React.FC = () => {
     }
   };
 
+  // ---- Retour micro discret pendant l'écoute (point 3) ----
+  // Dérivé UNIQUEMENT des niveaux déjà reçus (`mic-level`) : aucune analyse
+  // audio supplémentaire côté backend. On confirme un état sur une courte
+  // fenêtre glissante pour ne JAMAIS clignoter ni harceler : « Je vous entends »
+  // quand le niveau est franc, « Parlez un peu plus fort » seulement après un
+  // silence continu d'environ deux secondes. N'apparaît que dans la pilule
+  // compacte d'enregistrement (l'overlay Live montre déjà le texte en direct).
+  const [micHint, setMicHint] = useState<null | "ok" | "low">(null);
+  const micWindowRef = useRef<{ lowSince: number; okSince: number }>({
+    lowSince: 0,
+    okSince: 0,
+  });
+  const listeningCompact = isVisible && state === "recording";
+
+  useEffect(() => {
+    if (!listeningCompact) {
+      micWindowRef.current = { lowSince: 0, okSince: 0 };
+      setMicHint(null);
+      return;
+    }
+    const energy = levels.length ? Math.max(...levels) : 0;
+    const now =
+      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const w = micWindowRef.current;
+    const LOW = 0.1; // sous ce niveau : trop faible
+    const OK = 0.3; // au-dessus : clairement entendu
+    const LOW_HOLD_MS = 2000; // silence continu avant d'inviter à parler plus fort
+    const OK_HOLD_MS = 300; // brève confirmation avant « Je vous entends »
+    if (energy >= OK) {
+      w.lowSince = 0;
+      if (!w.okSince) w.okSince = now;
+      if (now - w.okSince >= OK_HOLD_MS) setMicHint("ok");
+    } else if (energy <= LOW) {
+      w.okSince = 0;
+      if (!w.lowSince) w.lowSince = now;
+      if (now - w.lowSince >= LOW_HOLD_MS) setMicHint("low");
+    } else {
+      // Zone intermédiaire (l'utilisateur parle doucement) : on ne réarme pas le
+      // compteur de silence et on laisse l'indice courant tel quel, sans à-coup.
+      w.lowSince = 0;
+    }
+  }, [levels, listeningCompact]);
+
+  // ---- Suggestion de Style contextuelle (point 5) ----
+  // Paire (app, Style qui collerait) en attente d'affichage. La validation de
+  // palier et l'existence du Style sont re-vérifiées à l'affichage (features à
+  // jour). Persistance (comptes + « ne plus afficher ») dans le localStorage.
+  const [suggestion, setSuggestion] = useState<{
+    process: string;
+    styleId: string;
+  } | null>(null);
+
+  const applySuggestion = async () => {
+    if (!suggestion) return;
+    const { process, styleId } = suggestion;
+    // Adopté → on ne re-propose plus cette paire.
+    const key = `${process}::${styleId}`;
+    const dismissed = readSuggestStore<string[]>(SUGGEST_DISMISSED_KEY, []);
+    if (!dismissed.includes(key)) {
+      dismissed.push(key);
+      writeSuggestStore(SUGGEST_DISMISSED_KEY, dismissed);
+    }
+    setSuggestion(null);
+    await chooseStyle(styleId);
+  };
+
+  const dismissSuggestion = () => {
+    if (!suggestion) return;
+    const key = `${suggestion.process}::${suggestion.styleId}`;
+    const dismissed = readSuggestStore<string[]>(SUGGEST_DISMISSED_KEY, []);
+    if (!dismissed.includes(key)) {
+      dismissed.push(key);
+      writeSuggestStore(SUGGEST_DISMISSED_KEY, dismissed);
+    }
+    setSuggestion(null);
+  };
+
+  // La carte de suggestion est-elle réellement affichable MAINTENANT ? (Style
+  // existant dans la liste ET non verrouillé par le palier courant.)
+  const suggestionStyle = suggestion
+    ? styles.find((s) => s.id === suggestion.styleId)
+    : undefined;
+  const suggestionVisible =
+    !!suggestion && !!suggestionStyle && !styleLock(suggestion.styleId).locked;
+
+  // Au repos (menu fermé), agrandit la fenêtre overlay pour loger la carte —
+  // même canal que le menu des Styles. Réinitialise à la hauteur de repos sinon.
+  useEffect(() => {
+    if (state !== "idle" || menuOpen) return;
+    invoke("set_overlay_menu_height", {
+      height: suggestionVisible ? SUGGEST_OVERLAY_HEIGHT : 0,
+    }).catch(() => {});
+  }, [suggestionVisible, state, menuOpen]);
+
   const smoothedLevelsRef = useRef<number[]>(Array(16).fill(0));
   // Live-text scroll-back: the text region "sticks" to the newest line while the
   // user is at the bottom; if they scroll up to read history, auto-follow pauses
@@ -247,6 +382,34 @@ const RecordingOverlay: React.FC = () => {
         },
       );
 
+      // Contexte de dictée pour la suggestion de Style (point 5). Le backend
+      // n'émet que quand un Style FIXE est sélectionné et qu'un autre collerait
+      // mieux ; ici on compte par (app, Style) et on ne propose qu'au-delà du
+      // seuil, jamais une paire déjà écartée. Comptes/écartés persistés localement.
+      const unlistenContext = await listen<{
+        process: string;
+        resolved: string;
+        selected: string;
+      }>("dictation-context", (event) => {
+        const { process, resolved, selected } = event.payload;
+        if (!process || !resolved) return;
+        if (resolved === selected) return;
+        if (SUGGEST_SKIP_STYLES.has(resolved)) return;
+        const key = `${process}::${resolved}`;
+        const dismissed = readSuggestStore<string[]>(SUGGEST_DISMISSED_KEY, []);
+        if (dismissed.includes(key)) return;
+        const counts = readSuggestStore<Record<string, number>>(
+          SUGGEST_COUNTS_KEY,
+          {},
+        );
+        const n = (counts[key] ?? 0) + 1;
+        counts[key] = n;
+        writeSuggestStore(SUGGEST_COUNTS_KEY, counts);
+        if (n >= SUGGEST_THRESHOLD) {
+          setSuggestion({ process, styleId: resolved });
+        }
+      });
+
       return () => {
         unlistenShow();
         unlistenHide();
@@ -256,6 +419,7 @@ const RecordingOverlay: React.FC = () => {
         unlistenPhase();
         unlistenThinkingComplete();
         unlistenPasteFallback();
+        unlistenContext();
       };
     };
 
@@ -447,6 +611,32 @@ const RecordingOverlay: React.FC = () => {
               })}
             </div>
           )}
+          {!menuOpen && suggestionVisible && suggestion && suggestionStyle && (
+            <div className={`ssuggest ${position}`}>
+              <p className="ssuggest-text">
+                {t("overlay.styleSuggestion", {
+                  app: friendlyAppLabel(suggestion.process),
+                  style: suggestionStyle.name,
+                })}
+              </p>
+              <div className="ssuggest-actions">
+                <button
+                  type="button"
+                  className="ssuggest-dismiss"
+                  onClick={dismissSuggestion}
+                >
+                  {t("overlay.styleSuggestionDismiss")}
+                </button>
+                <button
+                  type="button"
+                  className="ssuggest-apply"
+                  onClick={applySuggestion}
+                >
+                  {t("overlay.styleSuggestionApply")}
+                </button>
+              </div>
+            </div>
+          )}
           <div className="scard sidle">
             <button
               className="sgear"
@@ -594,10 +784,24 @@ const RecordingOverlay: React.FC = () => {
       dir={direction}
       className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
     >
-      <div
-        className={`scard compact ${working && isVisible ? "cworking" : ""}`}
-      >
-        {working ? workingRow(workLabel, true) : listeningRow(false)}
+      <div className="slisten-wrap">
+        <div
+          className={`scard compact ${working && isVisible ? "cworking" : ""}`}
+        >
+          {working ? workingRow(workLabel, true) : listeningRow(false)}
+        </div>
+        {/* Indice micro discret : jamais dans la même rangée que la forme d'onde
+            (au-dessus/en dessous de la pilule), ne la recouvre donc jamais. */}
+        <div
+          className={`smic-hint ${micHint ?? ""} ${micHint ? "show" : ""}`}
+          aria-live="polite"
+        >
+          {micHint === "low"
+            ? t("overlay.micTooLow")
+            : micHint === "ok"
+              ? t("overlay.micHearing")
+              : ""}
+        </div>
       </div>
     </div>
   );

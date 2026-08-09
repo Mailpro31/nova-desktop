@@ -754,7 +754,12 @@
     "transcribing": "Расшифровка...",
     "processing": "Обработка...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Открыть настройки"
+    "openSettings": "Открыть настройки",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Новое в Nova v{{version}}"

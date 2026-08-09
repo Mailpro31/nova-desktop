@@ -46,6 +46,14 @@ tauri_panel! {
 const OVERLAY_WIDTH: f64 = 256.0;
 const OVERLAY_HEIGHT: f64 = 46.0;
 
+// État « recording » uniquement : un peu plus haut que le repos pour loger,
+// SOUS/ AU-DESSUS de la pilule (selon le placement), l'indice micro discret
+// (« Je vous entends » / « Parlez un peu plus fort »). La carte reste ancrée
+// flush au bord de l'écran, donc cette hauteur supplémentaire n'apparaît que du
+// côté opposé au bord (transparent le reste du temps). On NE grossit PAS l'état
+// de repos (`idle`, toujours affiché) pour ne pas agrandir sa zone de clics.
+const OVERLAY_RECORDING_HEIGHT: f64 = 70.0;
+
 // Actual is 394x118, just a little extra
 const OVERLAY_STREAM_WIDTH: f64 = 400.0;
 const OVERLAY_STREAM_HEIGHT: f64 = 120.0;
@@ -54,6 +62,8 @@ const OVERLAY_STREAM_HEIGHT: f64 = 120.0;
 fn overlay_dimensions(state: &str) -> (f64, f64) {
     if state == "streaming" || state == "paste-fallback" {
         (OVERLAY_STREAM_WIDTH, OVERLAY_STREAM_HEIGHT)
+    } else if state == "recording" {
+        (OVERLAY_WIDTH, OVERLAY_RECORDING_HEIGHT)
     } else {
         (OVERLAY_WIDTH, OVERLAY_HEIGHT)
     }
