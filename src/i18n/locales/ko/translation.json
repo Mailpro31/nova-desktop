@@ -521,7 +521,8 @@
         "recommended": "권장",
         "downloaded": "다운로드됨",
         "downloadingModel": "모델 다운로드 중…",
-        "downloadingEngine": "엔진 다운로드 중…"
+        "downloadingEngine": "엔진 다운로드 중…",
+        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
       },
       "contextReading": {
         "title": "Context reading",

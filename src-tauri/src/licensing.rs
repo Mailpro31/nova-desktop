@@ -69,12 +69,15 @@ pub fn feature_min_tier(feature: &str) -> Tier {
     }
 }
 
-/// Styles inclus dans le palier Free (les autres nécessitent Pro).
+/// Styles inclus dans le palier Free (les autres nécessitent Pro). Exactement
+/// trois : « Transcription améliorée » (nettoyage par défaut), « E-mail » et
+/// « Notes ». Tous les autres presets intégrés (Messages, To-do, Prompt IA,
+/// Voix → texte, Réunion) nécessitent Nova Pro (`all_styles`) ; les Styles
+/// personnels restent gatés Nova Ultra (`custom_styles`).
 pub const FREE_STYLE_IDS: &[&str] = &[
     "default_improve_transcriptions",
     "nova_style_email",
-    "nova_style_messages",
-    "nova_style_voice_to_text",
+    "nova_style_notes",
 ];
 
 /// Styles INTÉGRÉS de Nova (presets d'origine). Doit rester synchronisé avec

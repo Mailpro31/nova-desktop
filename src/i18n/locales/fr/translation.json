@@ -521,7 +521,8 @@
         "recommended": "Recommandé",
         "downloaded": "téléchargé",
         "downloadingModel": "Téléchargement du modèle…",
-        "downloadingEngine": "Téléchargement du moteur…"
+        "downloadingEngine": "Téléchargement du moteur…",
+        "sameOnAllTiers": "La qualité et la rapidité de l'Intelligence privée — le moteur 100 % local — sont identiques sur toutes les offres : Nova Free, Pro et Ultra. Votre offre ne change que l'accès à Turbo, le moteur en ligne."
       },
       "contextReading": {
         "title": "Lecture de contexte",

@@ -12,6 +12,7 @@ import type {
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
 import { styleColor } from "@/lib/styleColors";
+import { styleLockFeature } from "@/lib/builtinStyles";
 
 type OverlayState =
   | "idle"
@@ -53,9 +54,26 @@ const RecordingOverlay: React.FC = () => {
   const [styles, setStyles] = useState<StyleItem[]>([]);
   const [selectedStyleId, setSelectedStyleId] = useState<string>("");
   const [menuOpen, setMenuOpen] = useState(false);
+  // Fonctionnalités du palier courant : décide quels Styles sont verrouillés.
+  // Défensif : licence dormante → `has()` vrai partout → aucune fonctionnalité
+  // absente → rien n'est verrouillé (bulle inchangée pour tous aujourd'hui).
+  const [features, setFeatures] = useState<Record<string, boolean>>({});
+
+  // Un Style est verrouillé si sa fonctionnalité de palier n'est pas accessible.
+  // `?? true` = fonctionnalité inconnue → jamais de verrou par défaut.
+  const styleLock = (id: string): { locked: boolean; tier: string } => {
+    const feature = styleLockFeature(id);
+    if (!feature) return { locked: false, tier: "" };
+    const locked = !(features[feature] ?? true);
+    const tier = feature === "custom_styles" ? "NOVA ULTRA" : "NOVA PRO";
+    return { locked, tier };
+  };
 
   const fetchStyles = async () => {
     try {
+      invoke<{ features: Record<string, boolean> }>("get_license_status")
+        .then((st) => setFeatures(st.features ?? {}))
+        .catch(() => setFeatures({}));
       const s = await commands.getAppSettings();
       if (s.status === "ok") {
         // Le mode « Automatique » ouvre la liste : c'est le défaut (Nova choisit
@@ -99,6 +117,9 @@ const RecordingOverlay: React.FC = () => {
   };
 
   const chooseStyle = async (id: string) => {
+    // Un Style verrouillé (au-delà du palier) n'est pas sélectionnable : on
+    // laisse le menu ouvert plutôt que d'appliquer un Style interdit.
+    if (styleLock(id).locked) return;
     setSelectedStyleId(id);
     setMenuOpen(false);
     await resizeForMenu(false, 0);
@@ -380,35 +401,50 @@ const RecordingOverlay: React.FC = () => {
         <div className="sidle-col">
           {menuOpen && (
             <div className={`smenu ${position}`}>
-              {styles.map((s) => (
-                <button
-                  key={s.id}
-                  className={`smenu-item ${s.id === selectedStyleId ? "active" : ""}`}
-                  onClick={() => chooseStyle(s.id)}
-                >
-                  <span
-                    className="smenu-dot"
-                    style={{ background: styleColor(s.id) }}
-                  />
-                  <span className="smenu-name">{s.name}</span>
-                  {s.id === selectedStyleId && (
-                    <svg
-                      className="smenu-check"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M20 6 9 17l-5-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </button>
-              ))}
+              {styles.map((s) => {
+                const { locked, tier } = styleLock(s.id);
+                return (
+                  <button
+                    key={s.id}
+                    className={`smenu-item ${s.id === selectedStyleId ? "active" : ""} ${
+                      locked ? "locked" : ""
+                    }`}
+                    onClick={() => chooseStyle(s.id)}
+                    disabled={locked}
+                    aria-disabled={locked}
+                  >
+                    <span
+                      className="smenu-dot"
+                      style={{ background: styleColor(s.id) }}
+                    />
+                    <span className="smenu-name">{s.name}</span>
+                    {locked ? (
+                      <span
+                        className={`smenu-lock ${tier.includes("ULTRA") ? "ultra" : ""}`}
+                      >
+                        {t("license.requiresTier", { tier })}
+                      </span>
+                    ) : (
+                      s.id === selectedStyleId && (
+                        <svg
+                          className="smenu-check"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M20 6 9 17l-5-5"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
           <div className="scard sidle">

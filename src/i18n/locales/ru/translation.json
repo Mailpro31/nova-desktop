@@ -521,7 +521,8 @@
         "recommended": "Рекомендуется",
         "downloaded": "загружено",
         "downloadingModel": "Загрузка модели…",
-        "downloadingEngine": "Загрузка движка…"
+        "downloadingEngine": "Загрузка движка…",
+        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
       },
       "contextReading": {
         "title": "Context reading",
