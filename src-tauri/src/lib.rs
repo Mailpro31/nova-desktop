@@ -16,6 +16,7 @@ mod llm_client;
 mod local_llm;
 mod machine_id;
 mod managers;
+mod meeting_capture;
 mod overlay;
 mod performance;
 pub mod portable;
@@ -691,6 +692,7 @@ pub fn run(cli_args: CliArgs) {
             commands::transcription::unload_model_manually,
             commands::transcription::is_transcribe_cpu_only_mode,
             commands::transcription::clear_transcribe_gpu_blacklist,
+            meeting_capture::probe_meeting_capture,
             performance::run_performance_diagnostics,
             performance::apply_adaptive_performance,
             performance::change_adaptive_performance_setting,

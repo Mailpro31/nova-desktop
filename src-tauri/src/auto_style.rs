@@ -25,6 +25,11 @@ pub const AUTO_STYLE_ID: &str = "auto";
 /// Style appliqué quand aucune règle ne correspond (générique, gratuit).
 const DEFAULT_AUTO_STYLE_ID: &str = "default_improve_transcriptions";
 
+/// Style « Réunion ». Sert aussi de définition unique de « l'app au premier plan
+/// EST une réunion » pour la capture des autres participants
+/// (voir [`foreground_meeting_target`]).
+pub const MEETING_STYLE_ID: &str = "nova_style_meeting";
+
 /// Liste noire intégrée : ces exécutables ne sont jamais inspectés (ni titre ni
 /// process routé) — confidentialité par défaut, complétée par l'utilisateur.
 const BUILTIN_BLOCKLIST: &[&str] = &[
@@ -62,7 +67,7 @@ const BUILTIN_BLOCKLIST: &[&str] = &[
 // en mot entier : « line » matche « line.exe » mais pas « outline.exe »).
 const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
     (
-        "nova_style_meeting",
+        MEETING_STYLE_ID,
         &[
             "zoom meeting",
             "google meet",
@@ -580,9 +585,19 @@ pub fn suggestion_context(settings: &AppSettings) -> Option<(String, String)> {
 // ---------------------------------------------------------------------------
 
 /// (titre, nom d'exécutable en minuscules). Chaînes vides si indisponible ou si
-/// l'application est sur liste noire (le titre n'est alors JAMAIS lu).
-#[cfg(target_os = "windows")]
+/// l'application est sur liste noire (le titre n'est alors JAMAIS lu). Le PID
+/// n'intéresse que la capture de réunion : les autres appelants passent par
+/// [`current_foreground`].
 fn current_foreground(user_blocklist: &[String]) -> (String, String) {
+    let (title, process, _pid) = current_foreground_full(user_blocklist);
+    (title, process)
+}
+
+/// (titre, nom d'exécutable en minuscules, PID). Mêmes garanties que
+/// [`current_foreground`] : liste noire respectée (aucun titre lu), champs vides
+/// et PID 0 si indisponible.
+#[cfg(target_os = "windows")]
+fn current_foreground_full(user_blocklist: &[String]) -> (String, String, u32) {
     use windows::core::PWSTR;
     use windows::Win32::Foundation::CloseHandle;
     use windows::Win32::System::Threading::{
@@ -596,7 +611,7 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
     unsafe {
         let hwnd = GetForegroundWindow();
         if hwnd.0.is_null() {
-            return (String::new(), String::new());
+            return (String::new(), String::new(), 0);
         }
 
         // Nom du process.
@@ -622,9 +637,10 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
             }
         }
 
-        // Confidentialité : app sur liste noire → on ne lit pas le titre.
+        // Confidentialité : app sur liste noire → on ne lit pas le titre, et le
+        // PID n'est pas exposé (aucune capture possible sur une app bloquée).
         if is_blocked(&process, user_blocklist) {
-            return (String::new(), String::new());
+            return (String::new(), String::new(), 0);
         }
 
         // Titre de la fenêtre.
@@ -641,13 +657,43 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
             String::new()
         };
 
-        (title, process)
+        (title, process, pid)
     }
 }
 
 #[cfg(not(target_os = "windows"))]
-fn current_foreground(_user_blocklist: &[String]) -> (String, String) {
-    (String::new(), String::new())
+fn current_foreground_full(_user_blocklist: &[String]) -> (String, String, u32) {
+    (String::new(), String::new(), 0)
+}
+
+/// Application de réunion au premier plan, si le Style « Réunion » est bien ce
+/// que la détection existante choisirait pour elle. Réutilise EXACTEMENT
+/// [`resolve_auto_style`] (une seule source de vérité pour « qu'est-ce qu'une
+/// réunion ») et la même barrière de confidentialité que la détection de Style :
+/// app sur liste noire ou illisible → `None`, donc aucune capture possible.
+///
+/// Renvoie `(nom d'exécutable, PID)`. Ne panique jamais.
+pub fn foreground_meeting_target(settings: &AppSettings) -> Option<(String, u32)> {
+    let (title, process, pid) = current_foreground_full(&settings.auto_style_blocklist);
+    if process.is_empty() || pid == 0 {
+        return None;
+    }
+
+    // Règles personnalisées seulement si le palier les autorise — même contrat
+    // que `resolve_override` / `suggestion_context`.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let empty = HashMap::new();
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
+        &settings.auto_style_rules
+    } else {
+        &empty
+    };
+
+    if resolve_auto_style(&title, &process, rules) == MEETING_STYLE_ID {
+        Some((process, pid))
+    } else {
+        None
+    }
 }
 
 // ---------------------------------------------------------------------------

@@ -128,6 +128,15 @@ windows = { version = "0.61.3", features = [
   "Win32_Storage_Xps",
 ] }
 winreg = "0.55"
+# Capture du son des autres participants d'une réunion (voir meeting_capture.rs).
+# Enveloppe sûre et testée autour de WASAPI, y compris la capture loopback
+# limitée à UN processus (`ActivateAudioInterfaceAsync` +
+# `AUDIOCLIENT_PROCESS_LOOPBACK_PARAMS`) : du COM non trivial qu'on ne réécrit
+# pas à la main. Le crate s'appuie sur `windows` 0.62, DÉJÀ présent dans l'arbre
+# (via sysinfo) — il n'ajoute donc aucune version supplémentaire de `windows`,
+# et aucun type Windows ne traverse la frontière entre les deux : la capture
+# reste confinée à son module.
+wasapi = "0.23"
 # Lecture de contexte — palier B (repli OCR). Quand l'accessibilité (palier A)
 # ne renvoie rien (apps Electron/canvas), Nova capture la fenêtre active (GDI /
 # PrintWindow, via le crate `windows` déjà présent) et lit le texte à l'écran,
