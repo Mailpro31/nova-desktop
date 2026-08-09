@@ -774,7 +774,10 @@
     "chooseStyle": "Choose a Style",
     "openSettings": "Open settings",
     "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder"
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",

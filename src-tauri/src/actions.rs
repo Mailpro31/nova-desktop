@@ -1413,11 +1413,41 @@ impl ShortcutAction for TranscribeAction {
         // fiable qu'au collage, car la transcription tourne en async ensuite.
         // Un seul appel synchrone, défensif : renvoie None si l'auto n'est pas
         // sélectionné ou si la lecture échoue (le Style choisi est alors gardé).
-        let auto_style_override = if post_process {
-            crate::auto_style::resolve_override(&get_settings(app))
+        let settings_for_style = if post_process {
+            Some(get_settings(app))
         } else {
             None
         };
+        let auto_style_override = settings_for_style
+            .as_ref()
+            .and_then(crate::auto_style::resolve_override);
+
+        // Suggestion de Style contextuelle (point 5) : uniquement quand un Style
+        // FIXE est sélectionné (en « Automatique », Nova choisit déjà le meilleur
+        // Style, aucune suggestion utile). On lit la fenêtre au premier plan une
+        // fois de plus et on émet le contexte ; TOUTE la décision (seuil, « ne
+        // plus afficher », gating de palier) vit côté overlay. Rien de sensible
+        // n'est émis (nom d'exécutable + ids de Style seulement).
+        if let Some(settings) = settings_for_style.as_ref() {
+            let selected = settings
+                .post_process_selected_prompt_id
+                .clone()
+                .unwrap_or_default();
+            if selected != crate::auto_style::AUTO_STYLE_ID {
+                if let Some((process, resolved)) = crate::auto_style::suggestion_context(settings) {
+                    if resolved != selected {
+                        let _ = app.emit(
+                            "dictation-context",
+                            crate::auto_style::DictationContext {
+                                process,
+                                resolved,
+                                selected,
+                            },
+                        );
+                    }
+                }
+            }
+        }
 
         tauri::async_runtime::spawn(async move {
             let _guard = FinishGuard(ah.clone());

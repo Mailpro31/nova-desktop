@@ -534,6 +534,47 @@ pub fn resolve_override(settings: &AppSettings) -> Option<String> {
     Some(resolve_auto_style(&title, &process, rules))
 }
 
+/// Contexte émis vers l'overlay pour la suggestion de Style contextuelle
+/// (point 5). Uniquement des identifiants techniques (nom d'exécutable, ids de
+/// Style) — jamais de titre de fenêtre ni de texte dicté : rien de sensible ne
+/// quitte le backend.
+#[derive(Clone, serde::Serialize)]
+pub struct DictationContext {
+    /// Nom d'exécutable au premier plan (minuscules, ex. « outlook.exe »).
+    pub process: String,
+    /// Id de Style que « Automatique » choisirait pour cette app.
+    pub resolved: String,
+    /// Id de Style actuellement sélectionné (fixe) par l'utilisateur.
+    pub selected: String,
+}
+
+/// Contexte de dictée pour la SUGGESTION de Style (point 5). Réutilise EXACTEMENT
+/// la détection du Style « Automatique » : lit une fois la fenêtre au premier
+/// plan (liste noire de confidentialité respectée par `current_foreground`) et
+/// renvoie `(process, style_qui_collerait)`. `None` si l'app est sur liste noire
+/// ou illisible (process vide) — sans identité d'app, aucune suggestion. La
+/// DÉCISION (seuil, « ne plus afficher », gating de palier) est laissée au
+/// frontend ; ici on ne fait que fournir le signal. Ne panique jamais.
+pub fn suggestion_context(settings: &AppSettings) -> Option<(String, String)> {
+    let (title, process) = current_foreground(&settings.auto_style_blocklist);
+    if process.is_empty() {
+        return None;
+    }
+
+    // Mêmes règles que `resolve_override` : règles personnalisées seulement si le
+    // palier les autorise, sinon règles intégrées uniquement.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let empty = HashMap::new();
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
+        &settings.auto_style_rules
+    } else {
+        &empty
+    };
+
+    let style = resolve_auto_style(&title, &process, rules);
+    Some((process, style))
+}
+
 // ---------------------------------------------------------------------------
 // Capture de la fenêtre au premier plan (Windows). Repli vide partout ailleurs.
 // ---------------------------------------------------------------------------

@@ -759,7 +759,10 @@
     "chooseStyle": "Choose a Style",
     "openSettings": "सेटिङ खोल्नुहोस्",
     "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder"
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "quota": {
     "todayUsage": "आजको निःशुल्क पुनर्लेखन",
