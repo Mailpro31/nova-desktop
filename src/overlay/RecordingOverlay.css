@@ -635,6 +635,31 @@
 .smenu-item.active {
   background: color-mix(in srgb, var(--color-accent, #0a84ff) 16%, transparent);
 }
+.smenu-item.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.smenu-item.locked:hover {
+  background: transparent;
+}
+/* Badge « Nécessite Nova Pro / Ultra » sur un Style verrouillé, compact pour la
+   bulle. Bleu Apple (accent) : seule couleur d'action de l'UI. */
+.smenu-lock {
+  flex: none;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-accent, #0a84ff);
+  border: 1px solid var(--color-accent, #0a84ff);
+  border-radius: 999px;
+  padding: 1px 6px;
+}
+.smenu-lock.ultra {
+  color: var(--color-ultra, #c9b6f0);
+  border-color: var(--color-ultra, #c9b6f0);
+}
 .smenu-dot {
   width: 12px;
   height: 12px;

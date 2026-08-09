@@ -4,7 +4,10 @@ import { RefreshCcw } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { commands } from "@/bindings";
 import { styleColor } from "../../../lib/styleColors";
-import { BUILTIN_STYLE_IDS } from "../../../lib/builtinStyles";
+import {
+  BUILTIN_STYLE_IDS,
+  styleLockFeature,
+} from "../../../lib/builtinStyles";
 
 import { Alert } from "../../ui/Alert";
 import {
@@ -191,12 +194,31 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
   const [draftText, setDraftText] = useState("");
   // Créer / modifier / supprimer des Styles est réservé à Nova Ultra.
   const [canEditStyles, setCanEditStyles] = useState(true);
+  // Fonctionnalités du palier courant : décide quels Styles sont verrouillés.
+  // Défensif : en licence dormante, `has()` renvoie vrai partout → aucune
+  // fonctionnalité absente → rien n'est grisé (comportement actuel préservé).
+  const [features, setFeatures] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     invoke<{ features: Record<string, boolean> }>("get_license_status")
-      .then((s) => setCanEditStyles(s.features?.custom_styles ?? true))
-      .catch(() => setCanEditStyles(true));
+      .then((s) => {
+        setFeatures(s.features ?? {});
+        setCanEditStyles(s.features?.custom_styles ?? true);
+      })
+      .catch(() => {
+        setFeatures({});
+        setCanEditStyles(true);
+      });
   }, []);
+
+  // Un Style est verrouillé si sa fonctionnalité de palier n'est pas accessible.
+  // `?? true` = si la fonctionnalité est inconnue (licence dormante ou statut
+  // indisponible), on n'interdit rien : jamais de blocage par défaut.
+  const styleLocked = (id: string): { locked: boolean; feature: string } => {
+    const feature = styleLockFeature(id);
+    if (!feature) return { locked: false, feature: "" };
+    return { locked: !(features[feature] ?? true), feature };
+  };
 
   const prompts = getSetting("post_process_prompts") || [];
   const selectedPromptId = getSetting("post_process_selected_prompt_id") || "";
@@ -269,31 +291,41 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
   };
 
   // Carte d'un Style : pastille couleur + nom + badge + coche sur l'actif.
+  // Un Style verrouillé (au-delà du palier) est grisé, non sélectionnable, et
+  // porte le badge « NÉCESSITE NOVA PRO / ULTRA ».
   const StyleCard: React.FC<{
     id: string;
     name: string;
     kind: "auto" | "builtin" | "custom";
   }> = ({ id, name, kind }) => {
     const active = selectedPromptId === id;
+    const { locked, feature: lockFeature } = styleLocked(id);
     const badge =
       kind === "auto"
         ? t("settings.postProcessing.prompts.badgeAuto")
         : kind === "builtin"
           ? t("settings.postProcessing.prompts.badgeBuiltin")
           : t("settings.postProcessing.prompts.badgeCustom");
+    const choose = () => {
+      if (locked) return;
+      handleSelect(id);
+    };
     return (
       <div
         role="button"
-        tabIndex={0}
+        tabIndex={locked ? -1 : 0}
         aria-pressed={active}
-        onClick={() => handleSelect(id)}
+        aria-disabled={locked}
+        onClick={choose}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") handleSelect(id);
+          if (e.key === "Enter" || e.key === " ") choose();
         }}
-        className={`flex items-center gap-3 rounded-[9px] border px-3 py-2.5 cursor-pointer transition-colors ${
-          active
-            ? "border-accent bg-accent/10"
-            : "border-mid-gray/20 hover:bg-mid-gray/10"
+        className={`flex items-center gap-3 rounded-[9px] border px-3 py-2.5 transition-colors ${
+          locked
+            ? "border-mid-gray/20 opacity-60 cursor-not-allowed"
+            : active
+              ? "border-accent bg-accent/10 cursor-pointer"
+              : "border-mid-gray/20 hover:bg-mid-gray/10 cursor-pointer"
         }`}
       >
         <span
@@ -304,10 +336,14 @@ const PostProcessingSettingsPromptsComponent: React.FC = () => {
         <span className="flex-1 min-w-0 text-sm font-medium truncate">
           {name}
         </span>
-        <span className="text-[9px] font-bold tracking-wider uppercase rounded-full px-1.5 py-px border text-text-secondary border-mid-gray/40 whitespace-nowrap">
-          {badge}
-        </span>
-        {canEditStyles && kind !== "auto" && (
+        {locked ? (
+          <TierBadge feature={lockFeature} />
+        ) : (
+          <span className="text-[9px] font-bold tracking-wider uppercase rounded-full px-1.5 py-px border text-text-secondary border-mid-gray/40 whitespace-nowrap">
+            {badge}
+          </span>
+        )}
+        {!locked && canEditStyles && kind !== "auto" && (
           <span className="flex items-center gap-1">
             {kind === "builtin" ? (
               <button

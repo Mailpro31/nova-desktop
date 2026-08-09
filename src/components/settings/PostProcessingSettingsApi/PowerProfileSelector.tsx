@@ -172,6 +172,10 @@ export const PowerProfileSelector: React.FC<{
         })}
       </div>
 
+      <p className="text-[11px] text-text-secondary">
+        {t("settings.postProcessing.powerProfile.sameOnAllTiers")}
+      </p>
+
       {busyId && progress && (
         <div className="flex flex-col gap-1">
           <div className="h-1.5 w-full rounded-full bg-mid-gray/20 overflow-hidden">
