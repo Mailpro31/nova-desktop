@@ -676,6 +676,10 @@
         "title": "App-Datenverzeichnis",
         "description": "Speicherort der Nova-Daten"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "Quellcode",
         "description": "Quellcode ansehen und beitragen",

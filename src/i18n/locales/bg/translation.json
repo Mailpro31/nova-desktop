@@ -676,6 +676,10 @@
         "title": "Папка с данни на приложението",
         "description": "Мястото, където Nova съхранява данните си"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "Изходен код",
         "description": "Преглед на изходния код и принос",

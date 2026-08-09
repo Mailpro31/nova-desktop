@@ -676,6 +676,10 @@
         "title": "Emplacement des données de l'application",
         "description": "Emplacement où Nova stocke ses données"
       },
+      "debugMode": {
+        "title": "Mode débogage",
+        "description": "Affiche la section Diagnostic dans la barre latérale, avec des outils techniques comme les journaux en direct et des tests de diagnostic. Vous pouvez aussi l'activer à tout moment avec Ctrl+Maj+D."
+      },
       "sourceCode": {
         "title": "Site officiel",
         "description": "Découvrir Nova et gérer votre abonnement",

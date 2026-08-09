@@ -680,6 +680,10 @@
         "title": "App Data Directory",
         "description": "Location where Nova stores its data"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "Official website",
         "description": "Discover Nova and manage your subscription",

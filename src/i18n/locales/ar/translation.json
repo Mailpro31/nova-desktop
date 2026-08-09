@@ -655,6 +655,10 @@
         "title": "مجلد بيانات التطبيق",
         "description": "الموقع الذي يخزن فيه Nova بياناته"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "كود المصدر",
         "description": "عرض كود المصدر والمساهمة",

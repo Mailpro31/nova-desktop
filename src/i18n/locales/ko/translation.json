@@ -676,6 +676,10 @@
         "title": "앱 데이터 디렉토리",
         "description": "Nova가 데이터를 저장하는 위치"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "소스 코드",
         "description": "소스 코드 보기 및 기여",
