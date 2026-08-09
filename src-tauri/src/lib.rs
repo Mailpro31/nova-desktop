@@ -17,6 +17,7 @@ mod local_llm;
 mod machine_id;
 mod managers;
 mod meeting_capture;
+mod meeting_transcript;
 mod overlay;
 mod performance;
 pub mod portable;
