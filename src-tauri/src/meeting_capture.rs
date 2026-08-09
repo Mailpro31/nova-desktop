@@ -183,6 +183,25 @@ fn interleaved_f32_to_mono(raw: &[u8]) -> Vec<f32> {
         .collect()
 }
 
+/// Nombre d'octets par trame audio (f32 × canaux). Une trame = un échantillon
+/// par canal ; c'est l'unité que WASAPI livre et le grain de la conversion mono.
+const BYTES_PER_FRAME: usize = 4 * CAPTURE_CHANNELS;
+
+/// Retire du tampon les octets formant des trames COMPLÈTES et les renvoie,
+/// laissant un éventuel reliquat de trame partielle en tête pour la prochaine
+/// lecture.
+///
+/// Nécessaire pour la capture en flux continu : contrairement à la prise
+/// ponctuelle qui convertit tout à la fin, une session lit par petits blocs et
+/// doit alimenter le rééchantillonneur au fil de l'eau — sans jamais couper une
+/// trame en deux (ce qui décalerait les canaux et transformerait la voix en
+/// bruit). Hors `#[cfg(windows)]` à dessein : logique pure, testable partout.
+#[allow(dead_code)] // Consommé par le chemin Windows uniquement (voir plus bas).
+fn take_complete_frames(raw: &mut std::collections::VecDeque<u8>) -> Vec<u8> {
+    let complete = (raw.len() / BYTES_PER_FRAME) * BYTES_PER_FRAME;
+    raw.drain(..complete).collect()
+}
+
 // ---------------------------------------------------------------------------
 // Capture (Windows)
 // ---------------------------------------------------------------------------
@@ -215,12 +234,25 @@ pub fn capture_process_loopback(
     })
 }
 
+/// Boucle de capture WASAPI PARTAGÉE par la prise ponctuelle (diagnostic) et la
+/// session de réunion longue. Toute la partie délicate — COM/MTA, activation du
+/// loopback par processus, rééchantillonnage vers 16 kHz — vit ICI, une seule
+/// fois : les deux appelants ne diffèrent que par leur condition d'arrêt.
+///
+/// `should_continue` est consulté à chaque tour : la prise ponctuelle borne sur
+/// une durée, la session sur un drapeau d'arrêt. `emit_16k` reçoit les trames
+/// 16 kHz mono AU FIL DE L'EAU — la session les transmet à la transcription, la
+/// prise ponctuelle les accumule. Ne panique jamais ; arrête toujours le flux
+/// avant de rendre la main.
 #[cfg(target_os = "windows")]
-fn capture_on_this_thread(pid: u32, max_duration: Duration) -> Result<CapturedAudio, CaptureError> {
+fn run_capture_loop(
+    pid: u32,
+    mut should_continue: impl FnMut() -> bool,
+    mut emit_16k: impl FnMut(&[f32]),
+) -> Result<(), CaptureError> {
     use crate::audio_toolkit::audio::FrameResampler;
     use crate::audio_toolkit::constants;
     use std::collections::VecDeque;
-    use std::time::Instant;
     use wasapi::{initialize_mta, AudioClient, Direction, SampleType, StreamMode, WaveFormat};
 
     initialize_mta()
@@ -263,19 +295,31 @@ fn capture_on_this_thread(pid: u32, max_duration: Duration) -> Result<CapturedAu
 
     // À partir d'ici le flux tourne : toute sortie doit l'arrêter, d'où l'arrêt
     // explicite avant chaque retour plutôt qu'un `?` nu dans la boucle.
+    let mut resampler = FrameResampler::new(
+        CAPTURE_SAMPLE_RATE,
+        constants::WHISPER_SAMPLE_RATE as usize,
+        Duration::from_millis(30),
+    );
     let mut raw: VecDeque<u8> = VecDeque::new();
-    let started = Instant::now();
     let mut read_error: Option<CaptureError> = None;
 
-    while started.elapsed() < max_duration {
+    while should_continue() {
         if let Err(e) = capture_client.read_from_device_to_deque(&mut raw) {
             read_error = Some(CaptureError::new(REASON_STREAM_ERROR, e.to_string()));
             break;
         }
 
+        // Convertit et émet les trames complètes accumulées, sans jamais couper
+        // une trame en deux (le reliquat reste en tête pour la lecture suivante).
+        let frame_bytes = take_complete_frames(&mut raw);
+        if !frame_bytes.is_empty() {
+            let mono = interleaved_f32_to_mono(&frame_bytes);
+            resampler.push(&mono, &mut |frame: &[f32]| emit_16k(frame));
+        }
+
         // Un processus parfaitement silencieux peut ne jamais signaler
-        // l'événement : le délai d'attente court garde la boucle bornée par
-        // `max_duration` au lieu de la laisser suspendue.
+        // l'événement : le délai d'attente court garde la boucle réactive à
+        // `should_continue` au lieu de la laisser suspendue.
         let _ = event.wait_for_event(100);
     }
 
@@ -285,20 +329,22 @@ fn capture_on_this_thread(pid: u32, max_duration: Duration) -> Result<CapturedAu
         return Err(error);
     }
 
-    // Le flux est en f32 entrelacé : on replie en mono puis on ramène à la
-    // fréquence du moteur de transcription, exactement comme le micro.
-    let mono = interleaved_f32_to_mono(raw.make_contiguous());
+    // Vide la queue interne du rééchantillonneur (dernières trames en vol).
+    resampler.finish(&mut |frame: &[f32]| emit_16k(frame));
+    Ok(())
+}
 
+#[cfg(target_os = "windows")]
+fn capture_on_this_thread(pid: u32, max_duration: Duration) -> Result<CapturedAudio, CaptureError> {
+    use std::time::Instant;
+
+    let started = Instant::now();
     let mut samples_16k: Vec<f32> = Vec::new();
-    let mut resampler = FrameResampler::new(
-        CAPTURE_SAMPLE_RATE,
-        constants::WHISPER_SAMPLE_RATE as usize,
-        Duration::from_millis(30),
-    );
-    resampler.push(&mono, &mut |frame: &[f32]| {
-        samples_16k.extend_from_slice(frame)
-    });
-    resampler.finish(&mut |frame: &[f32]| samples_16k.extend_from_slice(frame));
+    run_capture_loop(
+        pid,
+        || started.elapsed() < max_duration,
+        |frame| samples_16k.extend_from_slice(frame),
+    )?;
 
     Ok(CapturedAudio {
         samples_16k_mono: samples_16k,
@@ -313,6 +359,95 @@ pub fn capture_process_loopback(
     _pid: u32,
     _max_duration: Duration,
 ) -> Result<CapturedAudio, CaptureError> {
+    Err(CaptureError::new(REASON_UNAVAILABLE, "windows only"))
+}
+
+// ---------------------------------------------------------------------------
+// Capture longue (session de réunion)
+// ---------------------------------------------------------------------------
+
+/// Poignée d'une capture de réunion EN COURS. Contrairement à la prise ponctuelle
+/// du diagnostic (durée fixe, résultat rendu d'un bloc), une session dure tant
+/// que la réunion : on la démarre, elle émet les trames 16 kHz mono au fil de
+/// l'eau vers un callback (typiquement la transcription en flux), et on l'arrête
+/// explicitement.
+///
+/// La capture s'arrête au `stop()` OU si la poignée est lâchée (`Drop`) — jamais
+/// de thread de capture orphelin qui continuerait à écouter une réunion après
+/// coup.
+pub struct MeetingCaptureHandle {
+    stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    join: Option<std::thread::JoinHandle<Result<(), CaptureError>>>,
+}
+
+impl MeetingCaptureHandle {
+    /// Arrête la capture et attend la fin propre du thread (flux WASAPI fermé,
+    /// dernières trames émises). Renvoie l'erreur éventuelle survenue pendant la
+    /// session. Idempotent vis-à-vis de `Drop` : après `stop()`, le `Drop` ne
+    /// refait rien.
+    pub fn stop(mut self) -> Result<(), CaptureError> {
+        self.stop.store(true, std::sync::atomic::Ordering::Relaxed);
+        match self.join.take() {
+            Some(handle) => handle.join().unwrap_or_else(|_| {
+                Err(CaptureError::new(
+                    REASON_INTERNAL,
+                    "capture thread panicked",
+                ))
+            }),
+            None => Ok(()),
+        }
+    }
+}
+
+impl Drop for MeetingCaptureHandle {
+    fn drop(&mut self) {
+        // Garde-fou : une poignée lâchée sans `stop()` explicite ne doit pas
+        // laisser la réunion continuer à être captée en tâche de fond.
+        self.stop.store(true, std::sync::atomic::Ordering::Relaxed);
+        if let Some(handle) = self.join.take() {
+            let _ = handle.join();
+        }
+    }
+}
+
+/// Démarre une capture de réunion continue sur le processus `pid`. Chaque bloc de
+/// trames 16 kHz mono capté est passé à `on_frames` sur le thread de capture —
+/// garder ce callback léger (le transmettre à un canal), il ne doit jamais
+/// bloquer la lecture du flux. Ne panique jamais.
+#[cfg(target_os = "windows")]
+pub fn start_process_loopback(
+    pid: u32,
+    on_frames: impl Fn(&[f32]) + Send + 'static,
+) -> Result<MeetingCaptureHandle, CaptureError> {
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::sync::Arc;
+
+    let stop = Arc::new(AtomicBool::new(false));
+    let stop_for_thread = stop.clone();
+
+    let join = std::thread::Builder::new()
+        .name("nova-meeting-session".into())
+        .spawn(move || {
+            run_capture_loop(
+                pid,
+                || !stop_for_thread.load(Ordering::Relaxed),
+                |frame| on_frames(frame),
+            )
+        })
+        .map_err(|e| CaptureError::new(REASON_INTERNAL, e.to_string()))?;
+
+    Ok(MeetingCaptureHandle {
+        stop,
+        join: Some(join),
+    })
+}
+
+/// Repli hors Windows, même contrat que [`capture_process_loopback`].
+#[cfg(not(target_os = "windows"))]
+pub fn start_process_loopback(
+    _pid: u32,
+    _on_frames: impl Fn(&[f32]) + Send + 'static,
+) -> Result<MeetingCaptureHandle, CaptureError> {
     Err(CaptureError::new(REASON_UNAVAILABLE, "windows only"))
 }
 
@@ -393,9 +528,10 @@ pub async fn probe_meeting_capture(app: tauri::AppHandle) -> Result<MeetingCaptu
 #[cfg(test)]
 mod tests {
     use super::{
-        duration_ms_16k, interleaved_f32_to_mono, peak_level, CaptureError, MeetingCaptureProbe,
-        REASON_NO_MEETING_APP, REASON_UNAVAILABLE, SILENCE_PEAK,
+        duration_ms_16k, interleaved_f32_to_mono, peak_level, take_complete_frames, CaptureError,
+        MeetingCaptureProbe, REASON_NO_MEETING_APP, REASON_UNAVAILABLE, SILENCE_PEAK,
     };
+    use std::collections::VecDeque;
 
     /// Encode des échantillons f32 comme le fait WASAPI (petit-boutien, entrelacé).
     fn raw_frames(samples: &[f32]) -> Vec<u8> {
@@ -439,6 +575,32 @@ mod tests {
         assert_eq!(duration_ms_16k(&[]), 0);
         assert_eq!(duration_ms_16k(&vec![0.0; 16_000]), 1000);
         assert_eq!(duration_ms_16k(&vec![0.0; 8_000]), 500);
+    }
+
+    #[test]
+    fn complete_frames_leave_a_partial_frame_buffered() {
+        // Une session lit par blocs : si une lecture s'arrête au milieu d'une
+        // trame stéréo, les octets du demi-échantillon doivent RESTER pour la
+        // lecture suivante, sinon les canaux se décalent et la voix devient bruit.
+        let mut raw: VecDeque<u8> = raw_frames(&[1.0, 0.0]).into(); // une trame complète…
+        raw.extend(&1.0f32.to_le_bytes()); // …plus un demi (un seul canal)
+
+        let taken = take_complete_frames(&mut raw);
+        // La trame complète sort ; le demi-échantillon (4 octets) reste.
+        assert_eq!(interleaved_f32_to_mono(&taken), vec![0.5]);
+        assert_eq!(raw.len(), 4);
+
+        // La trame se complète à la lecture suivante : plus de reliquat.
+        raw.extend(&(-1.0f32).to_le_bytes());
+        let taken = take_complete_frames(&mut raw);
+        assert_eq!(interleaved_f32_to_mono(&taken), vec![0.0]);
+        assert!(raw.is_empty());
+    }
+
+    #[test]
+    fn complete_frames_on_empty_buffer_yield_nothing() {
+        let mut raw: VecDeque<u8> = VecDeque::new();
+        assert!(take_complete_frames(&mut raw).is_empty());
     }
 
     #[test]
