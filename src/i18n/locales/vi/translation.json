@@ -659,6 +659,10 @@
         "title": "Thư mục dữ liệu ứng dụng",
         "description": "Vị trí Nova lưu trữ dữ liệu"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "Mã nguồn",
         "description": "Xem mã nguồn và đóng góp",

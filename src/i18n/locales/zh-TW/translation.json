@@ -659,6 +659,10 @@
         "title": "應用程式資料目錄",
         "description": "Nova 儲存資料的位置"
       },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
+      },
       "sourceCode": {
         "title": "原始碼",
         "description": "檢視原始碼並參與貢獻",
