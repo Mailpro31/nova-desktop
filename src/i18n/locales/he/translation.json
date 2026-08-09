@@ -754,7 +754,9 @@
     "transcribing": "מתמלל...",
     "processing": "מעבד...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "פתח הגדרות"
+    "openSettings": "פתח הגדרות",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "whatsNew": {
     "title": "חדש ב-Nova v{{version}}"

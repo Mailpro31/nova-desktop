@@ -754,7 +754,9 @@
     "transcribing": "Transkrypcja...",
     "processing": "Przetwarzanie...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Otwórz ustawienia"
+    "openSettings": "Otwórz ustawienia",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "whatsNew": {
     "title": "Nowości w Nova v{{version}}"

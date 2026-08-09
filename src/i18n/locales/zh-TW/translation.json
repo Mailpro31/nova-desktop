@@ -754,7 +754,9 @@
     "transcribing": "正在轉錄...",
     "processing": "處理中...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "開啟設定"
+    "openSettings": "開啟設定",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "whatsNew": {
     "title": "Nova v{{version}} 新功能"

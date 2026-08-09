@@ -754,7 +754,9 @@
     "transcribing": "文字起こし中…",
     "processing": "処理中…",
     "chooseStyle": "Choose a Style",
-    "openSettings": "設定を開く"
+    "openSettings": "設定を開く",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "whatsNew": {
     "title": "Nova v{{version}} の新機能"

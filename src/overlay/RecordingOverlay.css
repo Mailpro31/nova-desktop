@@ -330,6 +330,47 @@
   background: var(--s-accent);
   transition: height 45ms linear;
 }
+
+/* Retour micro discret (point 3). La pilule + l'indice sont empilés : l'indice
+   se place AU-DESSUS de la pilule en placement bas et EN DESSOUS en placement
+   haut (toujours du côté opposé au bord de l'écran, dans l'espace transparent
+   que la fenêtre « recording » réserve). Il ne partage jamais la rangée de la
+   forme d'onde, donc ne la recouvre jamais. */
+.slisten-wrap {
+  display: flex;
+  flex-direction: column-reverse; /* bas : indice au-dessus de la pilule */
+  align-items: center;
+  gap: 6px;
+}
+.ov-stage.top .slisten-wrap {
+  flex-direction: column; /* haut : indice en dessous de la pilule */
+}
+.smic-hint {
+  height: 13px;
+  line-height: 13px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--s-faint);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease,
+    color 260ms ease;
+}
+.smic-hint.show {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+/* « Parlez un peu plus fort » : à peine plus présent que la confirmation, sans
+   jamais alarmer (aucun rouge) — on reste sur le gris secondaire de l'overlay. */
+.smic-hint.low {
+  color: var(--s-muted);
+}
 .sx {
   width: 22px;
   height: 22px;

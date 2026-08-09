@@ -139,6 +139,49 @@ const RecordingOverlay: React.FC = () => {
     }
   };
 
+  // ---- Retour micro discret pendant l'écoute (point 3) ----
+  // Dérivé UNIQUEMENT des niveaux déjà reçus (`mic-level`) : aucune analyse
+  // audio supplémentaire côté backend. On confirme un état sur une courte
+  // fenêtre glissante pour ne JAMAIS clignoter ni harceler : « Je vous entends »
+  // quand le niveau est franc, « Parlez un peu plus fort » seulement après un
+  // silence continu d'environ deux secondes. N'apparaît que dans la pilule
+  // compacte d'enregistrement (l'overlay Live montre déjà le texte en direct).
+  const [micHint, setMicHint] = useState<null | "ok" | "low">(null);
+  const micWindowRef = useRef<{ lowSince: number; okSince: number }>({
+    lowSince: 0,
+    okSince: 0,
+  });
+  const listeningCompact = isVisible && state === "recording";
+
+  useEffect(() => {
+    if (!listeningCompact) {
+      micWindowRef.current = { lowSince: 0, okSince: 0 };
+      setMicHint(null);
+      return;
+    }
+    const energy = levels.length ? Math.max(...levels) : 0;
+    const now =
+      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const w = micWindowRef.current;
+    const LOW = 0.1; // sous ce niveau : trop faible
+    const OK = 0.3; // au-dessus : clairement entendu
+    const LOW_HOLD_MS = 2000; // silence continu avant d'inviter à parler plus fort
+    const OK_HOLD_MS = 300; // brève confirmation avant « Je vous entends »
+    if (energy >= OK) {
+      w.lowSince = 0;
+      if (!w.okSince) w.okSince = now;
+      if (now - w.okSince >= OK_HOLD_MS) setMicHint("ok");
+    } else if (energy <= LOW) {
+      w.okSince = 0;
+      if (!w.lowSince) w.lowSince = now;
+      if (now - w.lowSince >= LOW_HOLD_MS) setMicHint("low");
+    } else {
+      // Zone intermédiaire (l'utilisateur parle doucement) : on ne réarme pas le
+      // compteur de silence et on laisse l'indice courant tel quel, sans à-coup.
+      w.lowSince = 0;
+    }
+  }, [levels, listeningCompact]);
+
   const smoothedLevelsRef = useRef<number[]>(Array(16).fill(0));
   // Live-text scroll-back: the text region "sticks" to the newest line while the
   // user is at the bottom; if they scroll up to read history, auto-follow pauses
@@ -594,10 +637,24 @@ const RecordingOverlay: React.FC = () => {
       dir={direction}
       className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
     >
-      <div
-        className={`scard compact ${working && isVisible ? "cworking" : ""}`}
-      >
-        {working ? workingRow(workLabel, true) : listeningRow(false)}
+      <div className="slisten-wrap">
+        <div
+          className={`scard compact ${working && isVisible ? "cworking" : ""}`}
+        >
+          {working ? workingRow(workLabel, true) : listeningRow(false)}
+        </div>
+        {/* Indice micro discret : jamais dans la même rangée que la forme d'onde
+            (au-dessus/en dessous de la pilule), ne la recouvre donc jamais. */}
+        <div
+          className={`smic-hint ${micHint ?? ""} ${micHint ? "show" : ""}`}
+          aria-live="polite"
+        >
+          {micHint === "low"
+            ? t("overlay.micTooLow")
+            : micHint === "ok"
+              ? t("overlay.micHearing")
+              : ""}
+        </div>
       </div>
     </div>
   );

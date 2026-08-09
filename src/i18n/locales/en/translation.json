@@ -772,7 +772,9 @@
     "transcribing": "Transcribing...",
     "processing": "Thinking",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Open settings"
+    "openSettings": "Open settings",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",

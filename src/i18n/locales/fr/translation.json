@@ -769,7 +769,9 @@
     "transcribing": "Transcription...",
     "processing": "Thinking",
     "chooseStyle": "Choisir un Style",
-    "openSettings": "Ouvrir les réglages"
+    "openSettings": "Ouvrir les réglages",
+    "micHearing": "Je vous entends",
+    "micTooLow": "Parlez un peu plus fort"
   },
   "whatsNew": {
     "title": "Nouveautés de Nova v{{version}}"

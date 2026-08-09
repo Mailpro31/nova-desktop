@@ -754,7 +754,9 @@
     "transcribing": "Transkribe ediliyor...",
     "processing": "İşleniyor...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Ayarları aç"
+    "openSettings": "Ayarları aç",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "whatsNew": {
     "title": "Nova v{{version}} yenilikleri"

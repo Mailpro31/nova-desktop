@@ -757,7 +757,9 @@
     "transcribing": "Transcriberen...",
     "processing": "Verwerken...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Instellingen openen"
+    "openSettings": "Instellingen openen",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "quota": {
     "todayUsage": "Gratis herformuleringen vandaag",

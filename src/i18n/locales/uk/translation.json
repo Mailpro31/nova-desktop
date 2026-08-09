@@ -754,7 +754,9 @@
     "transcribing": "Обробка...",
     "processing": "Постобробка...",
     "chooseStyle": "Choose a Style",
-    "openSettings": "Відкрити налаштування"
+    "openSettings": "Відкрити налаштування",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder"
   },
   "whatsNew": {
     "title": "Нове в Nova v{{version}}"
