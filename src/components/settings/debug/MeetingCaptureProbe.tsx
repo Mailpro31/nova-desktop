@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { CheckCircle2, CircleAlert, CircleX } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -43,6 +43,13 @@ const KNOWN_REASONS = [
   "internal",
 ] as const;
 
+// Miroir de `meeting_capture::SWITCH_GRACE_PERIOD` (Rust) : le bouton vit dans
+// la fenêtre Réglages, qui a donc le focus au clic. Le backend attend ce délai
+// avant de lire la fenêtre au premier plan ; ce compte à rebours n'est qu'un
+// affichage — c'est le délai côté Rust qui fait foi. Garder synchronisé si l'un
+// des deux change.
+const SWITCH_GRACE_SECONDS = 3;
+
 export const MeetingCaptureProbe: React.FC<{
   descriptionMode?: "inline" | "tooltip";
   grouped?: boolean;
@@ -51,10 +58,33 @@ export const MeetingCaptureProbe: React.FC<{
   const [result, setResult] = useState<ProbeResult | null>(null);
   const [failure, setFailure] = useState(false);
   const [running, setRunning] = useState(false);
+  const [switchCountdown, setSwitchCountdown] = useState(0);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (countdownRef.current) clearInterval(countdownRef.current);
+    },
+    [],
+  );
 
   const run = async () => {
     setRunning(true);
     setFailure(false);
+    setSwitchCountdown(SWITCH_GRACE_SECONDS);
+
+    // Purement visuel : le vrai délai est côté Rust (`SWITCH_GRACE_PERIOD`).
+    // S'arrête de lui-même à 0 ; le clean-up ci-dessus couvre le démontage.
+    countdownRef.current = setInterval(() => {
+      setSwitchCountdown((n) => {
+        if (n <= 1 && countdownRef.current) {
+          clearInterval(countdownRef.current);
+          countdownRef.current = null;
+        }
+        return Math.max(0, n - 1);
+      });
+    }, 1000);
+
     try {
       setResult(await invoke<ProbeResult>("probe_meeting_capture"));
     } catch {
@@ -63,6 +93,10 @@ export const MeetingCaptureProbe: React.FC<{
       setResult(null);
       setFailure(true);
     } finally {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+        countdownRef.current = null;
+      }
       setRunning(false);
     }
   };
@@ -126,7 +160,11 @@ export const MeetingCaptureProbe: React.FC<{
             className="shrink-0"
           >
             {running
-              ? t("settings.debug.meetingCapture.running")
+              ? switchCountdown > 0
+                ? t("settings.debug.meetingCapture.switchIn", {
+                    seconds: switchCountdown,
+                  })
+                : t("settings.debug.meetingCapture.running")
               : t("settings.debug.meetingCapture.run")}
           </Button>
         </div>

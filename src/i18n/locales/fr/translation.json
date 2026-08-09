@@ -643,10 +643,10 @@
       },
       "meetingCapture": {
         "title": "Test de capture de réunion",
-        "description": "Vérifie si cet ordinateur peut capter les autres participants d'une réunion — le son qui sort de vos haut-parleurs — en plus de votre micro. Ouvrez votre réunion, laissez sa fenêtre active, puis lancez le test.",
+        "description": "Vérifie si cet ordinateur peut capter les autres participants d'une réunion — le son qui sort de vos haut-parleurs — en plus de votre micro. Cliquez sur le bouton, puis basculez tout de suite sur la fenêtre de votre réunion : le test lit l'application au premier plan 3 secondes après le clic.",
         "privacy": "Capte environ 2 secondes depuis l'application de réunion au premier plan, uniquement pour mesurer un niveau sonore. Rien n'est enregistré, transcrit ni envoyé où que ce soit.",
         "run": "Lancer le test",
-        "running": "Test en cours…",
+        "running": "Basculez sur votre réunion maintenant…",
         "results": {
           "working": "Fonctionne. Nova a capté {{seconds}} s depuis {{process}}, niveau crête {{level}} %.",
           "silent": "Le flux de {{process}} s'est ouvert mais n'a entendu que du silence. Vérifiez que quelqu'un parlait pendant le test.",
@@ -655,7 +655,8 @@
           "no_audio": "Le flux s'est ouvert mais n'a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
           "stream_error": "La capture s'est interrompue avant la fin du test.",
           "internal": "Le test n'a pas pu s'exécuter."
-        }
+        },
+        "switchIn": "Basculez sur votre réunion… {{seconds}}"
       },
       "whatsNewPreview": {
         "title": "Aperçu des nouveautés",

@@ -33,6 +33,14 @@ use std::time::Duration;
 /// pour rester un diagnostic (on n'enregistre pas une réunion « pour voir »).
 const PROBE_DURATION: Duration = Duration::from_millis(2000);
 
+/// Délai avant de lire la fenêtre au premier plan. Le bouton du diagnostic vit
+/// dans la fenêtre Réglages de Nova : au moment du clic, c'est ELLE qui a le
+/// focus, jamais l'appli de réunion. Ce délai laisse le temps à l'utilisateur de
+/// basculer dessus (Alt+Tab) avant que la détection ne s'exécute — sans lui, le
+/// diagnostic échouerait TOUJOURS avec « aucune app de réunion », même réunion
+/// ouverte.
+const SWITCH_GRACE_PERIOD: Duration = Duration::from_millis(3000);
+
 /// Format demandé au flux loopback. On le FIXE au lieu d'interroger le
 /// périphérique : le pseudo-périphérique de loopback par processus n'implémente
 /// ni `GetMixFormat` ni `GetDevicePeriod` (ils renvoient `E_NOTIMPL`), donc toute
@@ -321,15 +329,21 @@ pub fn capture_process_loopback(
 #[tauri::command]
 #[specta::specta]
 pub async fn probe_meeting_capture(app: tauri::AppHandle) -> Result<MeetingCaptureProbe, String> {
+    // Voir la doc de `SWITCH_GRACE_PERIOD` : sans ce délai, la fenêtre au
+    // premier plan est TOUJOURS celle des Réglages, jamais la réunion.
+    tokio::time::sleep(SWITCH_GRACE_PERIOD).await;
+
     let settings = crate::settings::get_settings(&app);
 
     let Some((process, pid)) = crate::auto_style::foreground_meeting_target(&settings) else {
+        log::info!("meeting capture probe: no meeting app in the foreground");
         return Ok(MeetingCaptureProbe::failed(
             String::new(),
             false,
             CaptureError::new(REASON_NO_MEETING_APP, ""),
         ));
     };
+    log::info!("meeting capture probe: targeting {process} (pid {pid})");
 
     // La capture bloque deux secondes : elle ne doit pas s'exécuter sur
     // l'exécuteur asynchrone, sinon elle gèle les autres commandes.
@@ -345,10 +359,15 @@ pub async fn probe_meeting_capture(app: tauri::AppHandle) -> Result<MeetingCaptu
 
     Ok(match captured {
         Ok(audio) if audio.samples_16k_mono.is_empty() => {
+            log::info!("meeting capture probe: stream opened but produced no samples");
             MeetingCaptureProbe::failed(process, true, CaptureError::new(REASON_NO_AUDIO, ""))
         }
         Ok(audio) => {
             let peak = peak_level(&audio.samples_16k_mono);
+            log::info!(
+                "meeting capture probe: captured {}ms, peak {peak}",
+                duration_ms_16k(&audio.samples_16k_mono)
+            );
             MeetingCaptureProbe {
                 supported: true,
                 process,
@@ -360,7 +379,14 @@ pub async fn probe_meeting_capture(app: tauri::AppHandle) -> Result<MeetingCaptu
                 detail: None,
             }
         }
-        Err(error) => MeetingCaptureProbe::failed(process, true, error),
+        Err(error) => {
+            log::warn!(
+                "meeting capture probe failed: reason={} detail={}",
+                error.reason,
+                error.detail
+            );
+            MeetingCaptureProbe::failed(process, true, error)
+        }
     })
 }
 
