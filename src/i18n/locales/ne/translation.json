@@ -647,6 +647,22 @@
       "recordingBuffer": {
         "title": "अतिरिक्त रेकर्डिङ बफर",
         "description": "कि छोडेपछि अन्तिम अडियो समात्न रेकर्डिङ जारी राख्ने अतिरिक्त समय (मिलिसेकेन्डमा)। 0 = कुनै अतिरिक्त बफर छैन।"
+      },
+      "meetingCapture": {
+        "title": "Meeting capture test",
+        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Open your meeting, keep its window active, then run the test.",
+        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
+        "run": "Run the test",
+        "running": "Testing…",
+        "results": {
+          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
+          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
+          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
+          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
+          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
+          "stream_error": "The capture stopped before the end of the test.",
+          "internal": "The test could not run."
+        }
       }
     },
     "about": {
