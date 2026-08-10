@@ -894,6 +894,7 @@
       "unavailable": "Cet ordinateur ne sait pas capter le son d'une seule application. Windows 10 version 2004 ou plus récent est nécessaire.",
       "no_audio": "Le flux s'est ouvert mais n'a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
       "stream_error": "La capture s'est interrompue de façon inattendue.",
+      "requires_ultra": "Le mode réunion nécessite Nova Ultra.",
       "internal": "La réunion n'a pas pu démarrer."
     }
   }

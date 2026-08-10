@@ -894,6 +894,7 @@
       "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
       "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
       "stream_error": "The capture stopped unexpectedly.",
+      "requires_ultra": "Meeting mode requires Nova Ultra.",
       "internal": "The meeting could not be started."
     }
   }
