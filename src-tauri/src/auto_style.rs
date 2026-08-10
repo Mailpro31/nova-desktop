@@ -614,6 +614,20 @@ pub fn is_meeting_window(
     false
 }
 
+/// Entre deux fenêtres d'un même processus, laquelle afficher ? On préfère un
+/// vrai libellé lisible (qui contient une espace, ex. « Zoom Workplace ») à un
+/// nom de fenêtre interne (ex. « ZPToolBarParentWnd »), puis, à égalité, le plus
+/// long. Sert au dédoublonnage du sélecteur de réunion.
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+fn title_is_better(candidate: &str, current: &str) -> bool {
+    let candidate_human = candidate.contains(' ');
+    let current_human = current.contains(' ');
+    if candidate_human != current_human {
+        return candidate_human;
+    }
+    candidate.len() > current.len()
+}
+
 /// L'exécutable est-il sur liste noire (intégrée ou utilisateur) ?
 fn is_blocked(process: &str, user_blocklist: &[String]) -> bool {
     if process.is_empty() {
@@ -864,7 +878,6 @@ unsafe extern "system" fn collect_window(
 /// confidentialité. Ne panique jamais.
 #[cfg(target_os = "windows")]
 pub fn enumerate_meeting_apps(settings: &AppSettings) -> Vec<MeetingWindow> {
-    use std::collections::HashSet;
     use windows::Win32::Foundation::LPARAM;
     use windows::Win32::UI::WindowsAndMessaging::EnumWindows;
 
@@ -886,21 +899,38 @@ pub fn enumerate_meeting_apps(settings: &AppSettings) -> Vec<MeetingWindow> {
         &empty
     };
 
-    let mut seen: HashSet<u32> = HashSet::new();
-    let mut apps: Vec<MeetingWindow> = Vec::new();
+    // Une entrée par PROCESSUS (nom d'exe), pas par fenêtre : une app de réunion
+    // ouvre souvent plusieurs fenêtres (Zoom : « Zoom Workplace » + des fenêtres
+    // internes comme « ZPToolBarParentWnd »), et un onglet web ne s'isole de
+    // toute façon pas — la capture loopback prend tout le processus. On garde la
+    // fenêtre au titre le plus lisible pour l'afficher.
+    let mut best: HashMap<String, MeetingWindow> = HashMap::new();
+    let mut order: Vec<String> = Vec::new();
     for (pid, title) in collected {
         let process = process_name(pid);
         if process.is_empty() || is_blocked(&process, &settings.auto_style_blocklist) {
             continue;
         }
-        // Une seule entrée par processus (une app = plusieurs fenêtres possibles).
         // Détection LARGE (`is_meeting_window`) : on veut lister TOUTES les
         // réunions, y compris un onglet web sur n'importe quel site.
-        if is_meeting_window(&title, &process, rules) && seen.insert(pid) {
-            apps.push((process, pid, title));
+        if !is_meeting_window(&title, &process, rules) {
+            continue;
+        }
+        let key = process.to_lowercase();
+        match best.get(&key) {
+            Some((_, _, current)) => {
+                if title_is_better(&title, current) {
+                    best.insert(key, (process, pid, title));
+                }
+            }
+            None => {
+                order.push(key.clone());
+                best.insert(key, (process, pid, title));
+            }
         }
     }
-    apps
+    // Conserve l'ordre de première apparition (stable pour l'utilisateur).
+    order.into_iter().filter_map(|k| best.remove(&k)).collect()
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -1193,5 +1223,16 @@ mod tests {
         assert!(!is_browser("outline.exe"));
         assert!(is_browser("chrome.exe"));
         assert!(is_browser("msedge.exe"));
+    }
+
+    #[test]
+    fn picker_prefers_human_window_titles() {
+        // Un vrai libellé (avec espace) l'emporte sur une fenêtre interne Zoom.
+        assert!(title_is_better("Zoom Workplace", "ZPToolBarParentWnd"));
+        assert!(!title_is_better("ZPToolBarParentWnd", "Zoom Workplace"));
+        // À humanité égale, le plus long gagne (plus informatif).
+        assert!(title_is_better("Réunion — Projet Nova", "Réunion"));
+        // Deux noms internes : départage par longueur, jamais de panique.
+        assert!(!title_is_better("Wnd", "PopupHostWnd"));
     }
 }

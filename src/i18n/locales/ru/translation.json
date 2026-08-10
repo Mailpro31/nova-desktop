@@ -878,6 +878,8 @@
     "reportTitle": "Meeting report",
     "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
     "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
+    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
+    "showTranscript": "Show raw transcript",
     "consent": {
       "title": "Before you start",
       "subtitle": "This concerns the other people in your meeting.",

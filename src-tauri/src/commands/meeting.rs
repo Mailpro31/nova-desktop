@@ -66,6 +66,10 @@ pub struct MeetingReport {
     /// Compte rendu mis en forme par le Style « Réunion » (ou, à défaut de
     /// moteur, le dialogue brut « Vous »/« Autres »).
     pub report: String,
+    /// Dialogue brut « Vous »/« Autres » avant mise en forme — conservé pour
+    /// que l'historique puisse montrer la transcription telle quelle en plus du
+    /// compte rendu.
+    pub dialogue: String,
     /// Prises de parole transcrites avec succès.
     pub transcribed: usize,
     /// Prises ignorées (transcription en échec ou vide).
@@ -143,9 +147,24 @@ pub async fn stop_meeting(
     };
 
     let tm = Arc::clone(&app.state::<Arc<TranscriptionManager>>());
+    // Modèle à charger si besoin : contrairement à la dictée (qui réchauffe le
+    // moteur au DÉMARRAGE de l'enregistrement), le mode réunion ne transcrit
+    // qu'à l'arrêt. Sans ce chargement, `transcribe` renvoie « modèle non
+    // chargé » pour CHAQUE prise → 0 transcrit (et un comportement aléatoire :
+    // ça « marchait » seulement si une dictée récente avait laissé le moteur
+    // chaud). On charge donc explicitement avant la transcription par lots.
+    let selected_model = crate::settings::get_settings(&app).selected_model.clone();
 
     // Arrêt + transcription de toutes les prises = travail long et bloquant.
     let assembly = tokio::task::spawn_blocking(move || {
+        // Garantit le moteur chargé une seule fois, sur ce thread bloquant
+        // (le chargement bloque). En échec, on continue : chaque `transcribe`
+        // échouera proprement (prise ignorée) plutôt que de tout faire tomber.
+        if !tm.is_model_loaded() {
+            if let Err(e) = tm.load_model(&selected_model) {
+                log::warn!("meeting: échec du chargement du modèle avant transcription: {e}");
+            }
+        }
         let labels = SpeakerLabels {
             you: &you_label,
             others: &others_label,
@@ -162,6 +181,12 @@ pub async fn stop_meeting(
     .await
     .map_err(|e| format!("internal: {e}"))?;
 
+    log::info!(
+        "meeting: {} prise(s) transcrite(s), {} ignorée(s)",
+        assembly.transcribed,
+        assembly.skipped
+    );
+
     // Le dialogue brut passe au Style « Réunion » (même chemin que la dictée :
     // moteur local/Turbo, repli). Si le moteur échoue, on rend au moins le
     // dialogue brut — jamais rien perdu.
@@ -173,10 +198,11 @@ pub async fn stop_meeting(
         Some(MEETING_STYLE_ID),
     )
     .await
-    .unwrap_or(assembly.dialogue);
+    .unwrap_or_else(|| assembly.dialogue.clone());
 
     Ok(MeetingReport {
         report,
+        dialogue: assembly.dialogue,
         transcribed: assembly.transcribed,
         skipped: assembly.skipped,
     })
