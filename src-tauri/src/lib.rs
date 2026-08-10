@@ -18,6 +18,7 @@ mod machine_id;
 mod managers;
 mod meeting_capture;
 mod meeting_segmenter;
+mod meeting_session;
 mod meeting_transcript;
 mod overlay;
 mod performance;
