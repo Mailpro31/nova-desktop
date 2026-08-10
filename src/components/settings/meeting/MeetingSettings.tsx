@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Radio, Square, Users } from "lucide-react";
@@ -41,6 +41,12 @@ const ERROR_KEYS = [
 
 type Phase = "idle" | "starting" | "recording" | "stopping" | "done";
 
+// Miroir de `meeting_capture::SWITCH_GRACE_PERIOD` (Rust), réutilisée par
+// `start_meeting`. Le bouton vit dans les Réglages, qui ont donc le focus au
+// clic : le backend attend ce délai avant de lire la fenêtre au premier plan.
+// Ce compte à rebours n'est qu'un affichage — le délai côté Rust fait foi.
+const SWITCH_GRACE_SECONDS = 3;
+
 const hasConsented = (): boolean => {
   try {
     return localStorage.getItem(CONSENT_KEY) === "1";
@@ -59,6 +65,15 @@ export const MeetingSettings: React.FC = () => {
   const [consentChecked, setConsentChecked] = useState(false);
   // `null` tant que le statut n'est pas chargé : on ne grise pas avant de savoir.
   const [locked, setLocked] = useState<boolean | null>(null);
+  const [switchCountdown, setSwitchCountdown] = useState(0);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (countdownRef.current) clearInterval(countdownRef.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     let alive = true;
@@ -81,6 +96,19 @@ export const MeetingSettings: React.FC = () => {
     setError(null);
     setReport(null);
     setPhase("starting");
+    setSwitchCountdown(SWITCH_GRACE_SECONDS);
+
+    // Purement visuel : le vrai délai est côté Rust (`SWITCH_GRACE_PERIOD`).
+    countdownRef.current = setInterval(() => {
+      setSwitchCountdown((n) => {
+        if (n <= 1 && countdownRef.current) {
+          clearInterval(countdownRef.current);
+          countdownRef.current = null;
+        }
+        return Math.max(0, n - 1);
+      });
+    }, 1000);
+
     try {
       const info = await invoke<MeetingStartInfo>("start_meeting");
       setProcess(info.process);
@@ -88,6 +116,11 @@ export const MeetingSettings: React.FC = () => {
     } catch (e) {
       setError(errorMessage(e));
       setPhase("idle");
+    } finally {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+        countdownRef.current = null;
+      }
     }
   };
 
@@ -189,7 +222,9 @@ export const MeetingSettings: React.FC = () => {
                 className="shrink-0"
               >
                 {phase === "starting"
-                  ? t("meeting.starting")
+                  ? switchCountdown > 0
+                    ? t("meeting.switchIn", { seconds: switchCountdown })
+                    : t("meeting.starting")
                   : t("meeting.start")}
               </Button>
             )}

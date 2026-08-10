@@ -867,7 +867,7 @@
   "meeting": {
     "title": "Meeting mode",
     "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "readyHint": "Open your meeting, keep its window active, then start.",
+    "readyHint": "Open your meeting, keep its window active, then start — you'll have 3 seconds to switch to it.",
     "start": "Start meeting",
     "starting": "Starting…",
     "finish": "Finish",
@@ -896,6 +896,7 @@
       "stream_error": "The capture stopped unexpectedly.",
       "requires_ultra": "Meeting mode requires Nova Ultra.",
       "internal": "The meeting could not be started."
-    }
+    },
+    "switchIn": "Switch to your meeting… {{seconds}}"
   }
 }
