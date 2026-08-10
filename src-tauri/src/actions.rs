@@ -528,7 +528,11 @@ fn should_use_streaming_overlay(style: OverlayStyle, is_streaming: bool) -> bool
     style == OverlayStyle::Live && is_streaming
 }
 
-async fn post_process_transcription(
+/// Applique la reformulation (Style) à un texte. `pub(crate)` pour que le mode
+/// réunion réutilise EXACTEMENT le même chemin que la dictée (moteur local/Turbo,
+/// repli, quotas) en forçant le Style « Réunion » via `auto_style_override`,
+/// plutôt que de dupliquer l'appel au moteur.
+pub(crate) async fn post_process_transcription(
     app: &AppHandle,
     settings: &AppSettings,
     transcription: &str,
