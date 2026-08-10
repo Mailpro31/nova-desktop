@@ -19,7 +19,11 @@ use specta::Type;
 
 /// Clé publique Ed25519 de l'éditeur (base64 standard, 32 octets bruts).
 /// VIDE = licences dormantes (accès complet). Renseignée = paliers actifs.
-const PUBLIC_KEY_B64: &str = "Q+U/LqaeFgLSDkvqiAXRcHQ8DSwqU9NcrHiPt8A6EJE=";
+// BUILD DE TEST DÉVERROUILLÉE — NE PAS MERGER. Clé publique vidée : licences
+// dormantes → toutes les fonctionnalités (dont le mode réunion Ultra) débloquées
+// sans licence, pour valider le mode réunion de bout en bout sur Windows. La
+// vraie build gatée reste sur `main`.
+const PUBLIC_KEY_B64: &str = "";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
 #[serde(rename_all = "lowercase")]
