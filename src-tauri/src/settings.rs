@@ -487,11 +487,13 @@ pub struct AppSettings {
     /// Ancien jeton d'essai, conservé pour compatibilité du store. Jamais lu.
     #[serde(default)]
     pub trial_token: String,
-    /// Quota Free : reformulations (Styles) appliquées durant la journée
-    /// glissante en cours. Réinitialisé au bout de 24 h. Voir quota.rs.
+    /// Quota Free : reformulations Turbo appliquées à vie (jamais remis à
+    /// zéro). Voir quota.rs.
     #[serde(default)]
     pub free_rewrites_used: u32,
-    /// Début (epoch secondes) de la journée de quota courante. 0 = jamais amorcé.
+    /// Ancien champ de la fenêtre de quota quotidienne glissante, plus utilisé
+    /// par la logique de quota.rs. Conservé uniquement pour désérialiser sans
+    /// perte les réglages écrits par une version antérieure de Nova.
     #[serde(default)]
     pub free_quota_day_start: i64,
     /// Statistique de valeur : caractères dictés durant la semaine glissante
