@@ -26,9 +26,9 @@ export const FREE_STYLE_IDS: readonly string[] = [
 // Fonctionnalité de palier requise pour appliquer un Style donné. Un Style
 // gratuit ne requiert rien (null) ; un preset intégré payant requiert
 // « all_styles » (Nova Pro) ; un Style personnel requiert « custom_styles »
-// (Nova Ultra). Le mode « Automatique » (id « auto ») n'est jamais verrouillé
-// ici : il choisit un Style autorisé au moment de la dictée.
+// (Nova Ultra). Le mode « Automatique » requiert aussi Pro (« all_styles »).
 export function styleLockFeature(id: string): string | null {
-  if (id === "auto" || FREE_STYLE_IDS.includes(id)) return null;
+  if (id === "auto") return "all_styles";
+  if (FREE_STYLE_IDS.includes(id)) return null;
   return BUILTIN_STYLE_IDS.includes(id) ? "all_styles" : "custom_styles";
 }

@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Check } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 import { toast } from "sonner";
+import { invoke } from "@tauri-apps/api/core";
 import { useSettings } from "../../hooks/useSettings";
 import { styleColor } from "../../lib/styleColors";
 import OnboardingStepShell from "./OnboardingStepShell";
@@ -16,8 +17,8 @@ interface StyleOnboardingProps {
 
 /**
  * Étape « Style » de l'onboarding : Automatique (Nova choisit le Style selon
- * l'application active) ou un Style précis toujours appliqué. S'appuie sur le
- * même mécanisme que les réglages (`post_process_selected_prompt_id` /
+ * l'application active, Pro/Ultra seulement) ou un Style précis toujours appliqué.
+ * S'appuie sur le même mécanisme que les réglages (`post_process_selected_prompt_id` /
  * `AUTO_STYLE_ID`) — voir `PostProcessingSettingsPrompts`. N'écrit le réglage
  * que si l'utilisateur change réellement de choix, pour ne jamais bloquer la
  * suite si l'écriture échoue (cf. garde-fou « jamais de plantage »).
@@ -32,17 +33,30 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
 
   const prompts = getSetting("post_process_prompts") || [];
   const persistedPromptId = getSetting("post_process_selected_prompt_id");
+  const [features, setFeatures] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    invoke<{ features: Record<string, boolean> }>("get_license_status")
+      .then((st) => setFeatures(st.features ?? {}))
+      .catch(() => setFeatures({}));
+  }, []);
+
+  const hasAutoStyleAccess = features["all_styles"] ?? false;
+  const defaultStyleForTier = hasAutoStyleAccess ? AUTO_STYLE_ID : "default_improve_transcriptions";
   const initialIsAuto =
-    !persistedPromptId || persistedPromptId === AUTO_STYLE_ID;
+    !persistedPromptId
+      ? hasAutoStyleAccess
+      : persistedPromptId === AUTO_STYLE_ID && hasAutoStyleAccess;
 
   const [mode, setMode] = useState<"auto" | "manual">(
     initialIsAuto ? "auto" : "manual",
   );
-  const [manualPromptId, setManualPromptId] = useState<string>(
-    !initialIsAuto && persistedPromptId
-      ? persistedPromptId
-      : (prompts[0]?.id ?? ""),
-  );
+  const defaultManualId = !initialIsAuto && persistedPromptId
+    ? persistedPromptId
+    : prompts.find(p => p.id === "default_improve_transcriptions")?.id ||
+      prompts[0]?.id ||
+      "";
+  const [manualPromptId, setManualPromptId] = useState<string>(defaultManualId);
   const [saving, setSaving] = useState(false);
 
   const targetPromptId = useMemo(
@@ -89,8 +103,11 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
       <div className="space-y-3 overflow-y-auto pb-1">
         <button
           type="button"
-          onClick={() => setMode("auto")}
+          onClick={() => hasAutoStyleAccess && setMode("auto")}
+          disabled={!hasAutoStyleAccess}
           className={`w-full text-left flex items-start gap-3 rounded-xl px-4 py-3 border-2 transition-all duration-150 ${
+            !hasAutoStyleAccess ? "opacity-50 cursor-not-allowed" : ""
+          } ${
             mode === "auto"
               ? "border-logo-primary/60 bg-logo-primary/10"
               : "border-mid-gray/20 hover:border-logo-primary/40"
@@ -106,9 +123,16 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
               <span className="font-semibold text-text">
                 {t("onboarding.style.auto.title")}
               </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-logo-primary/20 text-logo-primary">
-                {t("onboarding.style.recommended")}
-              </span>
+              {!hasAutoStyleAccess ? (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-500/20 text-red-400">
+                  <Lock className="w-3 h-3" aria-hidden="true" />
+                  {t("license.requiresTier", { tier: "NOVA PRO" })}
+                </span>
+              ) : (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-logo-primary/20 text-logo-primary">
+                  {t("onboarding.style.recommended")}
+                </span>
+              )}
             </span>
             <span className="block text-sm text-text/60 mt-0.5">
               {t("onboarding.style.auto.description")}

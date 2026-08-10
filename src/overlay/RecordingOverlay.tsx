@@ -110,28 +110,41 @@ const RecordingOverlay: React.FC = () => {
     return { locked, tier };
   };
 
+  // Auto mode is locked for Free users (requires Pro for automatic resolution)
+  const isAutoLocked = features["all_styles"] === false;
+
   const fetchStyles = async () => {
     try {
-      invoke<{ features: Record<string, boolean> }>("get_license_status")
-        .then((st) => setFeatures(st.features ?? {}))
-        .catch(() => setFeatures({}));
+      const st = await invoke<{ features: Record<string, boolean> }>(
+        "get_license_status",
+      );
+      setFeatures(st.features ?? {});
       const s = await commands.getAppSettings();
       if (s.status === "ok") {
-        // Le mode « Automatique » ouvre la liste : c'est le défaut (Nova choisit
-        // le Style selon l'app active). Il ne vit pas dans `post_process_prompts`,
-        // on l'ajoute donc en tête pour qu'il apparaisse dans la bulle et le menu.
+        // Le mode « Automatique » requiert Pro. Il ne vit pas dans
+        // `post_process_prompts`, on l'ajoute donc en tête pour qu'il apparaisse
+        // dans la bulle et le menu (mais grisé si Free).
+        const hasAutoAccess = (st.features?.["all_styles"] ?? false);
         const autoItem: StyleItem = {
           id: "auto",
           name: t("settings.postProcessing.autoStyle.option"),
         };
-        setStyles([
+        const styleItems = [
           autoItem,
           ...(s.data.post_process_prompts ?? []).map((p) => ({
             id: p.id,
             name: p.name,
           })),
-        ]);
-        setSelectedStyleId(s.data.post_process_selected_prompt_id ?? "auto");
+        ];
+        setStyles(styleItems);
+        // Default to auto if Pro and currently set to auto, otherwise preserve
+        // or fall back to default style (improved transcriptions)
+        const currentId = s.data.post_process_selected_prompt_id ?? "auto";
+        let nextId = currentId;
+        if (currentId === "auto" && !hasAutoAccess) {
+          nextId = "default_improve_transcriptions";
+        }
+        setSelectedStyleId(nextId);
       }
     } catch {
       // Bulle purement décorative si les réglages ne se lisent pas.
