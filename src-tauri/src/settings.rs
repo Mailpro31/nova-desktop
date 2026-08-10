@@ -698,12 +698,11 @@ fn default_theme() -> Theme {
 
 fn default_post_process_enabled() -> bool {
     // Les Styles sont au cœur de Nova : la reformulation est active dès la
-    // première installation. Elle est portée par un raccourci DÉDIÉ
-    // (`transcribe_with_post_process`, ctrl+shift+space par défaut) distinct de
-    // la dictée brute (`transcribe`, ctrl+space) — activer par défaut se
-    // contente d'enregistrer ce second raccourci et ne change jamais le
-    // comportement de la dictée brute. N'affecte que les installs neuves : les
-    // utilisateurs existants conservent leur valeur persistée.
+    // première installation. Il y a un seul raccourci principal
+    // (`transcribe_with_post_process`, option+space par défaut) qui transcrit
+    // et applique le Style sélectionné (défaut « Transcription améliorée »).
+    // N'affecte que les installs neuves : les utilisateurs existants conservent
+    // leur valeur persistée.
     true
 }
 
@@ -1855,19 +1854,12 @@ mod tests {
             r##"{
             "settings_schema_version": 1,
             "bindings": {
-                "transcribe": {
-                    "id": "transcribe",
-                    "name": "Transcribe",
-                    "description": "Converts your speech into text.",
-                    "default_binding": "option+space",
-                    "current_binding": "f13"
-                },
                 "transcribe_with_post_process": {
                     "id": "transcribe_with_post_process",
-                    "name": "Transcribe with Post-Processing",
-                    "description": "Converts your speech into text and applies AI post-processing.",
-                    "default_binding": "option+shift+space",
-                    "current_binding": "option+shift+space"
+                    "name": "Transcribe",
+                    "description": "Converts your speech into text and applies the selected AI style.",
+                    "default_binding": "option+space",
+                    "current_binding": "option+space"
                 },
                 "cancel": {
                     "id": "cancel",
