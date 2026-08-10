@@ -666,6 +666,134 @@ fn current_foreground_full(_user_blocklist: &[String]) -> (String, String, u32) 
     (String::new(), String::new(), 0)
 }
 
+/// Nom d'exécutable (minuscules) d'un PID, ou chaîne vide si illisible.
+#[cfg(target_os = "windows")]
+fn process_name(pid: u32) -> String {
+    use windows::core::PWSTR;
+    use windows::Win32::Foundation::CloseHandle;
+    use windows::Win32::System::Threading::{
+        OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
+        PROCESS_QUERY_LIMITED_INFORMATION,
+    };
+
+    if pid == 0 {
+        return String::new();
+    }
+    unsafe {
+        let Ok(handle) = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid) else {
+            return String::new();
+        };
+        let mut buf = [0u16; 260];
+        let mut size = buf.len() as u32;
+        let ok = QueryFullProcessImageNameW(
+            handle,
+            PROCESS_NAME_WIN32,
+            PWSTR(buf.as_mut_ptr()),
+            &mut size,
+        )
+        .is_ok();
+        let _ = CloseHandle(handle);
+        if ok {
+            let full = String::from_utf16_lossy(&buf[..size as usize]);
+            full.rsplit(['\\', '/']).next().unwrap_or("").to_lowercase()
+        } else {
+            String::new()
+        }
+    }
+}
+
+/// Une application de réunion actuellement ouverte : `(exécutable, PID, titre)`.
+pub type MeetingWindow = (String, u32, String);
+
+/// Rappel `EnumWindows` : collecte `(pid, titre)` de chaque fenêtre VISIBLE au
+/// titre non vide. Le `lparam` porte un `*mut Vec<(u32, String)>`.
+#[cfg(target_os = "windows")]
+unsafe extern "system" fn collect_window(
+    hwnd: windows::Win32::Foundation::HWND,
+    lparam: windows::Win32::Foundation::LPARAM,
+) -> windows::core::BOOL {
+    use windows::core::BOOL;
+    use windows::Win32::UI::WindowsAndMessaging::{
+        GetWindowTextLengthW, GetWindowTextW, GetWindowThreadProcessId, IsWindowVisible,
+    };
+
+    // TRUE = continuer l'énumération, quoi qu'il arrive (jamais d'arrêt anticipé).
+    let keep_going = BOOL(1);
+    let collected = &mut *(lparam.0 as *mut Vec<(u32, String)>);
+
+    if !IsWindowVisible(hwnd).as_bool() {
+        return keep_going;
+    }
+    let len = GetWindowTextLengthW(hwnd);
+    if len <= 0 {
+        return keep_going;
+    }
+    let mut buf = vec![0u16; len as usize + 1];
+    let n = GetWindowTextW(hwnd, &mut buf);
+    if n <= 0 {
+        return keep_going;
+    }
+    let title = String::from_utf16_lossy(&buf[..n as usize]);
+
+    let mut pid: u32 = 0;
+    GetWindowThreadProcessId(hwnd, Some(&mut pid as *mut u32));
+    if pid != 0 {
+        collected.push((pid, title));
+    }
+    keep_going
+}
+
+/// TOUTES les applications de réunion actuellement ouvertes (pas seulement au
+/// premier plan), dédupliquées par processus. Permet à l'UI de proposer un choix
+/// plutôt que de dépendre du focus — donc plus de bascule Alt+Tab.
+///
+/// Réutilise EXACTEMENT [`resolve_auto_style`] pour décider « ceci est une
+/// réunion » (une seule source de vérité) et la même liste noire de
+/// confidentialité. Ne panique jamais.
+#[cfg(target_os = "windows")]
+pub fn enumerate_meeting_apps(settings: &AppSettings) -> Vec<MeetingWindow> {
+    use std::collections::HashSet;
+    use windows::Win32::Foundation::LPARAM;
+    use windows::Win32::UI::WindowsAndMessaging::EnumWindows;
+
+    let mut collected: Vec<(u32, String)> = Vec::new();
+    unsafe {
+        let _ = EnumWindows(
+            Some(collect_window),
+            LPARAM(&mut collected as *mut Vec<(u32, String)> as isize),
+        );
+    }
+
+    // Règles personnalisées seulement si le palier les autorise (même contrat
+    // que la détection de Style).
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let empty = HashMap::new();
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
+        &settings.auto_style_rules
+    } else {
+        &empty
+    };
+
+    let mut seen: HashSet<u32> = HashSet::new();
+    let mut apps: Vec<MeetingWindow> = Vec::new();
+    for (pid, title) in collected {
+        let process = process_name(pid);
+        if process.is_empty() || is_blocked(&process, &settings.auto_style_blocklist) {
+            continue;
+        }
+        // Une seule entrée par processus (une app = plusieurs fenêtres possibles).
+        if resolve_auto_style(&title, &process, rules) == MEETING_STYLE_ID && seen.insert(pid) {
+            apps.push((process, pid, title));
+        }
+    }
+    apps
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn enumerate_meeting_apps(_settings: &AppSettings) -> Vec<MeetingWindow> {
+    Vec::new()
+}
+
 /// Application de réunion au premier plan, si le Style « Réunion » est bien ce
 /// que la détection existante choisirait pour elle. Réutilise EXACTEMENT
 /// [`resolve_auto_style`] (une seule source de vérité pour « qu'est-ce qu'une
