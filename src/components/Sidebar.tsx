@@ -8,6 +8,7 @@ import {
   Info,
   Sparkles,
   Palette,
+  Users,
 } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
@@ -50,6 +51,11 @@ const HistorySettings = lazy(() =>
 const DebugSettings = lazy(() =>
   import("./settings/debug/DebugSettings").then((module) => ({
     default: module.DebugSettings,
+  })),
+);
+const MeetingSettings = lazy(() =>
+  import("./settings/meeting/MeetingSettings").then((module) => ({
+    default: module.MeetingSettings,
   })),
 );
 const AboutSettings = lazy(() =>
@@ -99,6 +105,12 @@ export const SECTIONS_CONFIG = {
     // la section (plus besoin de passer par Avancé pour la découvrir).
     enabled: () => true,
   },
+  meeting: {
+    labelKey: "sidebar.meeting",
+    icon: Users,
+    component: MeetingSettings,
+    enabled: () => true,
+  },
   personalization: {
     labelKey: "sidebar.personalization",
     icon: Palette,
@@ -141,6 +153,7 @@ const SECTION_COLORS: Record<string, string> = {
   home: "",
   configuration: "#8E8E93",
   postprocessing: "#BF5AF2",
+  meeting: "#30D158",
   personalization: "#FF375F",
   account: "#5E5CE6",
   history: "#FF9F0A",

@@ -13,6 +13,7 @@
     "models": "Hiệu năng",
     "advanced": "Nâng cao",
     "postProcessing": "Xử lý sau",
+    "meeting": "Meeting",
     "history": "Lịch sử",
     "debug": "Gỡ lỗi",
     "about": "Giới thiệu",
@@ -862,5 +863,38 @@
     "add": "Add",
     "ignore": "Ignore",
     "added": "“{{term}}” was added to your lexicon."
+  },
+  "meeting": {
+    "title": "Meeting mode",
+    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
+    "readyHint": "Open your meeting, keep its window active, then start.",
+    "start": "Start meeting",
+    "starting": "Starting…",
+    "finish": "Finish",
+    "finishing": "Finishing…",
+    "capturing": "Capturing {{app}}",
+    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "speakerYou": "You",
+    "speakerOthers": "Others",
+    "reportTitle": "Meeting report",
+    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
+    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
+    "consent": {
+      "title": "Before you start",
+      "subtitle": "This concerns the other people in your meeting.",
+      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
+      "checkbox": "I will let the other participants know before each captured meeting.",
+      "cancel": "Cancel",
+      "confirm": "Start capture"
+    },
+    "errors": {
+      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
+      "already_running": "A meeting is already being captured.",
+      "no_active_meeting": "No meeting is currently being captured.",
+      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
+      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
+      "stream_error": "The capture stopped unexpectedly.",
+      "internal": "The meeting could not be started."
+    }
   }
 }
