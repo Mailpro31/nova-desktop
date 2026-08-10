@@ -78,6 +78,14 @@ pub async fn start_meeting(app: AppHandle) -> Result<MeetingStartInfo, String> {
         return Err("requires_ultra".to_string());
     }
 
+    // Le bouton « Démarrer » vit dans la fenêtre Réglages de Nova : au clic,
+    // c'est ELLE qui a le focus, jamais l'appli de réunion. Ce délai laisse le
+    // temps de basculer dessus (Alt+Tab) avant de lire la fenêtre au premier
+    // plan — sans lui, la commande échouerait TOUJOURS avec « aucune app de
+    // réunion », même réunion ouverte. Même délai que le diagnostic
+    // (`meeting_capture::SWITCH_GRACE_PERIOD`), pour un comportement cohérent.
+    tokio::time::sleep(crate::meeting_capture::SWITCH_GRACE_PERIOD).await;
+
     let (process, pid) = crate::auto_style::foreground_meeting_target(&settings)
         .ok_or_else(|| "no_meeting_app".to_string())?;
 

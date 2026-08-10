@@ -39,7 +39,9 @@ const PROBE_DURATION: Duration = Duration::from_millis(2000);
 /// basculer dessus (Alt+Tab) avant que la détection ne s'exécute — sans lui, le
 /// diagnostic échouerait TOUJOURS avec « aucune app de réunion », même réunion
 /// ouverte.
-const SWITCH_GRACE_PERIOD: Duration = Duration::from_millis(3000);
+/// `pub(crate)` : réutilisée par `commands::meeting::start_meeting`, qui a
+/// exactement le même problème (bouton dans les Réglages).
+pub(crate) const SWITCH_GRACE_PERIOD: Duration = Duration::from_millis(3000);
 
 /// Format demandé au flux loopback. On le FIXE au lieu d'interroger le
 /// périphérique : le pseudo-périphérique de loopback par processus n'implémente
