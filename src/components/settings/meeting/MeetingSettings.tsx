@@ -19,6 +19,7 @@ const CONSENT_KEY = "nova.meeting.consented";
 // Miroirs des types Rust (commands/meeting.rs).
 interface MeetingReport {
   report: string;
+  dialogue: string;
   transcribed: number;
   skipped: number;
 }
@@ -329,9 +330,30 @@ export const MeetingSettings: React.FC = () => {
                 </div>
               </div>
               {report.report.trim() ? (
-                <pre className="text-sm whitespace-pre-wrap rounded-[10px] border border-hairline bg-inset p-4 font-sans leading-relaxed">
-                  {report.report}
-                </pre>
+                <>
+                  <pre className="text-sm whitespace-pre-wrap rounded-[10px] border border-hairline bg-inset p-4 font-sans leading-relaxed">
+                    {report.report}
+                  </pre>
+                  {/* Transcription brute « Vous »/« Autres » — repliée, pour
+                      relire mot à mot en plus du compte rendu mis en forme. */}
+                  {report.dialogue.trim() &&
+                    report.dialogue.trim() !== report.report.trim() && (
+                      <details className="group">
+                        <summary className="cursor-pointer text-xs text-mid-gray hover:text-white select-none">
+                          {t("meeting.showTranscript")}
+                        </summary>
+                        <pre className="mt-2 text-sm whitespace-pre-wrap rounded-[10px] border border-hairline bg-inset p-4 font-sans leading-relaxed">
+                          {report.dialogue}
+                        </pre>
+                      </details>
+                    )}
+                </>
+              ) : report.skipped > 0 ? (
+                // Du son a bien été capté et segmenté, mais rien n'a pu être
+                // transcrit — cas distinct de « rien entendu ».
+                <p className="text-sm text-mid-gray">
+                  {t("meeting.reportNotTranscribed")}
+                </p>
               ) : (
                 <p className="text-sm text-mid-gray">
                   {t("meeting.reportEmpty")}

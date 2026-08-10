@@ -878,6 +878,8 @@
     "reportTitle": "Compte rendu",
     "reportMeta": "{{transcribed}} passages transcrits, {{skipped}} ignorés",
     "reportEmpty": "Rien n'a été capté — personne n'a été entendu pendant la réunion.",
+    "reportNotTranscribed": "Nova a capté du son mais n'a pas pu le transcrire. Vérifiez que le modèle d'intelligence est bien téléchargé et que quelqu'un parlait, puis réessayez.",
+    "showTranscript": "Afficher la transcription brute",
     "consent": {
       "title": "Avant de commencer",
       "subtitle": "Ceci concerne les autres personnes présentes à votre réunion.",
