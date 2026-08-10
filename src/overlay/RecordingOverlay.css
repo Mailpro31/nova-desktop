@@ -685,6 +685,9 @@
 }
 /* Badge « Nécessite Nova Pro / Ultra » sur un Style verrouillé, compact pour la
    bulle. Bleu Apple (accent) : seule couleur d'action de l'UI. */
+/* Verrou de Style dans l'overlay : même langage « premium » (dégradé + lueur)
+   que PremiumBadge/TierBadge, mis à l'échelle du menu compact. Pro en bleu
+   d'action, Ultra en lilas. */
 .smenu-lock {
   flex: none;
   font-size: 8.5px;
@@ -692,14 +695,22 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--color-accent, #0a84ff);
-  border: 1px solid var(--color-accent, #0a84ff);
+  color: #fff;
+  border: none;
   border-radius: 999px;
-  padding: 1px 6px;
+  padding: 1.5px 6px;
+  background: linear-gradient(135deg, #7fb6ff 0%, #0a84ff 45%, #0060df 100%);
+  box-shadow: 0 1px 6px rgba(10, 132, 255, 0.35);
 }
 .smenu-lock.ultra {
-  color: var(--color-ultra, #c9b6f0);
-  border-color: var(--color-ultra, #c9b6f0);
+  color: #1f1f22;
+  background: linear-gradient(
+    135deg,
+    #d9c8f7 0%,
+    var(--color-ultra, #c9b6f0) 45%,
+    #9f86d9 100%
+  );
+  box-shadow: 0 1px 6px rgba(159, 134, 217, 0.35);
 }
 .smenu-dot {
   width: 12px;

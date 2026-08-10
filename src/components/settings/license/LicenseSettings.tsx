@@ -7,6 +7,7 @@ import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { invalidateLicense, TIER_FOR_FEATURE } from "./TierBadge";
+import { PremiumBadge } from "./PremiumBadge";
 import { QuotaBar } from "./QuotaBar";
 import { WeekStat } from "./WeekStat";
 
@@ -44,21 +45,12 @@ export const FEATURE_ROWS: { key: string; label: string }[] = [
  * visuel de Nova), Business bleu.
  */
 const TierPill: React.FC<{ tier: Tier }> = ({ tier }) => {
-  if (tier === "ultra") {
-    return (
-      <span
-        className="text-xs font-bold tracking-wide uppercase rounded-full px-3 py-1 whitespace-nowrap"
-        style={{
-          background:
-            "linear-gradient(135deg, #D9C8F7 0%, var(--color-ultra) 45%, #9F86D9 100%)",
-          color: "#1F1F22",
-          boxShadow: "0 2px 10px rgba(159, 134, 217, .35)",
-        }}
-      >
-        {TIER_LABEL[tier]}
-      </span>
-    );
+  // Pro et Ultra partagent le traitement « premium » (dégradé + lueur), même
+  // soin, seule la teinte change — cf. PremiumBadge.
+  if (tier === "ultra" || tier === "pro") {
+    return <PremiumBadge tier={tier}>{TIER_LABEL[tier]}</PremiumBadge>;
   }
+  // Free (neutre) et Business (bleu d'action) restent des pilules sobres.
   const color =
     tier === "free" ? "var(--color-text-secondary)" : "var(--color-accent)";
   return (
