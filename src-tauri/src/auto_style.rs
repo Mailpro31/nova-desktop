@@ -503,6 +503,117 @@ pub fn resolve_auto_style(
     DEFAULT_AUTO_STYLE_ID.to_string()
 }
 
+/// Le process est-il un navigateur ? Sert à n'élargir la détection de réunion
+/// « générique » qu'aux onglets web (là où vivent Google Meet, Teams web,
+/// Webex web…), sans flaguer un document desktop portant le même mot
+/// (« Meeting notes » dans Word). `proc_l` est supposé déjà en minuscules.
+fn is_browser(proc_l: &str) -> bool {
+    const BROWSERS: &[&str] = &[
+        "chrome",
+        "msedge",
+        "microsoftedge",
+        "firefox",
+        "brave",
+        "opera",
+        "vivaldi",
+        "arc",
+        "chromium",
+        "zen",
+        "librewolf",
+        "waterfox",
+        "floorp",
+        "yandex",
+        "thorium",
+        "safari",
+    ];
+    BROWSERS.iter().any(|b| whole_word_contains(proc_l, b))
+}
+
+/// Détection LARGE d'une fenêtre de réunion, réservée AU SÉLECTEUR du mode
+/// réunion ([`enumerate_meeting_apps`]) et à son diagnostic.
+///
+/// Contrairement à [`resolve_auto_style`] — qui doit rester PRÉCIS pour ne pas
+/// coller un mauvais Style pendant la dictée — on privilégie ici LE RAPPEL :
+/// l'utilisateur choisit explicitement dans une liste, donc un faux positif ne
+/// coûte qu'une ligne de trop, tandis qu'un oubli rend la réunion incapturable.
+/// Objectif : reconnaître une réunion dans N'IMPORTE QUEL navigateur, sur
+/// n'importe quel site, pas seulement les apps natives. PURE, testable hors
+/// Windows.
+pub fn is_meeting_window(
+    title: &str,
+    process: &str,
+    user_rules: &HashMap<String, Vec<String>>,
+) -> bool {
+    // 1) Détection précise existante (apps natives + repères stricts + règles
+    //    utilisateur) : une réunion « certaine » l'est toujours ici.
+    if resolve_auto_style(title, process, user_rules) == MEETING_STYLE_ID {
+        return true;
+    }
+
+    let title_l = title.to_lowercase();
+    let proc_l = process.to_lowercase();
+
+    // 2) Fournisseurs de visioconférence distinctifs : leur nom seul suffit
+    //    (titre OU process), quel que soit le process — quasi aucun faux positif
+    //    (ce sont des marques). Couvre le web comme le desktop.
+    const PROVIDERS: &[&str] = &[
+        "webex",
+        "whereby",
+        "jitsi",
+        "bluejeans",
+        "gotomeeting",
+        "gotomeet",
+        "livestorm",
+        "bigbluebutton",
+        "streamyard",
+        "riverside",
+        "ringcentral",
+        "8x8",
+        "livekit",
+        "teams",
+        "skype",
+        "huddle",
+        "zoom",
+    ];
+    if PROVIDERS
+        .iter()
+        .any(|p| whole_word_contains(&title_l, p) || whole_word_contains(&proc_l, p))
+    {
+        return true;
+    }
+
+    // 3) Mots « réunion » génériques (multi-langues) : ambigus hors contexte
+    //    (« Meeting notes », « Rappel »…), donc RESTREINTS aux navigateurs — là
+    //    où vit l'onglet de réunion. Ça couvre Google Meet & consorts quel que
+    //    soit le site, sans flaguer un document desktop du même mot.
+    if is_browser(&proc_l) {
+        const GENERIC: &[&str] = &[
+            "meet",
+            "meeting",
+            "réunion",
+            "reunion",
+            "visio",
+            "visioconférence",
+            "visioconference",
+            "vidéoconférence",
+            "videoconference",
+            "webinar",
+            "webinaire",
+            "hangout",
+            "hangouts",
+            "video call",
+            "appel vidéo",
+            "appel video",
+            "conference call",
+        ];
+        if GENERIC.iter().any(|g| whole_word_contains(&title_l, g)) {
+            return true;
+        }
+    }
+
+    false
+}
+
 /// L'exécutable est-il sur liste noire (intégrée ou utilisateur) ?
 fn is_blocked(process: &str, user_blocklist: &[String]) -> bool {
     if process.is_empty() {
@@ -747,8 +858,9 @@ unsafe extern "system" fn collect_window(
 /// premier plan), dédupliquées par processus. Permet à l'UI de proposer un choix
 /// plutôt que de dépendre du focus — donc plus de bascule Alt+Tab.
 ///
-/// Réutilise EXACTEMENT [`resolve_auto_style`] pour décider « ceci est une
-/// réunion » (une seule source de vérité) et la même liste noire de
+/// Utilise la détection LARGE [`is_meeting_window`] (fournisseurs connus +
+/// onglets web génériques), et non le strict [`resolve_auto_style`], pour
+/// reconnaître une réunion sur n'importe quel site. Même liste noire de
 /// confidentialité. Ne panique jamais.
 #[cfg(target_os = "windows")]
 pub fn enumerate_meeting_apps(settings: &AppSettings) -> Vec<MeetingWindow> {
@@ -782,7 +894,9 @@ pub fn enumerate_meeting_apps(settings: &AppSettings) -> Vec<MeetingWindow> {
             continue;
         }
         // Une seule entrée par processus (une app = plusieurs fenêtres possibles).
-        if resolve_auto_style(&title, &process, rules) == MEETING_STYLE_ID && seen.insert(pid) {
+        // Détection LARGE (`is_meeting_window`) : on veut lister TOUTES les
+        // réunions, y compris un onglet web sur n'importe quel site.
+        if is_meeting_window(&title, &process, rules) && seen.insert(pid) {
             apps.push((process, pid, title));
         }
     }
@@ -794,11 +908,11 @@ pub fn enumerate_meeting_apps(_settings: &AppSettings) -> Vec<MeetingWindow> {
     Vec::new()
 }
 
-/// Application de réunion au premier plan, si le Style « Réunion » est bien ce
-/// que la détection existante choisirait pour elle. Réutilise EXACTEMENT
-/// [`resolve_auto_style`] (une seule source de vérité pour « qu'est-ce qu'une
-/// réunion ») et la même barrière de confidentialité que la détection de Style :
-/// app sur liste noire ou illisible → `None`, donc aucune capture possible.
+/// Application de réunion au premier plan, si c'en est bien une au sens de la
+/// détection LARGE [`is_meeting_window`] (mêmes fournisseurs / onglets web que
+/// le sélecteur, une seule source de vérité). Même barrière de confidentialité
+/// que la détection de Style : app sur liste noire ou illisible → `None`, donc
+/// aucune capture possible.
 ///
 /// Renvoie `(nom d'exécutable, PID)`. Ne panique jamais.
 pub fn foreground_meeting_target(settings: &AppSettings) -> Option<(String, u32)> {
@@ -817,7 +931,7 @@ pub fn foreground_meeting_target(settings: &AppSettings) -> Option<(String, u32)
         &empty
     };
 
-    if resolve_auto_style(&title, &process, rules) == MEETING_STYLE_ID {
+    if is_meeting_window(&title, &process, rules) {
         Some((process, pid))
     } else {
         None
@@ -1014,5 +1128,70 @@ mod tests {
         assert!(is_blocked("keepassxc.exe", &[]));
         assert!(is_blocked("mabanque.exe", &["mabanque".to_string()]));
         assert!(!is_blocked("chrome.exe", &[]));
+    }
+
+    #[test]
+    fn picker_detects_web_meetings_on_any_site() {
+        // Google Meet en onglet Chrome : titre réel souvent « Meet — abc-defg-hij »,
+        // que resolve_auto_style (strict « google meet ») ne voit pas.
+        assert!(is_meeting_window(
+            "Meet - abc-defg-hij",
+            "chrome.exe",
+            &no_rules()
+        ));
+        assert_ne!(
+            resolve_auto_style("Meet - abc-defg-hij", "chrome.exe", &no_rules()),
+            MEETING_STYLE_ID
+        );
+        // Teams web, Webex web, Whereby, Jitsi web — marques distinctives.
+        assert!(is_meeting_window(
+            "Chat | Microsoft Teams",
+            "msedge.exe",
+            &no_rules()
+        ));
+        assert!(is_meeting_window(
+            "Webex | Accueil",
+            "firefox.exe",
+            &no_rules()
+        ));
+        assert!(is_meeting_window(
+            "whereby.com — Salle",
+            "chrome.exe",
+            &no_rules()
+        ));
+        assert!(is_meeting_window(
+            "Réunion en cours",
+            "brave.exe",
+            &no_rules()
+        ));
+        // Apps natives déjà reconnues restent vraies.
+        assert!(is_meeting_window("Zoom Meeting", "zoom.exe", &no_rules()));
+    }
+
+    #[test]
+    fn picker_ignores_desktop_docs_with_meeting_words() {
+        // « Meeting notes » dans Word (pas un navigateur) → pas une réunion.
+        assert!(!is_meeting_window(
+            "Meeting notes",
+            "winword.exe",
+            &no_rules()
+        ));
+        // « Rappel » / mot générique hors navigateur → pas une réunion.
+        assert!(!is_meeting_window(
+            "Réunion — plan",
+            "notepad.exe",
+            &no_rules()
+        ));
+        // Onglet web sans repère de réunion → pas listé.
+        assert!(!is_meeting_window(
+            "Facture 2024 - Google Sheets",
+            "chrome.exe",
+            &no_rules()
+        ));
+        // « outline.exe » n'est pas un navigateur malgré « ...line » — pas de
+        // faux positif de is_browser.
+        assert!(!is_browser("outline.exe"));
+        assert!(is_browser("chrome.exe"));
+        assert!(is_browser("msedge.exe"));
     }
 }
