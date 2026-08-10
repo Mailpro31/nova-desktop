@@ -124,7 +124,7 @@ const RecordingOverlay: React.FC = () => {
         // Le mode « Automatique » requiert Pro. Il ne vit pas dans
         // `post_process_prompts`, on l'ajoute donc en tête pour qu'il apparaisse
         // dans la bulle et le menu (mais grisé si Free).
-        const hasAutoAccess = (st.features?.["all_styles"] ?? false);
+        const hasAutoAccess = st.features?.["all_styles"] ?? false;
         const autoItem: StyleItem = {
           id: "auto",
           name: t("settings.postProcessing.autoStyle.option"),

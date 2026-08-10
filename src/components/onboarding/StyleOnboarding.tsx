@@ -42,20 +42,22 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
   }, []);
 
   const hasAutoStyleAccess = features["all_styles"] ?? false;
-  const defaultStyleForTier = hasAutoStyleAccess ? AUTO_STYLE_ID : "default_improve_transcriptions";
-  const initialIsAuto =
-    !persistedPromptId
-      ? hasAutoStyleAccess
-      : persistedPromptId === AUTO_STYLE_ID && hasAutoStyleAccess;
+  const defaultStyleForTier = hasAutoStyleAccess
+    ? AUTO_STYLE_ID
+    : "default_improve_transcriptions";
+  const initialIsAuto = !persistedPromptId
+    ? hasAutoStyleAccess
+    : persistedPromptId === AUTO_STYLE_ID && hasAutoStyleAccess;
 
   const [mode, setMode] = useState<"auto" | "manual">(
     initialIsAuto ? "auto" : "manual",
   );
-  const defaultManualId = !initialIsAuto && persistedPromptId
-    ? persistedPromptId
-    : prompts.find(p => p.id === "default_improve_transcriptions")?.id ||
-      prompts[0]?.id ||
-      "";
+  const defaultManualId =
+    !initialIsAuto && persistedPromptId
+      ? persistedPromptId
+      : prompts.find((p) => p.id === "default_improve_transcriptions")?.id ||
+        prompts[0]?.id ||
+        "";
   const [manualPromptId, setManualPromptId] = useState<string>(defaultManualId);
   const [saving, setSaving] = useState(false);
 
