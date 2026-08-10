@@ -867,7 +867,6 @@
   "meeting": {
     "title": "Meeting mode",
     "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "readyHint": "Open your meeting, keep its window active, then start.",
     "start": "Start meeting",
     "starting": "Starting…",
     "finish": "Finish",
@@ -879,6 +878,8 @@
     "reportTitle": "Meeting report",
     "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
     "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
+    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
+    "showTranscript": "Show raw transcript",
     "consent": {
       "title": "Before you start",
       "subtitle": "This concerns the other people in your meeting.",
@@ -896,6 +897,11 @@
       "stream_error": "The capture stopped unexpectedly.",
       "requires_ultra": "Meeting mode requires Nova Ultra.",
       "internal": "The meeting could not be started."
-    }
+    },
+    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
+    "pickApp": "Choose which meeting to capture.",
+    "oneApp": "Ready to capture {{app}}.",
+    "refresh": "Refresh",
+    "newMeeting": "New meeting"
   }
 }
