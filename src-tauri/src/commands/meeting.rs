@@ -30,12 +30,34 @@ const MEETING_STYLE_ID: &str = "nova_style_meeting";
 #[derive(Default)]
 pub struct MeetingSessionState(pub Mutex<Option<MeetingSession>>);
 
-/// Infos rendues au démarrage : de quoi confirmer à l'utilisateur ce qui est
-/// capté (nom de l'app de réunion détectée).
+/// Une application de réunion détectée, proposée au choix de l'utilisateur.
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
-pub struct MeetingStartInfo {
-    /// Exécutable de l'app de réunion captée (ex. « zoom.exe »).
+pub struct MeetingApp {
+    /// Exécutable (ex. « zoom.exe »).
     pub process: String,
+    /// Identifiant du processus à capter.
+    pub pid: u32,
+    /// Titre de la fenêtre — aide à distinguer plusieurs réunions (ex. l'onglet
+    /// d'un navigateur).
+    pub title: String,
+}
+
+/// Liste les applications de réunion actuellement ouvertes, pour que l'interface
+/// propose un choix plutôt que de dépendre de la fenêtre au premier plan.
+/// Non gaté : la simple détection ne capte rien (le verrou de palier est sur
+/// `start_meeting`).
+#[tauri::command]
+#[specta::specta]
+pub fn list_meeting_apps(app: AppHandle) -> Vec<MeetingApp> {
+    let settings = crate::settings::get_settings(&app);
+    crate::auto_style::enumerate_meeting_apps(&settings)
+        .into_iter()
+        .map(|(process, pid, title)| MeetingApp {
+            process,
+            pid,
+            title,
+        })
+        .collect()
 }
 
 /// Compte rendu final rendu à l'arrêt.
@@ -50,14 +72,16 @@ pub struct MeetingReport {
     pub skipped: usize,
 }
 
-/// Démarre une session de réunion sur l'app de réunion au premier plan.
+/// Démarre une session de réunion sur l'application choisie (`pid`, fourni par
+/// [`list_meeting_apps`] via l'interface). Plus aucune dépendance à la fenêtre au
+/// premier plan : l'utilisateur a explicitement sélectionné quoi écouter.
 ///
 /// Erreurs (codes stables, traduits côté interface) : `already_running` si une
-/// session tourne déjà, `no_meeting_app` si aucune app de réunion n'est au
-/// premier plan, sinon le code de [`crate::meeting_capture::CaptureError`].
+/// session tourne déjà, `requires_ultra` sans le palier, sinon le code de
+/// [`crate::meeting_capture::CaptureError`].
 #[tauri::command]
 #[specta::specta]
-pub async fn start_meeting(app: AppHandle) -> Result<MeetingStartInfo, String> {
+pub async fn start_meeting(app: AppHandle, pid: u32) -> Result<(), String> {
     // Refus net d'un double démarrage (l'UI ne devrait pas le permettre, mais le
     // backend reste l'autorité).
     {
@@ -68,18 +92,14 @@ pub async fn start_meeting(app: AppHandle) -> Result<MeetingStartInfo, String> {
         }
     }
 
-    let settings = crate::settings::get_settings(&app);
-
     // Verrou de palier : le mode réunion est réservé à Nova Ultra. Dormant
     // (clé publique vide) → `has` renvoie true partout, donc aucun changement de
     // comportement en développement.
+    let settings = crate::settings::get_settings(&app);
     let license_key = settings.license_key.as_deref().unwrap_or("");
     if !crate::licensing::has("meeting_mode", license_key, 0) {
         return Err("requires_ultra".to_string());
     }
-
-    let (process, pid) = crate::auto_style::foreground_meeting_target(&settings)
-        .ok_or_else(|| "no_meeting_app".to_string())?;
 
     // L'ouverture des flux audio bloque (quelques dizaines de ms) : hors de
     // l'exécuteur asynchrone.
@@ -97,7 +117,7 @@ pub async fn start_meeting(app: AppHandle) -> Result<MeetingStartInfo, String> {
     }
     *guard = Some(session);
 
-    Ok(MeetingStartInfo { process })
+    Ok(())
 }
 
 /// Arrête la session en cours et renvoie le compte rendu.

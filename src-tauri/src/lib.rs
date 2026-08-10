@@ -698,6 +698,7 @@ pub fn run(cli_args: CliArgs) {
             commands::transcription::is_transcribe_cpu_only_mode,
             commands::transcription::clear_transcribe_gpu_blacklist,
             meeting_capture::probe_meeting_capture,
+            commands::meeting::list_meeting_apps,
             commands::meeting::start_meeting,
             commands::meeting::stop_meeting,
             performance::run_performance_diagnostics,

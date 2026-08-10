@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
-import { Radio, Square, Users } from "lucide-react";
+import { Radio, RefreshCw, Square, Users } from "lucide-react";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
@@ -16,20 +16,21 @@ const MEETING_FEATURE = "meeting_mode";
 // ce drapeau local mémorise que l'utilisateur l'a acquitté.
 const CONSENT_KEY = "nova.meeting.consented";
 
-// Miroir de `commands::meeting::MeetingReport` (Rust).
+// Miroirs des types Rust (commands/meeting.rs).
 interface MeetingReport {
   report: string;
   transcribed: number;
   skipped: number;
 }
-interface MeetingStartInfo {
+interface MeetingApp {
   process: string;
+  pid: number;
+  title: string;
 }
 
-// Codes d'erreur stables renvoyés par les commandes (voir commands/meeting.rs +
-// meeting_capture). Tout code inconnu retombe sur un message générique.
+// Codes d'erreur stables renvoyés par les commandes. Tout code inconnu retombe
+// sur un message générique.
 const ERROR_KEYS = [
-  "no_meeting_app",
   "already_running",
   "no_active_meeting",
   "unavailable",
@@ -40,6 +41,13 @@ const ERROR_KEYS = [
 ] as const;
 
 type Phase = "idle" | "starting" | "recording" | "stopping" | "done";
+
+// Nom d'affichage lisible d'une app : « zoom.exe » → « Zoom ». Le titre de
+// fenêtre distingue plusieurs réunions (ex. onglets de navigateur).
+const friendlyName = (app: MeetingApp): string => {
+  const base = app.process.replace(/\.exe$/i, "");
+  return base.charAt(0).toUpperCase() + base.slice(1);
+};
 
 const hasConsented = (): boolean => {
   try {
@@ -52,13 +60,18 @@ const hasConsented = (): boolean => {
 export const MeetingSettings: React.FC = () => {
   const { t } = useTranslation();
   const [phase, setPhase] = useState<Phase>("idle");
-  const [process, setProcess] = useState("");
   const [report, setReport] = useState<MeetingReport | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [consentOpen, setConsentOpen] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
   // `null` tant que le statut n'est pas chargé : on ne grise pas avant de savoir.
   const [locked, setLocked] = useState<boolean | null>(null);
+
+  // Applications de réunion détectées + celle choisie (PID) + l'app captée.
+  const [apps, setApps] = useState<MeetingApp[]>([]);
+  const [detecting, setDetecting] = useState(false);
+  const [selectedPid, setSelectedPid] = useState<number | null>(null);
+  const [capturedApp, setCapturedApp] = useState<MeetingApp | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -71,6 +84,29 @@ export const MeetingSettings: React.FC = () => {
     };
   }, []);
 
+  // Détecte les applications de réunion ouvertes. Une seule → sélectionnée
+  // d'office ; plusieurs → l'utilisateur choisit ; le PID choisi est conservé
+  // s'il est toujours présent.
+  const detect = useCallback(async () => {
+    setDetecting(true);
+    try {
+      const found = await invoke<MeetingApp[]>("list_meeting_apps");
+      setApps(found);
+      setSelectedPid((prev) => {
+        if (prev != null && found.some((a) => a.pid === prev)) return prev;
+        return found.length === 1 ? found[0].pid : null;
+      });
+    } catch {
+      setApps([]);
+    } finally {
+      setDetecting(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (locked === false) void detect();
+  }, [locked, detect]);
+
   const errorMessage = (raw: unknown): string => {
     const code = String(raw ?? "");
     const known = ERROR_KEYS.find((k) => code === k);
@@ -78,12 +114,14 @@ export const MeetingSettings: React.FC = () => {
   };
 
   const beginCapture = async () => {
+    const app = apps.find((a) => a.pid === selectedPid);
+    if (!app) return;
     setError(null);
     setReport(null);
     setPhase("starting");
     try {
-      const info = await invoke<MeetingStartInfo>("start_meeting");
-      setProcess(info.process);
+      await invoke("start_meeting", { pid: app.pid });
+      setCapturedApp(app);
       setPhase("recording");
     } catch (e) {
       setError(errorMessage(e));
@@ -93,6 +131,7 @@ export const MeetingSettings: React.FC = () => {
 
   // Démarrage : passe par le consentement au tout premier usage, sinon direct.
   const onStart = () => {
+    if (selectedPid == null) return;
     if (hasConsented()) {
       void beginCapture();
     } else {
@@ -128,6 +167,7 @@ export const MeetingSettings: React.FC = () => {
   };
 
   const recording = phase === "recording" || phase === "stopping";
+  const multiple = apps.length > 1;
 
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">
@@ -145,13 +185,14 @@ export const MeetingSettings: React.FC = () => {
               <TierBadge feature={MEETING_FEATURE} />
             </div>
           )}
+
           {/* Bandeau de capture active — visible tant que la réunion tourne. */}
-          {recording && (
+          {recording && capturedApp && (
             <div className="flex items-center gap-3 rounded-[10px] border border-red-500/40 bg-red-500/10 px-4 py-3">
               <Radio className="w-4 h-4 text-red-500 shrink-0" aria-hidden />
               <div className="min-w-0">
                 <p className="text-sm font-medium">
-                  {t("meeting.capturing", { app: process })}
+                  {t("meeting.capturing", { app: friendlyName(capturedApp) })}
                 </p>
                 <p className="text-xs text-mid-gray mt-0.5">
                   {t("meeting.capturingHint")}
@@ -160,12 +201,88 @@ export const MeetingSettings: React.FC = () => {
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-sm text-mid-gray min-w-0">
-              <Users className="w-4 h-4 shrink-0" aria-hidden />
-              <span>{t("meeting.readyHint")}</span>
+          {/* Détection + sélection d'application (hors capture). */}
+          {!recording && phase !== "done" && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm text-mid-gray min-w-0">
+                  <Users className="w-4 h-4 shrink-0" aria-hidden />
+                  <span>
+                    {apps.length === 0
+                      ? t("meeting.noApp")
+                      : multiple
+                        ? t("meeting.pickApp")
+                        : t("meeting.oneApp", {
+                            app: friendlyName(apps[0]),
+                          })}
+                  </span>
+                </div>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  disabled={detecting}
+                  onClick={() => void detect()}
+                  className="shrink-0 inline-flex items-center gap-1.5"
+                >
+                  <RefreshCw
+                    className={`w-3.5 h-3.5 ${detecting ? "animate-spin" : ""}`}
+                    aria-hidden
+                  />
+                  {t("meeting.refresh")}
+                </Button>
+              </div>
+
+              {/* Sélecteur : uniquement quand plusieurs réunions sont ouvertes. */}
+              {multiple && (
+                <div className="rounded-[10px] border border-hairline overflow-hidden divide-y divide-hairline">
+                  {apps.map((app) => (
+                    <label
+                      key={app.pid}
+                      className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-mid-gray/10"
+                    >
+                      <input
+                        type="radio"
+                        name="meeting-app"
+                        className="accent-[var(--color-accent)] w-4 h-4 shrink-0"
+                        checked={selectedPid === app.pid}
+                        onChange={() => setSelectedPid(app.pid)}
+                      />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium">
+                          {friendlyName(app)}
+                        </p>
+                        {app.title && (
+                          <p className="text-xs text-mid-gray truncate">
+                            {app.title}
+                          </p>
+                        )}
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  disabled={phase === "starting" || selectedPid == null}
+                  onClick={onStart}
+                  className="shrink-0"
+                >
+                  {phase === "starting"
+                    ? t("meeting.starting")
+                    : t("meeting.start")}
+                </Button>
+              </div>
             </div>
-            {recording ? (
+          )}
+
+          {/* Bouton Terminer pendant la capture. */}
+          {recording && (
+            <div className="flex justify-end">
               <Button
                 type="button"
                 variant="danger"
@@ -179,21 +296,8 @@ export const MeetingSettings: React.FC = () => {
                   ? t("meeting.finishing")
                   : t("meeting.finish")}
               </Button>
-            ) : (
-              <Button
-                type="button"
-                variant="primary"
-                size="md"
-                disabled={phase === "starting"}
-                onClick={onStart}
-                className="shrink-0"
-              >
-                {phase === "starting"
-                  ? t("meeting.starting")
-                  : t("meeting.start")}
-              </Button>
-            )}
-          </div>
+            </div>
+          )}
 
           {error && <p className="text-sm text-red-400">{error}</p>}
 
@@ -203,12 +307,26 @@ export const MeetingSettings: React.FC = () => {
                 <h3 className="text-sm font-medium">
                   {t("meeting.reportTitle")}
                 </h3>
-                <span className="text-xs text-mid-gray">
-                  {t("meeting.reportMeta", {
-                    transcribed: report.transcribed,
-                    skipped: report.skipped,
-                  })}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-mid-gray">
+                    {t("meeting.reportMeta", {
+                      transcribed: report.transcribed,
+                      skipped: report.skipped,
+                    })}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      setPhase("idle");
+                      void detect();
+                    }}
+                    className="shrink-0"
+                  >
+                    {t("meeting.newMeeting")}
+                  </Button>
+                </div>
               </div>
               {report.report.trim() ? (
                 <pre className="text-sm whitespace-pre-wrap rounded-[10px] border border-hairline bg-inset p-4 font-sans leading-relaxed">

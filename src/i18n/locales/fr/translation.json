@@ -867,7 +867,6 @@
   "meeting": {
     "title": "Mode réunion",
     "description": "Transforme une réunion en compte rendu écrit. Nova capte votre micro et le son des autres participants, puis produit une synthèse qui distingue ce que vous avez dit de ce qu'ils ont dit.",
-    "readyHint": "Ouvrez votre réunion, laissez sa fenêtre active, puis démarrez.",
     "start": "Démarrer la réunion",
     "starting": "Démarrage…",
     "finish": "Terminer",
@@ -896,6 +895,11 @@
       "stream_error": "La capture s'est interrompue de façon inattendue.",
       "requires_ultra": "Le mode réunion nécessite Nova Ultra.",
       "internal": "La réunion n'a pas pu démarrer."
-    }
+    },
+    "noApp": "Aucune application de réunion détectée. Ouvrez votre réunion (Zoom, Teams, Google Meet…), puis actualisez.",
+    "pickApp": "Choisissez la réunion à capter.",
+    "oneApp": "Prêt à capter {{app}}.",
+    "refresh": "Actualiser",
+    "newMeeting": "Nouvelle réunion"
   }
 }
