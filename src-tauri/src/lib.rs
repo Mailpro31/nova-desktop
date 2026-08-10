@@ -215,6 +215,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(history_manager.clone());
     app_handle.manage(tray::CurrentTrayIconState::new());
     app_handle.manage(local_llm::LocalLlmProcess::default());
+    app_handle.manage(commands::meeting::MeetingSessionState::default());
 
     // Note: Shortcuts are NOT initialized here.
     // The frontend is responsible for calling the `initialize_shortcuts` command
@@ -697,6 +698,8 @@ pub fn run(cli_args: CliArgs) {
             commands::transcription::is_transcribe_cpu_only_mode,
             commands::transcription::clear_transcribe_gpu_blacklist,
             meeting_capture::probe_meeting_capture,
+            commands::meeting::start_meeting,
+            commands::meeting::stop_meeting,
             performance::run_performance_diagnostics,
             performance::apply_adaptive_performance,
             performance::change_adaptive_performance_setting,
