@@ -787,12 +787,12 @@
     "title": "Novidades no Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Reformulações gratuitas hoje",
+    "lifetimeUsage": "Reformulações Turbo gratuitas",
     "count": "{{used}} / {{limit}} reformulações",
-    "blockedInline": "Limite diário atingido — o ditado continua ilimitado, o texto é colado tal como está. Faça upgrade para reformulações ilimitadas.",
-    "resetsOn": "Reinicia em {{date}}.",
-    "blockedTitle": "Limite de reformulações atingido",
-    "blockedDescription": "Você usou suas 10 reformulações gratuitas de hoje. O ditado continua ilimitado — seu texto é colado tal como está. Assine o Nova para reformulações sem limite.",
+    "blockedInline": "Você usou todas as suas reformulações Turbo gratuitas — o ditado continua ilimitado, o texto é colado tal como está. Faça upgrade para Turbo ilimitado.",
+    "lifetimeNote": "Oferta única, não renovada.",
+    "blockedTitle": "Reformulações Turbo gratuitas esgotadas",
+    "blockedDescription": "Você usou suas 20 reformulações Turbo gratuitas. O ditado continua ilimitado — seu texto é colado tal como está. Assine o Nova Ultra para Turbo ilimitado.",
     "upgrade": "Assinar"
   },
   "weekStat": {

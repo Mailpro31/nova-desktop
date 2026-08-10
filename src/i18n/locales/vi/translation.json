@@ -787,12 +787,12 @@
     "title": "Điểm mới trong Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Lượt viết lại miễn phí hôm nay",
+    "lifetimeUsage": "Lượt viết lại Turbo miễn phí",
     "count": "{{used}} / {{limit}} lượt viết lại",
-    "blockedInline": "Đã đạt giới hạn hằng ngày — đọc chính tả vẫn không giới hạn, văn bản được dán nguyên trạng. Nâng cấp để viết lại không giới hạn.",
-    "resetsOn": "Đặt lại vào {{date}}.",
-    "blockedTitle": "Đã đạt giới hạn viết lại",
-    "blockedDescription": "Bạn đã dùng hết 10 lượt viết lại miễn phí hôm nay. Đọc chính tả vẫn không giới hạn — văn bản của bạn được dán nguyên trạng. Nâng cấp lên Nova để viết lại không giới hạn.",
+    "blockedInline": "Bạn đã dùng hết tất cả lượt viết lại Turbo miễn phí — đọc chính tả vẫn không giới hạn, văn bản được dán nguyên trạng. Nâng cấp lên Turbo không giới hạn.",
+    "lifetimeNote": "Ưu đãi một lần, không gia hạn.",
+    "blockedTitle": "Đã dùng hết lượt viết lại Turbo miễn phí",
+    "blockedDescription": "Bạn đã dùng hết 20 lượt viết lại Turbo miễn phí. Đọc chính tả vẫn không giới hạn — văn bản của bạn được dán nguyên trạng. Nâng cấp lên Nova Ultra để có Turbo không giới hạn.",
     "upgrade": "Đăng ký"
   },
   "weekStat": {

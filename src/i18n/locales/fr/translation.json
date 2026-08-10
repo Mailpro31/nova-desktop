@@ -736,12 +736,12 @@
     "openSettings": "Ouvrir les Préférences Système"
   },
   "quota": {
-    "todayUsage": "Reformulations gratuites aujourd'hui",
+    "lifetimeUsage": "Reformulations Turbo gratuites",
+    "lifetimeNote": "Offre unique, non renouvelée.",
     "count": "{{used}} / {{limit}} reformulations",
-    "blockedInline": "Limite quotidienne atteinte — la dictée reste illimitée, le texte est collé tel quel. Passez à un palier supérieur pour des reformulations illimitées.",
-    "resetsOn": "Réinitialisation le {{date}}.",
-    "blockedTitle": "Limite de reformulations atteinte",
-    "blockedDescription": "Vous avez utilisé vos 10 reformulations gratuites du jour. La dictée reste illimitée — votre texte est collé tel quel. Passez à Nova pour des reformulations sans limite.",
+    "blockedInline": "Vous avez utilisé toutes vos reformulations Turbo gratuites — la dictée reste illimitée, le texte est collé tel quel. Passez à Ultra pour un Turbo sans limite.",
+    "blockedTitle": "Reformulations Turbo gratuites épuisées",
+    "blockedDescription": "Vous avez utilisé vos 20 reformulations Turbo gratuites. La dictée reste illimitée — votre texte est collé tel quel. Passez à Nova Ultra pour un Turbo sans limite.",
     "upgrade": "S'abonner"
   },
   "weekStat": {

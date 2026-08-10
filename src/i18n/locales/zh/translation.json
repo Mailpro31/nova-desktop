@@ -787,12 +787,12 @@
     "title": "Nova v{{version}} 新功能"
   },
   "quota": {
-    "todayUsage": "今日免费改写",
+    "lifetimeUsage": "免费 Turbo 改写",
     "count": "{{used}} / {{limit}} 次改写",
-    "blockedInline": "已达每日上限——听写仍然无限制，文本将原样粘贴。升级即可无限改写。",
-    "resetsOn": "将于 {{date}} 重置。",
-    "blockedTitle": "已达改写上限",
-    "blockedDescription": "您已用完今日的 10 次免费改写。听写仍然无限制——您的文本将原样粘贴。升级到 Nova 即可无限改写。",
+    "blockedInline": "您已用完所有免费 Turbo 改写——听写仍然无限制，文本将原样粘贴。升级至无限 Turbo。",
+    "lifetimeNote": "一次性优惠，不会重置。",
+    "blockedTitle": "免费 Turbo 改写已用完",
+    "blockedDescription": "您已用完 20 次免费 Turbo 改写。听写仍然无限制——您的文本将原样粘贴。升级到 Nova Ultra 即可享受无限 Turbo。",
     "upgrade": "订阅"
   },
   "weekStat": {

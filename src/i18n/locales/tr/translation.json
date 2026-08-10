@@ -787,12 +787,12 @@
     "title": "Nova v{{version}} yenilikleri"
   },
   "quota": {
-    "todayUsage": "Bugünkü ücretsiz yeniden yazımlar",
+    "lifetimeUsage": "Ücretsiz Turbo yeniden yazımlar",
     "count": "{{used}} / {{limit}} yeniden yazım",
-    "blockedInline": "Günlük sınıra ulaşıldı — dikte sınırsız kalır, metin olduğu gibi yapıştırılır. Sınırsız yeniden yazım için yükseltin.",
-    "resetsOn": "{{date}} tarihinde sıfırlanır.",
-    "blockedTitle": "Yeniden yazım sınırına ulaşıldı",
-    "blockedDescription": "Bugün için 10 ücretsiz yeniden yazımınızı kullandınız. Dikte sınırsız kalır — metniniz olduğu gibi yapıştırılır. Sınırsız yeniden yazım için Nova'ya geçin.",
+    "blockedInline": "Tüm ücretsiz Turbo yeniden yazımlarınızı kullandınız — dikte sınırsız kalır, metin olduğu gibi yapıştırılır. Sınırsız Turbo'ya yükseltin.",
+    "lifetimeNote": "Tek seferlik teklif, yenilenmez.",
+    "blockedTitle": "Ücretsiz Turbo yeniden yazımlar tükendi",
+    "blockedDescription": "20 ücretsiz Turbo yeniden yazımınızı kullandınız. Dikte sınırsız kalır — metniniz olduğu gibi yapıştırılır. Sınırsız Turbo için Nova Ultra'ya geçin.",
     "upgrade": "Abone ol"
   },
   "weekStat": {

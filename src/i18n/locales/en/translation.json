@@ -739,12 +739,12 @@
     "openSettings": "Open System Settings"
   },
   "quota": {
-    "todayUsage": "Free rewrites today",
+    "lifetimeUsage": "Free Turbo rewrites",
+    "lifetimeNote": "One-time offer, not renewed.",
     "count": "{{used}} / {{limit}} rewrites",
-    "blockedInline": "Daily limit reached — dictation stays unlimited, your text is pasted as-is. Upgrade for unlimited rewrites.",
-    "resetsOn": "Resets on {{date}}.",
-    "blockedTitle": "Rewrite limit reached",
-    "blockedDescription": "You've used your 10 free rewrites for today. Dictation stays unlimited — your text is pasted as-is. Upgrade to Nova for unlimited rewrites.",
+    "blockedInline": "You've used all your free Turbo rewrites — dictation stays unlimited, your text is pasted as-is. Upgrade for unlimited Turbo.",
+    "blockedTitle": "Free Turbo rewrites used up",
+    "blockedDescription": "You've used your 20 free Turbo rewrites. Dictation stays unlimited — your text is pasted as-is. Upgrade to Nova Ultra for unlimited Turbo.",
     "upgrade": "Subscribe"
   },
   "weekStat": {

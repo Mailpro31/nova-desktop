@@ -787,12 +787,12 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "quota": {
-    "todayUsage": "Gratis herformuleringen vandaag",
+    "lifetimeUsage": "Gratis Turbo-herformuleringen",
     "count": "{{used}} / {{limit}} herformuleringen",
-    "blockedInline": "Daglimiet bereikt — dicteren blijft onbeperkt, de tekst wordt ongewijzigd geplakt. Upgrade voor onbeperkte herformuleringen.",
-    "resetsOn": "Wordt opnieuw ingesteld op {{date}}.",
-    "blockedTitle": "Limiet voor herformuleringen bereikt",
-    "blockedDescription": "Je hebt je 10 gratis herformuleringen voor vandaag gebruikt. Dicteren blijft onbeperkt — je tekst wordt ongewijzigd geplakt. Ga over op Nova voor onbeperkte herformuleringen.",
+    "blockedInline": "Je hebt al je gratis Turbo-herformuleringen gebruikt — dicteren blijft onbeperkt, de tekst wordt ongewijzigd geplakt. Upgrade naar onbeperkte Turbo.",
+    "lifetimeNote": "Eenmalig aanbod, wordt niet vernieuwd.",
+    "blockedTitle": "Gratis Turbo-herformuleringen op",
+    "blockedDescription": "Je hebt je 20 gratis Turbo-herformuleringen gebruikt. Dicteren blijft onbeperkt — je tekst wordt ongewijzigd geplakt. Ga over op Nova Ultra voor onbeperkte Turbo.",
     "upgrade": "Abonneren"
   },
   "weekStat": {

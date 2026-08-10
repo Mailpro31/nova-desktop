@@ -787,12 +787,12 @@
     "title": "Nowości w Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Darmowe przeredagowania dzisiaj",
+    "lifetimeUsage": "Darmowe przeredagowania Turbo",
     "count": "{{used}} / {{limit}} przeredagowań",
-    "blockedInline": "Osiągnięto dzienny limit — dyktowanie pozostaje nieograniczone, tekst jest wklejany bez zmian. Przejdź na wyższy plan, aby korzystać z nieograniczonych przeredagowań.",
-    "resetsOn": "Reset {{date}}.",
-    "blockedTitle": "Osiągnięto limit przeredagowań",
-    "blockedDescription": "Wykorzystano 10 darmowych przeredagowań na dziś. Dyktowanie pozostaje nieograniczone — tekst jest wklejany bez zmian. Przejdź na Nova, aby korzystać z nieograniczonych przeredagowań.",
+    "blockedInline": "Wykorzystano wszystkie darmowe przeredagowania Turbo — dyktowanie pozostaje nieograniczone, tekst jest wklejany bez zmian. Przejdź na nieograniczony Turbo.",
+    "lifetimeNote": "Oferta jednorazowa, nieodnawialna.",
+    "blockedTitle": "Darmowe przeredagowania Turbo wykorzystane",
+    "blockedDescription": "Wykorzystano 20 darmowych przeredagowań Turbo. Dyktowanie pozostaje nieograniczone — tekst jest wklejany bez zmian. Przejdź na Nova Ultra, aby korzystać z nieograniczonego Turbo.",
     "upgrade": "Subskrybuj"
   },
   "weekStat": {
