@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
+import { PremiumBadge, premiumTierFromLabel } from "./PremiumBadge";
 
 // Cache module partagé : le statut de licence ne change qu'à l'activation.
 // invalidateLicense() (appelé après activate/clear) force un rechargement.
@@ -71,18 +72,16 @@ export const TierBadge: React.FC<{ feature: string; className?: string }> = ({
 
   if (!locked) return null;
 
-  const isUltra = (TIER_FOR_FEATURE[feature] ?? "").includes("ULTRA");
-  const color = isUltra ? "var(--color-ultra)" : "var(--color-accent)";
+  const tierLabel = TIER_FOR_FEATURE[feature] ?? "NOVA PRO";
 
   return (
-    <span
-      className={`inline-flex items-center gap-1 text-[10px] font-bold tracking-wide uppercase rounded-full px-2 py-0.5 border whitespace-nowrap ${className}`}
-      style={{ color, borderColor: color }}
+    <PremiumBadge
+      tier={premiumTierFromLabel(tierLabel)}
+      size="gate"
+      className={className}
     >
-      {t("license.requiresTier", {
-        tier: TIER_FOR_FEATURE[feature] ?? "Nova Pro",
-      })}
-    </span>
+      {t("license.requiresTier", { tier: tierLabel })}
+    </PremiumBadge>
   );
 };
 
