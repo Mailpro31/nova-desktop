@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Radio, Square, Users } from "lucide-react";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
+import { TierBadge, getStatus } from "../license/TierBadge";
+
+// Fonctionnalité réservée à Nova Ultra (miroir de `feature_min_tier`, Rust). Le
+// backend reste l'autorité : la commande refuse aussi le démarrage sans le
+// palier. Ici on grise l'UI pour ne pas « mentir » (convention CLAUDE.md).
+const MEETING_FEATURE = "meeting_mode";
 
 // Le consentement des participants n'est demandé qu'UNE fois (décision produit) ;
 // ce drapeau local mémorise que l'utilisateur l'a acquitté.
@@ -29,6 +35,7 @@ const ERROR_KEYS = [
   "unavailable",
   "no_audio",
   "stream_error",
+  "requires_ultra",
   "internal",
 ] as const;
 
@@ -50,6 +57,19 @@ export const MeetingSettings: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [consentOpen, setConsentOpen] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
+  // `null` tant que le statut n'est pas chargé : on ne grise pas avant de savoir.
+  const [locked, setLocked] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    getStatus().then((s) => {
+      if (alive)
+        setLocked(s ? !(s.features?.[MEETING_FEATURE] ?? true) : false);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const errorMessage = (raw: unknown): string => {
     const code = String(raw ?? "");
@@ -115,7 +135,16 @@ export const MeetingSettings: React.FC = () => {
         title={t("meeting.title")}
         description={t("meeting.description")}
       >
-        <div className="p-4 space-y-4">
+        {/* Bloc gaté : grisé et inerte tant que le palier manque — l'UI ne
+            « ment » pas (convention CLAUDE.md). Le badge indique le palier. */}
+        <div
+          className={`p-4 space-y-4 ${locked ? "opacity-40 pointer-events-none select-none" : ""}`}
+        >
+          {locked && (
+            <div className="flex justify-start">
+              <TierBadge feature={MEETING_FEATURE} />
+            </div>
+          )}
           {/* Bandeau de capture active — visible tant que la réunion tourne. */}
           {recording && (
             <div className="flex items-center gap-3 rounded-[10px] border border-red-500/40 bg-red-500/10 px-4 py-3">

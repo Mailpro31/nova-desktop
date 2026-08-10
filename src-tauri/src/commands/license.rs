@@ -41,6 +41,7 @@ const KNOWN_FEATURES: &[&str] = &[
     "custom_naming",
     "priority_updates",
     "context_reading",
+    "meeting_mode",
 ];
 
 fn build_status(key: &str, _trial_started_at: i64, _trial_expired_notified: bool) -> LicenseStatus {

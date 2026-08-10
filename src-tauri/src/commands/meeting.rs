@@ -69,6 +69,15 @@ pub async fn start_meeting(app: AppHandle) -> Result<MeetingStartInfo, String> {
     }
 
     let settings = crate::settings::get_settings(&app);
+
+    // Verrou de palier : le mode réunion est réservé à Nova Ultra. Dormant
+    // (clé publique vide) → `has` renvoie true partout, donc aucun changement de
+    // comportement en développement.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    if !crate::licensing::has("meeting_mode", license_key, 0) {
+        return Err("requires_ultra".to_string());
+    }
+
     let (process, pid) = crate::auto_style::foreground_meeting_target(&settings)
         .ok_or_else(|| "no_meeting_app".to_string())?;
 

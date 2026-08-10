@@ -44,6 +44,7 @@ export const TIER_FOR_FEATURE: Record<string, string> = {
   orb_customization: "NOVA ULTRA",
   custom_naming: "NOVA ULTRA",
   context_reading: "NOVA ULTRA",
+  meeting_mode: "NOVA ULTRA",
 };
 
 /**

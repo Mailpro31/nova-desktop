@@ -64,7 +64,10 @@ pub fn feature_min_tier(feature: &str) -> Tier {
         | "orb_customization" | "custom_naming" | "priority_updates"
         // Lecture de contexte : Nova lit le contenu de la fenêtre active pour
         // ancrer la reformulation dans la situation. Fonctionnalité phare Ultra.
-        | "context_reading" => Tier::Ultra,
+        | "context_reading"
+        // Mode réunion : capture des autres participants + compte rendu. Feature
+        // phare de capture, réservée à Nova Ultra.
+        | "meeting_mode" => Tier::Ultra,
         _ => Tier::Free,
     }
 }
