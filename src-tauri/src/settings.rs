@@ -1854,12 +1854,19 @@ mod tests {
             r##"{
             "settings_schema_version": 1,
             "bindings": {
+                "transcribe": {
+                    "id": "transcribe",
+                    "name": "Transcribe",
+                    "description": "Converts your speech into text.",
+                    "default_binding": "option+space",
+                    "current_binding": "f13"
+                },
                 "transcribe_with_post_process": {
                     "id": "transcribe_with_post_process",
-                    "name": "Transcribe",
-                    "description": "Converts your speech into text and applies the selected AI style.",
-                    "default_binding": "option+space",
-                    "current_binding": "option+space"
+                    "name": "Transcribe with Post-Processing",
+                    "description": "Converts your speech into text and applies AI post-processing.",
+                    "default_binding": "option+shift+space",
+                    "current_binding": "option+shift+space"
                 },
                 "cancel": {
                     "id": "cancel",
