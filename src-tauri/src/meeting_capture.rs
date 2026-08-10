@@ -94,6 +94,13 @@ impl CaptureError {
             detail: detail.into(),
         }
     }
+
+    /// Erreur interne (code `internal`), constructible depuis les autres modules
+    /// du mode réunion (ex. [`crate::meeting_live`]) qui n'ont pas accès au `new`
+    /// privé mais doivent remonter un échec de démarrage.
+    pub fn new_internal(detail: impl Into<String>) -> Self {
+        Self::new(REASON_INTERNAL, detail)
+    }
 }
 
 /// Résultat du diagnostic. Ne contient JAMAIS d'audio ni de contenu de réunion :

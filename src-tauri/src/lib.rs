@@ -17,6 +17,7 @@ mod local_llm;
 mod machine_id;
 mod managers;
 mod meeting_capture;
+mod meeting_live;
 mod meeting_segmenter;
 mod meeting_session;
 mod meeting_transcript;
