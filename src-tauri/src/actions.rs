@@ -904,16 +904,16 @@ async fn post_process_with_provider(
                             );
                             return Some(result);
                         } else {
-                            error!("Structured output response missing 'transcription' field");
-                            return Some(clean_llm_output(&content));
+                            error!("Structured output response missing 'transcription' field; falling back to legacy mode");
+                            // Fall through to legacy mode instead of returning malformed content
                         }
                     }
                     Err(e) => {
                         error!(
-                            "Failed to parse structured output JSON: {}. Returning raw content.",
+                            "Failed to parse structured output JSON: {}. Falling back to legacy mode.",
                             e
                         );
-                        return Some(clean_llm_output(&content));
+                        // Fall through to legacy mode instead of returning malformed content
                     }
                 }
             }
