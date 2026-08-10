@@ -787,12 +787,12 @@
     "title": "Nuevo en Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Reformulaciones gratuitas hoy",
+    "lifetimeUsage": "Reformulaciones Turbo gratuitas",
     "count": "{{used}} / {{limit}} reformulaciones",
-    "blockedInline": "Límite diario alcanzado: el dictado sigue siendo ilimitado, el texto se pega tal cual. Mejora tu plan para reformulaciones ilimitadas.",
-    "resetsOn": "Se restablece el {{date}}.",
-    "blockedTitle": "Límite de reformulaciones alcanzado",
-    "blockedDescription": "Has usado tus 10 reformulaciones gratuitas de hoy. El dictado sigue siendo ilimitado: tu texto se pega tal cual. Pásate a Nova para reformulaciones sin límite.",
+    "blockedInline": "Has usado todas tus reformulaciones Turbo gratuitas — el dictado sigue siendo ilimitado, el texto se pega tal cual. Mejora a Turbo ilimitado.",
+    "lifetimeNote": "Oferta única, no se renueva.",
+    "blockedTitle": "Reformulaciones Turbo gratuitas agotadas",
+    "blockedDescription": "Has usado tus 20 reformulaciones Turbo gratuitas. El dictado sigue siendo ilimitado — tu texto se pega tal cual. Pásate a Nova Ultra para Turbo ilimitado.",
     "upgrade": "Suscribirse"
   },
   "weekStat": {

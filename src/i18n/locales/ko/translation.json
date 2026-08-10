@@ -787,12 +787,12 @@
     "title": "Nova v{{version}}의 새 소식"
   },
   "quota": {
-    "todayUsage": "오늘의 무료 다시 쓰기",
+    "lifetimeUsage": "무료 Turbo 다시 쓰기",
     "count": "{{used}} / {{limit}} 회 다시 쓰기",
-    "blockedInline": "일일 한도에 도달했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 다시 쓰기는 업그레이드하세요.",
-    "resetsOn": "{{date}}에 초기화됩니다.",
-    "blockedTitle": "다시 쓰기 한도 도달",
-    "blockedDescription": "오늘의 무료 다시 쓰기 10회를 모두 사용했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 다시 쓰기를 원하면 Nova로 업그레이드하세요.",
+    "blockedInline": "무료 Turbo 다시 쓰기를 모두 사용했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 Turbo로 업그레이드하세요.",
+    "lifetimeNote": "일회성 혜택, 갱신되지 않습니다.",
+    "blockedTitle": "무료 Turbo 다시 쓰기 소진",
+    "blockedDescription": "무료 Turbo 다시 쓰기 20회를 모두 사용했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 Turbo를 원하면 Nova Ultra로 업그레이드하세요.",
     "upgrade": "구독하기"
   },
   "weekStat": {

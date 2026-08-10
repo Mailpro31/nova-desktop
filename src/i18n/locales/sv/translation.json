@@ -787,12 +787,12 @@
     "title": "Nytt i Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Gratis omformuleringar idag",
+    "lifetimeUsage": "Gratis Turbo-omformuleringar",
     "count": "{{used}} / {{limit}} omformuleringar",
-    "blockedInline": "Daglig gräns nådd — diktering är fortfarande obegränsad, texten klistras in som den är. Uppgradera för obegränsade omformuleringar.",
-    "resetsOn": "Återställs den {{date}}.",
-    "blockedTitle": "Gräns för omformuleringar nådd",
-    "blockedDescription": "Du har använt dina 10 gratis omformuleringar för idag. Diktering är fortfarande obegränsad — din text klistras in som den är. Uppgradera till Nova för obegränsade omformuleringar.",
+    "blockedInline": "Du har använt alla dina gratis Turbo-omformuleringar — diktering är fortfarande obegränsad, texten klistras in som den är. Uppgradera till obegränsad Turbo.",
+    "lifetimeNote": "Engångserbjudande, förnyas inte.",
+    "blockedTitle": "Gratis Turbo-omformuleringar slut",
+    "blockedDescription": "Du har använt dina 20 gratis Turbo-omformuleringar. Diktering är fortfarande obegränsad — din text klistras in som den är. Uppgradera till Nova Ultra för obegränsad Turbo.",
     "upgrade": "Prenumerera"
   },
   "weekStat": {

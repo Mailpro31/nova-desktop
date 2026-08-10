@@ -787,12 +787,12 @@
     "title": "Neu in Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Kostenlose Umformulierungen heute",
+    "lifetimeUsage": "Kostenlose Turbo-Umformulierungen",
     "count": "{{used}} / {{limit}} Umformulierungen",
-    "blockedInline": "Tageslimit erreicht — das Diktieren bleibt unbegrenzt, der Text wird unverändert eingefügt. Upgraden Sie für unbegrenzte Umformulierungen.",
-    "resetsOn": "Zurücksetzung am {{date}}.",
-    "blockedTitle": "Limit für Umformulierungen erreicht",
-    "blockedDescription": "Sie haben Ihre 10 kostenlosen Umformulierungen für heute aufgebraucht. Das Diktieren bleibt unbegrenzt — Ihr Text wird unverändert eingefügt. Führen Sie ein Upgrade auf Nova durch für unbegrenzte Umformulierungen.",
+    "blockedInline": "Sie haben alle kostenlosen Turbo-Umformulierungen aufgebraucht — das Diktieren bleibt unbegrenzt, der Text wird unverändert eingefügt. Upgraden Sie auf unbegrenztes Turbo.",
+    "lifetimeNote": "Einmaliges Angebot, wird nicht erneuert.",
+    "blockedTitle": "Kostenlose Turbo-Umformulierungen aufgebraucht",
+    "blockedDescription": "Sie haben Ihre 20 kostenlosen Turbo-Umformulierungen aufgebraucht. Das Diktieren bleibt unbegrenzt — Ihr Text wird unverändert eingefügt. Führen Sie ein Upgrade auf Nova Ultra durch für unbegrenztes Turbo.",
     "upgrade": "Abonnieren"
   },
   "weekStat": {

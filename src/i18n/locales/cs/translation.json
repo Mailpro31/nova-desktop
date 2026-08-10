@@ -787,12 +787,12 @@
     "title": "Novinky v Nova v{{version}}"
   },
   "quota": {
-    "todayUsage": "Bezplatná přeformulování dnes",
+    "lifetimeUsage": "Bezplatná přeformulování Turbo",
     "count": "{{used}} / {{limit}} přeformulování",
-    "blockedInline": "Denní limit dosažen — diktování zůstává neomezené, text se vloží tak, jak je. Přejděte na vyšší plán pro neomezená přeformulování.",
-    "resetsOn": "Obnovení {{date}}.",
-    "blockedTitle": "Dosažen limit přeformulování",
-    "blockedDescription": "Využili jste svých 10 bezplatných přeformulování na dnešek. Diktování zůstává neomezené — váš text se vloží tak, jak je. Přejděte na Nova pro neomezená přeformulování.",
+    "blockedInline": "Využili jste všechna svá bezplatná přeformulování Turbo — diktování zůstává neomezené, text se vloží tak, jak je. Přejděte na neomezený Turbo.",
+    "lifetimeNote": "Jednorázová nabídka, neobnovuje se.",
+    "blockedTitle": "Bezplatná přeformulování Turbo vyčerpána",
+    "blockedDescription": "Využili jste svých 20 bezplatných přeformulování Turbo. Diktování zůstává neomezené — váš text se vloží tak, jak je. Přejděte na Nova Ultra pro neomezený Turbo.",
     "upgrade": "Předplatit"
   },
   "weekStat": {

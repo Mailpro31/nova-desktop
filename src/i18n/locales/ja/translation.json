@@ -787,12 +787,12 @@
     "title": "Nova v{{version}} の新機能"
   },
   "quota": {
-    "todayUsage": "本日の無料リライト",
+    "lifetimeUsage": "無料 Turbo リライト",
     "count": "{{used}} / {{limit}} 回のリライト",
-    "blockedInline": "本日の上限に達しました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限のリライトはアップグレードで。",
-    "resetsOn": "{{date}} にリセットされます。",
-    "blockedTitle": "リライトの上限に達しました",
-    "blockedDescription": "本日の無料リライト10回を使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限のリライトは Nova へのアップグレードで。",
+    "blockedInline": "無料の Turbo リライトをすべて使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限の Turbo にアップグレードしてください。",
+    "lifetimeNote": "一度限りの特典、更新されません。",
+    "blockedTitle": "無料の Turbo リライトを使い切りました",
+    "blockedDescription": "20回の無料 Turbo リライトを使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限の Turbo は Nova Ultra へのアップグレードで。",
     "upgrade": "登録する"
   },
   "weekStat": {
