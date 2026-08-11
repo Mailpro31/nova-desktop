@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova を準備しています…",
     "transcribing": "文字起こし中…",
     "processing": "処理中…",
     "chooseStyle": "Choose a Style",

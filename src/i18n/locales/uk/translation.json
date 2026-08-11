@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova готується…",
     "transcribing": "Обробка...",
     "processing": "Постобробка...",
     "chooseStyle": "Choose a Style",

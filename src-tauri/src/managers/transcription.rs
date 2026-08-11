@@ -368,6 +368,28 @@ impl TranscriptionManager {
         self.lock_engine().is_some() || self.active_engine_lease.load(Ordering::Acquire) != 0
     }
 
+    /// Whether the next transcription must wake or reload the engine. This is a
+    /// read-only hint for immediate UX feedback; model loading itself remains
+    /// asynchronous and never gates microphone capture.
+    pub fn needs_model_warmup(&self) -> bool {
+        self.reload_model_on_next_use.load(Ordering::Acquire) || !self.is_model_loaded()
+    }
+
+    /// Wait for the background load kicked off by [`initiate_model_load`] to
+    /// finish. Call only from a worker thread. The boolean reports whether an
+    /// engine is actually available after the attempt.
+    pub fn wait_for_model_warmup(&self) -> bool {
+        let mut is_loading = self.is_loading.lock().unwrap_or_else(|e| e.into_inner());
+        while *is_loading {
+            is_loading = self
+                .loading_condvar
+                .wait(is_loading)
+                .unwrap_or_else(|e| e.into_inner());
+        }
+        drop(is_loading);
+        self.is_model_loaded()
+    }
+
     /// Accelerator changes should not disturb the current transcription. Mark
     /// the cached engine stale; the next model-use path reloads it with the
     /// latest settings.

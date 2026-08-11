@@ -791,6 +791,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova is getting ready…",
     "transcribing": "Transcribing...",
     "processing": "Thinking",
     "chooseStyle": "Choose a Style",

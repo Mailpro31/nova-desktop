@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova está se preparando…",
     "transcribing": "Transcrevendo...",
     "processing": "Processando...",
     "chooseStyle": "Choose a Style",

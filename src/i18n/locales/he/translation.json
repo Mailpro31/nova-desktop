@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova מתכוננת…",
     "transcribing": "מתמלל...",
     "processing": "מעבד...",
     "chooseStyle": "Choose a Style",

@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova تستعد…",
     "transcribing": "...جاري التفريغ",
     "processing": "...جاري المعالجة",
     "chooseStyle": "Choose a Style",
