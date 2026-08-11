@@ -45,29 +45,29 @@ pub struct LlmProfileSpec {
 /// existants ; ici, la taille du modèle de reformulation local embarqué.
 ///
 /// Palier produit : Air est le seul profil du plan Free ; Aura et Apex
-/// nécessitent Nova Pro (et restent disponibles en Ultra). Air doit donc
-/// rester un moteur « normal », pas un modèle-jouet — d'où 1.5B plutôt que
-/// 0.5B, qui devenait peu fiable pour la reformulation. `ensure_server_running`
-/// délestage sur GPU (Vulkan) quand c'est possible pour rester rapide même sur
-/// Aura/Apex, avec repli CPU automatique sinon.
+/// nécessitent Nova Pro (et restent disponibles en Ultra). Air vise aussi les
+/// PC d'entrée de gamme (8 Go, CPU seul) : le 0.5B privilégie donc une latence
+/// bornée et s'appuie sur le nettoyage déterministe déjà effectué avant le LLM.
+/// Aura/Apex conservent les modèles plus expressifs. `ensure_server_running`
+/// déleste sur GPU (Vulkan) quand c'est possible, avec repli CPU automatique.
 pub const PROFILES: &[LlmProfileSpec] = &[
     LlmProfileSpec {
         id: "air",
-        repo_id: "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
-        approx_size_mb: 1000,
-        min_ram_gb: 0,
+        repo_id: "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+        approx_size_mb: 400,
+        min_ram_gb: 4,
     },
     LlmProfileSpec {
         id: "aura",
         repo_id: "Qwen/Qwen2.5-3B-Instruct-GGUF",
         approx_size_mb: 2100,
-        min_ram_gb: 8,
+        min_ram_gb: 12,
     },
     LlmProfileSpec {
         id: "apex",
         repo_id: "Qwen/Qwen2.5-7B-Instruct-GGUF",
         approx_size_mb: 4700,
-        min_ram_gb: 16,
+        min_ram_gb: 24,
     },
 ];
 
@@ -75,12 +75,24 @@ fn spec(profile_id: &str) -> Option<&'static LlmProfileSpec> {
     PROFILES.iter().find(|p| p.id == profile_id)
 }
 
+fn total_ram_gb() -> u64 {
+    let mut sys = sysinfo::System::new();
+    sys.refresh_memory();
+    sys.total_memory() / (1024 * 1024 * 1024)
+}
+
+/// Whether the machine has enough physical memory for this local profile.
+/// Unknown profiles are never considered compatible.
+pub fn profile_is_supported(profile_id: &str) -> bool {
+    spec(profile_id)
+        .map(|profile| total_ram_gb() >= profile.min_ram_gb)
+        .unwrap_or(false)
+}
+
 /// Détecte la RAM totale et recommande le plus gros profil que la machine
 /// peut raisonnablement faire tourner. Défensif : RAM inconnue → "air".
 pub fn recommended_profile_id() -> &'static str {
-    let mut sys = sysinfo::System::new();
-    sys.refresh_memory();
-    let total_ram_gb = sys.total_memory() / (1024 * 1024 * 1024);
+    let total_ram_gb = total_ram_gb();
 
     PROFILES
         .iter()
@@ -94,8 +106,10 @@ pub fn recommended_profile_id() -> &'static str {
 pub struct LlmProfileStatus {
     pub id: String,
     pub approx_size_mb: u64,
+    pub required_ram_gb: u64,
     pub is_downloaded: bool,
     pub is_recommended: bool,
+    pub is_supported: bool,
 }
 
 fn local_llm_dir(app: &AppHandle) -> Result<PathBuf, String> {
@@ -107,7 +121,15 @@ fn local_llm_dir(app: &AppHandle) -> Result<PathBuf, String> {
 }
 
 fn model_path(app: &AppHandle, profile_id: &str) -> Result<PathBuf, String> {
-    Ok(local_llm_dir(app)?.join(format!("{profile_id}.gguf")))
+    // `air.gguf` désignait le Qwen 1.5B dans les versions précédentes. Un nom
+    // distinct empêche de prendre silencieusement cet ancien modèle lourd pour
+    // le nouveau profil Air 0.5B après une mise à jour.
+    let filename = if profile_id == "air" {
+        "air-qwen2.5-0.5b.gguf".to_string()
+    } else {
+        format!("{profile_id}.gguf")
+    };
+    Ok(local_llm_dir(app)?.join(filename))
 }
 
 #[cfg(windows)]
@@ -123,10 +145,12 @@ pub fn profiles_status(app: &AppHandle) -> Vec<LlmProfileStatus> {
         .map(|p| LlmProfileStatus {
             id: p.id.to_string(),
             approx_size_mb: p.approx_size_mb,
+            required_ram_gb: p.min_ram_gb,
             is_downloaded: model_path(app, p.id)
                 .map(|path| path.is_file())
                 .unwrap_or(false),
             is_recommended: p.id == recommended,
+            is_supported: profile_is_supported(p.id),
         })
         .collect()
 }
@@ -251,7 +275,14 @@ async fn download_with_progress(
 /// poursuit, pour ne pas bloquer le téléchargement si HF change son API).
 async fn gguf_expected_sha256(repo_id: &str, filename: &str) -> Option<String> {
     let url = format!("https://huggingface.co/{repo_id}/resolve/main/{filename}");
-    let resp = reqwest::Client::new()
+    // Read the LFS metadata from Hugging Face's redirect response. Following
+    // the redirect loses `x-linked-etag` and exposes the Xet/CDN object ETag
+    // instead; that value is not the file SHA-256 and rejects valid models.
+    let client = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .ok()?;
+    let resp = client
         .head(&url)
         .timeout(std::time::Duration::from_secs(15))
         .send()
@@ -592,7 +623,7 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
             "--port",
             &LOCAL_LLM_PORT.to_string(),
             "-c",
-            "4096",
+            "1536",
             "-ngl",
             ngl,
         ])
@@ -602,7 +633,7 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
         // reformulation. Purement une optimisation de vitesse, sans effet sur la
         // sortie.
         .arg("--cache-reuse")
-        .arg("256")
+        .arg("128")
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null())
         .creation_flags(CREATE_NO_WINDOW)
@@ -641,6 +672,14 @@ async fn wait_for_health(child: &mut Child, max_iters: u32) -> bool {
 #[cfg(windows)]
 pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<(), String> {
     use tauri::Manager;
+
+    let profile = spec(profile_id).ok_or_else(|| format!("Profil inconnu : {profile_id}"))?;
+    if !profile_is_supported(profile_id) {
+        return Err(format!(
+            "Ce PC n'a pas assez de mémoire pour Nova {} ({} Go de RAM requis).",
+            profile_id, profile.min_ram_gb
+        ));
+    }
 
     let state = app.state::<LocalLlmProcess>();
     let already_running_same_profile = {
@@ -709,14 +748,99 @@ pub async fn ensure_server_running(_app: &AppHandle, _profile_id: &str) -> Resul
     Err("L'Intelligence privée locale n'est disponible que sous Windows.".to_string())
 }
 
+/// Profil local à préparer par défaut : celui déjà configuré pour
+/// l'Intelligence privée s'il est valide, sinon le profil recommandé selon la
+/// RAM détectée (aucune décision de l'utilisateur requise). Volontairement
+/// INDÉPENDANT DU PALIER : la qualité/vitesse du moteur local ne dépend jamais
+/// du plan (seul Turbo, en ligne, reste réservé).
+#[cfg(windows)]
+fn default_provision_profile_id(settings: &crate::settings::AppSettings) -> String {
+    settings
+        .post_process_models
+        .get(PROVIDER_ID)
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty() && spec(s).is_some())
+        .unwrap_or_else(|| recommended_profile_id().to_string())
+}
+
+#[cfg(windows)]
+fn mark_autoprovision_done(app: &AppHandle) {
+    let mut settings = crate::settings::get_settings(app);
+    if !settings.local_model_autoprovision_done {
+        settings.local_model_autoprovision_done = true;
+        crate::settings::write_settings(app, settings);
+    }
+}
+
+/// Prépare, EN ARRIÈRE-PLAN et sans JAMAIS bloquer le démarrage, le moteur local
+/// et le modèle recommandé dès le premier lancement — pour que la première
+/// reformulation via l'Intelligence privée soit immédiate, sans aucune action ni
+/// compréhension requise de l'utilisateur, et à l'identique sur tous les paliers.
+///
+/// Remplace l'ancien comportement paresseux (téléchargement au premier usage).
+/// « Jamais de plantage » : en cas d'échec (réseau absent…), on retente quelques
+/// fois avec un délai croissant puis on abandonne — le prochain lancement
+/// retentera (le drapeau `local_model_autoprovision_done` reste faux). Aucune
+/// erreur ne remonte ni ne bloque le premier lancement. Réutilise la plomberie
+/// existante (`ensure_server_binary`, `ensure_model_downloaded`, vérif SHA-256).
+#[cfg(windows)]
+pub async fn provision_default_model_in_background(app: &AppHandle) {
+    let settings = crate::settings::get_settings(app);
+    if settings.local_model_autoprovision_done {
+        return;
+    }
+    let profile_id = default_provision_profile_id(&settings);
+
+    // Déjà présent : rien à télécharger, on note l'installation comme faite.
+    if model_path(app, &profile_id)
+        .map(|p| p.is_file())
+        .unwrap_or(false)
+    {
+        mark_autoprovision_done(app);
+        return;
+    }
+
+    // Tentatives espacées (tâche de fond déjà détachée) : le réseau peut
+    // manquer au tout premier lancement puis revenir.
+    const DELAYS_SECS: [u64; 3] = [0, 60, 300];
+    for (attempt, delay) in DELAYS_SECS.iter().enumerate() {
+        if *delay > 0 {
+            tokio::time::sleep(std::time::Duration::from_secs(*delay)).await;
+        }
+        let result = async {
+            ensure_server_binary(app).await?;
+            ensure_model_downloaded(app, &profile_id).await?;
+            Ok::<(), String>(())
+        }
+        .await;
+        match result {
+            Ok(()) => {
+                mark_autoprovision_done(app);
+                log::info!("Intelligence privée : modèle « {profile_id} » prêt (installation automatique).");
+                return;
+            }
+            Err(e) => {
+                log::debug!(
+                    "Installation automatique du modèle local (tentative {}/{}) échouée : {e}",
+                    attempt + 1,
+                    DELAYS_SECS.len()
+                );
+            }
+        }
+    }
+}
+
+#[cfg(not(windows))]
+pub async fn provision_default_model_in_background(_app: &AppHandle) {}
+
 /// Préchauffage au démarrage. Si l'Intelligence privée est le moteur de
 /// reformulation ACTIF et que son modèle est DÉJÀ téléchargé, démarre
 /// `llama-server` en arrière-plan pour que la toute première reformulation ne
 /// paie pas le coût de démarrage + chargement du modèle (plusieurs secondes).
 /// Best-effort et non bloquant : toute erreur est ignorée (la reformulation
-/// démarrera le serveur à la demande comme avant). Ne télécharge JAMAIS le
-/// modèle ici — un téléchargement de plusieurs Go ne doit se déclencher que sur
-/// une action explicite de l'utilisateur, pas silencieusement au lancement.
+/// démarrera le serveur à la demande comme avant). Ne télécharge PAS le modèle
+/// ici : le téléchargement initial est pris en charge séparément, au premier
+/// lancement et en arrière-plan, par `provision_default_model_in_background`.
 #[cfg(windows)]
 pub async fn prewarm_if_selected(app: &AppHandle, settings: &crate::settings::AppSettings) {
     if !settings.post_process_enabled {

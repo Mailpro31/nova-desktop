@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Cog,
@@ -8,20 +8,61 @@ import {
   Info,
   Sparkles,
   Palette,
+  Users,
 } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
-import {
-  HomeSettings,
-  ConfigurationSettings,
-  HistorySettings,
-  DebugSettings,
-  AboutSettings,
-  PostProcessingSettings,
-  PersonalizationSettings,
-  AccountSettings,
-} from "./settings";
+
+const HomeSettings = lazy(() =>
+  import("./settings/home/HomeSettings").then((module) => ({
+    default: module.HomeSettings,
+  })),
+);
+const ConfigurationSettings = lazy(() =>
+  import("./settings/configuration/ConfigurationSettings").then((module) => ({
+    default: module.ConfigurationSettings,
+  })),
+);
+const PostProcessingSettings = lazy(() =>
+  import("./settings/post-processing/PostProcessingSettings").then(
+    (module) => ({
+      default: module.PostProcessingSettings,
+    }),
+  ),
+);
+const PersonalizationSettings = lazy(() =>
+  import("./settings/personalization/PersonalizationSettings").then(
+    (module) => ({
+      default: module.PersonalizationSettings,
+    }),
+  ),
+);
+const AccountSettings = lazy(() =>
+  import("./settings/account/AccountSettings").then((module) => ({
+    default: module.AccountSettings,
+  })),
+);
+const HistorySettings = lazy(() =>
+  import("./settings/history/HistorySettings").then((module) => ({
+    default: module.HistorySettings,
+  })),
+);
+const DebugSettings = lazy(() =>
+  import("./settings/debug/DebugSettings").then((module) => ({
+    default: module.DebugSettings,
+  })),
+);
+const MeetingSettings = lazy(() =>
+  import("./settings/meeting/MeetingSettings").then((module) => ({
+    default: module.MeetingSettings,
+  })),
+);
+const AboutSettings = lazy(() =>
+  import("./settings/about/AboutSettings").then((module) => ({
+    default: module.AboutSettings,
+  })),
+);
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
 
@@ -62,6 +103,12 @@ export const SECTIONS_CONFIG = {
     // Les Styles sont au cœur de Nova : la section est toujours visible ;
     // l'activation de la reformulation se fait via l'interrupteur en tête de
     // la section (plus besoin de passer par Avancé pour la découvrir).
+    enabled: () => true,
+  },
+  meeting: {
+    labelKey: "sidebar.meeting",
+    icon: Users,
+    component: MeetingSettings,
     enabled: () => true,
   },
   personalization: {
@@ -106,6 +153,7 @@ const SECTION_COLORS: Record<string, string> = {
   home: "",
   configuration: "#8E8E93",
   postprocessing: "#BF5AF2",
+  meeting: "#30D158",
   personalization: "#FF375F",
   account: "#5E5CE6",
   history: "#FF9F0A",

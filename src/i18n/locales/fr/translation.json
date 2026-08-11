@@ -13,6 +13,7 @@
     "models": "Performance",
     "advanced": "Avancé",
     "postProcessing": "Styles",
+    "meeting": "Mode réunion",
     "personalization": "Personnalisation",
     "history": "Historique",
     "debug": "Débogage",
@@ -424,9 +425,9 @@
         }
       },
       "customWords": {
-        "title": "Mots personnalisés",
-        "description": "Ajoutez des mots souvent mal entendus ou mal orthographiés lors de la transcription. Le système corrigera automatiquement les mots similaires pour correspondre à votre liste.",
-        "placeholder": "Ajouter un mot",
+        "title": "Lexique personnel",
+        "description": "Ajoutez des mots et des termes de plusieurs mots (marques, noms propres, termes techniques comme « repo GitHub ») souvent mal entendus ou mal orthographiés. Nova corrige les tournures proches pour coller à votre liste et préserve ces termes intacts pendant la reformulation.",
+        "placeholder": "Ajouter un mot ou un terme",
         "add": "Ajouter",
         "remove": "Supprimer {{word}}",
         "duplicate": "\"{{word}}\" existe déjà"
@@ -521,7 +522,8 @@
         "recommended": "Recommandé",
         "downloaded": "téléchargé",
         "downloadingModel": "Téléchargement du modèle…",
-        "downloadingEngine": "Téléchargement du moteur…"
+        "downloadingEngine": "Téléchargement du moteur…",
+        "sameOnAllTiers": "La qualité et la rapidité de l'Intelligence privée — le moteur 100 % local — sont identiques sur toutes les offres : Nova Free, Pro et Ultra. Votre offre ne change que l'accès à Turbo, le moteur en ligne."
       },
       "contextReading": {
         "title": "Lecture de contexte",
@@ -640,6 +642,23 @@
         "title": "Tampon d'enregistrement supplémentaire",
         "description": "Temps supplémentaire (en millisecondes) pour continuer l'enregistrement après avoir relâché la touche, pour capturer l'audio restant. 0 = pas de tampon supplémentaire."
       },
+      "meetingCapture": {
+        "title": "Test de capture de réunion",
+        "description": "Vérifie si cet ordinateur peut capter les autres participants d'une réunion — le son qui sort de vos haut-parleurs — en plus de votre micro. Cliquez sur le bouton, puis basculez tout de suite sur la fenêtre de votre réunion : le test lit l'application au premier plan 3 secondes après le clic.",
+        "privacy": "Capte environ 2 secondes depuis l'application de réunion au premier plan, uniquement pour mesurer un niveau sonore. Rien n'est enregistré, transcrit ni envoyé où que ce soit.",
+        "run": "Lancer le test",
+        "running": "Basculez sur votre réunion maintenant…",
+        "results": {
+          "working": "Fonctionne. Nova a capté {{seconds}} s depuis {{process}}, niveau crête {{level}} %.",
+          "silent": "Le flux de {{process}} s'est ouvert mais n'a entendu que du silence. Vérifiez que quelqu'un parlait pendant le test.",
+          "no_meeting_app": "Aucune application de réunion au premier plan. Ouvrez votre réunion, laissez sa fenêtre active, puis relancez le test.",
+          "unavailable": "Cet ordinateur ne sait pas capter le son d'une seule application. Windows 10 version 2004 ou plus récent est nécessaire.",
+          "no_audio": "Le flux s'est ouvert mais n'a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
+          "stream_error": "La capture s'est interrompue avant la fin du test.",
+          "internal": "Le test n'a pas pu s'exécuter."
+        },
+        "switchIn": "Basculez sur votre réunion… {{seconds}}"
+      },
       "whatsNewPreview": {
         "title": "Aperçu des nouveautés",
         "description": "Ouvrir la dernière note de version intégrée sans la marquer comme vue",
@@ -657,6 +676,10 @@
       "appDataDirectory": {
         "title": "Emplacement des données de l'application",
         "description": "Emplacement où Nova stocke ses données"
+      },
+      "debugMode": {
+        "title": "Mode débogage",
+        "description": "Affiche la section Diagnostic dans la barre latérale, avec des outils techniques comme les journaux en direct et des tests de diagnostic. Vous pouvez aussi l'activer à tout moment avec Ctrl+Maj+D."
       },
       "sourceCode": {
         "title": "Site officiel",
@@ -713,12 +736,12 @@
     "openSettings": "Ouvrir les Préférences Système"
   },
   "quota": {
-    "todayUsage": "Reformulations gratuites aujourd'hui",
+    "lifetimeUsage": "Reformulations Turbo gratuites",
+    "lifetimeNote": "Offre unique, non renouvelée.",
     "count": "{{used}} / {{limit}} reformulations",
-    "blockedInline": "Limite quotidienne atteinte — la dictée reste illimitée, le texte est collé tel quel. Passez à un palier supérieur pour des reformulations illimitées.",
-    "resetsOn": "Réinitialisation le {{date}}.",
-    "blockedTitle": "Limite de reformulations atteinte",
-    "blockedDescription": "Vous avez utilisé vos 10 reformulations gratuites du jour. La dictée reste illimitée — votre texte est collé tel quel. Passez à Nova pour des reformulations sans limite.",
+    "blockedInline": "Vous avez utilisé toutes vos reformulations Turbo gratuites — la dictée reste illimitée, le texte est collé tel quel. Passez à Ultra pour un Turbo sans limite.",
+    "blockedTitle": "Reformulations Turbo gratuites épuisées",
+    "blockedDescription": "Vous avez utilisé vos 20 reformulations Turbo gratuites. La dictée reste illimitée — votre texte est collé tel quel. Passez à Nova Ultra pour un Turbo sans limite.",
     "upgrade": "S'abonner"
   },
   "weekStat": {
@@ -766,12 +789,45 @@
   },
   "overlay": {
     "transcribing": "Transcription...",
-    "processing": "Traitement...",
+    "processing": "Thinking",
     "chooseStyle": "Choisir un Style",
-    "openSettings": "Ouvrir les réglages"
+    "openSettings": "Ouvrir les réglages",
+    "micHearing": "Je vous entends",
+    "micTooLow": "Parlez un peu plus fort",
+    "styleSuggestion": "Vous dictez souvent dans {{app}} — essayez le Style {{style}}",
+    "styleSuggestionApply": "Essayer",
+    "styleSuggestionDismiss": "Ne plus afficher"
   },
   "whatsNew": {
     "title": "Nouveautés de Nova v{{version}}"
+  },
+  "performanceOptimizer": {
+    "title": "Optimisation automatique",
+    "description": "Adapte Nova à cet ordinateur et inspecte le vrai parcours de transcription.",
+    "autoLabel": "Mode performance Auto",
+    "autoDescription": "Choisit une accélération sûre et la gestion mémoire des modèles selon la RAM, le processeur et les GPU compatibles.",
+    "diagnosticsDescription": "Vérifie le micro, le modèle, la reformulation, la mémoire et l’accélération.",
+    "run": "Lancer le diagnostic",
+    "running": "Vérification…",
+    "profile": "Profil",
+    "memory": "Mémoire",
+    "cpu": "Threads CPU",
+    "acceleration": "Accélération",
+    "latency": "Latence mesurée",
+    "median": "médiane {{value}} ms",
+    "p95": "p95 {{value}} ms",
+    "openMicrophone": "Ouvrir les réglages du micro",
+    "retryGpu": "Réessayer le GPU après redémarrage",
+    "classes": {
+      "low_memory": "Mémoire limitée",
+      "balanced": "Équilibré",
+      "performance": "Performance"
+    }
+  },
+  "voiceCommands": {
+    "title": "Commandes vocales",
+    "description": "Comprend nouveau paragraphe, à la ligne, point d’interrogation et les commandes Nova explicites pour les notes, listes, réunions ou l’annulation de la dictée.",
+    "added": "{{word}} a été ajouté au dictionnaire personnel"
   },
   "license": {
     "remove": "Retirer",
@@ -798,5 +854,54 @@
     "yourPlan": "Votre plan",
     "onlineEngineLockedTitle": "Turbo nécessite un abonnement Nova",
     "onlineEngineLocked": "Le moteur en ligne est réservé à Nova Pro et Ultra — votre texte a été collé sans reformulation."
+  },
+  "lexiconLearning": {
+    "title": "Apprendre mon vocabulaire",
+    "description": "Quand Nova repère un nom ou un terme que vous dictez souvent, il vous propose de l’ajouter à votre lexique personnel. Rien n’est jamais ajouté sans votre confirmation.",
+    "suggestionTitle": "Vouliez-vous dire « {{term}} » ?",
+    "suggestionDescription": "Ajoutez-le à votre lexique personnel pour améliorer sa reconnaissance.",
+    "add": "Ajouter",
+    "ignore": "Ignorer",
+    "added": "« {{term}} » a été ajouté à votre lexique."
+  },
+  "meeting": {
+    "title": "Mode réunion",
+    "description": "Transforme une réunion en compte rendu écrit. Nova capte votre micro et le son des autres participants, puis produit une synthèse qui distingue ce que vous avez dit de ce qu'ils ont dit.",
+    "start": "Démarrer la réunion",
+    "starting": "Démarrage…",
+    "finish": "Terminer",
+    "finishing": "Finalisation…",
+    "capturing": "Capture de {{app}}",
+    "capturingHint": "Nova enregistre cette réunion. Terminez pour obtenir le compte rendu.",
+    "speakerYou": "Vous",
+    "speakerOthers": "Autres",
+    "reportTitle": "Compte rendu",
+    "reportMeta": "{{transcribed}} passages transcrits, {{skipped}} ignorés",
+    "reportEmpty": "Rien n'a été capté — personne n'a été entendu pendant la réunion.",
+    "reportNotTranscribed": "Nova a capté du son mais n'a pas pu le transcrire. Vérifiez que le modèle d'intelligence est bien téléchargé et que quelqu'un parlait, puis réessayez.",
+    "showTranscript": "Afficher la transcription brute",
+    "consent": {
+      "title": "Avant de commencer",
+      "subtitle": "Ceci concerne les autres personnes présentes à votre réunion.",
+      "body": "Une fois démarré, Nova enregistre aussi la voix des autres participants — pas seulement la vôtre — pendant que l'application de réunion détectée est au premier plan. Selon où vous vous trouvez, la loi peut vous demander de les prévenir avant. Nova ne peut pas le faire à votre place.",
+      "checkbox": "Je préviendrai les autres participants avant chaque réunion captée.",
+      "cancel": "Annuler",
+      "confirm": "Démarrer la capture"
+    },
+    "errors": {
+      "no_meeting_app": "Aucune application de réunion au premier plan. Ouvrez votre réunion, laissez sa fenêtre active, puis relancez.",
+      "already_running": "Une réunion est déjà en cours de capture.",
+      "no_active_meeting": "Aucune réunion n'est en cours de capture.",
+      "unavailable": "Cet ordinateur ne sait pas capter le son d'une seule application. Windows 10 version 2004 ou plus récent est nécessaire.",
+      "no_audio": "Le flux s'est ouvert mais n'a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
+      "stream_error": "La capture s'est interrompue de façon inattendue.",
+      "requires_ultra": "Le mode réunion nécessite Nova Ultra.",
+      "internal": "La réunion n'a pas pu démarrer."
+    },
+    "noApp": "Aucune application de réunion détectée. Ouvrez votre réunion (Zoom, Teams, Google Meet…), puis actualisez.",
+    "pickApp": "Choisissez la réunion à capter.",
+    "oneApp": "Prêt à capter {{app}}.",
+    "refresh": "Actualiser",
+    "newMeeting": "Nouvelle réunion"
   }
 }

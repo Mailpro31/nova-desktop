@@ -1,0 +1,800 @@
+{
+  "meta": {
+    "lang": "fr",
+    "version": 1,
+    "description": "Dictées réelles FR pour valider la compréhension du sens et des auto-corrections, sans aucune commande vocale préfaite."
+  },
+  "cases": [
+    {
+      "id": "fr-autocorrection-001",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "je dois acheter trois carottes, deux salades, puis faire nettoyer la piscine... ah non en fait, nettoyer la piscine en premier",
+      "expected": "- Nettoyer la piscine\n- Acheter 3 carottes\n- Acheter 2 salades",
+      "must_include": ["Nettoyer la piscine", "3 carottes", "2 salades"],
+      "must_exclude": ["ah non", "en fait", "puis faire nettoyer"],
+      "notes": "Cas de référence : réordonnancement dicté à voix haute, piscine passe en premier, aucune trace d'hésitation."
+    },
+    {
+      "id": "fr-autocorrection-002",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "on se voit à quatorze heures, euh non pardon quinze heures devant le cinéma",
+      "expected": "On se voit à 15 h devant le cinéma.",
+      "must_include": ["15 h", "cinéma"],
+      "must_exclude": ["14", "pardon", "euh"],
+      "notes": "Correction d'un horaire : la valeur finale (15 h) remplace la valeur abandonnée (14 h)."
+    },
+    {
+      "id": "fr-autocorrection-003",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "envoie le fichier à Marc, enfin non plutôt à Julie elle s'en occupe cette semaine",
+      "expected": "Envoie le fichier à Julie, elle s'en occupe cette semaine.",
+      "must_include": ["Julie"],
+      "must_exclude": ["Marc", "enfin non", "plutôt"],
+      "notes": "Le destinataire est corrigé : Marc abandonné au profit de Julie."
+    },
+    {
+      "id": "fr-autocorrection-004",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "le budget est de cinq mille euros, ah pardon je me trompe c'est huit mille euros pour le trimestre",
+      "expected": "Budget : 8000 € pour le trimestre.",
+      "must_include": ["8000", "trimestre"],
+      "must_exclude": ["5000", "cinq mille", "pardon", "je me trompe"],
+      "notes": "Correction d'un montant chiffré."
+    },
+    {
+      "id": "fr-autocorrection-005",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "il faut réserver la salle pour lundi, non attends mardi c'est mieux, et prévenir l'équipe",
+      "expected": "- Réserver la salle pour mardi\n- Prévenir l'équipe",
+      "must_include": ["mardi", "Prévenir l'équipe"],
+      "must_exclude": ["lundi", "non attends", "c'est mieux"],
+      "notes": "Correction du jour au sein d'une tâche."
+    },
+    {
+      "id": "fr-autocorrection-006",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "bonjour je vous confirme le rendez-vous de jeudi, non désolé de vendredi à dix heures dans nos locaux",
+      "expected": "Bonjour,\n\nJe vous confirme le rendez-vous de vendredi à 10 h dans nos locaux.\n\nBien cordialement,",
+      "must_include": ["vendredi", "10 h"],
+      "must_exclude": ["jeudi", "désolé", "non de"],
+      "notes": "Correction du jour dans un e-mail formel."
+    },
+    {
+      "id": "fr-autocorrection-007",
+      "category": "auto-correction",
+      "style": "nova_style_voice_to_text",
+      "dictation": "le mot de passe c'est bonjour trente-deux, non pardon bonjour quarante-deux tout attaché",
+      "expected": "Le mot de passe, c'est bonjour42 tout attaché.",
+      "must_include": ["bonjour42"],
+      "must_exclude": ["trente-deux", "32", "pardon"],
+      "notes": "Correction d'un fragment technique dicté."
+    },
+    {
+      "id": "fr-autocorrection-008",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "appeler le plombier, relancer le client, ah oublie le plombier c'est déjà fait",
+      "expected": "- Relancer le client",
+      "must_include": ["Relancer le client"],
+      "must_exclude": ["plombier", "oublie", "déjà fait"],
+      "notes": "Retrait d'une tâche annulée à l'oral (sans mot-commande : l'utilisateur dit simplement qu'elle est faite)."
+    },
+    {
+      "id": "fr-autocorrection-009",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "je pars dans cinq minutes, enfin plutôt dix, le temps de finir un truc",
+      "expected": "Je pars dans 10 minutes, le temps de finir un truc.",
+      "must_include": ["10 minutes"],
+      "must_exclude": ["cinq", "enfin plutôt"],
+      "notes": "Correction d'une durée."
+    },
+    {
+      "id": "fr-autocorrection-010",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "la réunion portera sur le marketing, non sur les ventes, surtout la région nord",
+      "expected": "Réunion sur les ventes, en particulier la région nord.",
+      "must_include": ["ventes", "région nord"],
+      "must_exclude": ["marketing", "non sur"],
+      "notes": "Correction du sujet."
+    },
+    {
+      "id": "fr-autocorrection-011",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "je vous joins le devis, ah non pas le devis, la facture définitive en pièce jointe",
+      "expected": "Bonjour,\n\nVous trouverez la facture définitive en pièce jointe.\n\nBien cordialement,",
+      "must_include": ["facture définitive", "pièce jointe"],
+      "must_exclude": ["devis", "ah non pas"],
+      "notes": "Correction du nom du document."
+    },
+    {
+      "id": "fr-autocorrection-012",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "acheter du pain, du lait, du beurre, ah et rajoute des œufs au début c'est le plus urgent",
+      "expected": "- Acheter des œufs\n- Acheter du pain\n- Acheter du lait\n- Acheter du beurre",
+      "must_include": ["œufs", "pain", "lait", "beurre"],
+      "must_exclude": ["rajoute", "au début", "le plus urgent"],
+      "notes": "Insertion d'un élément en tête de liste, dicté après coup."
+    },
+    {
+      "id": "fr-autocorrection-013",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "rendez-vous au café de la gare, non plutôt à la brasserie d'en face c'est plus calme",
+      "expected": "Rendez-vous à la brasserie d'en face, c'est plus calme.",
+      "must_include": ["brasserie"],
+      "must_exclude": ["café de la gare", "non plutôt"],
+      "notes": "Correction du lieu."
+    },
+    {
+      "id": "fr-autocorrection-014",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "on livre le projet le quinze mars, euh non le vingt mars, il faut caler la démo avant",
+      "expected": "Livraison du projet le 20 mars. Caler la démo avant.",
+      "must_include": ["20 mars", "démo"],
+      "must_exclude": ["quinze mars", "15 mars", "euh non"],
+      "notes": "Correction de date."
+    },
+    {
+      "id": "fr-autocorrection-015",
+      "category": "auto-correction",
+      "style": "nova_style_prompt",
+      "dictation": "écris un poème sur l'automne, non finalement sur l'hiver, quatre strophes, ton mélancolique",
+      "expected": "Écris un poème sur l'hiver, en quatre strophes, sur un ton mélancolique.",
+      "must_include": ["hiver", "quatre strophes", "mélancolique"],
+      "must_exclude": ["automne", "non finalement"],
+      "notes": "Correction du thème d'un prompt IA."
+    },
+    {
+      "id": "fr-autocorrection-016",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "je t'appelle ce soir, ah non ce soir je peux pas, demain matin plutôt",
+      "expected": "Je t'appelle demain matin plutôt, ce soir je ne peux pas.",
+      "must_include": ["demain matin"],
+      "must_exclude": ["ah non"],
+      "notes": "Reformulation d'un créneau corrigé (l'ancien créneau peut être mentionné comme justification, mais l'intention finale est demain matin)."
+    },
+    {
+      "id": "fr-autocorrection-017",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "préparer la présentation, réserver le train pour Lyon, ah non c'est Marseille finalement",
+      "expected": "- Préparer la présentation\n- Réserver le train pour Marseille",
+      "must_include": ["présentation", "Marseille"],
+      "must_exclude": ["Lyon", "ah non", "finalement"],
+      "notes": "Correction de la destination à l'intérieur d'une tâche."
+    },
+    {
+      "id": "fr-autocorrection-018",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "je serai absent la semaine prochaine du lundi au mercredi, non du mardi au jeudi en fait",
+      "expected": "Bonjour,\n\nJe serai absent du mardi au jeudi de la semaine prochaine.\n\nBien cordialement,",
+      "must_include": ["mardi", "jeudi"],
+      "must_exclude": ["lundi", "mercredi", "non du", "en fait"],
+      "notes": "Correction d'une plage de dates."
+    },
+    {
+      "id": "fr-autocorrection-019",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "le client s'appelle monsieur Durand, pardon Dupont, il dirige une PME de logistique",
+      "expected": "Client : M. Dupont, dirigeant d'une PME de logistique.",
+      "must_include": ["Dupont", "logistique"],
+      "must_exclude": ["Durand", "pardon"],
+      "notes": "Correction d'un nom propre."
+    },
+    {
+      "id": "fr-autocorrection-020",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "commande deux pizzas, une margherita et une quatre fromages, ah non trois pizzas on sera plus nombreux",
+      "expected": "Commande 3 pizzas : une margherita et une quatre fromages.",
+      "must_include": ["3 pizzas", "margherita", "quatre fromages"],
+      "must_exclude": ["deux pizzas", "ah non"],
+      "notes": "Correction d'une quantité, les détails déjà dictés restent valables."
+    },
+    {
+      "id": "fr-hesitation-021",
+      "category": "hesitation",
+      "style": "nova_style_voice_to_text",
+      "dictation": "alors euh je pense que euh il faudrait euh revoir le planning avant vendredi",
+      "expected": "Je pense qu'il faudrait revoir le planning avant vendredi.",
+      "must_exclude": ["euh"],
+      "notes": "Suppression des hésitations pures."
+    },
+    {
+      "id": "fr-hesitation-022",
+      "category": "hesitation",
+      "style": "nova_style_messages",
+      "dictation": "hmm ouais du coup bah je sais pas trop, on verra demain je pense",
+      "expected": "Je ne sais pas trop, on verra demain je pense.",
+      "must_exclude": ["hmm", "bah"],
+      "notes": "Nettoyage d'un message hésitant sans en changer le sens."
+    },
+    {
+      "id": "fr-hesitation-023",
+      "category": "hesitation",
+      "style": "nova_style_notes",
+      "dictation": "donc voilà en gros l'idée c'est de, comment dire, simplifier le tunnel d'inscription",
+      "expected": "L'idée est de simplifier le tunnel d'inscription.",
+      "must_include": ["simplifier le tunnel d'inscription"],
+      "must_exclude": ["comment dire", "en gros"],
+      "notes": "Retrait des béquilles orales."
+    },
+    {
+      "id": "fr-reordering-024",
+      "category": "reordering",
+      "style": "nova_style_todo",
+      "dictation": "envoyer la newsletter, mais avant ça il faut valider le texte avec la direction",
+      "expected": "- Valider le texte avec la direction\n- Envoyer la newsletter",
+      "must_include": ["Valider le texte", "Envoyer la newsletter"],
+      "notes": "L'ordre logique (dépendance « avant ça ») prime sur l'ordre de dictée."
+    },
+    {
+      "id": "fr-reordering-025",
+      "category": "reordering",
+      "style": "nova_style_todo",
+      "dictation": "sortir les poubelles, faire les courses, ah la première chose c'est déposer les enfants à l'école",
+      "expected": "- Déposer les enfants à l'école\n- Sortir les poubelles\n- Faire les courses",
+      "must_include": [
+        "Déposer les enfants",
+        "Sortir les poubelles",
+        "Faire les courses"
+      ],
+      "must_exclude": ["ah la première chose"],
+      "notes": "Élément explicitement placé en premier a posteriori."
+    },
+    {
+      "id": "fr-slang-026",
+      "category": "slang",
+      "style": "nova_style_messages",
+      "dictation": "c'est trop chelou ce bug, ça marche chez moi mais ça plante grave chez le client",
+      "expected": "C'est vraiment étrange, ce bug : ça marche chez moi mais ça plante complètement chez le client.",
+      "must_include": ["bug", "client"],
+      "notes": "Argot (chelou, grave) rendu en registre courant sans perdre le sens."
+    },
+    {
+      "id": "fr-slang-027",
+      "category": "slang",
+      "style": "nova_style_messages",
+      "dictation": "franchement le resto d'hier c'était ouf, faut absolument y retourner",
+      "expected": "Franchement, le restaurant d'hier était génial, il faut absolument y retourner.",
+      "must_include": ["restaurant", "retourner"],
+      "notes": "Argot positif (ouf) transposé."
+    },
+    {
+      "id": "fr-anglicism-028",
+      "category": "anglicism",
+      "style": "nova_style_notes",
+      "dictation": "faut qu'on schedule un call avec l'équipe pour discuter des deadlines du sprint",
+      "expected": "Planifier un appel avec l'équipe pour discuter des échéances du sprint.",
+      "must_include": ["équipe", "sprint"],
+      "notes": "Anglicismes (schedule, call, deadlines) — le sens est conservé ; francisation naturelle attendue mais non imposée."
+    },
+    {
+      "id": "fr-anglicism-029",
+      "category": "anglicism",
+      "style": "nova_style_messages",
+      "dictation": "je te forward le mail du client, check les specs et dis-moi si c'est ok pour toi",
+      "expected": "Je te transfère le mail du client, regarde les spécifications et dis-moi si c'est bon pour toi.",
+      "must_include": ["client"],
+      "notes": "Anglicismes courants du quotidien pro."
+    },
+    {
+      "id": "fr-incomplete-030",
+      "category": "incomplete",
+      "style": "nova_style_todo",
+      "dictation": "il faut que je pense à... enfin bref, il faut que j'appelle le client demain",
+      "expected": "- Appeler le client demain",
+      "must_include": ["Appeler le client demain"],
+      "must_exclude": ["enfin bref", "il faut que je pense"],
+      "notes": "Amorce abandonnée puis reprise : une seule tâche complète en sortie."
+    },
+    {
+      "id": "fr-incomplete-031",
+      "category": "incomplete",
+      "style": "nova_style_notes",
+      "dictation": "le principal risque c'est... voilà le principal risque c'est la dépendance à un seul fournisseur",
+      "expected": "Principal risque : la dépendance à un seul fournisseur.",
+      "must_include": ["dépendance à un seul fournisseur"],
+      "notes": "Reprise après faux départ."
+    },
+    {
+      "id": "fr-oral-punctuation-032",
+      "category": "oral-punctuation",
+      "style": "nova_style_voice_to_text",
+      "dictation": "cher client virgule nous avons bien reçu votre demande point nous revenons vers vous rapidement point",
+      "expected": "Cher client, nous avons bien reçu votre demande. Nous revenons vers vous rapidement.",
+      "must_include": ["Cher client,", "votre demande."],
+      "must_exclude": ["virgule", "point"],
+      "notes": "Ponctuation dictée oralement remplacée par les symboles."
+    },
+    {
+      "id": "fr-oral-punctuation-033",
+      "category": "oral-punctuation",
+      "style": "nova_style_messages",
+      "dictation": "tu peux venir demain point d'interrogation sinon on décale à la semaine prochaine",
+      "expected": "Tu peux venir demain ? Sinon on décale à la semaine prochaine.",
+      "must_include": ["demain ?"],
+      "must_exclude": ["point d'interrogation"],
+      "notes": "« point d'interrogation » → « ? »."
+    },
+    {
+      "id": "fr-oral-punctuation-034",
+      "category": "oral-punctuation",
+      "style": "nova_style_notes",
+      "dictation": "objectifs deux points augmenter les ventes ouvre la parenthèse dix pour cent ferme la parenthèse et fidéliser",
+      "expected": "Objectifs : augmenter les ventes (10 %) et fidéliser.",
+      "must_include": ["Objectifs :", "(10 %)"],
+      "must_exclude": [
+        "deux points",
+        "ouvre la parenthèse",
+        "ferme la parenthèse"
+      ],
+      "notes": "Deux-points et parenthèses dictés oralement."
+    },
+    {
+      "id": "fr-numbers-035",
+      "category": "numbers",
+      "style": "nova_style_voice_to_text",
+      "dictation": "rendez-vous le onze juin deux mille vingt-neuf à quinze heures trente",
+      "expected": "Rendez-vous le 11 juin 2029 à 15 h 30.",
+      "must_include": ["11 juin 2029", "15 h 30"],
+      "must_exclude": ["onze", "deux mille"],
+      "notes": "Nombres et dates en chiffres."
+    },
+    {
+      "id": "fr-numbers-036",
+      "category": "numbers",
+      "style": "nova_style_notes",
+      "dictation": "le taux de conversion est passé de trois virgule deux pour cent à quatre virgule huit pour cent",
+      "expected": "Le taux de conversion est passé de 3,2 % à 4,8 %.",
+      "must_include": ["3,2 %", "4,8 %"],
+      "must_exclude": ["trois virgule", "pour cent"],
+      "notes": "Décimaux et pourcentages."
+    },
+    {
+      "id": "fr-email-037",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "dis à l'équipe support que le ticket 4821 est résolu et qu'ils peuvent fermer le dossier merci",
+      "expected": "Bonjour,\n\nLe ticket 4821 est résolu, vous pouvez fermer le dossier.\n\nMerci,\nBien cordialement,",
+      "must_include": ["4821"],
+      "notes": "E-mail court structuré à partir d'une consigne parlée."
+    },
+    {
+      "id": "fr-email-038",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "réponds au client qu'on est désolés du retard, la commande partira lundi au plus tard, on offre les frais de port",
+      "expected": "Bonjour,\n\nNous sommes désolés pour le retard. Votre commande partira lundi au plus tard, et nous vous offrons les frais de port.\n\nBien cordialement,",
+      "must_include": ["retard", "lundi", "frais de port"],
+      "notes": "E-mail d'excuse, tout le fond conservé."
+    },
+    {
+      "id": "fr-autocorrection-039",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "prends la sortie douze, non la treize, celle après la station-service",
+      "expected": "Prends la sortie 13, celle après la station-service.",
+      "must_include": ["sortie 13", "station-service"],
+      "must_exclude": ["douze", "12", "non la"],
+      "notes": "Correction d'un numéro de sortie."
+    },
+    {
+      "id": "fr-autocorrection-040",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "la version actuelle c'est la 2.3, ah non on est déjà passés en 2.4 depuis hier",
+      "expected": "Version actuelle : 2.4 (depuis hier).",
+      "must_include": ["2.4"],
+      "must_exclude": ["2.3", "ah non"],
+      "notes": "Correction d'un numéro de version."
+    },
+    {
+      "id": "fr-autocorrection-041",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "faire le point avec la compta, ah et supprime le point avec la compta finalement je le ferai moi-même",
+      "expected": "- Faire le point avec la compta soi-même",
+      "must_exclude": ["supprime le point", "finalement"],
+      "notes": "L'utilisateur « supprime » une tâche à l'oral mais la réintègre autrement : comprendre l'intention réelle, pas le mot « supprime »."
+    },
+    {
+      "id": "fr-autocorrection-042",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "on cible les jeunes de dix-huit à vingt-cinq ans, non plutôt vingt à trente ans, urbains actifs",
+      "expected": "Cible : 20 à 30 ans, urbains actifs.",
+      "must_include": ["20 à 30 ans", "urbains"],
+      "must_exclude": ["dix-huit", "18", "25", "non plutôt"],
+      "notes": "Correction d'une tranche d'âge."
+    },
+    {
+      "id": "fr-autocorrection-043",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "commençons la réunion à neuf heures, ah non tout le monde n'est pas dispo, disons dix heures",
+      "expected": "Bonjour,\n\nCommençons la réunion à 10 h, afin que tout le monde soit disponible.\n\nBien cordialement,",
+      "must_include": ["10 h"],
+      "must_exclude": ["neuf heures", "9 h", "ah non"],
+      "notes": "Correction d'horaire avec justification."
+    },
+    {
+      "id": "fr-autocorrection-044",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "j'ai payé quarante euros, enfin non c'était quatre-vingts avec le pourboire",
+      "expected": "J'ai payé 80 € avec le pourboire.",
+      "must_include": ["80 €", "pourboire"],
+      "must_exclude": ["quarante", "40", "enfin non"],
+      "notes": "Correction de montant avec précision ajoutée."
+    },
+    {
+      "id": "fr-autocorrection-045",
+      "category": "auto-correction",
+      "style": "nova_style_prompt",
+      "dictation": "génère un tableau avec trois colonnes, non quatre colonnes : nom, prénom, âge et ville",
+      "expected": "Génère un tableau à quatre colonnes : nom, prénom, âge et ville.",
+      "must_include": ["quatre colonnes", "nom", "prénom", "âge", "ville"],
+      "must_exclude": ["trois colonnes", "non quatre"],
+      "notes": "Correction du nombre de colonnes, la liste dictée après confirme."
+    },
+    {
+      "id": "fr-autocorrection-046",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "réviser le chapitre deux, non on commence par le chapitre un c'est plus logique, puis le deux",
+      "expected": "- Réviser le chapitre 1\n- Réviser le chapitre 2",
+      "must_include": ["chapitre 1", "chapitre 2"],
+      "must_exclude": ["non on commence", "c'est plus logique"],
+      "notes": "Réordonnancement explicité oralement."
+    },
+    {
+      "id": "fr-autocorrection-047",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "on part en voiture, ah non le train c'est mieux vu les bouchons, départ gare de Lyon",
+      "expected": "On part en train, c'est mieux vu les bouchons. Départ gare de Lyon.",
+      "must_include": ["train", "gare de Lyon"],
+      "must_exclude": ["en voiture", "ah non le"],
+      "notes": "Correction du moyen de transport."
+    },
+    {
+      "id": "fr-autocorrection-048",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "le responsable du projet est Thomas, ah pardon Thomas est parti, c'est Sarah maintenant",
+      "expected": "Responsable du projet : Sarah (Thomas est parti).",
+      "must_include": ["Sarah"],
+      "must_exclude": ["responsable du projet est Thomas", "pardon"],
+      "notes": "Correction de responsable, l'ancien reste en contexte."
+    },
+    {
+      "id": "fr-autocorrection-049",
+      "category": "auto-correction",
+      "style": "nova_style_voice_to_text",
+      "dictation": "mon adresse c'est douze rue des Lilas, non quatorze rue des Lilas, appartement trois",
+      "expected": "Mon adresse, c'est 14 rue des Lilas, appartement 3.",
+      "must_include": ["14 rue des Lilas", "appartement 3"],
+      "must_exclude": ["douze", "12 rue", "non quatorze"],
+      "notes": "Correction d'un numéro de rue."
+    },
+    {
+      "id": "fr-autocorrection-050",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "prendre rendez-vous chez le dentiste, chez le médecin aussi, ah le dentiste laisse tomber c'est trop tôt",
+      "expected": "- Prendre rendez-vous chez le médecin",
+      "must_include": ["médecin"],
+      "must_exclude": ["dentiste", "laisse tomber", "trop tôt"],
+      "notes": "Abandon d'une tâche exprimé naturellement (« laisse tomber »)."
+    },
+    {
+      "id": "fr-meeting-051",
+      "category": "meeting",
+      "style": "nova_style_meeting",
+      "dictation": "alors on a parlé du lancement, Paul pense qu'on est prêts, Marie n'est pas d'accord elle veut plus de tests, on a décidé de repousser d'une semaine, Paul s'occupe de prévenir les clients avant vendredi",
+      "expected": "## Résumé\nDiscussion sur le lancement du produit.\n\n## Points clés\n- Paul estime l'équipe prête au lancement\n- Marie souhaite davantage de tests\n\n## Décisions\n- Lancement repoussé d'une semaine\n\n## Actions\n- Paul : prévenir les clients avant vendredi",
+      "must_include": ["Paul", "Marie", "repoussé", "vendredi"],
+      "notes": "Compte rendu structuré : désaccord conservé, action attribuée."
+    },
+    {
+      "id": "fr-meeting-052",
+      "category": "meeting",
+      "style": "nova_style_meeting",
+      "dictation": "budget validé à cinquante mille, le design est en retard, il faut relancer le prestataire, échéance non fixée pour l'instant",
+      "expected": "## Résumé\nPoint budget et design.\n\n## Décisions\n- Budget validé à 50000 €\n\n## Points clés\n- Design en retard\n\n## Actions\n- Relancer le prestataire (échéance à fixer)",
+      "must_include": ["50000", "prestataire"],
+      "must_exclude": ["cinquante mille"],
+      "notes": "Ne pas inventer d'échéance absente."
+    },
+    {
+      "id": "fr-default-053",
+      "category": "cleanup",
+      "style": "default_improve_transcriptions",
+      "dictation": "donc voila euh je voulais te dire que le rapport est presque fini il manque juste la conclusion et euh les annexes",
+      "expected": "Donc voilà, je voulais te dire que le rapport est presque fini, il manque juste la conclusion et les annexes.",
+      "must_include": ["rapport", "conclusion", "annexes"],
+      "must_exclude": ["euh"],
+      "notes": "Style par défaut : nettoyage fidèle sans reformulation, ordre conservé."
+    },
+    {
+      "id": "fr-default-054",
+      "category": "cleanup",
+      "style": "default_improve_transcriptions",
+      "dictation": "est-ce que tu peux me rappeler quand tu as cinq minutes c'est au sujet du contrat",
+      "expected": "Est-ce que tu peux me rappeler quand tu as 5 minutes ? C'est au sujet du contrat.",
+      "must_include": ["5 minutes", "contrat"],
+      "notes": "Nettoyage + ponctuation, sans paraphrase."
+    },
+    {
+      "id": "fr-prompt-055",
+      "category": "prompt",
+      "style": "nova_style_prompt",
+      "dictation": "je veux un mail de relance pour une facture impayée, ton ferme mais poli, en français, court",
+      "expected": "Rédige un e-mail de relance pour une facture impayée. Ton : ferme mais poli. Langue : français. Contrainte : format court.",
+      "must_include": ["relance", "facture impayée", "ferme", "poli"],
+      "notes": "Structuration d'un prompt IA depuis une demande parlée."
+    },
+    {
+      "id": "fr-prompt-056",
+      "category": "prompt",
+      "style": "nova_style_prompt",
+      "dictation": "explique-moi la photosynthèse comme si j'avais dix ans avec un exemple simple",
+      "expected": "Explique la photosynthèse comme à un enfant de 10 ans, avec un exemple simple.",
+      "must_include": ["photosynthèse", "exemple"],
+      "notes": "Prompt de vulgarisation."
+    },
+    {
+      "id": "fr-slang-057",
+      "category": "slang",
+      "style": "nova_style_messages",
+      "dictation": "wesh ça dit quoi pour ce soir, on se fait un ciné ou pas",
+      "expected": "Salut, ça dit quoi pour ce soir ? On se fait un ciné ou pas ?",
+      "must_include": ["ce soir", "ciné"],
+      "notes": "Argot familier transposé en registre courant, ton amical conservé."
+    },
+    {
+      "id": "fr-anglicism-058",
+      "category": "anglicism",
+      "style": "nova_style_notes",
+      "dictation": "on a un gros momentum sur le produit, faut pas le killer avec des features useless",
+      "expected": "Nous avons une bonne dynamique sur le produit : ne pas la casser avec des fonctionnalités inutiles.",
+      "must_include": ["produit"],
+      "notes": "Anglicismes (momentum, killer, features useless) rendus naturellement."
+    },
+    {
+      "id": "fr-incomplete-059",
+      "category": "incomplete",
+      "style": "nova_style_messages",
+      "dictation": "attends je... non laisse tomber ce que je disais, on se rappelle demain c'est plus simple",
+      "expected": "Laisse tomber, on se rappelle demain, c'est plus simple.",
+      "must_include": ["demain"],
+      "must_exclude": ["attends je", "ce que je disais"],
+      "notes": "Faux départ auto-annulé, seule l'intention finale reste."
+    },
+    {
+      "id": "fr-oral-punctuation-060",
+      "category": "oral-punctuation",
+      "style": "nova_style_notes",
+      "dictation": "à faire nouvelle ligne acheter les billets nouvelle ligne réserver l'hôtel",
+      "expected": "À faire :\n- Acheter les billets\n- Réserver l'hôtel",
+      "must_include": ["Acheter les billets", "Réserver l'hôtel"],
+      "must_exclude": ["nouvelle ligne"],
+      "notes": "« nouvelle ligne » dicté est compris comme une intention de mise en forme, jamais collé littéralement."
+    },
+    {
+      "id": "fr-autocorrection-061",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "je prends le rouge, ah non le bleu il ira mieux avec le canapé",
+      "expected": "Je prends le bleu, il ira mieux avec le canapé.",
+      "must_include": ["bleu", "canapé"],
+      "must_exclude": ["le rouge", "ah non"],
+      "notes": "Correction d'un choix."
+    },
+    {
+      "id": "fr-autocorrection-062",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "la marge brute est de vingt pour cent, pardon je confonds, vingt pour cent c'est la marge nette, la brute c'est trente-cinq",
+      "expected": "Marge nette : 20 %. Marge brute : 35 %.",
+      "must_include": ["20 %", "35 %"],
+      "must_exclude": ["pardon", "je confonds"],
+      "notes": "L'utilisateur réattribue les valeurs : comprendre le réagencement."
+    },
+    {
+      "id": "fr-autocorrection-063",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "envoyer le contrat signé, relancer le fournisseur, ah le contrat c'est plus urgent mets-le en premier",
+      "expected": "- Envoyer le contrat signé\n- Relancer le fournisseur",
+      "must_include": ["contrat signé", "fournisseur"],
+      "must_exclude": ["ah le contrat", "plus urgent mets"],
+      "notes": "Priorisation dictée après coup."
+    },
+    {
+      "id": "fr-autocorrection-064",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "le livrable est prévu pour fin mars, ah non on avait dit fin avril dans le contrat, donc fin avril",
+      "expected": "Bonjour,\n\nLe livrable est prévu pour fin avril, conformément au contrat.\n\nBien cordialement,",
+      "must_include": ["fin avril"],
+      "must_exclude": ["fin mars", "ah non"],
+      "notes": "L'utilisateur se corrige en se référant au contrat."
+    },
+    {
+      "id": "fr-autocorrection-065",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "je t'envoie ça par mail, enfin non par whatsapp c'est plus rapide",
+      "expected": "Je t'envoie ça par WhatsApp, c'est plus rapide.",
+      "must_include": ["WhatsApp"],
+      "must_exclude": ["par mail", "enfin non"],
+      "notes": "Correction du canal."
+    },
+    {
+      "id": "fr-autocorrection-066",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "nombre de participants estimé à cent cinquante, finalement la salle fait deux cents places donc on peut viser deux cents",
+      "expected": "Nombre de participants visé : 200 (capacité de la salle).",
+      "must_include": ["200"],
+      "must_exclude": ["cent cinquante", "150"],
+      "notes": "Révision d'une estimation avec raison."
+    },
+    {
+      "id": "fr-autocorrection-067",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "arroser les plantes tous les jours, non tous les deux jours en hiver ça suffit",
+      "expected": "- Arroser les plantes tous les deux jours (en hiver)",
+      "must_include": ["tous les deux jours"],
+      "must_exclude": ["tous les jours,", "non tous les deux"],
+      "notes": "Correction d'une fréquence."
+    },
+    {
+      "id": "fr-autocorrection-068",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "réserve pour quatre personnes, ah non on sera six finalement, ma sœur vient avec son copain",
+      "expected": "Réserve pour 6 personnes finalement, ma sœur vient avec son copain.",
+      "must_include": ["6 personnes"],
+      "must_exclude": ["quatre personnes", "4 personnes", "ah non on sera"],
+      "notes": "Correction d'un nombre de couverts avec justification."
+    },
+    {
+      "id": "fr-autocorrection-069",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "le serveur est en panne depuis ce matin, enfin non depuis hier soir d'après les logs",
+      "expected": "Le serveur est en panne depuis hier soir (d'après les logs).",
+      "must_include": ["hier soir", "logs"],
+      "must_exclude": ["ce matin", "enfin non"],
+      "notes": "Correction temporelle sourcée."
+    },
+    {
+      "id": "fr-autocorrection-070",
+      "category": "auto-correction",
+      "style": "nova_style_prompt",
+      "dictation": "résume ce texte en cinq points, non en trois points ça suffira, style bullet points",
+      "expected": "Résume ce texte en trois points, sous forme de puces.",
+      "must_include": ["trois points", "puces"],
+      "must_exclude": ["cinq points", "non en trois"],
+      "notes": "Correction du nombre de points demandés."
+    },
+    {
+      "id": "fr-hesitation-071",
+      "category": "hesitation",
+      "style": "nova_style_email",
+      "dictation": "bonjour euh je me permets de euh vous relancer concernant euh notre échange de la semaine dernière",
+      "expected": "Bonjour,\n\nJe me permets de vous relancer concernant notre échange de la semaine dernière.\n\nBien cordialement,",
+      "must_include": ["relancer", "semaine dernière"],
+      "must_exclude": ["euh"],
+      "notes": "E-mail nettoyé de ses hésitations."
+    },
+    {
+      "id": "fr-numbers-072",
+      "category": "numbers",
+      "style": "nova_style_messages",
+      "dictation": "ça fait vingt-trois euros cinquante par personne, on est cinq donc cent dix-sept cinquante en tout",
+      "expected": "Ça fait 23,50 € par personne, on est 5, donc 117,50 € en tout.",
+      "must_include": ["23,50 €", "117,50 €"],
+      "must_exclude": ["vingt-trois", "cent dix-sept"],
+      "notes": "Montants avec centimes."
+    },
+    {
+      "id": "fr-slang-073",
+      "category": "slang",
+      "style": "nova_style_notes",
+      "dictation": "le projet est un peu à l'arrache là, faut qu'on se pose et qu'on cadre les trucs sérieusement",
+      "expected": "Le projet manque de cadre pour l'instant : il faut prendre le temps de structurer sérieusement.",
+      "must_include": ["projet"],
+      "notes": "Argot (à l'arrache, trucs) remonté en registre pro."
+    },
+    {
+      "id": "fr-incomplete-074",
+      "category": "incomplete",
+      "style": "nova_style_todo",
+      "dictation": "penser à... voilà penser à sauvegarder la base avant la migration",
+      "expected": "- Sauvegarder la base avant la migration",
+      "must_include": ["Sauvegarder la base", "migration"],
+      "must_exclude": ["penser à..."],
+      "notes": "Amorce reprise, tâche unique."
+    },
+    {
+      "id": "fr-email-075",
+      "category": "email",
+      "style": "nova_style_email",
+      "dictation": "remercie le candidat pour l'entretien d'hier, dis qu'on revient vers lui d'ici la fin de la semaine",
+      "expected": "Bonjour,\n\nMerci pour l'entretien d'hier. Nous revenons vers vous d'ici la fin de la semaine.\n\nBien cordialement,",
+      "must_include": ["entretien", "fin de la semaine"],
+      "notes": "E-mail RH courtois."
+    },
+    {
+      "id": "fr-autocorrection-076",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "on se retrouve devant l'entrée principale, ah non l'entrée principale est fermée le dimanche, côté parking alors",
+      "expected": "On se retrouve côté parking, l'entrée principale est fermée le dimanche.",
+      "must_include": ["côté parking", "dimanche"],
+      "must_exclude": [
+        "ah non l'entrée principale est fermée le dimanche, côté"
+      ],
+      "notes": "Correction du point de rendez-vous avec raison."
+    },
+    {
+      "id": "fr-autocorrection-077",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "la réunion est en salle B, pardon salle C, le vidéoprojecteur est cassé en salle B",
+      "expected": "Réunion en salle C (le vidéoprojecteur de la salle B est cassé).",
+      "must_include": ["salle C"],
+      "must_exclude": ["réunion est en salle B", "pardon"],
+      "notes": "Correction de salle avec justification."
+    },
+    {
+      "id": "fr-autocorrection-078",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "installer la mise à jour sur les postes, commencer par la compta, ah non par le service client ils sont plus urgents",
+      "expected": "- Installer la mise à jour d'abord sur les postes du service client\n- Installer la mise à jour sur les postes de la compta",
+      "must_include": ["service client", "compta"],
+      "must_exclude": ["ah non par", "plus urgents"],
+      "notes": "Ordre de déploiement corrigé oralement."
+    },
+    {
+      "id": "fr-autocorrection-079",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "confirme la commande de cent unités, ah non deux cents, la demande a augmenté",
+      "expected": "Bonjour,\n\nJe confirme la commande de 200 unités, la demande ayant augmenté.\n\nBien cordialement,",
+      "must_include": ["200 unités"],
+      "must_exclude": ["cent unités", "100 unités", "ah non deux cents"],
+      "notes": "Correction de quantité commandée."
+    },
+    {
+      "id": "fr-autocorrection-080",
+      "category": "auto-correction",
+      "style": "nova_style_voice_to_text",
+      "dictation": "le code de la porte c'est A comme Anatole 1 2 3 4, non pardon B comme Berthe 1 2 3 4",
+      "expected": "Le code de la porte, c'est B1234.",
+      "must_include": ["B1234"],
+      "must_exclude": ["Anatole", "pardon", "A comme"],
+      "notes": "Correction d'un code épelé, l'alphabet radio n'est pas recopié."
+    }
+  ]
+}

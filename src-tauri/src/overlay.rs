@@ -46,14 +46,24 @@ tauri_panel! {
 const OVERLAY_WIDTH: f64 = 256.0;
 const OVERLAY_HEIGHT: f64 = 46.0;
 
+// État « recording » uniquement : un peu plus haut que le repos pour loger,
+// SOUS/ AU-DESSUS de la pilule (selon le placement), l'indice micro discret
+// (« Je vous entends » / « Parlez un peu plus fort »). La carte reste ancrée
+// flush au bord de l'écran, donc cette hauteur supplémentaire n'apparaît que du
+// côté opposé au bord (transparent le reste du temps). On NE grossit PAS l'état
+// de repos (`idle`, toujours affiché) pour ne pas agrandir sa zone de clics.
+const OVERLAY_RECORDING_HEIGHT: f64 = 70.0;
+
 // Actual is 394x118, just a little extra
 const OVERLAY_STREAM_WIDTH: f64 = 400.0;
 const OVERLAY_STREAM_HEIGHT: f64 = 120.0;
 
 /// Overlay window size (logical) for a given UI state.
 fn overlay_dimensions(state: &str) -> (f64, f64) {
-    if state == "streaming" {
+    if state == "streaming" || state == "paste-fallback" {
         (OVERLAY_STREAM_WIDTH, OVERLAY_STREAM_HEIGHT)
+    } else if state == "recording" {
+        (OVERLAY_WIDTH, OVERLAY_RECORDING_HEIGHT)
     } else {
         (OVERLAY_WIDTH, OVERLAY_HEIGHT)
     }
@@ -316,8 +326,14 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
             // La bulle est traversante par défaut (les clics passent vers l'app
             // en dessous). Le veilleur de survol ci-dessous la rend cliquable
             // uniquement quand la souris est au-dessus (pour l'engrenage / annuler).
-            let _ = window.set_ignore_cursor_events(true);
-            start_overlay_hover_watcher(app_handle);
+            // Windows keeps this compact, non-focusable overlay interactive.
+            // Toggling click-through from a polling thread caused visible
+            // buttons to pass their clicks to the window underneath.
+            #[cfg(target_os = "linux")]
+            {
+                let _ = window.set_ignore_cursor_events(true);
+                start_overlay_hover_watcher(app_handle);
+            }
 
             debug!("Recording overlay window created successfully (hidden)");
         }
@@ -433,6 +449,14 @@ pub fn show_processing_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "processing");
 }
 
+/// Keep the last transcription available when Nova cannot paste it safely.
+pub fn show_paste_fallback(app_handle: &AppHandle, text: &str) {
+    show_overlay_state(app_handle, "paste-fallback");
+    if let Some(window) = app_handle.get_webview_window("recording_overlay") {
+        let _ = window.emit("paste-fallback", text);
+    }
+}
+
 /// Affiche la bulle au repos (mode « toujours affichée »). Rendue au démarrage
 /// et après chaque dictée quand `persistent_overlay` est actif.
 pub fn show_idle_overlay(app_handle: &AppHandle) {
@@ -468,7 +492,7 @@ pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String
 /// La souris est-elle au-dessus de la bulle ? (coordonnées logiques, comme
 /// `get_monitor_with_cursor`). Sert au veilleur de survol pour basculer le
 /// click-through.
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "linux")]
 fn cursor_over_overlay(app: &AppHandle, window: &tauri::webview::WebviewWindow) -> Option<bool> {
     let (cx, cy) = input::get_cursor_position(app)?;
     let scale = window.scale_factor().ok()?;
@@ -489,13 +513,13 @@ fn cursor_over_overlay(app: &AppHandle, window: &tauri::webview::WebviewWindow) 
 /// survole, sinon traversante (les clics passent vers l'app en dessous). Un
 /// seul thread pour la durée de vie de l'app ; ne fait un appel système que sur
 /// changement d'état de survol.
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "linux")]
 fn start_overlay_hover_watcher(app_handle: &AppHandle) {
     let app = app_handle.clone();
     std::thread::spawn(move || {
         let mut last_interactive: Option<bool> = None;
         loop {
-            std::thread::sleep(std::time::Duration::from_millis(90));
+            std::thread::sleep(std::time::Duration::from_millis(25));
             let Some(window) = app.get_webview_window("recording_overlay") else {
                 continue;
             };

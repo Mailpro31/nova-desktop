@@ -19,13 +19,15 @@ export const CustomWords: React.FC<CustomWordsProps> = React.memo(
     const customWords = getSetting("custom_words") || [];
 
     const handleAddWord = () => {
-      const trimmedWord = newWord.trim();
-      const sanitizedWord = trimmedWord.replace(/[<>"']/g, "");
-      if (
-        sanitizedWord &&
-        !sanitizedWord.includes(" ") &&
-        sanitizedWord.length <= 50
-      ) {
+      // Autorise les termes MULTI-MOTS (« repo GitHub », « NovaSpeak Pro ») :
+      // le moteur les gère déjà (n-grammes) et les protège pendant la
+      // reformulation. On nettoie seulement les caractères dangereux et on
+      // réduit les espaces internes à un seul.
+      const sanitizedWord = newWord
+        .trim()
+        .replace(/[<>"']/g, "")
+        .replace(/\s+/g, " ");
+      if (sanitizedWord && sanitizedWord.length <= 50) {
         if (customWords.includes(sanitizedWord)) {
           toast.error(
             t("settings.advanced.customWords.duplicate", {
@@ -64,7 +66,7 @@ export const CustomWords: React.FC<CustomWordsProps> = React.memo(
           <div className="flex items-center gap-2">
             <Input
               type="text"
-              className="max-w-40"
+              className="max-w-56"
               value={newWord}
               onChange={(e) => setNewWord(e.target.value)}
               onKeyDown={handleKeyPress}
@@ -76,7 +78,6 @@ export const CustomWords: React.FC<CustomWordsProps> = React.memo(
               onClick={handleAddWord}
               disabled={
                 !newWord.trim() ||
-                newWord.includes(" ") ||
                 newWord.trim().length > 50 ||
                 isUpdating("custom_words")
               }

@@ -4,10 +4,10 @@ import {
   useRef,
   type ReactNode,
   type ComponentType,
+  Suspense,
 } from "react";
 import { toast, Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
-import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { platform } from "@tauri-apps/plugin-os";
@@ -27,6 +27,7 @@ import Onboarding, {
 } from "./components/onboarding";
 import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
+import { LexiconSuggestions } from "./components/LexiconSuggestions";
 import { useSettings } from "./hooks/useSettings";
 import { useSettingsStore } from "./stores/settingsStore";
 import { commands } from "@/bindings";
@@ -190,6 +191,15 @@ function App() {
     };
   }, [t]);
 
+  useEffect(() => {
+    const unlisten = listen<string>("dictionary-word-added", (event) => {
+      toast.success(t("voiceCommands.added", { word: event.payload }));
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
   // Reformulation trop longue (moteur local ou réseau bloqué) : le texte brut
   // a été collé côté Rust après POST_PROCESS_TIMEOUT. On le signale.
   useEffect(() => {
@@ -250,29 +260,6 @@ function App() {
     return () => {
       unlisten.then((fn) => fn());
     };
-  }, [t]);
-
-  // Essai Nova Pro automatique en cours : rappel discret au lancement, avec
-  // invite à s'abonner. N'apparaît qu'une fois par ouverture de l'app.
-  useEffect(() => {
-    invoke<{ trial_days_remaining: number }>("get_license_status")
-      .then((status) => {
-        if (status.trial_days_remaining > 0) {
-          toast.info(t("license.trial.toastTitle"), {
-            description: t("license.trial.toastDescription", {
-              count: status.trial_days_remaining,
-            }),
-            duration: 8000,
-            action: {
-              label: t("license.trial.subscribe"),
-              onClick: () => {
-                void openUrl("https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09");
-              },
-            },
-          });
-        }
-      })
-      .catch(() => {});
   }, [t]);
 
   // Mode CPU forcé (le pilote graphique a bloqué l'init du moteur lors d'un
@@ -470,6 +457,7 @@ function App() {
         className="h-screen flex flex-col select-none cursor-default"
       >
         <WhatsNewGate />
+        <LexiconSuggestions />
         {/* Main content area that takes remaining space */}
         <div className="flex-1 flex overflow-hidden">
           <Sidebar
@@ -481,7 +469,15 @@ function App() {
             <div className="flex-1 overflow-y-auto">
               <div className="flex flex-col items-center p-4 gap-4">
                 <AccessibilityPermissions />
-                {renderSettingsContent(currentSection, setCurrentSection)}
+                <Suspense
+                  fallback={
+                    <div className="flex justify-center py-16" role="status">
+                      <div className="w-7 h-7 border-2 border-logo-primary border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  }
+                >
+                  {renderSettingsContent(currentSection, setCurrentSection)}
+                </Suspense>
               </div>
             </div>
           </div>

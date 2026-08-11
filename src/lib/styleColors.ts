@@ -14,6 +14,7 @@ const FIXED: Record<string, string> = {
   nova_style_prompt: "#CBB9F2", // lilas
   nova_style_todo: "#F2D9A6", // or
   nova_style_notes: "#9FD8F0", // ciel
+  nova_style_meeting: "#F0B7A4", // corail doux
   nova_style_voice_to_text: "#C7E3A8", // vert tendre
 };
 

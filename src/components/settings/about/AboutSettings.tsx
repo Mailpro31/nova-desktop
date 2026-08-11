@@ -8,6 +8,7 @@ import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { ShowWhatsNewOnUpdate } from "../ShowWhatsNewOnUpdate";
 import { LogDirectory } from "../debug";
+import { DebugModeToggle } from "../DebugModeToggle";
 
 export const AboutSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -57,6 +58,7 @@ export const AboutSettings: React.FC = () => {
 
         <AppDataDirectory descriptionMode="tooltip" grouped={true} />
         <LogDirectory grouped={true} />
+        <DebugModeToggle descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
     </div>
   );

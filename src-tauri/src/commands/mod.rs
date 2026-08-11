@@ -2,18 +2,42 @@ pub mod audio;
 pub mod history;
 pub mod license;
 pub mod local_llm;
+pub mod meeting;
 pub mod models;
 pub mod transcription;
 
 use crate::settings::{get_settings, write_settings, AppSettings, LogLevel};
 use crate::utils::cancel_current_operation;
 use tauri::{AppHandle, Manager};
+use tauri_plugin_clipboard_manager::ClipboardExt;
 use tauri_plugin_opener::OpenerExt;
 
 #[tauri::command]
 #[specta::specta]
 pub fn cancel_operation(app: AppHandle) {
     cancel_current_operation(&app);
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn finish_recording(app: AppHandle) {
+    if let Some(coordinator) = app.try_state::<crate::TranscriptionCoordinator>() {
+        coordinator.finish_current();
+    }
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn copy_transcription(app: AppHandle, text: String) -> Result<(), String> {
+    app.clipboard()
+        .write_text(text)
+        .map_err(|error| format!("Failed to copy transcription: {error}"))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn dismiss_recording_overlay(app: AppHandle) {
+    crate::overlay::hide_recording_overlay(&app);
 }
 
 #[tauri::command]
@@ -41,6 +65,31 @@ pub fn get_app_settings(app: AppHandle) -> Result<AppSettings, String> {
 #[specta::specta]
 pub fn get_default_settings() -> Result<AppSettings, String> {
     Ok(crate::settings::get_default_settings())
+}
+
+/// Termes récurrents que l'apprentissage progressif propose d'ajouter au
+/// lexique personnel. Vide tant qu'aucun candidat n'a atteint le seuil de
+/// récurrence (ou si l'apprentissage est désactivé). Voir `lexicon_learning.rs`.
+#[tauri::command]
+#[specta::specta]
+pub fn get_lexicon_suggestions(app: AppHandle) -> Vec<String> {
+    crate::lexicon_learning::pending_suggestions(&get_settings(&app))
+}
+
+/// L'utilisateur accepte une suggestion : le terme rejoint le lexique personnel.
+#[tauri::command]
+#[specta::specta]
+pub fn accept_lexicon_suggestion(app: AppHandle, term: String) -> Result<(), String> {
+    crate::lexicon_learning::accept(&app, &term);
+    Ok(())
+}
+
+/// L'utilisateur ignore une suggestion : le terme ne sera plus jamais reproposé.
+#[tauri::command]
+#[specta::specta]
+pub fn dismiss_lexicon_suggestion(app: AppHandle, term: String) -> Result<(), String> {
+    crate::lexicon_learning::dismiss(&app, &term);
+    Ok(())
 }
 
 #[tauri::command]

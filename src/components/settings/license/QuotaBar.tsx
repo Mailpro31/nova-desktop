@@ -10,13 +10,13 @@ type QuotaStatus = {
   used: number;
   limit: number;
   blocked: boolean;
-  resets_at: number;
 };
 
 /**
- * Barre de progression du quota gratuit de reformulations (10 / jour). Ne
- * s'affiche qu'au palier Free (les paliers payants ne sont pas limités). Passe au
- * rouge une fois le crédit quotidien épuisé — la dictée, elle, reste illimitée.
+ * Barre de progression du quota gratuit de reformulations Turbo, offert une
+ * fois à vie. Ne s'affiche qu'au palier Free (les paliers payants ne sont pas
+ * limités). Passe au rouge une fois le crédit épuisé — la dictée, elle, reste
+ * illimitée.
  */
 export const QuotaBar: React.FC = () => {
   const { t } = useTranslation();
@@ -39,19 +39,12 @@ export const QuotaBar: React.FC = () => {
   if (!status || !status.limited) return null;
 
   const pct = Math.min(100, Math.round((status.used / status.limit) * 100));
-  const resetDate =
-    status.resets_at > 0
-      ? new Date(status.resets_at * 1000).toLocaleDateString(undefined, {
-          day: "numeric",
-          month: "long",
-        })
-      : null;
 
   return (
     <div className="px-4 py-3 flex flex-col gap-2">
       <div className="flex items-baseline justify-between">
         <span className="text-sm text-text-primary">
-          {t("quota.todayUsage")}
+          {t("quota.lifetimeUsage")}
         </span>
         <span
           className="text-[12px] tabular-nums"
@@ -92,11 +85,9 @@ export const QuotaBar: React.FC = () => {
           {t("quota.blockedInline")}
         </span>
       ) : (
-        resetDate && (
-          <span className="text-[12px] text-text-secondary">
-            {t("quota.resetsOn", { date: resetDate })}
-          </span>
-        )
+        <span className="text-[12px] text-text-secondary">
+          {t("quota.lifetimeNote")}
+        </span>
       )}
     </div>
   );

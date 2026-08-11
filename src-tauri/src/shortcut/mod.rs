@@ -1136,7 +1136,7 @@ pub fn add_post_process_prompt(
     if !crate::licensing::has(
         "custom_styles",
         settings.license_key.as_deref().unwrap_or(""),
-        crate::licensing::effective_trial_start(&settings),
+        0,
     ) {
         return Err("La création de Styles personnalisés nécessite Nova Ultra.".to_string());
     }
@@ -1171,7 +1171,7 @@ pub fn update_post_process_prompt(
     if !crate::licensing::has(
         "custom_styles",
         settings.license_key.as_deref().unwrap_or(""),
-        crate::licensing::effective_trial_start(&settings),
+        0,
     ) {
         return Err("La modification des Styles nécessite Nova Ultra.".to_string());
     }
@@ -1335,6 +1335,24 @@ pub fn change_lazy_stream_close_setting(app: AppHandle, enabled: bool) -> Result
 pub fn change_vad_enabled_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     settings.vad_enabled = enabled;
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_voice_commands_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.voice_commands_enabled = enabled;
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_lexicon_learning_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.lexicon_learning_enabled = enabled;
     settings::write_settings(&app, settings);
     Ok(())
 }

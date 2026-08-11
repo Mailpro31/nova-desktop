@@ -328,7 +328,48 @@
   max-height: 18px;
   border-radius: 2px;
   background: var(--s-accent);
-  transition: height 80ms linear;
+  transition: height 45ms linear;
+}
+
+/* Retour micro discret (point 3). La pilule + l'indice sont empilés : l'indice
+   se place AU-DESSUS de la pilule en placement bas et EN DESSOUS en placement
+   haut (toujours du côté opposé au bord de l'écran, dans l'espace transparent
+   que la fenêtre « recording » réserve). Il ne partage jamais la rangée de la
+   forme d'onde, donc ne la recouvre jamais. */
+.slisten-wrap {
+  display: flex;
+  flex-direction: column-reverse; /* bas : indice au-dessus de la pilule */
+  align-items: center;
+  gap: 6px;
+}
+.ov-stage.top .slisten-wrap {
+  flex-direction: column; /* haut : indice en dessous de la pilule */
+}
+.smic-hint {
+  height: 13px;
+  line-height: 13px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--s-faint);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease,
+    color 260ms ease;
+}
+.smic-hint.show {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+/* « Parlez un peu plus fort » : à peine plus présent que la confirmation, sans
+   jamais alarmer (aucun rouge) — on reste sur le gris secondaire de l'overlay. */
+.smic-hint.low {
+  color: var(--s-muted);
 }
 .sx {
   width: 22px;
@@ -363,6 +404,80 @@
 .sx:active {
   transform: scale(0.95);
 }
+.sfinish {
+  color: var(--color-background);
+  background: var(--color-text);
+}
+.sfinish:hover {
+  color: var(--color-background);
+  background: color-mix(in srgb, var(--color-text) 84%, transparent);
+}
+
+/* Paste fallback: compact, actionable, and kept inside the non-activating
+   overlay so clicking Copy never steals the original insertion target. */
+.scard.sfallback {
+  width: var(--ov-open-w);
+  min-height: 104px;
+  border-radius: 14px;
+  padding: 13px 16px 12px;
+  gap: 8px;
+  color: var(--color-text);
+}
+.sfallback-head {
+  display: grid;
+  grid-template-columns: 18px 1fr 22px;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.sfallback-info {
+  display: inline-grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--s-accent);
+  border-radius: 50%;
+  color: var(--s-accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+.sfallback-info::before {
+  content: "i";
+}
+.sfallback-close {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--s-faint);
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+.sfallback-close svg {
+  width: 13px;
+  height: 13px;
+}
+.sfallback-text {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--s-muted);
+  font-size: 13px;
+}
+.sfallback-copy {
+  align-self: center;
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 13px;
+  background: var(--s-hair);
+  color: var(--color-text);
+  font: 600 12px var(--s-font);
+  cursor: pointer;
+}
+.sfallback-copy:hover {
+  background: var(--s-accent-soft);
+}
 
 /* working state (transcribing / polishing) — spinner + label */
 .sspinner {
@@ -371,12 +486,34 @@
   border-radius: 50%;
   border: 2px solid var(--s-hair);
   border-top-color: var(--s-accent);
-  animation: sspin 0.7s linear infinite;
+  /* Rotation ADOUCIE : une révolution qui accélère puis ralentit en douceur
+     (au lieu d'un « linear » mécanique à 0.7 s), doublée d'une respiration
+     d'opacité calée sur la même période que l'orbe au repos (sorb-breath 2.4 s).
+     La pilule « réfléchit » sobrement, visible du coin de l'œil sans happer le
+     regard — cohérent avec l'identité Apple/Nova. */
+  animation:
+    sspin 1.15s cubic-bezier(0.66, 0, 0.34, 1) infinite,
+    sspin-breath 2.4s ease-in-out infinite;
   flex: none;
 }
 @keyframes sspin {
   to {
     transform: rotate(1turn);
+  }
+}
+@keyframes sspin-breath {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Accessibilité : pas de rotation, seulement la respiration douce. */
+  .sspinner {
+    animation: sspin-breath 2.4s ease-in-out infinite;
   }
 }
 .swork-label {
@@ -388,6 +525,26 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.sworking-base {
+  position: relative;
+}
+.sthinking-track {
+  position: absolute;
+  left: 38px;
+  right: 38px;
+  bottom: 4px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--s-hair);
+}
+.sthinking-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--s-accent);
+  transition: width 100ms linear;
 }
 
 /* ============================================================
@@ -519,6 +676,42 @@
 .smenu-item.active {
   background: color-mix(in srgb, var(--color-accent, #0a84ff) 16%, transparent);
 }
+.smenu-item.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.smenu-item.locked:hover {
+  background: transparent;
+}
+/* Badge « Nécessite Nova Pro / Ultra » sur un Style verrouillé, compact pour la
+   bulle. Bleu Apple (accent) : seule couleur d'action de l'UI. */
+/* Verrou de Style dans l'overlay : même langage « premium » (dégradé + lueur)
+   que PremiumBadge/TierBadge, mis à l'échelle du menu compact. Pro en bleu
+   d'action, Ultra en lilas. */
+.smenu-lock {
+  flex: none;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 1.5px 6px;
+  background: linear-gradient(135deg, #7fb6ff 0%, #0a84ff 45%, #0060df 100%);
+  box-shadow: 0 1px 6px rgba(10, 132, 255, 0.35);
+}
+.smenu-lock.ultra {
+  color: #1f1f22;
+  background: linear-gradient(
+    135deg,
+    #d9c8f7 0%,
+    var(--color-ultra, #c9b6f0) 45%,
+    #9f86d9 100%
+  );
+  box-shadow: 0 1px 6px rgba(159, 134, 217, 0.35);
+}
 .smenu-dot {
   width: 12px;
   height: 12px;
@@ -537,4 +730,64 @@
   height: 15px;
   color: var(--color-accent, #0a84ff);
   flex: none;
+}
+
+/* Suggestion de Style contextuelle discrète (point 5). Même vocabulaire visuel
+   que le menu (surface + filet + arrondi 12), sobre et premium. Empilée dans
+   `.sidle-col`, elle se place au-dessus (bas) / en dessous (haut) de la pilule,
+   comme le menu. Action UNIQUE en bleu Apple ; « ne plus afficher » discret. */
+.ssuggest {
+  width: 248px;
+  box-sizing: border-box;
+  background: var(--s-surface);
+  border: 1px solid var(--s-border);
+  border-radius: 12px;
+  padding: 11px 12px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  animation: scard-pop 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ssuggest-text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+.ssuggest-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.ssuggest-dismiss {
+  border: none;
+  background: transparent;
+  color: var(--s-faint);
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    color 140ms ease,
+    background 140ms ease;
+}
+.ssuggest-dismiss:hover {
+  color: var(--color-text);
+  background: var(--s-hair);
+}
+.ssuggest-apply {
+  border: none;
+  background: var(--color-accent, #0a84ff);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 140ms ease;
+}
+.ssuggest-apply:hover {
+  filter: brightness(1.08);
 }

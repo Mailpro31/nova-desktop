@@ -25,6 +25,11 @@ pub const AUTO_STYLE_ID: &str = "auto";
 /// Style appliqué quand aucune règle ne correspond (générique, gratuit).
 const DEFAULT_AUTO_STYLE_ID: &str = "default_improve_transcriptions";
 
+/// Style « Réunion ». Sert aussi de définition unique de « l'app au premier plan
+/// EST une réunion » pour la capture des autres participants
+/// (voir [`foreground_meeting_target`]).
+pub const MEETING_STYLE_ID: &str = "nova_style_meeting";
+
 /// Liste noire intégrée : ces exécutables ne sont jamais inspectés (ni titre ni
 /// process routé) — confidentialité par défaut, complétée par l'utilisateur.
 const BUILTIN_BLOCKLIST: &[&str] = &[
@@ -61,6 +66,19 @@ const BUILTIN_BLOCKLIST: &[&str] = &[
 // sont, quand c'est possible, relégués aux repères de PROCESS (nom d'exe, borné
 // en mot entier : « line » matche « line.exe » mais pas « outline.exe »).
 const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
+    (
+        MEETING_STYLE_ID,
+        &[
+            "zoom meeting",
+            "google meet",
+            "teams meeting",
+            "réunion microsoft teams",
+            "webex meeting",
+            "réunion webex",
+            "jitsi meet",
+        ],
+        &["zoom", "zoommeeting", "gotomeeting", "jitsi"],
+    ),
     (
         "nova_style_email",
         &[
@@ -485,6 +503,131 @@ pub fn resolve_auto_style(
     DEFAULT_AUTO_STYLE_ID.to_string()
 }
 
+/// Le process est-il un navigateur ? Sert à n'élargir la détection de réunion
+/// « générique » qu'aux onglets web (là où vivent Google Meet, Teams web,
+/// Webex web…), sans flaguer un document desktop portant le même mot
+/// (« Meeting notes » dans Word). `proc_l` est supposé déjà en minuscules.
+fn is_browser(proc_l: &str) -> bool {
+    const BROWSERS: &[&str] = &[
+        "chrome",
+        "msedge",
+        "microsoftedge",
+        "firefox",
+        "brave",
+        "opera",
+        "vivaldi",
+        "arc",
+        "chromium",
+        "zen",
+        "librewolf",
+        "waterfox",
+        "floorp",
+        "yandex",
+        "thorium",
+        "safari",
+    ];
+    BROWSERS.iter().any(|b| whole_word_contains(proc_l, b))
+}
+
+/// Détection LARGE d'une fenêtre de réunion, réservée AU SÉLECTEUR du mode
+/// réunion ([`enumerate_meeting_apps`]) et à son diagnostic.
+///
+/// Contrairement à [`resolve_auto_style`] — qui doit rester PRÉCIS pour ne pas
+/// coller un mauvais Style pendant la dictée — on privilégie ici LE RAPPEL :
+/// l'utilisateur choisit explicitement dans une liste, donc un faux positif ne
+/// coûte qu'une ligne de trop, tandis qu'un oubli rend la réunion incapturable.
+/// Objectif : reconnaître une réunion dans N'IMPORTE QUEL navigateur, sur
+/// n'importe quel site, pas seulement les apps natives. PURE, testable hors
+/// Windows.
+pub fn is_meeting_window(
+    title: &str,
+    process: &str,
+    user_rules: &HashMap<String, Vec<String>>,
+) -> bool {
+    // 1) Détection précise existante (apps natives + repères stricts + règles
+    //    utilisateur) : une réunion « certaine » l'est toujours ici.
+    if resolve_auto_style(title, process, user_rules) == MEETING_STYLE_ID {
+        return true;
+    }
+
+    let title_l = title.to_lowercase();
+    let proc_l = process.to_lowercase();
+
+    // 2) Fournisseurs de visioconférence distinctifs : leur nom seul suffit
+    //    (titre OU process), quel que soit le process — quasi aucun faux positif
+    //    (ce sont des marques). Couvre le web comme le desktop.
+    const PROVIDERS: &[&str] = &[
+        "webex",
+        "whereby",
+        "jitsi",
+        "bluejeans",
+        "gotomeeting",
+        "gotomeet",
+        "livestorm",
+        "bigbluebutton",
+        "streamyard",
+        "riverside",
+        "ringcentral",
+        "8x8",
+        "livekit",
+        "teams",
+        "skype",
+        "huddle",
+        "zoom",
+    ];
+    if PROVIDERS
+        .iter()
+        .any(|p| whole_word_contains(&title_l, p) || whole_word_contains(&proc_l, p))
+    {
+        return true;
+    }
+
+    // 3) Mots « réunion » génériques (multi-langues) : ambigus hors contexte
+    //    (« Meeting notes », « Rappel »…), donc RESTREINTS aux navigateurs — là
+    //    où vit l'onglet de réunion. Ça couvre Google Meet & consorts quel que
+    //    soit le site, sans flaguer un document desktop du même mot.
+    if is_browser(&proc_l) {
+        const GENERIC: &[&str] = &[
+            "meet",
+            "meeting",
+            "réunion",
+            "reunion",
+            "visio",
+            "visioconférence",
+            "visioconference",
+            "vidéoconférence",
+            "videoconference",
+            "webinar",
+            "webinaire",
+            "hangout",
+            "hangouts",
+            "video call",
+            "appel vidéo",
+            "appel video",
+            "conference call",
+        ];
+        if GENERIC.iter().any(|g| whole_word_contains(&title_l, g)) {
+            return true;
+        }
+    }
+
+    false
+}
+
+/// Entre deux fenêtres d'un même processus, laquelle afficher ? On préfère un
+/// vrai libellé lisible (qui contient une espace, ex. « Zoom Workplace ») à un
+/// nom de fenêtre interne (ex. « ZPToolBarParentWnd »), puis, à égalité, le plus
+/// long. Sert au dédoublonnage du sélecteur de réunion.
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+fn title_is_better(candidate: &str, current: &str) -> bool {
+    let candidate_human = candidate.contains(' ');
+    let current_human = current.contains(' ');
+    if candidate_human != current_human {
+        return candidate_human;
+    }
+    candidate.len() > current.len()
+}
+
 /// L'exécutable est-il sur liste noire (intégrée ou utilisateur) ?
 fn is_blocked(process: &str, user_blocklist: &[String]) -> bool {
     if process.is_empty() {
@@ -512,11 +655,7 @@ pub fn resolve_override(settings: &AppSettings) -> Option<String> {
     // n'utilise que les règles intégrées (l'auto fonctionne quand même).
     let license_key = settings.license_key.as_deref().unwrap_or("");
     let empty = HashMap::new();
-    let rules = if crate::licensing::has(
-        "custom_auto_rules",
-        license_key,
-        crate::licensing::effective_trial_start(&settings),
-    ) {
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
         &settings.auto_style_rules
     } else {
         &empty
@@ -525,14 +664,65 @@ pub fn resolve_override(settings: &AppSettings) -> Option<String> {
     Some(resolve_auto_style(&title, &process, rules))
 }
 
+/// Contexte émis vers l'overlay pour la suggestion de Style contextuelle
+/// (point 5). Uniquement des identifiants techniques (nom d'exécutable, ids de
+/// Style) — jamais de titre de fenêtre ni de texte dicté : rien de sensible ne
+/// quitte le backend.
+#[derive(Clone, serde::Serialize)]
+pub struct DictationContext {
+    /// Nom d'exécutable au premier plan (minuscules, ex. « outlook.exe »).
+    pub process: String,
+    /// Id de Style que « Automatique » choisirait pour cette app.
+    pub resolved: String,
+    /// Id de Style actuellement sélectionné (fixe) par l'utilisateur.
+    pub selected: String,
+}
+
+/// Contexte de dictée pour la SUGGESTION de Style (point 5). Réutilise EXACTEMENT
+/// la détection du Style « Automatique » : lit une fois la fenêtre au premier
+/// plan (liste noire de confidentialité respectée par `current_foreground`) et
+/// renvoie `(process, style_qui_collerait)`. `None` si l'app est sur liste noire
+/// ou illisible (process vide) — sans identité d'app, aucune suggestion. La
+/// DÉCISION (seuil, « ne plus afficher », gating de palier) est laissée au
+/// frontend ; ici on ne fait que fournir le signal. Ne panique jamais.
+pub fn suggestion_context(settings: &AppSettings) -> Option<(String, String)> {
+    let (title, process) = current_foreground(&settings.auto_style_blocklist);
+    if process.is_empty() {
+        return None;
+    }
+
+    // Mêmes règles que `resolve_override` : règles personnalisées seulement si le
+    // palier les autorise, sinon règles intégrées uniquement.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let empty = HashMap::new();
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
+        &settings.auto_style_rules
+    } else {
+        &empty
+    };
+
+    let style = resolve_auto_style(&title, &process, rules);
+    Some((process, style))
+}
+
 // ---------------------------------------------------------------------------
 // Capture de la fenêtre au premier plan (Windows). Repli vide partout ailleurs.
 // ---------------------------------------------------------------------------
 
 /// (titre, nom d'exécutable en minuscules). Chaînes vides si indisponible ou si
-/// l'application est sur liste noire (le titre n'est alors JAMAIS lu).
-#[cfg(target_os = "windows")]
+/// l'application est sur liste noire (le titre n'est alors JAMAIS lu). Le PID
+/// n'intéresse que la capture de réunion : les autres appelants passent par
+/// [`current_foreground`].
 fn current_foreground(user_blocklist: &[String]) -> (String, String) {
+    let (title, process, _pid) = current_foreground_full(user_blocklist);
+    (title, process)
+}
+
+/// (titre, nom d'exécutable en minuscules, PID). Mêmes garanties que
+/// [`current_foreground`] : liste noire respectée (aucun titre lu), champs vides
+/// et PID 0 si indisponible.
+#[cfg(target_os = "windows")]
+fn current_foreground_full(user_blocklist: &[String]) -> (String, String, u32) {
     use windows::core::PWSTR;
     use windows::Win32::Foundation::CloseHandle;
     use windows::Win32::System::Threading::{
@@ -546,7 +736,7 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
     unsafe {
         let hwnd = GetForegroundWindow();
         if hwnd.0.is_null() {
-            return (String::new(), String::new());
+            return (String::new(), String::new(), 0);
         }
 
         // Nom du process.
@@ -572,9 +762,10 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
             }
         }
 
-        // Confidentialité : app sur liste noire → on ne lit pas le titre.
+        // Confidentialité : app sur liste noire → on ne lit pas le titre, et le
+        // PID n'est pas exposé (aucune capture possible sur une app bloquée).
         if is_blocked(&process, user_blocklist) {
-            return (String::new(), String::new());
+            return (String::new(), String::new(), 0);
         }
 
         // Titre de la fenêtre.
@@ -591,13 +782,190 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
             String::new()
         };
 
-        (title, process)
+        (title, process, pid)
     }
 }
 
 #[cfg(not(target_os = "windows"))]
-fn current_foreground(_user_blocklist: &[String]) -> (String, String) {
-    (String::new(), String::new())
+fn current_foreground_full(_user_blocklist: &[String]) -> (String, String, u32) {
+    (String::new(), String::new(), 0)
+}
+
+/// Nom d'exécutable (minuscules) d'un PID, ou chaîne vide si illisible.
+#[cfg(target_os = "windows")]
+fn process_name(pid: u32) -> String {
+    use windows::core::PWSTR;
+    use windows::Win32::Foundation::CloseHandle;
+    use windows::Win32::System::Threading::{
+        OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
+        PROCESS_QUERY_LIMITED_INFORMATION,
+    };
+
+    if pid == 0 {
+        return String::new();
+    }
+    unsafe {
+        let Ok(handle) = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid) else {
+            return String::new();
+        };
+        let mut buf = [0u16; 260];
+        let mut size = buf.len() as u32;
+        let ok = QueryFullProcessImageNameW(
+            handle,
+            PROCESS_NAME_WIN32,
+            PWSTR(buf.as_mut_ptr()),
+            &mut size,
+        )
+        .is_ok();
+        let _ = CloseHandle(handle);
+        if ok {
+            let full = String::from_utf16_lossy(&buf[..size as usize]);
+            full.rsplit(['\\', '/']).next().unwrap_or("").to_lowercase()
+        } else {
+            String::new()
+        }
+    }
+}
+
+/// Une application de réunion actuellement ouverte : `(exécutable, PID, titre)`.
+pub type MeetingWindow = (String, u32, String);
+
+/// Rappel `EnumWindows` : collecte `(pid, titre)` de chaque fenêtre VISIBLE au
+/// titre non vide. Le `lparam` porte un `*mut Vec<(u32, String)>`.
+#[cfg(target_os = "windows")]
+unsafe extern "system" fn collect_window(
+    hwnd: windows::Win32::Foundation::HWND,
+    lparam: windows::Win32::Foundation::LPARAM,
+) -> windows::core::BOOL {
+    use windows::core::BOOL;
+    use windows::Win32::UI::WindowsAndMessaging::{
+        GetWindowTextLengthW, GetWindowTextW, GetWindowThreadProcessId, IsWindowVisible,
+    };
+
+    // TRUE = continuer l'énumération, quoi qu'il arrive (jamais d'arrêt anticipé).
+    let keep_going = BOOL(1);
+    let collected = &mut *(lparam.0 as *mut Vec<(u32, String)>);
+
+    if !IsWindowVisible(hwnd).as_bool() {
+        return keep_going;
+    }
+    let len = GetWindowTextLengthW(hwnd);
+    if len <= 0 {
+        return keep_going;
+    }
+    let mut buf = vec![0u16; len as usize + 1];
+    let n = GetWindowTextW(hwnd, &mut buf);
+    if n <= 0 {
+        return keep_going;
+    }
+    let title = String::from_utf16_lossy(&buf[..n as usize]);
+
+    let mut pid: u32 = 0;
+    GetWindowThreadProcessId(hwnd, Some(&mut pid as *mut u32));
+    if pid != 0 {
+        collected.push((pid, title));
+    }
+    keep_going
+}
+
+/// TOUTES les applications de réunion actuellement ouvertes (pas seulement au
+/// premier plan), dédupliquées par processus. Permet à l'UI de proposer un choix
+/// plutôt que de dépendre du focus — donc plus de bascule Alt+Tab.
+///
+/// Utilise la détection LARGE [`is_meeting_window`] (fournisseurs connus +
+/// onglets web génériques), et non le strict [`resolve_auto_style`], pour
+/// reconnaître une réunion sur n'importe quel site. Même liste noire de
+/// confidentialité. Ne panique jamais.
+#[cfg(target_os = "windows")]
+pub fn enumerate_meeting_apps(settings: &AppSettings) -> Vec<MeetingWindow> {
+    use windows::Win32::Foundation::LPARAM;
+    use windows::Win32::UI::WindowsAndMessaging::EnumWindows;
+
+    let mut collected: Vec<(u32, String)> = Vec::new();
+    unsafe {
+        let _ = EnumWindows(
+            Some(collect_window),
+            LPARAM(&mut collected as *mut Vec<(u32, String)> as isize),
+        );
+    }
+
+    // Règles personnalisées seulement si le palier les autorise (même contrat
+    // que la détection de Style).
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let empty = HashMap::new();
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
+        &settings.auto_style_rules
+    } else {
+        &empty
+    };
+
+    // Une entrée par PROCESSUS (nom d'exe), pas par fenêtre : une app de réunion
+    // ouvre souvent plusieurs fenêtres (Zoom : « Zoom Workplace » + des fenêtres
+    // internes comme « ZPToolBarParentWnd »), et un onglet web ne s'isole de
+    // toute façon pas — la capture loopback prend tout le processus. On garde la
+    // fenêtre au titre le plus lisible pour l'afficher.
+    let mut best: HashMap<String, MeetingWindow> = HashMap::new();
+    let mut order: Vec<String> = Vec::new();
+    for (pid, title) in collected {
+        let process = process_name(pid);
+        if process.is_empty() || is_blocked(&process, &settings.auto_style_blocklist) {
+            continue;
+        }
+        // Détection LARGE (`is_meeting_window`) : on veut lister TOUTES les
+        // réunions, y compris un onglet web sur n'importe quel site.
+        if !is_meeting_window(&title, &process, rules) {
+            continue;
+        }
+        let key = process.to_lowercase();
+        match best.get(&key) {
+            Some((_, _, current)) => {
+                if title_is_better(&title, current) {
+                    best.insert(key, (process, pid, title));
+                }
+            }
+            None => {
+                order.push(key.clone());
+                best.insert(key, (process, pid, title));
+            }
+        }
+    }
+    // Conserve l'ordre de première apparition (stable pour l'utilisateur).
+    order.into_iter().filter_map(|k| best.remove(&k)).collect()
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn enumerate_meeting_apps(_settings: &AppSettings) -> Vec<MeetingWindow> {
+    Vec::new()
+}
+
+/// Application de réunion au premier plan, si c'en est bien une au sens de la
+/// détection LARGE [`is_meeting_window`] (mêmes fournisseurs / onglets web que
+/// le sélecteur, une seule source de vérité). Même barrière de confidentialité
+/// que la détection de Style : app sur liste noire ou illisible → `None`, donc
+/// aucune capture possible.
+///
+/// Renvoie `(nom d'exécutable, PID)`. Ne panique jamais.
+pub fn foreground_meeting_target(settings: &AppSettings) -> Option<(String, u32)> {
+    let (title, process, pid) = current_foreground_full(&settings.auto_style_blocklist);
+    if process.is_empty() || pid == 0 {
+        return None;
+    }
+
+    // Règles personnalisées seulement si le palier les autorise — même contrat
+    // que `resolve_override` / `suggestion_context`.
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+    let empty = HashMap::new();
+    let rules = if crate::licensing::has("custom_auto_rules", license_key, 0) {
+        &settings.auto_style_rules
+    } else {
+        &empty
+    };
+
+    if is_meeting_window(&title, &process, rules) {
+        Some((process, pid))
+    } else {
+        None
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -746,6 +1114,22 @@ mod tests {
     }
 
     #[test]
+    fn detects_meeting_before_generic_messaging() {
+        assert_eq!(
+            resolve_auto_style(
+                "Réunion Microsoft Teams — Projet Nova",
+                "teams.exe",
+                &no_rules()
+            ),
+            "nova_style_meeting"
+        );
+        assert_eq!(
+            resolve_auto_style("Zoom Meeting", "zoom.exe", &no_rules()),
+            "nova_style_meeting"
+        );
+    }
+
+    #[test]
     fn process_matching_is_whole_word() {
         // « line » (LINE messagerie) matche line.exe…
         assert_eq!(
@@ -774,5 +1158,81 @@ mod tests {
         assert!(is_blocked("keepassxc.exe", &[]));
         assert!(is_blocked("mabanque.exe", &["mabanque".to_string()]));
         assert!(!is_blocked("chrome.exe", &[]));
+    }
+
+    #[test]
+    fn picker_detects_web_meetings_on_any_site() {
+        // Google Meet en onglet Chrome : titre réel souvent « Meet — abc-defg-hij »,
+        // que resolve_auto_style (strict « google meet ») ne voit pas.
+        assert!(is_meeting_window(
+            "Meet - abc-defg-hij",
+            "chrome.exe",
+            &no_rules()
+        ));
+        assert_ne!(
+            resolve_auto_style("Meet - abc-defg-hij", "chrome.exe", &no_rules()),
+            MEETING_STYLE_ID
+        );
+        // Teams web, Webex web, Whereby, Jitsi web — marques distinctives.
+        assert!(is_meeting_window(
+            "Chat | Microsoft Teams",
+            "msedge.exe",
+            &no_rules()
+        ));
+        assert!(is_meeting_window(
+            "Webex | Accueil",
+            "firefox.exe",
+            &no_rules()
+        ));
+        assert!(is_meeting_window(
+            "whereby.com — Salle",
+            "chrome.exe",
+            &no_rules()
+        ));
+        assert!(is_meeting_window(
+            "Réunion en cours",
+            "brave.exe",
+            &no_rules()
+        ));
+        // Apps natives déjà reconnues restent vraies.
+        assert!(is_meeting_window("Zoom Meeting", "zoom.exe", &no_rules()));
+    }
+
+    #[test]
+    fn picker_ignores_desktop_docs_with_meeting_words() {
+        // « Meeting notes » dans Word (pas un navigateur) → pas une réunion.
+        assert!(!is_meeting_window(
+            "Meeting notes",
+            "winword.exe",
+            &no_rules()
+        ));
+        // « Rappel » / mot générique hors navigateur → pas une réunion.
+        assert!(!is_meeting_window(
+            "Réunion — plan",
+            "notepad.exe",
+            &no_rules()
+        ));
+        // Onglet web sans repère de réunion → pas listé.
+        assert!(!is_meeting_window(
+            "Facture 2024 - Google Sheets",
+            "chrome.exe",
+            &no_rules()
+        ));
+        // « outline.exe » n'est pas un navigateur malgré « ...line » — pas de
+        // faux positif de is_browser.
+        assert!(!is_browser("outline.exe"));
+        assert!(is_browser("chrome.exe"));
+        assert!(is_browser("msedge.exe"));
+    }
+
+    #[test]
+    fn picker_prefers_human_window_titles() {
+        // Un vrai libellé (avec espace) l'emporte sur une fenêtre interne Zoom.
+        assert!(title_is_better("Zoom Workplace", "ZPToolBarParentWnd"));
+        assert!(!title_is_better("ZPToolBarParentWnd", "Zoom Workplace"));
+        // À humanité égale, le plus long gagne (plus informatif).
+        assert!(title_is_better("Réunion — Projet Nova", "Réunion"));
+        // Deux noms internes : départage par longueur, jamais de panique.
+        assert!(!title_is_better("Wnd", "PopupHostWnd"));
     }
 }

@@ -26,7 +26,16 @@ const CANCELLATION_POLL_INTERVAL: Duration = Duration::from_millis(25);
 
 /// Borne dure de toute la reformulation (démarrage du moteur + appel LLM).
 /// Au-delà, on colle le texte brut : l'utilisateur ne reste jamais bloqué.
-const POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(60);
+// Air is fast once warm, but longer dictations can exceed 1.5 s on low-memory
+// CPUs. Keep the same bounded fallback as the other local profiles so valid
+// reformulations are not discarded just before completion.
+const LOCAL_AIR_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
+const LOCAL_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
+/// Anthropic/Turbo gets a short first chance; the remaining budget is reserved
+/// for the compatible local fallback instead of leaving the bubble spinning.
+const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_secs(5);
+// Includes the remote attempt and enough room for the local Air fallback.
+const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(10);
 
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
@@ -175,7 +184,27 @@ fn temperature_for_style(style_id: &str) -> f32 {
 /// Build a system prompt from the user's prompt template.
 /// Removes `${output}` placeholder since the transcription is sent as the user message.
 fn build_system_prompt(prompt_template: &str) -> String {
-    prompt_template.replace("${output}", "").trim().to_string()
+    prompt_template
+        .replace("<transcript>\n${output}\n</transcript>", "")
+        .replace("${output}", "")
+        .trim()
+        .to_string()
+}
+
+fn post_process_timeout(settings: &AppSettings) -> Duration {
+    match settings.active_post_process_provider() {
+        Some(provider) if provider.id == crate::local_llm::PROVIDER_ID => {
+            match settings
+                .post_process_models
+                .get(crate::local_llm::PROVIDER_ID)
+                .map(String::as_str)
+            {
+                Some("air") => LOCAL_AIR_POST_PROCESS_TIMEOUT,
+                _ => LOCAL_POST_PROCESS_TIMEOUT,
+            }
+        }
+        _ => REMOTE_POST_PROCESS_TIMEOUT,
+    }
 }
 
 /// Bloc d'instructions listant les raccourcis personnels (variables) de
@@ -327,6 +356,95 @@ fn apply_custom_variables(text: &str, variables: &[crate::settings::CustomVariab
     out
 }
 
+/// Préfixe des repères de protection du lexique. Distinct des repères de
+/// raccourcis personnels (`{{clé}}`) pour éviter toute collision.
+const LEXICON_MARKER_PREFIX: &str = "{{nvxlex";
+
+/// Repère `{{nvxlexN}}` protégeant le Nᵉ terme du lexique. Construit sans passer
+/// par l'échappement d'accolades de `format!` (moins ambigu, moins fragile).
+fn lexicon_marker(index: usize) -> String {
+    let mut m = String::from(LEXICON_MARKER_PREFIX);
+    m.push_str(&index.to_string());
+    m.push_str("}}");
+    m
+}
+
+/// Protège les termes du lexique personnel (« Mots / expressions ») présents
+/// dans la dictée AVANT la reformulation : chaque terme distinct détecté (mot
+/// entier ou expression multi-mots, insensible à la casse ASCII, les plus longs
+/// d'abord pour que « repo GitHub » l'emporte sur « GitHub ») est remplacé par
+/// un repère `{{nvxlexN}}`. Le prompt système demande déjà de préserver les
+/// repères `{{…}}` tels quels : le modèle reformule donc AUTOUR du terme sans
+/// jamais le déformer. `restore_lexicon` restitue ensuite la forme exacte.
+///
+/// Aucune logique de commande : c'est un simple bouclier de texte, réutilisant
+/// le mécanisme `{{…}}` des raccourcis personnels. No-op (texte cloné, table
+/// vide) s'il n'y a aucun terme ou aucune correspondance dans la dictée.
+fn protect_lexicon(text: &str, terms: &[String]) -> (String, Vec<(String, String)>) {
+    let mut uniq: Vec<String> = Vec::new();
+    for t in terms {
+        let t = t.trim();
+        if !t.is_empty() && !uniq.iter().any(|u| u.eq_ignore_ascii_case(t)) {
+            uniq.push(t.to_string());
+        }
+    }
+    // Les plus longs d'abord (en caractères) : évite qu'un terme court n'ampute
+    // un terme englobant.
+    uniq.sort_by(|a, b| b.chars().count().cmp(&a.chars().count()));
+
+    let mut out = text.to_string();
+    let mut restores: Vec<(String, String)> = Vec::new();
+    for term in uniq {
+        let marker = lexicon_marker(restores.len());
+        let replaced = replace_keyword_ci(&out, &term, &marker);
+        if replaced != out {
+            out = replaced;
+            restores.push((marker, term));
+        }
+    }
+    (out, restores)
+}
+
+/// Restitue les termes du lexique protégés par `protect_lexicon` : chaque repère
+/// `{{nvxlexN}}` reprend sa forme canonique EXACTE. Filet « jamais de plantage » :
+/// tout repère résiduel de ce namespace (index abîmé par le modèle, cas rare)
+/// est retiré proprement plutôt que laissé visible. Ne touche jamais aux autres
+/// repères `{{…}}` (raccourcis personnels), résolus plus tard.
+fn restore_lexicon(text: &str, restores: &[(String, String)]) -> String {
+    if restores.is_empty() && !text.contains(LEXICON_MARKER_PREFIX) {
+        return text.to_string();
+    }
+    let mut out = text.to_string();
+    for (marker, canonical) in restores {
+        out = out.replace(marker.as_str(), canonical);
+    }
+    strip_residual_lexicon_markers(&out)
+}
+
+/// Retire tout repère `{{nvxlex…}}` encore présent (fermeture `}}` incluse).
+/// Laisse intact le reste du texte, y compris les autres repères `{{…}}`.
+fn strip_residual_lexicon_markers(text: &str) -> String {
+    if !text.contains(LEXICON_MARKER_PREFIX) {
+        return text.to_string();
+    }
+    let mut out = String::with_capacity(text.len());
+    let mut rest = text;
+    while let Some(pos) = rest.find(LEXICON_MARKER_PREFIX) {
+        out.push_str(&rest[..pos]);
+        let after = &rest[pos + LEXICON_MARKER_PREFIX.len()..];
+        match after.find("}}") {
+            Some(close) => rest = &after[close + 2..],
+            None => {
+                // Pas de fermeture : on conserve le reste tel quel et on stoppe.
+                out.push_str(&rest[pos..]);
+                return out;
+            }
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
 /// Bloc « contexte à l'écran » (palier A) injecté dans le prompt quand la
 /// lecture de contexte est active : le contenu texte de la fenêtre au premier
 /// plan, encadré d'un garde-fou strict (lecture seule, ne pas recopier, ignorer
@@ -336,14 +454,10 @@ fn screen_context_block(settings: &AppSettings) -> String {
     if !settings.context_reading_enabled {
         return String::new();
     }
-    // Palier : la lecture de contexte est une fonctionnalité Nova Ultra (essai
-    // Pro inclus, cf. licensing::has). Sans le palier requis, on n'inspecte rien.
+    // Palier : la lecture de contexte est une fonctionnalité Nova Ultra.
+    // Sans le palier requis, on n'inspecte rien.
     let license_key = settings.license_key.as_deref().unwrap_or("");
-    if !crate::licensing::has(
-        "context_reading",
-        license_key,
-        crate::licensing::effective_trial_start(&settings),
-    ) {
+    if !crate::licensing::has("context_reading", license_key, 0) {
         return String::new();
     }
     // Cascade privacy-first : palier A (accessibilité) → palier B (OCR local),
@@ -351,11 +465,17 @@ fn screen_context_block(settings: &AppSettings) -> String {
     // palier C (VLM local, inerte tant qu'aucun serveur vision local n'est
     // configuré) → palier D (vision cloud, seulement si « Vision cloud » est
     // activée ; réservé Nova Ultra, image jamais conservée).
-    let ctx = match crate::auto_style::read_focused_context(&settings.auto_style_blocklist, 2000) {
+    // Le contexte enrichit la reformulation, mais ne doit pas saturer le petit
+    // contexte du profil Air ni monopoliser le CPU d'une machine de 8 Go.
+    const FAST_CONTEXT_CHARS: usize = 600;
+    let ctx = match crate::auto_style::read_focused_context(
+        &settings.auto_style_blocklist,
+        FAST_CONTEXT_CHARS,
+    ) {
         Some(ctx) if !ctx.trim().is_empty() => Some(ctx),
-        _ => crate::screen_vlm::describe_focused_window_local(2000).or_else(|| {
+        _ => crate::screen_vlm::describe_focused_window_local(FAST_CONTEXT_CHARS).or_else(|| {
             if settings.context_visual_enabled {
-                crate::screen_vision::describe_focused_window(license_key, 2000)
+                crate::screen_vision::describe_focused_window(license_key, FAST_CONTEXT_CHARS)
             } else {
                 None
             }
@@ -406,7 +526,11 @@ fn should_use_streaming_overlay(style: OverlayStyle, is_streaming: bool) -> bool
     style == OverlayStyle::Live && is_streaming
 }
 
-async fn post_process_transcription(
+/// Applique la reformulation (Style) à un texte. `pub(crate)` pour que le mode
+/// réunion réutilise EXACTEMENT le même chemin que la dictée (moteur local/Turbo,
+/// repli, quotas) en forçant le Style « Réunion » via `auto_style_override`,
+/// plutôt que de dupliquer l'appel au moteur.
+pub(crate) async fn post_process_transcription(
     app: &AppHandle,
     settings: &AppSettings,
     transcription: &str,
@@ -417,7 +541,7 @@ async fn post_process_transcription(
         return None;
     }
 
-    let provider = match settings.active_post_process_provider().cloned() {
+    let selected_provider = match settings.active_post_process_provider().cloned() {
         Some(provider) => provider,
         None => {
             debug!("Post-processing enabled but no provider is selected");
@@ -425,30 +549,49 @@ async fn post_process_transcription(
         }
     };
 
-    // Palier : le moteur en ligne « Turbo » nécessite un abonnement Nova
-    // (Pro ou Ultra, essai Pro inclus, cf. licensing::has). Le moteur local
-    // (Intelligence privée, Apple Intelligence) reste gratuit.
+    // Turbo is available to Pro/Ultra without the Free cap. Free receives ten
+    // daily cloud rewrites, enforced both locally and by the relay. The user's
+    // explicit engine choice remains authoritative (private local or Turbo).
     let license_key = settings.license_key.as_deref().unwrap_or("");
+    let paid_turbo = crate::licensing::has("cloud_styles", license_key, 0);
+    let free_turbo = crate::licensing::effective_tier(license_key, 0)
+        == crate::licensing::Tier::Free
+        && !crate::quota::is_rewrite_blocked(app);
+    let provider = selected_provider;
     let is_local_engine = provider.id == crate::local_llm::PROVIDER_ID
         || provider.id == crate::settings::APPLE_INTELLIGENCE_PROVIDER_ID;
-    if !is_local_engine
-        && !crate::licensing::has(
-            "cloud_styles",
-            license_key,
-            crate::licensing::effective_trial_start(&settings),
-        )
-    {
-        debug!("Turbo (moteur en ligne) réservé aux abonnés — reformulation ignorée");
-        // Le repli sur le texte brut doit être VISIBLE : sans ce signal,
-        // l'utilisateur croyait la reformulation « cassée » alors qu'elle est
-        // simplement réservée aux abonnés.
-        let _ = app.emit("online-engine-locked", ());
+    if provider.id == "nova_turbo" && !(paid_turbo || free_turbo) {
+        debug!("Turbo indisponible : quota gratuit atteint");
+        let _ = app.emit("quota-blocked", ());
         return None;
     }
 
-    let result =
+    let result = if is_local_engine {
         post_process_with_provider(app, settings, transcription, auto_style_override, &provider)
-            .await;
+            .await
+    } else {
+        match tokio::time::timeout(
+            REMOTE_PRIMARY_TIMEOUT,
+            post_process_with_provider(
+                app,
+                settings,
+                transcription,
+                auto_style_override,
+                &provider,
+            ),
+        )
+        .await
+        {
+            Ok(result) => result,
+            Err(_) => {
+                warn!(
+                    "Turbo/Anthropic sans réponse après {:?} — tentative locale",
+                    REMOTE_PRIMARY_TIMEOUT
+                );
+                None
+            }
+        }
+    };
 
     // Bascule automatique : le moteur en ligne a échoué (réseau, quota,
     // fournisseur) → on retente en INTELLIGENCE PRIVÉE si un modèle local est
@@ -461,6 +604,7 @@ async fn post_process_transcription(
             .cloned()
             .unwrap_or_default();
         let downloaded = !profile.trim().is_empty()
+            && crate::local_llm::profile_is_supported(&profile)
             && crate::local_llm::profiles_status(app)
                 .iter()
                 .any(|p| p.id == profile && p.is_downloaded);
@@ -554,12 +698,7 @@ async fn post_process_with_provider(
     // Style effectivement appliqué (après repli éventuel sur le gratuit) : sert à
     // choisir la température (fidèle vs libre) cohérente avec le prompt réel.
     let mut effective_style_id = selected_prompt_id.clone();
-    let prompt = if !style_is_free
-        && !crate::licensing::has(
-            required_feature,
-            license_key,
-            crate::licensing::effective_trial_start(&settings),
-        ) {
+    let prompt = if !style_is_free && !crate::licensing::has(required_feature, license_key, 0) {
         debug!(
             "Style '{}' réservé ({}) — repli sur le Style gratuit",
             selected_prompt_id, required_feature
@@ -596,9 +735,25 @@ async fn post_process_with_provider(
     // pas un nom de modèle). Jamais bloquant pour la dictée : un échec ne
     // fait qu'annuler la reformulation, le texte brut reste collé.
     if provider.id == crate::local_llm::PROVIDER_ID {
-        if let Err(e) = crate::local_llm::ensure_server_running(app, &model).await {
-            debug!("Intelligence privée indisponible : {e}");
-            return None;
+        // Le démarrage vit dans sa propre tâche : si le délai Air expire pendant
+        // un premier chargement, la tâche continue et enregistre proprement le
+        // processus. Abandonner directement `ensure_server_running` laisserait
+        // sinon un enfant llama-server vivant mais absent de l'état Tauri.
+        let warmup_app = app.clone();
+        let warmup_model = model.clone();
+        let warmup = tauri::async_runtime::spawn(async move {
+            crate::local_llm::ensure_server_running(&warmup_app, &warmup_model).await
+        });
+        match warmup.await {
+            Ok(Ok(())) => {}
+            Ok(Err(e)) => {
+                debug!("Intelligence privée indisponible : {e}");
+                return None;
+            }
+            Err(e) => {
+                debug!("Tâche Intelligence privée interrompue : {e}");
+                return None;
+            }
         }
     }
 
@@ -607,16 +762,13 @@ async fn post_process_with_provider(
         provider.id, model
     );
 
-    // Turbo : la « clé » transmise est le jeton de licence (NOVA1) — ou, en
-    // période d'essai (pas encore de licence), le jeton d'essai NOVAT1 scellé
-    // par le serveur. Sans ce repli, un utilisateur en essai obtenait un 401
-    // muet puis basculait sur le moteur local (lent) : le cloud semblait
-    // « ne pas marcher ». Les autres fournisseurs utilisent la clé saisie.
+    // Turbo receives either the paid license token or the bounded NOVAFREE
+    // device token. The relay owns the Anthropic key and enforces its quota.
     let api_key = if provider.id == "nova_turbo" {
-        if license_key.is_empty() {
-            settings.trial_token.clone()
-        } else {
+        if crate::licensing::has("cloud_styles", license_key, 0) {
             license_key.to_string()
+        } else {
+            format!("NOVAFREE.{}", crate::machine_id::fingerprint())
         }
     } else {
         settings
@@ -750,16 +902,16 @@ async fn post_process_with_provider(
                             );
                             return Some(result);
                         } else {
-                            error!("Structured output response missing 'transcription' field");
-                            return Some(clean_llm_output(&content));
+                            error!("Structured output response missing 'transcription' field; falling back to legacy mode");
+                            // Fall through to legacy mode instead of returning malformed content
                         }
                     }
                     Err(e) => {
                         error!(
-                            "Failed to parse structured output JSON: {}. Returning raw content.",
+                            "Failed to parse structured output JSON: {}. Falling back to legacy mode.",
                             e
                         );
-                        return Some(clean_llm_output(&content));
+                        // Fall through to legacy mode instead of returning malformed content
                     }
                 }
             }
@@ -777,20 +929,23 @@ async fn post_process_with_provider(
         }
     }
 
-    // Legacy mode: Replace ${output} variable in the prompt with the actual text
-    let processed_prompt = format!(
+    // Même sans JSON Schema, garder les instructions dans un message système
+    // stable permet à llama-server de réutiliser le cache KV entre deux dictées.
+    let system_prompt = format!(
         "{}{}{}",
-        prompt.replace("${output}", transcription),
+        build_system_prompt(&prompt),
         custom_variables_block(&settings.custom_variables),
         context_block
     );
-    debug!("Processed prompt length: {} chars", processed_prompt.len());
+    debug!("System prompt length: {} chars", system_prompt.len());
 
-    match crate::llm_client::send_chat_completion(
+    match crate::llm_client::send_chat_completion_with_schema(
         provider,
         api_key,
         &model,
-        processed_prompt,
+        transcription.to_string(),
+        Some(system_prompt),
+        None,
         temperature,
         reasoning_effort,
         reasoning,
@@ -907,10 +1062,46 @@ pub(crate) async fn process_transcription_output(
     post_process: bool,
     auto_style_override: Option<String>,
 ) -> ProcessedTranscription {
-    let settings = get_settings(app);
-    let mut final_text = transcription.to_string();
+    let mut settings = get_settings(app);
+    let voice_command =
+        crate::voice_commands::apply(transcription, settings.voice_commands_enabled);
+    if let Some(word) = voice_command.dictionary_word.as_ref() {
+        if !settings
+            .custom_words
+            .iter()
+            .any(|existing| existing.eq_ignore_ascii_case(word))
+        {
+            settings.custom_words.push(word.clone());
+            crate::settings::write_settings(app, settings);
+            let _ = app.emit("dictionary-word-added", word);
+        }
+        return ProcessedTranscription {
+            final_text: String::new(),
+            post_processed_text: None,
+            post_process_prompt: None,
+        };
+    }
+    if voice_command.cancelled {
+        debug!("Transcription discarded by an explicit voice command");
+        return ProcessedTranscription {
+            final_text: String::new(),
+            post_processed_text: None,
+            post_process_prompt: None,
+        };
+    }
+    // An explicit "Nova …" style command wins over automatic app detection for
+    // this transcription only; it never mutates the persisted selected style.
+    let effective_style_override = voice_command.style_override.or(auto_style_override);
+    let mut final_text = voice_command.text;
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
+
+    // Apprentissage progressif du lexique : on observe (sans jamais rien ajouter
+    // ni exécuter) les noms propres/acronymes récurrents de la dictée pour, le
+    // cas échéant, les PROPOSER plus tard à l'utilisateur. Best-effort ;
+    // n'affecte jamais le collage.
+    crate::lexicon_learning::observe_dictation(app, transcription);
+
     // Vrai dès qu'une reformulation IA a réellement produit un texte : décide
     // quel mécanisme de raccourcis personnels s'applique ensuite (repères vs
     // remplacement mot-à-mot — jamais les deux).
@@ -921,7 +1112,7 @@ pub(crate) async fn process_transcription_output(
     // the effective language rather than a possibly-stale intent.
     let effective_language = resolve_effective_language(app, &settings);
     if let Some(converted_text) =
-        maybe_convert_chinese_variant(&effective_language, transcription).await
+        maybe_convert_chinese_variant(&effective_language, &final_text).await
     {
         final_text = converted_text;
     }
@@ -934,22 +1125,34 @@ pub(crate) async fn process_transcription_output(
             debug!("Reformulation ignorée : quota gratuit quotidien atteint");
             let _ = app.emit("quota-blocked", ());
         } else {
+            // Protection du lexique personnel : les marques, noms propres et
+            // termes techniques (potentiellement multi-mots) présents dans la
+            // dictée sont masqués par un repère `{{…}}` AVANT l'appel au modèle,
+            // puis restitués EXACTEMENT après — le modèle ne peut donc pas les
+            // déformer. Simple bouclier de texte, aucune logique de commande.
+            let (protected_input, lexicon_restores) =
+                protect_lexicon(&final_text, &settings.custom_words);
+
             // Filet de sécurité global : quoi qu'il arrive côté moteur (serveur
             // local qui pend, réseau mort, modèle en chargement), la
-            // reformulation ne peut pas dépasser POST_PROCESS_TIMEOUT. Au-delà,
+            // reformulation ne peut pas dépasser le délai du moteur. Au-delà,
             // on colle le texte brut et on informe — jamais de spinner infini.
+            let timeout = post_process_timeout(&settings);
             match tokio::time::timeout(
-                POST_PROCESS_TIMEOUT,
+                timeout,
                 post_process_transcription(
                     app,
                     &settings,
-                    &final_text,
-                    auto_style_override.as_deref(),
+                    &protected_input,
+                    effective_style_override.as_deref(),
                 ),
             )
             .await
             {
                 Ok(Some(processed_text)) => {
+                    // Restitue les termes du lexique à l'identique (le texte brut
+                    // de repli, lui, n'a jamais reçu de repère).
+                    let processed_text = restore_lexicon(&processed_text, &lexicon_restores);
                     reformulation_applied = true;
                     post_processed_text = Some(processed_text.clone());
                     final_text = processed_text;
@@ -957,7 +1160,7 @@ pub(crate) async fn process_transcription_output(
                     crate::quota::record_rewrite(app);
 
                     // Style effectif (le Style auto résolu prime, pour l'historique).
-                    let effective_id = auto_style_override
+                    let effective_id = effective_style_override
                         .as_deref()
                         .or(settings.post_process_selected_prompt_id.as_deref());
                     if let Some(prompt_id) = effective_id {
@@ -974,7 +1177,7 @@ pub(crate) async fn process_transcription_output(
                 Err(_) => {
                     log::warn!(
                         "Reformulation abandonnée après {:?} — texte brut collé",
-                        POST_PROCESS_TIMEOUT
+                        timeout
                     );
                     let _ = app.emit("post-process-timeout", ());
                 }
@@ -1017,6 +1220,7 @@ impl ShortcutAction for TranscribeAction {
         // `process_transcription_output` : jamais de blocage avant l'enregistrement.
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
+        crate::input::remember_text_target();
 
         // Load model in the background
         let tm = app.state::<Arc<TranscriptionManager>>();
@@ -1161,6 +1365,7 @@ impl ShortcutAction for TranscribeAction {
             "TranscribeAction::start completed in {:?}",
             start_time.elapsed()
         );
+        crate::performance::record_latency("hotkey_to_recording_ready", start_time.elapsed());
     }
 
     fn stop(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
@@ -1210,11 +1415,41 @@ impl ShortcutAction for TranscribeAction {
         // fiable qu'au collage, car la transcription tourne en async ensuite.
         // Un seul appel synchrone, défensif : renvoie None si l'auto n'est pas
         // sélectionné ou si la lecture échoue (le Style choisi est alors gardé).
-        let auto_style_override = if post_process {
-            crate::auto_style::resolve_override(&get_settings(app))
+        let settings_for_style = if post_process {
+            Some(get_settings(app))
         } else {
             None
         };
+        let auto_style_override = settings_for_style
+            .as_ref()
+            .and_then(crate::auto_style::resolve_override);
+
+        // Suggestion de Style contextuelle (point 5) : uniquement quand un Style
+        // FIXE est sélectionné (en « Automatique », Nova choisit déjà le meilleur
+        // Style, aucune suggestion utile). On lit la fenêtre au premier plan une
+        // fois de plus et on émet le contexte ; TOUTE la décision (seuil, « ne
+        // plus afficher », gating de palier) vit côté overlay. Rien de sensible
+        // n'est émis (nom d'exécutable + ids de Style seulement).
+        if let Some(settings) = settings_for_style.as_ref() {
+            let selected = settings
+                .post_process_selected_prompt_id
+                .clone()
+                .unwrap_or_default();
+            if selected != crate::auto_style::AUTO_STYLE_ID {
+                if let Some((process, resolved)) = crate::auto_style::suggestion_context(settings) {
+                    if resolved != selected {
+                        let _ = app.emit(
+                            "dictation-context",
+                            crate::auto_style::DictationContext {
+                                process,
+                                resolved,
+                                selected,
+                            },
+                        );
+                    }
+                }
+            }
+        }
 
         tauri::async_runtime::spawn(async move {
             let _guard = FinishGuard(ah.clone());
@@ -1229,6 +1464,10 @@ impl ShortcutAction for TranscribeAction {
                     "Recording stopped and samples retrieved in {:?}, sample count: {}",
                     stop_recording_time.elapsed(),
                     samples.len()
+                );
+                crate::performance::record_latency(
+                    "stop_to_audio_ready",
+                    stop_recording_time.elapsed(),
                 );
 
                 if rm.was_cancelled_since(cancel_generation) {
@@ -1311,6 +1550,10 @@ impl ShortcutAction for TranscribeAction {
                                 transcription_time.elapsed(),
                                 transcription
                             );
+                            crate::performance::record_latency(
+                                "audio_to_transcript",
+                                transcription_time.elapsed(),
+                            );
 
                             // Modèle SANS streaming : la bulle n'a montré que la
                             // waveform pendant la dictée. On affiche maintenant le
@@ -1328,6 +1571,7 @@ impl ShortcutAction for TranscribeAction {
                                 // natif ou en affichage final (ci-dessus).
                                 tm.emit_stream_working(StreamWorkKind::Polishing);
                             }
+                            let output_processing_time = Instant::now();
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
                                     &ah,
@@ -1344,6 +1588,14 @@ impl ShortcutAction for TranscribeAction {
                                 change_tray_icon(&ah, TrayIconState::Idle);
                                 return;
                             };
+                            crate::performance::record_latency(
+                                if post_process {
+                                    "transcript_to_rewrite"
+                                } else {
+                                    "transcript_to_output"
+                                },
+                                output_processing_time.elapsed(),
+                            );
 
                             if rm.was_cancelled_since(cancel_generation) {
                                 debug!("Transcription operation cancelled before paste");
@@ -1369,6 +1621,10 @@ impl ShortcutAction for TranscribeAction {
                                 utils::hide_recording_overlay(&ah);
                                 change_tray_icon(&ah, TrayIconState::Idle);
                             } else {
+                                // L'overlay atteint visiblement 100 % avant que le
+                                // texte apparaisse au curseur, sans ralentir le
+                                // traitement lui-même.
+                                crate::performance::wait_for_thinking_frame(&ah).await;
                                 let ah_clone = ah.clone();
                                 let paste_time = Instant::now();
                                 let final_text = processed.final_text;
@@ -1383,7 +1639,9 @@ impl ShortcutAction for TranscribeAction {
                                         return;
                                     }
 
-                                    match utils::paste(final_text, ah_clone.clone()) {
+                                    let paste_fallback_text = final_text.clone();
+                                    let paste_result = utils::paste(final_text, ah_clone.clone());
+                                    match &paste_result {
                                         Ok(()) => {
                                             crate::week_stats::record_chars(
                                                 &ah_clone,
@@ -1393,13 +1651,23 @@ impl ShortcutAction for TranscribeAction {
                                                 "Text pasted successfully in {:?}",
                                                 paste_time.elapsed()
                                             );
+                                            crate::performance::record_latency(
+                                                "paste",
+                                                paste_time.elapsed(),
+                                            );
                                         }
                                         Err(e) => {
                                             error!("Failed to paste transcription: {}", e);
                                             let _ = ah_clone.emit("paste-error", ());
+                                            crate::overlay::show_paste_fallback(
+                                                &ah_clone,
+                                                &paste_fallback_text,
+                                            );
                                         }
                                     }
-                                    utils::hide_recording_overlay(&ah_clone);
+                                    if paste_result.is_ok() {
+                                        utils::hide_recording_overlay(&ah_clone);
+                                    }
                                     change_tray_icon(&ah_clone, TrayIconState::Idle);
                                 })
                                 .unwrap_or_else(|e| {
@@ -1519,9 +1787,10 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 #[cfg(test)]
 mod tests {
     use super::{
-        apply_custom_variables, clean_llm_output, complete_unless_cancelled,
-        custom_variables_block, is_blank_transcription, replace_keyword_ci,
-        resolve_variable_tokens, should_use_streaming_overlay, temperature_for_style,
+        apply_custom_variables, build_system_prompt, clean_llm_output, complete_unless_cancelled,
+        custom_variables_block, is_blank_transcription, protect_lexicon, replace_keyword_ci,
+        resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
+        temperature_for_style,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -1530,6 +1799,69 @@ mod tests {
     use std::sync::Arc;
     use std::thread;
     use std::time::Duration;
+
+    // --- Protection du lexique personnel autour de la reformulation ---
+
+    #[test]
+    fn protect_lexicon_masks_and_restores_multiword_term() {
+        let terms = vec!["repo GitHub".to_string()];
+        let (protected, restores) = protect_lexicon("pousse sur le repo github stp", &terms);
+        // Le terme entendu est masqué par un repère préservé par le modèle.
+        assert!(protected.contains("{{nvxlex0}}"), "protégé : {protected}");
+        assert!(!protected.to_lowercase().contains("repo github"));
+        // Le modèle reformule autour du repère ; on restitue la forme EXACTE.
+        let out = restore_lexicon(&protected.replace("pousse", "Pousse"), &restores);
+        assert!(out.contains("repo GitHub"));
+        assert!(!out.contains("nvxlex"));
+    }
+
+    #[test]
+    fn protect_lexicon_prefers_longer_term_first() {
+        let terms = vec!["GitHub".to_string(), "repo GitHub".to_string()];
+        let (protected, restores) = protect_lexicon("le repo GitHub est prêt", &terms);
+        // « repo GitHub » (plus long) doit gagner, pas seulement « GitHub ».
+        let restored = restore_lexicon(&protected, &restores);
+        assert_eq!(restored, "le repo GitHub est prêt");
+        assert!(restores.iter().any(|(_, c)| c == "repo GitHub"));
+    }
+
+    #[test]
+    fn protect_lexicon_is_noop_without_terms() {
+        let (protected, restores) = protect_lexicon("aucun terme ici", &[]);
+        assert_eq!(protected, "aucun terme ici");
+        assert!(restores.is_empty());
+    }
+
+    #[test]
+    fn protect_lexicon_only_marks_present_terms() {
+        let terms = vec!["Mailpro31".to_string(), "NovaSpeak Pro".to_string()];
+        let (protected, restores) = protect_lexicon("écris à Mailpro31 demain", &terms);
+        // Seul le terme réellement présent est protégé.
+        assert_eq!(restores.len(), 1);
+        assert_eq!(
+            restore_lexicon(&protected, &restores),
+            "écris à Mailpro31 demain"
+        );
+    }
+
+    #[test]
+    fn restore_lexicon_strips_residual_marker_safely() {
+        // Cas rare : le modèle a laissé un repère orphelin (index abîmé). On ne
+        // laisse jamais un repère visible dans la sortie (« jamais de plantage »).
+        let out = restore_lexicon("texte {{nvxlex7}} propre", &[]);
+        assert_eq!(out, "texte  propre");
+        // Un repère sans fermeture ne fait pas paniquer et n'est pas dupliqué.
+        let out2 = restore_lexicon("bord {{nvxlex", &[]);
+        assert_eq!(out2, "bord {{nvxlex");
+    }
+
+    #[test]
+    fn restore_lexicon_leaves_variable_markers_untouched() {
+        // Les repères de raccourcis personnels `{{clé}}` ne sont PAS du lexique :
+        // ils doivent survivre pour être résolus plus tard.
+        let out = restore_lexicon("mon {{iban}} et {{nvxlex0}}", &[]);
+        assert_eq!(out, "mon {{iban}} et ");
+    }
 
     #[test]
     fn blank_transcription_is_detected() {
@@ -1709,6 +2041,23 @@ mod tests {
         assert_eq!(temperature_for_style("nova_style_todo"), 0.4);
         // Style personnel inconnu → un peu de liberté par défaut.
         assert_eq!(temperature_for_style("mon_style_perso"), 0.4);
+    }
+
+    #[test]
+    fn system_prompt_keeps_transcription_out_of_the_cached_prefix() {
+        let template = "Règles fixes\n<transcript>\n${output}\n</transcript>";
+        let prompt = build_system_prompt(template);
+        assert_eq!(prompt, "Règles fixes");
+        assert!(!prompt.contains("${output}"));
+        assert!(!prompt.contains("<transcript>"));
+    }
+
+    #[test]
+    fn system_prompt_removes_legacy_placeholder_without_wrapper() {
+        assert_eq!(
+            build_system_prompt("Corrige ce texte : ${output}"),
+            "Corrige ce texte :"
+        );
     }
 
     #[test]

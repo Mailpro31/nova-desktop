@@ -6,8 +6,8 @@ import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
-import { Dialog } from "../../ui/Dialog";
 import { invalidateLicense, TIER_FOR_FEATURE } from "./TierBadge";
+import { PremiumBadge } from "./PremiumBadge";
 import { QuotaBar } from "./QuotaBar";
 import { WeekStat } from "./WeekStat";
 
@@ -19,8 +19,6 @@ type LicenseStatus = {
   email: string;
   licensed: boolean;
   features: Record<string, boolean>;
-  trial_days_remaining: number;
-  trial_just_expired: boolean;
 };
 
 const TIER_LABEL: Record<Tier, string> = {
@@ -34,7 +32,7 @@ const TIER_LABEL: Record<Tier, string> = {
 // tel quel par le tableau comparatif des paliers (Compte) — source de vérité
 // unique, on ne fabrique pas une deuxième liste de fonctionnalités.
 export const FEATURE_ROWS: { key: string; label: string }[] = [
-  { key: "cloud_styles", label: "Turbo — moteur de reformulation en ligne" },
+  { key: "cloud_styles", label: "Turbo illimité — reformulation en ligne" },
   { key: "all_styles", label: "Les 7 Styles" },
   { key: "power_profiles", label: "Profils de puissance" },
   { key: "best_models", label: "Meilleure IA / qualité maximale" },
@@ -44,44 +42,15 @@ export const FEATURE_ROWS: { key: string; label: string }[] = [
 /**
  * Pilule de palier, volontairement très différenciée : Free gris neutre,
  * Pro bleu Apple (l'accent d'action), Ultra lilas en dégradé (le « premium »
- * visuel de Nova), Business bleu. L'essai Pro affiche le compte à rebours.
+ * visuel de Nova), Business bleu.
  */
-const TierPill: React.FC<{ tier: Tier; onTrial: boolean; days: number }> = ({
-  tier,
-  onTrial,
-  days,
-}) => {
-  const { t } = useTranslation();
-  if (onTrial) {
-    return (
-      <span
-        className="text-xs font-bold tracking-wide uppercase rounded-full px-3 py-1 border whitespace-nowrap"
-        style={{
-          color: "var(--color-accent)",
-          borderColor: "var(--color-accent)",
-          background:
-            "color-mix(in srgb, var(--color-accent) 10%, transparent)",
-        }}
-      >
-        {t("license.trial.badgeDays", { count: days })}
-      </span>
-    );
+const TierPill: React.FC<{ tier: Tier }> = ({ tier }) => {
+  // Pro et Ultra partagent le traitement « premium » (dégradé + lueur), même
+  // soin, seule la teinte change — cf. PremiumBadge.
+  if (tier === "ultra" || tier === "pro") {
+    return <PremiumBadge tier={tier}>{TIER_LABEL[tier]}</PremiumBadge>;
   }
-  if (tier === "ultra") {
-    return (
-      <span
-        className="text-xs font-bold tracking-wide uppercase rounded-full px-3 py-1 whitespace-nowrap"
-        style={{
-          background:
-            "linear-gradient(135deg, #D9C8F7 0%, var(--color-ultra) 45%, #9F86D9 100%)",
-          color: "#1F1F22",
-          boxShadow: "0 2px 10px rgba(159, 134, 217, .35)",
-        }}
-      >
-        {TIER_LABEL[tier]}
-      </span>
-    );
-  }
+  // Free (neutre) et Business (bleu d'action) restent des pilules sobres.
   const color =
     tier === "free" ? "var(--color-text-secondary)" : "var(--color-accent)";
   return (
@@ -160,18 +129,8 @@ export const LicenseSettings: React.FC = () => {
     }
   };
 
-  const acknowledgeTrialExpired = async () => {
-    try {
-      setStatus(await invoke<LicenseStatus>("acknowledge_trial_expired"));
-    } catch {
-      // Défensif : l'invite disparaît au prochain lancement même en cas d'échec.
-    }
-  };
-
   const tier: Tier = status?.tier ?? "free";
   const isUltra = tier === "ultra";
-  const trialDaysRemaining = status?.trial_days_remaining ?? 0;
-  const onTrial = trialDaysRemaining > 0;
 
   // Liens de paiement Stripe — MENSUELS (l'utilisateur choisit l'annuel sur le
   // site s'il préfère ; les mêmes liens que la landing novaspeak.app).
@@ -203,7 +162,7 @@ export const LicenseSettings: React.FC = () => {
               : "Palier Nova actif sur cet appareil."}
           </p>
         </div>
-        <TierPill tier={tier} onTrial={onTrial} days={trialDaysRemaining} />
+        <TierPill tier={tier} />
       </div>
 
       {/* 2. Ce que le palier donne — chaque fonction marquée de SON palier. */}
@@ -264,26 +223,7 @@ export const LicenseSettings: React.FC = () => {
       <QuotaBar />
       <WeekStat />
 
-      {/* 4. Promo d'essai — SOUS le plan et les fonctions. */}
-      {onTrial && (
-        <SettingContainer
-          title={t("license.trial.title")}
-          description={t("license.trial.description", {
-            count: trialDaysRemaining,
-          })}
-          grouped={true}
-        >
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => openUrl(PRO_MONTHLY_URL)}
-          >
-            {t("license.trial.subscribe")}
-          </Button>
-        </SettingContainer>
-      )}
-
-      {/* 5. Montée de palier — checkout Stripe MENSUEL direct. */}
+      {/* 4. Montée de palier — checkout Stripe MENSUEL direct. */}
       {!isUltra && (
         <SettingContainer
           title="Passer à un palier supérieur"
@@ -325,7 +265,7 @@ export const LicenseSettings: React.FC = () => {
         </SettingContainer>
       )}
 
-      {/* 6. Activation d'une clé. */}
+      {/* 5. Activation d'une clé. */}
       <SettingContainer
         title="Entrer ma licence"
         description="Collez votre clé NOVA1 ou votre code d'achat NOVA-… reçu après paiement."
@@ -358,40 +298,6 @@ export const LicenseSettings: React.FC = () => {
           {error}
         </div>
       )}
-
-      <Dialog
-        open={status?.trial_just_expired ?? false}
-        onOpenChange={(open) => {
-          if (!open) void acknowledgeTrialExpired();
-        }}
-        title={t("license.trial.expiredTitle")}
-        closeLabel={t("license.trial.close")}
-        footer={
-          <>
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={() => void acknowledgeTrialExpired()}
-            >
-              {t("license.trial.close")}
-            </Button>
-            <Button
-              variant="primary"
-              size="md"
-              onClick={() => {
-                void openUrl(PRO_MONTHLY_URL);
-                void acknowledgeTrialExpired();
-              }}
-            >
-              {t("license.trial.subscribe")}
-            </Button>
-          </>
-        }
-      >
-        <p className="text-sm text-text-secondary">
-          {t("license.trial.expiredBody")}
-        </p>
-      </Dialog>
     </SettingsGroup>
   );
 };

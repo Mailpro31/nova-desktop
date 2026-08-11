@@ -10,12 +10,19 @@ mod clipboard;
 mod commands;
 mod helpers;
 mod input;
+mod lexicon_learning;
 mod licensing;
 mod llm_client;
 mod local_llm;
 mod machine_id;
 mod managers;
+mod meeting_capture;
+mod meeting_live;
+mod meeting_segmenter;
+mod meeting_session;
+mod meeting_transcript;
 mod overlay;
+mod performance;
 pub mod portable;
 mod quota;
 mod screen_ocr;
@@ -29,6 +36,7 @@ mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
 mod utils;
+mod voice_commands;
 mod week_stats;
 
 pub use cli::CliArgs;
@@ -162,6 +170,8 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     // after onboarding completes. This avoids triggering permission dialogs
     // on macOS before the user is ready.
 
+    performance::apply_startup_policy_if_enabled(app_handle);
+
     // Initialize the managers. The audio recorder receives the streaming router
     // explicitly, so always-on microphone startup can wire live-preview frames
     // even before Tauri state is populated.
@@ -205,6 +215,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(history_manager.clone());
     app_handle.manage(tray::CurrentTrayIconState::new());
     app_handle.manage(local_llm::LocalLlmProcess::default());
+    app_handle.manage(commands::meeting::MeetingSessionState::default());
 
     // Note: Shortcuts are NOT initialized here.
     // The frontend is responsible for calling the `initialize_shortcuts` command
@@ -609,6 +620,8 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_append_trailing_space_setting,
             shortcut::change_lazy_stream_close_setting,
             shortcut::change_vad_enabled_setting,
+            shortcut::change_voice_commands_setting,
+            shortcut::change_lexicon_learning_setting,
             shortcut::change_app_language_setting,
             shortcut::change_update_checks_setting,
             shortcut::change_show_whats_new_on_update_setting,
@@ -625,10 +638,16 @@ pub fn run(cli_args: CliArgs) {
             trigger_update_check,
             show_main_window_command,
             commands::cancel_operation,
+            commands::finish_recording,
+            commands::copy_transcription,
+            commands::dismiss_recording_overlay,
             commands::is_portable,
             commands::get_app_dir_path,
             commands::get_app_settings,
             commands::get_default_settings,
+            commands::get_lexicon_suggestions,
+            commands::accept_lexicon_suggestion,
+            commands::dismiss_lexicon_suggestion,
             commands::get_log_dir_path,
             commands::set_log_level,
             commands::open_recordings_folder,
@@ -678,6 +697,15 @@ pub fn run(cli_args: CliArgs) {
             commands::transcription::unload_model_manually,
             commands::transcription::is_transcribe_cpu_only_mode,
             commands::transcription::clear_transcribe_gpu_blacklist,
+            meeting_capture::probe_meeting_capture,
+            commands::meeting::list_meeting_apps,
+            commands::meeting::start_meeting,
+            commands::meeting::stop_meeting,
+            performance::run_performance_diagnostics,
+            performance::apply_adaptive_performance,
+            performance::change_adaptive_performance_setting,
+            performance::clear_performance_history,
+            performance::acknowledge_thinking_frame,
             commands::history::get_history_entries,
             commands::history::toggle_history_entry_saved,
             commands::history::get_audio_file_path,
@@ -894,18 +922,6 @@ pub fn run(cli_args: CliArgs) {
 
             initialize_core_logic(&app_handle);
 
-            // Scellage serveur de l'essai Pro (empreinte machine) en tâche de
-            // fond : contacte trial-check pour figer la vraie date de début et
-            // empêcher l'essai « infini » par réinstallation. Entièrement
-            // défensif (hors-ligne / dormant → l'essai local continue de faire
-            // foi), non bloquant pour le démarrage.
-            {
-                let trial_handle = app_handle.clone();
-                tauri::async_runtime::spawn(async move {
-                    commands::license::fetch_and_seal_trial(trial_handle).await;
-                });
-            }
-
             // Populate the overlay-enabled cache from initial settings so the
             // audio path (overlay::emit_levels, called ~24 Hz during recording)
             // can do a single atomic load instead of reading the Tauri store.
@@ -941,6 +957,20 @@ pub fn run(cli_args: CliArgs) {
                 let prewarm_settings = settings.clone();
                 tauri::async_runtime::spawn(async move {
                     crate::local_llm::prewarm_if_selected(&prewarm_handle, &prewarm_settings).await;
+                });
+            }
+
+            // Installe l'Intelligence privée (moteur + modèle recommandé) dès le
+            // premier lancement, en arrière-plan : la première reformulation
+            // locale est ainsi immédiate, sans aucune action de l'utilisateur, et
+            // à l'identique sur tous les paliers. Non bloquant et défensif — un
+            // échec (réseau absent…) laisse le premier lancement se poursuivre et
+            // sera réessayé au lancement suivant.
+            {
+                let provision_handle = app_handle.clone();
+                tauri::async_runtime::spawn(async move {
+                    crate::local_llm::provision_default_model_in_background(&provision_handle)
+                        .await;
                 });
             }
 

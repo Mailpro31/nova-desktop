@@ -8,24 +8,66 @@ import type {
   StreamPhase,
   StreamPhaseEvent,
   StreamTextEvent,
-  StreamWorkKind,
 } from "@/bindings";
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
 import { styleColor } from "@/lib/styleColors";
+import { styleLockFeature } from "@/lib/builtinStyles";
 
 type OverlayState =
   | "idle"
   | "recording"
   | "streaming"
   | "transcribing"
-  | "processing";
+  | "processing"
+  | "paste-fallback";
 
 type StyleItem = { id: string; name: string };
 
 // Number of reactive bars in the waveform (the simple, smoothed style shared by
 // every overlay form). Mic levels arrive as 16 FFT buckets; we take the first N.
 const WAVE_BARS = 9;
+
+// ---- Suggestion de Style contextuelle discrète (point 5) ----
+// Toute la mémoire/décision vit côté frontend (aucun churn de réglages) et
+// PERSISTE dans le localStorage de l'overlay. Seuil volontairement bas mais pas
+// immédiat : on ne propose qu'après quelques dictées dans la MÊME app avec un
+// Style fixe qui ne colle pas, et jamais deux fois une paire « ne plus afficher ».
+const SUGGEST_THRESHOLD = 3;
+const SUGGEST_COUNTS_KEY = "nova.styleSuggest.counts";
+const SUGGEST_DISMISSED_KEY = "nova.styleSuggest.dismissed";
+// Hauteur de fenêtre overlay (px) pour loger la carte de suggestion au repos,
+// via le même mécanisme que le menu des Styles (`set_overlay_menu_height`).
+const SUGGEST_OVERLAY_HEIGHT = 150;
+// Styles génériques qu'il n'y a aucun intérêt à suggérer.
+const SUGGEST_SKIP_STYLES = new Set(["auto", "default_improve_transcriptions"]);
+
+function readSuggestStore<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+function writeSuggestStore(key: string, value: unknown): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // localStorage indisponible : la suggestion reste éphémère, jamais de crash.
+  }
+}
+// Libellé lisible d'un exécutable (« outlook.exe » → « Outlook »).
+function friendlyAppLabel(process: string): string {
+  const base = (
+    process
+      .replace(/\.exe$/i, "")
+      .split(/[\\/]/)
+      .pop() ?? process
+  ).trim();
+  if (!base) return process;
+  return base.charAt(0).toUpperCase() + base.slice(1);
+}
 
 const RecordingOverlay: React.FC = () => {
   const { t } = useTranslation();
@@ -37,8 +79,9 @@ const RecordingOverlay: React.FC = () => {
     tentative: "",
   });
   const [phase, setPhase] = useState<StreamPhase>("listening");
-  const [workKind, setWorkKind] = useState<StreamWorkKind>("transcribing");
+  const [thinkingProgress, setThinkingProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
+  const [fallbackText, setFallbackText] = useState("");
   // Bumped on each new streaming session so the Live card remounts fresh (replays
   // the pop-in, and never animates in from the previous panel's open size).
   const [session, setSession] = useState(0);
@@ -52,26 +95,56 @@ const RecordingOverlay: React.FC = () => {
   const [styles, setStyles] = useState<StyleItem[]>([]);
   const [selectedStyleId, setSelectedStyleId] = useState<string>("");
   const [menuOpen, setMenuOpen] = useState(false);
+  // Fonctionnalités du palier courant : décide quels Styles sont verrouillés.
+  // Défensif : licence dormante → `has()` vrai partout → aucune fonctionnalité
+  // absente → rien n'est verrouillé (bulle inchangée pour tous aujourd'hui).
+  const [features, setFeatures] = useState<Record<string, boolean>>({});
+
+  // Un Style est verrouillé si sa fonctionnalité de palier n'est pas accessible.
+  // `?? true` = fonctionnalité inconnue → jamais de verrou par défaut.
+  const styleLock = (id: string): { locked: boolean; tier: string } => {
+    const feature = styleLockFeature(id);
+    if (!feature) return { locked: false, tier: "" };
+    const locked = !(features[feature] ?? true);
+    const tier = feature === "custom_styles" ? "NOVA ULTRA" : "NOVA PRO";
+    return { locked, tier };
+  };
+
+  // Auto mode is locked for Free users (requires Pro for automatic resolution)
+  const isAutoLocked = features["all_styles"] === false;
 
   const fetchStyles = async () => {
     try {
+      const st = await invoke<{ features: Record<string, boolean> }>(
+        "get_license_status",
+      );
+      setFeatures(st.features ?? {});
       const s = await commands.getAppSettings();
       if (s.status === "ok") {
-        // Le mode « Automatique » ouvre la liste : c'est le défaut (Nova choisit
-        // le Style selon l'app active). Il ne vit pas dans `post_process_prompts`,
-        // on l'ajoute donc en tête pour qu'il apparaisse dans la bulle et le menu.
+        // Le mode « Automatique » requiert Pro. Il ne vit pas dans
+        // `post_process_prompts`, on l'ajoute donc en tête pour qu'il apparaisse
+        // dans la bulle et le menu (mais grisé si Free).
+        const hasAutoAccess = st.features?.["all_styles"] ?? false;
         const autoItem: StyleItem = {
           id: "auto",
           name: t("settings.postProcessing.autoStyle.option"),
         };
-        setStyles([
+        const styleItems = [
           autoItem,
           ...(s.data.post_process_prompts ?? []).map((p) => ({
             id: p.id,
             name: p.name,
           })),
-        ]);
-        setSelectedStyleId(s.data.post_process_selected_prompt_id ?? "auto");
+        ];
+        setStyles(styleItems);
+        // Default to auto if Pro and currently set to auto, otherwise preserve
+        // or fall back to default style (improved transcriptions)
+        const currentId = s.data.post_process_selected_prompt_id ?? "auto";
+        let nextId = currentId;
+        if (currentId === "auto" && !hasAutoAccess) {
+          nextId = "default_improve_transcriptions";
+        }
+        setSelectedStyleId(nextId);
       }
     } catch {
       // Bulle purement décorative si les réglages ne se lisent pas.
@@ -98,6 +171,9 @@ const RecordingOverlay: React.FC = () => {
   };
 
   const chooseStyle = async (id: string) => {
+    // Un Style verrouillé (au-delà du palier) n'est pas sélectionnable : on
+    // laisse le menu ouvert plutôt que d'appliquer un Style interdit.
+    if (styleLock(id).locked) return;
     setSelectedStyleId(id);
     setMenuOpen(false);
     await resizeForMenu(false, 0);
@@ -116,6 +192,100 @@ const RecordingOverlay: React.FC = () => {
       await fetchStyles();
     }
   };
+
+  // ---- Retour micro discret pendant l'écoute (point 3) ----
+  // Dérivé UNIQUEMENT des niveaux déjà reçus (`mic-level`) : aucune analyse
+  // audio supplémentaire côté backend. On confirme un état sur une courte
+  // fenêtre glissante pour ne JAMAIS clignoter ni harceler : « Je vous entends »
+  // quand le niveau est franc, « Parlez un peu plus fort » seulement après un
+  // silence continu d'environ deux secondes. N'apparaît que dans la pilule
+  // compacte d'enregistrement (l'overlay Live montre déjà le texte en direct).
+  const [micHint, setMicHint] = useState<null | "ok" | "low">(null);
+  const micWindowRef = useRef<{ lowSince: number; okSince: number }>({
+    lowSince: 0,
+    okSince: 0,
+  });
+  const listeningCompact = isVisible && state === "recording";
+
+  useEffect(() => {
+    if (!listeningCompact) {
+      micWindowRef.current = { lowSince: 0, okSince: 0 };
+      setMicHint(null);
+      return;
+    }
+    const energy = levels.length ? Math.max(...levels) : 0;
+    const now =
+      typeof performance !== "undefined" ? performance.now() : Date.now();
+    const w = micWindowRef.current;
+    const LOW = 0.1; // sous ce niveau : trop faible
+    const OK = 0.3; // au-dessus : clairement entendu
+    const LOW_HOLD_MS = 2000; // silence continu avant d'inviter à parler plus fort
+    const OK_HOLD_MS = 300; // brève confirmation avant « Je vous entends »
+    if (energy >= OK) {
+      w.lowSince = 0;
+      if (!w.okSince) w.okSince = now;
+      if (now - w.okSince >= OK_HOLD_MS) setMicHint("ok");
+    } else if (energy <= LOW) {
+      w.okSince = 0;
+      if (!w.lowSince) w.lowSince = now;
+      if (now - w.lowSince >= LOW_HOLD_MS) setMicHint("low");
+    } else {
+      // Zone intermédiaire (l'utilisateur parle doucement) : on ne réarme pas le
+      // compteur de silence et on laisse l'indice courant tel quel, sans à-coup.
+      w.lowSince = 0;
+    }
+  }, [levels, listeningCompact]);
+
+  // ---- Suggestion de Style contextuelle (point 5) ----
+  // Paire (app, Style qui collerait) en attente d'affichage. La validation de
+  // palier et l'existence du Style sont re-vérifiées à l'affichage (features à
+  // jour). Persistance (comptes + « ne plus afficher ») dans le localStorage.
+  const [suggestion, setSuggestion] = useState<{
+    process: string;
+    styleId: string;
+  } | null>(null);
+
+  const applySuggestion = async () => {
+    if (!suggestion) return;
+    const { process, styleId } = suggestion;
+    // Adopté → on ne re-propose plus cette paire.
+    const key = `${process}::${styleId}`;
+    const dismissed = readSuggestStore<string[]>(SUGGEST_DISMISSED_KEY, []);
+    if (!dismissed.includes(key)) {
+      dismissed.push(key);
+      writeSuggestStore(SUGGEST_DISMISSED_KEY, dismissed);
+    }
+    setSuggestion(null);
+    await chooseStyle(styleId);
+  };
+
+  const dismissSuggestion = () => {
+    if (!suggestion) return;
+    const key = `${suggestion.process}::${suggestion.styleId}`;
+    const dismissed = readSuggestStore<string[]>(SUGGEST_DISMISSED_KEY, []);
+    if (!dismissed.includes(key)) {
+      dismissed.push(key);
+      writeSuggestStore(SUGGEST_DISMISSED_KEY, dismissed);
+    }
+    setSuggestion(null);
+  };
+
+  // La carte de suggestion est-elle réellement affichable MAINTENANT ? (Style
+  // existant dans la liste ET non verrouillé par le palier courant.)
+  const suggestionStyle = suggestion
+    ? styles.find((s) => s.id === suggestion.styleId)
+    : undefined;
+  const suggestionVisible =
+    !!suggestion && !!suggestionStyle && !styleLock(suggestion.styleId).locked;
+
+  // Au repos (menu fermé), agrandit la fenêtre overlay pour loger la carte —
+  // même canal que le menu des Styles. Réinitialise à la hauteur de repos sinon.
+  useEffect(() => {
+    if (state !== "idle" || menuOpen) return;
+    invoke("set_overlay_menu_height", {
+      height: suggestionVisible ? SUGGEST_OVERLAY_HEIGHT : 0,
+    }).catch(() => {});
+  }, [suggestionVisible, state, menuOpen]);
 
   const smoothedLevelsRef = useRef<number[]>(Array(16).fill(0));
   // Live-text scroll-back: the text region "sticks" to the newest line while the
@@ -150,10 +320,13 @@ const RecordingOverlay: React.FC = () => {
         }
         if (overlayState === "recording" || overlayState === "streaming") {
           setStreamText({ committed: "", tentative: "" });
+          setThinkingProgress(0);
+        }
+        if (overlayState === "transcribing") {
+          setThinkingProgress(4);
         }
         if (overlayState === "streaming") {
           setPhase("listening");
-          setWorkKind("transcribing");
           setElapsed(0);
           setSession((s) => s + 1); // remount the card fresh for this session
         }
@@ -176,11 +349,13 @@ const RecordingOverlay: React.FC = () => {
 
       const unlistenLevel = await listen<number[]>("mic-level", (event) => {
         const newLevels = event.payload as number[];
-        // Exponential smoothing across the 16 buckets, then take the first N
-        // bars for the shared waveform.
+        // Lift quiet speech aggressively, with a quick attack and slower release.
+        // This only changes the visual meter; the recorded samples stay untouched.
         const smoothed = smoothedLevelsRef.current.map((prev, i) => {
-          const target = newLevels[i] || 0;
-          return prev * 0.7 + target * 0.3;
+          const raw = Math.max(0, newLevels[i] || 0);
+          const target = Math.min(1, Math.pow(raw, 0.45) * 1.65);
+          const alpha = target > prev ? 0.72 : 0.24;
+          return prev + (target - prev) * alpha;
         });
         smoothedLevelsRef.current = smoothed;
         setLevels(smoothed.slice(0, WAVE_BARS));
@@ -193,7 +368,59 @@ const RecordingOverlay: React.FC = () => {
       const unlistenPhase = await events.streamPhaseEvent.listen((event) => {
         const payload: StreamPhaseEvent = event.payload;
         setPhase(payload.phase);
-        if (payload.kind) setWorkKind(payload.kind);
+        if (payload.phase === "working") setThinkingProgress(4);
+      });
+
+      const unlistenThinkingComplete = await listen<number>(
+        "thinking-complete",
+        (event) => {
+          setThinkingProgress(100);
+          // Acknowledge after React committed and the browser had one chance to
+          // paint the completed progress bar. The backend can then paste without
+          // an unconditional delay on every transcription.
+          requestAnimationFrame(() => {
+            invoke("acknowledge_thinking_frame", { id: event.payload }).catch(
+              () => {},
+            );
+          });
+        },
+      );
+
+      const unlistenPasteFallback = await listen<string>(
+        "paste-fallback",
+        (event) => {
+          setFallbackText(event.payload);
+          setState("paste-fallback");
+          setIsVisible(true);
+        },
+      );
+
+      // Contexte de dictée pour la suggestion de Style (point 5). Le backend
+      // n'émet que quand un Style FIXE est sélectionné et qu'un autre collerait
+      // mieux ; ici on compte par (app, Style) et on ne propose qu'au-delà du
+      // seuil, jamais une paire déjà écartée. Comptes/écartés persistés localement.
+      const unlistenContext = await listen<{
+        process: string;
+        resolved: string;
+        selected: string;
+      }>("dictation-context", (event) => {
+        const { process, resolved, selected } = event.payload;
+        if (!process || !resolved) return;
+        if (resolved === selected) return;
+        if (SUGGEST_SKIP_STYLES.has(resolved)) return;
+        const key = `${process}::${resolved}`;
+        const dismissed = readSuggestStore<string[]>(SUGGEST_DISMISSED_KEY, []);
+        if (dismissed.includes(key)) return;
+        const counts = readSuggestStore<Record<string, number>>(
+          SUGGEST_COUNTS_KEY,
+          {},
+        );
+        const n = (counts[key] ?? 0) + 1;
+        counts[key] = n;
+        writeSuggestStore(SUGGEST_COUNTS_KEY, counts);
+        if (n >= SUGGEST_THRESHOLD) {
+          setSuggestion({ process, styleId: resolved });
+        }
       });
 
       return () => {
@@ -203,6 +430,9 @@ const RecordingOverlay: React.FC = () => {
         unlistenLevel();
         unlistenStream();
         unlistenPhase();
+        unlistenThinkingComplete();
+        unlistenPasteFallback();
+        unlistenContext();
       };
     };
 
@@ -215,6 +445,23 @@ const RecordingOverlay: React.FC = () => {
     const id = setInterval(() => setElapsed((e) => e + 1), 1000);
     return () => clearInterval(id);
   }, [state, isVisible]);
+
+  // Progression volontairement asymptotique : elle avance vite pendant le
+  // traitement sans annoncer une fin prématurée, puis le backend envoie 100 %
+  // juste avant de coller le texte.
+  useEffect(() => {
+    const working =
+      state === "transcribing" ||
+      state === "processing" ||
+      (state === "streaming" && phase === "working");
+    if (!working || !isVisible || thinkingProgress >= 100) return;
+    const id = setInterval(() => {
+      setThinkingProgress((current) =>
+        Math.min(92, current + Math.max(0.35, (92 - current) * 0.045)),
+      );
+    }, 80);
+    return () => clearInterval(id);
+  }, [state, phase, isVisible, thinkingProgress]);
 
   // Stick to the bottom as text streams in — but only while pinned, so a user who
   // has scrolled up to read history isn't yanked back down by the next chunk.
@@ -259,7 +506,7 @@ const RecordingOverlay: React.FC = () => {
   const cancelBtn = (
     <button
       className="sx"
-      aria-label="cancel"
+      aria-label={t("tray.cancel")}
       onClick={() => commands.cancelOperation()}
     >
       <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -273,17 +520,34 @@ const RecordingOverlay: React.FC = () => {
     </button>
   );
 
+  const finishBtn = (
+    <button
+      className="sx sfinish"
+      aria-label={t("onboarding.step.finish")}
+      onClick={() => commands.finishRecording()}
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path
+          d="M3.2 8.2 6.5 11.4 12.9 4.8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+
   // dot (left) | waveform (center) | timer + cancel (right) — same structure for
   // pill & panel, so the Live morph is a pure width change.
-  const listeningRow = (showTimer: boolean, showCancel: boolean) => (
+  const listeningRow = (showTimer: boolean) => (
     <div className="sbase">
-      <div className="sbase-l">
-        <span className="sdot" />
-      </div>
+      <div className="sbase-l">{cancelBtn}</div>
       {waveform}
       <div className="sbase-r">
         {showTimer && <span className="stimer">{fmtTime(elapsed)}</span>}
-        {showCancel && cancelBtn}
+        {finishBtn}
       </div>
     </div>
   );
@@ -291,12 +555,15 @@ const RecordingOverlay: React.FC = () => {
   // spinner (left) | label (center) | cancel (right) — same 3-zone grid as the
   // listening row, so the label is centered.
   const workingRow = (label: string, showCancel: boolean) => (
-    <div className="sbase">
+    <div className="sbase sworking-base">
       <div className="sbase-l">
         <span className="sspinner" />
       </div>
       <span className="swork-label">{label}</span>
       <div className="sbase-r">{showCancel && cancelBtn}</div>
+      <div className="sthinking-track" aria-hidden="true">
+        <i style={{ width: `${thinkingProgress}%` }} />
+      </div>
     </div>
   );
 
@@ -311,35 +578,76 @@ const RecordingOverlay: React.FC = () => {
         <div className="sidle-col">
           {menuOpen && (
             <div className={`smenu ${position}`}>
-              {styles.map((s) => (
+              {styles.map((s) => {
+                const { locked, tier } = styleLock(s.id);
+                return (
+                  <button
+                    key={s.id}
+                    className={`smenu-item ${s.id === selectedStyleId ? "active" : ""} ${
+                      locked ? "locked" : ""
+                    }`}
+                    onClick={() => chooseStyle(s.id)}
+                    disabled={locked}
+                    aria-disabled={locked}
+                  >
+                    <span
+                      className="smenu-dot"
+                      style={{ background: styleColor(s.id) }}
+                    />
+                    <span className="smenu-name">{s.name}</span>
+                    {locked ? (
+                      <span
+                        className={`smenu-lock ${tier.includes("ULTRA") ? "ultra" : ""}`}
+                      >
+                        {t("license.requiresTier", { tier })}
+                      </span>
+                    ) : (
+                      s.id === selectedStyleId && (
+                        <svg
+                          className="smenu-check"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M20 6 9 17l-5-5"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {!menuOpen && suggestionVisible && suggestion && suggestionStyle && (
+            <div className={`ssuggest ${position}`}>
+              <p className="ssuggest-text">
+                {t("overlay.styleSuggestion", {
+                  app: friendlyAppLabel(suggestion.process),
+                  style: suggestionStyle.name,
+                })}
+              </p>
+              <div className="ssuggest-actions">
                 <button
-                  key={s.id}
-                  className={`smenu-item ${s.id === selectedStyleId ? "active" : ""}`}
-                  onClick={() => chooseStyle(s.id)}
+                  type="button"
+                  className="ssuggest-dismiss"
+                  onClick={dismissSuggestion}
                 >
-                  <span
-                    className="smenu-dot"
-                    style={{ background: styleColor(s.id) }}
-                  />
-                  <span className="smenu-name">{s.name}</span>
-                  {s.id === selectedStyleId && (
-                    <svg
-                      className="smenu-check"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M20 6 9 17l-5-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
+                  {t("overlay.styleSuggestionDismiss")}
                 </button>
-              ))}
+                <button
+                  type="button"
+                  className="ssuggest-apply"
+                  onClick={applySuggestion}
+                >
+                  {t("overlay.styleSuggestionApply")}
+                </button>
+              </div>
             </div>
           )}
           <div className="scard sidle">
@@ -430,13 +738,8 @@ const RecordingOverlay: React.FC = () => {
             </div>
           </div>
           {working
-            ? workingRow(
-                workKind === "polishing"
-                  ? t("overlay.processing")
-                  : t("overlay.transcribing"),
-                true,
-              )
-            : listeningRow(open, true)}
+            ? workingRow(t("overlay.processing"), true)
+            : listeningRow(open)}
         </div>
       </div>
     );
@@ -446,20 +749,72 @@ const RecordingOverlay: React.FC = () => {
   // spinner + label (transcribing / processing). Never both. The pill animates its
   // width between them; the cancel button is in both rows so it stays put.
   const working = state === "transcribing" || state === "processing";
-  const workLabel =
-    state === "processing"
-      ? t("overlay.processing")
-      : t("overlay.transcribing");
+  const workLabel = t("overlay.processing");
+
+  if (state === "paste-fallback") {
+    return (
+      <div
+        dir={direction}
+        className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+      >
+        <div className="scard sfallback">
+          <div className="sfallback-head">
+            <span className="sfallback-info" aria-hidden="true" />
+            <strong>{t("tray.copyLastTranscript")}</strong>
+            <button
+              className="sfallback-close"
+              aria-label={t("common.close")}
+              onClick={() => commands.dismissRecordingOverlay()}
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M4 4 L12 12 M12 4 L4 12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <p className="sfallback-text">{fallbackText}</p>
+          <button
+            className="sfallback-copy"
+            onClick={async () => {
+              await commands.copyTranscription(fallbackText);
+              await commands.dismissRecordingOverlay();
+            }}
+          >
+            {t("common.copy")}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       dir={direction}
       className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
     >
-      <div
-        className={`scard compact ${working && isVisible ? "cworking" : ""}`}
-      >
-        {working ? workingRow(workLabel, true) : listeningRow(false, true)}
+      <div className="slisten-wrap">
+        <div
+          className={`scard compact ${working && isVisible ? "cworking" : ""}`}
+        >
+          {working ? workingRow(workLabel, true) : listeningRow(false)}
+        </div>
+        {/* Indice micro discret : jamais dans la même rangée que la forme d'onde
+            (au-dessus/en dessous de la pilule), ne la recouvre donc jamais. */}
+        <div
+          className={`smic-hint ${micHint ?? ""} ${micHint ? "show" : ""}`}
+          aria-live="polite"
+        >
+          {micHint === "low"
+            ? t("overlay.micTooLow")
+            : micHint === "ok"
+              ? t("overlay.micHearing")
+              : ""}
+        </div>
       </div>
     </div>
   );

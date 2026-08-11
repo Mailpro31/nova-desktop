@@ -2,6 +2,79 @@ use enigo::{Enigo, Key, Keyboard, Mouse, Settings};
 use std::sync::Mutex;
 use tauri::{AppHandle, Manager};
 
+#[cfg(target_os = "windows")]
+use std::sync::atomic::{AtomicIsize, Ordering};
+
+#[cfg(target_os = "windows")]
+static LAST_TEXT_TARGET: AtomicIsize = AtomicIsize::new(0);
+
+/// Remember the foreground window before Nova displays any recording UI. Since
+/// the overlay is non-activating, its caret normally remains the insertion
+/// point; this handle is a recovery path if focus changes while processing.
+pub fn remember_text_target() {
+    #[cfg(target_os = "windows")]
+    unsafe {
+        use windows::Win32::UI::WindowsAndMessaging::GetForegroundWindow;
+        let window = GetForegroundWindow();
+        LAST_TEXT_TARGET.store(window.0 as isize, Ordering::Relaxed);
+    }
+}
+
+/// Restore the window that owned the caret when dictation started. Returns
+/// `true` ONLY when the captured target is genuinely the foreground window at
+/// return time — either because focus never left it, or because we brought it
+/// back and CONFIRMED it. Returns `false` when the window is gone or when the
+/// foreground can't be safely restored to the captured target; the caller then
+/// degrades to the copy-to-clipboard paste-fallback rather than typing into
+/// whatever unrelated window happens to be in front.
+///
+/// The confirmation matters: `SetForegroundWindow` can return `TRUE` while the
+/// foreground did NOT actually change (Windows foreground-lock rules), so its
+/// boolean alone is not proof. We re-read `GetForegroundWindow` after the call
+/// and only trust an equality check. All defensive («jamais de plantage»): any
+/// Win32 hiccup ends in `false`, i.e. the safe clipboard fallback.
+pub fn restore_text_target() -> bool {
+    #[cfg(target_os = "windows")]
+    unsafe {
+        use windows::Win32::Foundation::HWND;
+        use windows::Win32::UI::WindowsAndMessaging::{
+            GetForegroundWindow, IsWindow, SetForegroundWindow,
+        };
+
+        let raw = LAST_TEXT_TARGET.load(Ordering::Relaxed);
+        if raw == 0 {
+            return false;
+        }
+        let target = HWND(raw as *mut core::ffi::c_void);
+        if !IsWindow(Some(target)).as_bool() {
+            return false;
+        }
+        // Fast path: focus never left the captured target — nothing to restore.
+        if GetForegroundWindow() == target {
+            return true;
+        }
+
+        // Focus drifted while we were transcribing/reformulating. Try to bring
+        // the captured target back, then VERIFY it actually became foreground
+        // (poll briefly — the switch is not always instantaneous). We never
+        // return `true` on the strength of `SetForegroundWindow`'s return value
+        // alone: only a confirmed equality lets us paste.
+        let _ = SetForegroundWindow(target);
+        for _ in 0..6 {
+            std::thread::sleep(std::time::Duration::from_millis(25));
+            if GetForegroundWindow() == target {
+                return true;
+            }
+        }
+        // Couldn't confirm the target is in front → refuse to paste into the
+        // wrong window; the caller falls back to the clipboard overlay.
+        false
+    }
+
+    #[cfg(not(target_os = "windows"))]
+    true
+}
+
 /// Wrapper for Enigo to store in Tauri's managed state.
 /// Enigo is wrapped in a Mutex since it requires mutable access.
 pub struct EnigoState(pub Mutex<Enigo>);

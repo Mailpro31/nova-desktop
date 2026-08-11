@@ -19,8 +19,10 @@ const LOCKED_PROFILES = new Set(["aura", "apex"]);
 type LlmProfileStatus = {
   id: string;
   approx_size_mb: number;
+  required_ram_gb: number;
   is_downloaded: boolean;
   is_recommended: boolean;
+  is_supported: boolean;
 };
 
 type Progress = {
@@ -68,6 +70,8 @@ export const PowerProfileSelector: React.FC<{
   const activeId = currentModel ?? null;
 
   const apply = async (profileId: string) => {
+    const profile = profiles.find((candidate) => candidate.id === profileId);
+    if (!profile?.is_supported) return;
     if (LOCKED_PROFILES.has(profileId) && !canPro) return;
     setBusyId(profileId);
     setError(null);
@@ -115,16 +119,17 @@ export const PowerProfileSelector: React.FC<{
           if (!meta) return null;
           const active = activeId === profile.id;
           const locked = LOCKED_PROFILES.has(profile.id) && !canPro;
+          const unavailable = !profile.is_supported;
           return (
             <button
               key={profile.id}
-              disabled={busyId !== null || locked}
+              disabled={busyId !== null || locked || unavailable}
               onClick={() => apply(profile.id)}
               className={`rounded-lg border p-2.5 text-left transition-colors ${
                 active
                   ? "border-accent bg-accent/10"
                   : "border-hairline hover:bg-mid-gray/10"
-              } ${locked ? "opacity-70 cursor-not-allowed" : ""}`}
+              } ${locked || unavailable ? "opacity-70 cursor-not-allowed" : ""}`}
             >
               <div className="text-sm font-semibold flex items-center gap-1">
                 {meta.label}
@@ -166,6 +171,10 @@ export const PowerProfileSelector: React.FC<{
           );
         })}
       </div>
+
+      <p className="text-[11px] text-text-secondary">
+        {t("settings.postProcessing.powerProfile.sameOnAllTiers")}
+      </p>
 
       {busyId && progress && (
         <div className="flex flex-col gap-1">

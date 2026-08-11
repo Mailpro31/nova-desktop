@@ -13,6 +13,7 @@
     "models": "パフォーマンス",
     "advanced": "詳細設定",
     "postProcessing": "後処理",
+    "meeting": "Meeting",
     "history": "履歴",
     "debug": "デバッグ",
     "about": "概要",
@@ -521,7 +522,8 @@
         "recommended": "おすすめ",
         "downloaded": "ダウンロード済み",
         "downloadingModel": "モデルをダウンロード中…",
-        "downloadingEngine": "エンジンをダウンロード中…"
+        "downloadingEngine": "エンジンをダウンロード中…",
+        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
       },
       "contextReading": {
         "title": "Context reading",
@@ -640,6 +642,23 @@
         "title": "追加録音バッファ",
         "description": "キーを離した後に録音を続ける追加時間(ミリ秒)。末尾の音声を捕捉するため。0 = 追加バッファなし。"
       },
+      "meetingCapture": {
+        "title": "Meeting capture test",
+        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
+        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
+        "run": "Run the test",
+        "running": "Switch to your meeting now…",
+        "results": {
+          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
+          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
+          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
+          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
+          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
+          "stream_error": "The capture stopped before the end of the test.",
+          "internal": "The test could not run."
+        },
+        "switchIn": "Switch to your meeting… {{seconds}}"
+      },
       "whatsNewPreview": {
         "title": "新機能をプレビュー",
         "description": "最新の同梱リリースノートを既読にせずに開く",
@@ -657,6 +676,10 @@
       "appDataDirectory": {
         "title": "アプリデータディレクトリ",
         "description": "Nova がデータを保存する場所"
+      },
+      "debugMode": {
+        "title": "Debug mode",
+        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "ソースコード",
@@ -753,18 +776,23 @@
     "transcribing": "文字起こし中…",
     "processing": "処理中…",
     "chooseStyle": "Choose a Style",
-    "openSettings": "設定を開く"
+    "openSettings": "設定を開く",
+    "micHearing": "I can hear you",
+    "micTooLow": "Speak a little louder",
+    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestionApply": "Try it",
+    "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
     "title": "Nova v{{version}} の新機能"
   },
   "quota": {
-    "todayUsage": "本日の無料リライト",
+    "lifetimeUsage": "無料 Turbo リライト",
     "count": "{{used}} / {{limit}} 回のリライト",
-    "blockedInline": "本日の上限に達しました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限のリライトはアップグレードで。",
-    "resetsOn": "{{date}} にリセットされます。",
-    "blockedTitle": "リライトの上限に達しました",
-    "blockedDescription": "本日の無料リライト10回を使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限のリライトは Nova へのアップグレードで。",
+    "blockedInline": "無料の Turbo リライトをすべて使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限の Turbo にアップグレードしてください。",
+    "lifetimeNote": "一度限りの特典、更新されません。",
+    "blockedTitle": "無料の Turbo リライトを使い切りました",
+    "blockedDescription": "20回の無料 Turbo リライトを使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限の Turbo は Nova Ultra へのアップグレードで。",
     "upgrade": "登録する"
   },
   "weekStat": {
@@ -772,6 +800,34 @@
     "minutes_other": "≈ {{count}} minutes of typing saved",
     "words_one": "{{count}} word dictated this week",
     "words_other": "{{count}} words dictated this week"
+  },
+  "performanceOptimizer": {
+    "title": "Automatic optimization",
+    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
+    "autoLabel": "Auto performance mode",
+    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
+    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
+    "run": "Run diagnostic",
+    "running": "Checking…",
+    "profile": "Profile",
+    "memory": "Memory",
+    "cpu": "CPU threads",
+    "acceleration": "Acceleration",
+    "latency": "Measured latency",
+    "median": "median {{value}} ms",
+    "p95": "p95 {{value}} ms",
+    "openMicrophone": "Open microphone settings",
+    "retryGpu": "Retry GPU after restart",
+    "classes": {
+      "low_memory": "Low memory",
+      "balanced": "Balanced",
+      "performance": "Performance"
+    }
+  },
+  "voiceCommands": {
+    "title": "Voice commands",
+    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
+    "added": "{{word}} was added to the personal dictionary"
   },
   "license": {
     "remove": "Remove",
@@ -798,5 +854,54 @@
     "yourPlan": "ご利用プラン",
     "onlineEngineLockedTitle": "TurboにはNovaサブスクリプションが必要です",
     "onlineEngineLocked": "オンラインエンジンはNova ProとUltra限定のため、リフォーミュレーションなしで貼り付けられました。"
+  },
+  "lexiconLearning": {
+    "title": "Learn my vocabulary",
+    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
+    "suggestionTitle": "Did you mean “{{term}}”?",
+    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "add": "Add",
+    "ignore": "Ignore",
+    "added": "“{{term}}” was added to your lexicon."
+  },
+  "meeting": {
+    "title": "Meeting mode",
+    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
+    "start": "Start meeting",
+    "starting": "Starting…",
+    "finish": "Finish",
+    "finishing": "Finishing…",
+    "capturing": "Capturing {{app}}",
+    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "speakerYou": "You",
+    "speakerOthers": "Others",
+    "reportTitle": "Meeting report",
+    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
+    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
+    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
+    "showTranscript": "Show raw transcript",
+    "consent": {
+      "title": "Before you start",
+      "subtitle": "This concerns the other people in your meeting.",
+      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
+      "checkbox": "I will let the other participants know before each captured meeting.",
+      "cancel": "Cancel",
+      "confirm": "Start capture"
+    },
+    "errors": {
+      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
+      "already_running": "A meeting is already being captured.",
+      "no_active_meeting": "No meeting is currently being captured.",
+      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
+      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
+      "stream_error": "The capture stopped unexpectedly.",
+      "requires_ultra": "Meeting mode requires Nova Ultra.",
+      "internal": "The meeting could not be started."
+    },
+    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
+    "pickApp": "Choose which meeting to capture.",
+    "oneApp": "Ready to capture {{app}}.",
+    "refresh": "Refresh",
+    "newMeeting": "New meeting"
   }
 }
