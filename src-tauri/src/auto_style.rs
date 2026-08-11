@@ -503,6 +503,23 @@ pub fn resolve_auto_style(
     DEFAULT_AUTO_STYLE_ID.to_string()
 }
 
+/// Applique le périmètre de Styles du palier courant à la résolution Auto.
+/// Free ne peut résoudre que ses trois Styles essentiels ; Pro, Ultra et le
+/// mode licensing dormant conservent tous les Styles auxquels ils ont accès.
+fn resolve_auto_style_for_access(
+    title: &str,
+    process: &str,
+    user_rules: &HashMap<String, Vec<String>>,
+    all_styles: bool,
+) -> String {
+    let resolved = resolve_auto_style(title, process, user_rules);
+    if all_styles || crate::licensing::FREE_STYLE_IDS.contains(&resolved.as_str()) {
+        resolved
+    } else {
+        DEFAULT_AUTO_STYLE_ID.to_string()
+    }
+}
+
 /// Le process est-il un navigateur ? Sert à n'élargir la détection de réunion
 /// « générique » qu'aux onglets web (là où vivent Google Meet, Teams web,
 /// Webex web…), sans flaguer un document desktop portant le même mot
@@ -661,7 +678,10 @@ pub fn resolve_override(settings: &AppSettings) -> Option<String> {
         &empty
     };
 
-    Some(resolve_auto_style(&title, &process, rules))
+    let all_styles = crate::licensing::has("all_styles", license_key, 0);
+    Some(resolve_auto_style_for_access(
+        &title, &process, rules, all_styles,
+    ))
 }
 
 /// Contexte émis vers l'overlay pour la suggestion de Style contextuelle
@@ -701,7 +721,8 @@ pub fn suggestion_context(settings: &AppSettings) -> Option<(String, String)> {
         &empty
     };
 
-    let style = resolve_auto_style(&title, &process, rules);
+    let all_styles = crate::licensing::has("all_styles", license_key, 0);
+    let style = resolve_auto_style_for_access(&title, &process, rules, all_styles);
     Some((process, style))
 }
 
@@ -1150,6 +1171,42 @@ mod tests {
         assert_eq!(
             resolve_auto_style("MonCRM - tableau de bord", "chrome.exe", &rules),
             "nova_style_email"
+        );
+    }
+
+    #[test]
+    fn free_auto_only_resolves_essential_styles() {
+        assert_eq!(
+            resolve_auto_style_for_access(
+                "Boîte de réception - Gmail",
+                "chrome.exe",
+                &no_rules(),
+                false,
+            ),
+            "nova_style_email"
+        );
+        assert_eq!(
+            resolve_auto_style_for_access("", "discord.exe", &no_rules(), false),
+            DEFAULT_AUTO_STYLE_ID
+        );
+    }
+
+    #[test]
+    fn unlocked_auto_keeps_builtin_and_custom_styles() {
+        assert_eq!(
+            resolve_auto_style_for_access("", "discord.exe", &no_rules(), true),
+            "nova_style_messages"
+        );
+
+        let mut rules = HashMap::new();
+        rules.insert("prompt_personnel".to_string(), vec!["moncrm".to_string()]);
+        assert_eq!(
+            resolve_auto_style_for_access("MonCRM", "chrome.exe", &rules, true),
+            "prompt_personnel"
+        );
+        assert_eq!(
+            resolve_auto_style_for_access("MonCRM", "chrome.exe", &rules, false),
+            DEFAULT_AUTO_STYLE_ID
         );
     }
 
