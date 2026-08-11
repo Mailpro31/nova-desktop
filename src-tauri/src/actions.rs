@@ -1345,7 +1345,7 @@ impl ShortcutAction for TranscribeAction {
             // Revert UI state so we don't stay stuck in the recording overlay.
             tm.cancel_stream();
             utils::hide_recording_overlay(app);
-            change_tray_icon(app, TrayIconState::Idle);
+            change_tray_icon(app, TrayIconState::Error);
             if let Some(err) = recording_error {
                 let error_type = if is_microphone_access_denied(&err) {
                     "microphone_permission_denied"
@@ -1671,12 +1671,19 @@ impl ShortcutAction for TranscribeAction {
                                     if paste_result.is_ok() {
                                         utils::hide_recording_overlay(&ah_clone);
                                     }
-                                    change_tray_icon(&ah_clone, TrayIconState::Idle);
+                                    change_tray_icon(
+                                        &ah_clone,
+                                        if paste_result.is_ok() {
+                                            TrayIconState::Idle
+                                        } else {
+                                            TrayIconState::Error
+                                        },
+                                    );
                                 })
                                 .unwrap_or_else(|e| {
                                     error!("Failed to run paste on main thread: {:?}", e);
                                     utils::hide_recording_overlay(&ah);
-                                    change_tray_icon(&ah, TrayIconState::Idle);
+                                    change_tray_icon(&ah, TrayIconState::Error);
                                 });
                             }
                         }
@@ -1707,7 +1714,7 @@ impl ShortcutAction for TranscribeAction {
                                 }
                             }
                             utils::hide_recording_overlay(&ah);
-                            change_tray_icon(&ah, TrayIconState::Idle);
+                            change_tray_icon(&ah, TrayIconState::Error);
                         }
                     }
                 }
