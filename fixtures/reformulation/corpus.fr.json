@@ -22,7 +22,11 @@
       "dictation": "bonjour Jérémie la réunion est déplacée au vingt-cinq novembre deux mille vingt-sept et j'aimerais que tu tiennes Lisa au courant cordialement Sacha",
       "expected": "Bonjour Jérémie,\n\nLa réunion est déplacée au 25 novembre 2027. J'aimerais que tu tiennes Lisa au courant.\n\nCordialement,\nSacha",
       "must_include": ["Bonjour Jérémie", "25 novembre 2027", "Lisa", "Sacha"],
-      "must_exclude": ["Bonjour Sacha", "Je vais tenir Lisa", "Cordialement,\nJérémie"],
+      "must_exclude": [
+        "Bonjour Sacha",
+        "Je vais tenir Lisa",
+        "Cordialement,\nJérémie"
+      ],
       "notes": "Régression réelle : le modèle ne doit jamais inverser le locuteur et écrire la réponse de Jérémie."
     },
     {
