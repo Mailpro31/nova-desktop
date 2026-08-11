@@ -5,11 +5,11 @@
   /* Near-opaque app surface (theme.css --color-background at 98%). Auto-flips
      light/dark with --color-background, so no dark-mode override is needed. */
   --s-surface: color-mix(in srgb, var(--color-background) 98%, transparent);
-  /* Accent = logo pink; flips automatically via --color-logo-primary. */
-  --s-accent: var(--color-logo-primary);
+  /* Apple blue is the only action accent; the glass orb keeps its identity. */
+  --s-accent: #0a84ff;
   --s-accent-soft: color-mix(
     in srgb,
-    var(--color-background-ui) 16%,
+    var(--s-accent) 16%,
     transparent
   );
   /* Neutrals. Hairlines reuse the app's mid-gray at low opacity — same vocabulary
@@ -25,8 +25,7 @@
      the card's max footprint (--ov-work-w for compact, --ov-open-w for Live),
      since the card is anchored flush to the screen edge in CSS. Keep overlay.rs
      in sync when these change. */
-  --ov-rest-w: 172px; /* resting compact pill (minimal, recording) -- roomy enough
-                         for the English working label before the grow starts */
+  --ov-rest-w: 124px; /* 27.9% narrower than 172px; 40px remains clickable */
   --ov-pill-w: 184px; /* base width / Live pill before it opens or collapses */
   --ov-work-w: 216px; /* working pill (transcribing / polishing) -- wide enough to
                          center longer labels; shared by Live (collapsed) + minimal */
@@ -36,11 +35,10 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Accent uses the lighter logo pink in dark — reads better on the dark
-       surface than the deeper UI pink. */
+    /* Keep the same action blue in both themes; only its soft surface changes. */
     --s-accent-soft: color-mix(
       in srgb,
-      var(--color-logo-primary) 20%,
+      var(--s-accent) 20%,
       transparent
     );
     --s-muted: #a3a09a;
@@ -251,7 +249,7 @@
    Same structure for pill & panel; the dot stays anchored left in both. */
 .sbase {
   height: var(--ov-base-h);
-  padding: 0 10px;
+  padding: 0 8px;
   display: grid;
   /* Equal side columns (min 22px to hold the cancel button) keep the center item
      — waveform or label — centered whether the pill is at min width or content-
@@ -261,7 +259,7 @@
 }
 .sbase-l {
   display: flex;
-  padding-left: 5px;
+  padding-left: 0;
   align-items: center;
   justify-self: start;
 }
@@ -317,8 +315,8 @@
 .swave {
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding-right: 8px;
+  gap: 2px;
+  padding-right: 0;
   height: 18px;
   flex: none;
 }
