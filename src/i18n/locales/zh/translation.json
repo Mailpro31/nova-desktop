@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova 正在准备…",
     "transcribing": "正在转录...",
     "processing": "处理中...",
     "chooseStyle": "Choose a Style",

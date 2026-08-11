@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova hazırlanıyor…",
     "transcribing": "Transkribe ediliyor...",
     "processing": "İşleniyor...",
     "chooseStyle": "Choose a Style",

@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova се подготвя…",
     "transcribing": "Транскрибиране...",
     "processing": "Обработка...",
     "chooseStyle": "Choose a Style",
