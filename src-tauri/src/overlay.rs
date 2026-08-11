@@ -43,8 +43,14 @@ tauri_panel! {
 // Compact overlay (Minimal / transcribing / processing): the 40h pill animates
 // width from 172 (--ov-rest-w) to 216 (--ov-work-w) and expands from center, so
 // the window must fit the widest state plus a little slack.
-const OVERLAY_WIDTH: f64 = 256.0;
-const OVERLAY_HEIGHT: f64 = 46.0;
+// Match the native window to the visible card for each compact state. This
+// prevents transparent window slack from intercepting clicks on Windows. The
+// listening width drops 27.9% (172 -> 124px); height stays a usable 40px.
+const OVERLAY_IDLE_WIDTH: f64 = 102.0;
+const OVERLAY_COMPACT_WIDTH: f64 = 126.0;
+const OVERLAY_WORK_WIDTH: f64 = 218.0;
+const OVERLAY_MENU_WIDTH: f64 = 232.0;
+const OVERLAY_HEIGHT: f64 = 42.0;
 
 // État « recording » uniquement : un peu plus haut que le repos pour loger,
 // SOUS/ AU-DESSUS de la pilule (selon le placement), l'indice micro discret
@@ -52,7 +58,7 @@ const OVERLAY_HEIGHT: f64 = 46.0;
 // flush au bord de l'écran, donc cette hauteur supplémentaire n'apparaît que du
 // côté opposé au bord (transparent le reste du temps). On NE grossit PAS l'état
 // de repos (`idle`, toujours affiché) pour ne pas agrandir sa zone de clics.
-const OVERLAY_RECORDING_HEIGHT: f64 = 70.0;
+const OVERLAY_RECORDING_HEIGHT: f64 = 62.0;
 
 // Actual is 394x118, just a little extra
 const OVERLAY_STREAM_WIDTH: f64 = 400.0;
@@ -63,9 +69,11 @@ fn overlay_dimensions(state: &str) -> (f64, f64) {
     if state == "streaming" || state == "paste-fallback" {
         (OVERLAY_STREAM_WIDTH, OVERLAY_STREAM_HEIGHT)
     } else if state == "recording" {
-        (OVERLAY_WIDTH, OVERLAY_RECORDING_HEIGHT)
+        (OVERLAY_COMPACT_WIDTH, OVERLAY_RECORDING_HEIGHT)
+    } else if state == "idle" {
+        (OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
     } else {
-        (OVERLAY_WIDTH, OVERLAY_HEIGHT)
+        (OVERLAY_WORK_WIDTH, OVERLAY_HEIGHT)
     }
 }
 
@@ -276,7 +284,7 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
     // for Layer Shell as we use anchors. On other platforms, we require a monitor.
     #[cfg(not(target_os = "linux"))]
     {
-        let position = calculate_overlay_position(app_handle, OVERLAY_WIDTH, OVERLAY_HEIGHT);
+        let position = calculate_overlay_position(app_handle, OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT);
         if position.is_none() {
             debug!("Failed to determine overlay position, not creating overlay window");
             return;
@@ -292,7 +300,7 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
     )
     .title("Recording")
     .resizable(false)
-    .inner_size(OVERLAY_WIDTH, OVERLAY_HEIGHT)
+    .inner_size(OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
     .shadow(false)
     .maximizable(false)
     .minimizable(false)
@@ -346,7 +354,8 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
 /// Creates the recording overlay panel and keeps it hidden by default (macOS)
 #[cfg(target_os = "macos")]
 pub fn create_recording_overlay(app_handle: &AppHandle) {
-    if let Some((x, y)) = calculate_overlay_position(app_handle, OVERLAY_WIDTH, OVERLAY_HEIGHT) {
+    if let Some((x, y)) = calculate_overlay_position(app_handle, OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
+    {
         // PanelBuilder creates a Tauri window then converts it to NSPanel.
         // The window remains registered, so get_webview_window() still works.
         match PanelBuilder::<_, RecordingOverlayPanel>::new(app_handle, "recording_overlay")
@@ -355,7 +364,7 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
             .position(tauri::Position::Logical(tauri::LogicalPosition { x, y }))
             .level(PanelLevel::Status)
             .size(tauri::Size::Logical(tauri::LogicalSize {
-                width: OVERLAY_WIDTH,
+                width: OVERLAY_IDLE_WIDTH,
                 height: OVERLAY_HEIGHT,
             }))
             .has_shadow(false)
@@ -476,16 +485,16 @@ pub fn show_idle_overlay(app_handle: &AppHandle) {
 #[specta::specta]
 pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String> {
     if let Some(window) = app.get_webview_window("recording_overlay") {
-        let h = if height > OVERLAY_HEIGHT {
-            height
+        let (width, h) = if height > OVERLAY_HEIGHT {
+            (OVERLAY_MENU_WIDTH, height)
         } else {
-            OVERLAY_HEIGHT
+            (OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
         };
         let _ = window.set_size(tauri::Size::Logical(tauri::LogicalSize {
-            width: OVERLAY_WIDTH,
+            width,
             height: h,
         }));
-        if let Some((x, y)) = calculate_overlay_position(&app, OVERLAY_WIDTH, h) {
+        if let Some((x, y)) = calculate_overlay_position(&app, width, h) {
             let _ = window.set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
         }
         #[cfg(target_os = "windows")]
@@ -553,7 +562,7 @@ pub fn update_overlay_position(app_handle: &AppHandle) {
         // Use the window's current size so centering stays correct whether the
         // overlay is in compact or streaming layout.
         let (width, height) = current_overlay_logical_size(&overlay_window)
-            .unwrap_or((OVERLAY_WIDTH, OVERLAY_HEIGHT));
+            .unwrap_or((OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT));
         if let Some((x, y)) = calculate_overlay_position(app_handle, width, height) {
             let _ = overlay_window
                 .set_position(tauri::Position::Logical(tauri::LogicalPosition { x, y }));
@@ -571,6 +580,9 @@ pub fn update_overlay_position(app_handle: &AppHandle) {
             OverlayPosition::Bottom => "bottom",
         };
         let _ = overlay_window.emit("overlay-position", position);
+
+        #[cfg(target_os = "windows")]
+        force_overlay_topmost(&overlay_window);
     }
 }
 
@@ -648,4 +660,24 @@ pub fn emit_levels(app_handle: &AppHandle, levels: &[f32]) {
     // eval_script call per callback, cutting the per-callback WebKit
     // dispatch work in half.
     let _ = app_handle.emit_to("recording_overlay", "mic-level", levels);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn compact_states_use_their_visible_footprint() {
+        assert_eq!(overlay_dimensions("idle"), (102.0, 42.0));
+        assert_eq!(overlay_dimensions("recording"), (126.0, 62.0));
+        assert_eq!(overlay_dimensions("preparing"), (218.0, 42.0));
+        assert_eq!(overlay_dimensions("transcribing"), (218.0, 42.0));
+        assert_eq!(overlay_dimensions("processing"), (218.0, 42.0));
+    }
+
+    #[test]
+    fn expanded_states_keep_their_existing_footprint() {
+        assert_eq!(overlay_dimensions("streaming"), (400.0, 120.0));
+        assert_eq!(overlay_dimensions("paste-fallback"), (400.0, 120.0));
+    }
 }
