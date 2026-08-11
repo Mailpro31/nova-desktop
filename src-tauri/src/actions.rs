@@ -1816,10 +1816,10 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 #[cfg(test)]
 mod tests {
     use super::{
-        apply_custom_variables, build_system_prompt, clean_llm_output, complete_unless_cancelled,
-        custom_variables_block, is_blank_transcription, protect_lexicon, replace_keyword_ci,
-        resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
-        temperature_for_style,
+        apply_custom_variables, build_system_prompt, build_transcript_message, clean_llm_output,
+        complete_unless_cancelled, custom_variables_block, is_blank_transcription, protect_lexicon,
+        replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
+        temperature_for_style, TRANSFORMATION_CONTRACT,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
