@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova 준비 중…",
     "transcribing": "텍스트로 변환 중...",
     "processing": "처리 중...",
     "chooseStyle": "Choose a Style",

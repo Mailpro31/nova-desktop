@@ -16,6 +16,7 @@ import { styleLockFeature } from "@/lib/builtinStyles";
 
 type OverlayState =
   | "idle"
+  | "preparing"
   | "recording"
   | "streaming"
   | "transcribing"
@@ -554,16 +555,22 @@ const RecordingOverlay: React.FC = () => {
 
   // spinner (left) | label (center) | cancel (right) — same 3-zone grid as the
   // listening row, so the label is centered.
-  const workingRow = (label: string, showCancel: boolean) => (
+  const workingRow = (
+    label: string,
+    showCancel: boolean,
+    showProgress = true,
+  ) => (
     <div className="sbase sworking-base">
       <div className="sbase-l">
         <span className="sspinner" />
       </div>
       <span className="swork-label">{label}</span>
       <div className="sbase-r">{showCancel && cancelBtn}</div>
-      <div className="sthinking-track" aria-hidden="true">
-        <i style={{ width: `${thinkingProgress}%` }} />
-      </div>
+      {showProgress && (
+        <div className="sthinking-track" aria-hidden="true">
+          <i style={{ width: `${thinkingProgress}%` }} />
+        </div>
+      )}
     </div>
   );
 
@@ -748,8 +755,12 @@ const RecordingOverlay: React.FC = () => {
   // ---- Minimal overlay: exactly one row at a time — waveform (recording), or a
   // spinner + label (transcribing / processing). Never both. The pill animates its
   // width between them; the cancel button is in both rows so it stays put.
-  const working = state === "transcribing" || state === "processing";
-  const workLabel = t("overlay.processing");
+  const preparing = state === "preparing";
+  const working =
+    preparing || state === "transcribing" || state === "processing";
+  const workLabel = preparing
+    ? t("overlay.preparing")
+    : t("overlay.processing");
 
   if (state === "paste-fallback") {
     return (
@@ -801,7 +812,9 @@ const RecordingOverlay: React.FC = () => {
         <div
           className={`scard compact ${working && isVisible ? "cworking" : ""}`}
         >
-          {working ? workingRow(workLabel, true) : listeningRow(false)}
+          {working
+            ? workingRow(workLabel, true, !preparing)
+            : listeningRow(false)}
         </div>
         {/* Indice micro discret : jamais dans la même rangée que la forme d'onde
             (au-dessus/en dessous de la pilule), ne la recouvre donc jamais. */}

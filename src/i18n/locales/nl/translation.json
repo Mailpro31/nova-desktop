@@ -776,6 +776,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova maakt zich klaar…",
     "transcribing": "Transcriberen...",
     "processing": "Verwerken...",
     "chooseStyle": "Choose a Style",

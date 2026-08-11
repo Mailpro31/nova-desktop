@@ -788,6 +788,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova se prépare…",
     "transcribing": "Transcription...",
     "processing": "Thinking",
     "chooseStyle": "Choisir un Style",

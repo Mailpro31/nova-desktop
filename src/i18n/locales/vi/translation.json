@@ -773,6 +773,7 @@
     }
   },
   "overlay": {
+    "preparing": "Nova đang chuẩn bị…",
     "transcribing": "Đang chuyển đổi...",
     "processing": "Đang xử lý...",
     "chooseStyle": "Choose a Style",

@@ -10,7 +10,9 @@ use crate::managers::transcription::TranscriptionManager;
 use crate::settings::{get_settings, AppSettings, OverlayStyle, APPLE_INTELLIGENCE_PROVIDER_ID};
 use crate::shortcut;
 use crate::tray::{change_tray_icon, TrayIconState};
-use crate::utils::{self, show_recording_overlay, show_transcribing_overlay};
+use crate::utils::{
+    self, show_preparing_overlay, show_recording_overlay, show_transcribing_overlay,
+};
 use crate::TranscriptionCoordinator;
 use ferrous_opencc::{config::BuiltinConfig, OpenCC};
 use log::{debug, error, warn};
@@ -1229,7 +1231,9 @@ impl ShortcutAction for TranscribeAction {
         let tm = app.state::<Arc<TranscriptionManager>>();
         let rm = app.state::<Arc<AudioRecordingManager>>();
 
-        // Load ASR model and VAD model in parallel
+        // Load ASR model and VAD model in parallel. Read the warm-up hint before
+        // kickoff so a real cold start is explained without delaying capture.
+        let needs_model_warmup = tm.needs_model_warmup();
         let kickoff_started = Instant::now();
         tm.initiate_model_load();
         let rm_clone = Arc::clone(&rm);
@@ -1268,7 +1272,7 @@ impl ShortcutAction for TranscribeAction {
         } else {
             VadPolicy::Offline
         };
-        if model_supports_streaming {
+        if model_supports_streaming && !needs_model_warmup {
             tm.start_stream();
         }
         let plan_elapsed = plan_started.elapsed();
@@ -1278,6 +1282,7 @@ impl ShortcutAction for TranscribeAction {
         // pill instead of an oversized transparent live window.
         let overlay_started = Instant::now();
         match settings.overlay_style {
+            _ if needs_model_warmup => show_preparing_overlay(app),
             OverlayStyle::Live if model_supports_streaming => utils::show_streaming_overlay(app),
             OverlayStyle::Live | OverlayStyle::Minimal => show_recording_overlay(app),
             OverlayStyle::None => {} // show_overlay_state no-ops on None anyway
@@ -1340,6 +1345,30 @@ impl ShortcutAction for TranscribeAction {
         if recording_error.is_none() {
             // Dynamically register the cancel shortcut in a separate task to avoid deadlock
             shortcut::register_cancel_shortcut(app);
+
+            // The engine wakes in parallel with capture. Keep the explanatory
+            // state until the attempt completes, then reveal the real listening
+            // UI only if this recording is still active. For Live mode, opening
+            // the panel before the stream avoids clearing its first text event.
+            if needs_model_warmup {
+                let app_clone = app.clone();
+                let tm_clone = Arc::clone(&tm);
+                let rm_clone = Arc::clone(&rm);
+                let use_live_after_warmup =
+                    settings.overlay_style == OverlayStyle::Live && model_supports_streaming;
+                std::thread::spawn(move || {
+                    let loaded = tm_clone.wait_for_model_warmup();
+                    if !rm_clone.is_recording() {
+                        return;
+                    }
+                    if use_live_after_warmup && loaded {
+                        utils::show_streaming_overlay(&app_clone);
+                        tm_clone.start_stream();
+                    } else {
+                        show_recording_overlay(&app_clone);
+                    }
+                });
+            }
         } else {
             // Starting failed (for example due to blocked microphone permissions).
             // Revert UI state so we don't stay stuck in the recording overlay.
