@@ -736,6 +736,12 @@
     "openSettings": "פתח את הגדרות המערכת"
   },
   "errors": {
+    "privateEngineUnavailable": "הבינה הפרטית אינה זמינה",
+    "performanceReducedTitle": "ביצועים מופחתים",
+    "performanceReduced": "Nova משתמשת במצב התואם למחשב זה. אפשר לנסות שוב את ההאצה דרך הגדרות ← תצורה ← מתקדם.",
+    "recordingUnavailableTitle": "ההקלטה אינה זמינה",
+    "postProcessFallbackTitle": "הניסוח מחדש אינו זמין",
+    "postProcessFallback": "הטקסט המקורי הודבק.",
     "cpuOnlyModeTitle": "האצת GPU כבויה",
     "cpuOnlyMode": "מנהל הכרטיס הגרפי תקע את המנוע של Nova בהפעלה קודמת, ולכן התמלול רץ כעת על המעבד (CPU) — לאט יותר אבל עובד. עדכנו את מנהל ההתקן ולאחר מכן הפעילו מחדש את ה-GPU דרך הגדרות ← תצורה ← מתקדם.",
     "loadDirectory": "שגיאה בטעינת תיקייה: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova עודכנה",
+    "updatedVersion": "גרסה {{version}} מוכנה.",
+    "view": "הצגת החידושים",
     "title": "חדש ב-Nova v{{version}}"
   },
   "quota": {

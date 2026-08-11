@@ -723,6 +723,9 @@
     "updateFailed": "Update failed — retry"
   },
   "whatsNew": {
+    "updatedNotice": "Nova has been updated",
+    "updatedVersion": "Version {{version}} is ready.",
+    "view": "View what’s new",
     "title": "New in Nova v{{version}}"
   },
   "common": {
@@ -754,6 +757,12 @@
     "minutes_other": "≈ {{count}} minutes of typing saved"
   },
   "errors": {
+    "privateEngineUnavailable": "Private Intelligence unavailable",
+    "performanceReducedTitle": "Reduced performance",
+    "performanceReduced": "Nova is using a mode compatible with this computer. You can retry acceleration in Settings → Configuration → Advanced.",
+    "recordingUnavailableTitle": "Recording unavailable",
+    "postProcessFallbackTitle": "Reformulation unavailable",
+    "postProcessFallback": "Your original text was pasted.",
     "cpuOnlyModeTitle": "GPU acceleration disabled",
     "cpuOnlyMode": "Your graphics driver hung Nova's engine on a previous launch, so transcription now runs on the CPU — slower, but working. Update your graphics driver, then re-enable the GPU in Settings → Configuration → Advanced.",
     "loadDirectory": "Error loading directory: {{error}}",

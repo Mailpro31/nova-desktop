@@ -1,4 +1,4 @@
-import { listen } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,7 @@ type OverlayState =
   | "streaming"
   | "transcribing"
   | "processing"
+  | "capture-error"
   | "paste-fallback";
 
 type StyleItem = { id: string; name: string };
@@ -83,6 +84,8 @@ const RecordingOverlay: React.FC = () => {
   const [thinkingProgress, setThinkingProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [fallbackText, setFallbackText] = useState("");
+  const [captureErrorMessage, setCaptureErrorMessage] = useState("");
+  const [hasUnreadNotification, setHasUnreadNotification] = useState(false);
   // Bumped on each new streaming session so the Live card remounts fresh (replays
   // the pop-in, and never animates in from the previous panel's open size).
   const [session, setSession] = useState(0);
@@ -396,6 +399,25 @@ const RecordingOverlay: React.FC = () => {
         },
       );
 
+      const unlistenRecordingError = await listen<{
+        error_type: string;
+      }>("recording-error", (event) => {
+        const message =
+          event.payload.error_type === "microphone_permission_denied"
+            ? t("errors.micPermissionDeniedTitle")
+            : event.payload.error_type === "no_input_device"
+              ? t("errors.noInputDeviceTitle")
+              : t("errors.recordingUnavailableTitle");
+        setCaptureErrorMessage(message);
+        setState("capture-error");
+        setIsVisible(true);
+      });
+
+      const unlistenAttention = await listen<boolean>(
+        "notification-attention",
+        (event) => setHasUnreadNotification(event.payload),
+      );
+
       // Contexte de dictée pour la suggestion de Style (point 5). Le backend
       // n'émet que quand un Style FIXE est sélectionné et qu'un autre collerait
       // mieux ; ici on compte par (app, Style) et on ne propose qu'au-delà du
@@ -433,6 +455,8 @@ const RecordingOverlay: React.FC = () => {
         unlistenPhase();
         unlistenThinkingComplete();
         unlistenPasteFallback();
+        unlistenRecordingError();
+        unlistenAttention();
         unlistenContext();
       };
     };
@@ -662,6 +686,7 @@ const RecordingOverlay: React.FC = () => {
               className="sgear"
               aria-label={t("overlay.openSettings")}
               onClick={() => {
+                void emit("notification-attention-seen");
                 commands.showMainWindowCommand().catch(() => {});
               }}
             >
@@ -682,7 +707,11 @@ const RecordingOverlay: React.FC = () => {
                 />
               </svg>
             </button>
-            <span className="sdot" />
+            <span className="sdot">
+              {hasUnreadNotification && (
+                <span className="sunread" aria-hidden="true" />
+              )}
+            </span>
             <button
               className={`sgear sstar ${menuOpen ? "open" : ""}`}
               aria-label={t("overlay.chooseStyle")}
@@ -761,6 +790,32 @@ const RecordingOverlay: React.FC = () => {
   const workLabel = preparing
     ? t("overlay.preparing")
     : t("overlay.processing");
+
+  if (state === "capture-error") {
+    return (
+      <div
+        dir={direction}
+        className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+      >
+        <div className="scard scapture-error" role="alert">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7.5v5.5M12 16.5h.01" />
+          </svg>
+          <strong>{captureErrorMessage}</strong>
+          <button
+            type="button"
+            aria-label={t("common.close")}
+            onClick={() => commands.dismissRecordingOverlay()}
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4 4l8 8m0-8-8 8" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (state === "paste-fallback") {
     return (

@@ -1178,7 +1178,9 @@ pub(crate) async fn process_transcription_output(
                         }
                     }
                 }
-                Ok(None) => {}
+                Ok(None) => {
+                    let _ = app.emit("post-process-fallback", ());
+                }
                 Err(_) => {
                     log::warn!(
                         "Reformulation abandonnée après {:?} — texte brut collé",
@@ -1373,7 +1375,6 @@ impl ShortcutAction for TranscribeAction {
             // Starting failed (for example due to blocked microphone permissions).
             // Revert UI state so we don't stay stuck in the recording overlay.
             tm.cancel_stream();
-            utils::hide_recording_overlay(app);
             change_tray_icon(app, TrayIconState::Error);
             if let Some(err) = recording_error {
                 let error_type = if is_microphone_access_denied(&err) {
@@ -1383,6 +1384,7 @@ impl ShortcutAction for TranscribeAction {
                 } else {
                     "unknown"
                 };
+                crate::overlay::show_capture_error_overlay(app);
                 let _ = app.emit(
                     "recording-error",
                     RecordingErrorEvent {

@@ -736,6 +736,12 @@
     "openSettings": "Öppna systeminställningar"
   },
   "errors": {
+    "privateEngineUnavailable": "Privat intelligens är inte tillgänglig",
+    "performanceReducedTitle": "Minskad prestanda",
+    "performanceReduced": "Nova använder ett läge som är kompatibelt med den här datorn. Du kan försöka med acceleration igen under Inställningar → Konfiguration → Avancerat.",
+    "recordingUnavailableTitle": "Inspelning är inte tillgänglig",
+    "postProcessFallbackTitle": "Omformulering är inte tillgänglig",
+    "postProcessFallback": "Originaltexten klistrades in.",
     "cpuOnlyModeTitle": "GPU-acceleration avstängd",
     "cpuOnlyMode": "Grafikdrivrutinen låste Novas motor vid en tidigare start, så transkriberingen kör nu på CPU:n — långsammare men fungerande. Uppdatera grafikdrivrutinen och aktivera GPU:n igen under Inställningar → Konfiguration → Avancerat.",
     "loadDirectory": "Fel vid laddning av mapp: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova har uppdaterats",
+    "updatedVersion": "Version {{version}} är klar.",
+    "view": "Visa nyheter",
     "title": "Nytt i Nova v{{version}}"
   },
   "quota": {

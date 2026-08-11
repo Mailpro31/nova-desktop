@@ -736,6 +736,12 @@
     "openSettings": "Открыть настройки системы"
   },
   "errors": {
+    "privateEngineUnavailable": "Приватный интеллект недоступен",
+    "performanceReducedTitle": "Сниженная производительность",
+    "performanceReduced": "Nova использует режим, совместимый с этим компьютером. Ускорение можно повторно включить в Настройки → Конфигурация → Дополнительно.",
+    "recordingUnavailableTitle": "Запись недоступна",
+    "postProcessFallbackTitle": "Переформулирование недоступно",
+    "postProcessFallback": "Исходный текст вставлен.",
     "cpuOnlyModeTitle": "GPU-ускорение отключено",
     "cpuOnlyMode": "Графический драйвер заблокировал движок Nova при прошлом запуске, поэтому транскрипция теперь работает на ЦП — медленнее, но работает. Обновите графический драйвер и снова включите GPU в Настройки → Конфигурация → Расширенные.",
     "loadDirectory": "Ошибка загрузки каталога: {{error}}.",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova обновлена",
+    "updatedVersion": "Версия {{version}} готова.",
+    "view": "Посмотреть новинки",
     "title": "Новое в Nova v{{version}}"
   },
   "quota": {

@@ -736,6 +736,12 @@
     "openSettings": "Sistem Ayarlarını Aç"
   },
   "errors": {
+    "privateEngineUnavailable": "Özel Zekâ kullanılamıyor",
+    "performanceReducedTitle": "Düşük performans",
+    "performanceReduced": "Nova bu bilgisayarla uyumlu bir mod kullanıyor. Ayarlar → Yapılandırma → Gelişmiş bölümünden hızlandırmayı yeniden deneyebilirsiniz.",
+    "recordingUnavailableTitle": "Kayıt kullanılamıyor",
+    "postProcessFallbackTitle": "Yeniden biçimlendirme kullanılamıyor",
+    "postProcessFallback": "Özgün metin yapıştırıldı.",
     "cpuOnlyModeTitle": "GPU hızlandırma devre dışı",
     "cpuOnlyMode": "Grafik sürücüsü önceki bir açılışta Nova'nın motorunu kilitledi; bu yüzden transkripsiyon artık CPU üzerinde çalışıyor — daha yavaş ama çalışıyor. Grafik sürücünüzü güncelleyip GPU'yu Ayarlar → Yapılandırma → Gelişmiş altında yeniden etkinleştirin.",
     "loadDirectory": "Dizin yüklenirken hata oluştu: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova güncellendi",
+    "updatedVersion": "{{version}} sürümü hazır.",
+    "view": "Yenilikleri gör",
     "title": "Nova v{{version}} yenilikleri"
   },
   "quota": {

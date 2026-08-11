@@ -736,6 +736,12 @@
     "openSettings": "Mở Cài đặt Hệ thống"
   },
   "errors": {
+    "privateEngineUnavailable": "Trí tuệ riêng tư không khả dụng",
+    "performanceReducedTitle": "Hiệu suất giảm",
+    "performanceReduced": "Nova đang dùng chế độ tương thích với máy tính này. Bạn có thể thử lại tăng tốc trong Cài đặt → Cấu hình → Nâng cao.",
+    "recordingUnavailableTitle": "Không thể ghi âm",
+    "postProcessFallbackTitle": "Không thể diễn đạt lại",
+    "postProcessFallback": "Văn bản gốc đã được dán.",
     "cpuOnlyModeTitle": "Đã tắt tăng tốc GPU",
     "cpuOnlyMode": "Trình điều khiển đồ họa đã làm treo engine của Nova ở lần khởi động trước, nên việc phiên âm hiện chạy trên CPU — chậm hơn nhưng vẫn hoạt động. Hãy cập nhật trình điều khiển đồ họa rồi bật lại GPU trong Cài đặt → Cấu hình → Nâng cao.",
     "loadDirectory": "Lỗi khi tải thư mục: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova đã được cập nhật",
+    "updatedVersion": "Phiên bản {{version}} đã sẵn sàng.",
+    "view": "Xem điểm mới",
     "title": "Điểm mới trong Nova v{{version}}"
   },
   "quota": {

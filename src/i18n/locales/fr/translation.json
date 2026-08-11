@@ -751,6 +751,12 @@
     "minutes_other": "≈ {{count}} minutes de frappe évitées"
   },
   "errors": {
+    "privateEngineUnavailable": "Intelligence privée indisponible",
+    "performanceReducedTitle": "Performances réduites",
+    "performanceReduced": "Nova utilise un mode compatible avec cet ordinateur. Vous pouvez réessayer l’accélération dans Réglages → Configuration → Avancé.",
+    "recordingUnavailableTitle": "Enregistrement indisponible",
+    "postProcessFallbackTitle": "Reformulation indisponible",
+    "postProcessFallback": "Votre texte original a été collé.",
     "cpuOnlyModeTitle": "Accélération GPU désactivée",
     "cpuOnlyMode": "Le pilote graphique a bloqué le moteur de Nova lors d'un lancement précédent : la transcription fonctionne désormais sur le processeur (CPU), plus lentement. Mettez à jour votre pilote graphique, puis réactivez le GPU dans Réglages → Configuration → Avancé.",
     "loadDirectory": "Erreur lors du chargement du répertoire : {{error}}",
@@ -800,6 +806,9 @@
     "styleSuggestionDismiss": "Ne plus afficher"
   },
   "whatsNew": {
+    "updatedNotice": "Nova a été mis à jour",
+    "updatedVersion": "La version {{version}} est prête.",
+    "view": "Voir les nouveautés",
     "title": "Nouveautés de Nova v{{version}}"
   },
   "performanceOptimizer": {

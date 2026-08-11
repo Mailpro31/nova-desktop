@@ -736,6 +736,12 @@
     "openSettings": "システム設定を開く"
   },
   "errors": {
+    "privateEngineUnavailable": "プライベートインテリジェンスを利用できません",
+    "performanceReducedTitle": "パフォーマンス低下",
+    "performanceReduced": "Nova はこのパソコンに対応したモードを使用しています。設定 → 構成 → 詳細からアクセラレーションを再試行できます。",
+    "recordingUnavailableTitle": "録音を利用できません",
+    "postProcessFallbackTitle": "言い換えを利用できません",
+    "postProcessFallback": "元のテキストを貼り付けました。",
     "cpuOnlyModeTitle": "GPUアクセラレーションが無効です",
     "cpuOnlyMode": "前回の起動時にグラフィックドライバーがNovaのエンジンをハングさせたため、文字起こしは現在CPUで動作しています(低速ですが利用可能です)。グラフィックドライバーを更新し、設定 → 構成 → 詳細 でGPUを再有効化してください。",
     "loadDirectory": "ディレクトリの読み込みエラー: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova が更新されました",
+    "updatedVersion": "バージョン {{version}} を利用できます。",
+    "view": "新機能を見る",
     "title": "Nova v{{version}} の新機能"
   },
   "quota": {
