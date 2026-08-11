@@ -267,6 +267,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ onError }) => {
       <DownloadProgressDisplay
         downloadProgress={downloadProgress}
         downloadStats={downloadStats}
+        models={models}
       />
     </>
   );
