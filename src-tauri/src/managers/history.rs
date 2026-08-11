@@ -581,8 +581,22 @@ impl HistoryManager {
         Ok(())
     }
 
+    /// Chemin d'un enregistrement. Le `file_name` vient de la base interne ET
+    /// du frontend (commande IPC) : on n'accepte qu'un nom de fichier SIMPLE,
+    /// sans séparateur ni `..` — sinon, path traversal vers n'importe quel
+    /// fichier du disque (pentest 2026-08-11). En cas de doute, on retombe sur
+    /// un chemin inexistant DANS le dossier (l'appelant obtient juste un
+    /// "fichier introuvable" au lieu d'un fichier arbitraire).
     pub fn get_audio_file_path(&self, file_name: &str) -> PathBuf {
-        self.recordings_dir.join(file_name)
+        let safe = !file_name.is_empty()
+            && !file_name.contains(['/', '\\'])
+            && !file_name.contains("..")
+            && file_name.len() <= 128;
+        if safe {
+            self.recordings_dir.join(file_name)
+        } else {
+            self.recordings_dir.join("__invalid__")
+        }
     }
 
     pub async fn get_entry_by_id(&self, id: i64) -> Result<Option<HistoryEntry>> {
