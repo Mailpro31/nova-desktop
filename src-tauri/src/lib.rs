@@ -974,6 +974,17 @@ pub fn run(cli_args: CliArgs) {
                 });
             }
 
+            // Récupère le jeton gratuit signé (NOVAF1) auprès de trial-check :
+            // sans licence, c'est lui qui authentifie les reformulations Turbo
+            // du palier Gratuit. Défensif — un échec retente au prochain
+            // lancement, la dictée locale n'est jamais impactée.
+            {
+                let token_handle = app_handle.clone();
+                tauri::async_runtime::spawn(async move {
+                    crate::commands::license::fetch_and_store_free_token(&token_handle).await;
+                });
+            }
+
             // Hide tray icon if --no-tray was passed
             if cli_args.no_tray {
                 tray::set_tray_visibility(&app_handle, false);

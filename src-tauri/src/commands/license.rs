@@ -197,6 +197,58 @@ pub fn clear_license(app: AppHandle) -> LicenseStatus {
 const BILLING_PORTAL_URL: &str =
     "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/billing-portal";
 
+/// URL de la fonction edge de scellage d'essai / émission du jeton gratuit.
+const TRIAL_CHECK_URL: &str = "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/trial-check";
+
+#[derive(Deserialize)]
+struct TrialCheckResp {
+    ok: bool,
+    free_token: Option<String>,
+}
+
+/// Récupère (une fois) le jeton gratuit NOVAF1 signé par le serveur et le
+/// stocke dans les réglages. Sans lui, le palier Gratuit ne peut pas utiliser
+/// Turbo (le serveur rejette les jetons auto-fabriqués). Entièrement défensif :
+/// réseau coupé, serveur muet, déjà stocké → aucun changement, aucune erreur.
+/// N'est PAS une commande : appelée en tâche de fond au démarrage.
+pub async fn fetch_and_store_free_token(app: &AppHandle) {
+    let settings = get_settings(app);
+    // Déjà un jeton, ou une licence (inutile, le jeton NOVA1 prime) → rien à faire.
+    if !settings.free_token.trim().is_empty()
+        || settings.license_key.as_deref().unwrap_or("").trim().len() > 0
+    {
+        return;
+    }
+    let machine = crate::machine_id::fingerprint();
+    let client = match reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(12))
+        .build()
+    {
+        Ok(c) => c,
+        Err(_) => return,
+    };
+    let resp = match client
+        .post(TRIAL_CHECK_URL)
+        .json(&serde_json::json!({ "machine": machine }))
+        .send()
+        .await
+    {
+        Ok(r) => r,
+        Err(_) => return,
+    };
+    let parsed: TrialCheckResp = match resp.json().await {
+        Ok(p) => p,
+        Err(_) => return,
+    };
+    let token = match parsed.free_token {
+        Some(t) if parsed.ok && t.starts_with("NOVAF1.") => t,
+        _ => return,
+    };
+    let mut settings = get_settings(app);
+    settings.free_token = token;
+    write_settings(app, settings);
+}
+
 #[derive(Deserialize)]
 struct PortalResp {
     ok: bool,

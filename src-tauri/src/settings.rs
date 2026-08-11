@@ -487,6 +487,12 @@ pub struct AppSettings {
     /// Ancien jeton d'essai, conservé pour compatibilité du store. Jamais lu.
     #[serde(default)]
     pub trial_token: String,
+    /// Jeton gratuit SIGNÉ par le serveur (NOVAF1, émis par trial-check) :
+    /// authentifie les reformulations Turbo du palier Gratuit (20 à vie).
+    /// Vide tant que le premier contact réseau n'a pas eu lieu — l'appel
+    /// Turbo est alors simplement différé au prochain lancement.
+    #[serde(default)]
+    pub free_token: String,
     /// Quota Free : reformulations Turbo appliquées à vie (jamais remis à
     /// zéro). Voir quota.rs.
     #[serde(default)]
@@ -1515,6 +1521,7 @@ pub fn get_default_settings() -> AppSettings {
         trial_started_at: 0,
         trial_expired_notified: false,
         trial_token: String::new(),
+        free_token: String::new(),
         auto_style_rules: HashMap::new(),
         auto_style_blocklist: Vec::new(),
         context_reading_enabled: false,
