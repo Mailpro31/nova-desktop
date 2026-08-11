@@ -21,10 +21,10 @@
       "identifier": "fs:scope",
       "allow": [
         {
-          "path": "$APPDATA"
+          "path": "$APPDATA/app.novaspeak.desktop"
         },
         {
-          "path": "$APPDATA/**/*"
+          "path": "$APPDATA/app.novaspeak.desktop/**/*"
         }
       ]
     }

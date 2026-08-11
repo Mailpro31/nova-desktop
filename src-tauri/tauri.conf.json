@@ -18,7 +18,7 @@
       "assetProtocol": {
         "enable": true,
         "scope": {
-          "allow": ["**"],
+          "allow": ["$APPDATA/app.novaspeak.desktop/**"],
           "requireLiteralLeadingDot": false
         }
       },
