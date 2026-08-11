@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { CircleAlert, Info, TriangleAlert } from "lucide-react";
 import { emit } from "@tauri-apps/api/event";
-import { toast } from "sonner";
+import { toast, type ToastT } from "sonner";
 
 type AttentionVariant = "error" | "warning" | "info";
 type AttentionOptions = NonNullable<Parameters<typeof toast.error>[1]>;
@@ -30,10 +30,10 @@ export const showAttentionToast = (
         ? TriangleAlert
         : Info;
   const iconClass = variant === "error" ? "text-red-400" : "text-mid-gray";
-  const clearUnread = (...args: unknown[]) => {
+  const clearUnread = (dismissedToast: ToastT) => {
     unread.delete(id);
     syncBadge();
-    options.onDismiss?.(...(args as [any]));
+    options.onDismiss?.(dismissedToast);
   };
   const persistentOptions: AttentionOptions = {
     ...options,
