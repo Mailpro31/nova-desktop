@@ -762,13 +762,16 @@ async fn post_process_with_provider(
         provider.id, model
     );
 
-    // Turbo receives either the paid license token or the bounded NOVAFREE
-    // device token. The relay owns the Anthropic key and enforces its quota.
+    // Turbo receives either the paid license token (NOVA1) or the signed free
+    // device token (NOVAF1, fetched from trial-check at startup). The relay
+    // owns the Anthropic key and enforces its quota. An unsigned, self-made
+    // token would be rejected — if we have none yet (first run, offline), the
+    // call fails cleanly and the local engine takes over.
     let api_key = if provider.id == "nova_turbo" {
         if crate::licensing::has("cloud_styles", license_key, 0) {
             license_key.to_string()
         } else {
-            format!("NOVAFREE.{}", crate::machine_id::fingerprint())
+            settings.free_token.clone()
         }
     } else {
         settings
