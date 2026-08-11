@@ -17,6 +17,7 @@ pub enum TrayIconState {
     Idle,
     Recording,
     Transcribing,
+    Error,
 }
 
 /// Tauri managed state holding the last icon state set via `change_tray_icon`.
@@ -103,15 +104,76 @@ pub fn get_icon_path(theme: AppTheme, state: TrayIconState) -> &'static str {
         (AppTheme::Dark, TrayIconState::Idle) => "resources/tray_idle.png",
         (AppTheme::Dark, TrayIconState::Recording) => "resources/tray_recording.png",
         (AppTheme::Dark, TrayIconState::Transcribing) => "resources/tray_transcribing.png",
+        (AppTheme::Dark, TrayIconState::Error) => "resources/tray_idle.png",
         // Light theme uses dark icons
         (AppTheme::Light, TrayIconState::Idle) => "resources/tray_idle_dark.png",
         (AppTheme::Light, TrayIconState::Recording) => "resources/tray_recording_dark.png",
         (AppTheme::Light, TrayIconState::Transcribing) => "resources/tray_transcribing_dark.png",
+        (AppTheme::Light, TrayIconState::Error) => "resources/tray_idle_dark.png",
         // Colored theme uses pink icons (for Linux)
         (AppTheme::Colored, TrayIconState::Idle) => "resources/handy.png",
         (AppTheme::Colored, TrayIconState::Recording) => "resources/recording.png",
         (AppTheme::Colored, TrayIconState::Transcribing) => "resources/transcribing.png",
+        (AppTheme::Colored, TrayIconState::Error) => "resources/handy.png",
     }
+}
+
+/// Adds a compact status badge while preserving the exact Nova orb asset.
+/// Recording uses a solid Apple-blue dot, processing a blue ring, and errors a
+/// sober red dot. Rendering from the source pixels keeps every theme variant
+/// visually identical to the brand glyph instead of maintaining near-duplicate
+/// raster files that can drift.
+fn decorate_tray_icon(image: Image<'static>, state: TrayIconState) -> Image<'static> {
+    if state == TrayIconState::Idle {
+        return image;
+    }
+
+    let width = image.width();
+    let height = image.height();
+    if width < 16 || height < 16 {
+        return image;
+    }
+
+    let mut rgba = image.rgba().to_vec();
+    let scale = width.min(height) as f32 / 64.0;
+    let center_x = width as i32 - (11.0 * scale).round() as i32;
+    let center_y = height as i32 - (11.0 * scale).round() as i32;
+    let outer_radius = (10.0 * scale).round().max(2.0) as i32;
+    let badge_radius = (7.0 * scale).round().max(1.0) as i32;
+    let hole_radius = (3.2 * scale).round().max(1.0) as i32;
+    let outline = [31, 31, 34, 255]; // Nova surface #1F1F22
+    let accent = [10, 132, 255, 255]; // Apple blue #0A84FF
+    let error = [255, 69, 58, 255]; // sober system red
+
+    for y in (center_y - outer_radius).max(0)..=(center_y + outer_radius).min(height as i32 - 1) {
+        for x in (center_x - outer_radius).max(0)..=(center_x + outer_radius).min(width as i32 - 1)
+        {
+            let dx = x - center_x;
+            let dy = y - center_y;
+            let distance_squared = dx * dx + dy * dy;
+            let color = if distance_squared <= badge_radius * badge_radius {
+                match state {
+                    TrayIconState::Recording => accent,
+                    TrayIconState::Transcribing
+                        if distance_squared <= hole_radius * hole_radius =>
+                    {
+                        outline
+                    }
+                    TrayIconState::Transcribing => accent,
+                    TrayIconState::Error => error,
+                    TrayIconState::Idle => continue,
+                }
+            } else if distance_squared <= outer_radius * outer_radius {
+                outline
+            } else {
+                continue;
+            };
+            let offset = ((y as u32 * width + x as u32) * 4) as usize;
+            rgba[offset..offset + 4].copy_from_slice(&color);
+        }
+    }
+
+    Image::new_owned(rgba, width, height)
 }
 
 pub fn change_tray_icon(app: &AppHandle, icon: TrayIconState) {
@@ -128,6 +190,7 @@ pub fn change_tray_icon(app: &AppHandle, icon: TrayIconState) {
         app.path()
             .resolve(icon_path, tauri::path::BaseDirectory::Resource),
     )
+    .map(|image| decorate_tray_icon(image, icon))
     .and_then(|image| tray.set_icon(Some(image)))
     {
         error!("Failed to update tray icon '{icon_path}': {err}");
@@ -275,7 +338,7 @@ fn try_update_tray_menu(app: &AppHandle, locale: Option<&str>) -> tauri::Result<
                 ],
             )?
         }
-        TrayIconState::Idle => Menu::with_items(
+        TrayIconState::Idle | TrayIconState::Error => Menu::with_items(
             app,
             &[
                 &version_i,
@@ -349,8 +412,9 @@ pub fn copy_last_transcript(app: &AppHandle) {
 
 #[cfg(test)]
 mod tests {
-    use super::{last_transcript_text, load_tray_icon};
+    use super::{decorate_tray_icon, last_transcript_text, load_tray_icon, TrayIconState};
     use crate::managers::history::HistoryEntry;
+    use tauri::image::Image;
 
     fn build_entry(transcription: &str, post_processed: Option<&str>) -> HistoryEntry {
         HistoryEntry {
@@ -388,5 +452,31 @@ mod tests {
         let dir = tempfile::tempdir().expect("failed to create tempdir");
         let missing = dir.path().join("does_not_exist.png");
         assert!(load_tray_icon(Ok(missing)).is_err());
+    }
+
+    #[test]
+    fn tray_status_badges_are_distinct_and_preserve_idle_pixels() {
+        let pixels = vec![0_u8; 64 * 64 * 4];
+        let idle = decorate_tray_icon(
+            Image::new_owned(pixels.clone(), 64, 64),
+            TrayIconState::Idle,
+        );
+        let recording = decorate_tray_icon(
+            Image::new_owned(pixels.clone(), 64, 64),
+            TrayIconState::Recording,
+        );
+        let processing = decorate_tray_icon(
+            Image::new_owned(pixels.clone(), 64, 64),
+            TrayIconState::Transcribing,
+        );
+        let error = decorate_tray_icon(
+            Image::new_owned(pixels.clone(), 64, 64),
+            TrayIconState::Error,
+        );
+
+        assert_eq!(idle.rgba(), pixels);
+        assert_ne!(recording.rgba(), processing.rgba());
+        assert_ne!(recording.rgba(), error.rgba());
+        assert_ne!(processing.rgba(), error.rgba());
     }
 }
