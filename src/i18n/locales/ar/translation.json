@@ -736,6 +736,12 @@
     "openSettings": "فتح إعدادات النظام"
   },
   "errors": {
+    "privateEngineUnavailable": "الذكاء الخاص غير متاح",
+    "performanceReducedTitle": "أداء منخفض",
+    "performanceReduced": "تستخدم Nova وضعًا متوافقًا مع هذا الكمبيوتر. يمكنك إعادة محاولة التسريع من الإعدادات ← التكوين ← متقدم.",
+    "recordingUnavailableTitle": "التسجيل غير متاح",
+    "postProcessFallbackTitle": "إعادة الصياغة غير متاحة",
+    "postProcessFallback": "تم لصق النص الأصلي.",
     "cpuOnlyModeTitle": "تم تعطيل تسريع GPU",
     "cpuOnlyMode": "تسبّب برنامج تشغيل الرسومات في تعليق محرك Nova عند تشغيل سابق، لذا تعمل الترجمة الصوتية الآن على المعالج (CPU) — أبطأ لكنها تعمل. حدّث برنامج تشغيل الرسومات ثم أعد تفعيل GPU في الإعدادات ← التهيئة ← متقدم.",
     "loadDirectory": "خطأ في تحميل المجلد: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "تم تحديث Nova",
+    "updatedVersion": "الإصدار {{version}} جاهز.",
+    "view": "عرض الجديد",
     "title": "الجديد في Nova v{{version}}"
   },
   "quota": {

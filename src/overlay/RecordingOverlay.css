@@ -413,6 +413,58 @@
   background: color-mix(in srgb, var(--color-text) 84%, transparent);
 }
 
+/* Immediate capture failure: a persistent, readable reason in the floating
+   surface itself, even while the settings window is hidden. */
+.scard.scapture-error {
+  box-sizing: border-box;
+  width: 280px;
+  min-height: 54px;
+  padding: 8px 10px 8px 12px;
+  border-radius: 13px;
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  color: var(--color-text);
+}
+.scapture-error > svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  fill: none;
+  stroke: #ff453a;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.scapture-error strong {
+  min-width: 0;
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+}
+.scapture-error button {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--s-muted);
+  cursor: pointer;
+}
+.scapture-error button:hover {
+  background: var(--s-hair);
+  color: var(--color-text);
+}
+.scapture-error button svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
 /* Paste fallback: compact, actionable, and kept inside the non-activating
    overlay so clicking Copy never steals the original insertion target. */
 .scard.sfallback {
@@ -593,6 +645,16 @@
 }
 .scard.sidle .sdot {
   position: relative;
+}
+.sunread {
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #ff453a;
+  box-shadow: 0 0 0 2px var(--s-surface);
 }
 .scard.sidle .sdot::before {
   left: -5px;

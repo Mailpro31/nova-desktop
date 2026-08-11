@@ -736,6 +736,12 @@
     "openSettings": "Abrir Ajustes del Sistema"
   },
   "errors": {
+    "privateEngineUnavailable": "Inteligencia privada no disponible",
+    "performanceReducedTitle": "Rendimiento reducido",
+    "performanceReduced": "Nova está usando un modo compatible con este ordenador. Puedes reintentar la aceleración en Ajustes → Configuración → Avanzado.",
+    "recordingUnavailableTitle": "Grabación no disponible",
+    "postProcessFallbackTitle": "Reformulación no disponible",
+    "postProcessFallback": "Se pegó el texto original.",
     "cpuOnlyModeTitle": "Aceleración GPU desactivada",
     "cpuOnlyMode": "El controlador gráfico bloqueó el motor de Nova en un inicio anterior, por lo que la transcripción ahora usa la CPU — más lenta, pero funcional. Actualiza el controlador gráfico y vuelve a activar la GPU en Ajustes → Configuración → Avanzado.",
     "loadDirectory": "Error al cargar el directorio: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova se ha actualizado",
+    "updatedVersion": "La versión {{version}} está lista.",
+    "view": "Ver novedades",
     "title": "Nuevo en Nova v{{version}}"
   },
   "quota": {

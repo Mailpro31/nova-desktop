@@ -736,6 +736,12 @@
     "openSettings": "Systemeinstellungen öffnen"
   },
   "errors": {
+    "privateEngineUnavailable": "Private Intelligenz nicht verfügbar",
+    "performanceReducedTitle": "Reduzierte Leistung",
+    "performanceReduced": "Nova verwendet einen mit diesem Computer kompatiblen Modus. Sie können die Beschleunigung unter Einstellungen → Konfiguration → Erweitert erneut versuchen.",
+    "recordingUnavailableTitle": "Aufnahme nicht verfügbar",
+    "postProcessFallbackTitle": "Neuformulierung nicht verfügbar",
+    "postProcessFallback": "Der Originaltext wurde eingefügt.",
     "cpuOnlyModeTitle": "GPU-Beschleunigung deaktiviert",
     "cpuOnlyMode": "Der Grafiktreiber hat die Engine von Nova beim letzten Start blockiert. Die Transkription läuft daher auf der CPU — langsamer, aber funktionsfähig. Aktualisieren Sie den Grafiktreiber und aktivieren Sie die GPU wieder unter Einstellungen → Konfiguration → Erweitert.",
     "loadDirectory": "Fehler beim Laden des Verzeichnisses: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova wurde aktualisiert",
+    "updatedVersion": "Version {{version}} ist bereit.",
+    "view": "Neuigkeiten ansehen",
     "title": "Neu in Nova v{{version}}"
   },
   "quota": {

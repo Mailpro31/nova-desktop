@@ -7,6 +7,7 @@ import {
   Suspense,
 } from "react";
 import { toast, Toaster } from "sonner";
+import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -32,6 +33,10 @@ import { useSettings } from "./hooks/useSettings";
 import { useSettingsStore } from "./stores/settingsStore";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
+import {
+  markAttentionSeen,
+  showAttentionToast,
+} from "@/lib/attentionNotifications";
 
 type OnboardingStep =
   | "accessibility"
@@ -147,15 +152,16 @@ function App() {
         const description = t(platformKey, {
           defaultValue: t("errors.micPermissionDenied.generic"),
         });
-        toast.error(t("errors.micPermissionDeniedTitle"), { description });
+        showAttentionToast("error", t("errors.micPermissionDeniedTitle"), {
+          description,
+        });
       } else if (error_type === "no_input_device") {
-        toast.error(t("errors.noInputDeviceTitle"), {
+        showAttentionToast("error", t("errors.noInputDeviceTitle"), {
           description: t("errors.noInputDevice"),
         });
       } else {
-        toast.error(
-          t("errors.recordingFailed", { error: detail ?? "Unknown error" }),
-        );
+        console.warn("Recording failed:", detail);
+        showAttentionToast("error", t("errors.recordingUnavailableTitle"));
       }
     });
     return () => {
@@ -169,7 +175,7 @@ function App() {
   // so we show a localized, user-friendly message here instead of the raw error.
   useEffect(() => {
     const unlisten = listen("paste-error", () => {
-      toast.error(t("errors.pasteFailedTitle"), {
+      showAttentionToast("error", t("errors.pasteFailedTitle"), {
         description: t("errors.pasteFailed"),
       });
     });
@@ -182,9 +188,8 @@ function App() {
   // The payload is the backend error message (also logged to handy.log).
   useEffect(() => {
     const unlisten = listen<string>("transcription-error", (event) => {
-      toast.error(t("errors.transcriptionFailedTitle"), {
-        description: event.payload,
-      });
+      console.warn("Transcription failed:", event.payload);
+      showAttentionToast("error", t("errors.transcriptionFailedTitle"));
     });
     return () => {
       unlisten.then((fn) => fn());
@@ -193,7 +198,9 @@ function App() {
 
   useEffect(() => {
     const unlisten = listen<string>("dictionary-word-added", (event) => {
-      toast.success(t("voiceCommands.added", { word: event.payload }));
+      toast.success(t("voiceCommands.added", { word: event.payload }), {
+        duration: 1500,
+      });
     });
     return () => {
       unlisten.then((fn) => fn());
@@ -204,8 +211,8 @@ function App() {
   // a été collé côté Rust après POST_PROCESS_TIMEOUT. On le signale.
   useEffect(() => {
     const unlisten = listen("post-process-timeout", () => {
-      toast.warning(t("errors.postProcessTimeoutTitle"), {
-        description: t("errors.postProcessTimeout"),
+      showAttentionToast("warning", t("errors.postProcessFallbackTitle"), {
+        description: t("errors.postProcessFallback"),
       });
     });
     return () => {
@@ -213,14 +220,33 @@ function App() {
     };
   }, [t]);
 
+  useEffect(() => {
+    const unlisten = listen("post-process-fallback", () => {
+      showAttentionToast("warning", t("errors.postProcessFallbackTitle"), {
+        description: t("errors.postProcessFallback"),
+      });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  useEffect(() => {
+    const unlisten = listen("notification-attention-seen", () => {
+      markAttentionSeen();
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, []);
+
   // Le moteur en ligne est réservé à Nova Ultra : la reformulation a été
   // ignorée silencieusement côté Rust — on explique au lieu de laisser croire
   // à un bug.
   useEffect(() => {
     const unlisten = listen("online-engine-locked", () => {
-      toast.info(t("license.onlineEngineLockedTitle"), {
+      showAttentionToast("info", t("license.onlineEngineLockedTitle"), {
         description: t("license.onlineEngineLocked"),
-        duration: 8000,
       });
     });
     return () => {
@@ -232,9 +258,8 @@ function App() {
   // utilisé à la place. Sans ce toast, le repli était invisible.
   useEffect(() => {
     const unlisten = listen<string>("microphone-not-found", (event) => {
-      toast.warning(t("errors.microphoneNotFoundTitle"), {
+      showAttentionToast("warning", t("errors.microphoneNotFoundTitle"), {
         description: t("errors.microphoneNotFound", { name: event.payload }),
-        duration: 8000,
       });
     });
     return () => {
@@ -246,9 +271,8 @@ function App() {
   // Rust. On informe et on propose de passer à un palier supérieur.
   useEffect(() => {
     const unlisten = listen("quota-blocked", () => {
-      toast.error(t("quota.blockedTitle"), {
+      showAttentionToast("error", t("quota.blockedTitle"), {
         description: t("quota.blockedDescription"),
-        duration: 8000,
         action: {
           label: t("quota.upgrade"),
           onClick: () => {
@@ -270,9 +294,8 @@ function App() {
       .isTranscribeCpuOnlyMode()
       .then((cpuOnly) => {
         if (cpuOnly) {
-          toast.warning(t("errors.cpuOnlyModeTitle"), {
-            description: t("errors.cpuOnlyMode"),
-            duration: 10000,
+          showAttentionToast("warning", t("errors.performanceReducedTitle"), {
+            description: t("errors.performanceReduced"),
           });
         }
       })
@@ -283,15 +306,7 @@ function App() {
   useEffect(() => {
     const unlisten = listen<ModelStateEvent>("model-state-changed", (event) => {
       if (event.payload.event_type === "loading_failed") {
-        toast.error(
-          t("errors.modelLoadFailed", {
-            model:
-              event.payload.model_name || t("errors.modelLoadFailedUnknown"),
-          }),
-          {
-            description: event.payload.error,
-          },
-        );
+        showAttentionToast("error", t("errors.privateEngineUnavailable"));
       }
     });
     return () => {
@@ -399,6 +414,12 @@ function App() {
   const toaster = (
     <Toaster
       theme="system"
+      icons={{
+        success: <CircleCheck size={18} strokeWidth={2} aria-hidden="true" />,
+        info: <Info size={18} strokeWidth={2} aria-hidden="true" />,
+        warning: <TriangleAlert size={18} strokeWidth={2} aria-hidden="true" />,
+        error: <CircleAlert size={18} strokeWidth={2} aria-hidden="true" />,
+      }}
       toastOptions={{
         unstyled: true,
         classNames: {

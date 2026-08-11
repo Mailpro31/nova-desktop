@@ -736,6 +736,12 @@
     "openSettings": "打开系统设置"
   },
   "errors": {
+    "privateEngineUnavailable": "私密智能不可用",
+    "performanceReducedTitle": "性能降低",
+    "performanceReduced": "Nova 正在使用与此电脑兼容的模式。你可以在设置 → 配置 → 高级中重试加速。",
+    "recordingUnavailableTitle": "无法录音",
+    "postProcessFallbackTitle": "无法改写",
+    "postProcessFallback": "已粘贴原始文本。",
     "cpuOnlyModeTitle": "GPU 加速已禁用",
     "cpuOnlyMode": "上次启动时显卡驱动程序导致 Nova 引擎卡死,因此转写现在使用 CPU 运行——速度较慢但可正常使用。请更新显卡驱动程序,然后在 设置 → 配置 → 高级 中重新启用 GPU。",
     "loadDirectory": "加载目录时出错: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova 已更新",
+    "updatedVersion": "版本 {{version}} 已就绪。",
+    "view": "查看新功能",
     "title": "Nova v{{version}} 新功能"
   },
   "quota": {

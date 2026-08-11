@@ -736,6 +736,12 @@
     "openSettings": "Otwórz ustawienia systemowe"
   },
   "errors": {
+    "privateEngineUnavailable": "Prywatna inteligencja niedostępna",
+    "performanceReducedTitle": "Obniżona wydajność",
+    "performanceReduced": "Nova używa trybu zgodnego z tym komputerem. Przyspieszenie możesz ponowić w Ustawienia → Konfiguracja → Zaawansowane.",
+    "recordingUnavailableTitle": "Nagrywanie niedostępne",
+    "postProcessFallbackTitle": "Przeformułowanie niedostępne",
+    "postProcessFallback": "Wklejono oryginalny tekst.",
     "cpuOnlyModeTitle": "Akceleracja GPU wyłączona",
     "cpuOnlyMode": "Sterownik graficzny zablokował silnik Nova podczas poprzedniego uruchomienia, więc transkrypcja działa teraz na CPU — wolniej, ale działa. Zaktualizuj sterownik graficzny i ponownie włącz GPU w Ustawienia → Konfiguracja → Zaawansowane.",
     "loadDirectory": "Błąd wczytywania katalogu: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova została zaktualizowana",
+    "updatedVersion": "Wersja {{version}} jest gotowa.",
+    "view": "Zobacz nowości",
     "title": "Nowości w Nova v{{version}}"
   },
   "quota": {

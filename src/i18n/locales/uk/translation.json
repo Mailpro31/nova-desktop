@@ -736,6 +736,12 @@
     "openSettings": "Відкрити Системні налаштування"
   },
   "errors": {
+    "privateEngineUnavailable": "Приватний інтелект недоступний",
+    "performanceReducedTitle": "Знижена продуктивність",
+    "performanceReduced": "Nova використовує режим, сумісний із цим комп’ютером. Прискорення можна повторно ввімкнути в Налаштування → Конфігурація → Додатково.",
+    "recordingUnavailableTitle": "Запис недоступний",
+    "postProcessFallbackTitle": "Переформулювання недоступне",
+    "postProcessFallback": "Вставлено оригінальний текст.",
     "cpuOnlyModeTitle": "GPU-прискорення вимкнено",
     "cpuOnlyMode": "Графічний драйвер заблокував рушій Nova під час попереднього запуску, тому транскрипція тепер працює на ЦП — повільніше, але працює. Оновіть графічний драйвер і знову ввімкніть GPU у Налаштування → Конфігурація → Розширені.",
     "loadDirectory": "Помилка завантаження папки: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova оновлено",
+    "updatedVersion": "Версія {{version}} готова.",
+    "view": "Переглянути новинки",
     "title": "Нове в Nova v{{version}}"
   },
   "quota": {
