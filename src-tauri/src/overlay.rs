@@ -670,6 +670,7 @@ mod tests {
     fn compact_states_use_their_visible_footprint() {
         assert_eq!(overlay_dimensions("idle"), (102.0, 42.0));
         assert_eq!(overlay_dimensions("recording"), (126.0, 62.0));
+        assert_eq!(overlay_dimensions("preparing"), (218.0, 42.0));
         assert_eq!(overlay_dimensions("transcribing"), (218.0, 42.0));
         assert_eq!(overlay_dimensions("processing"), (218.0, 42.0));
     }
