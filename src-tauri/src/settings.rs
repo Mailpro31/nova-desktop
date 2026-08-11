@@ -706,9 +706,8 @@ fn default_theme() -> Theme {
 
 fn default_post_process_enabled() -> bool {
     // Les Styles sont au cœur de Nova : la reformulation est active dès la
-    // première installation. Il y a un seul raccourci principal
-    // (`transcribe_with_post_process`, option+space par défaut) qui transcrit
-    // et applique le Style sélectionné (défaut « Transcription améliorée »).
+    // première installation. Le raccourci principal `transcribe` transcrit et
+    // applique le Style sélectionné (défaut « Transcription améliorée »).
     // N'affecte que les installs neuves : les utilisateurs existants conservent
     // leur valeur persistée.
     true
@@ -1453,6 +1452,8 @@ pub fn get_default_settings() -> AppSettings {
     #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
     let default_post_process_shortcut = "alt+shift+space";
 
+    // Conservé dans les réglages pour compatibilité avec les installations
+    // existantes et les entrées CLI, mais jamais enregistré comme raccourci.
     bindings.insert(
         "transcribe_with_post_process".to_string(),
         ShortcutBinding {

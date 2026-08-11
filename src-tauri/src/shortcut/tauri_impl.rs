@@ -20,12 +20,8 @@ pub fn init_shortcuts(app: &AppHandle) {
 
     // Register all default shortcuts, applying user customizations
     for (id, default_binding) in default_bindings {
-        if id == "cancel" {
-            continue; // Skip cancel shortcut, it will be registered dynamically
-        }
-        // Skip post-processing shortcut when the feature is disabled
-        if id == "transcribe_with_post_process" && !user_settings.post_process_enabled {
-            continue;
+        if id == "cancel" || id == "transcribe_with_post_process" {
+            continue; // Cancel is dynamic; the legacy second dictation shortcut stays inactive.
         }
         let binding = user_settings
             .bindings

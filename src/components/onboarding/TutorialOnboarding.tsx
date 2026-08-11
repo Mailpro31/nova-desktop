@@ -41,7 +41,7 @@ const TutorialOnboarding: React.FC<TutorialOnboardingProps> = ({
   const [polishedText, setPolishedText] = useState("");
   const entryIdRef = useRef<number | null>(null);
 
-  const binding = getSetting("bindings")?.["transcribe_with_post_process"];
+  const binding = getSetting("bindings")?.["transcribe"];
   const shortcutLabel = binding
     ? formatKeyCombination(binding.current_binding, osType)
     : "…";
