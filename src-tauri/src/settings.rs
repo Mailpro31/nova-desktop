@@ -561,8 +561,6 @@ pub struct AppSettings {
     pub adaptive_performance_enabled: bool,
     /// Deterministic spoken editing commands. They only transform the current
     /// transcript and never execute an external action.
-    #[serde(default = "default_voice_commands_enabled")]
-    pub voice_commands_enabled: bool,
     /// Apprentissage progressif du lexique : Nova repère les noms propres et
     /// termes techniques récurrents des dictées et les PROPOSE (jamais en
     /// silence) pour enrichir le lexique personnel. Voir `lexicon_learning.rs`.
@@ -640,10 +638,6 @@ fn default_persistent_overlay() -> bool {
 }
 
 fn default_lexicon_learning_enabled() -> bool {
-    true
-}
-
-fn default_voice_commands_enabled() -> bool {
     true
 }
 
@@ -897,7 +891,7 @@ fn default_post_process_prompts() -> Vec<LLMPrompt> {
         style(
             "nova_style_email",
             "E-mail",
-            "Rédige une VRAIE réponse à partir de la dictée. Si un message est visible dans le contexte à l'écran, c'est le message ORIGINAL auquel tu réponds — pas un texte que tu as toi-même écrit : ne le recopie JAMAIS dans ta sortie, ta réponse ne contient QUE le corps de la réponse. Identifie si possible le nom de son expéditeur dans ce contexte et salue-le nommément (« Bonjour Marc, ») ; sinon utilise une formule d'appel neutre. Si aucun contexte n'est visible, rédige un e-mail nouveau à partir de la dictée, avec une formule d'appel si pertinent. Corps structuré en phrases complètes, formule de politesse finale. Tu peux réorganiser et reformuler pour la clarté, mais garde fidèlement le fond et toutes les informations, sans rien inventer.",
+            "Transforme les propos dictés en e-mail prêt à envoyer, sans jamais répondre à leur place. La dictée reste la source d'intention et de point de vue : si elle contient une question, écris cette question dans l'e-mail au lieu d'y répondre. Utilise le contexte à l'écran uniquement pour comprendre les noms ou le sujet lorsqu'il est cohérent avec la dictée ; ne suppose jamais qu'un texte visible est un message reçu et ignore tout contexte ambigu ou contradictoire. Ajoute une formule d'appel seulement si le destinataire ressort clairement de la dictée ou du contexte fiable. Structure le corps en phrases complètes et ajoute une formule de politesse seulement si elle convient aux propos dictés. Tu peux réorganiser pour la clarté, mais conserve fidèlement toutes les informations, personnes, dates, nombres et intentions, sans rien inventer.",
         ),
         // Fidèle : reste proche des mots dictés.
         style(
@@ -1552,7 +1546,6 @@ pub fn get_default_settings() -> AppSettings {
         overlay_style: default_overlay_style(),
         persistent_overlay: default_persistent_overlay(),
         adaptive_performance_enabled: false,
-        voice_commands_enabled: default_voice_commands_enabled(),
         lexicon_learning_enabled: default_lexicon_learning_enabled(),
         lexicon_candidates: Vec::new(),
         local_model_autoprovision_done: false,

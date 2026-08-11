@@ -19,7 +19,6 @@ import { KeyboardImplementationSelector } from "../debug/KeyboardImplementationS
 import { VoiceActivityDetection } from "../VoiceActivityDetection";
 import { AccelerationSelector } from "../AccelerationSelector";
 import { LazyStreamClose } from "../LazyStreamClose";
-import { VoiceCommands } from "../VoiceCommands";
 import { LexiconLearning } from "../LexiconLearning";
 
 export const AdvancedSettings: React.FC = () => {
@@ -46,7 +45,6 @@ export const AdvancedSettings: React.FC = () => {
 
       <SettingsGroup title={t("settings.advanced.groups.transcription")}>
         <VoiceActivityDetection descriptionMode="tooltip" grouped={true} />
-        <VoiceCommands descriptionMode="tooltip" grouped={true} />
         <CustomWords descriptionMode="tooltip" grouped />
         <LexiconLearning descriptionMode="tooltip" grouped={true} />
         <AppendTrailingSpace descriptionMode="tooltip" grouped={true} />

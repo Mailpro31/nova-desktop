@@ -6,6 +6,26 @@
   },
   "cases": [
     {
+      "id": "fr-never-answer-001",
+      "category": "transformation-contract",
+      "style": "default_improve_transcriptions",
+      "dictation": "est-ce que tu peux m'envoyer le compte rendu avant dix-sept heures",
+      "expected": "Est-ce que tu peux m'envoyer le compte rendu avant 17 h ?",
+      "must_include": ["m'envoyer le compte rendu", "17 h", "?"],
+      "must_exclude": ["Bien sûr", "Voici", "je peux", "Je vous envoie"],
+      "notes": "Une question dictée est mise au propre, jamais traitée comme une question adressée au modèle."
+    },
+    {
+      "id": "fr-never-answer-002",
+      "category": "transformation-contract",
+      "style": "nova_style_email",
+      "dictation": "bonjour Jérémie la réunion est déplacée au vingt-cinq novembre deux mille vingt-sept et j'aimerais que tu tiennes Lisa au courant cordialement Sacha",
+      "expected": "Bonjour Jérémie,\n\nLa réunion est déplacée au 25 novembre 2027. J'aimerais que tu tiennes Lisa au courant.\n\nCordialement,\nSacha",
+      "must_include": ["Bonjour Jérémie", "25 novembre 2027", "Lisa", "Sacha"],
+      "must_exclude": ["Bonjour Sacha", "Je vais tenir Lisa", "Cordialement,\nJérémie"],
+      "notes": "Régression réelle : le modèle ne doit jamais inverser le locuteur et écrire la réponse de Jérémie."
+    },
+    {
       "id": "fr-autocorrection-001",
       "category": "auto-correction",
       "style": "nova_style_todo",
