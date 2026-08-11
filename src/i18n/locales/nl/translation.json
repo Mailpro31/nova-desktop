@@ -723,6 +723,9 @@
     "updateFailed": "Update mislukt — opnieuw"
   },
   "whatsNew": {
+    "updatedNotice": "Nova is bijgewerkt",
+    "updatedVersion": "Versie {{version}} is gereed.",
+    "view": "Bekijk wat nieuw is",
     "title": "Nieuw in Nova v{{version}}"
   },
   "common": {
@@ -739,6 +742,12 @@
     "openSettings": "Systeeminstellingen openen"
   },
   "errors": {
+    "privateEngineUnavailable": "Privé-intelligentie niet beschikbaar",
+    "performanceReducedTitle": "Lagere prestaties",
+    "performanceReduced": "Nova gebruikt een modus die geschikt is voor deze computer. Je kunt versnelling opnieuw proberen via Instellingen → Configuratie → Geavanceerd.",
+    "recordingUnavailableTitle": "Opname niet beschikbaar",
+    "postProcessFallbackTitle": "Herformulering niet beschikbaar",
+    "postProcessFallback": "De oorspronkelijke tekst is geplakt.",
     "cpuOnlyModeTitle": "GPU-versnelling uitgeschakeld",
     "cpuOnlyMode": "Het grafische stuurprogramma blokkeerde de engine van Nova bij een eerdere start, dus draait transcriptie nu op de CPU — langzamer, maar werkend. Werk het stuurprogramma bij en schakel de GPU weer in via Instellingen → Configuratie → Geavanceerd.",
     "loadDirectory": "Fout bij laden van map: {{error}}",

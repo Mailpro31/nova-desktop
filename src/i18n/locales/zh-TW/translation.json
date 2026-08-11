@@ -736,6 +736,12 @@
     "openSettings": "開啟系統設定"
   },
   "errors": {
+    "privateEngineUnavailable": "私密智慧不可用",
+    "performanceReducedTitle": "效能降低",
+    "performanceReduced": "Nova 正在使用與此電腦相容的模式。你可以在設定 → 配置 → 進階中重試加速。",
+    "recordingUnavailableTitle": "無法錄音",
+    "postProcessFallbackTitle": "無法改寫",
+    "postProcessFallback": "已貼上原始文字。",
     "cpuOnlyModeTitle": "GPU 加速已停用",
     "cpuOnlyMode": "上次啟動時顯示卡驅動程式導致 Nova 引擎當住,因此轉寫現在改用 CPU 執行——速度較慢但仍可運作。請更新顯示卡驅動程式,然後在 設定 → 設定 → 進階 重新啟用 GPU。",
     "loadDirectory": "載入目錄時發生錯誤: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova 已更新",
+    "updatedVersion": "版本 {{version}} 已就緒。",
+    "view": "查看新功能",
     "title": "Nova v{{version}} 新功能"
   },
   "quota": {

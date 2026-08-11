@@ -63,10 +63,14 @@ const OVERLAY_RECORDING_HEIGHT: f64 = 62.0;
 // Actual is 394x118, just a little extra
 const OVERLAY_STREAM_WIDTH: f64 = 400.0;
 const OVERLAY_STREAM_HEIGHT: f64 = 120.0;
+const OVERLAY_ERROR_WIDTH: f64 = 280.0;
+const OVERLAY_ERROR_HEIGHT: f64 = 54.0;
 
 /// Overlay window size (logical) for a given UI state.
 fn overlay_dimensions(state: &str) -> (f64, f64) {
-    if state == "streaming" || state == "paste-fallback" {
+    if state == "capture-error" {
+        (OVERLAY_ERROR_WIDTH, OVERLAY_ERROR_HEIGHT)
+    } else if state == "streaming" || state == "paste-fallback" {
         (OVERLAY_STREAM_WIDTH, OVERLAY_STREAM_HEIGHT)
     } else if state == "recording" {
         (OVERLAY_COMPACT_WIDTH, OVERLAY_RECORDING_HEIGHT)
@@ -394,7 +398,7 @@ fn show_overlay_state(app_handle: &AppHandle, state: &str) {
     // Whether the overlay shows at all is governed by overlay_style; position
     // only chooses Top vs Bottom placement.
     let settings = settings::get_settings(app_handle);
-    if settings.overlay_style == OverlayStyle::None {
+    if settings.overlay_style == OverlayStyle::None && state != "capture-error" {
         return;
     }
 
@@ -446,6 +450,11 @@ pub fn show_recording_overlay(app_handle: &AppHandle) {
 /// Explains a cold engine start while microphone capture starts independently.
 pub fn show_preparing_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "preparing");
+}
+
+/// Capture errors must surface even when the regular overlay is disabled.
+pub fn show_capture_error_overlay(app_handle: &AppHandle) {
+    show_overlay_state(app_handle, "capture-error");
 }
 
 /// Shows the larger streaming overlay that displays live transcription text

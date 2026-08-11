@@ -736,6 +736,12 @@
     "openSettings": "Abrir Configurações do Sistema"
   },
   "errors": {
+    "privateEngineUnavailable": "Inteligência privada indisponível",
+    "performanceReducedTitle": "Desempenho reduzido",
+    "performanceReduced": "Nova está usando um modo compatível com este computador. Você pode tentar a aceleração novamente em Configurações → Configuração → Avançado.",
+    "recordingUnavailableTitle": "Gravação indisponível",
+    "postProcessFallbackTitle": "Reformulação indisponível",
+    "postProcessFallback": "O texto original foi colado.",
     "cpuOnlyModeTitle": "Aceleração de GPU desativada",
     "cpuOnlyMode": "O driver gráfico bloqueou o motor do Nova num arranque anterior, por isso a transcrição agora usa o CPU — mais lenta, mas funcional. Atualize o driver gráfico e reative a GPU em Definições → Configuração → Avançado.",
     "loadDirectory": "Erro ao carregar diretório: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova foi atualizado",
+    "updatedVersion": "A versão {{version}} está pronta.",
+    "view": "Ver novidades",
     "title": "Novidades no Nova v{{version}}"
   },
   "quota": {

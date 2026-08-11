@@ -736,6 +736,12 @@
     "openSettings": "Otevřít Nastavení systému"
   },
   "errors": {
+    "privateEngineUnavailable": "Soukromá inteligence není dostupná",
+    "performanceReducedTitle": "Snížený výkon",
+    "performanceReduced": "Nova používá režim kompatibilní s tímto počítačem. Akceleraci můžete zkusit znovu v Nastavení → Konfigurace → Pokročilé.",
+    "recordingUnavailableTitle": "Nahrávání není dostupné",
+    "postProcessFallbackTitle": "Přeformulování není dostupné",
+    "postProcessFallback": "Byl vložen původní text.",
     "cpuOnlyModeTitle": "Akcelerace GPU vypnuta",
     "cpuOnlyMode": "Ovladač grafiky zablokoval engine Novy při minulém spuštění, takže přepis nyní běží na CPU — pomaleji, ale funkčně. Aktualizujte grafický ovladač a pak GPU znovu povolte v Nastavení → Konfigurace → Pokročilé.",
     "loadDirectory": "Chyba při načítání adresáře: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova byla aktualizována",
+    "updatedVersion": "Verze {{version}} je připravena.",
+    "view": "Zobrazit novinky",
     "title": "Novinky v Nova v{{version}}"
   },
   "quota": {

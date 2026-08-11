@@ -723,6 +723,9 @@
     "updateFailed": "अद्यावधिक असफल — पुनः प्रयास"
   },
   "whatsNew": {
+    "updatedNotice": "Nova अद्यावधिक भयो",
+    "updatedVersion": "संस्करण {{version}} तयार छ।",
+    "view": "नयाँ कुरा हेर्नुहोस्",
     "title": "Nova v{{version}} मा नयाँ"
   },
   "common": {
@@ -739,6 +742,12 @@
     "openSettings": "सिस्टम सेटिङहरू खोल्नुहोस्"
   },
   "errors": {
+    "privateEngineUnavailable": "निजी बुद्धिमत्ता उपलब्ध छैन",
+    "performanceReducedTitle": "कार्यसम्पादन घटाइएको",
+    "performanceReduced": "Nova ले यो कम्प्युटरसँग मिल्ने मोड प्रयोग गरिरहेको छ। सेटिङ → कन्फिगरेसन → उन्नतमा एक्सेलेरेसन फेरि प्रयास गर्न सक्नुहुन्छ।",
+    "recordingUnavailableTitle": "रेकर्डिङ उपलब्ध छैन",
+    "postProcessFallbackTitle": "पुनर्लेखन उपलब्ध छैन",
+    "postProcessFallback": "मूल पाठ टाँसियो।",
     "cpuOnlyModeTitle": "GPU त्वरण अक्षम गरियो",
     "cpuOnlyMode": "अघिल्लो सुरुमा ग्राफिक्स ड्राइभरले Nova को इन्जिन रोकियो, त्यसैले ट्रान्सक्रिप्सन अब CPU मा चल्छ — ढिलो तर चल्ने। ग्राफिक्स ड्राइभर अपडेट गर्नुहोस् र सेटिङ → कन्फिगरेसन → उन्नत मा GPU फेरि सक्षम गर्नुहोस्।",
     "loadDirectory": "डाइरेक्टरी लोड गर्दा त्रुटि: {{error}}",

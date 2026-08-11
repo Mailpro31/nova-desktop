@@ -736,6 +736,12 @@
     "openSettings": "Отваряне на системните настройки"
   },
   "errors": {
+    "privateEngineUnavailable": "Частният интелект не е наличен",
+    "performanceReducedTitle": "Намалена производителност",
+    "performanceReduced": "Nova използва режим, съвместим с този компютър. Можете да опитате ускорението отново в Настройки → Конфигурация → Разширени.",
+    "recordingUnavailableTitle": "Записът не е наличен",
+    "postProcessFallbackTitle": "Преформулирането не е налично",
+    "postProcessFallback": "Оригиналният текст е поставен.",
     "cpuOnlyModeTitle": "GPU ускорението е изключено",
     "cpuOnlyMode": "Графичният драйвер блокира двигателя на Nova при предишно стартиране, затова транскрипцията вече работи на CPU — по-бавно, но работи. Актуализирайте графичния драйвер и включете отново GPU в Настройки → Конфигурация → Разширени.",
     "loadDirectory": "Грешка при зареждане на папката: {{error}}",
@@ -785,6 +791,9 @@
     "styleSuggestionDismiss": "Don't show again"
   },
   "whatsNew": {
+    "updatedNotice": "Nova беше актуализирана",
+    "updatedVersion": "Версия {{version}} е готова.",
+    "view": "Вижте новостите",
     "title": "Ново в Nova v{{version}}"
   },
   "quota": {
