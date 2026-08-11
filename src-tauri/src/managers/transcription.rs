@@ -1124,6 +1124,13 @@ impl TranscriptionManager {
         .emit(&self.app_handle);
     }
 
+    /// Affiche la transcription FINALE dans la bulle. Pour les modèles sans
+    /// streaming (batch), c'est le seul moment où l'utilisateur voit sa dictée
+    /// avant le collage — pendant la reformulation.
+    pub fn emit_final_text(&self, text: &str) {
+        self.emit_stream_text(text, "");
+    }
+
     fn emit_stream_text(&self, committed: &str, tentative: &str) {
         let _ = StreamTextEvent {
             committed: committed.to_string(),

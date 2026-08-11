@@ -10,9 +10,7 @@ use crate::managers::transcription::TranscriptionManager;
 use crate::settings::{get_settings, AppSettings, OverlayStyle, APPLE_INTELLIGENCE_PROVIDER_ID};
 use crate::shortcut;
 use crate::tray::{change_tray_icon, TrayIconState};
-use crate::utils::{
-    self, show_processing_overlay, show_recording_overlay, show_transcribing_overlay,
-};
+use crate::utils::{self, show_recording_overlay, show_transcribing_overlay};
 use crate::TranscriptionCoordinator;
 use ferrous_opencc::{config::BuiltinConfig, OpenCC};
 use log::{debug, error, warn};
@@ -1557,12 +1555,21 @@ impl ShortcutAction for TranscribeAction {
                                 transcription_time.elapsed(),
                             );
 
+                            // Modèle SANS streaming : la bulle n'a montré que la
+                            // waveform pendant la dictée. On affiche maintenant le
+                            // texte transcrit dans la bulle (panneau Live), le
+                            // temps de la reformulation — l'utilisateur voit ce
+                            // qu'il a dit AVANT le collage, sur tous les modèles.
+                            if !use_streaming_overlay {
+                                utils::show_streaming_overlay(&ah);
+                                tm.emit_final_text(&transcription);
+                            }
+
                             if post_process {
-                                if use_streaming_overlay {
-                                    tm.emit_stream_working(StreamWorkKind::Polishing);
-                                } else {
-                                    show_processing_overlay(&ah);
-                                }
+                                // Phase « reformulation » du panneau Live :
+                                // spinner sous le texte, qu'on soit en streaming
+                                // natif ou en affichage final (ci-dessus).
+                                tm.emit_stream_working(StreamWorkKind::Polishing);
                             }
                             let output_processing_time = Instant::now();
                             let Some(processed) = complete_unless_cancelled(

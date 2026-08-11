@@ -502,7 +502,10 @@ fn cursor_over_overlay(app: &AppHandle, window: &tauri::webview::WebviewWindow) 
     let y = pos.y as f64 / scale;
     let w = size.width as f64 / scale;
     let h = size.height as f64 / scale;
-    let (cx, cy) = (cx as f64, cy as f64);
+    // Enigo renvoie des pixels PHYSIQUES : sans la division par le facteur
+    // d'échelle, le test de survol ratait dès que Windows est en zoom 125/150 %
+    // — la bulle restait traversante et aucun clic n'arrivait jamais.
+    let (cx, cy) = (cx as f64 / scale, cy as f64 / scale);
     Some(cx >= x && cx < x + w && cy >= y && cy < y + h)
 }
 
