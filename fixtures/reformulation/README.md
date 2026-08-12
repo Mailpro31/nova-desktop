@@ -8,16 +8,14 @@ réagir à des mots-clés ou à des commandes préétablies.
 
 ## Fichiers
 
-- `corpus.fr.json` — dictées réelles en **français** (hésitations,
+- `corpus.fr.json` — **100** dictées réelles en **français** (hésitations,
   auto-corrections, réordonnancements, argot, anglicismes, phrases incomplètes,
   ponctuation orale).
-- `corpus.en.json` — corpus **anglais** équivalent, avec ses propres expressions
+- `corpus.en.json` — **100** dictées réelles en **anglais**, avec ses propres expressions
   idiomatiques (ce n'est **pas** une traduction du FR).
-- `style-prompts.json` — copie des consignes de Style par défaut
-  (`src-tauri/src/settings.rs::default_post_process_prompts`) que le harnais
-  utilise pour construire le prompt système. À garder synchronisé avec le Rust
-  (un test Rust vérifie la présence de la consigne d'auto-correction dans chaque
-  Style, cf. `settings.rs`).
+- `style-prompts.json` — copie des consignes persistées de Style. Le harnais
+  applique ensuite le contrat compact et versionné `rewrite-v2`, comme le Rust ;
+  ces consignes restent le repli des Styles personnalisés.
 
 ## Schéma d'un cas
 

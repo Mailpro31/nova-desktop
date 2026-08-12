@@ -718,8 +718,8 @@ fn default_show_tray_icon() -> bool {
 }
 
 fn default_post_process_provider_id() -> String {
-    // The ten daily Free rewrites use Nova Turbo (Anthropic) by default.
-    // Users can still explicitly select the private local engine.
+    // Le mode automatique privilégie le moteur local puis utilise Turbo si le
+    // local échoue et que l'offre de l'utilisateur l'autorise.
     "nova_turbo".to_string()
 }
 
@@ -733,7 +733,7 @@ fn default_post_process_providers() -> Vec<PostProcessProvider> {
         // /models ; sortie structurée désactivée (chemin ${output}).
         PostProcessProvider {
             id: "nova_turbo".to_string(),
-            label: "Turbo".to_string(),
+            label: "Auto · Local → Turbo".to_string(),
             base_url: "https://cvpucqsxgjczkdskohte.supabase.co/functions/v1/styles-chat"
                 .to_string(),
             allow_base_url_edit: false,
@@ -1292,6 +1292,13 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
             .find(|p| p.id == provider.id)
         {
             Some(existing) => {
+                // Les libellés des moteurs font partie du produit (pas d'une
+                // configuration utilisateur) : synchroniser aussi les anciennes
+                // installations lors d'un renommage de l'architecture.
+                if existing.label != provider.label {
+                    existing.label = provider.label.clone();
+                    changed = true;
+                }
                 // Sync supports_structured_output field for existing providers (migration)
                 if existing.supports_structured_output != provider.supports_structured_output {
                     debug!(

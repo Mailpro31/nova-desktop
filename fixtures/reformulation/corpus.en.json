@@ -894,6 +894,107 @@
       "must_include": ["server", "night", "tomorrow"],
       "must_exclude": ["the server restarts because", "here is", "I cannot"],
       "notes": "A question inside notes must not trigger an invented factual answer."
+    },
+    {
+      "id": "en-autocorrection-091",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "hello Camille send the file to Paul actually no to Pauline before Thursday best Malik",
+      "expected": "Hello Camille,\n\nSend the file to Pauline before Thursday.\n\nBest,\nMalik",
+      "must_include": ["Camille", "Pauline", "Thursday", "Malik"],
+      "must_exclude": ["to Paul ", "actually no"],
+      "notes": "The corrected recipient replaces the abandoned version without swapping roles."
+    },
+    {
+      "id": "en-autocorrection-092",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "meet me at gate B sorry gate D at six thirty pm",
+      "expected": "Meet me at gate D at 6:30 p.m.",
+      "must_include": ["gate D", "6:30"],
+      "must_exclude": ["gate B", "sorry"],
+      "notes": "A location correction and time should be resolved together."
+    },
+    {
+      "id": "en-transform-only-093",
+      "category": "transformation-only",
+      "style": "default_improve_transcriptions",
+      "dictation": "how do we deploy version one point zero thirty-five to the repo git hub",
+      "expected": "How do we deploy version 1.0.35 to the repo GitHub?",
+      "must_include": ["How", "1.0.35", "repo GitHub", "?"],
+      "must_exclude": ["here is how", "I can"],
+      "notes": "A technical question is transcribed and never solved by the model."
+    },
+    {
+      "id": "en-autocorrection-094",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "call Leah tomorrow then send the quote no the quote must go today and the call stays tomorrow",
+      "expected": "- Send the quote today\n- Call Leah tomorrow",
+      "must_include": ["quote today", "Leah tomorrow"],
+      "must_exclude": ["quote tomorrow", " no "],
+      "notes": "A correction must only alter the targeted task."
+    },
+    {
+      "id": "en-faithfulness-095",
+      "category": "faithfulness",
+      "style": "nova_style_messages",
+      "dictation": "I do not want to cancel the order or change the address",
+      "expected": "I do not want to cancel the order or change the address.",
+      "must_include": ["do not want", "cancel", "change the address"],
+      "notes": "The negative intent must remain intact."
+    },
+    {
+      "id": "en-private-data-096",
+      "category": "private-data",
+      "style": "nova_style_email",
+      "dictation": "please use my I B A N for the refund and my address for the letter",
+      "expected": "Please use my {{IBAN}} for the refund and my {{address}} for the letter.",
+      "must_include": ["{{IBAN}}", "{{address}}", "refund"],
+      "notes": "Multiple private shortcuts are placed without exposing their values."
+    },
+    {
+      "id": "en-autocorrection-097",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "marketing budget forty thousand dollars no thirty-five thousand and launch on June twelfth actually the thirteenth",
+      "expected": "## Budget and launch\n\n- Marketing budget: $35,000\n- Launch: June 13",
+      "must_include": ["35", "June 13"],
+      "must_exclude": ["40", "June 12", "actually"],
+      "notes": "Two independent corrections in one dictation must both be applied."
+    },
+    {
+      "id": "en-transform-only-098",
+      "category": "transformation-only",
+      "style": "nova_style_prompt",
+      "dictation": "ask the AI to compare the plans but do not perform the comparison now",
+      "expected": "Compare the available plans and present their differences without taking any other action.",
+      "must_include": ["Compare", "plans"],
+      "must_exclude": ["here is the comparison", "the best plan is"],
+      "notes": "Prompt style prepares a future instruction without executing it."
+    },
+    {
+      "id": "en-technical-099",
+      "category": "technical-terms",
+      "style": "default_improve_transcriptions",
+      "dictation": "the G P U is disabled so the C P U takes over through the local A P I",
+      "expected": "The GPU is disabled, so the CPU takes over through the local API.",
+      "must_include": ["GPU", "CPU", "API"],
+      "notes": "Technical acronyms spoken letter by letter are normalized."
+    },
+    {
+      "id": "en-context-100",
+      "category": "context-safety",
+      "style": "nova_style_email",
+      "dictation": "hello Nora can you tell me why the invoice is blocked best Hugo",
+      "expected": "Hello Nora,\n\nCan you tell me why the invoice is blocked?\n\nBest,\nHugo",
+      "must_include": ["Hello Nora", "why", "invoice", "Hugo"],
+      "must_exclude": [
+        "Hello Hugo",
+        "the invoice is blocked because",
+        "Best,\nNora"
+      ],
+      "notes": "The model does not answer the question or infer facts from screen context."
     }
   ]
 }

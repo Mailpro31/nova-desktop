@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/core";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 
@@ -73,6 +74,15 @@ const formatTime = (date: Date): string => {
   )}`;
 };
 
+const levelFromPersistedLine = (line: string): number => {
+  const upper = line.toUpperCase();
+  if (upper.includes(" ERROR ") || upper.includes("[ERROR]")) return 5;
+  if (upper.includes(" WARN ") || upper.includes("[WARN]")) return 4;
+  if (upper.includes(" DEBUG ") || upper.includes("[DEBUG]")) return 2;
+  if (upper.includes(" TRACE ") || upper.includes("[TRACE]")) return 1;
+  return 3;
+};
+
 interface LiveLogViewerProps {
   descriptionMode?: "tooltip" | "inline";
   grouped?: boolean;
@@ -100,6 +110,22 @@ export const LiveLogViewer: React.FC<LiveLogViewerProps> = ({
   // Subscribe to the backend log stream. Lines land in a ref buffer rather than
   // state so high log volume never overwhelms React.
   useEffect(() => {
+    let cancelled = false;
+    invoke<string[]>("get_recent_log_lines", { maxLines: 500 })
+      .then((persisted) => {
+        if (cancelled || persisted.length === 0) return;
+        const loaded = persisted.map((message) => ({
+          id: idRef.current++,
+          level: levelFromPersistedLine(message),
+          time: "--:--:--",
+          message,
+        }));
+        setLogs(loaded.slice(-MAX_LINES));
+      })
+      .catch((error) => {
+        console.error("Failed to load recent logs:", error);
+      });
+
     const unlisten = listen<LogEventPayload>("log://log", (event) => {
       const line: LogLine = {
         id: idRef.current++,
@@ -115,6 +141,7 @@ export const LiveLogViewer: React.FC<LiveLogViewerProps> = ({
     });
 
     return () => {
+      cancelled = true;
       unlisten.then((fn) => fn());
     };
   }, []);

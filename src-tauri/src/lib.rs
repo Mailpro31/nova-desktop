@@ -25,6 +25,7 @@ mod overlay;
 mod performance;
 pub mod portable;
 mod quota;
+mod rewrite;
 mod screen_ocr;
 mod screen_vision;
 mod screen_vlm;
@@ -647,6 +648,7 @@ pub fn run(cli_args: CliArgs) {
             commands::accept_lexicon_suggestion,
             commands::dismiss_lexicon_suggestion,
             commands::get_log_dir_path,
+            commands::get_recent_log_lines,
             commands::set_log_level,
             commands::open_recordings_folder,
             commands::open_log_dir,
