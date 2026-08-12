@@ -1003,6 +1003,22 @@ pub fn foreground_meeting_target(settings: &AppSettings) -> Option<(String, u32)
 /// dictée. Lu à l'instant de la reformulation puis jeté (rien n'est conservé).
 #[cfg(target_os = "windows")]
 pub fn read_focused_context(user_blocklist: &[String], max_chars: usize) -> Option<String> {
+    read_focused_context_impl(user_blocklist, max_chars, true)
+}
+
+/// Fast path used by Nova Air: UI Automation only, never OCR. OCR can occupy a
+/// modest CPU for several seconds and must not consume Air's inference budget.
+#[cfg(target_os = "windows")]
+pub fn read_focused_context_fast(user_blocklist: &[String], max_chars: usize) -> Option<String> {
+    read_focused_context_impl(user_blocklist, max_chars, false)
+}
+
+#[cfg(target_os = "windows")]
+fn read_focused_context_impl(
+    user_blocklist: &[String],
+    max_chars: usize,
+    allow_ocr: bool,
+) -> Option<String> {
     use uiautomation::patterns::{UITextPattern, UIValuePattern};
     use uiautomation::UIAutomation;
 
@@ -1049,7 +1065,7 @@ pub fn read_focused_context(user_blocklist: &[String], max_chars: usize) -> Opti
     }
 
     let trimmed = text.trim();
-    if trimmed.is_empty() {
+    if trimmed.is_empty() && allow_ocr {
         // Palier B : accessibilité muette (apps Chromium/Electron, rendu canvas)
         // → repli OCR local sur une capture de la fenêtre au premier plan.
         return crate::screen_ocr::ocr_focused_window(max_chars);
@@ -1061,6 +1077,11 @@ pub fn read_focused_context(user_blocklist: &[String], max_chars: usize) -> Opti
 
 #[cfg(not(target_os = "windows"))]
 pub fn read_focused_context(_user_blocklist: &[String], _max_chars: usize) -> Option<String> {
+    None
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn read_focused_context_fast(_user_blocklist: &[String], _max_chars: usize) -> Option<String> {
     None
 }
 

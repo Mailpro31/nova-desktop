@@ -862,7 +862,9 @@ pub async fn prewarm_if_selected(app: &AppHandle, settings: &crate::settings::Ap
         return;
     }
     match settings.active_post_process_provider() {
-        Some(p) if p.id == PROVIDER_ID => {}
+        // Nova Turbo is the automatic Local -> Turbo route, so it benefits
+        // from the exact same local prewarm as explicit Private Intelligence.
+        Some(p) if p.id == PROVIDER_ID || p.id == "nova_turbo" => {}
         _ => return,
     }
     let profile_id = match settings.post_process_models.get(PROVIDER_ID) {
