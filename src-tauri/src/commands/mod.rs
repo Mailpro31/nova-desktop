@@ -101,6 +101,65 @@ pub fn get_log_dir_path(app: AppHandle) -> Result<String, String> {
     Ok(log_dir.to_string_lossy().to_string())
 }
 
+/// Charge la fin du journal courant pour que l'écran Debug montre aussi ce qui
+/// s'est passé AVANT son ouverture. Lecture bornée (256 Kio / 1000 lignes) afin
+/// de rester instantanée même sur une longue session.
+#[tauri::command]
+#[specta::specta]
+pub fn get_recent_log_lines(
+    app: AppHandle,
+    max_lines: Option<usize>,
+) -> Result<Vec<String>, String> {
+    use std::io::{Read, Seek, SeekFrom};
+
+    let log_dir = crate::portable::app_log_dir(&app)
+        .map_err(|e| format!("Failed to get log directory: {e}"))?;
+    let mut files = std::fs::read_dir(&log_dir)
+        .map_err(|e| format!("Failed to read log directory: {e}"))?
+        .filter_map(Result::ok)
+        .filter(|entry| {
+            entry
+                .file_type()
+                .map(|kind| kind.is_file())
+                .unwrap_or(false)
+        })
+        .collect::<Vec<_>>();
+    files.sort_by_key(|entry| {
+        entry
+            .metadata()
+            .and_then(|metadata| metadata.modified())
+            .ok()
+    });
+    let Some(latest) = files.last() else {
+        return Ok(Vec::new());
+    };
+
+    let mut file = std::fs::File::open(latest.path())
+        .map_err(|e| format!("Failed to open current log: {e}"))?;
+    let len = file
+        .metadata()
+        .map_err(|e| format!("Failed to inspect current log: {e}"))?
+        .len();
+    const MAX_BYTES: u64 = 256 * 1024;
+    let start = len.saturating_sub(MAX_BYTES);
+    file.seek(SeekFrom::Start(start))
+        .map_err(|e| format!("Failed to seek current log: {e}"))?;
+    let mut text = String::new();
+    file.read_to_string(&mut text)
+        .map_err(|e| format!("Failed to read current log: {e}"))?;
+    if start > 0 {
+        if let Some(first_newline) = text.find('\n') {
+            text.drain(..=first_newline);
+        }
+    }
+    let cap = max_lines.unwrap_or(500).clamp(1, 1_000);
+    let mut lines = text.lines().map(str::to_string).collect::<Vec<_>>();
+    if lines.len() > cap {
+        lines.drain(..lines.len() - cap);
+    }
+    Ok(lines)
+}
+
 #[specta::specta]
 #[tauri::command]
 pub fn set_log_level(app: AppHandle, level: LogLevel) -> Result<(), String> {

@@ -904,6 +904,107 @@
         "je ne peux pas"
       ],
       "notes": "Une interrogation au sein de notes n'appelle aucune réponse factuelle inventée."
+    },
+    {
+      "id": "fr-autocorrection-091",
+      "category": "auto-correction",
+      "style": "nova_style_email",
+      "dictation": "bonjour Camille envoie le dossier à Paul enfin non à Pauline avant jeudi cordialement Malik",
+      "expected": "Bonjour Camille,\n\nEnvoie le dossier à Pauline avant jeudi.\n\nCordialement,\nMalik",
+      "must_include": ["Camille", "Pauline", "jeudi", "Malik"],
+      "must_exclude": ["à Paul ", "enfin non"],
+      "notes": "La destinataire corrigée remplace la version abandonnée sans inverser les rôles."
+    },
+    {
+      "id": "fr-autocorrection-092",
+      "category": "auto-correction",
+      "style": "nova_style_messages",
+      "dictation": "on se retrouve porte B pardon porte D à dix-huit heures trente",
+      "expected": "On se retrouve porte D à 18 h 30.",
+      "must_include": ["porte D", "18"],
+      "must_exclude": ["porte B", "pardon"],
+      "notes": "Une correction de lieu et une heure doivent être résolues ensemble."
+    },
+    {
+      "id": "fr-transform-only-093",
+      "category": "transformation-only",
+      "style": "default_improve_transcriptions",
+      "dictation": "comment est-ce qu'on déploie la version un point zéro trente-cinq sur le repo git hub",
+      "expected": "Comment est-ce qu'on déploie la version 1.0.35 sur le repo GitHub ?",
+      "must_include": ["Comment", "1.0.35", "repo GitHub", "?"],
+      "must_exclude": ["voici comment", "je peux"],
+      "notes": "Une question technique est transcrite, jamais résolue par le modèle."
+    },
+    {
+      "id": "fr-autocorrection-094",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "appeler Léa demain puis envoyer le devis non le devis doit partir aujourd'hui et l'appel reste demain",
+      "expected": "- Envoyer le devis aujourd'hui\n- Appeler Léa demain",
+      "must_include": ["devis aujourd'hui", "Léa demain"],
+      "must_exclude": ["devis demain", "non"],
+      "notes": "Une correction ne doit modifier que la tâche visée."
+    },
+    {
+      "id": "fr-faithfulness-095",
+      "category": "faithfulness",
+      "style": "nova_style_messages",
+      "dictation": "je ne veux ni annuler la commande ni modifier l'adresse",
+      "expected": "Je ne veux ni annuler la commande ni modifier l'adresse.",
+      "must_include": ["ne veux ni", "ni modifier", "adresse"],
+      "notes": "La double négation doit rester intacte."
+    },
+    {
+      "id": "fr-private-data-096",
+      "category": "private-data",
+      "style": "nova_style_email",
+      "dictation": "merci d'utiliser mon i b a n pour le remboursement et mon adresse pour le courrier",
+      "expected": "Merci d'utiliser mon {{IBAN}} pour le remboursement et mon {{adresse}} pour le courrier.",
+      "must_include": ["{{IBAN}}", "{{adresse}}", "remboursement"],
+      "notes": "Plusieurs raccourcis privés sont placés sans exposer leurs valeurs au modèle."
+    },
+    {
+      "id": "fr-autocorrection-097",
+      "category": "auto-correction",
+      "style": "nova_style_notes",
+      "dictation": "budget marketing quarante mille euros non trente-cinq mille et lancement le douze enfin le treize juin",
+      "expected": "## Budget et lancement\n\n- Budget marketing : 35 000 €\n- Lancement : 13 juin",
+      "must_include": ["35", "13 juin"],
+      "must_exclude": ["40", "12 juin", "non", "enfin"],
+      "notes": "Deux corrections indépendantes dans une même dictée doivent être appliquées."
+    },
+    {
+      "id": "fr-transform-only-098",
+      "category": "transformation-only",
+      "style": "nova_style_prompt",
+      "dictation": "demande à l'IA de comparer les offres mais ne fais pas la comparaison maintenant",
+      "expected": "Compare les offres disponibles et présente leurs différences, sans effectuer d'autre action.",
+      "must_include": ["Compare", "offres"],
+      "must_exclude": ["voici la comparaison", "la meilleure offre est"],
+      "notes": "Le style Prompt prépare l'instruction future sans l'exécuter."
+    },
+    {
+      "id": "fr-technical-099",
+      "category": "technical-terms",
+      "style": "default_improve_transcriptions",
+      "dictation": "le g p u est désactivé donc le c p u prend le relais via l'a p i locale",
+      "expected": "Le GPU est désactivé, donc le CPU prend le relais via l'API locale.",
+      "must_include": ["GPU", "CPU", "API"],
+      "notes": "Les acronymes techniques dictés lettre par lettre sont normalisés."
+    },
+    {
+      "id": "fr-context-100",
+      "category": "context-safety",
+      "style": "nova_style_email",
+      "dictation": "bonjour Nora peux-tu me dire pourquoi la facture est bloquée cordialement Hugo",
+      "expected": "Bonjour Nora,\n\nPeux-tu me dire pourquoi la facture est bloquée ?\n\nCordialement,\nHugo",
+      "must_include": ["Bonjour Nora", "pourquoi", "facture", "Hugo"],
+      "must_exclude": [
+        "Bonjour Hugo",
+        "la facture est bloquée parce que",
+        "Cordialement,\nNora"
+      ],
+      "notes": "Le modèle ne répond pas à la question et ne déduit rien du contexte écran."
     }
   ]
 }
