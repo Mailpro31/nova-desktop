@@ -819,6 +819,91 @@
       "must_include": ["B1234"],
       "must_exclude": ["Anatole", "pardon", "A comme"],
       "notes": "Correction d'un code épelé, l'alphabet radio n'est pas recopié."
+    },
+    {
+      "id": "fr-transform-only-083",
+      "category": "transformation-only",
+      "style": "default_improve_transcriptions",
+      "dictation": "est-ce que tu peux m'envoyer le contrat avant dix-sept heures",
+      "expected": "Est-ce que tu peux m'envoyer le contrat avant 17 h ?",
+      "must_include": ["contrat", "17", "?"],
+      "must_exclude": ["bien sûr", "je peux", "voici le contrat"],
+      "notes": "Une question dictée reste une question et n'est jamais traitée comme une demande au modèle."
+    },
+    {
+      "id": "fr-transform-only-084",
+      "category": "transformation-only",
+      "style": "nova_style_email",
+      "dictation": "bonjour Jérémie la réunion est déplacée au vingt-cinq novembre deux mille vingt-sept et j'aimerais que tu tiennes Lisa au courant cordialement Sacha",
+      "expected": "Bonjour Jérémie,\n\nLa réunion est déplacée au 25 novembre 2027. J'aimerais que tu tiennes Lisa au courant.\n\nCordialement,\nSacha",
+      "must_include": ["Bonjour Jérémie", "25 novembre 2027", "Lisa", "Sacha"],
+      "must_exclude": [
+        "Bonjour Sacha",
+        "Je vais tenir Lisa",
+        "Cordialement,\nJérémie"
+      ],
+      "notes": "Le locuteur, le destinataire et la signature ne doivent jamais être inversés."
+    },
+    {
+      "id": "fr-private-data-085",
+      "category": "private-data",
+      "style": "nova_style_email",
+      "dictation": "tu trouveras mon i-ban et mon adresse ci-dessous",
+      "expected": "Tu trouveras mon {{IBAN}} et mon {{adresse}} ci-dessous.",
+      "must_include": ["{{IBAN}}", "{{adresse}}"],
+      "notes": "Les informations personnelles sont représentées par des repères locaux, y compris quand un acronyme est séparé phonétiquement."
+    },
+    {
+      "id": "fr-context-086",
+      "category": "context-safety",
+      "style": "nova_style_email",
+      "dictation": "bonjour Marc peux-tu confirmer le budget de trente mille euros cordialement Inès",
+      "expected": "Bonjour Marc,\n\nPeux-tu confirmer le budget de 30 000 € ?\n\nCordialement,\nInès",
+      "must_include": ["Bonjour Marc", "30 000", "?", "Inès"],
+      "must_exclude": ["Bonjour Inès", "Je confirme", "Cordialement,\nMarc"],
+      "notes": "Le contexte écran ne doit jamais transformer le brouillon en message reçu."
+    },
+    {
+      "id": "fr-autocorrection-087",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "acheter trois carottes deux salades puis faire nettoyer la piscine ah non en fait nettoyer la piscine en premier",
+      "expected": "- Faire nettoyer la piscine\n- Acheter 3 carottes\n- Acheter 2 salades",
+      "must_include": ["piscine", "3 carottes", "2 salades"],
+      "must_exclude": ["ah non", "en fait"],
+      "notes": "La correction orale change l'ordre des tâches sans commande vocale prédéfinie."
+    },
+    {
+      "id": "fr-negation-088",
+      "category": "faithfulness",
+      "style": "nova_style_messages",
+      "dictation": "ne valide surtout pas le devis avant que Léa ait vérifié les montants",
+      "expected": "Ne valide surtout pas le devis avant que Léa ait vérifié les montants.",
+      "must_include": ["Ne valide surtout pas", "Léa", "montants"],
+      "notes": "Une négation critique doit être conservée."
+    },
+    {
+      "id": "fr-technical-089",
+      "category": "technical-terms",
+      "style": "nova_style_messages",
+      "dictation": "j'ai poussé la branche sur le ripo guithub et ouvert la pull request",
+      "expected": "J'ai poussé la branche sur le repo GitHub et ouvert la pull request.",
+      "must_include": ["repo GitHub", "pull request"],
+      "notes": "Le lexique produit corrige les formes phonétiques des termes techniques."
+    },
+    {
+      "id": "fr-no-meta-090",
+      "category": "transformation-only",
+      "style": "nova_style_notes",
+      "dictation": "pourquoi le serveur redémarre toutes les nuits c'est le point à vérifier demain",
+      "expected": "## Point à vérifier\n\n- Pourquoi le serveur redémarre-t-il toutes les nuits ?\n- Vérification prévue demain.",
+      "must_include": ["serveur", "nuits", "demain"],
+      "must_exclude": [
+        "le serveur redémarre parce que",
+        "voici",
+        "je ne peux pas"
+      ],
+      "notes": "Une interrogation au sein de notes n'appelle aucune réponse factuelle inventée."
     }
   ]
 }

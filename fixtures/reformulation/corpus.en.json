@@ -813,6 +813,87 @@
       "must_include": ["80", "tip"],
       "must_exclude": ["forty", "40", "well no"],
       "notes": "Amount correction with added detail."
+    },
+    {
+      "id": "en-transform-only-083",
+      "category": "transformation-only",
+      "style": "default_improve_transcriptions",
+      "dictation": "could you send me the contract before five pm",
+      "expected": "Could you send me the contract before 5 p.m.?",
+      "must_include": ["contract", "5", "?"],
+      "must_exclude": ["sure", "I can", "here is the contract"],
+      "notes": "A dictated question remains a question and is never answered by the model."
+    },
+    {
+      "id": "en-transform-only-084",
+      "category": "transformation-only",
+      "style": "nova_style_email",
+      "dictation": "hello Jeremy the meeting has moved to November twenty-fifth twenty twenty-seven and I'd like you to keep Lisa informed best regards Sasha",
+      "expected": "Hello Jeremy,\n\nThe meeting has moved to November 25, 2027. I'd like you to keep Lisa informed.\n\nBest regards,\nSasha",
+      "must_include": ["Hello Jeremy", "November 25", "Lisa", "Sasha"],
+      "must_exclude": [
+        "Hello Sasha",
+        "I will keep Lisa",
+        "Best regards,\nJeremy"
+      ],
+      "notes": "The speaker, addressee and signature must never be reversed."
+    },
+    {
+      "id": "en-private-data-085",
+      "category": "private-data",
+      "style": "nova_style_email",
+      "dictation": "you'll find my I B A N and my address below",
+      "expected": "You'll find my {{IBAN}} and my {{address}} below.",
+      "must_include": ["{{IBAN}}", "{{address}}"],
+      "notes": "Private values use local markers even when an acronym is dictated letter by letter."
+    },
+    {
+      "id": "en-context-086",
+      "category": "context-safety",
+      "style": "nova_style_email",
+      "dictation": "hello Mark could you confirm the thirty thousand dollar budget best regards Ines",
+      "expected": "Hello Mark,\n\nCould you confirm the $30,000 budget?\n\nBest regards,\nInes",
+      "must_include": ["Hello Mark", "30,000", "?", "Ines"],
+      "must_exclude": ["Hello Ines", "I confirm", "Best regards,\nMark"],
+      "notes": "Screen context must never turn the current draft into an incoming message."
+    },
+    {
+      "id": "en-autocorrection-087",
+      "category": "auto-correction",
+      "style": "nova_style_todo",
+      "dictation": "buy three carrots two salads then have the pool cleaned actually no clean the pool first",
+      "expected": "- Have the pool cleaned\n- Buy 3 carrots\n- Buy 2 salads",
+      "must_include": ["pool", "3 carrots", "2 salads"],
+      "must_exclude": ["actually no"],
+      "notes": "A natural spoken correction reorders tasks without predefined voice commands."
+    },
+    {
+      "id": "en-negation-088",
+      "category": "faithfulness",
+      "style": "nova_style_messages",
+      "dictation": "do not approve the quote before Leah has checked the amounts",
+      "expected": "Do not approve the quote before Leah has checked the amounts.",
+      "must_include": ["Do not approve", "Leah", "amounts"],
+      "notes": "A critical negation must be preserved."
+    },
+    {
+      "id": "en-technical-089",
+      "category": "technical-terms",
+      "style": "nova_style_messages",
+      "dictation": "I pushed the branch to the repo git hub and opened the pull request",
+      "expected": "I pushed the branch to the repo GitHub and opened the pull request.",
+      "must_include": ["repo GitHub", "pull request"],
+      "notes": "The product lexicon fixes phonetic spellings of technical terms."
+    },
+    {
+      "id": "en-no-meta-090",
+      "category": "transformation-only",
+      "style": "nova_style_notes",
+      "dictation": "why does the server restart every night that's the point to check tomorrow",
+      "expected": "## Point to check\n\n- Why does the server restart every night?\n- Check tomorrow.",
+      "must_include": ["server", "night", "tomorrow"],
+      "must_exclude": ["the server restarts because", "here is", "I cannot"],
+      "notes": "A question inside notes must not trigger an invented factual answer."
     }
   ]
 }

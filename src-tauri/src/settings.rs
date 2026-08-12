@@ -584,7 +584,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 3;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 4;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -1734,6 +1734,13 @@ fn apply_settings_migrations(
         }
         updated = true;
     }
+    if stored_schema_version < 4 {
+        // Qwen3 replaces the previous Qwen2.5 local models in 1.0.34. Their
+        // filenames are versioned separately; reset the one-shot provision flag
+        // so existing installs fetch the compatible model in the background.
+        settings.local_model_autoprovision_done = false;
+        updated = true;
+    }
     if stored_schema_version < CURRENT_SETTINGS_SCHEMA_VERSION as u64 {
         settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
     }
@@ -2182,7 +2189,10 @@ mod tests {
 
         assert!(apply_settings_migrations(&mut settings, &raw));
         assert_eq!(settings.post_process_provider_id, "nova_turbo");
-        assert_eq!(settings.settings_schema_version, 3);
+        assert_eq!(
+            settings.settings_schema_version,
+            CURRENT_SETTINGS_SCHEMA_VERSION
+        );
 
         // Once migrated, a deliberate switch back to local must be preserved.
         settings.post_process_provider_id = crate::local_llm::PROVIDER_ID.to_string();
@@ -2198,6 +2208,24 @@ mod tests {
             settings.post_process_provider_id,
             crate::local_llm::PROVIDER_ID
         );
+    }
+
+    #[test]
+    fn v4_migration_reprovisions_the_qwen3_local_model_once() {
+        let mut settings = get_default_settings();
+        settings.settings_schema_version = 3;
+        settings.local_model_autoprovision_done = true;
+        let raw = serde_json::json!({
+            "settings_schema_version": 3,
+            "onboarding_completed": false,
+            "whats_new_last_seen_version": default_whats_new_last_seen_version(),
+            "overlay_style": "live",
+            "local_model_autoprovision_done": true
+        });
+
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert!(!settings.local_model_autoprovision_done);
+        assert_eq!(settings.settings_schema_version, 4);
     }
 
     #[test]
@@ -2346,23 +2374,22 @@ mod tests {
         );
     }
 
-    /// Le Style E-mail doit distinguer répondre (contexte à l'écran = message
-    /// original) de rédiger un e-mail neuf, interdire la recopie, et demander
-    /// l'identification du destinataire — sinon le modèle recolle le message lu.
+    /// Le Style E-mail transforme toujours le point de vue de la dictée. Un
+    /// contexte écran ambigu ne doit jamais être promu en message reçu.
     #[test]
-    fn email_prompt_covers_reply_detection_and_anti_echo() {
+    fn email_prompt_preserves_the_speaker_and_distrusts_screen_context() {
         let p = prompt_of("nova_style_email");
         assert!(
-            p.contains("ORIGINAL"),
-            "distinction réponse/original manquante"
+            p.contains("sans jamais répondre à leur place"),
+            "contrat de transformation manquant"
         );
         assert!(
-            p.to_lowercase().contains("jamais") && p.to_lowercase().contains("recopie"),
-            "consigne anti-recopie manquante"
+            p.contains("point de vue") && p.contains("question"),
+            "préservation du locuteur ou des questions manquante"
         );
         assert!(
-            p.to_lowercase().contains("expéditeur") || p.to_lowercase().contains("nommément"),
-            "détection du destinataire manquante"
+            p.contains("contexte ambigu") && p.contains("ne suppose jamais"),
+            "garde-fou du contexte écran manquant"
         );
     }
 
