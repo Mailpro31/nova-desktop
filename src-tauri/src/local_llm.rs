@@ -3,8 +3,8 @@
 //!
 //! Principe : au lieu de demander à l'utilisateur d'installer un service tiers
 //! (Ollama), l'app télécharge elle-même, une seule fois, le binaire officiel
-//! `llama-server` du projet llama.cpp (portable, sans installeur) et un petit
-//! modèle Qwen2.5-Instruct au format GGUF, puis pilote ce binaire comme un
+//! `llama-server` du projet llama.cpp (portable, sans installeur) et un modèle
+//! Qwen3 multilingue au format GGUF, puis pilote ce binaire comme un
 //! sous-processus lié à `127.0.0.1` uniquement. `llama-server` expose une API
 //! compatible OpenAI (`/v1/chat/completions`) — le même format que Turbo et
 //! qu'Ollama — donc `llm_client.rs` n'a besoin d'aucune modification : il ne
@@ -46,27 +46,27 @@ pub struct LlmProfileSpec {
 ///
 /// Palier produit : Air est le seul profil du plan Free ; Aura et Apex
 /// nécessitent Nova Pro (et restent disponibles en Ultra). Air vise aussi les
-/// PC d'entrée de gamme (8 Go, CPU seul) : le 0.5B privilégie donc une latence
+/// PC d'entrée de gamme (8 Go, CPU seul) : le 0.6B privilégie donc une latence
 /// bornée et s'appuie sur le nettoyage déterministe déjà effectué avant le LLM.
 /// Aura/Apex conservent les modèles plus expressifs. `ensure_server_running`
 /// déleste sur GPU (Vulkan) quand c'est possible, avec repli CPU automatique.
 pub const PROFILES: &[LlmProfileSpec] = &[
     LlmProfileSpec {
         id: "air",
-        repo_id: "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
-        approx_size_mb: 400,
+        repo_id: "Qwen/Qwen3-0.6B-GGUF",
+        approx_size_mb: 640,
         min_ram_gb: 4,
     },
     LlmProfileSpec {
         id: "aura",
-        repo_id: "Qwen/Qwen2.5-3B-Instruct-GGUF",
-        approx_size_mb: 2100,
+        repo_id: "Qwen/Qwen3-4B-GGUF",
+        approx_size_mb: 2500,
         min_ram_gb: 12,
     },
     LlmProfileSpec {
         id: "apex",
-        repo_id: "Qwen/Qwen2.5-7B-Instruct-GGUF",
-        approx_size_mb: 4700,
+        repo_id: "Qwen/Qwen3-8B-GGUF",
+        approx_size_mb: 5030,
         min_ram_gb: 24,
     },
 ];
@@ -121,14 +121,10 @@ fn local_llm_dir(app: &AppHandle) -> Result<PathBuf, String> {
 }
 
 fn model_path(app: &AppHandle, profile_id: &str) -> Result<PathBuf, String> {
-    // `air.gguf` désignait le Qwen 1.5B dans les versions précédentes. Un nom
-    // distinct empêche de prendre silencieusement cet ancien modèle lourd pour
-    // le nouveau profil Air 0.5B après une mise à jour.
-    let filename = if profile_id == "air" {
-        "air-qwen2.5-0.5b.gguf".to_string()
-    } else {
-        format!("{profile_id}.gguf")
-    };
+    // Noms versionnés : une mise à jour ne doit jamais réutiliser silencieuse-
+    // ment les anciens fichiers Qwen2.5 (`air-qwen2.5-0.5b.gguf`, `aura.gguf`,
+    // `apex.gguf`) avec le nouveau contrat Qwen3.
+    let filename = format!("{profile_id}-qwen3.gguf");
     Ok(local_llm_dir(app)?.join(filename))
 }
 
@@ -611,8 +607,15 @@ async fn is_server_up() -> bool {
 const CREATE_NO_WINDOW: u32 = 0x0800_0000;
 
 #[cfg(windows)]
-fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result<Child> {
+fn spawn_llama_server(
+    binary: &Path,
+    model: &Path,
+    profile_id: &str,
+    ngl: &str,
+) -> std::io::Result<Child> {
     use std::os::windows::process::CommandExt;
+
+    let context_size = if profile_id == "air" { "3072" } else { "4096" };
 
     std::process::Command::new(binary)
         .args([
@@ -623,7 +626,7 @@ fn spawn_llama_server(binary: &Path, model: &Path, ngl: &str) -> std::io::Result
             "--port",
             &LOCAL_LLM_PORT.to_string(),
             "-c",
-            "1536",
+            context_size,
             "-ngl",
             ngl,
         ])
@@ -714,7 +717,7 @@ pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<
     let model = model_path(app, profile_id)?;
     let binary = server_binary_path(app)?;
 
-    let mut child = spawn_llama_server(&binary, &model, "999")
+    let mut child = spawn_llama_server(&binary, &model, profile_id, "999")
         .map_err(|e| format!("Démarrage du moteur local impossible : {e}"))?;
 
     // Fenêtre généreuse : un vrai chargement GPU (gros modèle, VRAM lente)
@@ -726,7 +729,7 @@ pub async fn ensure_server_running(app: &AppHandle, profile_id: &str) -> Result<
         // Pas de GPU compatible (ou build CPU-only téléchargé) : repli CPU.
         let _ = child.kill();
         let _ = child.wait();
-        child = spawn_llama_server(&binary, &model, "0")
+        child = spawn_llama_server(&binary, &model, profile_id, "0")
             .map_err(|e| format!("Démarrage du moteur local impossible : {e}"))?;
         if !wait_for_health(&mut child, 60).await {
             let _ = child.kill();
@@ -772,6 +775,16 @@ fn mark_autoprovision_done(app: &AppHandle) {
     }
 }
 
+#[cfg(windows)]
+async fn warm_selected_local_profile(app: &AppHandle, profile_id: &str) {
+    let selected = crate::settings::get_settings(app).post_process_provider_id == PROVIDER_ID;
+    if selected {
+        if let Err(error) = ensure_server_running(app, profile_id).await {
+            log::debug!("Préchauffage du moteur local ignoré : {error}");
+        }
+    }
+}
+
 /// Prépare, EN ARRIÈRE-PLAN et sans JAMAIS bloquer le démarrage, le moteur local
 /// et le modèle recommandé dès le premier lancement — pour que la première
 /// reformulation via l'Intelligence privée soit immédiate, sans aucune action ni
@@ -797,6 +810,7 @@ pub async fn provision_default_model_in_background(app: &AppHandle) {
         .unwrap_or(false)
     {
         mark_autoprovision_done(app);
+        warm_selected_local_profile(app, &profile_id).await;
         return;
     }
 
@@ -816,6 +830,7 @@ pub async fn provision_default_model_in_background(app: &AppHandle) {
         match result {
             Ok(()) => {
                 mark_autoprovision_done(app);
+                warm_selected_local_profile(app, &profile_id).await;
                 log::info!("Intelligence privée : modèle « {profile_id} » prêt (installation automatique).");
                 return;
             }

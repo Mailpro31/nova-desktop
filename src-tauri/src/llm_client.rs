@@ -83,7 +83,7 @@ struct ChatMessageResponse {
 
 fn local_max_tokens(user_content: &str) -> u32 {
     let estimated_input_tokens = user_content.chars().count().div_ceil(3) as u32;
-    (estimated_input_tokens + 24).clamp(48, 192)
+    (estimated_input_tokens + 24).clamp(48, 384)
 }
 
 /// Build headers for API requests based on provider type
@@ -198,9 +198,6 @@ pub async fn send_chat_completion_with_schema(
         });
     }
 
-    let is_local = provider.id == crate::local_llm::PROVIDER_ID;
-    let local_max_tokens = is_local.then(|| local_max_tokens(&user_content));
-
     // Add user message
     messages.push(ChatMessage {
         role: "user".to_string(),
@@ -269,7 +266,8 @@ mod tests {
     fn local_output_budget_is_bounded_and_scales_with_input() {
         assert_eq!(local_max_tokens(""), 48);
         assert_eq!(local_max_tokens(&"a".repeat(300)), 124);
-        assert_eq!(local_max_tokens(&"a".repeat(1_000)), 192);
+        assert_eq!(local_max_tokens(&"a".repeat(1_000)), 358);
+        assert_eq!(local_max_tokens(&"a".repeat(2_000)), 384);
     }
 }
 

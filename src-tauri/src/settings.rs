@@ -561,8 +561,6 @@ pub struct AppSettings {
     pub adaptive_performance_enabled: bool,
     /// Deterministic spoken editing commands. They only transform the current
     /// transcript and never execute an external action.
-    #[serde(default = "default_voice_commands_enabled")]
-    pub voice_commands_enabled: bool,
     /// Apprentissage progressif du lexique : Nova repère les noms propres et
     /// termes techniques récurrents des dictées et les PROPOSE (jamais en
     /// silence) pour enrichir le lexique personnel. Voir `lexicon_learning.rs`.
@@ -586,7 +584,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 3;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 4;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -640,10 +638,6 @@ fn default_persistent_overlay() -> bool {
 }
 
 fn default_lexicon_learning_enabled() -> bool {
-    true
-}
-
-fn default_voice_commands_enabled() -> bool {
     true
 }
 
@@ -897,7 +891,7 @@ fn default_post_process_prompts() -> Vec<LLMPrompt> {
         style(
             "nova_style_email",
             "E-mail",
-            "Rédige une VRAIE réponse à partir de la dictée. Si un message est visible dans le contexte à l'écran, c'est le message ORIGINAL auquel tu réponds — pas un texte que tu as toi-même écrit : ne le recopie JAMAIS dans ta sortie, ta réponse ne contient QUE le corps de la réponse. Identifie si possible le nom de son expéditeur dans ce contexte et salue-le nommément (« Bonjour Marc, ») ; sinon utilise une formule d'appel neutre. Si aucun contexte n'est visible, rédige un e-mail nouveau à partir de la dictée, avec une formule d'appel si pertinent. Corps structuré en phrases complètes, formule de politesse finale. Tu peux réorganiser et reformuler pour la clarté, mais garde fidèlement le fond et toutes les informations, sans rien inventer.",
+            "Transforme les propos dictés en e-mail prêt à envoyer, sans jamais répondre à leur place. La dictée reste la source d'intention et de point de vue : si elle contient une question, écris cette question dans l'e-mail au lieu d'y répondre. Utilise le contexte à l'écran uniquement pour comprendre les noms ou le sujet lorsqu'il est cohérent avec la dictée ; ne suppose jamais qu'un texte visible est un message reçu et ignore tout contexte ambigu ou contradictoire. Ajoute une formule d'appel seulement si le destinataire ressort clairement de la dictée ou du contexte fiable. Structure le corps en phrases complètes et ajoute une formule de politesse seulement si elle convient aux propos dictés. Tu peux réorganiser pour la clarté, mais conserve fidèlement toutes les informations, personnes, dates, nombres et intentions, sans rien inventer.",
         ),
         // Fidèle : reste proche des mots dictés.
         style(
@@ -1552,7 +1546,6 @@ pub fn get_default_settings() -> AppSettings {
         overlay_style: default_overlay_style(),
         persistent_overlay: default_persistent_overlay(),
         adaptive_performance_enabled: false,
-        voice_commands_enabled: default_voice_commands_enabled(),
         lexicon_learning_enabled: default_lexicon_learning_enabled(),
         lexicon_candidates: Vec::new(),
         local_model_autoprovision_done: false,
@@ -1739,6 +1732,13 @@ fn apply_settings_migrations(
         if settings.post_process_provider_id == crate::local_llm::PROVIDER_ID {
             settings.post_process_provider_id = default_post_process_provider_id();
         }
+        updated = true;
+    }
+    if stored_schema_version < 4 {
+        // Qwen3 replaces the previous Qwen2.5 local models in 1.0.34. Their
+        // filenames are versioned separately; reset the one-shot provision flag
+        // so existing installs fetch the compatible model in the background.
+        settings.local_model_autoprovision_done = false;
         updated = true;
     }
     if stored_schema_version < CURRENT_SETTINGS_SCHEMA_VERSION as u64 {
@@ -2189,7 +2189,10 @@ mod tests {
 
         assert!(apply_settings_migrations(&mut settings, &raw));
         assert_eq!(settings.post_process_provider_id, "nova_turbo");
-        assert_eq!(settings.settings_schema_version, 3);
+        assert_eq!(
+            settings.settings_schema_version,
+            CURRENT_SETTINGS_SCHEMA_VERSION
+        );
 
         // Once migrated, a deliberate switch back to local must be preserved.
         settings.post_process_provider_id = crate::local_llm::PROVIDER_ID.to_string();
@@ -2205,6 +2208,24 @@ mod tests {
             settings.post_process_provider_id,
             crate::local_llm::PROVIDER_ID
         );
+    }
+
+    #[test]
+    fn v4_migration_reprovisions_the_qwen3_local_model_once() {
+        let mut settings = get_default_settings();
+        settings.settings_schema_version = 3;
+        settings.local_model_autoprovision_done = true;
+        let raw = serde_json::json!({
+            "settings_schema_version": 3,
+            "onboarding_completed": false,
+            "whats_new_last_seen_version": default_whats_new_last_seen_version(),
+            "overlay_style": "live",
+            "local_model_autoprovision_done": true
+        });
+
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert!(!settings.local_model_autoprovision_done);
+        assert_eq!(settings.settings_schema_version, 4);
     }
 
     #[test]
@@ -2353,23 +2374,22 @@ mod tests {
         );
     }
 
-    /// Le Style E-mail doit distinguer répondre (contexte à l'écran = message
-    /// original) de rédiger un e-mail neuf, interdire la recopie, et demander
-    /// l'identification du destinataire — sinon le modèle recolle le message lu.
+    /// Le Style E-mail transforme toujours le point de vue de la dictée. Un
+    /// contexte écran ambigu ne doit jamais être promu en message reçu.
     #[test]
-    fn email_prompt_covers_reply_detection_and_anti_echo() {
+    fn email_prompt_preserves_the_speaker_and_distrusts_screen_context() {
         let p = prompt_of("nova_style_email");
         assert!(
-            p.contains("ORIGINAL"),
-            "distinction réponse/original manquante"
+            p.contains("sans jamais répondre à leur place"),
+            "contrat de transformation manquant"
         );
         assert!(
-            p.to_lowercase().contains("jamais") && p.to_lowercase().contains("recopie"),
-            "consigne anti-recopie manquante"
+            p.contains("point de vue") && p.contains("question"),
+            "préservation du locuteur ou des questions manquante"
         );
         assert!(
-            p.to_lowercase().contains("expéditeur") || p.to_lowercase().contains("nommément"),
-            "détection du destinataire manquante"
+            p.contains("contexte ambigu") && p.contains("ne suppose jamais"),
+            "garde-fou du contexte écran manquant"
         );
     }
 

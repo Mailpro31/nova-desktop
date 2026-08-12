@@ -36,7 +36,6 @@ mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
 mod utils;
-mod voice_commands;
 mod week_stats;
 
 pub use cli::CliArgs;
@@ -620,7 +619,6 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_append_trailing_space_setting,
             shortcut::change_lazy_stream_close_setting,
             shortcut::change_vad_enabled_setting,
-            shortcut::change_voice_commands_setting,
             shortcut::change_lexicon_learning_setting,
             shortcut::change_app_language_setting,
             shortcut::change_update_checks_setting,
