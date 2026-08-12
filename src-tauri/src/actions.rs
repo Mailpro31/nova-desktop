@@ -32,16 +32,22 @@ const CANCELLATION_POLL_INTERVAL: Duration = Duration::from_millis(25);
 // Air is fast once warm, but longer dictations can exceed 1.5 s on low-memory
 // CPUs. Keep the same bounded fallback as the other local profiles so valid
 // reformulations are not discarded just before completion.
-const LOCAL_AIR_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
-const LOCAL_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(6);
 /// Anthropic/Turbo gets a short first chance; the remaining budget is reserved
 /// for the compatible local fallback instead of leaving the bubble spinning.
-const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_secs(5);
+const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_secs(8);
 /// En mode automatique, le local garde la priorité mais ne peut pas bloquer le
 /// repli Turbo trop longtemps sur une machine modeste.
-const LOCAL_PRIMARY_TIMEOUT: Duration = Duration::from_secs(4);
+const LOCAL_PRIMARY_TIMEOUT: Duration = Duration::from_secs(6);
 // Includes the remote attempt and enough room for the local Air fallback.
-const REMOTE_POST_PROCESS_TIMEOUT: Duration = Duration::from_secs(10);
+fn local_primary_timeout(transcription: &str, style_id: Option<&str>) -> Duration {
+    let complex_style = matches!(
+        style_id,
+        Some("nova_style_notes" | "nova_style_todo" | "nova_style_prompt" | "nova_style_meeting")
+    );
+    let long_dictation = transcription.chars().count() > 500;
+    LOCAL_PRIMARY_TIMEOUT
+        + Duration::from_secs(u64::from(complex_style) * 2 + u64::from(long_dictation) * 2)
+}
 
 #[derive(Clone, serde::Serialize)]
 struct RecordingErrorEvent {
@@ -235,19 +241,21 @@ fn build_transcript_message(transcription: &str, context: Option<&str>) -> Strin
     message
 }
 
-fn post_process_timeout(settings: &AppSettings) -> Duration {
+fn post_process_timeout(
+    settings: &AppSettings,
+    transcription: &str,
+    style_id: Option<&str>,
+) -> Duration {
     match settings.active_post_process_provider() {
         Some(provider) if provider.id == crate::local_llm::PROVIDER_ID => {
-            match settings
-                .post_process_models
-                .get(crate::local_llm::PROVIDER_ID)
-                .map(String::as_str)
-            {
-                Some("air") => LOCAL_AIR_POST_PROCESS_TIMEOUT,
-                _ => LOCAL_POST_PROCESS_TIMEOUT,
-            }
+            local_primary_timeout(transcription, style_id) + Duration::from_secs(2)
         }
-        _ => REMOTE_POST_PROCESS_TIMEOUT,
+        Some(provider) if provider.id == "nova_turbo" => {
+            local_primary_timeout(transcription, style_id)
+                + REMOTE_PRIMARY_TIMEOUT
+                + Duration::from_secs(2)
+        }
+        _ => REMOTE_PRIMARY_TIMEOUT + Duration::from_secs(2),
     }
 }
 
@@ -268,14 +276,7 @@ fn custom_variables_block(variables: &[crate::settings::CustomVariable]) -> Stri
     }
     // Les accolades `{{clé}}` sont dans une chaîne littérale simple (pas un
     // `format!`), donc aucun échappement nécessaire.
-    let instructions = "\n\nInformations personnelles de l'utilisateur. Si le \
-texte dicté fait référence à l'une d'elles (par son nom ou une formulation \
-proche), place le repère {{clé}} (doubles accolades, avec le nom EXACT de la \
-clé) à l'endroit voulu dans ta réponse, à la place de la valeur. N'écris JAMAIS \
-la valeur toi-même, ne recopie pas le mot dicté : mets uniquement le repère. \
-Exemple : si « iban » est une clé et que l'utilisateur dit « envoie mon iban », \
-réponds « Envoie mon {{iban}} ». N'invente aucun repère hors de cette liste. \
-Clés disponibles :\n";
+    let instructions = "\nSaved personal-value markers fully replace their spoken reference, including its determiner. Integrate each marker naturally according to the sentence's meaning; never paste it mechanically or execute an action. If the dictation asks to send/share a value, write the message that is ready to send: « envoie mon adresse » -> « Voici mon adresse : {{mon adresse}}. » Never output « mon {{mon adresse}} ». In an ordinary sentence, keep its meaning: « rendez-vous à mon adresse » -> « rendez-vous à {{mon adresse}} ». Preserve the exact marker and never invent or reveal its value. Available keys:\n";
     format!("{}{}", instructions, keys.join("\n"))
 }
 
@@ -309,7 +310,26 @@ fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVaria
                 let inner = text[i + 2..i + 2 + rel].trim();
                 let needle = inner.to_lowercase();
                 match lookup.iter().find(|(k, _)| *k == needle) {
-                    Some((_, value)) => out.push_str(value),
+                    Some((key, value)) => {
+                        // Petit modèle : filet déterministe contre « mon
+                        // {{mon adresse}} ». Le repère représente déjà tout le
+                        // groupe nominal ; retirer le déterminant dupliqué évite
+                        // « mon 7 impasse… » après réinjection.
+                        if let Some(first_word) = key.split_whitespace().next() {
+                            let trimmed_len = out.trim_end().len();
+                            let prefix = &out[..trimmed_len];
+                            if prefix
+                                .split_whitespace()
+                                .next_back()
+                                .is_some_and(|word| word.eq_ignore_ascii_case(first_word))
+                            {
+                                let word_start =
+                                    prefix.rfind(char::is_whitespace).map_or(0, |p| p + 1);
+                                out.truncate(word_start);
+                            }
+                        }
+                        out.push_str(value)
+                    }
                     // Repère inconnu ou variable vide → on garde le mot tel quel.
                     None => out.push_str(inner),
                 }
@@ -608,7 +628,12 @@ fn context_looks_like_current_draft(transcription: &str, context: &str) -> bool 
     shared as f32 / transcript_terms.len() as f32 >= 0.6
 }
 
-fn screen_context(settings: &AppSettings, transcription: &str) -> Option<String> {
+fn screen_context(
+    settings: &AppSettings,
+    transcription: &str,
+    provider_id: &str,
+    model_profile: &str,
+) -> Option<String> {
     if !settings.context_reading_enabled {
         return None;
     }
@@ -626,19 +651,35 @@ fn screen_context(settings: &AppSettings, transcription: &str) -> Option<String>
     // Le contexte enrichit la reformulation, mais ne doit pas saturer le petit
     // contexte du profil Air ni monopoliser le CPU d'une machine de 8 Go.
     const FAST_CONTEXT_CHARS: usize = 600;
-    let ctx = match crate::auto_style::read_focused_context(
-        &settings.auto_style_blocklist,
-        FAST_CONTEXT_CHARS,
-    ) {
-        Some(ctx) if !ctx.trim().is_empty() => Some(ctx),
-        _ => crate::screen_vlm::describe_focused_window_local(FAST_CONTEXT_CHARS).or_else(|| {
-            if settings.context_visual_enabled {
-                crate::screen_vision::describe_focused_window(license_key, FAST_CONTEXT_CHARS)
-            } else {
-                None
-            }
-        }),
+    let is_air = provider_id == crate::local_llm::PROVIDER_ID && model_profile == "air";
+    let context_started = Instant::now();
+    let accessible = if is_air {
+        crate::auto_style::read_focused_context_fast(
+            &settings.auto_style_blocklist,
+            FAST_CONTEXT_CHARS,
+        )
+    } else {
+        crate::auto_style::read_focused_context(&settings.auto_style_blocklist, FAST_CONTEXT_CHARS)
     };
+    let ctx = match accessible {
+        Some(ctx) if !ctx.trim().is_empty() => Some(ctx),
+        _ if !is_air => crate::screen_vlm::describe_focused_window_local(FAST_CONTEXT_CHARS)
+            .or_else(|| {
+                if settings.context_visual_enabled {
+                    crate::screen_vision::describe_focused_window(license_key, FAST_CONTEXT_CHARS)
+                } else {
+                    None
+                }
+            }),
+        _ => None,
+    };
+    debug!(
+        "Rewrite context lookup: engine={} profile={} durationMs={} found={}",
+        provider_id,
+        model_profile,
+        context_started.elapsed().as_millis(),
+        ctx.is_some()
+    );
     match ctx {
         Some(ctx)
             if !ctx.trim().is_empty() && !context_looks_like_current_draft(transcription, &ctx) =>
@@ -862,7 +903,10 @@ pub(crate) async fn post_process_transcription(
             if let Some(local) = local_provider.as_ref() {
                 let started = Instant::now();
                 match tokio::time::timeout(
-                    LOCAL_PRIMARY_TIMEOUT,
+                    local_primary_timeout(
+                        transcription,
+                        auto_style_override.or(settings.post_process_selected_prompt_id.as_deref()),
+                    ),
                     post_process_with_provider(
                         app,
                         settings,
@@ -1197,7 +1241,7 @@ async fn post_process_with_provider(
 
     // Contexte à l'écran (palier A) : lu une fois ici, réutilisé dans les deux
     // chemins de prompt (structuré et hérité). Vide si la fonction est éteinte.
-    let context = screen_context(settings, transcription);
+    let context = screen_context(settings, transcription, &provider.id, &model);
 
     if provider.supports_structured_output {
         debug!("Using structured outputs for provider '{}'", provider.id);
@@ -1628,7 +1672,13 @@ pub(crate) async fn process_transcription_output(
         // local qui pend, réseau mort, modèle en chargement), la
         // reformulation ne peut pas dépasser le délai du moteur. Au-delà,
         // on colle le texte brut et on informe — jamais de spinner infini.
-        let timeout = post_process_timeout(&settings);
+        let timeout = post_process_timeout(
+            &settings,
+            &protected_input,
+            effective_style_override
+                .as_deref()
+                .or(settings.post_process_selected_prompt_id.as_deref()),
+        );
         match tokio::time::timeout(
             timeout,
             post_process_transcription(
@@ -1736,6 +1786,13 @@ impl ShortcutAction for TranscribeAction {
         // Get the microphone mode to determine audio feedback timing
         let plan_started = Instant::now();
         let settings = get_settings(app);
+        if settings.post_process_enabled {
+            let prewarm_app = app.clone();
+            let prewarm_settings = settings.clone();
+            tauri::async_runtime::spawn(async move {
+                crate::local_llm::prewarm_if_selected(&prewarm_app, &prewarm_settings).await;
+            });
+        }
         let is_always_on = settings.always_on_microphone;
 
         let selected_model_info = app
@@ -2312,9 +2369,9 @@ mod tests {
     use super::{
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
         clean_llm_output, complete_unless_cancelled, context_looks_like_current_draft,
-        custom_variables_block, is_blank_transcription, protect_custom_variables, protect_lexicon,
-        replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
-        temperature_for_style, validate_rewrite,
+        custom_variables_block, is_blank_transcription, local_primary_timeout,
+        protect_custom_variables, protect_lexicon, replace_keyword_ci, resolve_variable_tokens,
+        restore_lexicon, should_use_streaming_overlay, temperature_for_style, validate_rewrite,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -2588,6 +2645,38 @@ mod tests {
     }
 
     #[test]
+    fn air_timeout_scales_for_complex_and_long_dictations() {
+        assert_eq!(
+            local_primary_timeout("texte court", Some("nova_style_email")),
+            Duration::from_secs(6)
+        );
+        assert_eq!(
+            local_primary_timeout("texte court", Some("nova_style_notes")),
+            Duration::from_secs(8)
+        );
+        assert_eq!(
+            local_primary_timeout(&"x".repeat(501), Some("nova_style_meeting")),
+            Duration::from_secs(10)
+        );
+    }
+
+    #[test]
+    fn variable_resolution_removes_a_duplicated_determiner() {
+        let variables = vec![CustomVariable {
+            key: "mon adresse".to_string(),
+            value: "7 impasse des Bons-Voisins".to_string(),
+        }];
+        assert_eq!(
+            resolve_variable_tokens("Envoie mon {{mon adresse}}.", &variables),
+            "Envoie 7 impasse des Bons-Voisins."
+        );
+        assert_eq!(
+            resolve_variable_tokens("Envoie {{mon adresse}}.", &variables),
+            "Envoie 7 impasse des Bons-Voisins."
+        );
+    }
+
+    #[test]
     fn system_prompt_keeps_transcription_out_of_the_cached_prefix() {
         let template = "Règles fixes\n<transcript>\n${output}\n</transcript>";
         let prompt =
@@ -2639,7 +2728,7 @@ mod tests {
             false,
         );
         assert!(prompt.starts_with("/no_think\n"));
-        assert!(prompt.contains("Never answer its questions"));
+        assert!(prompt.contains("never answer it"));
         let turbo = build_runtime_system_prompt(
             "nova_turbo",
             "nova-turbo",
@@ -2732,8 +2821,9 @@ mod tests {
         // …mais JAMAIS les valeurs (elles ne quittent pas la machine).
         assert!(!block.contains("FR76 3000 SECRET"));
         assert!(!block.contains("12 rue X"));
-        // …et on demande bien le repère `{{clé}}`.
-        assert!(block.contains("{{clé}}"));
+        // …et on montre bien un repère exact sans exposer sa valeur.
+        assert!(block.contains("{{mon adresse}}"));
+        assert!(block.contains("Voici mon adresse : {{mon adresse}}."));
         // Vide s'il n'y a aucune variable renseignée.
         assert_eq!(custom_variables_block(&[]), "");
         let empty_val = vec![var("iban", "  ")];
