@@ -13,6 +13,7 @@ import {
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
+import { isCampusMode } from "@/lib/mode";
 
 const HomeSettings = lazy(() =>
   import("./settings/home/HomeSettings").then((module) => ({
@@ -76,74 +77,103 @@ interface IconProps {
 
 interface SectionConfig {
   labelKey: string;
+  campusLabelKey: string | undefined;
   icon: React.ComponentType<IconProps>;
   component: React.ComponentType;
   enabled: (settings: any) => boolean;
+  campusVisible: boolean;
 }
 
 export const SECTIONS_CONFIG = {
   home: {
     labelKey: "sidebar.home",
+    campusLabelKey: undefined,
     icon: HandyHand,
     component: HomeSettings,
     enabled: () => true,
+    campusVisible: true,
   },
   configuration: {
     labelKey: "sidebar.configuration",
+    campusLabelKey: "sidebar.general",
     icon: Cog,
     // Regroupe les anciennes sections Général / Modèles / Avancé sous une
     // seule entrée (sous-onglets internes, voir ConfigurationSettings).
     component: ConfigurationSettings,
     enabled: () => true,
+    campusVisible: true,
   },
   postprocessing: {
     labelKey: "sidebar.postProcessing",
+    campusLabelKey: "sidebar.styles",
     icon: Sparkles,
     component: PostProcessingSettings,
     // Les Styles sont au cœur de Nova : la section est toujours visible ;
     // l'activation de la reformulation se fait via l'interrupteur en tête de
     // la section (plus besoin de passer par Avancé pour la découvrir).
     enabled: () => true,
+    campusVisible: true,
   },
   meeting: {
     labelKey: "sidebar.meeting",
+    campusLabelKey: undefined,
     icon: Users,
     component: MeetingSettings,
     enabled: () => true,
+    campusVisible: false,
   },
   personalization: {
     labelKey: "sidebar.personalization",
+    campusLabelKey: undefined,
     icon: Palette,
     component: PersonalizationSettings,
     enabled: () => true,
+    campusVisible: false,
   },
   account: {
     labelKey: "sidebar.account",
+    campusLabelKey: undefined,
     icon: CreditCard,
     // Palier actif, licence, comparatif des paliers (anciennement au bas de
     // la section À propos).
     component: AccountSettings,
     enabled: () => true,
+    campusVisible: false,
   },
   history: {
     labelKey: "sidebar.history",
+    campusLabelKey: undefined,
     icon: History,
     component: HistorySettings,
     enabled: () => true,
+    campusVisible: true,
   },
   debug: {
     labelKey: "sidebar.debug",
+    campusLabelKey: undefined,
     icon: FlaskConical,
     component: DebugSettings,
     enabled: (settings) => settings?.debug_mode ?? false,
+    campusVisible: false,
   },
   about: {
     labelKey: "sidebar.about",
+    campusLabelKey: undefined,
     icon: Info,
     component: AboutSettings,
     enabled: () => true,
+    campusVisible: false,
   },
 } as const satisfies Record<string, SectionConfig>;
+
+// Ordre des entrées de la sidebar en mode campus.
+// Spec : Accueil / Styles / Historique / Réglages
+const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
+  "home",
+  "postprocessing",
+  "history",
+  "configuration",
+];
 
 // Icônes carrées colorées façon macOS (Réglages système). Chaque catégorie a
 // sa couleur d'identité — ce ne sont PAS des actions (l'accent d'action unique
@@ -172,10 +202,63 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { settings } = useSettings();
+  const campusMode = isCampusMode();
 
   const availableSections = Object.entries(SECTIONS_CONFIG)
-    .filter(([_, config]) => config.enabled(settings))
-    .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
+    .filter(([_, config]) => {
+      if (campusMode) {
+        return config.campusVisible;
+      }
+      return config.enabled(settings);
+    })
+    .map(([id, config]) => ({
+      id: id as SidebarSection,
+      ...config,
+      labelKey:
+        campusMode && config.campusLabelKey
+          ? config.campusLabelKey
+          : config.labelKey,
+    }))
+    .sort((a, b) => {
+      if (!campusMode) return 0; // personal mode keeps definition order
+      const ia = CAMPUS_SIDEBAR_ORDER.indexOf(a.id);
+      const ib = CAMPUS_SIDEBAR_ORDER.indexOf(b.id);
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+
+  if (campusMode) {
+    return (
+      <div className="flex flex-col w-44 h-full bg-background border-e border-hairline items-start px-3 py-4 gap-6">
+        <div className="flex items-center gap-2 px-2">
+          <HandyHand width={32} height={32} />
+          {/* eslint-disable-next-line i18next/no-literal-string */}
+          <span className="text-lg font-semibold tracking-tight">Nova</span>
+        </div>
+        <div className="flex flex-col w-full gap-1">
+          {availableSections.map((section) => {
+            const Icon = section.icon;
+            const isActive = activeSection === section.id;
+
+            return (
+              <button
+                key={section.id}
+                type="button"
+                className={`flex gap-3 items-center px-3 py-2 w-full rounded-xl text-sm font-medium transition-colors text-left ${
+                  isActive
+                    ? "bg-mid-gray/15 text-text"
+                    : "text-text-secondary hover:bg-mid-gray/10 hover:text-text"
+                }`}
+                onClick={() => onSectionChange(section.id)}
+              >
+                <Icon size={18} className="shrink-0" strokeWidth={1.75} />
+                <span className="truncate">{t(section.labelKey)}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-40 h-full bg-sidebar border-e border-hairline items-center px-2">

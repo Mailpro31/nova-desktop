@@ -109,6 +109,18 @@ async changeOverlayStyleSetting(style: string) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Active/désactive la bulle « toujours affichée ». Montre immédiatement l'état
+ * de repos (ou masque la bulle) pour refléter le choix sans redémarrage.
+ */
+async changePersistentOverlaySetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_persistent_overlay_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async changeDebugModeSetting(enabled: boolean) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_debug_mode_setting", { enabled }) };
@@ -296,6 +308,41 @@ async updateCustomWords(words: string[]) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async updateCustomVariables(variables: CustomVariable[]) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_custom_variables", { variables }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Met à jour la configuration du Style « Automatique » : règles personnalisées
+ * (id de Style → repères) et liste noire de confidentialité. Les entrées vides
+ * sont ignorées.
+ */
+async updateAutoStyleConfig(rules: Partial<{ [key in string]: string[] }>, blocklist: string[]) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_auto_style_config", { rules, blocklist }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Active/désactive la lecture de contexte (`enabled`) et la lecture visuelle
+ * avancée (`visual`). La lecture visuelle n'a d'effet que si la lecture de
+ * contexte est active — l'appelant garantit déjà cette cohérence, on persiste
+ * simplement les deux drapeaux.
+ */
+async updateContextReadingConfig(enabled: boolean, visual: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_context_reading_config", { enabled, visual }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 /**
  * Temporarily unregister a binding while the user is editing it in the UI.
  * This avoids firing the action while keys are being recorded.
@@ -346,6 +393,14 @@ async changeLazyStreamCloseSetting(enabled: boolean) : Promise<Result<null, stri
 async changeVadEnabledSetting(enabled: boolean) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_vad_enabled_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async changeLexiconLearningSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_lexicon_learning_setting", { enabled }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -528,9 +583,106 @@ async getDefaultSettings() : Promise<Result<AppSettings, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Lit le fichier `campus-config.json` placé à côté de l'exécutable par l'IT.
+ */
+async getCampusConfig() : Promise<Result<CampusConfig | null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_campus_config") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Active ou désactive la logique campus côté backend.
+ */
+async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_campus_mode", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async loadCampusSession() : Promise<Result<CampusSession | null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("load_campus_session") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async saveCampusSession(session: CampusSession) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("save_campus_session", { session }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async clearCampusSession() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("clear_campus_session") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Marque l'onboarding comme terminé sans toucher à la session campus.
+ */
+async completeCampusOnboarding() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("complete_campus_onboarding") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async checkCampusServerReachability(serverUrl: string) : Promise<Result<boolean, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("check_campus_server_reachability", { serverUrl }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async requestCampusAuth(serverUrl: string, email: string, machine: string) : Promise<Result<CampusAuthRequestResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("request_campus_auth", { serverUrl, email, machine }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async verifyCampusAuth(serverUrl: string, email: string, code: string, machine: string) : Promise<Result<CampusAuthVerifyResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("verify_campus_auth", { serverUrl, email, code, machine }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getCampusMe(serverUrl: string, token: string) : Promise<Result<CampusMeResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_campus_me", { serverUrl, token }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Termes récurrents que l'apprentissage progressif propose d'ajouter au
+ * lexique personnel. Vide tant qu'aucun candidat n'a atteint le seuil de
+ * récurrence (ou si l'apprentissage est désactivé). Voir `lexicon_learning.rs`.
+ */
 async getLexiconSuggestions() : Promise<string[]> {
     return await TAURI_INVOKE("get_lexicon_suggestions");
 },
+/**
+ * L'utilisateur accepte une suggestion : le terme rejoint le lexique personnel.
+ */
 async acceptLexiconSuggestion(term: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("accept_lexicon_suggestion", { term }) };
@@ -539,6 +691,9 @@ async acceptLexiconSuggestion(term: string) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * L'utilisateur ignore une suggestion : le terme ne sera plus jamais reproposé.
+ */
 async dismissLexiconSuggestion(term: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("dismiss_lexicon_suggestion", { term }) };
@@ -547,17 +702,22 @@ async dismissLexiconSuggestion(term: string) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
-async changeLexiconLearningSetting(enabled: boolean) : Promise<Result<null, string>> {
+async getLogDirPath() : Promise<Result<string, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("change_lexicon_learning_setting", { enabled }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_log_dir_path") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getLogDirPath() : Promise<Result<string, string>> {
+/**
+ * Charge la fin du journal courant pour que l'écran Debug montre aussi ce qui
+ * s'est passé AVANT son ouverture. Lecture bornée (256 Kio / 1000 lignes) afin
+ * de rester instantanée même sur une longue session.
+ */
+async getRecentLogLines(maxLines: number | null) : Promise<Result<string[], string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_log_dir_path") };
+    return { status: "ok", data: await TAURI_INVOKE("get_recent_log_lines", { maxLines }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -662,6 +822,115 @@ async deleteModel(modelId: string) : Promise<Result<null, string>> {
 async cancelDownload(modelId: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("cancel_download", { modelId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Statut des 3 profils pour l'écran de réglages : taille, déjà téléchargé,
+ * recommandé selon la RAM détectée.
+ */
+async getLocalLlmProfiles() : Promise<LlmProfileStatus[]> {
+    return await TAURI_INVOKE("get_local_llm_profiles");
+},
+/**
+ * Active un profil : télécharge le modèle (et le moteur, la première fois)
+ * s'ils sont absents, puis démarre `llama-server` avec ce profil. Émet la
+ * progression sur `llm-download-progress`. N'écrit pas les réglages
+ * eux-mêmes — le frontend appelle ensuite `set_post_process_provider` /
+ * `change_post_process_model_setting`, comme pour les autres fournisseurs.
+ */
+async activateLocalLlmProfile(profileId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("activate_local_llm_profile", { profileId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Statut d'abonnement courant.
+ */
+async getLicenseStatus() : Promise<LicenseStatus> {
+    return await TAURI_INVOKE("get_license_status");
+},
+/**
+ * Ancienne commande conservée pour les bindings existants. Aucun essai actif.
+ */
+async acknowledgeTrialExpired() : Promise<LicenseStatus> {
+    return await TAURI_INVOKE("acknowledge_trial_expired");
+},
+/**
+ * Active une clé de licence (jeton NOVA1). Rejette une clé invalide/expirée.
+ */
+async activateLicense(key: string) : Promise<Result<LicenseStatus, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("activate_license", { key }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Active une licence à partir du CODE d'achat (format NOVA-xxxx) : calcule
+ * l'empreinte machine, échange le code contre un jeton signé via la fonction
+ * edge, le vérifie localement, puis le stocke. Complète (sans remplacer)
+ * l'activation par jeton collé. Défensive : messages FR, jamais de panique.
+ */
+async activateLicenseCode(code: string) : Promise<Result<LicenseStatus, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("activate_license_code", { code }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Décision produit : une licence activée ne peut plus être retirée depuis
+ * l'app (protège contre un retour au palier Free non désiré). Reste
+ * disponible pour compat des bindings existants ; renvoie le statut
+ * INCHANGÉ sans jamais effacer `license_key`. Remplacer par une nouvelle
+ * clé reste possible via `activate_license`/`activate_license_code`.
+ */
+async clearLicense() : Promise<LicenseStatus> {
+    return await TAURI_INVOKE("clear_license");
+},
+/**
+ * Ouvre le portail client Stripe (résiliation, changement de palier avec
+ * prorata, moyen de paiement, factures) dans le navigateur. L'app envoie son
+ * jeton de licence — jamais la clé d'achat — ; le serveur résout le client
+ * Stripe et renvoie une URL de session éphémère.
+ */
+async openBillingPortal() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("open_billing_portal") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Statut du quota pour le frontend (barre de progression des reformulations).
+ */
+async getQuotaStatus() : Promise<QuotaStatus> {
+    return await TAURI_INVOKE("get_quota_status");
+},
+/**
+ * Statut hebdomadaire pour le frontend.
+ */
+async getWeekStat() : Promise<WeekStat> {
+    return await TAURI_INVOKE("get_week_stat");
+},
+/**
+ * Agrandit (ou rétablit) la fenêtre de la bulle pour héberger le menu de choix
+ * de Style : la fenêtre idle fait 46 px, trop court pour un menu déroulant. On
+ * la ré-ancre au bord de l'écran après redimensionnement (ancrage bas → le menu
+ * s'étend vers le haut ; ancrage haut → vers le bas).
+ */
+async setOverlayMenuHeight(height: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_overlay_menu_height", { height }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -830,9 +1099,20 @@ async unloadModelManually() : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Whether startup skipped the GPU backend modules because a previous native
+ * backend init hung on a broken graphics driver (see
+ * `managers::transcription::init_transcribe_backend`). The frontend shows a
+ * degraded-mode notice when this is true.
+ */
 async isTranscribeCpuOnlyMode() : Promise<boolean> {
     return await TAURI_INVOKE("is_transcribe_cpu_only_mode");
 },
+/**
+ * Clear the broken-GPU-driver blacklist so the NEXT launch retries the full
+ * (GPU-enabled) backend init — e.g. after a graphics driver update. Only
+ * takes effect after an app restart.
+ */
 async clearTranscribeGpuBlacklist() : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("clear_transcribe_gpu_blacklist") };
@@ -840,6 +1120,92 @@ async clearTranscribeGpuBlacklist() : Promise<Result<null, string>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+/**
+ * Teste la capture des autres participants sur CETTE machine, contre
+ * l'application de réunion actuellement au premier plan.
+ * 
+ * C'est un diagnostic, pas la fonctionnalité : l'audio capté sert uniquement à
+ * calculer un niveau crête, puis il est jeté. Rien n'est enregistré, transcrit,
+ * ni envoyé où que ce soit.
+ */
+async probeMeetingCapture() : Promise<Result<MeetingCaptureProbe, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("probe_meeting_capture") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Liste les applications de réunion actuellement ouvertes, pour que l'interface
+ * propose un choix plutôt que de dépendre de la fenêtre au premier plan.
+ * Non gaté : la simple détection ne capte rien (le verrou de palier est sur
+ * `start_meeting`).
+ */
+async listMeetingApps() : Promise<MeetingApp[]> {
+    return await TAURI_INVOKE("list_meeting_apps");
+},
+/**
+ * Démarre une session de réunion sur l'application choisie (`pid`, fourni par
+ * [`list_meeting_apps`] via l'interface). Plus aucune dépendance à la fenêtre au
+ * premier plan : l'utilisateur a explicitement sélectionné quoi écouter.
+ * 
+ * Erreurs (codes stables, traduits côté interface) : `already_running` si une
+ * session tourne déjà, `requires_ultra` sans le palier, sinon le code de
+ * [`crate::meeting_capture::CaptureError`].
+ */
+async startMeeting(pid: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("start_meeting", { pid }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Arrête la session en cours et renvoie le compte rendu.
+ * 
+ * `you_label` / `others_label` viennent de l'interface (i18n) : « Vous » /
+ * « Autres » traduits. Erreur `no_active_meeting` si aucune session ne tourne.
+ */
+async stopMeeting(youLabel: string, othersLabel: string) : Promise<Result<MeetingReport, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("stop_meeting", { youLabel, othersLabel }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async runPerformanceDiagnostics() : Promise<Result<PerformanceReport, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("run_performance_diagnostics") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async applyAdaptivePerformance() : Promise<Result<DeviceProfile, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("apply_adaptive_performance") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async changeAdaptivePerformanceSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_adaptive_performance_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async clearPerformanceHistory() : Promise<void> {
+    await TAURI_INVOKE("clear_performance_history");
+},
+async acknowledgeThinkingFrame(id: number) : Promise<void> {
+    await TAURI_INVOKE("acknowledge_thinking_frame", { id });
 },
 async getHistoryEntries(cursor: number | null, limit: number | null) : Promise<Result<PaginatedHistory, string>> {
     try {
@@ -898,10 +1264,8 @@ async updateRecordingRetentionPeriod(period: string) : Promise<Result<null, stri
 }
 },
 /**
- * Checks if the Mac is a laptop by detecting battery presence
- * 
- * This uses pmset to check for battery information.
- * Returns true if a battery is detected (laptop), false otherwise (desktop)
+ * Stub implementation for non-macOS platforms
+ * Always returns false since laptop detection is macOS-specific
  */
 async isLaptop() : Promise<Result<boolean, string>> {
     try {
@@ -932,6 +1296,7 @@ streamTextEvent: "stream-text-event"
 
 /** user-defined types **/
 
+export type AdaptiveClass = "low_memory" | "balanced" | "performance"
 /**
  * The container-level `serde(default)` (backed by the `Default` impl below)
  * guarantees every field — including ones added in the future — falls back to
@@ -957,19 +1322,144 @@ bindings?: Partial<{ [key in string]: ShortcutBinding }>; push_to_talk?: boolean
  * upgrading from before this key existed are blanked by the migration so they
  * see the current release's notes — see `apply_settings_migrations`.
  */
-whats_new_last_seen_version?: string; selected_model?: string; onboarding_completed?: boolean; always_on_microphone?: boolean; selected_microphone?: string | null; clamshell_microphone?: string | null; selected_output_device?: string | null; translate_to_english?: boolean; selected_language?: string; overlay_position?: OverlayPosition; debug_mode?: boolean; log_level?: LogLevel; custom_words?: string[]; model_unload_timeout?: ModelUnloadTimeout; word_correction_threshold?: number; history_limit?: number; recording_retention_period?: RecordingRetentionPeriod; paste_method?: PasteMethod; clipboard_handling?: ClipboardHandling; auto_submit?: boolean; auto_submit_key?: AutoSubmitKey; post_process_enabled?: boolean; post_process_provider_id?: string; post_process_providers?: PostProcessProvider[]; post_process_api_keys?: SecretMap; post_process_models?: Partial<{ [key in string]: string }>; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
+whats_new_last_seen_version?: string; selected_model?: string; onboarding_completed?: boolean; always_on_microphone?: boolean; selected_microphone?: string | null; clamshell_microphone?: string | null; selected_output_device?: string | null; translate_to_english?: boolean; selected_language?: string; overlay_position?: OverlayPosition; debug_mode?: boolean; log_level?: LogLevel; custom_words?: string[]; 
+/**
+ * Raccourcis personnels injectés dans la reformulation (mot-clé → valeur).
+ */
+custom_variables?: CustomVariable[]; 
+/**
+ * Style « Automatique » : règles personnalisées (id de Style → repères
+ * d'app/onglet), prioritaires sur les règles intégrées. Réservé Ultra.
+ */
+auto_style_rules?: Partial<{ [key in string]: string[] }>; 
+/**
+ * Style « Automatique » : liste noire de confidentialité (noms d'exécutables
+ * jamais inspectés — banque, gestionnaire de mots de passe…).
+ */
+auto_style_blocklist?: string[]; 
+/**
+ * Lecture de contexte : Nova lit le CONTENU de la fenêtre active (le mail
+ * auquel on répond, la conversation) pour ancrer la reformulation dans la
+ * situation. Lu au moment de la dictée puis oublié ; `auto_style_blocklist`
+ * s'y applique aussi (apps sensibles jamais lues). Désactivé par défaut.
+ */
+context_reading_enabled?: boolean; 
+/**
+ * Lecture visuelle avancée : quand le texte ne suffit pas, Nova analyse une
+ * image de l'écran via le moteur en ligne (Turbo). Réservé Nova Ultra + en
+ * ligne ; sans effet si `context_reading_enabled` est faux. Désactivé par défaut.
+ */
+context_visual_enabled?: boolean; model_unload_timeout?: ModelUnloadTimeout; word_correction_threshold?: number; history_limit?: number; recording_retention_period?: RecordingRetentionPeriod; paste_method?: PasteMethod; clipboard_handling?: ClipboardHandling; auto_submit?: boolean; auto_submit_key?: AutoSubmitKey; post_process_enabled?: boolean; post_process_provider_id?: string; post_process_providers?: PostProcessProvider[]; post_process_api_keys?: SecretMap; post_process_models?: Partial<{ [key in string]: string }>; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; 
+/**
+ * Migration unique : bascule les anciennes installs (qui avaient
+ * « Transcription améliorée » comme défaut figé) vers le mode
+ * « Automatique », désormais le défaut. Une fois passée, on ne réécrit
+ * plus jamais le choix de l'utilisateur.
+ */
+auto_default_migrated?: boolean; 
+/**
+ * Clé de licence Nova (jeton NOVA1…). Vide = palier Free. Voir licensing.rs.
+ */
+license_key?: string | null; 
+/**
+ * Ancien champ d'essai conservé uniquement pour désérialiser sans perte
+ * les réglages créés avant la suppression de l'essai Pro. Toujours ignoré.
+ */
+trial_started_at?: number; 
+/**
+ * Ancien indicateur d'essai, conservé pour compatibilité du store.
+ */
+trial_expired_notified?: boolean; 
+/**
+ * Ancien jeton d'essai, conservé pour compatibilité du store. Jamais lu.
+ */
+trial_token?: string; 
+/**
+ * Jeton gratuit SIGNÉ par le serveur (NOVAF1, émis par trial-check) :
+ * authentifie les reformulations Turbo du palier Gratuit (20 à vie).
+ * Vide tant que le premier contact réseau n'a pas eu lieu — l'appel
+ * Turbo est alors simplement différé au prochain lancement.
+ */
+free_token?: string; 
+/**
+ * Quota Free : reformulations Turbo appliquées à vie (jamais remis à
+ * zéro). Voir quota.rs.
+ */
+free_rewrites_used?: number; 
+/**
+ * Ancien champ de la fenêtre de quota quotidienne glissante, plus utilisé
+ * par la logique de quota.rs. Conservé uniquement pour désérialiser sans
+ * perte les réglages écrits par une version antérieure de Nova.
+ */
+free_quota_day_start?: number; 
+/**
+ * Statistique de valeur : caractères dictés durant la semaine glissante
+ * (tous paliers). Voir week_stats.rs.
+ */
+week_chars_produced?: number; 
+/**
+ * Début (epoch secondes) de la semaine de statistique courante.
+ */
+week_stat_week_start?: number; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
 /**
  * Which recording overlay to show: None / Minimal / Live. Streaming mode is
  * not gated on this — that follows model capability. Migrated from the old
  * `overlay_position` (position `none` → style `None`).
  */
-overlay_style?: OverlayStyle; lexicon_learning_enabled?: boolean; lexicon_candidates?: LexiconCandidate[]; local_model_autoprovision_done?: boolean }
+overlay_style?: OverlayStyle; 
+/**
+ * Bulle (overlay) affichée en permanence à l'écran, même au repos, avec un
+ * engrenage pour choisir le Style. Cochée par défaut. Sans effet si
+ * `overlay_style` = None.
+ */
+persistent_overlay?: boolean; 
+/**
+ * Let Nova choose conservative CPU/GPU and model-lifetime settings from
+ * this device's RAM, CPU count, and usable accelerators.
+ */
+adaptive_performance_enabled?: boolean; 
+/**
+ * Deterministic spoken editing commands. They only transform the current
+ * transcript and never execute an external action.
+ * Apprentissage progressif du lexique : Nova repère les noms propres et
+ * termes techniques récurrents des dictées et les PROPOSE (jamais en
+ * silence) pour enrichir le lexique personnel. Voir `lexicon_learning.rs`.
+ */
+lexicon_learning_enabled?: boolean; 
+/**
+ * Observations accumulées (comptes) des candidats au lexique. Purement un
+ * tampon d'apprentissage : rien n'est appliqué sans l'accord explicite de
+ * l'utilisateur.
+ */
+lexicon_candidates?: LexiconCandidate[]; 
+/**
+ * Vrai une fois que le modèle d'Intelligence privée recommandé a été
+ * téléchargé automatiquement (dès le premier lancement, en arrière-plan).
+ * Empêche de re-tenter à chaque démarrage une fois l'installation réussie ;
+ * tant que c'est faux, l'app retente en arrière-plan au lancement suivant.
+ * Voir `local_llm::provision_default_model_in_background`.
+ */
+local_model_autoprovision_done?: boolean }
 export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
 export type AvailableAccelerators = { transcribe: string[]; ort: string[]; gpu_devices: GpuDeviceOption[] }
 export type BindingResponse = { success: boolean; binding: ShortcutBinding | null; error: string | null }
+export type CampusAuthRequestResponse = { sent: boolean }
+export type CampusAuthVerifyResponse = { token: string }
+export type CampusConfig = { server_url: string }
+export type CampusMeResponse = { email: string; role: string; cohort: string }
+export type CampusSession = { server_url: string; token: string; email: string }
 export type ClipboardHandling = "dont_modify" | "copy_to_clipboard"
 export type CustomSounds = { start: boolean; stop: boolean }
+/**
+ * Raccourci personnel (« variable ») : un mot-clé et sa valeur. Lors de la
+ * reformulation, l'IA insère la valeur exacte quand le texte dicté fait
+ * référence au mot-clé (ex. « mon IBAN » → FR76…).
+ */
+export type CustomVariable = { key: string; value: string }
+export type DeviceProfile = { class: AdaptiveClass; total_memory_mb: number; available_memory_mb: number; logical_cpus: number; cpu_name: string; cpu_score: number; gpu_count: number; cpu_only_fallback: boolean; recommended_model_unload: string; recommended_accelerator: string }
+export type DiagnosticCheck = { id: string; status: DiagnosticStatus; detail: string }
+export type DiagnosticStatus = "ok" | "warning" | "error"
 export type EngineType = 
 /**
  * Any GGML/GGUF model loaded through transcribe-cpp (Whisper, Parakeet,
@@ -990,8 +1480,130 @@ export type ImplementationChangeResult = { success: boolean;
 reset_bindings: string[] }
 export type KeyboardImplementation = "tauri" | "handy_keys"
 export type LLMPrompt = { id: string; name: string; prompt: string }
-export type LexiconCandidate = { term: string; count: number; dismissed: boolean }
+export type LatencyStats = { stage: string; count: number; median_ms: number; p95_ms: number; last_ms: number }
+/**
+ * Terme pressenti pour le lexique personnel, observé au fil des dictées
+ * (apprentissage progressif — voir `lexicon_learning.rs`). Un candidat n'est
+ * JAMAIS ajouté automatiquement : il est seulement compté ; une fois qu'il
+ * revient assez souvent, il est proposé à l'utilisateur, qui seul décide de
+ * l'ajouter au lexique (`term` recopié dans `custom_words`) ou de l'ignorer
+ * définitivement (`dismissed`).
+ */
+export type LexiconCandidate = { term: string; count: number; dismissed?: boolean }
+/**
+ * Statut d'abonnement renvoyé au frontend.
+ */
+export type LicenseStatus = { 
+/**
+ * Palier courant (free / pro / ultra / business).
+ */
+tier: Tier; 
+/**
+ * Le système de licence est-il actif (clé publique configurée) ?
+ */
+active: boolean; 
+/**
+ * E-mail associé à la licence (si valide), sinon vide.
+ */
+email: string; 
+/**
+ * Une clé est-elle enregistrée et valide ?
+ */
+licensed: boolean; 
+/**
+ * Fonctionnalité → accessible au palier courant.
+ */
+features: Partial<{ [key in string]: boolean }>; 
+/**
+ * Champ de compatibilité frontend, toujours égal à 0.
+ */
+trial_days_remaining: number; 
+/**
+ * Champ de compatibilité frontend, toujours faux.
+ */
+trial_just_expired: boolean }
+export type LlmProfileStatus = { id: string; approx_size_mb: number; required_ram_gb: number; is_downloaded: boolean; is_recommended: boolean; is_supported: boolean }
 export type LogLevel = "trace" | "debug" | "info" | "warn" | "error"
+/**
+ * Une application de réunion détectée, proposée au choix de l'utilisateur.
+ */
+export type MeetingApp = { 
+/**
+ * Exécutable (ex. « zoom.exe »).
+ */
+process: string; 
+/**
+ * Identifiant du processus à capter.
+ */
+pid: number; 
+/**
+ * Titre de la fenêtre — aide à distinguer plusieurs réunions (ex. l'onglet
+ * d'un navigateur).
+ */
+title: string }
+/**
+ * Résultat du diagnostic. Ne contient JAMAIS d'audio ni de contenu de réunion :
+ * seulement de quoi répondre « est-ce que ça marche sur cette machine, et Nova
+ * a-t-elle réellement entendu quelque chose ».
+ */
+export type MeetingCaptureProbe = { 
+/**
+ * La capture a abouti (le flux s'est ouvert et a produit des échantillons).
+ */
+supported: boolean; 
+/**
+ * Exécutable de l'application de réunion testée (ex. « zoom.exe »). Vide si
+ * aucune n'a été détectée au premier plan.
+ */
+process: string; 
+/**
+ * Une application de réunion était bien au premier plan.
+ */
+meeting_app_detected: boolean; 
+/**
+ * Durée réellement capturée, en millisecondes.
+ */
+captured_ms: number; 
+/**
+ * Niveau crête observé (0.0 à 1.0). Calculé, puis l'audio est jeté.
+ */
+peak_level: number; 
+/**
+ * La capture a fonctionné mais n'a entendu que du silence — cas normal si
+ * personne ne parlait ; à distinguer d'un échec.
+ */
+silent: boolean; 
+/**
+ * Code de raison de l'échec, à traduire côté interface. `None` si succès.
+ */
+reason: string | null; 
+/**
+ * Détail technique brut (message Windows). Non traduit, non obligatoire.
+ */
+detail: string | null }
+/**
+ * Compte rendu final rendu à l'arrêt.
+ */
+export type MeetingReport = { 
+/**
+ * Compte rendu mis en forme par le Style « Réunion » (ou, à défaut de
+ * moteur, le dialogue brut « Vous »/« Autres »).
+ */
+report: string; 
+/**
+ * Dialogue brut « Vous »/« Autres » avant mise en forme — conservé pour
+ * que l'historique puisse montrer la transcription telle quelle en plus du
+ * compte rendu.
+ */
+dialogue: string; 
+/**
+ * Prises de parole transcrites avec succès.
+ */
+transcribed: number; 
+/**
+ * Prises ignorées (transcription en échec ou vide).
+ */
+skipped: number }
 export type ModelInfo = { id: string; name: string; description: string; filename: string; source: ModelSource; size_mb: number; is_downloaded: boolean; is_downloading: boolean; partial_size: number; is_directory: boolean; engine_type: EngineType; accuracy_score: number; speed_score: number; supports_translation: boolean; is_recommended: boolean; supported_languages: string[]; supports_language_selection: boolean; is_custom: boolean; supports_streaming: boolean; supports_language_detection: boolean }
 export type ModelLoadStatus = { is_loaded: boolean; current_model: string | null }
 /**
@@ -1030,8 +1642,21 @@ export type OverlayPosition = "top" | "bottom"
 export type OverlayStyle = "none" | "minimal" | "live"
 export type PaginatedHistory = { entries: HistoryEntry[]; has_more: boolean }
 export type PasteMethod = "ctrl_v" | "direct" | "none" | "shift_insert" | "ctrl_shift_v" | "external_script"
+export type PerformanceReport = { device: DeviceProfile; latency: LatencyStats[]; checks: DiagnosticCheck[]; adaptive_enabled: boolean }
 export type PermissionAccess = "allowed" | "denied" | "unknown"
 export type PostProcessProvider = { id: string; label: string; base_url: string; allow_base_url_edit?: boolean; models_endpoint?: string | null; supports_structured_output?: boolean }
+/**
+ * État du quota renvoyé au frontend (barre de progression + information).
+ */
+export type QuotaStatus = { 
+/**
+ * Le quota s'applique-t-il (Free + licences actives) ?
+ */
+limited: boolean; used: number; limit: number; 
+/**
+ * Crédit à vie de reformulations Turbo épuisé (la dictée reste ouverte).
+ */
+blocked: boolean }
 export type RecordingRetentionPeriod = "never" | "preserve_limit" | "days_3" | "weeks_2" | "months_3"
 export type SecretMap = Partial<{ [key in string]: string }>
 export type ShortcutBinding = { id: string; name: string; description: string; default_binding: string; current_binding: string }
@@ -1073,8 +1698,18 @@ export type StreamWorkKind = "transcribing" | "polishing"
  * and `Dark` force one of the two palettes Handy already ships.
  */
 export type Theme = "system" | "light" | "dark"
+export type Tier = "free" | "pro" | "ultra" | "business"
 export type TranscribeAcceleratorSetting = "auto" | "cpu" | "gpu"
 export type TypingTool = "auto" | "wtype" | "kwtype" | "dotool" | "ydotool" | "xdotool"
+export type WeekStat = { words: number; chars: number; 
+/**
+ * Minutes de frappe estimées évitées cette semaine.
+ */
+minutes: number; 
+/**
+ * Epoch (secondes) de la prochaine réinitialisation.
+ */
+resets_at: number }
 export type WindowsMicrophonePermissionStatus = { supported: boolean; overall_access: PermissionAccess; device_access: PermissionAccess; app_access: PermissionAccess; desktop_app_access: PermissionAccess }
 
 /** tauri-specta globals **/

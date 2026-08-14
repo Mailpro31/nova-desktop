@@ -11,12 +11,20 @@ import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
+import { CampusAccountSection } from "./CampusAccountSection";
+import { CampusGeneralSettings } from "./CampusGeneralSettings";
+import { isCampusMode } from "@/lib/mode";
 
 export const GeneralSettings: React.FC = () => {
   const { t } = useTranslation();
   const { audioFeedbackEnabled, getSetting } = useSettings();
   const pushToTalk = getSetting("push_to_talk");
   const isLinux = type() === "linux";
+
+  if (isCampusMode()) {
+    return <CampusGeneralSettings />;
+  }
+
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">
       <SettingsGroup title={t("settings.general.title")}>

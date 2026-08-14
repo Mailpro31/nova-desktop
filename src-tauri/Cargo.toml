@@ -38,6 +38,7 @@ tauri = { version = "2.10.2", features = [
 ] }
 tauri-plugin-log = "2.7.1"
 tauri-plugin-opener = "2.5.2"
+tauri-plugin-http = "2.5.9"
 tauri-plugin-store = "2.4.1"
 tauri-plugin-os = "2.3.2"
 tauri-plugin-clipboard-manager = "2.3.2"
@@ -58,7 +59,7 @@ tokio = "1.43.0"
 vad-rs = { git = "https://github.com/cjpais/vad-rs", default-features = false }
 enigo = "0.6.1"
 rodio = { git = "https://github.com/cjpais/rodio.git" }
-reqwest = { version = "0.12", features = ["json", "stream", "blocking"] }
+reqwest = { version = "0.12", features = ["json", "stream", "blocking", "multipart"] }
 futures-util = "0.3"
 rustfft = "6.4.0"
 strsim = "0.11.0"

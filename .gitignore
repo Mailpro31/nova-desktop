@@ -50,3 +50,6 @@ vite.config.d.ts
 
 # Fichier d'etat de mission (outil de travail agent, non commitable)
 NOVA_MAJ_ETAT.md
+
+# Serveur interne autonome
+nova-server/

@@ -661,9 +661,9 @@
   height: 28px;
   border: none;
   background: transparent;
-  /* Assez clair pour rester lisible sur la pilule sombre (l'ancien gris se
-     confondait avec le fond). */
-  color: rgba(255, 255, 255, 0.72);
+  /* L'icône s'adapte au thème actif de l'app (sombre ou clair) pour rester
+     lisible et bien contrastée sur la pilule de repos. */
+  color: color-mix(in srgb, var(--color-text) 88%, transparent);
   cursor: pointer;
   border-radius: 999px;
   transition:
@@ -685,12 +685,16 @@
    survol pour marquer l'action. */
 .sstar:hover svg path {
   fill: currentColor;
-  fill-opacity: 0.18;
+  fill-opacity: 0.25;
 }
-/* En thème clair, les icônes doivent rester sombres pour être lisibles. */
-@media (prefers-color-scheme: light) {
+
+@media (prefers-color-scheme: dark) {
   .sgear {
-    color: rgba(0, 0, 0, 0.55);
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .sgear:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
   }
 }
 

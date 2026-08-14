@@ -22,6 +22,7 @@ import AccessibilityPermissions from "./components/AccessibilityPermissions";
 import Footer from "./components/footer";
 import Onboarding, {
   AccessibilityOnboarding,
+  CampusOnboarding,
   StyleOnboarding,
   QuickVariablesOnboarding,
   TutorialOnboarding,
@@ -37,18 +38,26 @@ import {
   markAttentionSeen,
   showAttentionToast,
 } from "@/lib/attentionNotifications";
+import { isCampusMode } from "@/lib/mode";
+import {
+  loadCampusSession,
+  completeCampusOnboarding,
+  clearCampusSession,
+} from "@/lib/campusSession";
+import CampusStatusBubble from "./components/CampusStatusBubble";
 
 type OnboardingStep =
   | "accessibility"
   | "model"
+  | "campus"
   | "style"
   | "variables"
   | "tutorial"
   | "done";
 
-// Étapes ajoutées après le modèle, dans l'ordre où elles s'enchaînent — sert
-// à calculer l'index/le total affichés par le repère de progression à
-// pastilles (`OnboardingStepShell`).
+// Étapes ajoutées après l'onboarding initial (modèle ou campus), dans l'ordre
+// où elles s'enchaînent — sert à calculer l'index/le total affichés par le
+// repère de progression à pastilles (`OnboardingStepShell`).
 const POST_MODEL_STEPS: OnboardingStep[] = ["style", "variables", "tutorial"];
 
 const renderSettingsContent = (
@@ -89,6 +98,15 @@ function App() {
 
   useEffect(() => {
     checkOnboardingStatus();
+  }, []);
+
+  // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
+  useEffect(() => {
+    if (isCampusMode()) {
+      commands.setCampusMode(true).catch((e) => {
+        console.warn("Failed to set campus mode:", e);
+      });
+    }
   }, []);
 
   // Initialize RTL direction when language changes
@@ -231,6 +249,51 @@ function App() {
     };
   }, [t]);
 
+  // Session campus révoquée (401) : retour à l'onboarding.
+  useEffect(() => {
+    const unlisten = listen("campus-session-invalid", () => {
+      clearCampusSession()
+        .then(() => {
+          setOnboardingStep("campus");
+          showAttentionToast("error", t("campus.sessionExpiredTitle"), {
+            description: t("campus.sessionExpired"),
+          });
+        })
+        .catch((e) => {
+          console.error("Failed to clear campus session:", e);
+          setOnboardingStep("campus");
+        });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  // Serveur campus injoignable : repli local actif. Notification discrète,
+  // dédupliquée (id fixe) et auto-masquée — pas de badge d'attention.
+  useEffect(() => {
+    const unlisten = listen("campus-server-unreachable", () => {
+      toast.warning(t("campus.serverUnreachableTitle"), {
+        id: "campus-server-unreachable",
+        description: t("campus.serverUnreachable"),
+        duration: 4000,
+      });
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, [t]);
+
+  // Déconnexion demandée depuis la section Compte : retour à l'onboarding.
+  useEffect(() => {
+    const unlisten = listen("campus-logout-requested", () => {
+      setOnboardingStep("campus");
+    });
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, []);
+
   useEffect(() => {
     const unlisten = listen("notification-attention-seen", () => {
       markAttentionSeen();
@@ -242,8 +305,9 @@ function App() {
 
   // Le moteur en ligne est réservé à Nova Ultra : la reformulation a été
   // ignorée silencieusement côté Rust — on explique au lieu de laisser croire
-  // à un bug.
+  // à un bug. Inutile en mode campus (tout est débloqué par l'établissement).
   useEffect(() => {
+    if (isCampusMode()) return;
     const unlisten = listen("online-engine-locked", () => {
       showAttentionToast("info", t("license.onlineEngineLockedTitle"), {
         description: t("license.onlineEngineLocked"),
@@ -268,8 +332,10 @@ function App() {
   }, [t]);
 
   // Quota gratuit de reformulations épuisé : le texte a été collé brut côté
-  // Rust. On informe et on propose de passer à un palier supérieur.
+  // Rust. On informe et on propose de passer à un palier supérieur. Inutile en
+  // mode campus (pas de quota).
   useEffect(() => {
+    if (isCampusMode()) return;
     const unlisten = listen("quota-blocked", () => {
       showAttentionToast("error", t("quota.blockedTitle"), {
         description: t("quota.blockedDescription"),
@@ -330,7 +396,16 @@ function App() {
         settingsResult.data.onboarding_completed === true;
       const currentPlatform = platform();
 
-      if (hasCompletedOnboarding) {
+      // En mode campus, une session valide équivaut à un onboarding terminé.
+      let campusSession = null;
+      if (isCampusMode()) {
+        campusSession = await loadCampusSession();
+        if (campusSession && !hasCompletedOnboarding) {
+          await completeCampusOnboarding().catch(() => {});
+        }
+      }
+
+      if (hasCompletedOnboarding || campusSession !== null) {
         // Returning user - check if they need to grant permissions first
         setIsReturningUser(true);
 
@@ -383,14 +458,24 @@ function App() {
 
   const handleAccessibilityComplete = () => {
     // Returning users already have models, skip to main app
-    // New users need to select a model
-    setOnboardingStep(isReturningUser ? "done" : "model");
+    // New users need to select a model (personal) or authenticate (campus)
+    if (isReturningUser) {
+      setOnboardingStep("done");
+    } else if (isCampusMode()) {
+      setOnboardingStep("campus");
+    } else {
+      setOnboardingStep("model");
+    }
   };
 
   const handleModelSelected = () => {
     // Modèle choisi (téléchargement lancé) : enchaîne sur les étapes
     // ajoutées — choix du Style, raccourcis personnels, puis mini-tutoriel —
     // avant de basculer sur l'app principale.
+    setOnboardingStep("style");
+  };
+
+  const handleCampusOnboardingComplete = () => {
     setOnboardingStep("style");
   };
 
@@ -447,6 +532,8 @@ function App() {
     );
   } else if (onboardingStep === "model") {
     content = <Onboarding onModelSelected={handleModelSelected} />;
+  } else if (onboardingStep === "campus") {
+    content = <CampusOnboarding onComplete={handleCampusOnboardingComplete} />;
   } else if (onboardingStep === "style") {
     content = (
       <StyleOnboarding
@@ -513,6 +600,7 @@ function App() {
     <>
       {toaster}
       {content}
+      {isCampusMode() && <CampusStatusBubble />}
     </>
   );
 }

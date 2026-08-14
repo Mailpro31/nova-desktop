@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
-import { Cog, CreditCard, History } from "lucide-react";
+import { Cog, CreditCard, History, Sparkles } from "lucide-react";
 import type { SidebarSection } from "../../Sidebar";
 import { WeekStat } from "../license/WeekStat";
+import { isCampusMode } from "@/lib/mode";
+import { CampusHomeSettings } from "./CampusHomeSettings";
 
 type Tier = "free" | "pro" | "ultra" | "business";
 
@@ -80,6 +82,10 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
 
   const go = (section: SidebarSection) => onNavigate?.(section);
 
+  if (isCampusMode()) {
+    return <CampusHomeSettings onNavigate={go} />;
+  }
+
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">
       <div className="px-1">
@@ -89,19 +95,21 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
         </p>
       </div>
 
-      <div className="rounded-lg border border-mid-gray/20 bg-background divide-y divide-mid-gray/20">
-        <div className="px-4 py-3 flex items-center justify-between">
-          {/* eslint-disable-next-line i18next/no-literal-string */}
-          <span className="text-sm text-text-secondary">Palier actif</span>
-          <span
-            className="text-sm font-semibold px-2.5 py-1 rounded-full border"
-            style={{ color: TIER_COLOR[tier], borderColor: TIER_COLOR[tier] }}
-          >
-            {TIER_LABEL[tier]}
-          </span>
+      {!isCampusMode() && (
+        <div className="rounded-lg border border-mid-gray/20 bg-background divide-y divide-mid-gray/20">
+          <div className="px-4 py-3 flex items-center justify-between">
+            {/* eslint-disable-next-line i18next/no-literal-string */}
+            <span className="text-sm text-text-secondary">Palier actif</span>
+            <span
+              className="text-sm font-semibold px-2.5 py-1 rounded-full border"
+              style={{ color: TIER_COLOR[tier], borderColor: TIER_COLOR[tier] }}
+            >
+              {TIER_LABEL[tier]}
+            </span>
+          </div>
+          <WeekStat />
         </div>
-        <WeekStat />
-      </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <QuickNavCard
@@ -110,12 +118,21 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
           label={t("sidebar.configuration")}
           onClick={() => go("configuration")}
         />
-        <QuickNavCard
-          icon={CreditCard}
-          color="#5E5CE6"
-          label={t("sidebar.account")}
-          onClick={() => go("account")}
-        />
+        {isCampusMode() ? (
+          <QuickNavCard
+            icon={Sparkles}
+            color="#BF5AF2"
+            label={t("sidebar.styles")}
+            onClick={() => go("postprocessing")}
+          />
+        ) : (
+          <QuickNavCard
+            icon={CreditCard}
+            color="#5E5CE6"
+            label={t("sidebar.account")}
+            onClick={() => go("account")}
+          />
+        )}
         <QuickNavCard
           icon={History}
           color="#FF9F0A"

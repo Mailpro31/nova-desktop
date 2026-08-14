@@ -16,6 +16,20 @@ use base64::Engine;
 use ed25519_dalek::{Signature, VerifyingKey};
 use serde::{Deserialize, Serialize};
 use specta::Type;
+use std::sync::atomic::{AtomicBool, Ordering};
+
+/// Mode campus : toutes les fonctionnalités sont débloquées par l'établissement.
+static CAMPUS_ENABLED: AtomicBool = AtomicBool::new(false);
+
+/// Active/désactive le bypass de palier pour le mode campus.
+pub fn set_campus_enabled(enabled: bool) {
+    CAMPUS_ENABLED.store(enabled, Ordering::Relaxed);
+}
+
+/// Le mode campus est-il actif côté backend ?
+pub fn is_campus_enabled() -> bool {
+    CAMPUS_ENABLED.load(Ordering::Relaxed)
+}
 
 /// Clé publique Ed25519 de l'éditeur (base64 standard, 32 octets bruts).
 /// VIDE = licences dormantes (accès complet). Renseignée = paliers actifs.
@@ -165,10 +179,11 @@ pub fn verify_key(key: &str) -> Option<LicenseInfo> {
 }
 
 /// Palier courant d'après la clé stockée. Dormant → Ultra ; actif sans clé
-/// valide → Free ; sinon le palier de la licence.
+/// valide → Free ; sinon le palier de la licence. En mode campus, l'établissement
+/// paie : on renvoie toujours Ultra pour court-circuiter tous les verrous.
 pub fn current_tier(license_key: &str) -> Tier {
-    if !enabled() {
-        return Tier::Ultra; // dormant = tout débloqué
+    if is_campus_enabled() || !enabled() {
+        return Tier::Ultra; // campus ou dormant = tout débloqué
     }
     verify_key(license_key)
         .map(|i| i.tier)
@@ -190,7 +205,11 @@ pub fn effective_tier(license_key: &str, _trial_started_at: i64) -> Tier {
 }
 
 /// La fonctionnalité est-elle accessible avec la licence active ?
+/// En mode campus, l'établissement débloque toutes les fonctionnalités.
 pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
+    if is_campus_enabled() {
+        return true;
+    }
     effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
 }
 

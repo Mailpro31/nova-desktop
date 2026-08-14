@@ -30,8 +30,10 @@ import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileS
 import { TierBadge } from "../license/TierBadge";
 import { AutoStyleSettings } from "./AutoStyleSettings";
 import { ContextReadingSettings } from "./ContextReadingSettings";
+import { CampusStylesSettings } from "./CampusStylesSettings";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { useSettings } from "../../../hooks/useSettings";
+import { isCampusMode } from "@/lib/mode";
 
 const PostProcessingSettingsApiComponent: React.FC = () => {
   const { t } = useTranslation();
@@ -524,6 +526,11 @@ PostProcessingSettingsPrompts.displayName = "PostProcessingSettingsPrompts";
 
 export const PostProcessingSettings: React.FC = () => {
   const { t } = useTranslation();
+  const campusMode = isCampusMode();
+
+  if (campusMode) {
+    return <CampusStylesSettings />;
+  }
 
   return (
     <div className="max-w-3xl w-full mx-auto space-y-6">

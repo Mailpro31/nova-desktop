@@ -216,6 +216,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(tray::CurrentTrayIconState::new());
     app_handle.manage(local_llm::LocalLlmProcess::default());
     app_handle.manage(commands::meeting::MeetingSessionState::default());
+    app_handle.manage(commands::campus::CampusState::default());
 
     // Note: Shortcuts are NOT initialized here.
     // The frontend is responsible for calling the `initialize_shortcuts` command
@@ -644,6 +645,30 @@ pub fn run(cli_args: CliArgs) {
             commands::get_app_dir_path,
             commands::get_app_settings,
             commands::get_default_settings,
+            commands::campus::get_campus_config,
+            commands::campus::set_campus_mode,
+            commands::campus::load_campus_session,
+            commands::campus::save_campus_session,
+            commands::campus::clear_campus_session,
+            commands::campus::complete_campus_onboarding,
+            commands::campus::check_campus_server_reachability,
+            commands::campus::request_campus_auth,
+            commands::campus::verify_campus_auth,
+            commands::campus::get_campus_me,
+            commands::campus::get_campus_vocabulary,
+            commands::campus::add_campus_dictionary_entry,
+            commands::campus::delete_campus_dictionary_entry,
+            commands::campus::learn_campus_dictionary,
+            commands::campus::export_campus_dictionary,
+            commands::campus::import_campus_dictionary,
+            commands::campus::analyze_campus_document,
+            commands::campus::add_campus_snippet,
+            commands::campus::delete_campus_snippet,
+            commands::campus::get_campus_formatting_rules,
+            commands::campus::add_campus_formatting_rule,
+            commands::campus::delete_campus_formatting_rule,
+            commands::campus::execute_campus_command,
+            commands::campus::transcribe_campus_audio_file,
             commands::get_lexicon_suggestions,
             commands::accept_lexicon_suggestion,
             commands::dismiss_lexicon_suggestion,
@@ -820,6 +845,7 @@ pub fn run(cli_args: CliArgs) {
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_macos_permissions::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .plugin(tauri_plugin_autostart::init(

@@ -20,7 +20,8 @@
     "about": "À propos",
     "home": "Accueil",
     "configuration": "Configuration",
-    "account": "Compte"
+    "account": "Compte",
+    "styles": "Styles"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -913,5 +914,199 @@
     "oneApp": "Prêt à capter {{app}}.",
     "refresh": "Actualiser",
     "newMeeting": "Nouvelle réunion"
+  },
+  "campus": {
+    "onboarding": {
+      "welcome": {
+        "title": "Bienvenue sur Nova Campus",
+        "subtitle": "La dictée intelligente de votre établissement, sécurisée par email académique.",
+        "connect": "Se connecter"
+      },
+      "email": {
+        "title": "Se connecter à Nova Campus",
+        "subtitle": "Saisissez l'adresse serveur de votre établissement et votre email académique.",
+        "serverLabel": "Serveur Nova",
+        "serverPlaceholder": "https://nova.ipsa.fr",
+        "emailLabel": "Email académique",
+        "emailPlaceholder": "prenom.nom@ipsa.fr"
+      },
+      "code": {
+        "title": "Code de vérification",
+        "subtitle": "Un code à 6 chiffres a été envoyé à {{email}}.",
+        "resend": "Renvoyer",
+        "resent": "Code renvoyé",
+        "resendCooldown": "Renvoyer dans {{seconds}} s",
+        "invalid": "Code incorrect ou expiré.",
+        "forbidden": "Sièges ou appareils épuisés. Contactez l'administrateur de votre établissement."
+      },
+      "ready": {
+        "title": "Prêt à dicter",
+        "subtitle": "Connecté à {{server}}.",
+        "shortcut": "Appuyez sur {{shortcut}} pour dicter.",
+        "shortcutFallback": "Votre raccourci de dictée est configuré dans les réglages.",
+        "start": "Commencer"
+      }
+    },
+    "account": {
+      "title": "Compte",
+      "server": "Serveur",
+      "email": "Connecté en tant que",
+      "role": "Rôle",
+      "cohort": "Cohorte",
+      "logout": "Se déconnecter",
+      "logoutConfirmTitle": "Se déconnecter de Nova Campus ?",
+      "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser Nova Campus. Êtes-vous sûr ?",
+      "logoutConfirmButton": "Se déconnecter",
+      "refresh": "Actualiser",
+      "checking": "Vérification de la connexion…",
+      "connected": "Connecté à {{server}}",
+      "offline": "{{server}} — hors ligne"
+    },
+    "footer": {
+      "connected": "{{server}} — connecté",
+      "offline": "Hors ligne — mode secours"
+    },
+    "bubble": {
+      "checking": "vérification…",
+      "connected": "connecté",
+      "offline": "hors ligne",
+      "resetPosition": "Réinitialiser la position",
+      "hide": "Masquer la bulle"
+    },
+    "errors": {
+      "network": "Impossible de joindre le serveur. Vérifiez l'adresse et votre connexion."
+    },
+    "home": {
+      "title": "Dictez, n'écrivez plus",
+      "subtitle": "La dictée vocale de votre établissement, à un raccourci de distance.",
+      "action": {
+        "dictate": "Dicter",
+        "cancel": "Annuler",
+        "postProcess": "Dicter avec Style"
+      },
+      "stylesTitle": "Styles",
+      "seeAll": "Tout voir",
+      "statusTitle": "Connexion",
+      "connected": "Connecté à {{server}}",
+      "offline": "{{server}} — hors ligne, mode secours",
+      "privacyNote": "Vos données restent sur le réseau de votre établissement. Seul le texte transcrit et la consigne du Style actif sont envoyés au serveur."
+    },
+    "settings": {
+      "generalSubtitle": "Configurez vos préférences de dictée.",
+      "aboutSubtitle": "Informations et outils de diagnostic pour Nova Campus.",
+      "shortcuts": {
+        "title": "Raccourcis clavier",
+        "description": "Configurez comment vous déclenchez la dictée"
+      },
+      "sound": {
+        "title": "Son",
+        "description": "Micro, retour sonore et volume"
+      },
+      "account": {
+        "title": "Compte",
+        "description": "Votre session Nova Campus"
+      },
+      "bubble": {
+        "title": "Bulle de connexion",
+        "description": "Indicateur flottant de votre connexion Nova Campus",
+        "helper": "Glissez la bulle pour la déplacer. Utilisez les boutons ci-dessous pour l'afficher, la masquer ou réinitialiser sa position.",
+        "show": "Afficher la bulle",
+        "hide": "Masquer la bulle",
+        "resetPosition": "Réinitialiser la position"
+      }
+    },
+    "styles": {
+      "subtitle": "Choisissez ou personnalisez le style d'écriture appliqué à vos dictées.",
+      "listTitle": "Styles d'écriture",
+      "descriptions": {
+        "auto": "Laissez Nova choisir automatiquement la meilleure mise en forme pour votre dictée.",
+        "default_improve_transcriptions": "Nettoyez votre texte dicté : ponctuation, fautes et phrases fluides.",
+        "nova_style_email": "Mettez en forme votre dictée sous la forme d'un email clair et poli.",
+        "nova_style_messages": "Transformez votre voix en messages concis prêts à l'envoi.",
+        "nova_style_prompt": "Transformez votre dictée en consigne structurée pour outils IA.",
+        "nova_style_todo": "Extrayez des tâches et listes de contrôle actionnables de votre dictée.",
+        "nova_style_notes": "Restructurez votre dictée en notes claires et organisées.",
+        "nova_style_meeting": "Résumez et mettez en forme vos notes et points de réunion.",
+        "nova_style_voice_to_text": "Transcription brute sans aucun post-traitement."
+      }
+    },
+    "dictionary": {
+      "title": "Dictionnaire",
+      "description": "Vocabulaire partagé par l'établissement et lexique personnel.",
+      "sharedTitle": "Vocabulaire de l'établissement",
+      "sharedDescription": "Termes et orthographes recommandés par votre établissement (lecture seule).",
+      "sharedEmpty": "Aucun terme partagé par l'établissement.",
+      "sharedBadge": "Établissement",
+      "personalTitle": "Vocabulaire personnel",
+      "personalDescription": "Vos acronymes, noms propres ou jargon métier.",
+      "personalEmpty": "Aucun terme personnalisé. Ajoutez vos expressions ci-dessous.",
+      "learnedBadge": "Appris",
+      "manualBadge": "Personnel",
+      "termLabel": "Terme",
+      "termPlaceholder": "Ex: IPSA",
+      "replacementLabel": "Correction / Remplacement (optionnel)",
+      "replacementPlaceholder": "Ex: Institut Polytechnique des Sciences Avancées",
+      "addTerm": "Ajouter le terme",
+      "exportCsv": "Exporter CSV",
+      "importCsv": "Importer CSV",
+      "importSuccess": "{{count}} terme(s) importé(s) avec succès.",
+      "analyzeDoc": "Analyser un document",
+      "analyzeDocTitle": "Analyser un document existant",
+      "analyzeDocDescription": "Envoyez un fichier texte pour que l'IA en extraie automatiquement le vocabulaire et les noms propres. Le document n'est jamais stocké.",
+      "analyzeDocPlaceholder": "Collez le texte d'un document ou glissez un fichier texte...",
+      "analyzeDocButton": "Lancer l'analyse",
+      "analyzeSuccess": "{{count}} nouveau(x) terme(s) extrait(s) et ajouté(s) !",
+      "analyzeEmpty": "Aucun nouveau terme trouvé dans le document.",
+      "analyzing": "Analyse du vocabulaire en cours…",
+      "learnedToast": "Nova s'en souviendra pour vos prochaines dictées"
+    },
+    "snippets": {
+      "title": "Snippets vocaux",
+      "description": "Associez une expression orale courte à un texte long ou récurrent.",
+      "empty": "Aucun snippet vocal configuré.",
+      "triggerLabel": "Expression prononcée",
+      "triggerPlaceholder": "Ex: mon lien visio",
+      "contentLabel": "Texte inséré",
+      "contentPlaceholder": "Ex: https://meet.google.com/abc-def-ghi",
+      "add": "Ajouter le snippet",
+      "tip": "Astuce : Dites « {{trigger}} » lors d'une dictée pour insérer vos informations instantanément !"
+    },
+    "formatting": {
+      "title": "Règles de formatage",
+      "description": "Règles appliquées automatiquement lors de la reformulation de vos dictées.",
+      "sharedTitle": "Règles de l'établissement",
+      "sharedDescription": "Règles imposées par la charte de votre établissement (lecture seule).",
+      "sharedEmpty": "Aucune règle partagée par l'établissement.",
+      "personalTitle": "Règles personnelles",
+      "personalDescription": "Vos propres consignes de mise en forme.",
+      "personalEmpty": "Aucune règle personnelle configurée.",
+      "rulePlaceholder": "Ex: Écrire les pourcentages en chiffres suivis du symbole %",
+      "addRule": "Ajouter la règle"
+    },
+    "command": {
+      "title": "Mode commande",
+      "description": "Sélectionnez du texte, dictez une consigne vocale pour le modifier avec l'IA.",
+      "shortcutTitle": "Raccourci du mode commande",
+      "shortcutDescription": "Raccourci clavier pour déclencher la consigne vocale sur la sélection",
+      "modalTitle": "Mode Commande",
+      "modalInstructionPlaceholder": "Ex: Traduis en anglais, résume en 3 points, rends plus formel...",
+      "executing": "Traitement de l'instruction par le serveur…",
+      "success": "Sélection modifiée avec succès.",
+      "error": "Impossible d'appliquer la commande au texte sélectionné."
+    },
+    "files": {
+      "title": "Transcrire un fichier",
+      "description": "Glissez un fichier audio pour le transcrire via le serveur Nova Campus.",
+      "actionButton": "Transcrire un fichier",
+      "dropzone": "Glissez un enregistrement audio ici ou cliquez pour choisir",
+      "supportedFormats": "Formats supportés : WAV, MP3, M4A, OGG",
+      "transcribing": "Transcription du fichier par le serveur en cours…",
+      "copiedToClipboard": "Transcription copiée dans le presse-papiers et archivée dans l'Historique !",
+      "error": "Échec de la transcription du fichier audio."
+    },
+    "sessionExpiredTitle": "Session expirée",
+    "sessionExpired": "Veuillez vous reconnecter pour continuer à utiliser Nova Campus.",
+    "serverUnreachableTitle": "Serveur injoignable",
+    "serverUnreachable": "Le serveur Nova Campus est indisponible et aucun secours local n'était disponible."
   }
 }

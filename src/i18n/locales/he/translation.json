@@ -20,7 +20,8 @@
     "personalization": "Personalization",
     "home": "בית",
     "configuration": "הגדרות",
-    "account": "חשבון"
+    "account": "חשבון",
+    "styles": "עיבוד משלים"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -913,5 +914,199 @@
     "oneApp": "Ready to capture {{app}}.",
     "refresh": "Refresh",
     "newMeeting": "New meeting"
+  },
+  "campus": {
+    "onboarding": {
+      "welcome": {
+        "title": "Welcome to Nova Campus",
+        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "connect": "Sign in"
+      },
+      "email": {
+        "title": "Connect to Nova Campus",
+        "subtitle": "Enter your institution's Nova server and academic email.",
+        "serverLabel": "Nova Server",
+        "serverPlaceholder": "https://nova.ipsa.fr",
+        "emailLabel": "Academic email",
+        "emailPlaceholder": "first.last@ipsa.fr"
+      },
+      "code": {
+        "title": "Verification code",
+        "subtitle": "A 6-digit code has been sent to {{email}}.",
+        "resend": "Resend",
+        "resent": "Code resent",
+        "resendCooldown": "Resend in {{seconds}}s",
+        "invalid": "Incorrect or expired code.",
+        "forbidden": "Seats or devices exhausted. Contact your institution administrator."
+      },
+      "ready": {
+        "title": "Ready to dictate",
+        "subtitle": "Connected to {{server}}.",
+        "shortcut": "Press {{shortcut}} to dictate.",
+        "shortcutFallback": "Your dictation shortcut is configured in settings.",
+        "start": "Get started"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "server": "Server",
+      "email": "Signed in as",
+      "role": "Role",
+      "cohort": "Cohort",
+      "logout": "Sign out",
+      "logoutConfirmTitle": "Sign out of Nova Campus?",
+      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
+      "logoutConfirmButton": "Sign out",
+      "refresh": "Refresh",
+      "checking": "Checking connection…",
+      "connected": "Connected to {{server}}",
+      "offline": "{{server}} — offline"
+    },
+    "footer": {
+      "connected": "{{server}} — connected",
+      "offline": "Offline — fallback mode"
+    },
+    "bubble": {
+      "checking": "checking…",
+      "connected": "connected",
+      "offline": "offline",
+      "resetPosition": "Reset position",
+      "hide": "Hide bubble"
+    },
+    "errors": {
+      "network": "Could not reach the server. Check the address and your connection."
+    },
+    "home": {
+      "title": "Dictate, don't type",
+      "subtitle": "Your institution's voice dictation, one shortcut away.",
+      "action": {
+        "dictate": "Dictate",
+        "cancel": "Cancel",
+        "postProcess": "Dictate with Style"
+      },
+      "stylesTitle": "Styles",
+      "seeAll": "See all",
+      "statusTitle": "Connection",
+      "connected": "Connected to {{server}}",
+      "offline": "{{server}} — offline fallback",
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server."
+    },
+    "settings": {
+      "generalSubtitle": "Configure your dictation preferences.",
+      "aboutSubtitle": "Information and troubleshooting tools for Nova Campus.",
+      "shortcuts": {
+        "title": "Keyboard shortcuts",
+        "description": "Configure how you trigger dictation"
+      },
+      "sound": {
+        "title": "Sound",
+        "description": "Microphone, feedback and volume"
+      },
+      "account": {
+        "title": "Account",
+        "description": "Your Nova Campus session"
+      },
+      "bubble": {
+        "title": "Connection bubble",
+        "description": "Floating indicator showing your Nova Campus connection",
+        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
+        "show": "Show bubble",
+        "hide": "Hide bubble",
+        "resetPosition": "Reset position"
+      }
+    },
+    "styles": {
+      "subtitle": "Choose or customize the writing style applied to your dictations.",
+      "listTitle": "Writing styles",
+      "descriptions": {
+        "auto": "Let Nova automatically choose the best formatting for your dictation.",
+        "default_improve_transcriptions": "Clean up your dictated text: punctuation, typos and fluid phrasing.",
+        "nova_style_email": "Format your dictation as a clear, polite email.",
+        "nova_style_messages": "Turn your voice into concise, ready-to-send messages.",
+        "nova_style_prompt": "Transform your dictation into a structured prompt for AI tools.",
+        "nova_style_todo": "Extract actionable tasks and checklists from your dictation.",
+        "nova_style_notes": "Restructure your dictation as clean, organized notes.",
+        "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
+        "nova_style_voice_to_text": "Raw transcription without any post-processing."
+      }
+    },
+    "dictionary": {
+      "title": "Dictionary",
+      "description": "Organization-shared vocabulary and personal lexicon.",
+      "sharedTitle": "Organization vocabulary",
+      "sharedDescription": "Terms and spellings recommended by your organization (read-only).",
+      "sharedEmpty": "No vocabulary shared by the organization.",
+      "sharedBadge": "Organization",
+      "personalTitle": "Personal vocabulary",
+      "personalDescription": "Your acronyms, proper names, or domain jargon.",
+      "personalEmpty": "No personal terms yet. Add your custom expressions below.",
+      "learnedBadge": "Learned",
+      "manualBadge": "Personal",
+      "termLabel": "Term",
+      "termPlaceholder": "E.g. NASA",
+      "replacementLabel": "Correction / Replacement (optional)",
+      "replacementPlaceholder": "E.g. National Aeronautics and Space Administration",
+      "addTerm": "Add term",
+      "exportCsv": "Export CSV",
+      "importCsv": "Import CSV",
+      "importSuccess": "{{count}} term(s) imported successfully.",
+      "analyzeDoc": "Analyze document",
+      "analyzeDocTitle": "Analyze an existing document",
+      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocPlaceholder": "Paste document text or drop a text file...",
+      "analyzeDocButton": "Start analysis",
+      "analyzeSuccess": "{{count}} new term(s) extracted and added!",
+      "analyzeEmpty": "No new terms found in the document.",
+      "analyzing": "Analyzing vocabulary with AI…",
+      "learnedToast": "Nova will remember this for future dictations"
+    },
+    "snippets": {
+      "title": "Voice snippets",
+      "description": "Associate a short voice phrase with longer or recurring text.",
+      "empty": "No voice snippets configured.",
+      "triggerLabel": "Spoken phrase",
+      "triggerPlaceholder": "E.g. my meeting link",
+      "contentLabel": "Inserted text",
+      "contentPlaceholder": "E.g. https://meet.google.com/abc-def-ghi",
+      "add": "Add snippet",
+      "tip": "Tip: Say \"{{trigger}}\" during dictation to instantly insert your information!"
+    },
+    "formatting": {
+      "title": "Formatting rules",
+      "description": "Rules automatically applied when reformulating your dictations.",
+      "sharedTitle": "Organization rules",
+      "sharedDescription": "Style and formatting guidelines enforced by your organization (read-only).",
+      "sharedEmpty": "No organization rules configured.",
+      "personalTitle": "Personal rules",
+      "personalDescription": "Your personal formatting guidelines.",
+      "personalEmpty": "No personal formatting rules configured.",
+      "rulePlaceholder": "E.g. Format all percentages with digits followed by the % symbol",
+      "addRule": "Add rule"
+    },
+    "command": {
+      "title": "Command mode",
+      "description": "Select text, dictate a voice instruction to transform it with AI.",
+      "shortcutTitle": "Command mode shortcut",
+      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
+      "modalTitle": "Command Mode",
+      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
+      "executing": "Processing command on server…",
+      "success": "Text rewritten successfully.",
+      "error": "Failed to apply command to selected text."
+    },
+    "files": {
+      "title": "Transcribe a file",
+      "description": "Drop an audio file to transcribe it with the Nova Campus server.",
+      "actionButton": "Transcribe a file",
+      "dropzone": "Drop an audio recording here or click to browse",
+      "supportedFormats": "Supported formats: WAV, MP3, M4A, OGG",
+      "transcribing": "Transcribing audio file on server…",
+      "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
+      "error": "Failed to transcribe audio file."
+    },
+    "sessionExpiredTitle": "Session expired",
+    "sessionExpired": "Please sign in again to continue using Nova Campus.",
+    "serverUnreachableTitle": "Server unreachable",
+    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available."
   }
 }

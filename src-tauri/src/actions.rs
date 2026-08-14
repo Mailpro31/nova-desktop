@@ -2,6 +2,7 @@
 use crate::apple_intelligence;
 use crate::audio_feedback::{play_feedback_sound, play_feedback_sound_blocking, SoundType};
 use crate::audio_toolkit::{is_microphone_access_denied, is_no_input_device_error, VadPolicy};
+use crate::commands::campus::{self, CampusError};
 use crate::managers::audio::AudioRecordingManager;
 use crate::managers::history::HistoryManager;
 use crate::managers::model::ModelManager;
@@ -1073,6 +1074,49 @@ pub(crate) async fn post_process_transcription(
     result
 }
 
+/// Résout le prompt effectif à envoyer au serveur Nova Campus pour la
+/// reformulation. Tient compte du Style automatique, du Style sélectionné et
+/// du repli sur le style gratuit si le palier n'est pas disponible.
+pub(crate) fn resolve_effective_style_prompt(
+    app: &AppHandle,
+    auto_style_override: Option<&str>,
+) -> Option<String> {
+    let settings = get_settings(app);
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+
+    let selected_prompt_id = match auto_style_override {
+        Some(id) => id.to_string(),
+        None => settings.post_process_selected_prompt_id.clone()?,
+    };
+
+    let prompt = settings
+        .post_process_prompts
+        .iter()
+        .find(|prompt| prompt.id == selected_prompt_id)
+        .map(|prompt| prompt.prompt.clone())?;
+
+    let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
+    let required_feature = if crate::licensing::is_builtin_style(&selected_prompt_id) {
+        "all_styles"
+    } else {
+        "custom_styles"
+    };
+
+    if !style_is_free && !crate::licensing::has(required_feature, license_key, 0) {
+        debug!(
+            "Style '{}' réservé ({}) — repli sur le Style gratuit",
+            selected_prompt_id, required_feature
+        );
+        settings
+            .post_process_prompts
+            .iter()
+            .find(|p| p.id == "default_improve_transcriptions")
+            .map(|p| p.prompt.clone())
+    } else {
+        Some(prompt)
+    }
+}
+
 async fn post_process_with_provider(
     app: &AppHandle,
     settings: &AppSettings,
@@ -1980,7 +2024,11 @@ impl ShortcutAction for TranscribeAction {
                                                  // la reformulation ne dépend plus d'un second raccourci dédié. Le
                                                  // raccourci de post-traitement (`self.post_process`) force l'application
                                                  // même si le toggle était coupé.
-        let post_process = self.post_process || get_settings(app).post_process_enabled;
+                                                 // En mode campus, la reformulation est TOUJOURS active (spec §C :
+                                                 // « Reformulation toujours active »), indépendamment du toggle.
+        let post_process = self.post_process
+            || get_settings(app).post_process_enabled
+            || crate::licensing::is_campus_enabled();
         let cancel_generation = rm.cancel_generation();
 
         // Style « Automatique » : on lit la fenêtre au premier plan MAINTENANT
@@ -2069,21 +2117,9 @@ impl ShortcutAction for TranscribeAction {
                         crate::audio_toolkit::save_wav_file(&wav_path, &samples_for_wav)
                     });
 
-                    // Transcribe concurrently with WAV save. If a live stream was
-                    // running, finalize it and use its text (all audio was already
-                    // fed to the stream); otherwise batch-transcribe the samples.
-                    let transcription_time = Instant::now();
-                    let transcription_result = match tm.finalize_stream() {
-                        // A finalized stream with usable text wins. An empty result
-                        // (no active stream, produced nothing, or a finalize error
-                        // after the engine was returned) falls back to a full batch
-                        // transcription of the same audio. A finalize timeout is
-                        // surfaced instead — the worker may still hold the engine,
-                        // so a batch fallback would contend with it.
-                        Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
-                        Ok(_) => tm.transcribe(samples),
-                        Err(err) => Err(err),
-                    };
+                    // Finalize stream first to clean up worker state and capture
+                    // any local result as a fallback.
+                    let stream_result = tm.finalize_stream();
 
                     // Await WAV save and verify
                     let wav_saved = match wav_handle.await {
@@ -2116,6 +2152,98 @@ impl ShortcutAction for TranscribeAction {
                         return;
                     }
 
+                    // En mode campus, on envoie le WAV au serveur. Le stream local
+                    // a déjà été finalisé ; son texte sert de secours si le serveur
+                    // est injoignable ou renvoie une erreur non-fatale.
+                    let transcription_time = Instant::now();
+                    let mut campus_used = false;
+                    let mut campus_error: Option<CampusError> = None;
+
+                    let transcription_result: Result<String, anyhow::Error> = if wav_saved {
+                        if let Some(session) = campus::should_use_campus(&ah).await {
+                            match campus::transcribe_campus(&ah, &wav_path_for_verify, &session)
+                                .await
+                            {
+                                Ok(text) => {
+                                    campus_used = true;
+                                    campus::invalidate_server_reachability_cache(
+                                        &session.server_url,
+                                    );
+                                    if post_process {
+                                        if let Some(style_prompt) = resolve_effective_style_prompt(
+                                            &ah,
+                                            auto_style_override.as_deref(),
+                                        ) {
+                                            match campus::reformulate_campus(
+                                                &text,
+                                                &style_prompt,
+                                                &session,
+                                            )
+                                            .await
+                                            {
+                                                Ok(reformulated) => Ok(reformulated),
+                                                Err(e) => {
+                                                    campus_error = Some(e);
+                                                    Ok(text)
+                                                }
+                                            }
+                                        } else {
+                                            Ok(text)
+                                        }
+                                    } else {
+                                        Ok(text)
+                                    }
+                                }
+                                Err(e) => {
+                                    campus_error = Some(e);
+                                    match stream_result {
+                                        Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                                        Ok(_) => tm.transcribe(samples),
+                                        Err(err) => Err(err),
+                                    }
+                                }
+                            }
+                        } else {
+                            // Session campus présente mais serveur injoignable
+                            // (cache ou vérification fraîche) : repli local +
+                            // notification discrète, jamais de perte.
+                            if campus::is_campus_enabled(&ah) && campus::has_campus_session(&ah) {
+                                let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                            }
+                            match stream_result {
+                                Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                                Ok(_) => tm.transcribe(samples),
+                                Err(err) => Err(err),
+                            }
+                        }
+                    } else {
+                        match stream_result {
+                            Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                            Ok(_) => tm.transcribe(samples),
+                            Err(err) => Err(err),
+                        }
+                    };
+
+                    // Gestion des erreurs campus : 401 -> déconnexion ;
+                    // autre erreur + pas de secours local -> notification.
+                    if let Some(err) = campus_error {
+                        match err {
+                            CampusError::Unauthorized => {
+                                campus::clear_campus_session_and_notify(&ah);
+                            }
+                            CampusError::Network(_) => {
+                                warn!("Campus server request failed: {}", err);
+                                let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                            }
+                            _ => {
+                                warn!("Campus server request failed: {}", err);
+                                if transcription_result.is_err() {
+                                    let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                                }
+                            }
+                        }
+                    }
+
                     match transcription_result {
                         Ok(transcription) => {
                             debug!(
@@ -2145,11 +2273,15 @@ impl ShortcutAction for TranscribeAction {
                                 tm.emit_stream_working(StreamWorkKind::Polishing);
                             }
                             let output_processing_time = Instant::now();
+                            // Si le serveur campus a déjà reformulé, on désactive la
+                            // reformulation locale pour éviter un double traitement.
+                            let effective_post_process =
+                                if campus_used { false } else { post_process };
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
                                     &ah,
                                     &transcription,
-                                    post_process,
+                                    effective_post_process,
                                     auto_style_override.clone(),
                                 ),
                                 || rm.was_cancelled_since(cancel_generation),
@@ -2162,7 +2294,7 @@ impl ShortcutAction for TranscribeAction {
                                 return;
                             };
                             crate::performance::record_latency(
-                                if post_process {
+                                if effective_post_process {
                                     "transcript_to_rewrite"
                                 } else {
                                     "transcript_to_output"

@@ -1,4 +1,5 @@
 pub mod audio;
+pub mod campus;
 pub mod history;
 pub mod license;
 pub mod local_llm;
