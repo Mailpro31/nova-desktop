@@ -173,6 +173,23 @@ async fn parse_error_text(response: reqwest::Response) -> String {
     format!("HTTP {}: {}", status, text)
 }
 
+/// Vérifie la réponse d'une commande authentifiée : si le serveur a révoqué la
+/// session (401), on efface la session locale et on notifie le frontend pour
+/// qu'il retourne à l'onboarding. Renvoie la réponse consommable sinon.
+async fn handle_authed_response(
+    app: &AppHandle,
+    response: reqwest::Response,
+) -> Result<reqwest::Response, String> {
+    if response.status() == reqwest::StatusCode::UNAUTHORIZED {
+        clear_campus_session_and_notify(app);
+        return Err(parse_error_text(response).await);
+    }
+    if !response.status().is_success() {
+        return Err(parse_error_text(response).await);
+    }
+    Ok(response)
+}
+
 #[tauri::command]
 #[specta::specta]
 pub async fn check_campus_server_reachability(server_url: String) -> Result<bool, String> {
@@ -258,6 +275,7 @@ fn campus_client_with_token(token: &str) -> reqwest::Client {
 #[tauri::command]
 #[specta::specta]
 pub async fn get_campus_me(
+    app: AppHandle,
     server_url: String,
     token: String,
 ) -> Result<CampusMeResponse, String> {
@@ -268,10 +286,7 @@ pub async fn get_campus_me(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusMeResponse>()
@@ -348,6 +363,7 @@ pub struct CampusCommandResponse {
 #[tauri::command]
 #[specta::specta]
 pub async fn get_campus_vocabulary(
+    app: AppHandle,
     server_url: String,
     token: String,
 ) -> Result<CampusVocabularyResponse, String> {
@@ -358,10 +374,7 @@ pub async fn get_campus_vocabulary(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusVocabularyResponse>()
@@ -372,6 +385,7 @@ pub async fn get_campus_vocabulary(
 #[tauri::command]
 #[specta::specta]
 pub async fn add_campus_dictionary_entry(
+    app: AppHandle,
     server_url: String,
     token: String,
     term: String,
@@ -385,10 +399,7 @@ pub async fn add_campus_dictionary_entry(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusIdResponse>()
@@ -399,6 +410,7 @@ pub async fn add_campus_dictionary_entry(
 #[tauri::command]
 #[specta::specta]
 pub async fn delete_campus_dictionary_entry(
+    app: AppHandle,
     server_url: String,
     token: String,
     entry_id: i64,
@@ -410,10 +422,7 @@ pub async fn delete_campus_dictionary_entry(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    handle_authed_response(&app, response).await?;
 
     Ok(())
 }
@@ -421,6 +430,7 @@ pub async fn delete_campus_dictionary_entry(
 #[tauri::command]
 #[specta::specta]
 pub async fn learn_campus_dictionary(
+    app: AppHandle,
     server_url: String,
     token: String,
     heard: String,
@@ -434,10 +444,7 @@ pub async fn learn_campus_dictionary(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusLearnResponse>()
@@ -448,6 +455,7 @@ pub async fn learn_campus_dictionary(
 #[tauri::command]
 #[specta::specta]
 pub async fn export_campus_dictionary(
+    app: AppHandle,
     server_url: String,
     token: String,
 ) -> Result<String, String> {
@@ -458,10 +466,7 @@ pub async fn export_campus_dictionary(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .text()
@@ -472,6 +477,7 @@ pub async fn export_campus_dictionary(
 #[tauri::command]
 #[specta::specta]
 pub async fn import_campus_dictionary(
+    app: AppHandle,
     server_url: String,
     token: String,
     csv_content: String,
@@ -492,10 +498,7 @@ pub async fn import_campus_dictionary(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusImportResponse>()
@@ -506,6 +509,7 @@ pub async fn import_campus_dictionary(
 #[tauri::command]
 #[specta::specta]
 pub async fn analyze_campus_document(
+    app: AppHandle,
     server_url: String,
     token: String,
     text_content: String,
@@ -537,10 +541,7 @@ pub async fn analyze_campus_document(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusAnalyzeResponse>()
@@ -551,6 +552,7 @@ pub async fn analyze_campus_document(
 #[tauri::command]
 #[specta::specta]
 pub async fn add_campus_snippet(
+    app: AppHandle,
     server_url: String,
     token: String,
     trigger: String,
@@ -564,10 +566,7 @@ pub async fn add_campus_snippet(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusIdResponse>()
@@ -578,6 +577,7 @@ pub async fn add_campus_snippet(
 #[tauri::command]
 #[specta::specta]
 pub async fn delete_campus_snippet(
+    app: AppHandle,
     server_url: String,
     token: String,
     snippet_id: i64,
@@ -589,10 +589,7 @@ pub async fn delete_campus_snippet(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    handle_authed_response(&app, response).await?;
 
     Ok(())
 }
@@ -600,6 +597,7 @@ pub async fn delete_campus_snippet(
 #[tauri::command]
 #[specta::specta]
 pub async fn get_campus_formatting_rules(
+    app: AppHandle,
     server_url: String,
     token: String,
 ) -> Result<CampusFormattingRulesResponse, String> {
@@ -610,10 +608,7 @@ pub async fn get_campus_formatting_rules(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusFormattingRulesResponse>()
@@ -624,6 +619,7 @@ pub async fn get_campus_formatting_rules(
 #[tauri::command]
 #[specta::specta]
 pub async fn add_campus_formatting_rule(
+    app: AppHandle,
     server_url: String,
     token: String,
     rule: String,
@@ -636,10 +632,7 @@ pub async fn add_campus_formatting_rule(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusIdResponse>()
@@ -650,6 +643,7 @@ pub async fn add_campus_formatting_rule(
 #[tauri::command]
 #[specta::specta]
 pub async fn delete_campus_formatting_rule(
+    app: AppHandle,
     server_url: String,
     token: String,
     rule_id: i64,
@@ -661,10 +655,7 @@ pub async fn delete_campus_formatting_rule(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    handle_authed_response(&app, response).await?;
 
     Ok(())
 }
@@ -672,6 +663,7 @@ pub async fn delete_campus_formatting_rule(
 #[tauri::command]
 #[specta::specta]
 pub async fn execute_campus_command(
+    app: AppHandle,
     server_url: String,
     token: String,
     instruction: String,
@@ -695,10 +687,7 @@ pub async fn execute_campus_command(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     response
         .json::<CampusCommandResponse>()
@@ -709,6 +698,7 @@ pub async fn execute_campus_command(
 #[tauri::command]
 #[specta::specta]
 pub async fn transcribe_campus_audio_file(
+    app: AppHandle,
     server_url: String,
     token: String,
     file_bytes: Vec<u8>,
@@ -749,10 +739,7 @@ pub async fn transcribe_campus_audio_file(
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
-
-    if !response.status().is_success() {
-        return Err(parse_error_text(response).await);
-    }
+    let response = handle_authed_response(&app, response).await?;
 
     let resp: TranscribeResponse = response
         .json()

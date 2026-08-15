@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi } from "@/lib/campusApi";
+import { CampusApi, campusErrorText } from "@/lib/campusApi";
 import type {
   CampusSharedDictEntry,
   CampusPersonalDictEntry,
@@ -81,7 +81,8 @@ export const CampusDictionarySection: React.FC = () => {
       toast.success(t("settings.advanced.customWords.add"));
     } catch (err) {
       console.error("Failed to add dictionary entry:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     } finally {
       setAdding(false);
     }
@@ -97,7 +98,8 @@ export const CampusDictionarySection: React.FC = () => {
       await loadVocabulary();
     } catch (err) {
       console.error("Failed to delete dictionary entry:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     }
   };
 
@@ -118,7 +120,8 @@ export const CampusDictionarySection: React.FC = () => {
       document.body.removeChild(link);
     } catch (err) {
       console.error("Failed to export dictionary:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     }
   };
 
@@ -136,10 +139,13 @@ export const CampusDictionarySection: React.FC = () => {
       const api = new CampusApi(session.server_url);
       const res = await api.importDictionary(session.token, text);
       await loadVocabulary();
-      toast.success(t("campus.dictionary.importSuccess", { count: res.imported }));
+      toast.success(
+        t("campus.dictionary.importSuccess", { count: res.imported }),
+      );
     } catch (err) {
       console.error("Failed to import dictionary:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
@@ -183,7 +189,8 @@ export const CampusDictionarySection: React.FC = () => {
       }
     } catch (err) {
       console.error("Failed to analyze document:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     } finally {
       setAnalyzing(false);
     }
@@ -345,7 +352,9 @@ export const CampusDictionarySection: React.FC = () => {
                 {item.replacement && (
                   <>
                     <span className="text-text-secondary">→</span>
-                    <span className="text-text-secondary">{item.replacement}</span>
+                    <span className="text-text-secondary">
+                      {item.replacement}
+                    </span>
                   </>
                 )}
               </div>

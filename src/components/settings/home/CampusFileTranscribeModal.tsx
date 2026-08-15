@@ -1,20 +1,27 @@
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { FileAudio, UploadCloud, X, RefreshCw, Copy, Check } from "lucide-react";
+import {
+  FileAudio,
+  UploadCloud,
+  X,
+  RefreshCw,
+  Copy,
+  Check,
+} from "lucide-react";
 import { toast } from "sonner";
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { Button } from "../../ui/Button";
 import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi } from "@/lib/campusApi";
+import { CampusApi, campusErrorText } from "@/lib/campusApi";
 
 interface CampusFileTranscribeModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const CampusFileTranscribeModal: React.FC<CampusFileTranscribeModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+export const CampusFileTranscribeModal: React.FC<
+  CampusFileTranscribeModalProps
+> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [transcribing, setTranscribing] = useState(false);
@@ -68,12 +75,13 @@ export const CampusFileTranscribeModal: React.FC<CampusFileTranscribeModalProps>
       setResultText(text);
 
       // Copy to clipboard
-      await navigator.clipboard.writeText(text).catch(() => {});
+      await writeText(text).catch(() => {});
 
       toast.success(t("campus.files.copiedToClipboard"));
     } catch (err) {
       console.error("File transcription failed:", err);
-      toast.error(t("campus.files.error"));
+      const message = campusErrorText(err, t("campus.files.error"));
+      if (message) toast.error(message);
     } finally {
       setTranscribing(false);
     }
@@ -81,7 +89,7 @@ export const CampusFileTranscribeModal: React.FC<CampusFileTranscribeModalProps>
 
   const handleCopyAgain = async () => {
     if (!resultText) return;
-    await navigator.clipboard.writeText(resultText);
+    await writeText(resultText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     toast.success(t("history.copied"));

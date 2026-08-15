@@ -7,7 +7,13 @@ import {
   Suspense,
 } from "react";
 import { toast, Toaster } from "sonner";
-import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-react";
+import {
+  CircleAlert,
+  CircleCheck,
+  Info,
+  Settings,
+  TriangleAlert,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -45,6 +51,7 @@ import {
   clearCampusSession,
 } from "@/lib/campusSession";
 import CampusStatusBubble from "./components/CampusStatusBubble";
+import CampusSettingsDrawer from "./components/CampusSettingsDrawer";
 
 type OnboardingStep =
   | "accessibility"
@@ -86,6 +93,7 @@ function App() {
   // (vs a new user who needs full onboarding including model selection)
   const [isReturningUser, setIsReturningUser] = useState(false);
   const [currentSection, setCurrentSection] = useState<SidebarSection>("home");
+  const [campusSettingsOpen, setCampusSettingsOpen] = useState(false);
   const { settings, updateSetting } = useSettings();
   const direction = getLanguageDirection(i18n.language);
   const refreshAudioDevices = useSettingsStore(
@@ -568,10 +576,12 @@ function App() {
         <LexiconSuggestions />
         {/* Main content area that takes remaining space */}
         <div className="flex-1 flex overflow-hidden">
-          <Sidebar
-            activeSection={currentSection}
-            onSectionChange={setCurrentSection}
-          />
+          {!isCampusMode() && (
+            <Sidebar
+              activeSection={currentSection}
+              onSectionChange={setCurrentSection}
+            />
+          )}
           {/* Scrollable content area */}
           <div className="flex-1 flex flex-col overflow-hidden">
             <div className="flex-1 overflow-y-auto">
@@ -592,6 +602,29 @@ function App() {
         </div>
         {/* Fixed footer at bottom */}
         <Footer />
+
+        {isCampusMode() && (
+          <>
+            {/* Roue ancrée : ouvre le panneau latéral des réglages */}
+            <button
+              type="button"
+              onClick={() => setCampusSettingsOpen((v) => !v)}
+              className="fixed top-4 right-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-white text-text-secondary shadow-md transition-all hover:rotate-45 hover:text-accent cursor-pointer"
+              aria-label={t("campus.settings.drawerTitle")}
+            >
+              <Settings size={18} />
+            </button>
+            <CampusSettingsDrawer
+              open={campusSettingsOpen}
+              activeSection={currentSection}
+              onNavigate={(section) => {
+                setCurrentSection(section);
+                setCampusSettingsOpen(false);
+              }}
+              onClose={() => setCampusSettingsOpen(false)}
+            />
+          </>
+        )}
       </div>
     );
   }

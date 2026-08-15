@@ -539,11 +539,13 @@
       "subtitle": "根據上下文,AI 會寫出的內容。"
     },
     "history": {
+      "copied": "Copied",
       "title": "歷史紀錄",
       "openFolder": "開啟錄音資料夾",
       "loading": "載入歷史紀錄中...",
       "empty": "還沒有轉錄紀錄。開始錄製以建立您的歷史紀錄！",
       "copyToClipboard": "複製轉錄到剪貼簿",
+      "copyError": "Failed to copy to clipboard.",
       "save": "儲存轉錄",
       "unsave": "從已儲存中移除",
       "delete": "刪除條目",
@@ -989,7 +991,9 @@
       "statusTitle": "Connection",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server."
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet"
     },
     "settings": {
       "generalSubtitle": "Configure your dictation preferences.",
@@ -1013,7 +1017,8 @@
         "show": "Show bubble",
         "hide": "Hide bubble",
         "resetPosition": "Reset position"
-      }
+      },
+      "drawerTitle": "Settings"
     },
     "styles": {
       "subtitle": "Choose or customize the writing style applied to your dictations.",

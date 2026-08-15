@@ -539,11 +539,13 @@
       "subtitle": "What the AI writes, based on context."
     },
     "history": {
+      "copied": "Copied",
       "title": "History",
       "openFolder": "Open Recordings Folder",
       "loading": "Loading history...",
       "empty": "No transcriptions yet. Start recording to build your history!",
       "copyToClipboard": "Copy transcription to clipboard",
+      "copyError": "Failed to copy to clipboard.",
       "save": "Save transcription",
       "unsave": "Remove from saved",
       "delete": "Delete entry",
@@ -989,7 +991,9 @@
       "statusTitle": "Connection",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server."
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet"
     },
     "settings": {
       "generalSubtitle": "Configure your dictation preferences.",
@@ -1013,7 +1017,8 @@
         "show": "Show bubble",
         "hide": "Hide bubble",
         "resetPosition": "Reset position"
-      }
+      },
+      "drawerTitle": "Settings"
     },
     "styles": {
       "subtitle": "Choose or customize the writing style applied to your dictations.",

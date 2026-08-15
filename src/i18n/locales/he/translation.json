@@ -539,11 +539,13 @@
       "subtitle": "מה הבינה המלאכותית כותבת בהתאם להקשר."
     },
     "history": {
+      "copied": "Copied",
       "title": "היסטוריה",
       "openFolder": "פתח את תיקיית ההקלטות",
       "loading": "טוען היסטוריה...",
       "empty": "עדיין אין תמלולים. התחל להקליט כדי לבנות את ההיסטוריה שלך!",
       "copyToClipboard": "העתק תמלול ללוח",
+      "copyError": "Failed to copy to clipboard.",
       "save": "שמור תמלול",
       "unsave": "הסר משמורים",
       "delete": "מחק רשומה",
@@ -989,7 +991,9 @@
       "statusTitle": "Connection",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server."
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet"
     },
     "settings": {
       "generalSubtitle": "Configure your dictation preferences.",
@@ -1013,7 +1017,8 @@
         "show": "Show bubble",
         "hide": "Hide bubble",
         "resetPosition": "Reset position"
-      }
+      },
+      "drawerTitle": "Settings"
     },
     "styles": {
       "subtitle": "Choose or customize the writing style applied to your dictations.",

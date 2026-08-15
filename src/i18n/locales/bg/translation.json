@@ -539,11 +539,13 @@
       "subtitle": "Какво пише изкуственият интелект според контекста."
     },
     "history": {
+      "copied": "Copied",
       "title": "История",
       "openFolder": "Отваряне на папката с записи",
       "loading": "Зареждане на историята...",
       "empty": "Все още няма транскрипции. Започнете запис, за да изградите история!",
       "copyToClipboard": "Копиране на транскрипцията в клипборда",
+      "copyError": "Failed to copy to clipboard.",
       "save": "Запазване на транскрипцията",
       "unsave": "Премахване от запазените",
       "delete": "Изтриване на записа",
@@ -989,7 +991,9 @@
       "statusTitle": "Connection",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server."
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet"
     },
     "settings": {
       "generalSubtitle": "Configure your dictation preferences.",
@@ -1013,7 +1017,8 @@
         "show": "Show bubble",
         "hide": "Hide bubble",
         "resetPosition": "Reset position"
-      }
+      },
+      "drawerTitle": "Settings"
     },
     "styles": {
       "subtitle": "Choose or customize the writing style applied to your dictations.",

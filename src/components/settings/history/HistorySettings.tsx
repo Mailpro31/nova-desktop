@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { readFile } from "@tauri-apps/plugin-fs";
 import { Check, Copy, FolderOpen, RotateCcw, Star, Trash2 } from "lucide-react";
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
@@ -174,9 +175,11 @@ export const HistorySettings: React.FC = () => {
 
   const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(text);
+      await writeText(text);
+      toast.success(t("settings.history.copied"));
     } catch (error) {
       console.error("Failed to copy to clipboard:", error);
+      toast.error(t("settings.history.copyError"));
     }
   };
 

@@ -638,6 +638,7 @@ pub fn run(cli_args: CliArgs) {
             trigger_update_check,
             show_main_window_command,
             commands::cancel_operation,
+            commands::trigger_transcription,
             commands::finish_recording,
             commands::copy_transcription,
             commands::dismiss_recording_overlay,

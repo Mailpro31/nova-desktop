@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { X, GripVertical, Settings } from "lucide-react";
+import { GripVertical, Settings } from "lucide-react";
 import { loadCampusSession } from "@/lib/campusSession";
 import { isServerReachable } from "@/lib/campusApi";
 import { useCampusBubbleStore } from "@/stores/campusBubbleStore";
@@ -23,7 +23,7 @@ export const CampusStatusBubble: React.FC = () => {
   const dragRef = useRef<DragRef | null>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
 
-  const { visible, position, setVisible, setPosition, resetPosition } =
+  const { visible, position, setPosition, resetPosition } =
     useCampusBubbleStore();
 
   const check = useCallback(async () => {
@@ -172,17 +172,6 @@ export const CampusStatusBubble: React.FC = () => {
             className="flex items-center gap-2 w-full px-3 py-2 text-sm text-text hover:bg-mid-gray/10 text-left"
           >
             {t("campus.bubble.resetPosition")}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setVisible(false);
-              setShowMenu(false);
-            }}
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm text-danger hover:bg-mid-gray/10 text-left"
-          >
-            <X size={14} />
-            {t("campus.bubble.hide")}
           </button>
         </div>
       )}

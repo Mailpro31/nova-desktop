@@ -539,11 +539,13 @@
       "subtitle": "Що ШІ пише залежно від контексту."
     },
     "history": {
+      "copied": "Copied",
       "title": "Історія",
       "openFolder": "Відкрити папку записів",
       "loading": "Завантаження історії...",
       "empty": "Транскрипцій поки немає. Почніть запис, щоб створити історію!",
       "copyToClipboard": "Копіювати транскрипцію в буфер обміну",
+      "copyError": "Failed to copy to clipboard.",
       "save": "Зберегти транскрипцію",
       "unsave": "Видалити зі збережених",
       "delete": "Видалити запис",
@@ -989,7 +991,9 @@
       "statusTitle": "Connection",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server."
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet"
     },
     "settings": {
       "generalSubtitle": "Configure your dictation preferences.",
@@ -1013,7 +1017,8 @@
         "show": "Show bubble",
         "hide": "Hide bubble",
         "resetPosition": "Reset position"
-      }
+      },
+      "drawerTitle": "Settings"
     },
     "styles": {
       "subtitle": "Choose or customize the writing style applied to your dictations.",

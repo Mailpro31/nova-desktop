@@ -27,6 +27,14 @@ pub fn finish_recording(app: AppHandle) {
     }
 }
 
+/// Déclenche une dictée comme si le raccourci correspondant avait été pressé
+/// (par exemple depuis un bouton de l'écran d'accueil campus).
+#[tauri::command]
+#[specta::specta]
+pub fn trigger_transcription(app: AppHandle, binding_id: String) {
+    crate::signal_handle::send_transcription_input(&app, &binding_id, "HOME_BUTTON");
+}
+
 #[tauri::command]
 #[specta::specta]
 pub fn copy_transcription(app: AppHandle, text: String) -> Result<(), String> {

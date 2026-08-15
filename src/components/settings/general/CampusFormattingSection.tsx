@@ -1,11 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { ListFilter, Plus, Trash2, RefreshCw, Building, User } from "lucide-react";
+import {
+  ListFilter,
+  Plus,
+  Trash2,
+  RefreshCw,
+  Building,
+  User,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi } from "@/lib/campusApi";
+import { CampusApi, campusErrorText } from "@/lib/campusApi";
 import type { CampusRuleEntry } from "@/lib/campusApi";
 
 export const CampusFormattingSection: React.FC = () => {
@@ -54,7 +61,8 @@ export const CampusFormattingSection: React.FC = () => {
       toast.success(t("campus.formatting.addRule"));
     } catch (err) {
       console.error("Failed to add formatting rule:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     } finally {
       setAdding(false);
     }
@@ -70,7 +78,8 @@ export const CampusFormattingSection: React.FC = () => {
       await loadRules();
     } catch (err) {
       console.error("Failed to delete formatting rule:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     }
   };
 

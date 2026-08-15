@@ -128,7 +128,7 @@ export const SECTIONS_CONFIG = {
     icon: Palette,
     component: PersonalizationSettings,
     enabled: () => true,
-    campusVisible: false,
+    campusVisible: true,
   },
   account: {
     labelKey: "sidebar.account",
@@ -167,19 +167,26 @@ export const SECTIONS_CONFIG = {
 } as const satisfies Record<string, SectionConfig>;
 
 // Ordre des entrées de la sidebar en mode campus.
-// Spec : Accueil / Styles / Historique / Réglages
-const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
+// Spec : Accueil / Styles / Historique / Réglages / Personnalisation
+export const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
   "home",
   "postprocessing",
   "history",
   "configuration",
+  "personalization",
 ];
+
+// Libellé affiché pour une section en mode campus (priorité au libellé campus).
+export function getCampusLabelKey(section: SidebarSection): string {
+  const config = SECTIONS_CONFIG[section];
+  return config.campusLabelKey ?? config.labelKey;
+}
 
 // Icônes carrées colorées façon macOS (Réglages système). Chaque catégorie a
 // sa couleur d'identité — ce ne sont PAS des actions (l'accent d'action unique
 // reste le bleu #0A84FF, réservé à la sélection). « home » affiche l'orbe
 // Nova directement, sans carré.
-const SECTION_COLORS: Record<string, string> = {
+export const SECTION_COLORS: Record<string, string> = {
   home: "",
   configuration: "#8E8E93",
   postprocessing: "#BF5AF2",

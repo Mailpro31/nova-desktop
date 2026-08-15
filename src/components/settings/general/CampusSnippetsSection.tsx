@@ -1,11 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Sparkles, Plus, Trash2, RefreshCw, Lightbulb, MessageSquare } from "lucide-react";
+import {
+  Sparkles,
+  Plus,
+  Trash2,
+  RefreshCw,
+  Lightbulb,
+  MessageSquare,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi } from "@/lib/campusApi";
+import { CampusApi, campusErrorText } from "@/lib/campusApi";
 import type { CampusSnippetEntry } from "@/lib/campusApi";
 
 export const CampusSnippetsSection: React.FC = () => {
@@ -54,7 +61,8 @@ export const CampusSnippetsSection: React.FC = () => {
       toast.success(t("campus.snippets.add"));
     } catch (err) {
       console.error("Failed to add snippet:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     } finally {
       setAdding(false);
     }
@@ -70,7 +78,8 @@ export const CampusSnippetsSection: React.FC = () => {
       await loadSnippets();
     } catch (err) {
       console.error("Failed to delete snippet:", err);
-      toast.error(t("campus.errors.network"));
+      const msg = campusErrorText(err, t("campus.errors.network"));
+      if (msg) toast.error(msg);
     }
   };
 

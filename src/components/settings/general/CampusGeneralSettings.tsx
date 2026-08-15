@@ -4,9 +4,6 @@ import {
   Keyboard,
   Volume2,
   User,
-  CircleDot,
-  Eye,
-  EyeOff,
   Info,
   BookA,
   MessageSquare,
@@ -26,7 +23,6 @@ import { CampusAccountSection } from "./CampusAccountSection";
 import { CampusDictionarySection } from "./CampusDictionarySection";
 import { CampusSnippetsSection } from "./CampusSnippetsSection";
 import { CampusFormattingSection } from "./CampusFormattingSection";
-import { useCampusBubbleStore } from "@/stores/campusBubbleStore";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
@@ -137,50 +133,8 @@ export const CampusGeneralSettings: React.FC = () => {
         <CampusAccountSection inline={true} />
       </SectionCard>
 
-      <BubbleSettingsCard />
-
       <AboutSectionCard />
     </div>
-  );
-};
-
-const BubbleSettingsCard: React.FC = () => {
-  const { t } = useTranslation();
-  const { visible, setVisible, resetPosition } = useCampusBubbleStore();
-
-  return (
-    <SectionCard
-      icon={CircleDot}
-      title={t("campus.settings.bubble.title")}
-      description={t("campus.settings.bubble.description")}
-    >
-      <div className="px-4 py-3 space-y-3">
-        <p className="text-sm text-text-secondary">
-          {t("campus.settings.bubble.helper")}
-        </p>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setVisible(!visible)}
-            className="inline-flex items-center gap-1.5"
-          >
-            {visible ? <EyeOff size={14} /> : <Eye size={14} />}
-            {visible
-              ? t("campus.settings.bubble.hide")
-              : t("campus.settings.bubble.show")}
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={resetPosition}
-            className="inline-flex items-center gap-1.5"
-          >
-            {t("campus.settings.bubble.resetPosition")}
-          </Button>
-        </div>
-      </div>
-    </SectionCard>
   );
 };
 

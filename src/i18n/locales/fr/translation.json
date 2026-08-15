@@ -539,11 +539,13 @@
       "subtitle": "Ce que l'IA écrit selon le contexte."
     },
     "history": {
+      "copied": "Copied",
       "title": "Historique",
       "openFolder": "Ouvrir le dossier des enregistrements",
       "loading": "Chargement de l'historique...",
       "empty": "Pas encore de transcriptions. Commencez à enregistrer pour créer votre historique !",
       "copyToClipboard": "Copier la transcription dans le presse-papiers",
+      "copyError": "Failed to copy to clipboard.",
       "save": "Enregistrer la transcription",
       "unsave": "Retirer des favoris",
       "delete": "Supprimer l'entrée",
@@ -989,7 +991,9 @@
       "statusTitle": "Connexion",
       "connected": "Connecté à {{server}}",
       "offline": "{{server}} — hors ligne, mode secours",
-      "privacyNote": "Vos données restent sur le réseau de votre établissement. Seul le texte transcrit et la consigne du Style actif sont envoyés au serveur."
+      "privacyNote": "Vos données restent sur le réseau de votre établissement. Seul le texte transcrit et la consigne du Style actif sont envoyés au serveur.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet"
     },
     "settings": {
       "generalSubtitle": "Configurez vos préférences de dictée.",
@@ -1013,7 +1017,8 @@
         "show": "Afficher la bulle",
         "hide": "Masquer la bulle",
         "resetPosition": "Réinitialiser la position"
-      }
+      },
+      "drawerTitle": "Settings"
     },
     "styles": {
       "subtitle": "Choisissez ou personnalisez le style d'écriture appliqué à vos dictées.",

@@ -66,6 +66,20 @@ function parseCommandError(err: unknown): CampusApiError {
   return new CampusApiError(message, status);
 }
 
+/**
+ * Message d'erreur affichable pour une action campus.
+ * Retourne `null` quand la session a été révoquée (401) : le backend émet
+ * déjà l'événement `campus-session-invalid` et le frontend navigue vers
+ * l'onboarding avec son propre toast, donc aucune erreur locale à afficher.
+ */
+export function campusErrorText(err: unknown, fallback: string): string | null {
+  if (err instanceof CampusApiError) {
+    if (err.status === 401) return null;
+    return err.message || fallback;
+  }
+  return fallback;
+}
+
 export class CampusApi {
   private baseUrl: string;
 
@@ -146,10 +160,7 @@ export class CampusApi {
     }
   }
 
-  async deleteDictionaryEntry(
-    token: string,
-    entryId: number,
-  ): Promise<void> {
+  async deleteDictionaryEntry(token: string, entryId: number): Promise<void> {
     try {
       await invoke("delete_campus_dictionary_entry", {
         serverUrl: this.baseUrl,
