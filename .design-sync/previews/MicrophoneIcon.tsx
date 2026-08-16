@@ -21,7 +21,11 @@ export const Colors = () => (
     <MicrophoneIcon width={32} height={32} />
     <MicrophoneIcon width={32} height={32} color="var(--color-accent)" />
     <MicrophoneIcon width={32} height={32} color="var(--color-danger)" />
-    <MicrophoneIcon width={32} height={32} color="var(--color-text-secondary)" />
+    <MicrophoneIcon
+      width={32}
+      height={32}
+      color="var(--color-text-secondary)"
+    />
   </div>
 );
 

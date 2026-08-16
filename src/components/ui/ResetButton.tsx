@@ -14,11 +14,11 @@ export const ResetButton: React.FC<ResetButtonProps> = React.memo(
     <button
       type="button"
       aria-label={ariaLabel}
-      className={`p-1 rounded-md border border-transparent transition-all duration-150 ${
+      className={`p-1 rounded-chip border border-transparent transition-colors duration-[120ms] ${
         disabled
-          ? "opacity-50 cursor-not-allowed text-text/40"
-          : "hover:bg-logo-primary/30 active:bg-logo-primary/50 active:translate-y-[1px] hover:cursor-pointer hover:border-logo-primary text-text/80"
-      } ${className}`}
+          ? "opacity-40 cursor-not-allowed text-text-secondary"
+          : "text-text-secondary hover:text-accent hover:bg-accent/10 active:bg-accent/15 hover:cursor-pointer"
+      } focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

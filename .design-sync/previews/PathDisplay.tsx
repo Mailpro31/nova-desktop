@@ -35,6 +35,10 @@ export const LongPath = () => (
 
 export const Disabled = () => (
   <div style={stack}>
-    <PathDisplay path="/var/log/nova/transcription.log" onOpen={noop} disabled />
+    <PathDisplay
+      path="/var/log/nova/transcription.log"
+      onOpen={noop}
+      disabled
+    />
   </div>
 );

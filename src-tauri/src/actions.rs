@@ -2472,6 +2472,22 @@ impl ShortcutAction for TestAction {
     }
 }
 
+/// Raccourci Nova Commands — capture la sélection courante puis ouvre Nova.
+///
+/// Expérimental : sans raccourci par défaut, et sans effet tant que le réglage
+/// `nova_commands_enabled` est désactivé (vérifié dans `trigger_command`).
+struct CommandAction;
+
+impl ShortcutAction for CommandAction {
+    fn start(&self, app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        crate::nova_commands::trigger_command(app);
+    }
+
+    fn stop(&self, _app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        // Action ponctuelle : rien à faire au relâchement.
+    }
+}
+
 // Static Action Map
 pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::new(|| {
     let mut map = HashMap::new();
@@ -2488,6 +2504,10 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
     map.insert(
         "cancel".to_string(),
         Arc::new(CancelAction) as Arc<dyn ShortcutAction>,
+    );
+    map.insert(
+        "command".to_string(),
+        Arc::new(CommandAction) as Arc<dyn ShortcutAction>,
     );
     map.insert(
         "test".to_string(),

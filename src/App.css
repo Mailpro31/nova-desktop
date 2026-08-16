@@ -20,12 +20,25 @@
   --color-inset: var(--color-inset);
   --color-text-secondary: var(--color-text-secondary);
   --color-hairline: var(--color-hairline);
+  --color-hairline-strong: var(--color-hairline-strong);
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
   --color-success: var(--color-success);
   --color-warning: var(--color-warning);
   --color-danger: var(--color-danger);
   --color-ultra: var(--color-ultra);
+
+  /* Géométrie et élévation (src/styles/theme.css) exposées comme utilitaires :
+     rounded-chip / rounded-control / rounded-card / rounded-panel,
+     shadow-raised / shadow-floating / shadow-overlay. */
+  --radius-chip: var(--radius-chip);
+  --radius-control: var(--radius-control);
+  --radius-card: var(--radius-card);
+  --radius-panel: var(--radius-panel);
+
+  --shadow-raised: var(--shadow-raised);
+  --shadow-floating: var(--shadow-floating);
+  --shadow-overlay: var(--shadow-overlay);
 }
 
 :root {
@@ -110,6 +123,7 @@ textarea:focus-visible,
     --color-inset: var(--nova-inset);
     --color-text-secondary: var(--nova-text-secondary);
     --color-hairline: var(--nova-hairline);
+    --color-hairline-strong: var(--nova-hairline-strong);
     --color-accent-hover: var(--nova-accent-hover);
     --color-success: var(--nova-success);
     --color-warning: var(--nova-warning);
@@ -133,12 +147,19 @@ textarea:focus-visible,
     --color-inset: var(--nova-light-inset);
     --color-text-secondary: var(--nova-light-text-secondary);
     --color-hairline: var(--nova-light-hairline);
+    --color-hairline-strong: var(--nova-light-hairline-strong);
     --color-accent-hover: var(--nova-light-accent-hover);
     --color-success: var(--nova-light-success);
     --color-warning: var(--nova-light-warning);
     --color-danger: var(--nova-light-danger);
     --color-ultra: var(--nova-light-ultra);
     --color-log-surface: color-mix(in srgb, var(--color-background), black 4%);
+
+    /* Ombres retendues pour le clair : sur fond pâle, les valeurs sombres
+       écrasent la surface au lieu de la détacher. */
+    --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-floating: 0 8px 24px -8px rgba(0, 0, 0, 0.18);
+    --shadow-overlay: 0 24px 60px -16px rgba(0, 0, 0, 0.26);
   }
 }
 
@@ -160,12 +181,17 @@ textarea:focus-visible,
   --color-inset: var(--nova-light-inset);
   --color-text-secondary: var(--nova-light-text-secondary);
   --color-hairline: var(--nova-light-hairline);
+  --color-hairline-strong: var(--nova-light-hairline-strong);
   --color-accent-hover: var(--nova-light-accent-hover);
   --color-success: var(--nova-light-success);
   --color-warning: var(--nova-light-warning);
   --color-danger: var(--nova-light-danger);
   --color-ultra: var(--nova-light-ultra);
   --color-log-surface: color-mix(in srgb, var(--color-background), black 4%);
+
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-floating: 0 8px 24px -8px rgba(0, 0, 0, 0.18);
+  --shadow-overlay: 0 24px 60px -16px rgba(0, 0, 0, 0.26);
 }
 
 :root[data-theme="dark"] {
@@ -179,6 +205,7 @@ textarea:focus-visible,
   --color-inset: var(--nova-inset);
   --color-text-secondary: var(--nova-text-secondary);
   --color-hairline: var(--nova-hairline);
+  --color-hairline-strong: var(--nova-hairline-strong);
   --color-accent-hover: var(--nova-accent-hover);
   --color-success: var(--nova-success);
   --color-warning: var(--nova-warning);
@@ -222,6 +249,31 @@ textarea:focus-visible,
   }
 }
 
+/* Mouvement réduit — exigence de la planche de fondation et critère
+   d'accessibilité pour l'enseignement supérieur. « Réduit » ne veut pas dire
+   « aucun retour » : les transitions de couleur et d'opacité restent utiles à
+   la compréhension, seuls les déplacements, rotations et animations en boucle
+   sont neutralisés. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Les transformations sont la principale source d'inconfort vestibulaire. */
+  *,
+  *::before,
+  *::after {
+    transition-property:
+      color, background-color, border-color, outline-color, fill, stroke,
+      opacity, box-shadow !important;
+  }
+}
+
 .logo-primary {
   fill: var(--color-logo-primary);
 }
@@ -253,16 +305,10 @@ textarea:focus-visible,
   animation: nova-dialog-panel-in var(--nova-motion-panel) var(--nova-ease);
 }
 
+/* Le bloc `prefers-reduced-motion` plus haut neutralise déjà durées et
+   transformations globalement ; ici on annule seulement le décalage d'entrée
+   du panneau de dialogue, qui est une transformation persistante. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
-  }
-
   .nova-dialog-panel {
     transform: none;
   }
@@ -278,5 +324,44 @@ textarea:focus-visible,
 @media (prefers-contrast: more) {
   :root {
     --color-hairline: color-mix(in srgb, var(--color-text) 42%, transparent);
+  }
+}
+
+/* Respiration de l'orbe Nova sur l'accueil.
+   `motion-safe:` la désactive déjà quand le mouvement est réduit ; le bloc
+   `prefers-reduced-motion` ci-dessus la neutraliserait de toute façon. */
+@keyframes nova-orb-breath {
+  0%,
+  100% {
+    transform: scale(0.96);
+    filter: brightness(0.98);
+  }
+  50% {
+    transform: scale(1);
+    filter: brightness(1.04);
+  }
+}
+
+/* Écoute : respiration plus ample et plus rapide que le repos. */
+@keyframes nova-orb-listen {
+  0%,
+  100% {
+    transform: scale(0.92);
+    filter: brightness(0.96);
+  }
+  50% {
+    transform: scale(1.04);
+    filter: brightness(1.1);
+  }
+}
+
+/* Traitement : pulsation d'intensité, sans rotation ni progression feinte. */
+@keyframes nova-orb-work {
+  0%,
+  100% {
+    filter: brightness(0.9);
+  }
+  50% {
+    filter: brightness(1.12);
   }
 }

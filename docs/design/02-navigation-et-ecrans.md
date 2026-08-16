@@ -25,17 +25,17 @@ aujourd'hui** — redondance manifeste à trancher dans la refonte.
 
 ## Sections (mode personnel)
 
-| Section | Contenu |
-|---|---|
-| Accueil | actions rapides, état, accès aux autres sections |
-| Configuration | sous-onglets Général / Modèles / Avancé |
-| Styles | activation, liste des styles, style automatique, lecture de contexte |
-| Réunion | capture de réunion |
-| Personnalisation | thème, orbe, variables personnelles |
-| Compte | palier actif, licence, comparatif des paliers, quotas |
-| Historique | transcriptions, lecteur audio, rétention |
-| Débogage | masqué sauf `Ctrl+Maj+D` : journaux, chemins, sondes |
-| À propos | version, mises à jour, nouveautés |
+| Section          | Contenu                                                              |
+| ---------------- | -------------------------------------------------------------------- |
+| Accueil          | actions rapides, état, accès aux autres sections                     |
+| Configuration    | sous-onglets Général / Modèles / Avancé                              |
+| Styles           | activation, liste des styles, style automatique, lecture de contexte |
+| Réunion          | capture de réunion                                                   |
+| Personnalisation | thème, orbe, variables personnelles                                  |
+| Compte           | palier actif, licence, comparatif des paliers, quotas                |
+| Historique       | transcriptions, lecteur audio, rétention                             |
+| Débogage         | masqué sauf `Ctrl+Maj+D` : journaux, chemins, sondes                 |
+| À propos         | version, mises à jour, nouveautés                                    |
 
 ## Sections (mode Campus)
 
@@ -44,6 +44,7 @@ Masquées en Campus : Réunion, Compte, Débogage, À propos (l'à-propos vit da
 Réglages).
 
 ### Accueil Campus — état actuel
+
 - Grand titre + sous-titre.
 - Pastille d'état à droite : « Connecté à {serveur} » (vert) ou « Hors ligne »
   (orange).
@@ -55,6 +56,7 @@ Réglages).
 - Encart confidentialité discret en bas.
 
 ### Réglages Campus (`CampusGeneralSettings`)
+
 Sections : Raccourcis · Son · **Dictionnaire** · **Snippets vocaux** ·
 **Règles de formatage** · Compte · Bulle · À propos.
 Le dictionnaire et le formatage **ne sont pas des pages séparées** : ce sont

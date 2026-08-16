@@ -21,7 +21,10 @@
     "home": "Trang chủ",
     "configuration": "Cấu hình",
     "account": "Tài khoản",
-    "styles": "Xử lý sau"
+    "styles": "Xử lý sau",
+    "aiSkills": "AI Skills",
+    "settings": "Cài đặt",
+    "organization": "Tổ chức"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -180,6 +183,38 @@
         "checkFailed": "Không thể kiểm tra quyền. Vui lòng thử lại.",
         "requestFailed": "Không thể yêu cầu quyền. Vui lòng thử lại."
       }
+    },
+    "back": "Quay lại",
+    "welcome": {
+      "title": "Viết nhanh như bạn nghĩ",
+      "subtitle": "Nova biến giọng nói của bạn thành văn bản rõ ràng ở bất kỳ đâu trên máy tính.",
+      "providedBy": "Được cung cấp bởi {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Thiết lập đề xuất",
+      "subtitle": "Nova đã chuẩn bị các thiết lập này từ máy của bạn. Bạn có thể thay đổi sau.",
+      "use": "Dùng thiết lập đề xuất",
+      "customize": "Tùy chỉnh",
+      "row": {
+        "microphone": "Micrô",
+        "engine": "Xử lý",
+        "shortcut": "Phím tắt",
+        "language": "Ngôn ngữ"
+      },
+      "value": {
+        "notSet": "Chưa đặt",
+        "autoDetected": "Tự động nhận diện",
+        "localEngine": "Trên thiết bị này"
+      }
+    },
+    "customize": {
+      "title": "Vài lựa chọn",
+      "subtitle": "Mọi thứ khác giữ giá trị đề xuất và có thể đổi trong Cài đặt."
+    },
+    "writingStyles": {
+      "introTitle": "Nova không chỉ chép lại lời nói",
+      "introSubtitle": "Hãy nói, Nova sẽ viết theo văn phong phù hợp với việc bạn đang làm.",
+      "unavailable": "Chưa có văn phong nào khả dụng."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Mở",
     "copy": "Sao chép",
     "clear": "Xóa",
-    "noOptionsFound": "Không tìm thấy tùy chọn"
+    "noOptionsFound": "Không tìm thấy tùy chọn",
+    "cancel": "Huỷ",
+    "remove": "Bỏ",
+    "selectOption": "Chọn một mục…"
   },
   "accessibility": {
     "permissionsDescription": "Nova cần quyền truy cập để gõ văn bản đã chuyển đổi.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Đọc chính tả do trường của bạn cung cấp, với email học thuật của bạn.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Không kết nối được máy chủ. Hãy kiểm tra kết nối và thử lại.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Lối viết"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Gửi một tài liệu văn bản tới máy chủ của trường để rút ra từ vựng và tên riêng. Chỉ những từ rút được mới được lưu — tài liệu thì không.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Đã kết nối Campus",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local đang hoạt động"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Tổ chức",
+      "subtitle": "Trường của bạn, những gì trường cung cấp, và dữ liệu đi đâu.",
+      "connection": "Kết nối",
+      "managedBy": "Được quản lý bởi {{organization}}",
+      "identityTitle": "Danh tính"
+    },
+    "provides": {
+      "title": "Những gì trường của bạn cung cấp",
+      "transcription": {
+        "title": "Nhận dạng giọng nói",
+        "description": "Bản ghi được gửi tới máy chủ của trường để chuyển thành văn bản."
+      },
+      "rewriting": {
+        "title": "Lối viết",
+        "description": "Văn bản và lối viết đã chọn được gửi tới máy chủ của trường để viết lại."
+      },
+      "vocabulary": {
+        "title": "Từ vựng dùng chung",
+        "description": "Thuật ngữ của trường và của bạn giúp viết đúng khi nhận dạng và khi viết lại."
+      },
+      "formatting": {
+        "title": "Quy tắc trình bày",
+        "description": "Quy tắc của trường và của bạn được áp dụng mỗi lần viết lại."
+      },
+      "paused": "Đang tạm dừng — không kết nối được máy chủ của trường."
+    },
+    "offline": {
+      "title": "Khi không kết nối được máy chủ",
+      "body": "Đọc chính tả vẫn hoạt động trên máy này. Nhận dạng giọng nói chạy tại chỗ; lối viết, từ vựng dùng chung, quy tắc trình bày và AI Skills sẽ trở lại cùng kết nối."
+    },
+    "data": {
+      "title": "Dữ liệu của bạn đi đâu",
+      "audio": "Âm thanh đọc chính tả",
+      "text": "Văn bản gửi đi để viết lại",
+      "vocabulary": "Từ vựng, lối tắt và quy tắc",
+      "history": "Lịch sử",
+      "recordings": "Bản ghi",
+      "appName": "Tên ứng dụng đang ở phía trước",
+      "onDevice": "Máy này",
+      "onCampus": "Máy chủ của trường",
+      "note": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Làm việc với đoạn bạn chọn.",
+    "preview": "Thử nghiệm",
+    "previewHint": "AI Skills đang trong giai đoạn kiểm thử.",
+    "essentials": "Điều cốt yếu",
+    "howItWorks": "Cách dùng",
+    "how": {
+      "select": "Chọn văn bản trong bất kỳ ứng dụng nào",
+      "open": "Mở Nova bằng phím tắt của bạn",
+      "choose": "Chọn một AI Skill",
+      "review": "Đọc kết quả trước khi có gì thay đổi"
+    },
+    "privacy": "Được xử lý qua kết nối Campus của bạn.",
+    "privacyOffline": "AI Skills chạy trên máy chủ của trường bạn, hiện không kết nối được."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Giải thích",
+        "description": "Hiểu rõ một đoạn khó."
+      },
+      "summarize": {
+        "name": "Tóm tắt",
+        "description": "Rút phần đã chọn về ý chính."
+      },
+      "improve": {
+        "name": "Trau chuốt",
+        "description": "Rõ ràng và mượt mà hơn."
+      },
+      "translate": {
+        "name": "Dịch",
+        "description": "Dịch đoạn đã chọn."
+      },
+      "ask": {
+        "name": "Hỏi Nova",
+        "description": "Đưa cho Nova một chỉ dẫn cụ thể."
+      }
+    },
+    "askPlaceholder": "Hỏi Nova…",
+    "ask": "Hỏi",
+    "running": "Nova đang xử lý…",
+    "result": "Kết quả",
+    "replace": "Thay thế",
+    "copy": "Sao chép",
+    "close": "Đóng",
+    "copied": "Đã sao chép",
+    "experimentTitle": "Thử nghiệm",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Chọn văn bản trong bất kỳ ứng dụng nào rồi chạy một tác vụ AI trên đó. Chưa kiểm chứng ở mọi ứng dụng.",
+    "shortcutMissing": "Chưa gán phím tắt nào. Hãy đặt một phím tắt cho Nova Commands trong Cài đặt — việc thu nhận chỉ hoạt động khi ứng dụng của bạn còn ở phía trước.",
+    "runDiagnostics": "Chạy chẩn đoán",
+    "error": {
+      "busy": "Đã có một lệnh đang chạy.",
+      "nonTextClipboard": "Bảng nháp chứa thứ không phải văn bản và Nova sẽ không thể trả lại. Hãy sao chép nó sang nơi khác trước.",
+      "noSelection": "Hãy chọn văn bản trước khi mở Nova.",
+      "unsupported": "Hiện Nova Commands chỉ có trên Windows.",
+      "targetChanged": "Ứng dụng ban đầu không còn ở phía trước. Hãy sao chép kết quả thay vì thế.",
+      "offline": "AI Skills cần kết nối Campus.",
+      "failed": "Nova không xử lý được yêu cầu này.",
+      "emptyResult": "Nova trả về kết quả rỗng.",
+      "busyTitle": "Đang chạy rồi",
+      "nonTextClipboardTitle": "Không khôi phục được bảng nháp",
+      "noSelectionTitle": "Chưa chọn văn bản",
+      "unsupportedTitle": "Không dùng được ở đây",
+      "targetChangedTitle": "Cửa sổ đã đổi",
+      "offlineTitle": "Không kết nối được Campus",
+      "failedTitle": "Lệnh thất bại",
+      "emptyResultTitle": "Không có gì để hiện"
+    },
+    "original": "Bản gốc"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Đang kiểm tra…"
+      },
+      "ready": {
+        "title": "Nova đã sẵn sàng."
+      },
+      "campusLocal": {
+        "title": "Nova Local đang hoạt động",
+        "detail": "Đọc chính tả vẫn dùng được. Tính năng AI sẽ trở lại cùng Campus."
+      },
+      "permissionsNeeded": {
+        "title": "Cần quyền dùng micrô",
+        "detail": "Nova cần quyền dùng micrô trước khi có thể đọc chính tả."
+      },
+      "microphoneMissing": {
+        "title": "Không thấy micrô nào",
+        "detail": "Hãy cắm micrô rồi chọn nó trong cài đặt."
+      },
+      "modelMissing": {
+        "title": "Hoàn tất thiết lập Nova",
+        "detail": "Vẫn còn một mô hình giọng nói cần tải về."
+      },
+      "shortcutMissing": {
+        "title": "Nova đã sẵn sàng",
+        "detail": "Gán một phím tắt là đọc chính tả chỉ cách một phím."
+      },
+      "dictateHint": "để đọc chính tả",
+      "openSettings": "Mở cài đặt",
+      "listening": {
+        "title": "Nova đang nghe…"
+      },
+      "processing": {
+        "title": "Nova đang xử lý…"
+      },
+      "insertionFailed": {
+        "title": "Không dán được",
+        "detail": "Nội dung bạn đọc đang ở trong bảng nháp."
+      }
+    },
+    "active": {
+      "title": "Đang dùng",
+      "style": "Lối viết",
+      "styleAutomatic": "Tự động",
+      "engine": "Bộ máy",
+      "microphone": "Micrô",
+      "lastDictation": "Lần đọc gần nhất"
+    },
+    "engine": {
+      "campus": "Máy chủ của trường bạn",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Bắt đầu",
+      "campus": "Đã liên kết tài khoản Campus",
+      "voice": "Giọng nói sẵn sàng",
+      "firstDictation": "Lần đọc đầu tiên",
+      "style": "Thử một lối viết",
+      "aiSkill": "Dùng AI Skill đầu tiên",
+      "done": "Xong",
+      "todo": "Còn lại"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Tự động",
+      "builtin": "Lối viết",
+      "personal": "Lối viết của bạn"
+    },
+    "automaticHow": "Nova đọc tên ứng dụng đang ở phía trước và áp dụng lối viết tương ứng. Ứng dụng bạn chặn sẽ không bao giờ bị xem xét.",
+    "active": "Đang dùng",
+    "emptyPersonal": "Bạn chưa tạo lối viết nào.",
+    "rowActions": "Thao tác lối viết",
+    "error": {
+      "save": "Không lưu được lối viết.",
+      "delete": "Không xoá được lối viết."
+    }
+  },
+  "history": {
+    "subtitle": "Mọi thứ bạn đã đọc chính tả với Nova.",
+    "group": {
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "week": "Tuần này",
+      "older": "Trước đó"
+    },
+    "searchPlaceholder": "Tìm trong các lần đọc",
+    "noMatch": "Không có gì khớp với “{{query}}”.",
+    "empty": "Các lần đọc của bạn sẽ hiện ở đây.",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép"
+  },
+  "settingsNav": {
+    "voice": "Giọng nói"
+  },
+  "personalization": {
+    "appearance": "Giao diện",
+    "orb": "Quả cầu",
+    "overlay": "Lớp phủ"
   }
 }

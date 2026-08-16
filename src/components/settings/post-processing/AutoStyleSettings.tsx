@@ -92,11 +92,10 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
   };
 
   return (
-    <div className="space-y-4 p-3 bg-mid-gray/5 rounded-md border border-mid-gray/20">
-      <p className="text-sm text-text-secondary">
-        {t("settings.postProcessing.autoStyle.description")}
-      </p>
-
+    // Conteneur aligné sur la planche : creux discret, rayon de carte, filet
+    // standard. La description générale a été retirée — elle vit désormais une
+    // seule fois, sous le Style « Automatique » lui-même.
+    <div className="space-y-4 rounded-card border border-hairline bg-inset p-3.5">
       {/* Liste noire de confidentialité — gratuit */}
       <div className="space-y-1.5">
         <label className="text-sm font-semibold">

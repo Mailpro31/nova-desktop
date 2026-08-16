@@ -278,7 +278,7 @@ export const CampusDictionarySection: React.FC = () => {
             placeholder={t("campus.dictionary.analyzeDocPlaceholder")}
             rows={4}
             aria-labelledby="campus-document-analysis-title"
-            className="font-mono text-xs"
+            className="w-full p-2.5 font-mono text-xs"
           />
 
           <div className="flex items-center justify-between gap-2">
@@ -358,7 +358,7 @@ export const CampusDictionarySection: React.FC = () => {
             {shared.map((item) => (
               <div
                 key={item.id}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-inset px-3 py-1.5 text-xs font-medium"
+                className="inline-flex items-center gap-1.5 rounded-chip bg-inset px-3 py-1.5 text-xs font-medium"
               >
                 <span className="text-text">{item.term}</span>
                 {item.replacement && (
@@ -439,7 +439,7 @@ export const CampusDictionarySection: React.FC = () => {
               return (
                 <div
                   key={item.id}
-                  className="group flex min-h-12 items-center justify-between gap-2 px-2 py-2"
+                  className="group flex min-h-12 items-center justify-between gap-2 px-3 py-2"
                 >
                   <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span

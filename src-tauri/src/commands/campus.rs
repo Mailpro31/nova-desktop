@@ -382,6 +382,11 @@ pub struct CampusMeResponse {
     pub email: String,
     pub role: String,
     pub cohort: String,
+    /// Nom de l'établissement, déduit côté serveur du domaine de l'adresse.
+    /// Absent des anciennes réponses : `default` évite de casser la
+    /// désérialisation contre un serveur non mis à jour.
+    #[serde(default)]
+    pub organization: String,
 }
 
 fn campus_client_no_auth() -> reqwest::Client {

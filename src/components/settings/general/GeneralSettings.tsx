@@ -11,7 +11,6 @@ import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
-import { CampusAccountSection } from "./CampusAccountSection";
 import { CampusGeneralSettings } from "./CampusGeneralSettings";
 import { isCampusMode } from "@/lib/mode";
 
@@ -26,7 +25,7 @@ export const GeneralSettings: React.FC = () => {
   }
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
+    <div className="space-y-6">
       <SettingsGroup title={t("settings.general.title")}>
         <ShortcutInput shortcutId="transcribe" grouped={true} />
         <PushToTalk descriptionMode="tooltip" grouped={true} />

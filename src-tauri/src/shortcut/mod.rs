@@ -378,6 +378,11 @@ fn unregister_all_shortcuts(app: &AppHandle, implementation: KeyboardImplementat
         if id == "cancel" || id == "transcribe_with_post_process" {
             continue;
         }
+        // An unassigned binding was never registered — see the matching guard
+        // in `register_all_shortcuts_for_implementation`.
+        if binding.current_binding.trim().is_empty() {
+            continue;
+        }
 
         let result = match implementation {
             KeyboardImplementation::Tauri => tauri_impl::unregister_shortcut(app, binding),
@@ -413,6 +418,14 @@ fn register_all_shortcuts_for_implementation(
             .get(id)
             .cloned()
             .unwrap_or_else(|| default_binding.clone());
+
+        // A binding can legitimately have no shortcut assigned — Nova Commands
+        // ships that way while it is experimental. Registering an empty string
+        // would fail validation on every launch, log an error, and rewrite
+        // settings each time through the reset path below.
+        if binding.current_binding.trim().is_empty() {
+            continue;
+        }
 
         // Validate the shortcut for the target implementation
         if let Err(e) =

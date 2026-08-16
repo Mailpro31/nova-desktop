@@ -213,6 +213,138 @@ pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
     effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
 }
 
+/// Fonctionnalités sur lesquelles l'interface pose réellement un verrou.
+///
+/// Miroir de `TIER_FOR_FEATURE` dans `src/components/settings/license/TierBadge.tsx` :
+/// ce sont exactement les clés pour lesquelles un badge « NÉCESSITE NOVA PRO /
+/// ULTRA » peut s'afficher. Toute entrée ajoutée là-bas doit l'être ici, faute
+/// de quoi un nouvel argumentaire commercial pourrait apparaître en campus sans
+/// qu'aucun test ne le remarque.
+#[cfg(test)]
+pub(crate) const UI_GATED_FEATURES: &[&str] = &[
+    "online_engine",
+    "cloud_styles",
+    "all_styles",
+    "power_profiles",
+    "custom_variables",
+    "best_models",
+    "custom_styles",
+    "custom_auto_rules",
+    "orb_customization",
+    "custom_naming",
+    "context_reading",
+    "meeting_mode",
+];
+
+/// Frontière campus / personnel.
+///
+/// Ces tests portent sur le **comportement observable**, pas sur
+/// l'implémentation : ils échoueraient si quelqu'un modifiait le calcul de
+/// palier de telle sorte qu'un badge d'achat redevienne possible en campus,
+/// quelle que soit la manière dont le changement est écrit.
+#[cfg(test)]
+mod campus_boundary_tests {
+    use super::*;
+
+    /// Le mode campus est un état global : chaque test le pose et le rend.
+    struct CampusMode;
+    impl CampusMode {
+        fn on() -> Self {
+            set_campus_enabled(true);
+            CampusMode
+        }
+    }
+    impl Drop for CampusMode {
+        fn drop(&mut self) {
+            set_campus_enabled(false);
+        }
+    }
+
+    #[test]
+    fn campus_can_never_show_an_upsell() {
+        let _campus = CampusMode::on();
+        // Sans clé de licence : le cas exact d'un poste étudiant.
+        for feature in UI_GATED_FEATURES {
+            assert!(
+                has(feature, "", 0),
+                "« {feature} » verrouillé en campus : un badge d'achat s'afficherait                  à un étudiant dont l'établissement fournit déjà l'accès"
+            );
+        }
+    }
+
+    #[test]
+    fn campus_unlocks_every_writing_style() {
+        let _campus = CampusMode::on();
+        // La liste des Styles se construit sur ces deux clés côté interface.
+        assert!(has("all_styles", "", 0));
+        assert!(has("custom_styles", "", 0));
+    }
+
+    #[test]
+    fn campus_mode_is_released_and_restrictions_return() {
+        {
+            let _campus = CampusMode::on();
+            assert!(has("meeting_mode", "", 0));
+        }
+        // Sans le rétablissement, un build personnel hériterait des droits
+        // campus après un simple basculement de mode.
+        assert!(!has("meeting_mode", "", 0));
+    }
+
+    #[test]
+    fn personal_free_keeps_its_restrictions() {
+        assert!(
+            !has("all_styles", "", 0),
+            "Free ne débloque pas tous les Styles"
+        );
+        assert!(!has("custom_styles", "", 0), "Free ne crée pas de Style");
+        assert!(!has("meeting_mode", "", 0));
+        // Ce qui n'est pas listé reste ouvert : la liste est une allowlist de
+        // verrous, pas de fonctionnalités.
+        assert!(has("dictation", "", 0));
+    }
+
+    #[test]
+    fn feature_tiers_are_ordered_pro_then_ultra() {
+        // Protège la hiérarchie : un Style Pro ne doit pas devenir Ultra, ni
+        // l'inverse, par un remaniement du `match`.
+        assert_eq!(feature_min_tier("all_styles"), Tier::Pro);
+        assert_eq!(feature_min_tier("custom_variables"), Tier::Pro);
+        assert_eq!(feature_min_tier("custom_styles"), Tier::Ultra);
+        assert_eq!(feature_min_tier("meeting_mode"), Tier::Ultra);
+        assert_eq!(feature_min_tier("dictation"), Tier::Free);
+    }
+
+    #[test]
+    fn pro_unlocks_pro_features_but_not_ultra() {
+        assert!(Tier::Pro.level() >= feature_min_tier("all_styles").level());
+        assert!(Tier::Pro.level() < feature_min_tier("custom_styles").level());
+    }
+
+    #[test]
+    fn ultra_unlocks_everything_the_ui_gates() {
+        for feature in UI_GATED_FEATURES {
+            assert!(
+                Tier::Ultra.level() >= feature_min_tier(feature).level(),
+                "« {feature} » resterait verrouillé pour Nova Ultra"
+            );
+        }
+    }
+
+    #[test]
+    fn every_ui_gated_feature_is_actually_gated() {
+        // Un badge annoncé sur une fonctionnalité en réalité gratuite serait un
+        // faux argumentaire — il inviterait à payer pour ce qu'on a déjà.
+        for feature in UI_GATED_FEATURES {
+            assert_ne!(
+                feature_min_tier(feature),
+                Tier::Free,
+                "« {feature} » est annoncé payant par l'interface mais est gratuit"
+            );
+        }
+    }
+}
+
 #[cfg(test)]
 mod style_gating_tests {
     use super::*;

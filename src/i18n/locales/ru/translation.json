@@ -21,7 +21,10 @@
     "home": "Главная",
     "configuration": "Конфигурация",
     "account": "Аккаунт",
-    "styles": "Постобработка"
+    "styles": "Постобработка",
+    "aiSkills": "AI Skills",
+    "settings": "Настройки",
+    "organization": "Организация"
   },
   "onboarding": {
     "subtitle": "Для начала выберите модель транскрипции",
@@ -180,6 +183,38 @@
         "checkFailed": "Не удалось проверить разрешения. Пожалуйста, попробуйте снова.",
         "requestFailed": "Не удалось запросить разрешение. Пожалуйста, попробуйте снова."
       }
+    },
+    "back": "Назад",
+    "welcome": {
+      "title": "Пишите со скоростью мысли",
+      "subtitle": "Nova превращает ваш голос в понятный текст в любом месте компьютера.",
+      "providedBy": "Предоставлено {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Рекомендуемая настройка",
+      "subtitle": "Nova подготовила эти параметры по вашему компьютеру. Их можно изменить позже.",
+      "use": "Использовать рекомендуемую настройку",
+      "customize": "Настроить",
+      "row": {
+        "microphone": "Микрофон",
+        "engine": "Обработка",
+        "shortcut": "Сочетание клавиш",
+        "language": "Язык"
+      },
+      "value": {
+        "notSet": "Не задано",
+        "autoDetected": "Определён автоматически",
+        "localEngine": "На этом устройстве"
+      }
+    },
+    "customize": {
+      "title": "Несколько решений",
+      "subtitle": "Остальное сохраняет рекомендуемое значение и меняется в настройках."
+    },
+    "writingStyles": {
+      "introTitle": "Nova не только расшифровывает речь",
+      "introSubtitle": "Говорите — и Nova напишет в подходящем стиле.",
+      "unavailable": "Пока нет доступного стиля письма."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Открыть",
     "copy": "Копировать",
     "clear": "Очистить",
-    "noOptionsFound": "Вариантов не найдено"
+    "noOptionsFound": "Вариантов не найдено",
+    "cancel": "Отмена",
+    "remove": "Убрать",
+    "selectOption": "Выберите вариант…"
   },
   "accessibility": {
     "permissionsDescription": "Nova необходимы разрешения на доступ для ввода расшифрованного текста.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Голосовая диктовка от вашего учебного заведения, с академической почтой.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Сервер недоступен. Проверьте подключение и повторите попытку.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Стили письма"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Отправьте текстовый документ на сервер заведения, чтобы извлечь словарь и имена собственные. Сохраняются только найденные термины — сам документ нет.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Кампус подключён",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local активен"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Организация",
+      "subtitle": "Ваше учебное заведение, что оно даёт и куда идут ваши данные.",
+      "connection": "Соединение",
+      "managedBy": "Управляется {{organization}}",
+      "identityTitle": "Личные данные"
+    },
+    "provides": {
+      "title": "Что предоставляет ваше учебное заведение",
+      "transcription": {
+        "title": "Распознавание речи",
+        "description": "Запись отправляется на сервер заведения, который превращает её в текст."
+      },
+      "rewriting": {
+        "title": "Стили письма",
+        "description": "Текст и выбранный стиль отправляются на сервер заведения, который его переписывает."
+      },
+      "vocabulary": {
+        "title": "Общий словарь",
+        "description": "Термины заведения и ваши собственные помогают писать их правильно при распознавании и переписывании."
+      },
+      "formatting": {
+        "title": "Правила оформления",
+        "description": "Правила заведения и ваши применяются при каждом переписывании."
+      },
+      "paused": "Сейчас недоступно — сервер заведения не отвечает."
+    },
+    "offline": {
+      "title": "Когда сервер недоступен",
+      "body": "Диктовка продолжает работать на этом устройстве. Распознавание речи выполняется локально; стили, общий словарь, правила оформления и AI Skills вернутся вместе со связью."
+    },
+    "data": {
+      "title": "Куда идут ваши данные",
+      "audio": "Звук диктовки",
+      "text": "Текст, отправленный на переписывание",
+      "vocabulary": "Словарь, сокращения и правила",
+      "history": "История",
+      "recordings": "Записи",
+      "appName": "Имя приложения на переднем плане",
+      "onDevice": "Это устройство",
+      "onCampus": "Сервер заведения",
+      "note": "Сервер заведения считает, сколько расшифровок и переписываний вы делаете за день. Их содержимое не сохраняется."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Работайте с выделенным текстом.",
+    "preview": "Предпросмотр",
+    "previewHint": "AI Skills сейчас проходят проверку.",
+    "essentials": "Главное",
+    "howItWorks": "Как это работает",
+    "how": {
+      "select": "Выделите текст в любом приложении",
+      "open": "Откройте Nova своим сочетанием клавиш",
+      "choose": "Выберите AI Skill",
+      "review": "Прочтите результат, прежде чем что-то изменится"
+    },
+    "privacy": "Обрабатывается через ваше подключение к Campus.",
+    "privacyOffline": "AI Skills выполняются на сервере вашего учебного заведения, сейчас недоступном."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Объяснить",
+        "description": "Ясно понять сложный текст."
+      },
+      "summarize": {
+        "name": "Кратко изложить",
+        "description": "Свести выделенное к главному."
+      },
+      "improve": {
+        "name": "Улучшить",
+        "description": "Выиграть в ясности и формулировке."
+      },
+      "translate": {
+        "name": "Перевести",
+        "description": "Перевести выделенный текст."
+      },
+      "ask": {
+        "name": "Спросить Nova",
+        "description": "Дать Nova точное указание."
+      }
+    },
+    "askPlaceholder": "Спросить Nova…",
+    "ask": "Спросить",
+    "running": "Nova работает…",
+    "result": "Результат",
+    "replace": "Заменить",
+    "copy": "Копировать",
+    "close": "Закрыть",
+    "copied": "Скопировано",
+    "experimentTitle": "Экспериментально",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Выделите текст в любом приложении и примените к нему действие ИИ. Пока проверено не во всех приложениях.",
+    "shortcutMissing": "Сочетание клавиш ещё не назначено. Задайте его для Nova Commands в настройках — захват работает, только пока ваше приложение остаётся впереди.",
+    "runDiagnostics": "Запустить диагностику",
+    "error": {
+      "busy": "Команда уже выполняется.",
+      "nonTextClipboard": "В буфере обмена не текст, и Nova не смогла бы вернуть его на место. Сначала скопируйте его в другое место.",
+      "noSelection": "Выделите текст, прежде чем открывать Nova.",
+      "unsupported": "Пока Nova Commands доступна только в Windows.",
+      "targetChanged": "Исходное приложение больше не активно. Скопируйте результат вместо этого.",
+      "offline": "AI Skills требуют подключения к Campus.",
+      "failed": "Nova не смогла обработать этот запрос.",
+      "emptyResult": "Nova вернула пустой результат.",
+      "busyTitle": "Уже выполняется",
+      "nonTextClipboardTitle": "Буфер обмена не восстановить",
+      "noSelectionTitle": "Текст не выделен",
+      "unsupportedTitle": "Здесь недоступно",
+      "targetChangedTitle": "Окно сменилось",
+      "offlineTitle": "Campus недоступен",
+      "failedTitle": "Команда не выполнена",
+      "emptyResultTitle": "Нечего показать"
+    },
+    "original": "Оригинал"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Проверка…"
+      },
+      "ready": {
+        "title": "Nova готова."
+      },
+      "campusLocal": {
+        "title": "Nova Local активна",
+        "detail": "Диктовка по-прежнему работает. Функции ИИ вернутся вместе с Campus."
+      },
+      "permissionsNeeded": {
+        "title": "Нужен доступ к микрофону",
+        "detail": "Nova требуется разрешение на микрофон, прежде чем диктовать."
+      },
+      "microphoneMissing": {
+        "title": "Микрофон не найден",
+        "detail": "Подключите микрофон и выберите его в настройках."
+      },
+      "modelMissing": {
+        "title": "Завершите настройку Nova",
+        "detail": "Осталось загрузить речевую модель."
+      },
+      "shortcutMissing": {
+        "title": "Nova готова",
+        "detail": "Назначьте сочетание клавиш — и диктовка в одно нажатие."
+      },
+      "dictateHint": "для диктовки",
+      "openSettings": "Открыть настройки",
+      "listening": {
+        "title": "Nova вас слушает…"
+      },
+      "processing": {
+        "title": "Nova работает…"
+      },
+      "insertionFailed": {
+        "title": "Не удалось вставить",
+        "detail": "Ваша диктовка в буфере обмена."
+      }
+    },
+    "active": {
+      "title": "Активно",
+      "style": "Стиль письма",
+      "styleAutomatic": "Автоматически",
+      "engine": "Движок",
+      "microphone": "Микрофон",
+      "lastDictation": "Последняя диктовка"
+    },
+    "engine": {
+      "campus": "Сервер вашего учебного заведения",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Первые шаги",
+      "campus": "Учётная запись Campus привязана",
+      "voice": "Голос готов",
+      "firstDictation": "Первая диктовка",
+      "style": "Попробовать стиль письма",
+      "aiSkill": "Использовать первый AI Skill",
+      "done": "Готово",
+      "todo": "Осталось"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Автоматически",
+      "builtin": "Стили",
+      "personal": "Ваши стили"
+    },
+    "automaticHow": "Nova читает имя приложения на переднем плане и применяет подходящий стиль. Заблокированные вами приложения никогда не проверяются.",
+    "active": "Активен",
+    "emptyPersonal": "Вы ещё не создали ни одного стиля.",
+    "rowActions": "Действия со стилем",
+    "error": {
+      "save": "Не удалось сохранить стиль.",
+      "delete": "Не удалось удалить стиль."
+    }
+  },
+  "history": {
+    "subtitle": "Всё, что вы надиктовали в Nova.",
+    "group": {
+      "today": "Сегодня",
+      "yesterday": "Вчера",
+      "week": "На этой неделе",
+      "older": "Ранее"
+    },
+    "searchPlaceholder": "Поиск по диктовкам",
+    "noMatch": "Ничего не найдено по «{{query}}».",
+    "empty": "Здесь появятся ваши диктовки.",
+    "copy": "Копировать",
+    "copied": "Скопировано"
+  },
+  "settingsNav": {
+    "voice": "Голос"
+  },
+  "personalization": {
+    "appearance": "Оформление",
+    "orb": "Сфера",
+    "overlay": "Наложение"
   }
 }

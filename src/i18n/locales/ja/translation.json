@@ -21,7 +21,10 @@
     "home": "ホーム",
     "configuration": "設定",
     "account": "アカウント",
-    "styles": "後処理"
+    "styles": "後処理",
+    "aiSkills": "AI Skills",
+    "settings": "設定",
+    "organization": "組織"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -180,6 +183,38 @@
         "checkFailed": "権限の確認に失敗しました。もう一度お試しください。",
         "requestFailed": "権限のリクエストに失敗しました。もう一度お試しください。"
       }
+    },
+    "back": "戻る",
+    "welcome": {
+      "title": "考える速さで書く",
+      "subtitle": "Nova は PC のどこでも、声を明確な文章に変えます。",
+      "providedBy": "提供元：{{organization}}"
+    },
+    "smartSetup": {
+      "title": "推奨設定",
+      "subtitle": "Nova がこの端末に合わせて設定を用意しました。あとから変更できます。",
+      "use": "推奨設定を使う",
+      "customize": "カスタマイズ",
+      "row": {
+        "microphone": "マイク",
+        "engine": "処理",
+        "shortcut": "ショートカット",
+        "language": "言語"
+      },
+      "value": {
+        "notSet": "未設定",
+        "autoDetected": "自動検出",
+        "localEngine": "この端末で"
+      }
+    },
+    "customize": {
+      "title": "いくつかの選択",
+      "subtitle": "それ以外は推奨値のままで、設定からいつでも変更できます。"
+    },
+    "writingStyles": {
+      "introTitle": "Nova は文字起こしだけではありません",
+      "introSubtitle": "話すだけで、作業に合った文体で Nova が書きます。",
+      "unavailable": "利用できる文体はまだありません。"
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "開く",
     "copy": "コピー",
     "clear": "クリア",
-    "noOptionsFound": "オプションが見つかりません"
+    "noOptionsFound": "オプションが見つかりません",
+    "cancel": "キャンセル",
+    "remove": "削除",
+    "selectOption": "選択してください…"
   },
   "accessibility": {
     "permissionsDescription": "Nova が文字起こしテキストを入力するには、アクセシビリティ権限が必要です。",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "所属機関が提供する音声入力を、大学のメールアドレスで。",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "サーバーに接続できません。接続を確認してもう一度お試しください。",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "文体"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "テキスト文書を所属機関のサーバーへ送り、語彙と固有名詞を抽出します。保存されるのは抽出された語のみで、文書そのものは保存されません。",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "キャンパスに接続済み",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local 動作中"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "組織",
+      "subtitle": "所属機関、その提供内容、そしてデータの行き先。",
+      "connection": "接続",
+      "managedBy": "{{organization}} が管理",
+      "identityTitle": "本人情報"
+    },
+    "provides": {
+      "title": "所属機関が提供するもの",
+      "transcription": {
+        "title": "音声認識",
+        "description": "録音は所属機関のサーバーへ送られ、文字になります。"
+      },
+      "rewriting": {
+        "title": "文体",
+        "description": "文章と選んだ文体が所属機関のサーバーへ送られ、書き直されます。"
+      },
+      "vocabulary": {
+        "title": "共有語彙",
+        "description": "機関が登録した用語とあなたの用語が、認識と書き直しの表記を助けます。"
+      },
+      "formatting": {
+        "title": "整形ルール",
+        "description": "機関のルールとあなたのルールが、書き直しのたびに適用されます。"
+      },
+      "paused": "現在停止中 — 所属機関のサーバーに接続できません。"
+    },
+    "offline": {
+      "title": "サーバーに接続できないとき",
+      "body": "この端末で音声入力は使えます。音声認識は端末内で動作し、文体・共有語彙・整形ルール・AI Skills は接続が戻ると再び使えます。"
+    },
+    "data": {
+      "title": "データの行き先",
+      "audio": "音声入力の録音",
+      "text": "書き直しに送る文章",
+      "vocabulary": "語彙・短縮・ルール",
+      "history": "履歴",
+      "recordings": "録音ファイル",
+      "appName": "前面のアプリ名",
+      "onDevice": "この端末",
+      "onCampus": "所属機関のサーバー",
+      "note": "所属機関のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。"
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "選択した文章に対して操作します。",
+    "preview": "試験公開",
+    "previewHint": "AI Skills は現在検証中です。",
+    "essentials": "基本の操作",
+    "howItWorks": "使い方",
+    "how": {
+      "select": "任意のアプリで文章を選択する",
+      "open": "ショートカットで Nova を開く",
+      "choose": "AI Skill を選ぶ",
+      "review": "何かが変わる前に結果を確認する"
+    },
+    "privacy": "Campus 接続を通じて処理されます。",
+    "privacyOffline": "AI Skills は所属機関のサーバーで動作しますが、現在つながりません。"
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "説明",
+        "description": "難しい文章を明快に理解する。"
+      },
+      "summarize": {
+        "name": "要約",
+        "description": "選択部分を要点にまとめる。"
+      },
+      "improve": {
+        "name": "推敲",
+        "description": "明快さと言い回しを整える。"
+      },
+      "translate": {
+        "name": "翻訳",
+        "description": "選択した文章を翻訳する。"
+      },
+      "ask": {
+        "name": "Nova に尋ねる",
+        "description": "Nova に具体的な指示を出す。"
+      }
+    },
+    "askPlaceholder": "Nova に尋ねる…",
+    "ask": "尋ねる",
+    "running": "Nova が処理しています…",
+    "result": "結果",
+    "replace": "置き換える",
+    "copy": "コピー",
+    "close": "閉じる",
+    "copied": "コピーしました",
+    "experimentTitle": "実験的機能",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "任意のアプリで文章を選択し、AI の操作を実行します。すべてのアプリで検証済みではありません。",
+    "shortcutMissing": "ショートカットがまだ割り当てられていません。設定で Nova Commands 用に指定してください。取り込みは、お使いのアプリが前面にある間だけ機能します。",
+    "runDiagnostics": "診断を実行",
+    "error": {
+      "busy": "すでにコマンドを実行中です。",
+      "nonTextClipboard": "クリップボードに文章以外のものが入っており、Nova は元に戻せません。先に別の場所へ控えてください。",
+      "noSelection": "Nova を開く前に文章を選択してください。",
+      "unsupported": "Nova Commands は現時点では Windows のみで利用できます。",
+      "targetChanged": "元のアプリはもう前面にありません。代わりに結果をコピーしてください。",
+      "offline": "AI Skills には Campus への接続が必要です。",
+      "failed": "Nova はこの依頼を処理できませんでした。",
+      "emptyResult": "Nova からの応答が空でした。",
+      "busyTitle": "すでに実行中",
+      "nonTextClipboardTitle": "クリップボードを戻せません",
+      "noSelectionTitle": "文章が選択されていません",
+      "unsupportedTitle": "ここでは使えません",
+      "targetChangedTitle": "ウィンドウが変わりました",
+      "offlineTitle": "Campus に接続できません",
+      "failedTitle": "コマンドが失敗しました",
+      "emptyResultTitle": "表示するものがありません"
+    },
+    "original": "元の文章"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "確認しています…"
+      },
+      "ready": {
+        "title": "Nova の準備ができました。"
+      },
+      "campusLocal": {
+        "title": "Nova Local が動作中です",
+        "detail": "音声入力は使えます。AI 機能は Campus の復帰とともに戻ります。"
+      },
+      "permissionsNeeded": {
+        "title": "マイクへのアクセスが必要です",
+        "detail": "音声入力の前に、マイクの使用を許可してください。"
+      },
+      "microphoneMissing": {
+        "title": "マイクが見つかりません",
+        "detail": "マイクを接続し、設定で選んでください。"
+      },
+      "modelMissing": {
+        "title": "Nova の設定を仕上げてください",
+        "detail": "音声認識モデルの取得が残っています。"
+      },
+      "shortcutMissing": {
+        "title": "Nova の準備ができました",
+        "detail": "ショートカットを割り当てれば、ひと押しで音声入力できます。"
+      },
+      "dictateHint": "で音声入力",
+      "openSettings": "設定を開く",
+      "listening": {
+        "title": "Nova が聞いています…"
+      },
+      "processing": {
+        "title": "Nova が処理しています…"
+      },
+      "insertionFailed": {
+        "title": "貼り付けできませんでした",
+        "detail": "音声入力した文章はクリップボードにあります。"
+      }
+    },
+    "active": {
+      "title": "稼働中",
+      "style": "文体",
+      "styleAutomatic": "自動",
+      "engine": "エンジン",
+      "microphone": "マイク",
+      "lastDictation": "直近の音声入力"
+    },
+    "engine": {
+      "campus": "所属機関のサーバー",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "はじめに",
+      "campus": "Campus アカウントを連携済み",
+      "voice": "音声の準備完了",
+      "firstDictation": "はじめての音声入力",
+      "style": "文体を試す",
+      "aiSkill": "はじめての AI Skill を使う",
+      "done": "完了",
+      "todo": "未完了"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "自動",
+      "builtin": "文体",
+      "personal": "あなたの文体"
+    },
+    "automaticHow": "Nova は前面のアプリ名を読み取り、対応する文体を適用します。除外したアプリは一切参照しません。",
+    "active": "使用中",
+    "emptyPersonal": "まだ文体を作成していません。",
+    "rowActions": "文体の操作",
+    "error": {
+      "save": "文体を保存できませんでした。",
+      "delete": "文体を削除できませんでした。"
+    }
+  },
+  "history": {
+    "subtitle": "Nova で音声入力したすべて。",
+    "group": {
+      "today": "今日",
+      "yesterday": "昨日",
+      "week": "今週",
+      "older": "それ以前"
+    },
+    "searchPlaceholder": "音声入力を検索",
+    "noMatch": "「{{query}}」に一致するものはありません。",
+    "empty": "音声入力した内容がここに表示されます。",
+    "copy": "コピー",
+    "copied": "コピーしました"
+  },
+  "settingsNav": {
+    "voice": "音声"
+  },
+  "personalization": {
+    "appearance": "外観",
+    "orb": "オーブ",
+    "overlay": "オーバーレイ"
   }
 }

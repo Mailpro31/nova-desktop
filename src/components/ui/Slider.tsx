@@ -53,11 +53,13 @@ export const Slider: React.FC<SliderProps> = ({
             value={value}
             onChange={handleChange}
             disabled={disabled}
-            className="h-1.5 flex-grow cursor-pointer appearance-none rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-55"
+            className="flex-grow h-1.5 rounded-full appearance-none cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
-              background: `linear-gradient(to right, var(--color-background-ui) ${
+              // Piste fine et précise : accent d'action sur la portion
+              // parcourue, filet de contrôle sur le reste.
+              background: `linear-gradient(to right, var(--color-accent) ${
                 ((value - min) / (max - min)) * 100
-              }%, rgba(128, 128, 128, 0.2) ${
+              }%, var(--color-hairline-strong) ${
                 ((value - min) / (max - min)) * 100
               }%)`,
             }}

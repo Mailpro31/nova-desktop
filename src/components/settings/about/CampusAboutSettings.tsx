@@ -22,7 +22,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   description,
   children,
 }) => (
-  <section className="overflow-hidden border border-hairline bg-surface [border-radius:var(--nova-radius-card)] [box-shadow:var(--nova-shadow-sm)]">
+  <section className="bg-surface rounded-card border border-hairline overflow-hidden">
     <div className="px-5 py-4 border-b border-hairline">
       <div className="flex items-center gap-2.5">
         <Icon size={18} className="text-text-secondary" strokeWidth={1.75} />
@@ -55,7 +55,7 @@ export const CampusAboutSettings: React.FC = () => {
   }, []);
 
   return (
-    <div className="mx-auto w-full max-w-[760px] space-y-5">
+    <div className="space-y-5">
       <PageHeader
         title={t("sidebar.about")}
         description={t("campus.settings.aboutSubtitle")}

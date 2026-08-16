@@ -109,7 +109,7 @@ export const CampusFormattingSection: React.FC = () => {
             {sharedRules.map((rule) => (
               <div
                 key={rule.id}
-                className="flex min-h-11 items-center gap-2 px-2 py-2 text-xs text-text"
+                className="flex min-h-11 items-center gap-2 px-3 py-2 text-xs text-text"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                 <span className="flex-1 leading-relaxed">{rule.rule}</span>
@@ -190,7 +190,7 @@ export const CampusFormattingSection: React.FC = () => {
             {personalRules.map((rule) => (
               <div
                 key={rule.id}
-                className="group flex min-h-12 items-center justify-between gap-2 px-2 py-2"
+                className="group flex min-h-12 items-center justify-between gap-2 px-3 py-2"
               >
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />

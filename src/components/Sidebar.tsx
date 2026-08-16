@@ -1,20 +1,24 @@
 import React, { lazy } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  BookOpen,
+  Building2,
   Cog,
   CreditCard,
   FlaskConical,
   History,
+  House,
   Info,
+  Settings,
   Sparkles,
   Palette,
   Users,
-  Building2,
-  BookOpen,
 } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
+import { useCampusStatus } from "../hooks/useCampusStatus";
+import { useOrganization } from "../hooks/useOrganization";
 import { isCampusMode } from "@/lib/mode";
 
 const HomeSettings = lazy(() =>
@@ -25,16 +29,6 @@ const HomeSettings = lazy(() =>
 const ConfigurationSettings = lazy(() =>
   import("./settings/configuration/ConfigurationSettings").then((module) => ({
     default: module.ConfigurationSettings,
-  })),
-);
-const CampusOrganizationSettings = lazy(() =>
-  import("./settings/campus/CampusOrganizationSettings").then((module) => ({
-    default: module.CampusOrganizationSettings,
-  })),
-);
-const CampusAiSkills = lazy(() =>
-  import("./settings/campus/CampusAiSkills").then((module) => ({
-    default: module.CampusAiSkills,
   })),
 );
 const PostProcessingSettings = lazy(() =>
@@ -76,6 +70,18 @@ const AboutSettings = lazy(() =>
     default: module.AboutSettings,
   })),
 );
+const AiSkillsSettings = lazy(() =>
+  import("./settings/ai-skills/AiSkillsSettings").then((module) => ({
+    default: module.AiSkillsSettings,
+  })),
+);
+const CampusOrganizationSettings = lazy(() =>
+  import("./settings/organization/CampusOrganizationSettings").then(
+    (module) => ({
+      default: module.CampusOrganizationSettings,
+    }),
+  ),
+);
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
 
@@ -100,35 +106,29 @@ export const SECTIONS_CONFIG = {
   home: {
     labelKey: "sidebar.home",
     campusLabelKey: undefined,
-    icon: HandyHand,
+    icon: House,
     component: HomeSettings,
     enabled: () => true,
     campusVisible: true,
   },
+  aiskills: {
+    labelKey: "sidebar.aiSkills",
+    campusLabelKey: undefined,
+    icon: BookOpen,
+    component: AiSkillsSettings,
+    // Campus uniquement. Un AI Skill s'exécute sur `/api/command` ; il n'existe
+    // aucun moteur local. Montrer la page en personnel présenterait des
+    // capacités qui ne pourraient jamais s'y déclencher. (Elle y était visible
+    // tant qu'« AI Skills » désignait les Styles — ce n'est plus le cas.)
+    enabled: () => isCampusMode(),
+    campusVisible: true,
+  },
   configuration: {
     labelKey: "sidebar.configuration",
-    campusLabelKey: "campus.settings.title",
+    campusLabelKey: "sidebar.settings",
     icon: Cog,
-    // Regroupe les anciennes sections Général / Modèles / Avancé sous une
-    // seule entrée (sous-onglets internes, voir ConfigurationSettings).
     component: ConfigurationSettings,
     enabled: () => true,
-    campusVisible: true,
-  },
-  campus: {
-    labelKey: "campus.navigation.campus",
-    campusLabelKey: "campus.navigation.campus",
-    icon: Building2,
-    component: CampusOrganizationSettings,
-    enabled: () => false,
-    campusVisible: true,
-  },
-  aiSkills: {
-    labelKey: "campus.aiSkills.title",
-    campusLabelKey: "campus.aiSkills.title",
-    icon: BookOpen,
-    component: CampusAiSkills,
-    enabled: () => false,
     campusVisible: true,
   },
   postprocessing: {
@@ -136,9 +136,6 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: "sidebar.styles",
     icon: Sparkles,
     component: PostProcessingSettings,
-    // Les Styles sont au cœur de Nova : la section est toujours visible ;
-    // l'activation de la reformulation se fait via l'interrupteur en tête de
-    // la section (plus besoin de passer par Avancé pour la découvrir).
     enabled: () => true,
     campusVisible: true,
   },
@@ -152,21 +149,32 @@ export const SECTIONS_CONFIG = {
   },
   personalization: {
     labelKey: "sidebar.personalization",
-    campusLabelKey: "sidebar.personalization",
+    campusLabelKey: undefined,
     icon: Palette,
     component: PersonalizationSettings,
     enabled: () => true,
-    campusVisible: true,
+    // En campus, la personnalisation vit dans Réglages (onglet dédié) :
+    // la navigation principale reste à quatre destinations.
+    campusVisible: false,
   },
   account: {
     labelKey: "sidebar.account",
     campusLabelKey: undefined,
     icon: CreditCard,
-    // Palier actif, licence, comparatif des paliers (anciennement au bas de
-    // la section À propos).
     component: AccountSettings,
     enabled: () => true,
     campusVisible: false,
+  },
+  organization: {
+    labelKey: "sidebar.organization",
+    campusLabelKey: undefined,
+    icon: Building2,
+    component: CampusOrganizationSettings,
+    // Atteinte par le bloc bas de la barre latérale, pas par la liste
+    // principale — l'établissement est accessible sans être une destination
+    // de premier plan.
+    enabled: () => false,
+    campusVisible: true,
   },
   history: {
     labelKey: "sidebar.history",
@@ -194,39 +202,53 @@ export const SECTIONS_CONFIG = {
   },
 } as const satisfies Record<string, SectionConfig>;
 
-// Ordre des entrées de la sidebar en mode campus.
-// Campus keeps the common path first, with administration one level deeper.
-export const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
+/**
+ * Destinations principales du mode campus — quatre, pas davantage.
+ * L'établissement et les réglages vivent dans le bloc bas, séparés
+ * visuellement : accessibles en permanence sans occuper le même rang.
+ */
+const CAMPUS_PRIMARY: SidebarSection[] = [
   "home",
-  "aiSkills",
+  "aiskills",
   "postprocessing",
-  "personalization",
   "history",
-  "campus",
-  "configuration",
 ];
 
-// Libellé affiché pour une section en mode campus (priorité au libellé campus).
-export function getCampusLabelKey(section: SidebarSection): string {
-  const config = SECTIONS_CONFIG[section];
-  return config.campusLabelKey ?? config.labelKey;
+/** Taille et graisse d'icône uniques dans toute la navigation. */
+const ICON_SIZE = 18;
+const ICON_STROKE = 1.75;
+
+interface NavItemProps {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
 }
 
-// Legacy category colors used by the Personal shell. CampusNavigation keeps
-// its iconography neutral and reserves Nova blue for selection and actions.
-export const SECTION_COLORS: Record<string, string> = {
-  home: "",
-  configuration: "#8E8E93",
-  campus: "#0A84FF",
-  aiSkills: "#0A84FF",
-  postprocessing: "#BF5AF2",
-  meeting: "#30D158",
-  personalization: "#FF375F",
-  account: "#5E5CE6",
-  history: "#FF9F0A",
-  debug: "#30D158",
-  about: "#64D2FF",
-};
+/**
+ * Rangée de navigation. État actif volontairement sobre : fond neutre léger
+ * et texte plein, jamais un aplat bleu — l'accent reste la couleur d'action.
+ */
+const NavItem: React.FC<NavItemProps> = ({
+  label,
+  active,
+  onClick,
+  children,
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-current={active ? "page" : undefined}
+    className={`flex w-full items-center gap-2.5 h-[34px] px-2.5 rounded-chip text-left text-sm transition-colors duration-[120ms] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+      active
+        ? "bg-mid-gray/12 text-text font-medium"
+        : "text-text-secondary hover:bg-mid-gray/8 hover:text-text"
+    }`}
+  >
+    {children}
+    <span className="truncate">{label}</span>
+  </button>
+);
 
 interface SidebarProps {
   activeSection: SidebarSection;
@@ -240,102 +262,135 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const { t } = useTranslation();
   const { settings } = useSettings();
   const campusMode = isCampusMode();
-
-  const availableSections = Object.entries(SECTIONS_CONFIG)
-    .filter(([_, config]) => {
-      if (campusMode) {
-        return config.campusVisible;
-      }
-      return config.enabled(settings);
-    })
-    .map(([id, config]) => ({
-      id: id as SidebarSection,
-      ...config,
-      labelKey:
-        campusMode && config.campusLabelKey
-          ? config.campusLabelKey
-          : config.labelKey,
-    }))
-    .sort((a, b) => {
-      if (!campusMode) return 0; // personal mode keeps definition order
-      const ia = CAMPUS_SIDEBAR_ORDER.indexOf(a.id);
-      const ib = CAMPUS_SIDEBAR_ORDER.indexOf(b.id);
-      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
-    });
+  const organization = useOrganization();
+  const { connection } = useCampusStatus();
 
   if (campusMode) {
     return (
-      <div className="flex flex-col w-44 h-full bg-background border-e border-hairline items-start px-3 py-4 gap-6">
-        <div className="flex items-center gap-2 px-2">
-          <HandyHand width={32} height={32} />
+      <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
+        <div className="flex items-center gap-2.5 px-2.5 pb-4">
+          <HandyHand width={24} height={24} />
           {/* eslint-disable-next-line i18next/no-literal-string */}
-          <span className="text-lg font-semibold tracking-tight">Nova</span>
+          <span className="text-[15px] font-semibold tracking-[-0.01em] text-text">
+            Nova
+          </span>
         </div>
-        <div className="flex flex-col w-full gap-1">
-          {availableSections.map((section) => {
-            const Icon = section.icon;
-            const isActive = activeSection === section.id;
 
-            return (
-              <button
-                key={section.id}
-                type="button"
-                className={`flex gap-3 items-center px-3 py-2 w-full rounded-xl text-sm font-medium transition-colors text-left ${
-                  isActive
-                    ? "bg-mid-gray/15 text-text"
-                    : "text-text-secondary hover:bg-mid-gray/10 hover:text-text"
-                }`}
-                onClick={() => onSectionChange(section.id)}
-              >
-                <Icon size={18} className="shrink-0" strokeWidth={1.75} />
-                <span className="truncate">{t(section.labelKey)}</span>
-              </button>
-            );
-          })}
+        {CAMPUS_PRIMARY.map((id) => {
+          const config = SECTIONS_CONFIG[id];
+          const Icon = config.icon;
+          return (
+            <NavItem
+              key={id}
+              label={t(config.campusLabelKey ?? config.labelKey)}
+              active={activeSection === id}
+              onClick={() => onSectionChange(id)}
+            >
+              <Icon
+                size={ICON_SIZE}
+                strokeWidth={ICON_STROKE}
+                className="shrink-0"
+              />
+            </NavItem>
+          );
+        })}
+
+        <div className="flex-1" />
+
+        {/* Bloc bas : établissement puis réglages, séparés des destinations
+            produit par un filet. Deux lignes compactes, jamais une carte. */}
+        <div className="pt-3 mt-1 border-t border-hairline flex flex-col gap-1">
+          {organization && (
+            <button
+              type="button"
+              onClick={() => onSectionChange("organization")}
+              aria-current={
+                activeSection === "organization" ? "page" : undefined
+              }
+              className={`flex w-full items-start gap-2.5 px-2.5 py-2 rounded-chip text-left transition-colors duration-[120ms] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                activeSection === "organization"
+                  ? "bg-mid-gray/12"
+                  : "hover:bg-mid-gray/8"
+              }`}
+            >
+              <Building2
+                size={ICON_SIZE}
+                strokeWidth={ICON_STROKE}
+                className="shrink-0 mt-0.5 text-text-secondary"
+              />
+              <span className="min-w-0 flex-1">
+                <span className="flex items-center gap-1.5">
+                  <span className="truncate text-[13px] font-medium text-text">
+                    {organization.name}
+                  </span>
+                  {/* Représentation unique du statut dans toute l'app. */}
+                  <span
+                    aria-hidden="true"
+                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                      connection === "connected"
+                        ? "bg-success"
+                        : connection === "local"
+                          ? "bg-warning"
+                          : "bg-mid-gray/50"
+                    }`}
+                  />
+                </span>
+                <span className="block truncate text-[11px] text-text-secondary mt-0.5">
+                  {connection === "local"
+                    ? t("campus.status.localActive")
+                    : t("campus.organization.managedBy", {
+                        organization: organization.shortName,
+                      })}
+                </span>
+              </span>
+            </button>
+          )}
+
+          <NavItem
+            label={t("sidebar.settings")}
+            active={activeSection === "configuration"}
+            onClick={() => onSectionChange("configuration")}
+          >
+            <Settings
+              size={ICON_SIZE}
+              strokeWidth={ICON_STROKE}
+              className="shrink-0"
+            />
+          </NavItem>
         </div>
-      </div>
+      </nav>
     );
   }
 
-  return (
-    <div className="flex flex-col w-40 h-full bg-sidebar border-e border-hairline items-center px-2">
-      <HandyTextLogo width={120} className="m-4" />
-      <div className="flex flex-col w-full items-center gap-0.5 pt-2 border-t border-hairline">
-        {availableSections.map((section) => {
-          const Icon = section.icon;
-          const isActive = activeSection === section.id;
-          const color = SECTION_COLORS[section.id];
+  // ── Mode personnel : liste et ordre inchangés, seule la présentation suit
+  // la planche de fondation (état actif sobre, tokens, icônes homogènes).
+  const availableSections = Object.entries(SECTIONS_CONFIG)
+    .filter(([, config]) => config.enabled(settings))
+    .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
 
-          return (
-            <div
-              key={section.id}
-              className={`flex gap-2.5 items-center p-1.5 w-full rounded-[10px] cursor-pointer transition-colors ${
-                isActive
-                  ? "bg-accent text-white"
-                  : "hover:bg-mid-gray/15 hover:opacity-100 opacity-90"
-              }`}
-              onClick={() => onSectionChange(section.id)}
-            >
-              {section.id === "home" || !color ? (
-                <Icon width={26} height={26} className="shrink-0" />
-              ) : (
-                <span
-                  className="shrink-0 flex items-center justify-center rounded-[6px]"
-                  style={{ width: 26, height: 26, background: color }}
-                >
-                  <Icon width={16} height={16} className="text-white" />
-                </span>
-              )}
-              <p
-                className="text-sm font-medium truncate"
-                title={t(section.labelKey)}
-              >
-                {t(section.labelKey)}
-              </p>
-            </div>
-          );
-        })}
+  return (
+    <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
+      <div className="px-2.5 pb-4">
+        <HandyTextLogo width={110} />
       </div>
-    </div>
+
+      {availableSections.map((section) => {
+        const Icon = section.icon;
+        return (
+          <NavItem
+            key={section.id}
+            label={t(section.labelKey)}
+            active={activeSection === section.id}
+            onClick={() => onSectionChange(section.id)}
+          >
+            <Icon
+              size={ICON_SIZE}
+              strokeWidth={ICON_STROKE}
+              className="shrink-0"
+            />
+          </NavItem>
+        );
+      })}
+    </nav>
   );
 };

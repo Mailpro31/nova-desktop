@@ -39,37 +39,37 @@ type NonCreatableProps = {
 
 export type SelectProps = BaseProps & (CreatableProps | NonCreatableProps);
 
+// react-select est stylé en JS : les tokens de la planche de fondation sont
+// donc référencés directement en var() plutôt que par des classes utilitaires.
 const baseBackground = "var(--color-inset)";
+const selectedBackground =
+  "color-mix(in srgb, var(--color-accent) 12%, transparent)";
 const hoverBackground =
-  "color-mix(in srgb, var(--color-text) 5%, var(--color-inset))";
-const focusBackground = "var(--color-surface)";
-const neutralBorder = "var(--color-hairline)";
+  "color-mix(in srgb, var(--color-accent) 10%, transparent)";
+const neutralBorder = "var(--color-hairline-strong)";
 
 const selectStyles: StylesConfig<SelectOption, false> = {
   control: (base, state) => ({
     ...base,
-    minHeight: "var(--nova-control-height)",
-    borderRadius: "var(--nova-radius-control)",
-    borderColor: state.isFocused ? "var(--color-logo-primary)" : neutralBorder,
+    minHeight: "var(--control-h)",
+    borderRadius: "var(--radius-control)",
+    borderColor: state.isFocused ? "var(--color-accent)" : neutralBorder,
+    // Focus visible : liseré d'accent décalé, comme les autres contrôles.
     boxShadow: state.isFocused
-      ? "0 0 0 2px color-mix(in srgb, var(--color-accent) 20%, transparent)"
+      ? "0 0 0 2px var(--color-background), 0 0 0 4px var(--color-accent)"
       : "none",
-    backgroundColor: state.isFocused ? focusBackground : baseBackground,
+    backgroundColor: baseBackground,
     fontSize: "0.875rem",
     color: "var(--color-text)",
-    fontWeight: 400,
-    transition:
-      "background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease",
+    transition: "border-color 120ms ease, box-shadow 120ms ease",
     ":hover": {
-      borderColor:
-        "color-mix(in srgb, var(--color-text-secondary) 35%, transparent)",
-      backgroundColor: hoverBackground,
+      borderColor: "color-mix(in srgb, var(--color-accent) 60%, transparent)",
     },
   }),
   valueContainer: (base) => ({
     ...base,
     paddingInline: 10,
-    paddingBlock: 6,
+    paddingBlock: 4,
   }),
   input: (base) => ({
     ...base,
@@ -82,43 +82,45 @@ const selectStyles: StylesConfig<SelectOption, false> = {
   dropdownIndicator: (base, state) => ({
     ...base,
     color: state.isFocused
-      ? "var(--color-logo-primary)"
-      : "color-mix(in srgb, var(--color-mid-gray) 80%, transparent)",
+      ? "var(--color-accent)"
+      : "var(--color-text-secondary)",
     ":hover": {
-      color: "var(--color-logo-primary)",
+      color: "var(--color-accent)",
     },
   }),
   clearIndicator: (base) => ({
     ...base,
-    color: "color-mix(in srgb, var(--color-mid-gray) 80%, transparent)",
+    color: "var(--color-text-secondary)",
     ":hover": {
-      color: "var(--color-logo-primary)",
+      color: "var(--color-accent)",
     },
   }),
   menu: (provided) => ({
     ...provided,
     zIndex: 30,
+    padding: 4,
     backgroundColor: "var(--color-surface)",
     color: "var(--color-text)",
-    border:
-      "1px solid color-mix(in srgb, var(--color-mid-gray) 30%, transparent)",
-    borderRadius: "var(--nova-radius-card)",
-    boxShadow: "var(--nova-shadow-floating)",
+    borderRadius: "var(--radius-card)",
+    border: "1px solid var(--color-hairline)",
+    boxShadow: "var(--shadow-floating)",
   }),
   option: (base, state) => ({
     ...base,
+    borderRadius: "var(--radius-chip)",
     backgroundColor: state.isSelected
-      ? focusBackground
+      ? selectedBackground
       : state.isFocused
         ? hoverBackground
         : "transparent",
-    color: "var(--color-text)",
+    color: state.isSelected ? "var(--color-accent)" : "var(--color-text)",
+    fontWeight: state.isSelected ? 500 : 400,
     cursor: state.isDisabled ? "not-allowed" : base.cursor,
-    opacity: state.isDisabled ? 0.5 : 1,
+    opacity: state.isDisabled ? 0.4 : 1,
   }),
   placeholder: (base) => ({
     ...base,
-    color: "color-mix(in srgb, var(--color-mid-gray) 65%, transparent)",
+    color: "var(--color-text-secondary)",
   }),
 };
 

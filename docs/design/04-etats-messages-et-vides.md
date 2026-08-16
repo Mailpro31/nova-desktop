@@ -19,21 +19,21 @@ Règle produit : **une seule notification à la fois, jamais bloquante**.
 
 ## Catalogue réel des messages d'erreur
 
-| Situation | Traitement actuel |
-|---|---|
-| Permission micro refusée | erreur, texte adapté à la plateforme |
-| Aucun périphérique d'entrée | erreur |
-| Micro configuré introuvable | avertissement, repli sur le micro par défaut |
-| Échec du collage | erreur, message non technique (détail dans le journal) |
-| Échec de transcription | erreur |
-| Reformulation trop longue / repli | avertissement, texte brut déjà collé |
-| Serveur Campus injoignable | avertissement discret, repli local |
-| Session Campus expirée (401) | erreur + retour à la connexion |
-| Moteur privé indisponible | erreur |
-| Mode CPU forcé (pilote GPU) | avertissement, une fois par lancement, avec chemin de réactivation |
-| Moteur en ligne verrouillé | information (mode personnel seulement) |
-| Quota épuisé | erreur avec action « Passer à un palier supérieur » (mode personnel seulement) |
-| Mot ajouté au dictionnaire | succès, 1,5 s |
+| Situation                         | Traitement actuel                                                              |
+| --------------------------------- | ------------------------------------------------------------------------------ |
+| Permission micro refusée          | erreur, texte adapté à la plateforme                                           |
+| Aucun périphérique d'entrée       | erreur                                                                         |
+| Micro configuré introuvable       | avertissement, repli sur le micro par défaut                                   |
+| Échec du collage                  | erreur, message non technique (détail dans le journal)                         |
+| Échec de transcription            | erreur                                                                         |
+| Reformulation trop longue / repli | avertissement, texte brut déjà collé                                           |
+| Serveur Campus injoignable        | avertissement discret, repli local                                             |
+| Session Campus expirée (401)      | erreur + retour à la connexion                                                 |
+| Moteur privé indisponible         | erreur                                                                         |
+| Mode CPU forcé (pilote GPU)       | avertissement, une fois par lancement, avec chemin de réactivation             |
+| Moteur en ligne verrouillé        | information (mode personnel seulement)                                         |
+| Quota épuisé                      | erreur avec action « Passer à un palier supérieur » (mode personnel seulement) |
+| Mot ajouté au dictionnaire        | succès, 1,5 s                                                                  |
 
 Tout message doit être compréhensible sans culture technique. Interdits :
 codes HTTP, noms de modèles, « tokens », « quantization », « VAD ».

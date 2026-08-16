@@ -1,9 +1,17 @@
-/* ========================================================================== 
-   Nova — Quiet Engineering palette
+/* ==========================================================================
+   Nova — tokens de design (palette, géométrie, élévation, mouvement)
    --------------------------------------------------------------------------
-   Source of truth for application colors. The interface is light-first, with
-   a complete dark counterpart. One Nova blue carries actions, selection and
-   focus; status colors are reserved for status meaning.
+   Source de vérité du système visuel, aligné sur la planche de fondation
+   « Quiet Engineering ». L'app est CLAIRE par défaut, avec une contrepartie
+   sombre complète (identité « bleu nuit » de Nova). Chaque token nommé
+   ci-dessous est référencé par les utilitaires Tailwind (voir App.css
+   `@theme inline`) et par les composants, donc une valeur hex ne vit qu'à un
+   seul endroit.
+
+   Accent d'ACTION unique : bleu Apple #0A84FF (boutons primaires,
+   interrupteurs actifs, sélections, focus). Jamais un autre accent pour une
+   action ; les couleurs de statut restent réservées au sens « statut ».
+   Verrou « Ultra » : lilas #C9B6F0.
    ========================================================================== */
 
 :root {
@@ -14,11 +22,12 @@
   --nova-inset: #1a1a1d; /* champs / insets           */
   --nova-text: #f2f2f4; /* texte principal           */
   --nova-text-secondary: #98989f; /* texte secondaire / gris   */
-  --nova-hairline: rgba(255, 255, 255, 0.07);
-  --nova-accent: #0a84ff; /* Nova blue — single action accent */
+  --nova-hairline: rgba(255, 255, 255, 0.07); /* séparateur       */
+  --nova-hairline-strong: rgba(255, 255, 255, 0.16); /* contour de contrôle */
+  --nova-accent: #0a84ff; /* bleu Apple — ACTION unique */
   --nova-accent-hover: #3b9bff;
   --nova-success: #30d158;
-  --nova-warning: #ff9f0a;
+  --nova-warning: #ff9f0a; /* dégradé / repli local      */
   --nova-danger: #ff453a;
   --nova-ultra: #c9b6f0; /* verrou Nova Ultra          */
 
@@ -33,9 +42,10 @@
   --nova-light-text: #1d1d1f;
   --nova-light-text-secondary: #6e6e73;
   --nova-light-hairline: rgba(0, 0, 0, 0.08);
+  --nova-light-hairline-strong: rgba(0, 0, 0, 0.14);
   --nova-light-accent-hover: #0066cc;
   --nova-light-success: #248a3d;
-  --nova-light-warning: #9a6700;
+  --nova-light-warning: #b25000; /* ambre assombri : lisible sur blanc */
   --nova-light-danger: #d70015;
   --nova-light-ultra: #7a5cba; /* lilas Ultra assombri : lisible sur blanc */
 
@@ -71,6 +81,7 @@
   --color-inset: var(--nova-light-inset);
   --color-text-secondary: var(--nova-light-text-secondary);
   --color-hairline: var(--nova-light-hairline);
+  --color-hairline-strong: var(--nova-light-hairline-strong);
   --color-accent: var(--nova-accent);
   --color-accent-hover: var(--nova-light-accent-hover);
   --color-success: var(--nova-light-success);
@@ -107,4 +118,32 @@
   --orb-s3: #93a6e0;
   --orb-s4: #7e92d6;
   --orb-glow: 126, 146, 214;
+
+  /* ---- Géométrie (planche de fondation « Quiet Engineering ») -------------
+     Quatre rayons seulement, du plus serré au plus large. La pilule (999px)
+     reste réservée au statut. Exposés à Tailwind dans App.css : rounded-chip,
+     rounded-control, rounded-card, rounded-panel. */
+  --radius-chip: 8px; /* badge, pastille          */
+  --radius-control: 10px; /* bouton, champ            */
+  --radius-card: 12px; /* carte, groupe            */
+  --radius-panel: 16px; /* panneau, dialogue        */
+
+  /* Hauteurs de contrôle. Exprimées en px et non en rem : la base typographique
+     est à 15px, un `h-9` Tailwind vaudrait 33,75px et non 36px. */
+  --control-h-sm: 32px;
+  --control-h: 36px;
+  --control-h-lg: 40px;
+
+  /* ---- Élévation : trois niveaux, jamais plus ----------------------------
+     1 surface posée · 2 panneau flottant, menu · 3 overlay modal.
+     Partout ailleurs, un filet `--color-hairline` suffit. */
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-floating: 0 8px 24px -8px rgba(0, 0, 0, 0.65);
+  --shadow-overlay: 0 24px 60px -16px rgba(0, 0, 0, 0.8);
+
+  /* ---- Mouvement : court, sobre, interruptible --------------------------- */
+  --motion-micro: 120ms; /* survol, appui, bascule   */
+  --motion-standard: 180ms; /* apparition, sélection    */
+  --motion-panel: 220ms; /* dialogue, overlay        */
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }

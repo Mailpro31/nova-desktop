@@ -21,7 +21,10 @@
     "home": "Начало",
     "configuration": "Конфигурация",
     "account": "Акаунт",
-    "styles": "Постобработка"
+    "styles": "Постобработка",
+    "aiSkills": "AI Skills",
+    "settings": "Настройки",
+    "organization": "Организация"
   },
   "onboarding": {
     "subtitle": "За да започнете, изберете модел за транскрипция",
@@ -180,6 +183,38 @@
         "checkFailed": "Проверката на разрешенията не бе успешна. Опитайте отново.",
         "requestFailed": "Заявката за разрешение не бе успешна. Опитайте отново."
       }
+    },
+    "back": "Назад",
+    "welcome": {
+      "title": "Пишете със скоростта на мисълта си",
+      "subtitle": "Nova превръща гласа ви в ясен текст навсякъде на компютъра.",
+      "providedBy": "Предоставено от {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Препоръчана настройка",
+      "subtitle": "Nova подготви тези настройки според вашата машина. Можете да ги промените по-късно.",
+      "use": "Използване на препоръчаната настройка",
+      "customize": "Персонализиране",
+      "row": {
+        "microphone": "Микрофон",
+        "engine": "Обработка",
+        "shortcut": "Пряк път",
+        "language": "Език"
+      },
+      "value": {
+        "notSet": "Не е зададено",
+        "autoDetected": "Открит автоматично",
+        "localEngine": "На това устройство"
+      }
+    },
+    "customize": {
+      "title": "Няколко избора",
+      "subtitle": "Всичко останало запазва препоръчаната си стойност и се променя в Настройки."
+    },
+    "writingStyles": {
+      "introTitle": "Nova не само транскрибира",
+      "introSubtitle": "Говорете и Nova пише в стила, подходящ за задачата ви.",
+      "unavailable": "Все още няма наличен стил на писане."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Отваряне",
     "copy": "Копиране",
     "clear": "Изчистване",
-    "noOptionsFound": "Няма намерени опции"
+    "noOptionsFound": "Няма намерени опции",
+    "cancel": "Отказ",
+    "remove": "Премахни",
+    "selectOption": "Изберете опция…"
   },
   "accessibility": {
     "permissionsDescription": "Nova се нуждае от разрешения за достъпност, за да въвежда транскрибирания текст.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Гласова диктовка, предоставена от вашето учебно заведение, с академичния ви имейл.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Сървърът е недостъпен. Проверете връзката и опитайте отново.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Стилове на писане"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Изпратете текстов документ до сървъра на заведението, за да извлечете речник и собствени имена. Запазват се само извлечените термини — не и документът.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Кампусът е свързан",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local е активен"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Организация",
+      "subtitle": "Вашето учебно заведение, какво предоставя и къде отиват данните ви.",
+      "connection": "Връзка",
+      "managedBy": "Управлявано от {{organization}}",
+      "identityTitle": "Самоличност"
+    },
+    "provides": {
+      "title": "Какво предоставя вашето учебно заведение",
+      "transcription": {
+        "title": "Разпознаване на реч",
+        "description": "Записът ви отива на сървъра на заведението, който го превръща в текст."
+      },
+      "rewriting": {
+        "title": "Стилове на писане",
+        "description": "Текстът и избраният стил отиват на сървъра, който го пренаписва."
+      },
+      "vocabulary": {
+        "title": "Споделен речник",
+        "description": "Термините на заведението и вашите помагат да бъдат изписани правилно."
+      },
+      "formatting": {
+        "title": "Правила за форматиране",
+        "description": "Правилата на заведението и вашите се прилагат при всяко пренаписване."
+      },
+      "paused": "Временно спряно — сървърът на заведението е недостъпен."
+    },
+    "offline": {
+      "title": "Когато сървърът е недостъпен",
+      "body": "Диктовката продължава да работи на това устройство. Разпознаването на реч се изпълнява локално; стиловете, споделеният речник, правилата за форматиране и AI Skills се връщат с връзката."
+    },
+    "data": {
+      "title": "Къде отиват данните ви",
+      "audio": "Звук от диктовката",
+      "text": "Текст, изпратен за пренаписване",
+      "vocabulary": "Речник, преки пътища и правила",
+      "history": "История",
+      "recordings": "Записи",
+      "appName": "Име на приложението отпред",
+      "onDevice": "Това устройство",
+      "onCampus": "Сървър на заведението",
+      "note": "Сървърът брои колко транскрипции и пренаписвания правите всеки ден. Не съхранява съдържанието им."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Работете с избрания текст.",
+    "preview": "Преглед",
+    "previewHint": "AI Skills се тестват в момента.",
+    "essentials": "Основното",
+    "howItWorks": "Как работи",
+    "how": {
+      "select": "Изберете текст в което и да е приложение",
+      "open": "Отворете Nova с вашата клавишна комбинация",
+      "choose": "Изберете AI Skill",
+      "review": "Прегледайте резултата, преди нещо да се промени"
+    },
+    "privacy": "Обработва се през вашата връзка с Campus.",
+    "privacyOffline": "AI Skills работят на сървъра на вашето учебно заведение, който сега е недостъпен."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Обясни",
+        "description": "Да разберете ясно сложен текст."
+      },
+      "summarize": {
+        "name": "Обобщи",
+        "description": "Да сведете избраното до най-важното."
+      },
+      "improve": {
+        "name": "Подобри",
+        "description": "Да спечелите яснота и изказ."
+      },
+      "translate": {
+        "name": "Преведи",
+        "description": "Да преведете избрания текст."
+      },
+      "ask": {
+        "name": "Питай Nova",
+        "description": "Да дадете на Nova конкретно указание."
+      }
+    },
+    "askPlaceholder": "Питай Nova…",
+    "ask": "Попитай",
+    "running": "Nova работи…",
+    "result": "Резултат",
+    "replace": "Замени",
+    "copy": "Копирай",
+    "close": "Затвори",
+    "copied": "Копирано",
+    "experimentTitle": "Експериментално",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Изберете текст в което и да е приложение и приложете действие с ИИ върху него. Още не е проверено във всички приложения.",
+    "shortcutMissing": "Още няма зададена клавишна комбинация. Задайте такава за Nova Commands в Настройки — прихващането работи само докато вашето приложение е отпред.",
+    "runDiagnostics": "Стартирай диагностика",
+    "error": {
+      "busy": "Вече се изпълнява команда.",
+      "nonTextClipboard": "Клипбордът съдържа нещо различно от текст и Nova не би могла да го върне. Копирайте го първо другаде.",
+      "noSelection": "Изберете текст, преди да отворите Nova.",
+      "unsupported": "Засега Nova Commands работи само на Windows.",
+      "targetChanged": "Първоначалното приложение вече не е активно. Копирайте резултата вместо това.",
+      "offline": "AI Skills изискват връзка с Campus.",
+      "failed": "Nova не можа да обработи тази заявка.",
+      "emptyResult": "Nova върна празен резултат.",
+      "busyTitle": "Вече тече",
+      "nonTextClipboardTitle": "Клипбордът не може да се възстанови",
+      "noSelectionTitle": "Няма избран текст",
+      "unsupportedTitle": "Недостъпно тук",
+      "targetChangedTitle": "Прозорецът се смени",
+      "offlineTitle": "Campus е недостъпен",
+      "failedTitle": "Командата не успя",
+      "emptyResultTitle": "Няма какво да се покаже"
+    },
+    "original": "Оригинал"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Проверка…"
+      },
+      "ready": {
+        "title": "Nova е готова."
+      },
+      "campusLocal": {
+        "title": "Nova Local е активна",
+        "detail": "Диктовката още работи. Функциите с ИИ ще се върнат с Campus."
+      },
+      "permissionsNeeded": {
+        "title": "Нужен е достъп до микрофона",
+        "detail": "Nova се нуждае от разрешение за микрофона, преди да диктува."
+      },
+      "microphoneMissing": {
+        "title": "Не е открит микрофон",
+        "detail": "Свържете микрофон и го изберете в настройките."
+      },
+      "modelMissing": {
+        "title": "Довършете настройката на Nova",
+        "detail": "Остава да се изтегли речеви модел."
+      },
+      "shortcutMissing": {
+        "title": "Nova е готова",
+        "detail": "Задайте клавишна комбинация и диктовката е на един клавиш."
+      },
+      "dictateHint": "за диктовка",
+      "openSettings": "Отвори настройките",
+      "listening": {
+        "title": "Nova ви слуша…"
+      },
+      "processing": {
+        "title": "Nova работи…"
+      },
+      "insertionFailed": {
+        "title": "Поставянето не бе възможно",
+        "detail": "Диктовката ви е в клипборда."
+      }
+    },
+    "active": {
+      "title": "Активно",
+      "style": "Стил на писане",
+      "styleAutomatic": "Автоматичен",
+      "engine": "Двигател",
+      "microphone": "Микрофон",
+      "lastDictation": "Последна диктовка"
+    },
+    "engine": {
+      "campus": "Сървърът на вашето учебно заведение",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Първи стъпки",
+      "campus": "Профилът в Campus е свързан",
+      "voice": "Гласът е готов",
+      "firstDictation": "Първа диктовка",
+      "style": "Опитайте стил на писане",
+      "aiSkill": "Използвайте първия си AI Skill",
+      "done": "Готово",
+      "todo": "Предстои"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Автоматично",
+      "builtin": "Стилове",
+      "personal": "Вашите стилове"
+    },
+    "automaticHow": "Nova чете името на приложението отпред и прилага съответния стил. Блокираните от вас приложения никога не се проверяват.",
+    "active": "Активен",
+    "emptyPersonal": "Още не сте създали стил.",
+    "rowActions": "Действия за стила",
+    "error": {
+      "save": "Стилът не можа да бъде запазен.",
+      "delete": "Стилът не можа да бъде изтрит."
+    }
+  },
+  "history": {
+    "subtitle": "Всичко, което сте диктували с Nova.",
+    "group": {
+      "today": "Днес",
+      "yesterday": "Вчера",
+      "week": "Тази седмица",
+      "older": "По-рано"
+    },
+    "searchPlaceholder": "Търсене в диктовките",
+    "noMatch": "Нищо не съвпада с „{{query}}“.",
+    "empty": "Тук ще се появят вашите диктовки.",
+    "copy": "Копиране",
+    "copied": "Копирано"
+  },
+  "settingsNav": {
+    "voice": "Глас"
+  },
+  "personalization": {
+    "appearance": "Външен вид",
+    "orb": "Сфера",
+    "overlay": "Наслагване"
   }
 }

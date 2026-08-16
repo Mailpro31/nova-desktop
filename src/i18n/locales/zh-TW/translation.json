@@ -21,7 +21,10 @@
     "home": "首頁",
     "configuration": "配置",
     "account": "帳戶",
-    "styles": "後處理"
+    "styles": "後處理",
+    "aiSkills": "AI Skills",
+    "settings": "設定",
+    "organization": "組織"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -180,6 +183,38 @@
         "checkFailed": "檢查權限失敗，請重試",
         "requestFailed": "請求權限失敗，請重試"
       }
+    },
+    "back": "返回",
+    "welcome": {
+      "title": "以思考的速度書寫",
+      "subtitle": "Nova 可在電腦的任何位置把語音轉成清晰的文字。",
+      "providedBy": "由 {{organization}} 提供"
+    },
+    "smartSetup": {
+      "title": "建議設定",
+      "subtitle": "Nova 已依你的裝置準備好這些設定，之後隨時可以變更。",
+      "use": "使用建議設定",
+      "customize": "自訂",
+      "row": {
+        "microphone": "麥克風",
+        "engine": "處理",
+        "shortcut": "快速鍵",
+        "language": "語言"
+      },
+      "value": {
+        "notSet": "未設定",
+        "autoDetected": "已自動偵測",
+        "localEngine": "在本裝置"
+      }
+    },
+    "customize": {
+      "title": "幾項選擇",
+      "subtitle": "其餘保持建議值，可在設定中修改。"
+    },
+    "writingStyles": {
+      "introTitle": "Nova 不只是轉寫",
+      "introSubtitle": "開口說話，Nova 會用貼合當前情境的文風書寫。",
+      "unavailable": "目前沒有可用的寫作風格。"
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "開啟",
     "copy": "複製",
     "clear": "清除",
-    "noOptionsFound": "未找到選項"
+    "noOptionsFound": "未找到選項",
+    "cancel": "取消",
+    "remove": "移除",
+    "selectOption": "請選擇…"
   },
   "accessibility": {
     "permissionsDescription": "Nova 需要輔助使用權限才能輸入轉錄的文字",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "由你所屬機構提供的語音輸入，使用你的校園信箱。",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "無法連線伺服器。請檢查網路後重試。",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "寫作風格"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "將文字文件傳送到機構伺服器，擷取詞彙與專有名詞。只儲存擷取出的詞條，不儲存文件本身。",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "校園已連線",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local 已啟用"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "組織",
+      "subtitle": "你所屬的機構、它提供什麼，以及你的資料去了哪裡。",
+      "connection": "連線",
+      "managedBy": "由 {{organization}} 管理",
+      "identityTitle": "身分"
+    },
+    "provides": {
+      "title": "你所屬機構提供的能力",
+      "transcription": {
+        "title": "語音辨識",
+        "description": "你的錄音送到機構伺服器，由它轉成文字。"
+      },
+      "rewriting": {
+        "title": "寫作風格",
+        "description": "你的文字和所選風格送到機構伺服器，由它改寫。"
+      },
+      "vocabulary": {
+        "title": "共用詞庫",
+        "description": "機構加入的術語和你自己的術語，協助辨識與改寫正確書寫。"
+      },
+      "formatting": {
+        "title": "格式規則",
+        "description": "機構的規則和你自己的規則，會在每次改寫時套用。"
+      },
+      "paused": "目前暫停 — 無法連線機構伺服器。"
+    },
+    "offline": {
+      "title": "伺服器無法連線時",
+      "body": "語音輸入在本機繼續可用。語音辨識在本機執行；寫作風格、共用詞庫、格式規則與 AI Skills 會隨連線恢復。"
+    },
+    "data": {
+      "title": "你的資料去了哪裡",
+      "audio": "語音輸入的錄音",
+      "text": "送出改寫的文字",
+      "vocabulary": "詞庫、快捷語與規則",
+      "history": "歷史紀錄",
+      "recordings": "錄音檔",
+      "appName": "前景應用程式的名稱",
+      "onDevice": "本機",
+      "onCampus": "機構伺服器",
+      "note": "機構伺服器會統計你每天進行了多少次轉錄與改寫，但不保存內容。"
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "對選取的文字執行操作。",
+    "preview": "預覽",
+    "previewHint": "AI Skills 正在測試中。",
+    "essentials": "常用操作",
+    "howItWorks": "使用方法",
+    "how": {
+      "select": "在任何應用程式中選取文字",
+      "open": "用你的快速鍵開啟 Nova",
+      "choose": "選擇一個 AI Skill",
+      "review": "在任何內容變動前先看結果"
+    },
+    "privacy": "透過你的 Campus 連線處理。",
+    "privacyOffline": "AI Skills 執行於你所屬機構的伺服器，目前無法連線。"
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "解釋",
+        "description": "把複雜的文字讀明白。"
+      },
+      "summarize": {
+        "name": "摘要",
+        "description": "把選取內容歸納為重點。"
+      },
+      "improve": {
+        "name": "潤飾",
+        "description": "讓表達更清楚、更順。"
+      },
+      "translate": {
+        "name": "翻譯",
+        "description": "翻譯選取的文字。"
+      },
+      "ask": {
+        "name": "問 Nova",
+        "description": "給 Nova 一則具體的指示。"
+      }
+    },
+    "askPlaceholder": "問 Nova…",
+    "ask": "提問",
+    "running": "Nova 正在處理…",
+    "result": "結果",
+    "replace": "取代",
+    "copy": "複製",
+    "close": "關閉",
+    "copied": "已複製",
+    "experimentTitle": "實驗功能",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "在任何應用程式中選取文字，然後對其執行一次 AI 操作。尚未在所有應用程式中驗證。",
+    "shortcutMissing": "尚未指定快速鍵。請在設定中為 Nova Commands 指定一個——只有你自己的應用程式仍在前景時才能取得所選文字。",
+    "runDiagnostics": "執行診斷",
+    "error": {
+      "busy": "已有指令在執行。",
+      "nonTextClipboard": "剪貼簿中不是文字，Nova 無法將它放回。請先複製到別處。",
+      "noSelection": "請先選取文字，再開啟 Nova。",
+      "unsupported": "Nova Commands 目前僅支援 Windows。",
+      "targetChanged": "原本的應用程式已不在前景。請改用複製。",
+      "offline": "AI Skills 需要連線至 Campus。",
+      "failed": "Nova 無法處理這個請求。",
+      "emptyResult": "Nova 回傳了空結果。",
+      "busyTitle": "已有指令在執行",
+      "nonTextClipboardTitle": "剪貼簿無法還原",
+      "noSelectionTitle": "沒有選取文字",
+      "unsupportedTitle": "此處不可用",
+      "targetChangedTitle": "視窗已切換",
+      "offlineTitle": "Campus 無法連線",
+      "failedTitle": "指令失敗",
+      "emptyResultTitle": "沒有可顯示的內容"
+    },
+    "original": "原文"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "正在檢查…"
+      },
+      "ready": {
+        "title": "Nova 已就緒。"
+      },
+      "campusLocal": {
+        "title": "Nova Local 正在執行",
+        "detail": "語音輸入照常可用。AI 功能將隨 Campus 一同恢復。"
+      },
+      "permissionsNeeded": {
+        "title": "需要麥克風權限",
+        "detail": "語音輸入前，請先允許 Nova 使用麥克風。"
+      },
+      "microphoneMissing": {
+        "title": "未偵測到麥克風",
+        "detail": "請接上麥克風，然後在設定中選擇。"
+      },
+      "modelMissing": {
+        "title": "完成 Nova 的設定",
+        "detail": "還有一個語音模型需要下載。"
+      },
+      "shortcutMissing": {
+        "title": "Nova 已就緒",
+        "detail": "指定一組快速鍵，語音輸入就只差一次按鍵。"
+      },
+      "dictateHint": "開始語音輸入",
+      "openSettings": "開啟設定",
+      "listening": {
+        "title": "Nova 正在聽…"
+      },
+      "processing": {
+        "title": "Nova 正在處理…"
+      },
+      "insertionFailed": {
+        "title": "無法貼上",
+        "detail": "你的語音輸入已放入剪貼簿。"
+      }
+    },
+    "active": {
+      "title": "使用中",
+      "style": "寫作風格",
+      "styleAutomatic": "自動",
+      "engine": "引擎",
+      "microphone": "麥克風",
+      "lastDictation": "最近一次語音輸入"
+    },
+    "engine": {
+      "campus": "你所屬機構的伺服器",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "開始使用",
+      "campus": "已連結 Campus 帳號",
+      "voice": "語音就緒",
+      "firstDictation": "第一次語音輸入",
+      "style": "試用一種寫作風格",
+      "aiSkill": "使用第一個 AI Skill",
+      "done": "已完成",
+      "todo": "待完成"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "自動",
+      "builtin": "風格",
+      "personal": "你的風格"
+    },
+    "automaticHow": "Nova 會讀取前景應用程式的名稱並套用對應風格。你封鎖的應用程式永遠不會被讀取。",
+    "active": "使用中",
+    "emptyPersonal": "你還沒有建立風格。",
+    "rowActions": "風格操作",
+    "error": {
+      "save": "無法儲存這個風格。",
+      "delete": "無法刪除這個風格。"
+    }
+  },
+  "history": {
+    "subtitle": "你用 Nova 語音輸入的全部內容。",
+    "group": {
+      "today": "今天",
+      "yesterday": "昨天",
+      "week": "本週",
+      "older": "更早"
+    },
+    "searchPlaceholder": "搜尋你的語音輸入",
+    "noMatch": "沒有與「{{query}}」相符的內容。",
+    "empty": "你的語音輸入會顯示在這裡。",
+    "copy": "複製",
+    "copied": "已複製"
+  },
+  "settingsNav": {
+    "voice": "語音"
+  },
+  "personalization": {
+    "appearance": "外觀",
+    "orb": "光球",
+    "overlay": "浮層"
   }
 }

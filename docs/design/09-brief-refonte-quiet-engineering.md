@@ -83,18 +83,18 @@ IPSA-branded portal.
 
 Not only the Home screen. A coherent complete product system covering:
 
-01. Campus login · 02. Verification code · 03. Connection success ·
-04. First-run welcome · 05. AI Essentials introduction · 06. AI Skills module ·
-07. AI Skills quiz · 08. AI Skills progression · 09. Smart Setup ·
-10. Microphone setup · 11. Recommended configuration · 12. Custom setup ·
-13. First dictation tutorial · 14. Main Home · 15. Dictation active state ·
-16. Processing state · 17. Rewrite · 18. File transcription · 19. Styles ·
-20. Style selection · 21. History · 22. Campus page · 23. Privacy information ·
-24. Organization information · 25. Settings · 26. Writing settings ·
-27. Dictionary · 28. Snippets · 29. Formatting rules · 30. Advanced settings ·
-31. Offline Campus state · 32. Local fallback state · 33. Errors ·
-34. Empty states · 35. Dialogs · 36. Toasts · 37. Tooltips ·
-38. Recording overlay · 39. Dark mode · 40. Small-window layout.
+1.  Campus login · 02. Verification code · 03. Connection success ·
+2.  First-run welcome · 05. AI Essentials introduction · 06. AI Skills module ·
+3.  AI Skills quiz · 08. AI Skills progression · 09. Smart Setup ·
+4.  Microphone setup · 11. Recommended configuration · 12. Custom setup ·
+5.  First dictation tutorial · 14. Main Home · 15. Dictation active state ·
+6.  Processing state · 17. Rewrite · 18. File transcription · 19. Styles ·
+7.  Style selection · 21. History · 22. Campus page · 23. Privacy information ·
+8.  Organization information · 25. Settings · 26. Writing settings ·
+9.  Dictionary · 28. Snippets · 29. Formatting rules · 30. Advanced settings ·
+10. Offline Campus state · 32. Local fallback state · 33. Errors ·
+11. Empty states · 35. Dialogs · 36. Toasts · 37. Tooltips ·
+12. Recording overlay · 39. Dark mode · 40. Small-window layout.
 
 Every screen must look like part of the **same product**.
 
@@ -137,14 +137,14 @@ System-oriented type direction appropriate for Windows: **Segoe UI Variable /
 system UI**, with Apple-like care in weight, tracking, line height, hierarchy and
 optical balance. No trendy display font — Nova is a tool.
 
-| Role | Size | Weight |
-|---|---|---|
-| Hero | 30–32 px | Semibold |
-| Page title | 26–28 px | Semibold |
+| Role          | Size     | Weight   |
+| ------------- | -------- | -------- |
+| Hero          | 30–32 px | Semibold |
+| Page title    | 26–28 px | Semibold |
 | Section title | 16–17 px | Semibold |
-| Body | 14–15 px | Regular |
-| UI | 13–14 px | Medium |
-| Metadata | 12–13 px | — |
+| Body          | 14–15 px | Regular  |
+| UI            | 13–14 px | Medium   |
+| Metadata      | 12–13 px | —        |
 
 Avoid excessive bold text.
 
@@ -190,8 +190,8 @@ Respect reduced motion.
 
 ## Home screen
 
-Home is the most important screen. Within 3 seconds it must answer: *What does
-Nova do? How do I use it? Is it ready?*
+Home is the most important screen. Within 3 seconds it must answer: _What does
+Nova do? How do I use it? Is it ready?_
 
 Suggested hierarchy:
 
@@ -517,7 +517,7 @@ content area.
 
 - **Empty:** "No recent dictations · Your recent dictations will appear here."
   No giant illustration.
-- **Error:** always answer *what happened* and *what can I do* —
+- **Error:** always answer _what happened_ and _what can I do_ —
   "Campus is temporarily unavailable. Nova is using local processing for now."
 - **Toasts:** compact — "Copied to clipboard", "Style changed to Auto",
   "Campus reconnected".
@@ -527,7 +527,7 @@ content area.
 
 Nova speaks like a precise tool. Never childish.
 
-Avoid: *Awesome! Amazing! Great job! You're crushing it!*
+Avoid: _Awesome! Amazing! Great job! You're crushing it!_
 Use: **Ready · Connected · Module complete · Saved · Continue · Try again.**
 
 ## Accessibility
@@ -609,15 +609,15 @@ blanches, le texte encre et le gris froid secondaire existent déjà
 
 ## Points à trancher
 
-| Sujet | Ce que dit le code | Ce que dit le brief |
-|---|---|---|
-| **Thème par défaut** | sombre — identité « bleu nuit », `theme.css` | clair d'abord, sombre comme vrai thème |
-| **Raccourci de dictée** | `Ctrl+Espace` (défaut Campus documenté) | `F9`, affiché partout dans les maquettes |
-| **Étapes après connexion** | doctrine « zéro friction » : **aucune** étape après la connexion, aucun réglage obligatoire | Welcome → AI Essentials / Smart Setup → première dictée |
-| **Entrées de navigation** | règle « 4 entrées maximum » | Home · AI Skills · Styles · History · Campus + Settings = 6 |
-| **Pile typographique** | `-apple-system, "SF Pro Display", "SF Pro Text", "Segoe UI", Inter, system-ui` | Segoe UI Variable / system UI, Windows d'abord |
-| **Échelle de titres** | base 15 px, titres jusqu'à `text-3xl` sur l'accueil Campus | échelle explicite 30-32 / 26-28 / 16-17 / 14-15 / 13-14 / 12-13 |
-| **Vocabulaire de repli** | « Serveur injoignable — texte collé sans reformulation » | « Nova Local active » / « Campus temporarily unavailable » |
+| Sujet                      | Ce que dit le code                                                                          | Ce que dit le brief                                             |
+| -------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| **Thème par défaut**       | sombre — identité « bleu nuit », `theme.css`                                                | clair d'abord, sombre comme vrai thème                          |
+| **Raccourci de dictée**    | `Ctrl+Espace` (défaut Campus documenté)                                                     | `F9`, affiché partout dans les maquettes                        |
+| **Étapes après connexion** | doctrine « zéro friction » : **aucune** étape après la connexion, aucun réglage obligatoire | Welcome → AI Essentials / Smart Setup → première dictée         |
+| **Entrées de navigation**  | règle « 4 entrées maximum »                                                                 | Home · AI Skills · Styles · History · Campus + Settings = 6     |
+| **Pile typographique**     | `-apple-system, "SF Pro Display", "SF Pro Text", "Segoe UI", Inter, system-ui`              | Segoe UI Variable / system UI, Windows d'abord                  |
+| **Échelle de titres**      | base 15 px, titres jusqu'à `text-3xl` sur l'accueil Campus                                  | échelle explicite 30-32 / 26-28 / 16-17 / 14-15 / 13-14 / 12-13 |
+| **Vocabulaire de repli**   | « Serveur injoignable — texte collé sans reformulation »                                    | « Nova Local active » / « Campus temporarily unavailable »      |
 
 Sur les étapes d'onboarding et le nombre d'entrées de navigation, le brief
 assouplit délibérément la doctrine « zéro friction » (§05) : les étapes sont

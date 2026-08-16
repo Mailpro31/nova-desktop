@@ -29,6 +29,12 @@ pub fn init_shortcuts(app: &AppHandle) {
             .cloned()
             .unwrap_or(default_binding);
 
+        // Un raccourci non attribué n'est pas une erreur : Nova Commands est
+        // livré ainsi tant qu'il reste expérimental.
+        if binding.current_binding.trim().is_empty() {
+            continue;
+        }
+
         if let Err(e) = register_shortcut(app, binding) {
             error!("Failed to register shortcut {} during init: {}", id, e);
         }

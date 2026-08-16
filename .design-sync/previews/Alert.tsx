@@ -11,16 +11,16 @@ const stack: React.CSSProperties = {
 export const Variants = () => (
   <div style={stack}>
     <Alert variant="error">
-      Le modèle Whisper Large n’a pas pu être chargé : mémoire GPU
-      insuffisante. Choisissez un modèle plus léger dans les réglages.
+      Le modèle Whisper Large n’a pas pu être chargé : mémoire GPU insuffisante.
+      Choisissez un modèle plus léger dans les réglages.
     </Alert>
     <Alert variant="warning">
       Aucun microphone n’a été détecté. La transcription restera inactive tant
       qu’un périphérique d’entrée n’est pas sélectionné.
     </Alert>
     <Alert variant="info">
-      La détection d’activité vocale filtre les silences avant la
-      transcription : les enregistrements très courts peuvent être ignorés.
+      La détection d’activité vocale filtre les silences avant la transcription
+      : les enregistrements très courts peuvent être ignorés.
     </Alert>
     <Alert variant="success">
       Modèle Parakeet téléchargé et vérifié. La transcription hors ligne est

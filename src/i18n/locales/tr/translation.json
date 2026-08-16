@@ -21,7 +21,10 @@
     "home": "Ana Sayfa",
     "configuration": "Yapılandırma",
     "account": "Hesap",
-    "styles": "Son İşlem"
+    "styles": "Son İşlem",
+    "aiSkills": "AI Skills",
+    "settings": "Ayarlar",
+    "organization": "Kuruluş"
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
@@ -180,6 +183,38 @@
         "checkFailed": "İzinler kontrol edilemedi. Lütfen tekrar deneyin.",
         "requestFailed": "İzin isteği başarısız oldu. Lütfen tekrar deneyin."
       }
+    },
+    "back": "Geri",
+    "welcome": {
+      "title": "Düşündüğünüz hızda yazın",
+      "subtitle": "Nova, sesinizi bilgisayarınızın her yerinde anlaşılır metne dönüştürür.",
+      "providedBy": "{{organization}} tarafından sağlanır"
+    },
+    "smartSetup": {
+      "title": "Önerilen kurulum",
+      "subtitle": "Nova bu ayarları bilgisayarınıza göre hazırladı. Daha sonra değiştirebilirsiniz.",
+      "use": "Önerilen kurulumu kullan",
+      "customize": "Özelleştir",
+      "row": {
+        "microphone": "Mikrofon",
+        "engine": "İşleme",
+        "shortcut": "Kısayol",
+        "language": "Dil"
+      },
+      "value": {
+        "notSet": "Ayarlanmadı",
+        "autoDetected": "Otomatik algılandı",
+        "localEngine": "Bu cihazda"
+      }
+    },
+    "customize": {
+      "title": "Birkaç seçim",
+      "subtitle": "Geri kalan her şey önerilen değerini korur ve Ayarlar'dan değiştirilebilir."
+    },
+    "writingStyles": {
+      "introTitle": "Nova yalnızca deşifre etmez",
+      "introSubtitle": "Konuşun, Nova yaptığınız işe uygun üslupla yazsın.",
+      "unavailable": "Henüz kullanılabilir bir yazım üslubu yok."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Aç",
     "copy": "Kopyala",
     "clear": "Temizle",
-    "noOptionsFound": "Seçenek bulunamadı"
+    "noOptionsFound": "Seçenek bulunamadı",
+    "cancel": "Vazgeç",
+    "remove": "Kaldır",
+    "selectOption": "Bir seçenek seçin…"
   },
   "accessibility": {
     "permissionsDescription": "Nova, transkribe edilen metni yazabilmek için erişilebilirlik izinlerine ihtiyaç duyar.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Kurumunuzun sağladığı sesli dikte, akademik e-postanızla.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Sunucuya ulaşılamadı. Bağlantınızı denetleyip yeniden deneyin.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Yazım Biçemleri"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Sözcük dağarcığı ve özel adları çıkarmak için kurumunuzun sunucusuna bir metin belgesi gönderin. Yalnızca bulunan terimler saklanır — belge saklanmaz.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Kampüs bağlı",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local etkin"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Kuruluş",
+      "subtitle": "Kurumunuz, sağladıkları ve verilerinizin gittiği yer.",
+      "connection": "Bağlantı",
+      "managedBy": "{{organization}} tarafından yönetiliyor",
+      "identityTitle": "Kimlik"
+    },
+    "provides": {
+      "title": "Kurumunuzun sağladıkları",
+      "transcription": {
+        "title": "Konuşma tanıma",
+        "description": "Kaydınız kurumunuzun sunucusuna gider ve metne dönüştürülür."
+      },
+      "rewriting": {
+        "title": "Yazım biçemleri",
+        "description": "Metniniz ve seçtiğiniz biçem kurumunuzun sunucusuna gider ve yeniden yazılır."
+      },
+      "vocabulary": {
+        "title": "Ortak sözlük",
+        "description": "Kurumunuzun ve sizin eklediğiniz terimler, doğru yazılmalarına yardımcı olur."
+      },
+      "formatting": {
+        "title": "Biçimlendirme kuralları",
+        "description": "Kurumunuzun ve sizin kurallarınız her yeniden yazımda uygulanır."
+      },
+      "paused": "Şu anda duraklatıldı — kurum sunucusuna ulaşılamıyor."
+    },
+    "offline": {
+      "title": "Sunucuya ulaşılamadığında",
+      "body": "Dikte bu aygıtta çalışmayı sürdürür. Konuşma tanıma yerel olarak çalışır; biçemler, ortak sözlük, biçimlendirme kuralları ve AI Skills bağlantıyla birlikte döner."
+    },
+    "data": {
+      "title": "Verileriniz nereye gider",
+      "audio": "Dikte sesi",
+      "text": "Yeniden yazım için gönderilen metin",
+      "vocabulary": "Sözlük, kısayollar ve kurallar",
+      "history": "Geçmiş",
+      "recordings": "Kayıtlar",
+      "appName": "Öndeki uygulamanın adı",
+      "onDevice": "Bu aygıt",
+      "onCampus": "Kurum sunucusu",
+      "note": "Kurumunuzun sunucusu her gün kaç dikte ve yeniden yazım yaptığınızı sayar. İçeriklerini saklamaz."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Seçtiğiniz metin üzerinde çalışın.",
+    "preview": "Önizleme",
+    "previewHint": "AI Skills şu anda test ediliyor.",
+    "essentials": "Temeller",
+    "howItWorks": "Nasıl çalışır",
+    "how": {
+      "select": "Herhangi bir uygulamada metin seçin",
+      "open": "Nova'yı kısayolunuzla açın",
+      "choose": "Bir AI Skill seçin",
+      "review": "Bir şey değişmeden önce sonucu gözden geçirin"
+    },
+    "privacy": "Campus bağlantınız üzerinden işlenir.",
+    "privacyOffline": "AI Skills kurumunuzun sunucusunda çalışır; şu anda erişilemiyor."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Açıkla",
+        "description": "Karmaşık metni net biçimde anlamak."
+      },
+      "summarize": {
+        "name": "Özetle",
+        "description": "Seçimi ana fikirlerine indirmek."
+      },
+      "improve": {
+        "name": "İyileştir",
+        "description": "Netlik ve anlatımda kazanmak."
+      },
+      "translate": {
+        "name": "Çevir",
+        "description": "Seçili metni çevirmek."
+      },
+      "ask": {
+        "name": "Nova'ya sor",
+        "description": "Nova'ya belirli bir yönerge vermek."
+      }
+    },
+    "askPlaceholder": "Nova'ya sor…",
+    "ask": "Sor",
+    "running": "Nova çalışıyor…",
+    "result": "Sonuç",
+    "replace": "Değiştir",
+    "copy": "Kopyala",
+    "close": "Kapat",
+    "copied": "Kopyalandı",
+    "experimentTitle": "Deneysel",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Herhangi bir uygulamada metin seçin ve üzerinde bir YZ eylemi çalıştırın. Henüz tüm uygulamalarda doğrulanmadı.",
+    "shortcutMissing": "Henüz bir kısayol atanmadı. Ayarlar'da Nova Commands için bir kısayol belirleyin — yakalama yalnızca kendi uygulamanız önde kaldığı sürece çalışır.",
+    "runDiagnostics": "Tanılamayı çalıştır",
+    "error": {
+      "busy": "Zaten bir komut çalışıyor.",
+      "nonTextClipboard": "Panonuzda metin dışında bir şey var ve Nova bunu geri koyamaz. Önce başka bir yere kopyalayın.",
+      "noSelection": "Nova'yı açmadan önce biraz metin seçin.",
+      "unsupported": "Nova Commands şimdilik yalnızca Windows'ta kullanılabilir.",
+      "targetChanged": "Özgün uygulama artık etkin değil. Bunun yerine sonucu kopyalayın.",
+      "offline": "AI Skills için Campus bağlantısı gerekir.",
+      "failed": "Nova bu isteği işleyemedi.",
+      "emptyResult": "Nova boş bir sonuç döndürdü.",
+      "busyTitle": "Zaten çalışıyor",
+      "nonTextClipboardTitle": "Pano geri yüklenemez",
+      "noSelectionTitle": "Metin seçilmedi",
+      "unsupportedTitle": "Burada kullanılamaz",
+      "targetChangedTitle": "Pencere değişti",
+      "offlineTitle": "Campus erişilemiyor",
+      "failedTitle": "Komut başarısız",
+      "emptyResultTitle": "Gösterilecek bir şey yok"
+    },
+    "original": "Özgün"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Denetleniyor…"
+      },
+      "ready": {
+        "title": "Nova hazır."
+      },
+      "campusLocal": {
+        "title": "Nova Local etkin",
+        "detail": "Dikte çalışmaya devam ediyor. YZ işlevleri Campus ile geri gelecek."
+      },
+      "permissionsNeeded": {
+        "title": "Mikrofon erişimi gerekli",
+        "detail": "Nova'nın dikte edebilmesi için mikrofon izni gerekiyor."
+      },
+      "microphoneMissing": {
+        "title": "Mikrofon bulunamadı",
+        "detail": "Bir mikrofon bağlayın, sonra ayarlardan seçin."
+      },
+      "modelMissing": {
+        "title": "Nova kurulumunu tamamlayın",
+        "detail": "Hâlâ indirilmesi gereken bir konuşma modeli var."
+      },
+      "shortcutMissing": {
+        "title": "Nova hazır",
+        "detail": "Bir kısayol atayın; dikte tek tuş uzağınızda olsun."
+      },
+      "dictateHint": "dikte için",
+      "openSettings": "Ayarları aç",
+      "listening": {
+        "title": "Nova sizi dinliyor…"
+      },
+      "processing": {
+        "title": "Nova çalışıyor…"
+      },
+      "insertionFailed": {
+        "title": "Yapıştırılamadı",
+        "detail": "Dikteniz panoda."
+      }
+    },
+    "active": {
+      "title": "Etkin",
+      "style": "Yazım biçemi",
+      "styleAutomatic": "Otomatik",
+      "engine": "Motor",
+      "microphone": "Mikrofon",
+      "lastDictation": "Son dikte"
+    },
+    "engine": {
+      "campus": "Kurumunuzun sunucusu",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Başlarken",
+      "campus": "Campus hesabı bağlandı",
+      "voice": "Ses hazır",
+      "firstDictation": "İlk dikte",
+      "style": "Bir yazım biçemi deneyin",
+      "aiSkill": "İlk AI Skill'inizi kullanın",
+      "done": "Tamam",
+      "todo": "Yapılacak"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Otomatik",
+      "builtin": "Biçemler",
+      "personal": "Biçemleriniz"
+    },
+    "automaticHow": "Nova öndeki uygulamanın adını okur ve uygun biçemi uygular. Engellediğiniz uygulamalar hiçbir zaman incelenmez.",
+    "active": "Etkin",
+    "emptyPersonal": "Henüz bir biçem oluşturmadınız.",
+    "rowActions": "Biçem eylemleri",
+    "error": {
+      "save": "Biçem kaydedilemedi.",
+      "delete": "Biçem silinemedi."
+    }
+  },
+  "history": {
+    "subtitle": "Nova ile dikte ettiğiniz her şey.",
+    "group": {
+      "today": "Bugün",
+      "yesterday": "Dün",
+      "week": "Bu hafta",
+      "older": "Daha önce"
+    },
+    "searchPlaceholder": "Diktelerinizde arayın",
+    "noMatch": "“{{query}}” ile eşleşen bir şey yok.",
+    "empty": "Dikteleriniz burada görünecek.",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı"
+  },
+  "settingsNav": {
+    "voice": "Ses"
+  },
+  "personalization": {
+    "appearance": "Görünüm",
+    "orb": "Küre",
+    "overlay": "Katman"
   }
 }

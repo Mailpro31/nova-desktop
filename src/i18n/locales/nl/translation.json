@@ -21,7 +21,10 @@
     "home": "Start",
     "configuration": "Configuratie",
     "account": "Account",
-    "styles": "Naverwerking"
+    "styles": "Naverwerking",
+    "aiSkills": "AI Skills",
+    "settings": "Instellingen",
+    "organization": "Organisatie"
   },
   "onboarding": {
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
@@ -180,6 +183,38 @@
         "checkFailed": "Machtigingen controleren mislukt. Probeer het opnieuw.",
         "requestFailed": "Machtiging aanvragen mislukt. Probeer het opnieuw."
       }
+    },
+    "back": "Terug",
+    "welcome": {
+      "title": "Schrijf zo snel als je denkt",
+      "subtitle": "Nova zet je stem overal op je pc om in heldere tekst.",
+      "providedBy": "Aangeboden door {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Aanbevolen instelling",
+      "subtitle": "Nova heeft deze instellingen op basis van je computer voorbereid. Je kunt alles later wijzigen.",
+      "use": "Aanbevolen instelling gebruiken",
+      "customize": "Aanpassen",
+      "row": {
+        "microphone": "Microfoon",
+        "engine": "Verwerking",
+        "shortcut": "Sneltoets",
+        "language": "Taal"
+      },
+      "value": {
+        "notSet": "Niet ingesteld",
+        "autoDetected": "Automatisch gedetecteerd",
+        "localEngine": "Op dit apparaat"
+      }
+    },
+    "customize": {
+      "title": "Een paar keuzes",
+      "subtitle": "Al het andere houdt zijn aanbevolen waarde en is te wijzigen in Instellingen."
+    },
+    "writingStyles": {
+      "introTitle": "Nova doet meer dan transcriberen",
+      "introSubtitle": "Spreek, en Nova schrijft in de stijl die bij je werk past.",
+      "unavailable": "Er is nog geen schrijfstijl beschikbaar."
     }
   },
   "modelSelector": {
@@ -738,7 +773,10 @@
     "open": "Openen",
     "copy": "Kopiëren",
     "clear": "Wissen",
-    "noOptionsFound": "Geen opties gevonden"
+    "noOptionsFound": "Geen opties gevonden",
+    "cancel": "Annuleren",
+    "remove": "Verwijderen",
+    "selectOption": "Kies een optie…"
   },
   "accessibility": {
     "permissionsDescription": "Nova heeft toegankelijkheidsmachtigingen nodig om getranscribeerde tekst te kunnen typen.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Spraakdictaat aangeboden door uw instelling, met uw academische e-mail.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "De server is onbereikbaar. Controleer uw verbinding en probeer het opnieuw.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Schrijfstijlen"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Stuur een tekstdocument naar de server van uw instelling om woordenschat en eigennamen te halen. Alleen de gevonden termen worden bewaard — het document zelf niet.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Campus verbonden",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local actief"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Organisatie",
+      "subtitle": "Uw instelling, wat zij levert en waar uw gegevens heen gaan.",
+      "connection": "Verbinding",
+      "managedBy": "Beheerd door {{organization}}",
+      "identityTitle": "Identiteit"
+    },
+    "provides": {
+      "title": "Wat uw instelling levert",
+      "transcription": {
+        "title": "Spraakherkenning",
+        "description": "Uw opname gaat naar de server van uw instelling, die er tekst van maakt."
+      },
+      "rewriting": {
+        "title": "Schrijfstijlen",
+        "description": "Uw tekst en de gekozen stijl gaan naar de server van uw instelling, die de tekst herschrijft."
+      },
+      "vocabulary": {
+        "title": "Gedeelde woordenlijst",
+        "description": "Termen van uw instelling en van uzelf helpen herkenning en herschrijving ze correct te spellen."
+      },
+      "formatting": {
+        "title": "Opmaakregels",
+        "description": "Regels van uw instelling en van uzelf worden bij elke herschrijving toegepast."
+      },
+      "paused": "Tijdelijk gepauzeerd — de server van uw instelling is onbereikbaar."
+    },
+    "offline": {
+      "title": "Als de server onbereikbaar is",
+      "body": "Dicteren blijft werken op dit apparaat. Spraakherkenning draait lokaal; schrijfstijlen, gedeelde woordenlijst, opmaakregels en AI Skills keren terug met de verbinding."
+    },
+    "data": {
+      "title": "Waar uw gegevens heen gaan",
+      "audio": "Audio van het dictaat",
+      "text": "Tekst verzonden om te herschrijven",
+      "vocabulary": "Woordenlijst, sneltoetsen en regels",
+      "history": "Geschiedenis",
+      "recordings": "Opnamen",
+      "appName": "Naam van de toepassing op de voorgrond",
+      "onDevice": "Dit apparaat",
+      "onCampus": "Server van de instelling",
+      "note": "De server van uw instelling telt hoeveel transcripties en herschrijvingen u per dag uitvoert. De inhoud wordt niet bewaard."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Werk met de tekst die u selecteert.",
+    "preview": "Voorbeeld",
+    "previewHint": "AI Skills worden momenteel getest.",
+    "essentials": "Het wezenlijke",
+    "howItWorks": "Zo werkt het",
+    "how": {
+      "select": "Selecteer tekst in een willekeurige toepassing",
+      "open": "Open Nova met uw sneltoets",
+      "choose": "Kies een AI Skill",
+      "review": "Bekijk het resultaat voordat er iets verandert"
+    },
+    "privacy": "Verwerkt via uw Campus-verbinding.",
+    "privacyOffline": "AI Skills draaien op de server van uw instelling, die nu onbereikbaar is."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Uitleggen",
+        "description": "Ingewikkelde tekst helder begrijpen."
+      },
+      "summarize": {
+        "name": "Samenvatten",
+        "description": "De selectie tot haar kern terugbrengen."
+      },
+      "improve": {
+        "name": "Verbeteren",
+        "description": "Winnen aan helderheid en formulering."
+      },
+      "translate": {
+        "name": "Vertalen",
+        "description": "De geselecteerde tekst vertalen."
+      },
+      "ask": {
+        "name": "Nova vragen",
+        "description": "Nova een specifieke opdracht geven."
+      }
+    },
+    "askPlaceholder": "Nova vragen…",
+    "ask": "Vragen",
+    "running": "Nova is bezig…",
+    "result": "Resultaat",
+    "replace": "Vervangen",
+    "copy": "Kopiëren",
+    "close": "Sluiten",
+    "copied": "Gekopieerd",
+    "experimentTitle": "Experimenteel",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Selecteer tekst in een willekeurige toepassing en voer er een AI-actie op uit. Nog niet in alle toepassingen getoetst.",
+    "shortcutMissing": "Er is nog geen sneltoets toegewezen. Stel er een in voor Nova Commands bij Instellingen — vastleggen lukt alleen zolang uw eigen toepassing op de voorgrond staat.",
+    "runDiagnostics": "Diagnose uitvoeren",
+    "error": {
+      "busy": "Er loopt al een opdracht.",
+      "nonTextClipboard": "Uw klembord bevat iets anders dan tekst, en Nova zou het niet kunnen terugzetten. Kopieer het eerst ergens anders naartoe.",
+      "noSelection": "Selecteer tekst voordat u Nova opent.",
+      "unsupported": "Nova Commands is voorlopig alleen op Windows beschikbaar.",
+      "targetChanged": "De oorspronkelijke toepassing is niet meer actief. Kopieer het resultaat in plaats daarvan.",
+      "offline": "AI Skills vereisen een Campus-verbinding.",
+      "failed": "Nova kon dit verzoek niet verwerken.",
+      "emptyResult": "Nova gaf een leeg resultaat terug.",
+      "busyTitle": "Al bezig",
+      "nonTextClipboardTitle": "Klembord niet herstelbaar",
+      "noSelectionTitle": "Geen tekst geselecteerd",
+      "unsupportedTitle": "Hier niet beschikbaar",
+      "targetChangedTitle": "Venster gewisseld",
+      "offlineTitle": "Campus onbereikbaar",
+      "failedTitle": "Opdracht mislukt",
+      "emptyResultTitle": "Niets te tonen"
+    },
+    "original": "Origineel"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Bezig met controleren…"
+      },
+      "ready": {
+        "title": "Nova is klaar."
+      },
+      "campusLocal": {
+        "title": "Nova Local is actief",
+        "detail": "Dicteren werkt nog. AI-functies keren terug zodra Campus er weer is."
+      },
+      "permissionsNeeded": {
+        "title": "Microfoontoegang vereist",
+        "detail": "Nova heeft toestemming voor de microfoon nodig om te kunnen dicteren."
+      },
+      "microphoneMissing": {
+        "title": "Geen microfoon gevonden",
+        "detail": "Sluit een microfoon aan en kies die in de instellingen."
+      },
+      "modelMissing": {
+        "title": "Voltooi het instellen van Nova",
+        "detail": "Er moet nog een spraakmodel worden gedownload."
+      },
+      "shortcutMissing": {
+        "title": "Nova is klaar",
+        "detail": "Wijs een sneltoets toe en dicteren is één toets ver."
+      },
+      "dictateHint": "om te dicteren",
+      "openSettings": "Instellingen openen",
+      "listening": {
+        "title": "Nova luistert…"
+      },
+      "processing": {
+        "title": "Nova is bezig…"
+      },
+      "insertionFailed": {
+        "title": "Plakken lukte niet",
+        "detail": "Uw dictaat staat op het klembord."
+      }
+    },
+    "active": {
+      "title": "Actief",
+      "style": "Schrijfstijl",
+      "styleAutomatic": "Automatisch",
+      "engine": "Engine",
+      "microphone": "Microfoon",
+      "lastDictation": "Laatste dictaat"
+    },
+    "engine": {
+      "campus": "Server van uw instelling",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Aan de slag",
+      "campus": "Campus-account gekoppeld",
+      "voice": "Stem gereed",
+      "firstDictation": "Eerste dictaat",
+      "style": "Een schrijfstijl proberen",
+      "aiSkill": "Uw eerste AI Skill gebruiken",
+      "done": "Klaar",
+      "todo": "Te doen"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Automatisch",
+      "builtin": "Stijlen",
+      "personal": "Uw stijlen"
+    },
+    "automaticHow": "Nova leest de naam van de toepassing op de voorgrond en past de bijbehorende stijl toe. Geblokkeerde toepassingen worden nooit bekeken.",
+    "active": "Actief",
+    "emptyPersonal": "U hebt nog geen stijl gemaakt.",
+    "rowActions": "Stijlacties",
+    "error": {
+      "save": "De stijl kon niet worden opgeslagen.",
+      "delete": "De stijl kon niet worden verwijderd."
+    }
+  },
+  "history": {
+    "subtitle": "Alles wat u met Nova hebt gedicteerd.",
+    "group": {
+      "today": "Vandaag",
+      "yesterday": "Gisteren",
+      "week": "Deze week",
+      "older": "Eerder"
+    },
+    "searchPlaceholder": "Zoek in uw dictaten",
+    "noMatch": "Niets komt overeen met “{{query}}”.",
+    "empty": "Hier verschijnen uw dictaten.",
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd"
+  },
+  "settingsNav": {
+    "voice": "Stem"
+  },
+  "personalization": {
+    "appearance": "Weergave",
+    "orb": "Orb",
+    "overlay": "Overlay"
   }
 }

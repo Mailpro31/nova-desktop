@@ -21,7 +21,10 @@
     "home": "الرئيسية",
     "configuration": "الإعدادات",
     "account": "الحساب",
-    "styles": "معالجة لاحقة"
+    "styles": "معالجة لاحقة",
+    "aiSkills": "AI Skills",
+    "settings": "الإعدادات",
+    "organization": "المؤسسة"
   },
   "onboarding": {
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
@@ -180,6 +183,38 @@
         "checkFailed": "فشل التحقق من الأذونات. يرجير المحاولة مرة أخرى.",
         "requestFailed": "فشل طلب الإذن. يرجى المحاولة مرة أخرى."
       }
+    },
+    "back": "رجوع",
+    "welcome": {
+      "title": "اكتب بسرعة تفكيرك",
+      "subtitle": "يحوّل Nova صوتك إلى نص واضح في أي مكان على جهازك.",
+      "providedBy": "مقدَّم من {{organization}}"
+    },
+    "smartSetup": {
+      "title": "الإعداد الموصى به",
+      "subtitle": "أعدّ Nova هذه الإعدادات انطلاقًا من جهازك. يمكنك تغييرها لاحقًا.",
+      "use": "استخدام الإعداد الموصى به",
+      "customize": "تخصيص",
+      "row": {
+        "microphone": "الميكروفون",
+        "engine": "المعالجة",
+        "shortcut": "الاختصار",
+        "language": "اللغة"
+      },
+      "value": {
+        "notSet": "غير محدد",
+        "autoDetected": "تم اكتشافها تلقائيًا",
+        "localEngine": "على هذا الجهاز"
+      }
+    },
+    "customize": {
+      "title": "بعض الخيارات",
+      "subtitle": "يحتفظ الباقي بقيمته الموصى بها ويمكن تغييره في الإعدادات."
+    },
+    "writingStyles": {
+      "introTitle": "Nova لا يكتفي بالنسخ",
+      "introSubtitle": "تحدّث، وسيكتب Nova بالأسلوب المناسب لما تفعله.",
+      "unavailable": "لا يتوفر أي أسلوب كتابة بعد."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "فتح",
     "copy": "نسخ",
     "clear": "مسح",
-    "noOptionsFound": "لم يتم العثور على خيارات"
+    "noOptionsFound": "لم يتم العثور على خيارات",
+    "cancel": "إلغاء",
+    "remove": "إزالة",
+    "selectOption": "اختر خيارًا…"
   },
   "accessibility": {
     "permissionsDescription": ".يحتاج Nova إلى أذونات إمكانية الوصول لكتابة النص المفرغ",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "الإملاء الصوتي الذي توفّره مؤسستك، ببريدك الأكاديمي.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "تعذّر الوصول إلى الخادم. تحقّق من اتصالك وأعد المحاولة.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "أساليب الكتابة"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "أرسل مستندًا نصيًا إلى خادم مؤسستك لاستخراج المفردات وأسماء الأعلام. تُحفظ المصطلحات المستخرجة فقط — لا المستند نفسه.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "الحرم متصل",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local نشط"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "المؤسسة",
+      "subtitle": "مؤسستك، وما تقدّمه، وإلى أين تذهب بياناتك.",
+      "connection": "الاتصال",
+      "managedBy": "تُدار بواسطة {{organization}}",
+      "identityTitle": "الهوية"
+    },
+    "provides": {
+      "title": "ما تقدّمه مؤسستك",
+      "transcription": {
+        "title": "التعرّف على الكلام",
+        "description": "يُرسل تسجيلك إلى خادم مؤسستك الذي يحوّله إلى نص."
+      },
+      "rewriting": {
+        "title": "أساليب الكتابة",
+        "description": "يُرسل نصك والأسلوب المختار إلى خادم مؤسستك الذي يعيد صياغته."
+      },
+      "vocabulary": {
+        "title": "مفردات مشتركة",
+        "description": "المصطلحات التي تضيفها مؤسستك ومصطلحاتك تساعد على كتابتها بشكل صحيح."
+      },
+      "formatting": {
+        "title": "قواعد التنسيق",
+        "description": "تُطبَّق قواعد مؤسستك وقواعدك في كل إعادة صياغة."
+      },
+      "paused": "متوقف مؤقتًا — تعذّر الوصول إلى خادم مؤسستك."
+    },
+    "offline": {
+      "title": "عندما يتعذّر الوصول إلى الخادم",
+      "body": "يستمر الإملاء على هذا الجهاز. يعمل التعرّف على الكلام محليًا، وتعود أساليب الكتابة والمفردات المشتركة وقواعد التنسيق وAI Skills مع عودة الاتصال."
+    },
+    "data": {
+      "title": "إلى أين تذهب بياناتك",
+      "audio": "صوت الإملاء",
+      "text": "النص المُرسل لإعادة الصياغة",
+      "vocabulary": "المفردات والاختصارات والقواعد",
+      "history": "السجل",
+      "recordings": "التسجيلات",
+      "appName": "اسم التطبيق في المقدمة",
+      "onDevice": "هذا الجهاز",
+      "onCampus": "خادم المؤسسة",
+      "note": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة يوميًا. ولا يحتفظ بمحتواها."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "اعمل على النص الذي تحدّده.",
+    "preview": "معاينة",
+    "previewHint": "‏AI Skills قيد الاختبار حاليًا.",
+    "essentials": "الأساسيات",
+    "howItWorks": "كيف يعمل",
+    "how": {
+      "select": "حدّد نصًا في أي تطبيق",
+      "open": "افتح Nova باختصارك",
+      "choose": "اختر AI Skill",
+      "review": "راجع النتيجة قبل أن يتغيّر أي شيء"
+    },
+    "privacy": "تتم المعالجة عبر اتصالك بـ Campus.",
+    "privacyOffline": "تعمل AI Skills على خادم مؤسستك، وهو غير متاح الآن."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "اشرح",
+        "description": "فهم النص المعقّد بوضوح."
+      },
+      "summarize": {
+        "name": "لخّص",
+        "description": "اختزال التحديد إلى أفكاره الأساسية."
+      },
+      "improve": {
+        "name": "حسّن",
+        "description": "كسب الوضوح وحسن الصياغة."
+      },
+      "translate": {
+        "name": "ترجم",
+        "description": "ترجمة النص المحدّد."
+      },
+      "ask": {
+        "name": "اسأل Nova",
+        "description": "إعطاء Nova تعليمة محدّدة."
+      }
+    },
+    "askPlaceholder": "اسأل Nova…",
+    "ask": "اسأل",
+    "running": "‏Nova تعمل…",
+    "result": "النتيجة",
+    "replace": "استبدال",
+    "copy": "نسخ",
+    "close": "إغلاق",
+    "copied": "تم النسخ",
+    "experimentTitle": "تجريبي",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "حدّد نصًا في أي تطبيق ثم نفّذ عليه إجراءً بالذكاء الاصطناعي. لم يُتحقق منه بعد في جميع التطبيقات.",
+    "shortcutMissing": "لم يُعيَّن اختصار بعد. عيّن اختصارًا لـ Nova Commands من الإعدادات — لا يعمل الالتقاط إلا ما دام تطبيقك في المقدمة.",
+    "runDiagnostics": "تشغيل التشخيص",
+    "error": {
+      "busy": "هناك أمر قيد التنفيذ بالفعل.",
+      "nonTextClipboard": "تحتوي الحافظة على شيء غير نصي، ولن تستطيع Nova إعادته. انسخه إلى مكان آخر أولًا.",
+      "noSelection": "حدّد نصًا قبل فتح Nova.",
+      "unsupported": "‏Nova Commands متاحة على Windows فقط في الوقت الحالي.",
+      "targetChanged": "لم يعد التطبيق الأصلي نشطًا. انسخ النتيجة بدلًا من ذلك.",
+      "offline": "تتطلب AI Skills اتصالًا بـ Campus.",
+      "failed": "لم تتمكن Nova من معالجة هذا الطلب.",
+      "emptyResult": "أعادت Nova نتيجة فارغة.",
+      "busyTitle": "قيد التنفيذ بالفعل",
+      "nonTextClipboardTitle": "تعذّرت استعادة الحافظة",
+      "noSelectionTitle": "لا يوجد نص محدّد",
+      "unsupportedTitle": "غير متاح هنا",
+      "targetChangedTitle": "تغيّرت النافذة",
+      "offlineTitle": "‏Campus غير متاح",
+      "failedTitle": "فشل الأمر",
+      "emptyResultTitle": "لا شيء لعرضه"
+    },
+    "original": "الأصل"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "جارٍ التحقق…"
+      },
+      "ready": {
+        "title": "‏Nova جاهزة."
+      },
+      "campusLocal": {
+        "title": "‏Nova Local نشط",
+        "detail": "الإملاء ما زال يعمل. ستعود وظائف الذكاء الاصطناعي مع Campus."
+      },
+      "permissionsNeeded": {
+        "title": "مطلوب الوصول إلى الميكروفون",
+        "detail": "تحتاج Nova إلى إذن استخدام الميكروفون قبل أن تُملي."
+      },
+      "microphoneMissing": {
+        "title": "لم يُعثر على ميكروفون",
+        "detail": "وصّل ميكروفونًا ثم اختره من الإعدادات."
+      },
+      "modelMissing": {
+        "title": "أكمل إعداد Nova",
+        "detail": "ما زال يلزم تنزيل نموذج للتعرف على الكلام."
+      },
+      "shortcutMissing": {
+        "title": "‏Nova جاهزة",
+        "detail": "عيّن اختصارًا ليصبح الإملاء على بُعد ضغطة واحدة."
+      },
+      "dictateHint": "للإملاء",
+      "openSettings": "فتح الإعدادات",
+      "listening": {
+        "title": "‏Nova تستمع إليك…"
+      },
+      "processing": {
+        "title": "‏Nova تعمل…"
+      },
+      "insertionFailed": {
+        "title": "تعذّر اللصق",
+        "detail": "إملاؤك موجود في الحافظة."
+      }
+    },
+    "active": {
+      "title": "نشط",
+      "style": "أسلوب الكتابة",
+      "styleAutomatic": "تلقائي",
+      "engine": "المحرّك",
+      "microphone": "الميكروفون",
+      "lastDictation": "آخر إملاء"
+    },
+    "engine": {
+      "campus": "خادم مؤسستك",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "البداية",
+      "campus": "تم ربط حساب Campus",
+      "voice": "الصوت جاهز",
+      "firstDictation": "أول إملاء",
+      "style": "جرّب أسلوب كتابة",
+      "aiSkill": "استخدم أول AI Skill",
+      "done": "تم",
+      "todo": "متبقٍ"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "تلقائي",
+      "builtin": "الأساليب",
+      "personal": "أساليبك"
+    },
+    "automaticHow": "تقرأ Nova اسم التطبيق في المقدمة وتطبّق الأسلوب المناسب. التطبيقات التي تحظرها لا تُفحص أبدًا.",
+    "active": "نشط",
+    "emptyPersonal": "لم تنشئ أسلوبًا بعد.",
+    "rowActions": "إجراءات الأسلوب",
+    "error": {
+      "save": "تعذّر حفظ الأسلوب.",
+      "delete": "تعذّر حذف الأسلوب."
+    }
+  },
+  "history": {
+    "subtitle": "كل ما أمليته باستخدام Nova.",
+    "group": {
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "week": "هذا الأسبوع",
+      "older": "أقدم"
+    },
+    "searchPlaceholder": "ابحث في إملاءاتك",
+    "noMatch": "لا شيء يطابق «{{query}}».",
+    "empty": "ستظهر إملاءاتك هنا.",
+    "copy": "نسخ",
+    "copied": "تم النسخ"
+  },
+  "settingsNav": {
+    "voice": "الصوت"
+  },
+  "personalization": {
+    "appearance": "المظهر",
+    "orb": "الكرة",
+    "overlay": "الطبقة"
   }
 }

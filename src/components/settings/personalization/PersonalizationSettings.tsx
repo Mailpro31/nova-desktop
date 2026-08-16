@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { isCampusMode } from "@/lib/mode";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
@@ -10,6 +9,7 @@ import { TierBadge } from "../license/TierBadge";
 import { ThemeSelector } from "../ThemeSelector";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ShowOverlay } from "../ShowOverlay";
+import { isCampusMode } from "@/lib/mode";
 import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import { useSettings } from "../../../hooks/useSettings";
 import {
@@ -92,18 +92,23 @@ export const PersonalizationSettings: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[760px] space-y-8">
+    // Largeur héritée de l'app shell.
+    <div className="space-y-6">
       <PageHeader
         title={t("sidebar.personalization")}
         description={t("campus.personalization.description")}
       />
 
-      <SettingsGroup title={t("campus.personalization.appearance")}>
-        <ThemeSelector descriptionMode="tooltip" grouped={true} />
-        <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
-      </SettingsGroup>
+      {/* En campus, langue et thème vivent dans « Général » : les répéter ici
+          donnerait deux emplacements pour un même réglage. */}
+      {!campusMode && (
+        <SettingsGroup title={t("personalization.appearance")}>
+          <ThemeSelector descriptionMode="tooltip" grouped={true} />
+          <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
+        </SettingsGroup>
+      )}
 
-      <SettingsGroup title={t("campus.personalization.orb")}>
+      <SettingsGroup title={t("personalization.orb")}>
         <SettingContainer
           title={t("campus.personalization.orbColor")}
           description={t("campus.personalization.orbDescription")}
@@ -142,7 +147,7 @@ export const PersonalizationSettings: React.FC = () => {
         </SettingContainer>
       </SettingsGroup>
 
-      <SettingsGroup title={t("campus.personalization.bubble")}>
+      <SettingsGroup title={t("personalization.overlay")}>
         <ToggleSwitch
           checked={persistentOverlay}
           onChange={togglePersistentOverlay}

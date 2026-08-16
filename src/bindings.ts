@@ -591,6 +591,37 @@ async getDefaultSettings() : Promise<Result<AppSettings, string>> {
 }
 },
 /**
+ * Capture la sélection courante. Refuse si la fonctionnalité est désactivée.
+ */
+async novaCommandCaptureSelection() : Promise<Result<SelectionCapture, CommandError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("nova_command_capture_selection") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Colle un résultat en restaurant le presse-papiers.
+ *
+ * **Expérimental.** N'est appelé que depuis l'action « Remplacer » d'un
+ * aperçu : rien ne remplace automatiquement le texte de l'utilisateur.
+ */
+async novaCommandReplace(result: string, target: TargetWindow) : Promise<Result<null, CommandError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("nova_command_replace", { result, target }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * État du moteur, pour la validation manuelle. Ne modifie rien.
+ */
+async novaCommandDiagnostics() : Promise<CommandsDiagnostics> {
+    return await TAURI_INVOKE("nova_command_diagnostics");
+},
+/**
  * Lit le fichier `campus-config.json` placé à côté de l'exécutable par l'IT.
  */
 async getCampusConfig() : Promise<Result<CampusConfig | null, string>> {
@@ -1392,11 +1423,15 @@ async isLaptop() : Promise<Result<boolean, string>> {
 
 
 export const events = __makeEvents__<{
+dictationStateEvent: DictationStateEvent,
 historyUpdatePayload: HistoryUpdatePayload,
+novaCommandCaptureEvent: NovaCommandCaptureEvent,
 streamPhaseEvent: StreamPhaseEvent,
 streamTextEvent: StreamTextEvent
 }>({
+dictationStateEvent: "dictation-state-event",
 historyUpdatePayload: "history-update-payload",
+novaCommandCaptureEvent: "nova-command-capture-event",
 streamPhaseEvent: "stream-phase-event",
 streamTextEvent: "stream-text-event"
 })
@@ -1511,7 +1546,13 @@ week_chars_produced?: number;
 /**
  * Début (epoch secondes) de la semaine de statistique courante.
  */
-week_stat_week_start?: number; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
+week_stat_week_start?: number; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; 
+/**
+ * Nova Commands (sélection → commande IA → aperçu). **Expérimental,
+ * désactivé par défaut** : la couche native clavier + presse-papiers doit
+ * être validée sur applications Windows réelles avant toute activation.
+ */
+nova_commands_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
 /**
  * Which recording overlay to show: None / Minimal / Live. Streaming mode is
  * not gated on this — that follows model capability. Migrated from the old
@@ -1568,7 +1609,7 @@ export type CampusFormattingRulesResponse = { shared: CampusRuleEntry[]; persona
 export type CampusIdResponse = { id: number }
 export type CampusImportResponse = { imported: number }
 export type CampusLearnResponse = { learned: boolean }
-export type CampusMeResponse = { email: string; role: string; cohort: string }
+export type CampusMeResponse = { email: string; role: string; cohort: string; organization: string }
 export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
 export type CampusRuleEntry = { id: number; rule: string }
 export type CampusSession = { server_url: string; email: string }
@@ -1576,6 +1617,75 @@ export type CampusSharedDictEntry = { id: number; term: string; replacement: str
 export type CampusSnippetEntry = { id: number; trigger: string; content: string }
 export type CampusVocabularyResponse = { shared: CampusSharedDictEntry[]; personal: CampusPersonalDictEntry[]; snippets: CampusSnippetEntry[] }
 export type ClipboardHandling = "dont_modify" | "copy_to_clipboard"
+export type CommandError =
+/**
+ * Une autre commande est déjà en cours.
+ */
+{ kind: "Busy" } |
+/**
+ * Le presse-papiers contient un contenu non textuel qu'on ne saurait
+ * restaurer : on refuse plutôt que de le détruire.
+ */
+{ kind: "NonTextClipboard" } |
+/**
+ * Aucun texte n'a été copié dans le délai imparti.
+ */
+{ kind: "NoSelection" } |
+/**
+ * Plateforme sans détection fiable de changement de presse-papiers.
+ */
+{ kind: "Unsupported" } |
+/**
+ * La fenêtre cible n'est plus celle d'où venait la sélection.
+ */
+{ kind: "TargetChanged" } | { kind: "Clipboard"; detail: string } | { kind: "Input"; detail: string }
+/**
+ * Rapport de diagnostic du moteur, destiné au **test manuel sur Windows**.
+ *
+ * Volontairement hors de l'interface utilisateur : il sert à valider la
+ * couche native avant toute activation par défaut.
+ */
+export type CommandsDiagnostics = {
+/**
+ * La plateforme fournit-elle une détection fiable de changement ?
+ */
+sequence_detection: boolean;
+/**
+ * Nature du presse-papiers courant : `empty`, `text`, `non-text`.
+ */
+clipboard_kind: string;
+/**
+ * Le presse-papiers pourrait-il être restauré après capture ?
+ */
+clipboard_restorable: boolean; foreground_process: string; foreground_pid: number;
+/**
+ * Le réglage expérimental est-il actif ?
+ */
+enabled: boolean }
+/**
+ * Nature d'un échec, quand elle change ce que l'utilisateur peut faire.
+ */
+export type DictationErrorKind =
+/**
+ * La capture audio n'a pas démarré — micro absent, occupé ou refusé.
+ */
+"microphone" |
+/**
+ * Le texte n'a pas pu être inséré. Il est dans le presse-papiers : la
+ * dictée n'est jamais perdue (voir `clipboard::paste_via_clipboard`).
+ */
+"insertion"
+/**
+ * Ce que l'utilisateur perçoit. Le moteur connaît davantage de nuances —
+ * préparation du modèle, flux en direct, transcription puis reformulation —
+ * mais aucune ne demande une réaction différente de sa part.
+ */
+export type DictationState = "idle" | "listening" | "processing" | "error"
+export type DictationStateEvent = { state: DictationState;
+/**
+ * Renseigné uniquement quand `state` vaut `Error`.
+ */
+error: DictationErrorKind | null }
 export type CustomSounds = { start: boolean; stop: boolean }
 /**
  * Raccourci personnel (« variable ») : un mot-clé et sa valeur. Lors de la
@@ -1757,6 +1867,13 @@ sha256: string | null } } |
  */
 "Local"
 export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "min_10" | "min_15" | "hour_1" | "sec_15"
+/**
+ * Résultat d'une capture déclenchée par le raccourci, poussé vers l'interface.
+ *
+ * Un seul des deux champs est renseigné. Le texte capturé y transite parce que
+ * l'interface doit l'afficher ; il n'est ni journalisé ni persisté.
+ */
+export type NovaCommandCaptureEvent = { capture: SelectionCapture | null; error: CommandError | null }
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
 /**
@@ -1785,6 +1902,7 @@ limited: boolean; used: number; limit: number;
 blocked: boolean }
 export type RecordingRetentionPeriod = "never" | "preserve_limit" | "days_3" | "weeks_2" | "months_3"
 export type SecretMap = Partial<{ [key in string]: string }>
+export type SelectionCapture = { text: string; target: TargetWindow }
 export type ShortcutBinding = { id: string; name: string; description: string; default_binding: string; current_binding: string }
 export type SoundTheme = "marimba" | "pop" | "custom"
 /**
@@ -1824,6 +1942,19 @@ export type StreamWorkKind = "transcribing" | "polishing"
  * and `Dark` force one of the two palettes Handy already ships.
  */
 export type Theme = "system" | "light" | "dark"
+/**
+ * Fenêtre à laquelle la sélection appartient, mémorisée avant toute prise de
+ * focus par l'interface Nova.
+ */
+export type TargetWindow = {
+/**
+ * Nom du processus, à visée de diagnostic uniquement.
+ */
+process: string;
+/**
+ * Identité forte de la cible.
+ */
+pid: number }
 export type Tier = "free" | "pro" | "ultra" | "business"
 export type TranscribeAcceleratorSetting = "auto" | "cpu" | "gpu"
 export type TypingTool = "auto" | "wtype" | "kwtype" | "dotool" | "ydotool" | "xdotool"

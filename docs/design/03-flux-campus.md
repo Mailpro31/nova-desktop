@@ -42,11 +42,11 @@ Un compte peut être **suspendu** côté serveur (`disabled`).
 
 ## États réseau — trois états, pas deux
 
-| État | Déclencheur | Comportement attendu |
-|---|---|---|
-| **Connecté** | `GET /api/health` répond (timeout 2 s, cache 30 s) | pastille verte, nom du serveur |
-| **Hors ligne** | serveur injoignable | pastille orange, **repli local**, notification discrète auto-masquée (4 s), jamais bloquante |
-| **Session invalide** | `401` sur une route authentifiée | session supprimée, retour à l'écran de connexion, message « session expirée » |
+| État                 | Déclencheur                                        | Comportement attendu                                                                         |
+| -------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Connecté**         | `GET /api/health` répond (timeout 2 s, cache 30 s) | pastille verte, nom du serveur                                                               |
+| **Hors ligne**       | serveur injoignable                                | pastille orange, **repli local**, notification discrète auto-masquée (4 s), jamais bloquante |
+| **Session invalide** | `401` sur une route authentifiée                   | session supprimée, retour à l'écran de connexion, message « session expirée »                |
 
 L'état est ré-évalué toutes les 30 secondes.
 
@@ -66,12 +66,12 @@ toujours « Serveur injoignable — texte collé sans reformulation ».
 
 ## Ce que le client envoie au serveur
 
-| Route | Contenu envoyé |
-|---|---|
-| `POST /api/transcribe` | l'audio (WAV, après filtrage des silences) |
-| `POST /api/reformulate` | le texte + **la consigne du style**, rien d'autre |
-| `POST /api/command` | l'instruction dictée + le texte sélectionné |
-| `POST /api/dictionary/learn` | `{heard, corrected}`, 120 caractères max |
+| Route                          | Contenu envoyé                                                                     |
+| ------------------------------ | ---------------------------------------------------------------------------------- |
+| `POST /api/transcribe`         | l'audio (WAV, après filtrage des silences)                                         |
+| `POST /api/reformulate`        | le texte + **la consigne du style**, rien d'autre                                  |
+| `POST /api/command`            | l'instruction dictée + le texte sélectionné                                        |
+| `POST /api/dictionary/learn`   | `{heard, corrected}`, 120 caractères max                                           |
 | `POST /api/dictionary/analyze` | un document, dont seuls les termes sont extraits — le document n'est jamais stocké |
 
 Le serveur injecte lui-même le vocabulaire, les snippets et les règles de

@@ -24,13 +24,13 @@ contresens produit.
 Un drapeau de compilation `VITE_NOVA_MODE=campus|personal` (défaut `personal`)
 sélectionne le mode. Le mode personnel ne doit jamais régresser.
 
-| | **Personal** | **Campus** |
-|---|---|---|
-| Transcription | modèles locaux téléchargés (Whisper, Parakeet), GPU local | serveur de l'établissement (Whisper sur GPU) |
-| Reformulation | moteur local ou API, selon le palier | LLM du serveur de l'établissement |
-| Compte | paliers payants (Free / Pro / Ultra / Business), quotas | membre de l'établissement, **illimité, aucun palier visible** |
-| Entrée | choix d'un modèle à l'onboarding | e-mail + code à 6 chiffres |
-| Données | tout reste sur la machine | tout reste sur le réseau de l'établissement |
+|               | **Personal**                                              | **Campus**                                                    |
+| ------------- | --------------------------------------------------------- | ------------------------------------------------------------- |
+| Transcription | modèles locaux téléchargés (Whisper, Parakeet), GPU local | serveur de l'établissement (Whisper sur GPU)                  |
+| Reformulation | moteur local ou API, selon le palier                      | LLM du serveur de l'établissement                             |
+| Compte        | paliers payants (Free / Pro / Ultra / Business), quotas   | membre de l'établissement, **illimité, aucun palier visible** |
+| Entrée        | choix d'un modèle à l'onboarding                          | e-mail + code à 6 chiffres                                    |
+| Données       | tout reste sur la machine                                 | tout reste sur le réseau de l'établissement                   |
 
 ## Styles
 

@@ -44,11 +44,14 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
           disabled={disabled || isUpdating}
           onChange={(e) => onChange(e.target.checked)}
         />
-        <div className="peer relative h-6 w-10 rounded-full bg-mid-gray/25 transition-colors duration-150 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-black/5 after:bg-white after:shadow-sm after:transition-transform after:duration-150 after:content-[''] peer-checked:bg-accent peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent peer-disabled:opacity-55 motion-reduce:transition-none motion-reduce:after:transition-none" />
+        {/* Planche de fondation : piste 44×26, pastille 20 px, course 18 px.
+            Dimensions en px et non en unités rem — la base typographique à
+            15 px décalerait un `w-11 h-6` de 3 px. */}
+        <div className="relative w-[44px] h-[26px] rounded-full bg-mid-gray/25 peer transition-colors duration-[120ms] motion-reduce:transition-none peer-checked:bg-accent peer-disabled:opacity-40 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent after:content-[''] after:absolute after:top-[3px] after:start-[3px] after:h-[20px] after:w-[20px] after:rounded-full after:bg-white after:shadow-raised after:transition-transform after:duration-[180ms] motion-reduce:after:transition-none peer-checked:after:translate-x-[18px] rtl:peer-checked:after:-translate-x-[18px]"></div>
       </label>
       {isUpdating && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-4 h-4 border-2 border-logo-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
     </SettingContainer>

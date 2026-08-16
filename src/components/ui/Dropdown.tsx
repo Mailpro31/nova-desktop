@@ -22,7 +22,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   selectedValue,
   onSelect,
   className = "",
-  placeholder = "Select an option...",
+  placeholder,
   disabled = false,
   onRefresh,
 }) => {
@@ -151,7 +151,11 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <button
         ref={triggerRef}
         type="button"
-        className="grid min-h-10 w-full min-w-[200px] cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border border-hairline bg-inset px-3 py-2 text-start text-sm font-medium text-text transition-colors duration-150 [border-radius:var(--nova-radius-control)] hover:border-accent/50 hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-55 motion-reduce:transition-none"
+        className={`h-[var(--control-h)] px-3 text-sm text-text bg-inset border border-hairline-strong rounded-control min-w-[200px] w-full text-start grid grid-cols-[1fr_auto] gap-2 items-center transition-colors duration-[120ms] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+          disabled
+            ? "opacity-40 cursor-not-allowed"
+            : "cursor-pointer hover:border-accent/60"
+        }`}
         onClick={handleToggle}
         onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
@@ -159,7 +163,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
         aria-expanded={isOpen}
         aria-controls={isOpen ? listboxId : undefined}
       >
-        <span className="truncate">{selectedOption?.label || placeholder}</span>
+        <span className="truncate">
+          {selectedOption?.label || placeholder || t("common.selectOption")}
+        </span>
         <svg
           className={`h-4 w-4 transition-transform duration-150 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}
           fill="none"
@@ -175,16 +181,17 @@ export const Dropdown: React.FC<DropdownProps> = ({
           />
         </svg>
       </button>
+      {/* Menu flottant : élévation 2, rayon de carte, filet de séparation. */}
       {isOpen && !disabled && (
         <div
           id={listboxId}
           role="listbox"
           aria-label={selectedOption?.label || placeholder}
-          className="absolute inset-x-0 top-full z-50 mt-1 max-h-60 overflow-y-auto border border-hairline bg-surface p-1 [border-radius:var(--nova-radius-card)] [box-shadow:var(--nova-shadow-floating)]"
+          className="absolute inset-x-0 top-full z-50 mt-1 max-h-60 overflow-y-auto border border-hairline bg-surface p-1 rounded-card shadow-floating"
           onKeyDown={handleListKeyDown}
         >
           {options.length === 0 ? (
-            <div className="px-3 py-2 text-sm text-text-secondary">
+            <div className="px-2 py-1.5 text-sm text-text-secondary">
               {t("common.noOptionsFound")}
             </div>
           ) : (
@@ -198,11 +205,11 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 role="option"
                 aria-selected={selectedValue === option.value}
                 tabIndex={-1}
-                className={`w-full cursor-pointer px-3 py-2 text-start text-sm transition-colors duration-150 [border-radius:var(--nova-radius-control)] hover:bg-inset focus:bg-inset focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none ${
+                className={`w-full cursor-pointer px-2 py-1.5 text-sm text-start rounded-chip transition-colors duration-[120ms] motion-reduce:transition-none hover:bg-accent/10 focus:bg-accent/10 focus:outline-none ${
                   selectedValue === option.value
-                    ? "bg-accent/12 font-semibold text-text"
+                    ? "bg-accent/12 text-accent font-medium"
                     : "text-text"
-                }`}
+                } ${option.disabled ? "opacity-40 cursor-not-allowed" : ""}`}
                 onClick={() => handleSelect(option.value)}
                 disabled={option.disabled}
               >

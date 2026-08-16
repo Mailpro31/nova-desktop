@@ -21,7 +21,10 @@
     "home": "गृहपृष्ठ",
     "configuration": "सेटिङ",
     "account": "खाता",
-    "styles": "पोस्ट प्रोसेस"
+    "styles": "पोस्ट प्रोसेस",
+    "aiSkills": "AI Skills",
+    "settings": "सेटिङहरू",
+    "organization": "संगठन"
   },
   "onboarding": {
     "subtitle": "सुरु गर्न, एउटा ट्रान्सक्रिप्सन मोडेल छान्नुहोस्",
@@ -180,6 +183,38 @@
         "checkFailed": "अनुमतिहरू जाँच गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
         "requestFailed": "अनुमति अनुरोध गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।"
       }
+    },
+    "back": "पछाडि",
+    "welcome": {
+      "title": "सोच्ने गतिमा लेख्नुहोस्",
+      "subtitle": "Nova ले तपाईंको आवाजलाई PC को जुनसुकै ठाउँमा स्पष्ट पाठमा बदल्छ।",
+      "providedBy": "{{organization}} द्वारा उपलब्ध"
+    },
+    "smartSetup": {
+      "title": "सिफारिस गरिएको सेटअप",
+      "subtitle": "Nova ले तपाईंको मेसिनअनुसार यी सेटिङ तयार गर्‍यो। पछि परिवर्तन गर्न सकिन्छ।",
+      "use": "सिफारिस गरिएको सेटअप प्रयोग गर्नुहोस्",
+      "customize": "अनुकूलन",
+      "row": {
+        "microphone": "माइक्रोफोन",
+        "engine": "प्रशोधन",
+        "shortcut": "सर्टकट",
+        "language": "भाषा"
+      },
+      "value": {
+        "notSet": "सेट गरिएको छैन",
+        "autoDetected": "स्वतः पत्ता लागेको",
+        "localEngine": "यही यन्त्रमा"
+      }
+    },
+    "customize": {
+      "title": "केही छनोट",
+      "subtitle": "बाँकी सबै सिफारिस गरिएको मानमै रहन्छ र सेटिङमा बदल्न सकिन्छ।"
+    },
+    "writingStyles": {
+      "introTitle": "Nova ले श्रुतिलेखन मात्र गर्दैन",
+      "introSubtitle": "बोल्नुहोस्, Nova ले काम अनुसारको शैलीमा लेख्छ।",
+      "unavailable": "अहिलेसम्म कुनै लेखन शैली उपलब्ध छैन।"
     }
   },
   "modelSelector": {
@@ -738,7 +773,10 @@
     "open": "खोल्नुहोस्",
     "copy": "कपी गर्नुहोस्",
     "clear": "खाली गर्नुहोस्",
-    "noOptionsFound": "कुनै विकल्प भेटिएन"
+    "noOptionsFound": "कुनै विकल्प भेटिएन",
+    "cancel": "रद्द",
+    "remove": "हटाउनुहोस्",
+    "selectOption": "विकल्प छान्नुहोस्…"
   },
   "accessibility": {
     "permissionsDescription": "ट्रान्सक्राइब गरिएको टेक्स्ट टाइप गर्न Nova लाई एक्सेसिबिलिटी अनुमति चाहिन्छ।",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "तपाईंको संस्थाले दिने आवाज श्रुतिलेखन, तपाईंको शैक्षिक इमेलसँग।",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "सर्भरमा पुग्न सकिएन। जडान जाँचेर फेरि प्रयास गर्नुहोस्।",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "लेखन शैली"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "शब्दभण्डार र नामहरू निकाल्न पाठ कागजात संस्थाको सर्भरमा पठाउनुहोस्। निकालिएका शब्द मात्र सुरक्षित हुन्छन् — कागजात होइन।",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "क्याम्पस जोडिएको",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local सक्रिय"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "संगठन",
+      "subtitle": "तपाईंको संस्था, यसले दिने कुरा, र तपाईंको डेटा कहाँ जान्छ।",
+      "connection": "जडान",
+      "managedBy": "{{organization}} द्वारा व्यवस्थित",
+      "identityTitle": "परिचय"
+    },
+    "provides": {
+      "title": "तपाईंको संस्थाले दिने कुरा",
+      "transcription": {
+        "title": "वाणी पहिचान",
+        "description": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा जान्छ, जसले त्यसलाई पाठ बनाउँछ।"
+      },
+      "rewriting": {
+        "title": "लेखन शैली",
+        "description": "तपाईंको पाठ र छानिएको शैली संस्थाको सर्भरमा जान्छ, जसले पुनर्लेखन गर्छ।"
+      },
+      "vocabulary": {
+        "title": "साझा शब्दभण्डार",
+        "description": "संस्थाका र तपाईंका शब्दहरूले सही हिज्जे लेख्न मद्दत गर्छन्।"
+      },
+      "formatting": {
+        "title": "ढाँचा नियम",
+        "description": "संस्थाका र तपाईंका नियम हरेक पुनर्लेखनमा लागू हुन्छन्।"
+      },
+      "paused": "हाल रोकिएको — संस्थाको सर्भर पुग्न सकिँदैन।"
+    },
+    "offline": {
+      "title": "सर्भर पुग्न नसकिँदा",
+      "body": "यो यन्त्रमा श्रुतिलेखन चलिरहन्छ। वाणी पहिचान स्थानीय रूपमा चल्छ; शैली, साझा शब्दभण्डार, ढाँचा नियम र AI Skills जडानसँगै फर्कन्छन्।"
+    },
+    "data": {
+      "title": "तपाईंको डेटा कहाँ जान्छ",
+      "audio": "श्रुतिलेखनको आवाज",
+      "text": "पुनर्लेखनका लागि पठाइएको पाठ",
+      "vocabulary": "शब्दभण्डार, सर्टकट र नियम",
+      "history": "इतिहास",
+      "recordings": "रेकर्डिङहरू",
+      "appName": "अगाडिको अनुप्रयोगको नाम",
+      "onDevice": "यो यन्त्र",
+      "onCampus": "संस्थाको सर्भर",
+      "note": "संस्थाको सर्भरले दैनिक कति श्रुतिलेखन र पुनर्लेखन गर्नुभयो भनेर गन्छ। सामग्री राख्दैन।"
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "छानिएको पाठमा काम गर्नुहोस्।",
+    "preview": "पूर्वावलोकन",
+    "previewHint": "AI Skills हाल परीक्षणमा छन्।",
+    "essentials": "मुख्य कुरा",
+    "howItWorks": "कसरी चल्छ",
+    "how": {
+      "select": "कुनै पनि अनुप्रयोगमा पाठ छान्नुहोस्",
+      "open": "आफ्नो सर्टकटले Nova खोल्नुहोस्",
+      "choose": "एउटा AI Skill छान्नुहोस्",
+      "review": "केही बदलिनुअघि नतिजा हेर्नुहोस्"
+    },
+    "privacy": "तपाईंको Campus जडानमार्फत प्रशोधन हुन्छ।",
+    "privacyOffline": "AI Skills तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।"
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "व्याख्या गर्नुहोस्",
+        "description": "जटिल पाठ प्रस्ट बुझ्नुहोस्।"
+      },
+      "summarize": {
+        "name": "सारांश",
+        "description": "छानिएको कुरालाई मुख्य विचारमा झार्नुहोस्।"
+      },
+      "improve": {
+        "name": "सुधार्नुहोस्",
+        "description": "स्पष्टता र भाषामा सुधार।"
+      },
+      "translate": {
+        "name": "अनुवाद",
+        "description": "छानिएको पाठ अनुवाद गर्नुहोस्।"
+      },
+      "ask": {
+        "name": "Nova लाई सोध्नुहोस्",
+        "description": "Nova लाई निश्चित निर्देशन दिनुहोस्।"
+      }
+    },
+    "askPlaceholder": "Nova लाई सोध्नुहोस्…",
+    "ask": "सोध्नुहोस्",
+    "running": "Nova काम गर्दैछ…",
+    "result": "नतिजा",
+    "replace": "प्रतिस्थापन",
+    "copy": "प्रतिलिपि",
+    "close": "बन्द",
+    "copied": "प्रतिलिपि भयो",
+    "experimentTitle": "प्रयोगात्मक",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "कुनै पनि अनुप्रयोगमा पाठ छान्नुहोस्, अनि त्यसमा एआई कार्य चलाउनुहोस्। सबै अनुप्रयोगमा अझै जाँचिएको छैन।",
+    "shortcutMissing": "अझै कुनै सर्टकट तोकिएको छैन। सेटिङमा Nova Commands का लागि एउटा राख्नुहोस् — तपाईंको अनुप्रयोग अगाडि रहँदा मात्र समात्न सकिन्छ।",
+    "runDiagnostics": "निदान चलाउनुहोस्",
+    "error": {
+      "busy": "एउटा आदेश पहिल्यै चलिरहेको छ।",
+      "nonTextClipboard": "क्लिपबोर्डमा पाठ बाहेक अरू केही छ, र Nova ले त्यो फिर्ता राख्न सक्दैन। पहिले अन्यत्र प्रतिलिपि गर्नुहोस्।",
+      "noSelection": "Nova खोल्नुअघि पाठ छान्नुहोस्।",
+      "unsupported": "अहिलेलाई Nova Commands Windows मा मात्र उपलब्ध छ।",
+      "targetChanged": "मूल अनुप्रयोग अब सक्रिय छैन। बरु नतिजा प्रतिलिपि गर्नुहोस्।",
+      "offline": "AI Skills लाई Campus जडान चाहिन्छ।",
+      "failed": "Nova ले यो अनुरोध प्रशोधन गर्न सकेन।",
+      "emptyResult": "Nova ले खाली नतिजा फर्कायो।",
+      "busyTitle": "पहिल्यै चलिरहेको",
+      "nonTextClipboardTitle": "क्लिपबोर्ड फर्काउन सकिँदैन",
+      "noSelectionTitle": "कुनै पाठ छानिएको छैन",
+      "unsupportedTitle": "यहाँ उपलब्ध छैन",
+      "targetChangedTitle": "सञ्झ्याल बदलियो",
+      "offlineTitle": "Campus पुग्न सकिँदैन",
+      "failedTitle": "आदेश असफल",
+      "emptyResultTitle": "देखाउने केही छैन"
+    },
+    "original": "मूल"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "जाँच हुँदै…"
+      },
+      "ready": {
+        "title": "Nova तयार छ।"
+      },
+      "campusLocal": {
+        "title": "Nova Local सक्रिय छ",
+        "detail": "श्रुतिलेखन अझै चल्छ। एआई सुविधा Campus सँगै फर्कनेछ।"
+      },
+      "permissionsNeeded": {
+        "title": "माइक्रोफोन अनुमति चाहियो",
+        "detail": "श्रुतिलेखन गर्नुअघि Nova लाई माइक्रोफोनको अनुमति चाहिन्छ।"
+      },
+      "microphoneMissing": {
+        "title": "कुनै माइक्रोफोन भेटिएन",
+        "detail": "माइक्रोफोन जोड्नुहोस्, अनि सेटिङमा छान्नुहोस्।"
+      },
+      "modelMissing": {
+        "title": "Nova को सेटअप पूरा गर्नुहोस्",
+        "detail": "एउटा वाणी मोडेल अझै डाउनलोड गर्न बाँकी छ।"
+      },
+      "shortcutMissing": {
+        "title": "Nova तयार छ",
+        "detail": "सर्टकट तोक्नुहोस्, श्रुतिलेखन एक थिचाइ टाढा हुनेछ।"
+      },
+      "dictateHint": "श्रुतिलेखनका लागि",
+      "openSettings": "सेटिङ खोल्नुहोस्",
+      "listening": {
+        "title": "Nova सुन्दैछ…"
+      },
+      "processing": {
+        "title": "Nova काम गर्दैछ…"
+      },
+      "insertionFailed": {
+        "title": "टाँस्न सकिएन",
+        "detail": "तपाईंको श्रुतिलेखन क्लिपबोर्डमा छ।"
+      }
+    },
+    "active": {
+      "title": "सक्रिय",
+      "style": "लेखन शैली",
+      "styleAutomatic": "स्वचालित",
+      "engine": "इन्जिन",
+      "microphone": "माइक्रोफोन",
+      "lastDictation": "पछिल्लो श्रुतिलेखन"
+    },
+    "engine": {
+      "campus": "तपाईंको संस्थाको सर्भर",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "सुरुवात",
+      "campus": "Campus खाता जोडियो",
+      "voice": "आवाज तयार",
+      "firstDictation": "पहिलो श्रुतिलेखन",
+      "style": "लेखन शैली प्रयोग गर्नुहोस्",
+      "aiSkill": "पहिलो AI Skill प्रयोग गर्नुहोस्",
+      "done": "भयो",
+      "todo": "बाँकी"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "स्वचालित",
+      "builtin": "शैलीहरू",
+      "personal": "तपाईंका शैली"
+    },
+    "automaticHow": "Nova अगाडिको अनुप्रयोगको नाम पढ्छ र मिल्दो शैली लागू गर्छ। तपाईंले रोकेका अनुप्रयोग कहिल्यै जाँचिँदैनन्।",
+    "active": "सक्रिय",
+    "emptyPersonal": "तपाईंले अझै शैली बनाउनुभएको छैन।",
+    "rowActions": "शैली कार्यहरू",
+    "error": {
+      "save": "शैली सुरक्षित गर्न सकिएन।",
+      "delete": "शैली मेट्न सकिएन।"
+    }
+  },
+  "history": {
+    "subtitle": "Nova सँग तपाईंले श्रुतिलेखन गरेको सबै।",
+    "group": {
+      "today": "आज",
+      "yesterday": "हिजो",
+      "week": "यो हप्ता",
+      "older": "पहिलेको"
+    },
+    "searchPlaceholder": "श्रुतिलेखनमा खोज्नुहोस्",
+    "noMatch": "“{{query}}” सँग केही मिलेन।",
+    "empty": "तपाईंका श्रुतिलेखन यहाँ देखिनेछन्।",
+    "copy": "कपी गर्नुहोस्",
+    "copied": "प्रतिलिपि भयो"
+  },
+  "settingsNav": {
+    "voice": "आवाज"
+  },
+  "personalization": {
+    "appearance": "रूप",
+    "orb": "गोला",
+    "overlay": "ओभरले"
   }
 }

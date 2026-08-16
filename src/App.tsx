@@ -19,19 +19,25 @@ import {
 import { ModelStateEvent, RecordingErrorEvent } from "./lib/types/events";
 import "./App.css";
 import AccessibilityPermissions from "./components/AccessibilityPermissions";
-import Footer from "./components/footer";
+import AppShell from "./components/shell/AppShell";
+import NovaCommandsHost from "./components/commands/NovaCommandsHost";
 import Onboarding, {
   AccessibilityOnboarding,
+  WritingStylesIntroStep,
   CampusOnboarding,
-  CampusFirstRun,
-  StyleOnboarding,
-  QuickVariablesOnboarding,
+  CustomizeStep,
+  SmartSetupStep,
   TutorialOnboarding,
+  WelcomeStep,
 } from "./components/onboarding";
-import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
+import { SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
 import { LexiconSuggestions } from "./components/LexiconSuggestions";
 import { useSettings } from "./hooks/useSettings";
+import { useCampusStatus } from "./hooks/useCampusStatus";
+import { useSystemReadiness } from "./hooks/useSystemReadiness";
+import { useOnboardingFlow } from "./hooks/useOnboardingFlow";
+import { reconcileWithLegacySetting } from "./lib/onboarding/progress";
 import { useSettingsStore } from "./stores/settingsStore";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
@@ -45,36 +51,22 @@ import {
   completeCampusOnboarding,
   clearCampusSession,
 } from "@/lib/campusSession";
-import { CampusNavigation } from "./components/campus/CampusNavigation";
-import { firstRunStorageKey, loadCampusFirstRun } from "@/lib/aiSkills";
-import { refreshCampusContext, useCampusStore } from "@/stores/campusStore";
 
-type OnboardingStep =
-  | "accessibility"
-  | "model"
-  | "campus"
-  | "campus-first-run"
-  | "style"
-  | "variables"
-  | "tutorial"
-  | "done";
-
-// Étapes ajoutées après l'onboarding initial (modèle ou campus), dans l'ordre
-// où elles s'enchaînent — sert à calculer l'index/le total affichés par le
-// repère de progression à pastilles (`OnboardingStepShell`).
-const POST_MODEL_STEPS: OnboardingStep[] = ["style", "variables", "tutorial"];
+// Le parcours de première ouverture n'est plus une suite figée : il est
+// calculé depuis l'état réel du système (voir `useOnboardingFlow`). App.tsx
+// ne conserve donc qu'une question — s'agit-il d'une première ouverture ?
 
 const renderSettingsContent = (
   section: SidebarSection,
   onNavigate: (section: SidebarSection) => void,
 ) => {
-  // Accueil a besoin de naviguer vers d'autres sections (accès rapide) ; les
-  // autres composants de section n'attendent aucune prop.
+  // L'accueil renvoie vers d'autres sections ; les autres composants de
+  // section n'attendent aucune prop.
   if (section === "home") {
-    const HomeComponent = SECTIONS_CONFIG.home.component as ComponentType<{
+    const Component = SECTIONS_CONFIG[section].component as ComponentType<{
       onNavigate?: (section: SidebarSection) => void;
     }>;
-    return <HomeComponent onNavigate={onNavigate} />;
+    return <Component onNavigate={onNavigate} />;
   }
   const ActiveComponent =
     SECTIONS_CONFIG[section]?.component || SECTIONS_CONFIG.home.component;
@@ -83,16 +75,27 @@ const renderSettingsContent = (
 
 function App() {
   const { t, i18n } = useTranslation();
-  const campusMode = isCampusMode();
-  const [onboardingStep, setOnboardingStep] = useState<OnboardingStep | null>(
-    null,
-  );
-  // Track if this is a returning user who just needs to grant permissions
-  // (vs a new user who needs full onboarding including model selection)
-  const [isReturningUser, setIsReturningUser] = useState(false);
-  const [needsCampusFirstRun, setNeedsCampusFirstRun] = useState(false);
+  // `null` tant que l'état persisté n'a pas été lu.
+  const [isFirstRun, setIsFirstRun] = useState<boolean | null>(null);
+  const [customizing, setCustomizing] = useState(false);
   const [currentSection, setCurrentSection] = useState<SidebarSection>("home");
+
   const { settings, updateSetting } = useSettings();
+  const readiness = useSystemReadiness();
+  const { session: campusSessionState, refresh: refreshCampusStatus } =
+    useCampusStatus();
+
+  const flow = useOnboardingFlow({
+    readiness,
+    hasCampusSession: campusSessionState !== null,
+    isFirstRun,
+    onFinished: () => {
+      updateSetting("onboarding_completed", true).catch((e) => {
+        console.warn("Failed to persist onboarding completion:", e);
+      });
+      setIsFirstRun(false);
+    },
+  });
   const direction = getLanguageDirection(i18n.language);
   const refreshAudioDevices = useSettingsStore(
     (state) => state.refreshAudioDevices,
@@ -101,24 +104,19 @@ function App() {
     (state) => state.refreshOutputDevices,
   );
   const hasCompletedPostOnboardingInit = useRef(false);
-  const contentScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     checkOnboardingStatus();
   }, []);
 
-  useEffect(() => {
-    contentScrollRef.current?.scrollTo({ top: 0 });
-  }, [currentSection]);
-
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
-    if (campusMode) {
+    if (isCampusMode()) {
       commands.setCampusMode(true).catch((e) => {
         console.warn("Failed to set campus mode:", e);
       });
     }
-  }, [campusMode]);
+  }, []);
 
   // Initialize RTL direction when language changes
   useEffect(() => {
@@ -126,12 +124,14 @@ function App() {
   }, [i18n.language]);
 
   // Initialize Enigo, shortcuts, and refresh audio devices when main app loads.
-  // Les raccourcis sont enregistrés dès l'étape « tutorial » (et pas seulement
-  // à « done ») : sans ça, la dictée-test du premier lancement et toute
-  // saisie de raccourci pendant l'onboarding échouaient silencieusement.
+  // Les raccourcis sont enregistrés dès l'étape de première dictée (et pas
+  // seulement à la fin) : sans ça, la dictée-test du premier lancement et
+  // toute saisie de raccourci pendant le parcours échouaient silencieusement.
   useEffect(() => {
     const needsInit =
-      onboardingStep === "tutorial" || onboardingStep === "done";
+      flow.current === "firstDictation" ||
+      flow.current === "smartSetup" ||
+      (isFirstRun === false && flow.current === null);
     if (needsInit && !hasCompletedPostOnboardingInit.current) {
       hasCompletedPostOnboardingInit.current = true;
       Promise.all([
@@ -143,7 +143,7 @@ function App() {
       refreshAudioDevices();
       refreshOutputDevices();
     }
-  }, [onboardingStep, refreshAudioDevices, refreshOutputDevices]);
+  }, [flow.current, isFirstRun, refreshAudioDevices, refreshOutputDevices]);
 
   // Handle keyboard shortcuts for debug mode toggle
   useEffect(() => {
@@ -263,16 +263,18 @@ function App() {
   // Session campus révoquée (401) : retour à l'onboarding.
   useEffect(() => {
     const unlisten = listen("campus-session-invalid", () => {
+      // La session disparue, `useCampusStatus` la relit et le parcours
+      // réintroduit de lui-même l'étape de connexion.
       clearCampusSession()
         .then(() => {
-          setOnboardingStep("campus");
+          refreshCampusStatus();
           showAttentionToast("error", t("campus.sessionExpiredTitle"), {
             description: t("campus.sessionExpired"),
           });
         })
         .catch((e) => {
           console.error("Failed to clear campus session:", e);
-          setOnboardingStep("campus");
+          refreshCampusStatus();
         });
     });
     return () => {
@@ -298,12 +300,12 @@ function App() {
   // Déconnexion demandée depuis la section Compte : retour à l'onboarding.
   useEffect(() => {
     const unlisten = listen("campus-logout-requested", () => {
-      setOnboardingStep("campus");
+      refreshCampusStatus();
     });
     return () => {
       unlisten.then((fn) => fn());
     };
-  }, []);
+  }, [refreshCampusStatus]);
 
   useEffect(() => {
     const unlisten = listen("notification-attention-seen", () => {
@@ -399,139 +401,65 @@ function App() {
     }
   };
 
+  /**
+   * Détermine une seule chose : s'agit-il d'une première ouverture ?
+   *
+   * Le reste du parcours est calculé depuis l'état système par
+   * `useOnboardingFlow`. Un utilisateur qui se servait déjà de Nova est
+   * reconnu par le réglage historique `onboarding_completed` (ou, en campus,
+   * par une session valide) et ne verra jamais la présentation ni la
+   * configuration initiale — seulement d'éventuelles étapes correctives.
+   */
   const checkOnboardingStatus = async () => {
     try {
       const settingsResult = await commands.getAppSettings();
       const hasCompletedOnboarding =
         settingsResult.status === "ok" &&
         settingsResult.data.onboarding_completed === true;
-      const currentPlatform = platform();
 
-      // En mode campus, une session valide équivaut à un onboarding terminé.
       let campusSession = null;
       if (isCampusMode()) {
         campusSession = await loadCampusSession();
         if (campusSession && !hasCompletedOnboarding) {
           await completeCampusOnboarding().catch(() => {});
         }
-        if (campusSession) {
-          await refreshCampusContext().catch(() => undefined);
-          const organizationId =
-            useCampusStore.getState().context.organization.id;
-          const firstRun = loadCampusFirstRun(
-            firstRunStorageKey(organizationId, campusSession.email),
-          );
-          setNeedsCampusFirstRun(!firstRun.completed);
-        }
       }
 
-      const onboardingCompleteForMode = isCampusMode()
-        ? campusSession !== null
-        : hasCompletedOnboarding;
+      const alreadyConfigured =
+        hasCompletedOnboarding || campusSession !== null;
+      reconcileWithLegacySetting(alreadyConfigured);
+      setIsFirstRun(!alreadyConfigured);
 
-      if (onboardingCompleteForMode) {
-        // Returning user - check if they need to grant permissions first
-        setIsReturningUser(true);
-
-        if (currentPlatform === "macos") {
-          try {
+      // Une permission révoquée doit pouvoir être réaccordée : sur un
+      // lancement démarré en arrière-plan, la fenêtre doit alors se montrer.
+      if (alreadyConfigured) {
+        const currentPlatform = platform();
+        try {
+          if (currentPlatform === "macos") {
             const [hasAccessibility, hasMicrophone] = await Promise.all([
               checkAccessibilityPermission(),
               checkMicrophonePermission(),
             ]);
             if (!hasAccessibility || !hasMicrophone) {
               await revealMainWindowForPermissions();
-              setOnboardingStep("accessibility");
-              return;
             }
-          } catch (e) {
-            console.warn("Failed to check macOS permissions:", e);
-            // If we can't check, proceed to main app and let them fix it there
-          }
-        }
-
-        if (currentPlatform === "windows") {
-          try {
-            const microphoneStatus =
+          } else if (currentPlatform === "windows") {
+            const status =
               await commands.getWindowsMicrophonePermissionStatus();
-            if (
-              microphoneStatus.supported &&
-              microphoneStatus.overall_access === "denied"
-            ) {
+            if (status.supported && status.overall_access === "denied") {
               await revealMainWindowForPermissions();
-              setOnboardingStep("accessibility");
-              return;
             }
-          } catch (e) {
-            console.warn("Failed to check Windows microphone permissions:", e);
-            // If we can't check, proceed to main app and let them fix it there
           }
+        } catch (e) {
+          console.warn("Failed to check permissions:", e);
         }
-
-        setOnboardingStep(
-          isCampusMode() &&
-            campusSession &&
-            !loadCampusFirstRun(
-              firstRunStorageKey(
-                useCampusStore.getState().context.organization.id,
-                campusSession.email,
-              ),
-            ).completed
-            ? "campus-first-run"
-            : "done",
-        );
-      } else {
-        // New user - start full onboarding
-        setIsReturningUser(false);
-        setOnboardingStep("accessibility");
       }
     } catch (error) {
       console.error("Failed to check onboarding status:", error);
-      setOnboardingStep("accessibility");
+      // En cas d'échec de lecture, on traite comme une première ouverture :
+      // mieux vaut un parcours de trop qu'une application inutilisable.
+      setIsFirstRun(true);
     }
-  };
-
-  const handleAccessibilityComplete = () => {
-    // Returning users already have models, skip to main app
-    // New users need to select a model (personal) or authenticate (campus)
-    if (isReturningUser) {
-      setOnboardingStep(
-        campusMode && needsCampusFirstRun ? "campus-first-run" : "done",
-      );
-    } else if (campusMode) {
-      setOnboardingStep("campus");
-    } else {
-      setOnboardingStep("model");
-    }
-  };
-
-  const handleModelSelected = () => {
-    // Modèle choisi (téléchargement lancé) : enchaîne sur les étapes
-    // ajoutées — choix du Style, raccourcis personnels, puis mini-tutoriel —
-    // avant de basculer sur l'app principale.
-    setOnboardingStep("style");
-  };
-
-  const handleCampusOnboardingComplete = () => {
-    setNeedsCampusFirstRun(true);
-    setOnboardingStep("campus-first-run");
-  };
-
-  const handleCampusFirstRunComplete = () => {
-    setNeedsCampusFirstRun(false);
-    setOnboardingStep("done");
-  };
-
-  const handleStyleDone = () => {
-    setOnboardingStep("variables");
-  };
-
-  const handleVariablesDone = () => {
-    setOnboardingStep("tutorial");
-  };
-
-  const handleTutorialDone = () => {
-    setOnboardingStep("done");
   };
 
   // Rendered once around every step below (including onboarding) so
@@ -560,8 +488,9 @@ function App() {
     />
   );
 
-  // Still checking onboarding status
-  if (onboardingStep === null) {
+  // L'état système n'est pas encore connu : ne rien afficher plutôt que de
+  // faire clignoter un écran de parcours qui sera peut-être sauté.
+  if (isFirstRun === null || !readiness.loaded || !flow.initialized) {
     return null;
   }
 
@@ -569,92 +498,91 @@ function App() {
   // stable wrapper around this node, so crossing between onboarding steps and
   // the main app never remounts it (which would drop any in-flight toast).
   let content: ReactNode;
-  if (onboardingStep === "accessibility") {
+  if (flow.current === "permissions") {
+    content = <AccessibilityOnboarding onComplete={flow.next} />;
+  } else if (flow.current === "campus") {
     content = (
-      <AccessibilityOnboarding onComplete={handleAccessibilityComplete} />
-    );
-  } else if (onboardingStep === "model") {
-    content = <Onboarding onModelSelected={handleModelSelected} />;
-  } else if (onboardingStep === "campus") {
-    content = <CampusOnboarding onComplete={handleCampusOnboardingComplete} />;
-  } else if (onboardingStep === "campus-first-run") {
-    content = <CampusFirstRun onComplete={handleCampusFirstRunComplete} />;
-  } else if (onboardingStep === "style") {
-    content = (
-      <StyleOnboarding
-        stepIndex={POST_MODEL_STEPS.indexOf("style")}
-        stepCount={POST_MODEL_STEPS.length}
-        onDone={handleStyleDone}
+      <CampusOnboarding
+        onComplete={() => {
+          refreshCampusStatus();
+          flow.next();
+        }}
       />
     );
-  } else if (onboardingStep === "variables") {
+  } else if (flow.current === "welcome") {
+    content = <WelcomeStep onContinue={flow.next} />;
+  } else if (flow.current === "model") {
     content = (
-      <QuickVariablesOnboarding
-        stepIndex={POST_MODEL_STEPS.indexOf("variables")}
-        stepCount={POST_MODEL_STEPS.length}
-        onDone={handleVariablesDone}
+      <Onboarding
+        onModelSelected={() => {
+          readiness.refresh();
+          flow.next();
+        }}
       />
     );
-  } else if (onboardingStep === "tutorial") {
+  } else if (flow.current === "smartSetup") {
+    content = customizing ? (
+      <CustomizeStep
+        stepIndex={flow.displayIndex}
+        stepCount={flow.displayCount}
+        onBack={() => setCustomizing(false)}
+        onContinue={() => {
+          setCustomizing(false);
+          flow.next();
+        }}
+      />
+    ) : (
+      <SmartSetupStep
+        readiness={readiness}
+        stepIndex={flow.displayIndex}
+        stepCount={flow.displayCount}
+        onBack={flow.canGoBack ? flow.back : undefined}
+        onAccept={flow.next}
+        onCustomize={() => setCustomizing(true)}
+      />
+    );
+  } else if (flow.current === "writingStyles") {
+    content = (
+      <WritingStylesIntroStep
+        stepIndex={flow.displayIndex}
+        stepCount={flow.displayCount}
+        onBack={flow.back}
+        onContinue={flow.next}
+        onSkip={flow.skip}
+      />
+    );
+  } else if (flow.current === "firstDictation") {
     content = (
       <TutorialOnboarding
-        stepIndex={POST_MODEL_STEPS.indexOf("tutorial")}
-        stepCount={POST_MODEL_STEPS.length}
-        onDone={handleTutorialDone}
+        stepIndex={flow.displayIndex}
+        stepCount={flow.displayCount}
+        onDone={flow.next}
       />
     );
   } else {
     content = (
-      <div
+      <AppShell
         dir={direction}
-        className="h-screen flex flex-col select-none cursor-default"
+        activeSection={currentSection}
+        onSectionChange={setCurrentSection}
+        banner={
+          <>
+            <WhatsNewGate />
+            <LexiconSuggestions />
+            <AccessibilityPermissions />
+          </>
+        }
       >
-        <WhatsNewGate />
-        <LexiconSuggestions />
-        {/* Main content area that takes remaining space */}
-        <div
-          className={`flex min-h-0 flex-1 overflow-hidden ${
-            campusMode ? "flex-col md:flex-row" : "flex-row"
-          }`}
-        >
-          {campusMode ? (
-            <CampusNavigation
-              activeSection={currentSection}
-              onNavigate={setCurrentSection}
-            />
-          ) : (
-            <Sidebar
-              activeSection={currentSection}
-              onSectionChange={setCurrentSection}
-            />
-          )}
-          {/* Scrollable content area */}
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <div ref={contentScrollRef} className="flex-1 overflow-y-auto">
-              <div
-                className={
-                  campusMode
-                    ? "mx-auto flex w-full max-w-[960px] flex-col px-6 py-8 sm:px-8 md:px-10 lg:px-12 lg:py-10"
-                    : "flex flex-col items-center gap-4 p-4"
-                }
-              >
-                <AccessibilityPermissions />
-                <Suspense
-                  fallback={
-                    <div className="flex justify-center py-16" role="status">
-                      <div className="w-7 h-7 border-2 border-logo-primary border-t-transparent rounded-full animate-spin" />
-                    </div>
-                  }
-                >
-                  {renderSettingsContent(currentSection, setCurrentSection)}
-                </Suspense>
-              </div>
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-16" role="status">
+              <div className="w-7 h-7 border-2 border-accent border-t-transparent rounded-full animate-spin" />
             </div>
-          </div>
-        </div>
-        {/* Fixed footer at bottom */}
-        {!campusMode && <Footer />}
-      </div>
+          }
+        >
+          {renderSettingsContent(currentSection, setCurrentSection)}
+        </Suspense>
+      </AppShell>
     );
   }
 
@@ -662,6 +590,9 @@ function App() {
     <>
       {toaster}
       {content}
+      {/* Monté hors du shell : la palette est déclenchée par un raccourci
+          global et ne dépend d'aucun écran en particulier. */}
+      <NovaCommandsHost />
     </>
   );
 }

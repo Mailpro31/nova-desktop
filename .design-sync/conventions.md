@@ -43,19 +43,19 @@ une classe utilitaire que l'app n'emploie pas aujourd'hui **n'existe pas** dans
 `_ds/<dossier>/styles.css`. La voie sûre est donc la variable CSS — toutes sont
 définies dans `:root` et basculent avec le thème :
 
-| Token | Rôle |
-|---|---|
-| `--color-background` | fond de fenêtre |
-| `--color-sidebar` | barre latérale |
-| `--color-surface` | cartes, groupes de réglages |
-| `--color-inset` | champs, zones en creux |
-| `--color-text` / `--color-text-secondary` | texte principal / secondaire |
-| `--color-hairline` | filets de séparation (1 px) |
-| `--color-accent` / `--color-accent-hover` | **bleu Apple `#0A84FF` — action, et rien d'autre** |
-| `--color-success` / `--color-danger` | statut |
-| `--color-ultra` | verrou de palier « Nova Ultra » (mode personnel uniquement) |
-| `--color-mid-gray` | gris neutre, base des voiles `color-mix` |
-| `--orb-s0` … `--orb-s4`, `--orb-glow` | dégradé de l'orbe de marque |
+| Token                                     | Rôle                                                        |
+| ----------------------------------------- | ----------------------------------------------------------- |
+| `--color-background`                      | fond de fenêtre                                             |
+| `--color-sidebar`                         | barre latérale                                              |
+| `--color-surface`                         | cartes, groupes de réglages                                 |
+| `--color-inset`                           | champs, zones en creux                                      |
+| `--color-text` / `--color-text-secondary` | texte principal / secondaire                                |
+| `--color-hairline`                        | filets de séparation (1 px)                                 |
+| `--color-accent` / `--color-accent-hover` | **bleu Apple `#0A84FF` — action, et rien d'autre**          |
+| `--color-success` / `--color-danger`      | statut                                                      |
+| `--color-ultra`                           | verrou de palier « Nova Ultra » (mode personnel uniquement) |
+| `--color-mid-gray`                        | gris neutre, base des voiles `color-mix`                    |
+| `--orb-s0` … `--orb-s4`, `--orb-glow`     | dégradé de l'orbe de marque                                 |
 
 Règle d'accent : **une seule couleur d'action**, l'accent bleu. Les couleurs de
 section (`SECTION_COLORS`) sont des repères de catégorie, jamais des actions.

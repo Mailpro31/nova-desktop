@@ -14,18 +14,16 @@ export const SettingsGroup: React.FC<SettingsGroupProps> = ({
   return (
     <section className="space-y-3">
       {title && (
-        <div className="px-1">
-          <h2 className="text-base font-semibold leading-tight text-text">
+        <div className="px-4">
+          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wide">
             {title}
           </h2>
           {description && (
-            <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-              {description}
-            </p>
+            <p className="text-xs text-text-secondary mt-1">{description}</p>
           )}
         </div>
       )}
-      <div className="overflow-visible border border-hairline bg-surface [border-radius:var(--nova-radius-card)]">
+      <div className="bg-surface border border-hairline rounded-card overflow-visible">
         <div className="divide-y divide-hairline">{children}</div>
       </div>
     </section>

@@ -9,7 +9,7 @@ import { TierComparisonTable } from "../license/TierComparisonTable";
  */
 export const AccountSettings: React.FC = () => {
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
+    <div className="space-y-6">
       <LicenseSettings />
       <TierComparisonTable />
     </div>

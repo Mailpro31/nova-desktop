@@ -171,7 +171,7 @@ export const MeetingSettings: React.FC = () => {
   const multiple = apps.length > 1;
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
+    <div className="space-y-6">
       <SettingsGroup
         title={t("meeting.title")}
         description={t("meeting.description")}

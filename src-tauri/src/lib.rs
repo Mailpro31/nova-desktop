@@ -8,6 +8,7 @@ mod catalog;
 pub mod cli;
 mod clipboard;
 mod commands;
+mod dictation_state;
 mod helpers;
 mod input;
 mod lexicon_learning;
@@ -21,6 +22,7 @@ mod meeting_live;
 mod meeting_segmenter;
 mod meeting_session;
 mod meeting_transcript;
+mod nova_commands;
 mod overlay;
 mod performance;
 pub mod portable;
@@ -111,7 +113,7 @@ fn build_console_filter() -> env_filter::Filter {
     builder.build()
 }
 
-fn show_main_window(app: &AppHandle) {
+pub(crate) fn show_main_window(app: &AppHandle) {
     if let Some(main_window) = app.get_webview_window("main") {
         if let Err(e) = main_window.unminimize() {
             log::error!("Failed to unminimize webview window: {}", e);
@@ -646,6 +648,9 @@ pub fn run(cli_args: CliArgs) {
             commands::get_app_dir_path,
             commands::get_app_settings,
             commands::get_default_settings,
+            nova_commands::nova_command_capture_selection,
+            nova_commands::nova_command_replace,
+            nova_commands::nova_command_diagnostics,
             commands::campus::get_campus_config,
             commands::campus::fetch_campus_server_config,
             commands::campus::set_campus_mode,
@@ -750,6 +755,8 @@ pub fn run(cli_args: CliArgs) {
             managers::history::HistoryUpdatePayload,
             managers::transcription::StreamTextEvent,
             managers::transcription::StreamPhaseEvent,
+            nova_commands::NovaCommandCaptureEvent,
+            dictation_state::DictationStateEvent,
         ]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds

@@ -21,7 +21,10 @@
     "home": "בית",
     "configuration": "הגדרות",
     "account": "חשבון",
-    "styles": "עיבוד משלים"
+    "styles": "עיבוד משלים",
+    "aiSkills": "AI Skills",
+    "settings": "הגדרות",
+    "organization": "ארגון"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -180,6 +183,38 @@
         "checkFailed": "בדיקת ההרשאות נכשלה. נסה שוב.",
         "requestFailed": "בקשת ההרשאה נכשלה. נסה שוב."
       }
+    },
+    "back": "חזרה",
+    "welcome": {
+      "title": "כתבו במהירות המחשבה",
+      "subtitle": "Nova הופך את הקול שלכם לטקסט ברור בכל מקום במחשב.",
+      "providedBy": "סופק על ידי {{organization}}"
+    },
+    "smartSetup": {
+      "title": "הגדרה מומלצת",
+      "subtitle": "Nova הכין את ההגדרות האלה לפי המחשב שלכם. אפשר לשנות הכול בהמשך.",
+      "use": "להשתמש בהגדרה המומלצת",
+      "customize": "התאמה אישית",
+      "row": {
+        "microphone": "מיקרופון",
+        "engine": "עיבוד",
+        "shortcut": "קיצור דרך",
+        "language": "שפה"
+      },
+      "value": {
+        "notSet": "לא הוגדר",
+        "autoDetected": "זוהתה אוטומטית",
+        "localEngine": "במכשיר הזה"
+      }
+    },
+    "customize": {
+      "title": "כמה בחירות",
+      "subtitle": "כל השאר נשאר בערך המומלץ וניתן לשינוי בהגדרות."
+    },
+    "writingStyles": {
+      "introTitle": "Nova עושה יותר מתמלול",
+      "introSubtitle": "דברו, ו-Nova כותב בסגנון שמתאים למה שאתם עושים.",
+      "unavailable": "עדיין אין סגנון כתיבה זמין."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "פתח",
     "copy": "העתק",
     "clear": "נקה",
-    "noOptionsFound": "לא נמצאו אפשרויות"
+    "noOptionsFound": "לא נמצאו אפשרויות",
+    "cancel": "ביטול",
+    "remove": "הסרה",
+    "selectOption": "בחרו אפשרות…"
   },
   "accessibility": {
     "permissionsDescription": "Nova צריך הרשאות נגישות כדי להקליד את הטקסט המתומלל.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "הכתבה קולית שמספק המוסד שלכם, עם הדוא\"ל האקדמי שלכם.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "לא ניתן להגיע לשרת. בדקו את החיבור ונסו שוב.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "סגנונות כתיבה"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "שלחו מסמך טקסט לשרת המוסד כדי לחלץ אוצר מילים ושמות פרטיים. רק המונחים שחולצו נשמרים — לא המסמך עצמו.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "הקמפוס מחובר",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local פעיל"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "ארגון",
+      "subtitle": "המוסד שלכם, מה הוא מספק, ולאן הולכים הנתונים שלכם.",
+      "connection": "חיבור",
+      "managedBy": "מנוהל על ידי {{organization}}",
+      "identityTitle": "זהות"
+    },
+    "provides": {
+      "title": "מה המוסד שלכם מספק",
+      "transcription": {
+        "title": "זיהוי דיבור",
+        "description": "ההקלטה נשלחת לשרת המוסד, שהופך אותה לטקסט."
+      },
+      "rewriting": {
+        "title": "סגנונות כתיבה",
+        "description": "הטקסט והסגנון שנבחר נשלחים לשרת המוסד, שכותב אותו מחדש."
+      },
+      "vocabulary": {
+        "title": "אוצר מילים משותף",
+        "description": "מונחים של המוסד ושלכם עוזרים לאיית אותם נכון."
+      },
+      "formatting": {
+        "title": "כללי עיצוב",
+        "description": "כללי המוסד ושלכם מוחלים בכל כתיבה מחדש."
+      },
+      "paused": "מושהה כרגע — שרת המוסד אינו זמין."
+    },
+    "offline": {
+      "title": "כשהשרת אינו זמין",
+      "body": "ההכתבה ממשיכה לעבוד במכשיר הזה. זיהוי הדיבור רץ מקומית; סגנונות, אוצר מילים משותף, כללי עיצוב ו־AI Skills חוזרים עם החיבור."
+    },
+    "data": {
+      "title": "לאן הולכים הנתונים שלכם",
+      "audio": "השמע של ההכתבה",
+      "text": "טקסט שנשלח לכתיבה מחדש",
+      "vocabulary": "אוצר מילים, קיצורים וכללים",
+      "history": "היסטוריה",
+      "recordings": "הקלטות",
+      "appName": "שם היישום שבחזית",
+      "onDevice": "המכשיר הזה",
+      "onCampus": "שרת המוסד",
+      "note": "שרת המוסד סופר כמה תמלולים וכתיבות מחדש אתם מבצעים בכל יום. הוא אינו שומר את התוכן."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "פעלו על הטקסט שאתם מסמנים.",
+    "preview": "תצוגה מקדימה",
+    "previewHint": "‏AI Skills נמצאים כעת בבדיקה.",
+    "essentials": "העיקר",
+    "howItWorks": "איך זה עובד",
+    "how": {
+      "select": "סמנו טקסט בכל יישום",
+      "open": "פתחו את Nova עם קיצור הדרך שלכם",
+      "choose": "בחרו AI Skill",
+      "review": "קראו את התוצאה לפני שמשהו משתנה"
+    },
+    "privacy": "מעובד דרך חיבור ה־Campus שלכם.",
+    "privacyOffline": "‏AI Skills פועלים על שרת המוסד שלכם, שאינו זמין כרגע."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "הסבר",
+        "description": "להבין טקסט מורכב בבהירות."
+      },
+      "summarize": {
+        "name": "סכם",
+        "description": "לצמצם את הבחירה לעיקריה."
+      },
+      "improve": {
+        "name": "שפר",
+        "description": "להרוויח בבהירות ובניסוח."
+      },
+      "translate": {
+        "name": "תרגם",
+        "description": "לתרגם את הטקסט המסומן."
+      },
+      "ask": {
+        "name": "שאלו את Nova",
+        "description": "לתת ל־Nova הוראה מסוימת."
+      }
+    },
+    "askPlaceholder": "שאלו את Nova…",
+    "ask": "שאל",
+    "running": "‏Nova עובדת…",
+    "result": "תוצאה",
+    "replace": "החלף",
+    "copy": "העתק",
+    "close": "סגור",
+    "copied": "הועתק",
+    "experimentTitle": "ניסיוני",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "בחרו טקסט בכל יישום והפעילו עליו פעולת בינה מלאכותית. עדיין לא נבדק בכל היישומים.",
+    "shortcutMissing": "עדיין לא הוקצה קיצור דרך. הגדירו קיצור ל־Nova Commands בהגדרות — הלכידה פועלת רק כל עוד היישום שלכם נמצא בחזית.",
+    "runDiagnostics": "הרץ אבחון",
+    "error": {
+      "busy": "פקודה כבר פועלת.",
+      "nonTextClipboard": "בלוח הגזירים יש משהו שאינו טקסט, ו־Nova לא תוכל להחזירו. העתיקו אותו קודם למקום אחר.",
+      "noSelection": "סמנו טקסט לפני פתיחת Nova.",
+      "unsupported": "בשלב זה Nova Commands זמינה ב־Windows בלבד.",
+      "targetChanged": "היישום המקורי כבר אינו פעיל. העתיקו את התוצאה במקום זאת.",
+      "offline": "‏AI Skills מחייבים חיבור ל־Campus.",
+      "failed": "‏Nova לא הצליחה לטפל בבקשה הזו.",
+      "emptyResult": "‏Nova החזירה תוצאה ריקה.",
+      "busyTitle": "כבר פועל",
+      "nonTextClipboardTitle": "לא ניתן לשחזר את לוח הגזירים",
+      "noSelectionTitle": "לא סומן טקסט",
+      "unsupportedTitle": "לא זמין כאן",
+      "targetChangedTitle": "החלון השתנה",
+      "offlineTitle": "‏Campus אינו זמין",
+      "failedTitle": "הפקודה נכשלה",
+      "emptyResultTitle": "אין מה להציג"
+    },
+    "original": "מקור"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "בודק…"
+      },
+      "ready": {
+        "title": "‏Nova מוכנה."
+      },
+      "campusLocal": {
+        "title": "‏Nova Local פעיל",
+        "detail": "ההכתבה עדיין עובדת. יכולות הבינה המלאכותית ישובו עם Campus."
+      },
+      "permissionsNeeded": {
+        "title": "נדרשת גישה למיקרופון",
+        "detail": "‏Nova זקוקה להרשאה למיקרופון לפני שתוכל להכתיב."
+      },
+      "microphoneMissing": {
+        "title": "לא זוהה מיקרופון",
+        "detail": "חברו מיקרופון ובחרו בו בהגדרות."
+      },
+      "modelMissing": {
+        "title": "השלימו את הגדרת Nova",
+        "detail": "עדיין נדרש להוריד מודל דיבור."
+      },
+      "shortcutMissing": {
+        "title": "‏Nova מוכנה",
+        "detail": "הקצו קיצור דרך וההכתבה תהיה במרחק הקשה אחת."
+      },
+      "dictateHint": "להכתבה",
+      "openSettings": "פתיחת ההגדרות",
+      "listening": {
+        "title": "‏Nova מקשיבה…"
+      },
+      "processing": {
+        "title": "‏Nova עובדת…"
+      },
+      "insertionFailed": {
+        "title": "ההדבקה נכשלה",
+        "detail": "ההכתבה שלכם בלוח הגזירים."
+      }
+    },
+    "active": {
+      "title": "פעיל",
+      "style": "סגנון כתיבה",
+      "styleAutomatic": "אוטומטי",
+      "engine": "מנוע",
+      "microphone": "מיקרופון",
+      "lastDictation": "ההכתבה האחרונה"
+    },
+    "engine": {
+      "campus": "השרת של המוסד שלכם",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "צעדים ראשונים",
+      "campus": "חשבון Campus מקושר",
+      "voice": "הקול מוכן",
+      "firstDictation": "הכתבה ראשונה",
+      "style": "לנסות סגנון כתיבה",
+      "aiSkill": "להשתמש ב־AI Skill הראשון",
+      "done": "בוצע",
+      "todo": "נותר"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "אוטומטי",
+      "builtin": "סגנונות",
+      "personal": "הסגנונות שלכם"
+    },
+    "automaticHow": "‏Nova קוראת את שם היישום שבחזית ומחילה את הסגנון המתאים. יישומים שחסמתם אינם נבדקים לעולם.",
+    "active": "פעיל",
+    "emptyPersonal": "עדיין לא יצרתם סגנון.",
+    "rowActions": "פעולות סגנון",
+    "error": {
+      "save": "לא ניתן היה לשמור את הסגנון.",
+      "delete": "לא ניתן היה למחוק את הסגנון."
+    }
+  },
+  "history": {
+    "subtitle": "כל מה שהכתבתם ב־Nova.",
+    "group": {
+      "today": "היום",
+      "yesterday": "אתמול",
+      "week": "השבוע",
+      "older": "קודם לכן"
+    },
+    "searchPlaceholder": "חיפוש בהכתבות",
+    "noMatch": "שום דבר לא תואם ל־«{{query}}».",
+    "empty": "ההכתבות שלכם יופיעו כאן.",
+    "copy": "העתק",
+    "copied": "הועתק"
+  },
+  "settingsNav": {
+    "voice": "קול"
+  },
+  "personalization": {
+    "appearance": "מראה",
+    "orb": "ספירה",
+    "overlay": "שכבה"
   }
 }

@@ -102,12 +102,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
         opacity: coords ? 1 : 0,
       }}
       role="tooltip"
-      className="whitespace-normal border border-hairline bg-surface px-3 py-2 text-xs leading-relaxed text-text shadow-[var(--nova-shadow-floating)] [border-radius:var(--nova-radius-control)] transition-opacity duration-150 motion-reduce:transition-none"
+      className="px-3 py-2 text-xs leading-relaxed text-text bg-surface border border-hairline rounded-control shadow-floating whitespace-normal transition-opacity duration-[180ms] motion-reduce:transition-none"
     >
       {children}
       <div
         style={{ left: coords?.arrowLeft ?? 0 }}
-        className={`absolute ${arrowClasses} h-0 w-0 -translate-x-1/2 transform border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-hairline`}
+        className={`absolute ${arrowClasses} transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-hairline-strong`}
       />
     </div>,
     document.body,

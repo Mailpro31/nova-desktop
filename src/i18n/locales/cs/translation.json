@@ -21,7 +21,10 @@
     "home": "Domů",
     "configuration": "Konfigurace",
     "account": "Účet",
-    "styles": "Následné zpracování"
+    "styles": "Následné zpracování",
+    "aiSkills": "AI Skills",
+    "settings": "Nastavení",
+    "organization": "Organizace"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -180,6 +183,38 @@
         "checkFailed": "Nepodařilo se zkontrolovat oprávnění. Zkuste to prosím znovu.",
         "requestFailed": "Nepodařilo se požádat o oprávnění. Zkuste to prosím znovu."
       }
+    },
+    "back": "Zpět",
+    "welcome": {
+      "title": "Pište rychlostí své myšlenky",
+      "subtitle": "Nova promění váš hlas v jasný text kdekoli v počítači.",
+      "providedBy": "Poskytuje {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Doporučené nastavení",
+      "subtitle": "Nova připravila tato nastavení podle vašeho počítače. Kdykoli je můžete změnit.",
+      "use": "Použít doporučené nastavení",
+      "customize": "Přizpůsobit",
+      "row": {
+        "microphone": "Mikrofon",
+        "engine": "Zpracování",
+        "shortcut": "Zkratka",
+        "language": "Jazyk"
+      },
+      "value": {
+        "notSet": "Nenastaveno",
+        "autoDetected": "Zjištěno automaticky",
+        "localEngine": "V tomto zařízení"
+      }
+    },
+    "customize": {
+      "title": "Několik voleb",
+      "subtitle": "Vše ostatní si ponechá doporučenou hodnotu a lze to změnit v Nastavení."
+    },
+    "writingStyles": {
+      "introTitle": "Nova umí víc než přepis",
+      "introSubtitle": "Mluvte a Nova píše stylem, který odpovídá vaší práci.",
+      "unavailable": "Zatím není k dispozici žádný styl psaní."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Otevřít",
     "copy": "Kopírovat",
     "clear": "Vymazat",
-    "noOptionsFound": "Nenalezeny žádné možnosti"
+    "noOptionsFound": "Nenalezeny žádné možnosti",
+    "cancel": "Zrušit",
+    "remove": "Odebrat",
+    "selectOption": "Vyberte možnost…"
   },
   "accessibility": {
     "permissionsDescription": "Nova potřebuje oprávnění usnadnění přístupu, aby mohlo psát přepsaný text.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Hlasové diktování poskytované vaší institucí, s vaší školní adresou.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Server je nedostupný. Zkontrolujte připojení a zkuste to znovu.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Styly psaní"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Odešlete textový dokument na server instituce a získejte z něj slovník a vlastní jména. Ukládají se jen nalezené termíny — dokument nikoli.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Kampus připojen",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local je aktivní"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Organizace",
+      "subtitle": "Vaše instituce, co poskytuje a kam míří vaše data.",
+      "connection": "Připojení",
+      "managedBy": "Spravuje {{organization}}",
+      "identityTitle": "Identita"
+    },
+    "provides": {
+      "title": "Co poskytuje vaše instituce",
+      "transcription": {
+        "title": "Rozpoznávání řeči",
+        "description": "Nahrávka putuje na server vaší instituce, který z ní udělá text."
+      },
+      "rewriting": {
+        "title": "Styly psaní",
+        "description": "Text a zvolený styl putují na server vaší instituce, který text přepíše."
+      },
+      "vocabulary": {
+        "title": "Sdílený slovník",
+        "description": "Termíny instituce i vaše vlastní pomáhají rozpoznávání i přepisu psát je správně."
+      },
+      "formatting": {
+        "title": "Pravidla formátování",
+        "description": "Pravidla instituce i vaše vlastní se uplatní při každém přepisu."
+      },
+      "paused": "Nyní pozastaveno — server instituce je nedostupný."
+    },
+    "offline": {
+      "title": "Když je server nedostupný",
+      "body": "Diktování na tomto zařízení funguje dál. Rozpoznávání řeči běží lokálně; styly, sdílený slovník, pravidla formátování a AI Skills se vrátí s připojením."
+    },
+    "data": {
+      "title": "Kam míří vaše data",
+      "audio": "Zvuk diktování",
+      "text": "Text odeslaný k přepisu",
+      "vocabulary": "Slovník, zkratky a pravidla",
+      "history": "Historie",
+      "recordings": "Nahrávky",
+      "appName": "Název aplikace v popředí",
+      "onDevice": "Toto zařízení",
+      "onCampus": "Server instituce",
+      "note": "Server vaší instituce počítá, kolik přepisů a úprav denně provedete. Jejich obsah neuchovává."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Pracujte s označeným textem.",
+    "preview": "Náhled",
+    "previewHint": "AI Skills se právě testují.",
+    "essentials": "To podstatné",
+    "howItWorks": "Jak to funguje",
+    "how": {
+      "select": "Označte text v libovolné aplikaci",
+      "open": "Otevřete Novu svou zkratkou",
+      "choose": "Vyberte AI Skill",
+      "review": "Přečtěte si výsledek, než se cokoli změní"
+    },
+    "privacy": "Zpracováno přes vaše připojení ke Campusu.",
+    "privacyOffline": "AI Skills běží na serveru vaší instituce, který je nyní nedostupný."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Vysvětlit",
+        "description": "Jasně porozumět složitému textu."
+      },
+      "summarize": {
+        "name": "Shrnout",
+        "description": "Zúžit výběr na jeho podstatu."
+      },
+      "improve": {
+        "name": "Vylepšit",
+        "description": "Získat na jasnosti a formulaci."
+      },
+      "translate": {
+        "name": "Přeložit",
+        "description": "Přeložit označený text."
+      },
+      "ask": {
+        "name": "Zeptat se Novy",
+        "description": "Dát Nově konkrétní pokyn."
+      }
+    },
+    "askPlaceholder": "Zeptat se Novy…",
+    "ask": "Zeptat se",
+    "running": "Nova pracuje…",
+    "result": "Výsledek",
+    "replace": "Nahradit",
+    "copy": "Kopírovat",
+    "close": "Zavřít",
+    "copied": "Zkopírováno",
+    "experimentTitle": "Experimentální",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Označte text v libovolné aplikaci a spusťte na něj akci s IA. Zatím neověřeno ve všech aplikacích.",
+    "shortcutMissing": "Zatím není přiřazena žádná zkratka. Nastavte ji pro Nova Commands v Nastavení — zachycení funguje jen tehdy, když je vaše aplikace v popředí.",
+    "runDiagnostics": "Spustit diagnostiku",
+    "error": {
+      "busy": "Jiný příkaz už probíhá.",
+      "nonTextClipboard": "Schránka obsahuje něco jiného než text a Nova by to nedokázala vrátit zpět. Zkopírujte to nejprve jinam.",
+      "noSelection": "Než otevřete Novu, označte text.",
+      "unsupported": "Nova Commands je zatím dostupná jen ve Windows.",
+      "targetChanged": "Původní aplikace už není aktivní. Zkopírujte výsledek místo toho.",
+      "offline": "AI Skills vyžadují připojení ke Campusu.",
+      "failed": "Nova nedokázala tento požadavek zpracovat.",
+      "emptyResult": "Nova vrátila prázdný výsledek.",
+      "busyTitle": "Již probíhá",
+      "nonTextClipboardTitle": "Schránku nelze obnovit",
+      "noSelectionTitle": "Není označen žádný text",
+      "unsupportedTitle": "Zde nedostupné",
+      "targetChangedTitle": "Okno se změnilo",
+      "offlineTitle": "Campus nedostupný",
+      "failedTitle": "Příkaz selhal",
+      "emptyResultTitle": "Není co zobrazit"
+    },
+    "original": "Originál"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Kontrola…"
+      },
+      "ready": {
+        "title": "Nova je připravena."
+      },
+      "campusLocal": {
+        "title": "Nova Local je aktivní",
+        "detail": "Diktování stále funguje. Funkce IA se vrátí s Campusem."
+      },
+      "permissionsNeeded": {
+        "title": "Je potřeba přístup k mikrofonu",
+        "detail": "Nova potřebuje svolení k mikrofonu, než bude moci diktovat."
+      },
+      "microphoneMissing": {
+        "title": "Nebyl nalezen žádný mikrofon",
+        "detail": "Připojte mikrofon a vyberte jej v nastavení."
+      },
+      "modelMissing": {
+        "title": "Dokončete nastavení Novy",
+        "detail": "Ještě je třeba stáhnout řečový model."
+      },
+      "shortcutMissing": {
+        "title": "Nova je připravena",
+        "detail": "Přiřaďte zkratku a diktování bude na jedno stisknutí."
+      },
+      "dictateHint": "pro diktování",
+      "openSettings": "Otevřít nastavení",
+      "listening": {
+        "title": "Nova poslouchá…"
+      },
+      "processing": {
+        "title": "Nova pracuje…"
+      },
+      "insertionFailed": {
+        "title": "Vložení se nezdařilo",
+        "detail": "Váš diktát je ve schránce."
+      }
+    },
+    "active": {
+      "title": "Aktivní",
+      "style": "Styl psaní",
+      "styleAutomatic": "Automatický",
+      "engine": "Motor",
+      "microphone": "Mikrofon",
+      "lastDictation": "Poslední diktování"
+    },
+    "engine": {
+      "campus": "Server vaší instituce",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Začínáme",
+      "campus": "Účet Campus propojen",
+      "voice": "Hlas připraven",
+      "firstDictation": "První diktování",
+      "style": "Vyzkoušet styl psaní",
+      "aiSkill": "Použít první AI Skill",
+      "done": "Hotovo",
+      "todo": "Zbývá"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Automatický",
+      "builtin": "Styly",
+      "personal": "Vaše styly"
+    },
+    "automaticHow": "Nova přečte název aplikace v popředí a použije odpovídající styl. Zablokované aplikace se nikdy nezkoumají.",
+    "active": "Aktivní",
+    "emptyPersonal": "Zatím jste nevytvořili žádný styl.",
+    "rowActions": "Akce stylu",
+    "error": {
+      "save": "Styl se nepodařilo uložit.",
+      "delete": "Styl se nepodařilo smazat."
+    }
+  },
+  "history": {
+    "subtitle": "Vše, co jste s Novou nadiktovali.",
+    "group": {
+      "today": "Dnes",
+      "yesterday": "Včera",
+      "week": "Tento týden",
+      "older": "Dříve"
+    },
+    "searchPlaceholder": "Hledat v diktátech",
+    "noMatch": "Nic neodpovídá „{{query}}“.",
+    "empty": "Tady se objeví vaše diktáty.",
+    "copy": "Kopírovat",
+    "copied": "Zkopírováno"
+  },
+  "settingsNav": {
+    "voice": "Hlas"
+  },
+  "personalization": {
+    "appearance": "Vzhled",
+    "orb": "Koule",
+    "overlay": "Překryv"
   }
 }

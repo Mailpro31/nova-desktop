@@ -178,9 +178,9 @@ export const Dialog: React.FC<DialogProps> = ({
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
-        className={`nova-dialog-panel flex max-h-[calc(100dvh-2rem)] w-full ${sizeClass} flex-col overflow-hidden border border-hairline bg-surface shadow-[var(--nova-shadow-modal)] outline-none [border-radius:var(--nova-radius-modal)] sm:max-h-[calc(100dvh-3rem)] ${className}`}
+        className={`nova-dialog-panel flex max-h-[calc(100dvh-2rem)] w-full ${sizeClass} flex-col overflow-hidden rounded-panel border border-hairline bg-surface shadow-overlay outline-none sm:max-h-[calc(100dvh-3rem)] ${className}`}
       >
-        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-hairline px-6 py-5">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-hairline px-4 py-2.5">
           <div className="min-w-0">
             <h2 id={titleId} className="text-base font-semibold text-text">
               {title}
@@ -188,7 +188,7 @@ export const Dialog: React.FC<DialogProps> = ({
             {description && (
               <p
                 id={descriptionId}
-                className="mt-1.5 text-sm leading-relaxed text-text-secondary"
+                className="mt-1 text-sm leading-relaxed text-text-secondary"
               >
                 {description}
               </p>
@@ -199,7 +199,7 @@ export const Dialog: React.FC<DialogProps> = ({
               type="button"
               onClick={() => onOpenChange(false)}
               aria-label={closeLabel}
-              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-transparent text-text-secondary transition-colors duration-150 hover:bg-inset hover:text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-chip border border-transparent text-text-secondary transition-colors duration-[120ms] hover:bg-mid-gray/10 hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -212,7 +212,7 @@ export const Dialog: React.FC<DialogProps> = ({
           {children}
         </div>
         {footer && (
-          <div className="flex shrink-0 flex-wrap justify-end gap-2 border-t border-hairline px-6 py-4">
+          <div className="flex shrink-0 flex-wrap justify-end gap-2 border-t border-hairline px-4 py-3">
             {footer}
           </div>
         )}

@@ -16,14 +16,14 @@ deux étapes est **optionnel et découvert plus tard**.
 
 ## 2. Tout a un bon défaut
 
-| Réglage | Défaut Campus |
-|---|---|
-| Style | **Automatique** (repli « Transcription améliorée ») |
-| Raccourci de dictée | `Ctrl+Espace`, affiché sur l'écran « C'est prêt » |
-| Reformulation | toujours active — **pas d'interrupteur** |
-| Moteur | serveur de l'établissement — aucun choix |
-| Langue | détection automatique côté serveur |
-| Signal sonore | activé (il rassure : Nova écoute) |
+| Réglage             | Défaut Campus                                       |
+| ------------------- | --------------------------------------------------- |
+| Style               | **Automatique** (repli « Transcription améliorée ») |
+| Raccourci de dictée | `Ctrl+Espace`, affiché sur l'écran « C'est prêt »   |
+| Reformulation       | toujours active — **pas d'interrupteur**            |
+| Moteur              | serveur de l'établissement — aucun choix            |
+| Langue              | détection automatique côté serveur                  |
+| Signal sonore       | activé (il rassure : Nova écoute)                   |
 
 Tout est modifiable **plus tard**, dans les réglages. Rien n'est demandé au
 départ.

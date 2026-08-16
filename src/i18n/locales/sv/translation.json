@@ -21,7 +21,10 @@
     "home": "Hem",
     "configuration": "Konfiguration",
     "account": "Konto",
-    "styles": "Efterbearbetning"
+    "styles": "Efterbearbetning",
+    "aiSkills": "AI Skills",
+    "settings": "Inställningar",
+    "organization": "Organisation"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -180,6 +183,38 @@
         "checkFailed": "Misslyckades med att kontrollera behörigheter. Försök igen.",
         "requestFailed": "Misslyckades med att begära behörighet. Försök igen."
       }
+    },
+    "back": "Tillbaka",
+    "welcome": {
+      "title": "Skriv i tankens hastighet",
+      "subtitle": "Nova gör din röst till tydlig text var som helst på datorn.",
+      "providedBy": "Tillhandahålls av {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Rekommenderad konfiguration",
+      "subtitle": "Nova har förberett inställningarna utifrån din dator. Du kan ändra allt senare.",
+      "use": "Använd rekommenderad konfiguration",
+      "customize": "Anpassa",
+      "row": {
+        "microphone": "Mikrofon",
+        "engine": "Bearbetning",
+        "shortcut": "Kortkommando",
+        "language": "Språk"
+      },
+      "value": {
+        "notSet": "Inte angivet",
+        "autoDetected": "Identifierat automatiskt",
+        "localEngine": "På den här enheten"
+      }
+    },
+    "customize": {
+      "title": "Några val",
+      "subtitle": "Allt annat behåller sitt rekommenderade värde och ändras i Inställningar."
+    },
+    "writingStyles": {
+      "introTitle": "Nova gör mer än att transkribera",
+      "introSubtitle": "Tala, så skriver Nova i den stil som passar det du gör.",
+      "unavailable": "Ingen skrivstil är tillgänglig ännu."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Öppna",
     "copy": "Kopiera",
     "clear": "Rensa",
-    "noOptionsFound": "Inga alternativ hittades"
+    "noOptionsFound": "Inga alternativ hittades",
+    "cancel": "Avbryt",
+    "remove": "Ta bort",
+    "selectOption": "Välj ett alternativ…"
   },
   "accessibility": {
     "permissionsDescription": "Nova behöver behörighet för hjälpmedel för att kunna skriva transkriberad text.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "Röstdiktering från ditt lärosäte, med din studentadress.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Servern går inte att nå. Kontrollera anslutningen och försök igen.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Skrivstilar"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Skicka ett textdokument till lärosätets server för att plocka ut ordlista och egennamn. Endast de funna termerna sparas — inte dokumentet.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Campus anslutet",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local aktivt"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Organisation",
+      "subtitle": "Ditt lärosäte, vad det tillhandahåller och vart dina data går.",
+      "connection": "Anslutning",
+      "managedBy": "Hanteras av {{organization}}",
+      "identityTitle": "Identitet"
+    },
+    "provides": {
+      "title": "Vad ditt lärosäte tillhandahåller",
+      "transcription": {
+        "title": "Taligenkänning",
+        "description": "Din inspelning skickas till lärosätets server, som gör text av den."
+      },
+      "rewriting": {
+        "title": "Skrivstilar",
+        "description": "Din text och vald stil skickas till lärosätets server, som skriver om den."
+      },
+      "vocabulary": {
+        "title": "Gemensam ordlista",
+        "description": "Termer från lärosätet och dina egna hjälper både igenkänning och omskrivning att stava rätt."
+      },
+      "formatting": {
+        "title": "Formateringsregler",
+        "description": "Lärosätets regler och dina egna tillämpas vid varje omskrivning."
+      },
+      "paused": "Pausat just nu — lärosätets server går inte att nå."
+    },
+    "offline": {
+      "title": "När servern inte går att nå",
+      "body": "Diktering fungerar fortfarande på den här enheten. Taligenkänningen körs lokalt; skrivstilar, gemensam ordlista, formateringsregler och AI Skills återkommer med anslutningen."
+    },
+    "data": {
+      "title": "Vart dina data går",
+      "audio": "Dikteringens ljud",
+      "text": "Text som skickas för omskrivning",
+      "vocabulary": "Ordlista, genvägar och regler",
+      "history": "Historik",
+      "recordings": "Inspelningar",
+      "appName": "Namnet på programmet i förgrunden",
+      "onDevice": "Den här enheten",
+      "onCampus": "Lärosätets server",
+      "note": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Arbeta med texten du markerar.",
+    "preview": "Förhandsvisning",
+    "previewHint": "AI Skills testas för närvarande.",
+    "essentials": "Det väsentliga",
+    "howItWorks": "Så fungerar det",
+    "how": {
+      "select": "Markera text i valfritt program",
+      "open": "Öppna Nova med ditt kortkommando",
+      "choose": "Välj en AI Skill",
+      "review": "Läs resultatet innan något ändras"
+    },
+    "privacy": "Behandlas via din Campus-anslutning.",
+    "privacyOffline": "AI Skills körs på din lärosätesserver, som just nu inte går att nå."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Förklara",
+        "description": "Förstå svår text klart."
+      },
+      "summarize": {
+        "name": "Sammanfatta",
+        "description": "Reducera markeringen till dess kärna."
+      },
+      "improve": {
+        "name": "Förbättra",
+        "description": "Vinna i klarhet och formulering."
+      },
+      "translate": {
+        "name": "Översätt",
+        "description": "Översätt markerad text."
+      },
+      "ask": {
+        "name": "Fråga Nova",
+        "description": "Ge Nova en bestämd instruktion."
+      }
+    },
+    "askPlaceholder": "Fråga Nova…",
+    "ask": "Fråga",
+    "running": "Nova arbetar…",
+    "result": "Resultat",
+    "replace": "Ersätt",
+    "copy": "Kopiera",
+    "close": "Stäng",
+    "copied": "Kopierat",
+    "experimentTitle": "Experimentellt",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Markera text i valfritt program och kör en AI-åtgärd på den. Ännu inte prövat i alla program.",
+    "shortcutMissing": "Inget kortkommando är tilldelat ännu. Ange ett för Nova Commands under Inställningar — infångningen fungerar bara medan ditt eget program ligger överst.",
+    "runDiagnostics": "Kör diagnostik",
+    "error": {
+      "busy": "Ett kommando pågår redan.",
+      "nonTextClipboard": "Urklipp innehåller något annat än text, och Nova skulle inte kunna lägga tillbaka det. Kopiera det någon annanstans först.",
+      "noSelection": "Markera text innan du öppnar Nova.",
+      "unsupported": "Nova Commands finns tills vidare bara på Windows.",
+      "targetChanged": "Ursprungsprogrammet är inte längre aktivt. Kopiera resultatet i stället.",
+      "offline": "AI Skills kräver en Campus-anslutning.",
+      "failed": "Nova kunde inte behandla begäran.",
+      "emptyResult": "Nova returnerade ett tomt resultat.",
+      "busyTitle": "Pågår redan",
+      "nonTextClipboardTitle": "Urklipp kan inte återställas",
+      "noSelectionTitle": "Ingen text markerad",
+      "unsupportedTitle": "Inte tillgängligt här",
+      "targetChangedTitle": "Fönstret har bytts",
+      "offlineTitle": "Campus onåbart",
+      "failedTitle": "Kommandot misslyckades",
+      "emptyResultTitle": "Inget att visa"
+    },
+    "original": "Original"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Kontrollerar…"
+      },
+      "ready": {
+        "title": "Nova är redo."
+      },
+      "campusLocal": {
+        "title": "Nova Local är aktivt",
+        "detail": "Diktering fungerar fortfarande. AI-funktionerna återkommer med Campus."
+      },
+      "permissionsNeeded": {
+        "title": "Mikrofonåtkomst krävs",
+        "detail": "Nova behöver tillstånd att använda mikrofonen innan diktering går."
+      },
+      "microphoneMissing": {
+        "title": "Ingen mikrofon hittades",
+        "detail": "Anslut en mikrofon och välj den i inställningarna."
+      },
+      "modelMissing": {
+        "title": "Slutför installationen av Nova",
+        "detail": "En talmodell behöver fortfarande hämtas."
+      },
+      "shortcutMissing": {
+        "title": "Nova är redo",
+        "detail": "Tilldela ett kortkommando så räcker en tangenttryckning."
+      },
+      "dictateHint": "för att diktera",
+      "openSettings": "Öppna inställningar",
+      "listening": {
+        "title": "Nova lyssnar…"
+      },
+      "processing": {
+        "title": "Nova arbetar…"
+      },
+      "insertionFailed": {
+        "title": "Kunde inte klistra in",
+        "detail": "Din diktering finns i urklipp."
+      }
+    },
+    "active": {
+      "title": "Aktivt",
+      "style": "Skrivstil",
+      "styleAutomatic": "Automatisk",
+      "engine": "Motor",
+      "microphone": "Mikrofon",
+      "lastDictation": "Senaste diktering"
+    },
+    "engine": {
+      "campus": "Ditt lärosätes server",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Kom igång",
+      "campus": "Campus-konto kopplat",
+      "voice": "Rösten redo",
+      "firstDictation": "Första dikteringen",
+      "style": "Prova en skrivstil",
+      "aiSkill": "Använd din första AI Skill",
+      "done": "Klart",
+      "todo": "Kvar"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Automatiskt",
+      "builtin": "Stilar",
+      "personal": "Dina stilar"
+    },
+    "automaticHow": "Nova läser namnet på programmet i förgrunden och tillämpar motsvarande stil. Program du blockerar granskas aldrig.",
+    "active": "Aktiv",
+    "emptyPersonal": "Du har inte skapat någon stil ännu.",
+    "rowActions": "Stilåtgärder",
+    "error": {
+      "save": "Stilen kunde inte sparas.",
+      "delete": "Stilen kunde inte tas bort."
+    }
+  },
+  "history": {
+    "subtitle": "Allt du har dikterat med Nova.",
+    "group": {
+      "today": "I dag",
+      "yesterday": "I går",
+      "week": "Denna vecka",
+      "older": "Tidigare"
+    },
+    "searchPlaceholder": "Sök bland dina dikteringar",
+    "noMatch": "Inget matchar ”{{query}}”.",
+    "empty": "Här visas dina dikteringar.",
+    "copy": "Kopiera",
+    "copied": "Kopierat"
+  },
+  "settingsNav": {
+    "voice": "Röst"
+  },
+  "personalization": {
+    "appearance": "Utseende",
+    "orb": "Orb",
+    "overlay": "Överlägg"
   }
 }

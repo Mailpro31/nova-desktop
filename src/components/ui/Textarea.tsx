@@ -10,12 +10,17 @@ export const Textarea: React.FC<TextareaProps> = ({
   variant = "default",
   ...props
 }) => {
+  // Même grammaire que Input : creux, filet de contour, rayon 10 px, focus
+  // visible. Seule la hauteur minimale change entre les variantes.
   const baseClasses =
-    "w-full resize-y border border-hairline bg-inset text-start text-sm font-normal leading-relaxed text-text [border-radius:var(--nova-radius-control)] transition-[background-color,border-color,box-shadow] duration-150 placeholder:text-text-secondary/75 hover:border-text-secondary/35 hover:bg-surface focus:border-accent focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-65";
+    "text-sm text-text leading-relaxed bg-inset border border-hairline-strong rounded-control text-start resize-y " +
+    "placeholder:text-text-secondary/75 transition-colors duration-[120ms] hover:border-accent/60 " +
+    "focus:outline-2 focus:outline-offset-2 focus:outline-accent focus:border-accent " +
+    "disabled:opacity-40 disabled:cursor-not-allowed";
 
   const variantClasses = {
     default: "px-3 py-2 min-h-[100px]",
-    compact: "px-2 py-1 min-h-[80px]",
+    compact: "px-2.5 py-1.5 min-h-[80px]",
   };
 
   return (

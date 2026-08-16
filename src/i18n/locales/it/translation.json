@@ -21,7 +21,10 @@
     "home": "Home",
     "configuration": "Configurazione",
     "account": "Account",
-    "styles": "Post-Elaborazione"
+    "styles": "Post-Elaborazione",
+    "aiSkills": "AI Skills",
+    "settings": "Impostazioni",
+    "organization": "Organizzazione"
   },
   "onboarding": {
     "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
@@ -180,6 +183,38 @@
         "checkFailed": "Impossibile verificare i permessi. Riprova.",
         "requestFailed": "Impossibile richiedere il permesso. Riprova."
       }
+    },
+    "back": "Indietro",
+    "welcome": {
+      "title": "Scrivi alla velocità del pensiero",
+      "subtitle": "Nova trasforma la tua voce in testo chiaro ovunque sul PC.",
+      "providedBy": "Fornito da {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Configurazione consigliata",
+      "subtitle": "Nova ha preparato queste impostazioni in base al tuo computer. Potrai modificarle in seguito.",
+      "use": "Usa la configurazione consigliata",
+      "customize": "Personalizza",
+      "row": {
+        "microphone": "Microfono",
+        "engine": "Elaborazione",
+        "shortcut": "Scorciatoia",
+        "language": "Lingua"
+      },
+      "value": {
+        "notSet": "Non impostato",
+        "autoDetected": "Rilevata automaticamente",
+        "localEngine": "Su questo dispositivo"
+      }
+    },
+    "customize": {
+      "title": "Alcune scelte",
+      "subtitle": "Tutto il resto mantiene il valore consigliato e si modifica in Impostazioni."
+    },
+    "writingStyles": {
+      "introTitle": "Nova non si limita a trascrivere",
+      "introSubtitle": "Parla e Nova scrive nello stile adatto a ciò che stai facendo.",
+      "unavailable": "Nessuno stile di scrittura è ancora disponibile."
     }
   },
   "modelSelector": {
@@ -732,7 +767,10 @@
     "open": "Apri",
     "copy": "Copia",
     "clear": "Svuota",
-    "noOptionsFound": "Nessuna opzione trovata"
+    "noOptionsFound": "Nessuna opzione trovata",
+    "cancel": "Annulla",
+    "remove": "Rimuovi",
+    "selectOption": "Scegli un'opzione…"
   },
   "accessibility": {
     "permissionsDescription": "Nova ha bisogno dei permessi di accessibilità per digitare il testo trascritto.",
@@ -921,7 +959,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Your institution's secure voice dictation, powered by academic email.",
+        "subtitle": "La dettatura vocale fornita dal tuo istituto, con la tua email accademica.",
         "connect": "Sign in"
       },
       "email": {
@@ -957,7 +995,7 @@
       },
       "label": "Nova Campus",
       "errors": {
-        "network": "Could not reach Campus. Check your connection and try again.",
+        "network": "Server irraggiungibile. Controlla la connessione e riprova.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
@@ -1067,7 +1105,8 @@
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
         "nova_style_voice_to_text": "Raw transcription without any post-processing."
-      }
+      },
+      "title": "Stili di scrittura"
     },
     "dictionary": {
       "title": "Dictionary",
@@ -1091,7 +1130,7 @@
       "importSuccess": "{{count}} term(s) imported successfully.",
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
-      "analyzeDocDescription": "Upload a text document to automatically extract custom vocabulary and proper names using AI. The document is never stored.",
+      "analyzeDocDescription": "Invia un documento di testo al server del tuo istituto per estrarne vocabolario e nomi propri. Vengono salvati solo i termini estratti; il documento non viene conservato.",
       "analyzeDocPlaceholder": "Paste document text or drop a text file...",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
@@ -1160,9 +1199,10 @@
     },
     "status": {
       "checking": "Checking",
-      "connected": "Campus connected",
+      "connected": "Campus connesso",
       "local": "Nova Local active",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local attivo"
     },
     "privacy": {
       "institutionPolicyTitle": "Privacy managed by your institution",
@@ -1397,6 +1437,224 @@
           "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
         }
       }
+    },
+    "organization": {
+      "title": "Organizzazione",
+      "subtitle": "Il tuo istituto, ciò che fornisce e dove vanno i tuoi dati.",
+      "connection": "Connessione",
+      "managedBy": "Gestito da {{organization}}",
+      "identityTitle": "Identità"
+    },
+    "provides": {
+      "title": "Ciò che fornisce il tuo istituto",
+      "transcription": {
+        "title": "Riconoscimento vocale",
+        "description": "La registrazione viene inviata al server del tuo istituto, che la trasforma in testo."
+      },
+      "rewriting": {
+        "title": "Stili di scrittura",
+        "description": "Il testo e lo stile scelto vengono inviati al server del tuo istituto, che lo riscrive."
+      },
+      "vocabulary": {
+        "title": "Vocabolario condiviso",
+        "description": "I termini aggiunti dal tuo istituto, e i tuoi, aiutano riconoscimento e riscrittura a scriverli correttamente."
+      },
+      "formatting": {
+        "title": "Regole di formattazione",
+        "description": "Le regole del tuo istituto, e le tue, vengono applicate a ogni riscrittura."
+      },
+      "paused": "In pausa — il server del tuo istituto è irraggiungibile."
+    },
+    "offline": {
+      "title": "Quando il server è irraggiungibile",
+      "body": "La dettatura continua a funzionare su questo dispositivo. Il riconoscimento vocale gira in locale; stili, vocabolario condiviso, regole di formattazione e AI Skills tornano con la connessione."
+    },
+    "data": {
+      "title": "Dove vanno i tuoi dati",
+      "audio": "Audio della dettatura",
+      "text": "Testo inviato per la riscrittura",
+      "vocabulary": "Vocabolario, scorciatoie e regole",
+      "history": "Cronologia",
+      "recordings": "Registrazioni",
+      "appName": "Nome dell'applicazione in primo piano",
+      "onDevice": "Questo dispositivo",
+      "onCampus": "Server dell'istituto",
+      "note": "Il server del tuo istituto conta quante trascrizioni e riscritture esegui ogni giorno. Non ne conserva il contenuto."
     }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Agisci sul testo che selezioni.",
+    "preview": "Anteprima",
+    "previewHint": "Gli AI Skills sono in fase di test.",
+    "essentials": "L'essenziale",
+    "howItWorks": "Come funziona",
+    "how": {
+      "select": "Seleziona del testo in qualsiasi applicazione",
+      "open": "Apri Nova con la tua scorciatoia",
+      "choose": "Scegli un AI Skill",
+      "review": "Rileggi il risultato prima che cambi qualcosa"
+    },
+    "privacy": "Elaborato tramite la tua connessione Campus.",
+    "privacyOffline": "Gli AI Skills passano dal server del tuo istituto, ora irraggiungibile."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Spiega",
+        "description": "Capire chiaramente un testo complesso."
+      },
+      "summarize": {
+        "name": "Riassumi",
+        "description": "Ridurre la selezione alle idee principali."
+      },
+      "improve": {
+        "name": "Migliora",
+        "description": "Guadagnare in chiarezza e forma."
+      },
+      "translate": {
+        "name": "Traduci",
+        "description": "Tradurre il testo selezionato."
+      },
+      "ask": {
+        "name": "Chiedi a Nova",
+        "description": "Dare a Nova un'istruzione precisa."
+      }
+    },
+    "askPlaceholder": "Chiedi a Nova…",
+    "ask": "Chiedi",
+    "running": "Nova sta lavorando…",
+    "result": "Risultato",
+    "replace": "Sostituisci",
+    "copy": "Copia",
+    "close": "Chiudi",
+    "copied": "Copiato",
+    "experimentTitle": "Sperimentale",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Seleziona del testo in qualsiasi applicazione e applicavi un'azione IA. Non ancora verificato su tutte le applicazioni.",
+    "shortcutMissing": "Nessuna scorciatoia è ancora assegnata. Impostane una per Nova Commands nelle Impostazioni: la cattura funziona solo finché la tua applicazione resta in primo piano.",
+    "runDiagnostics": "Esegui diagnostica",
+    "error": {
+      "busy": "Un comando è già in corso.",
+      "nonTextClipboard": "Gli appunti contengono qualcosa che non è testo e Nova non saprebbe ripristinarlo. Copialo prima altrove.",
+      "noSelection": "Seleziona del testo prima di aprire Nova.",
+      "unsupported": "Per ora Nova Commands è disponibile solo su Windows.",
+      "targetChanged": "L'applicazione di origine non è più attiva. Copia invece il risultato.",
+      "offline": "Gli AI Skills richiedono una connessione Campus.",
+      "failed": "Nova non è riuscita a elaborare questa richiesta.",
+      "emptyResult": "Nova ha restituito un risultato vuoto.",
+      "busyTitle": "Già in corso",
+      "nonTextClipboardTitle": "Appunti non ripristinabili",
+      "noSelectionTitle": "Nessun testo selezionato",
+      "unsupportedTitle": "Non disponibile qui",
+      "targetChangedTitle": "Finestra cambiata",
+      "offlineTitle": "Campus non raggiungibile",
+      "failedTitle": "Comando non riuscito",
+      "emptyResultTitle": "Niente da mostrare"
+    },
+    "original": "Originale"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Verifica in corso…"
+      },
+      "ready": {
+        "title": "Nova è pronto."
+      },
+      "campusLocal": {
+        "title": "Nova Local è attivo",
+        "detail": "La dettatura funziona ancora. Le funzioni IA torneranno con Campus."
+      },
+      "permissionsNeeded": {
+        "title": "Serve l'accesso al microfono",
+        "detail": "Nova ha bisogno del permesso per usare il microfono prima di dettare."
+      },
+      "microphoneMissing": {
+        "title": "Nessun microfono rilevato",
+        "detail": "Collega un microfono, poi scegli­lo nelle impostazioni."
+      },
+      "modelMissing": {
+        "title": "Completa la configurazione di Nova",
+        "detail": "Manca ancora da scaricare un modello vocale."
+      },
+      "shortcutMissing": {
+        "title": "Nova è pronto",
+        "detail": "Assegna una scorciatoia e dettare sarà questione di un tasto."
+      },
+      "dictateHint": "per dettare",
+      "openSettings": "Apri le impostazioni",
+      "listening": {
+        "title": "Nova ti ascolta…"
+      },
+      "processing": {
+        "title": "Nova sta lavorando…"
+      },
+      "insertionFailed": {
+        "title": "Impossibile incollare",
+        "detail": "La tua dettatura è negli appunti."
+      }
+    },
+    "active": {
+      "title": "Attivo",
+      "style": "Stile di scrittura",
+      "styleAutomatic": "Automatico",
+      "engine": "Motore",
+      "microphone": "Microfono",
+      "lastDictation": "Ultima dettatura"
+    },
+    "engine": {
+      "campus": "Server del tuo istituto",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Per iniziare",
+      "campus": "Account Campus collegato",
+      "voice": "Voce pronta",
+      "firstDictation": "Prima dettatura",
+      "style": "Provare uno stile di scrittura",
+      "aiSkill": "Usare il primo AI Skill",
+      "done": "Fatto",
+      "todo": "Da fare"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Automatico",
+      "builtin": "Stili",
+      "personal": "I tuoi stili"
+    },
+    "automaticHow": "Nova legge il nome dell'applicazione in primo piano e applica lo stile corrispondente. Le applicazioni che blocchi non vengono mai ispezionate.",
+    "active": "Attivo",
+    "emptyPersonal": "Non hai ancora creato uno stile.",
+    "rowActions": "Azioni dello stile",
+    "error": {
+      "save": "Impossibile salvare lo stile.",
+      "delete": "Impossibile eliminare lo stile."
+    }
+  },
+  "history": {
+    "subtitle": "Tutto ciò che hai dettato con Nova.",
+    "group": {
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "week": "Questa settimana",
+      "older": "Prima"
+    },
+    "searchPlaceholder": "Cerca nelle tue dettature",
+    "noMatch": "Nulla corrisponde a «{{query}}».",
+    "empty": "Qui appariranno le tue dettature.",
+    "copy": "Copia",
+    "copied": "Copiato"
+  },
+  "settingsNav": {
+    "voice": "Voce"
+  },
+  "personalization": {
+    "appearance": "Aspetto",
+    "orb": "Sfera",
+    "overlay": "Riquadro"
   }
 }

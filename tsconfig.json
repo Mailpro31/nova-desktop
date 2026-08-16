@@ -29,5 +29,9 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  /* Les tests unitaires s'exécutent avec `bun test`, qui fournit lui-même
+     `bun:test`. Les typer ici imposerait `@types/bun` au build de production
+     alors qu'aucun code livré ne les importe. */
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
