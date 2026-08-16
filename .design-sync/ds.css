@@ -1,0 +1,17 @@
+/* Entrée Tailwind pour /design-sync.
+ *
+ * Reprend telle quelle la feuille de l'application (`src/App.css`, qui importe
+ * Tailwind v4 puis les tokens Nova de `src/styles/theme.css` et les enregistre
+ * comme utilitaires via `@theme inline`), et élargit le scan de classes aux
+ * aperçus rédigés pour le design system, afin que les utilitaires employés
+ * dans les cartes soient bien présents dans le CSS compilé.
+ *
+ * Compilé vers `.design-sync/.cache/ds-styles.css` (voir `buildCmd` dans
+ * `.design-sync/config.json`), qui sert de `cssEntry` au converter.
+ */
+@import "../src/App.css";
+
+@source "../src/components";
+@source "../src/styles";
+@source "./previews";
+@source "./entry.tsx";
