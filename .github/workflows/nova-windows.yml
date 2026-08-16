@@ -6,6 +6,15 @@ name: "Nova — build Windows (.exe)"
 # tauri.conf.json a désactivé signCommand + createUpdaterArtifacts.
 on:
   workflow_dispatch:
+    inputs:
+      nova_mode:
+        description: "Edition Nova à compiler"
+        required: true
+        default: "campus"
+        type: choice
+        options:
+          - campus
+          - personal
 
 jobs:
   windows:
@@ -19,4 +28,5 @@ jobs:
       sign-binaries: false
       asset-prefix: "Nova"
       upload-artifacts: true
+      nova_mode: ${{ inputs.nova_mode }}
     secrets: inherit

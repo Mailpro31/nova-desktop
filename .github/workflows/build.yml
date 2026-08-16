@@ -55,6 +55,10 @@ on:
         required: false
         type: boolean
         default: false
+      nova_mode:
+        required: false
+        type: string
+        default: "personal"
 
 env:
   TSC_VERSION: "0.9.0"
@@ -544,6 +548,7 @@ jobs:
           # les builds de test le laissent à false et ne signent donc rien.
           TAURI_SIGNING_PRIVATE_KEY: ${{ runner.temp }}/nova-updater.key
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ env.NOVA_UPDATER_PW }}
+          VITE_NOVA_MODE: ${{ inputs.nova_mode }}
         with:
           tagName: ${{ inputs.release-id && format('v{0}', steps.get-version.outputs.version) || '' }}
           releaseName: ${{ inputs.release-id && format('v{0}', steps.get-version.outputs.version) || '' }}
