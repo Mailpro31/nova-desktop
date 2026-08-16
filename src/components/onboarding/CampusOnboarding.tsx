@@ -8,7 +8,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { hostname } from "@tauri-apps/plugin-os";
-import { Building2, Check, Mail, Server } from "lucide-react";
+import { Check } from "lucide-react";
 import HandyTextLogo from "../icons/HandyTextLogo";
 import OnboardingStepShell from "./OnboardingStepShell";
 import { CampusApi, CampusApiError, type CampusProfile } from "@/lib/campusApi";
@@ -27,6 +27,8 @@ import {
 } from "@/lib/campusPolicy";
 import { ManagedBy } from "@/components/campus/ManagedBy";
 import { refreshCampusContext } from "@/stores/campusStore";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 type CampusStep = "welcome" | "email" | "code" | "ready";
 
@@ -75,7 +77,10 @@ const CodeInput: React.FC<CodeInputProps> = ({
   };
 
   return (
-    <div className="flex justify-center gap-2" role="group">
+    <div
+      className="mx-auto grid w-full max-w-[304px] grid-cols-6 gap-1.5"
+      role="group"
+    >
       {digits.map((digit, index) => (
         <input
           key={index}
@@ -103,7 +108,11 @@ const CodeInput: React.FC<CodeInputProps> = ({
               onComplete();
             }
           }}
-          className="h-14 w-11 rounded-lg border border-mid-gray/25 bg-white text-center text-xl font-semibold text-text outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:opacity-50 sm:w-12"
+          className={`h-12 min-w-0 w-full border bg-inset text-center text-lg font-semibold text-text outline-none [border-radius:var(--nova-radius-control)] transition-[background-color,border-color,box-shadow] duration-150 focus:bg-surface focus:ring-2 disabled:cursor-not-allowed disabled:opacity-55 ${
+            invalid
+              ? "border-danger focus:border-danger focus:ring-danger/20"
+              : "border-hairline focus:border-accent focus:ring-accent/20"
+          }`}
         />
       ))}
     </div>
@@ -245,27 +254,28 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
   if (step === "welcome") {
     const emailCodeAvailable = context.authMethods.includes("email_code");
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 p-6">
-        <HandyTextLogo width={180} />
-        <div className="max-w-md space-y-3 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-text-secondary">
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
+        <HandyTextLogo width={160} />
+        <div className="max-w-[480px] space-y-3 text-center">
+          <p className="text-xs font-medium tracking-wide text-text-secondary">
             {t("campus.onboarding.label")}
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-text">
+          <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.025em] text-text">
             {t("campus.onboarding.welcome.title")}
           </h1>
-          <p className="leading-relaxed text-text-secondary">
+          <p className="text-sm leading-relaxed text-text-secondary">
             {t("campus.onboarding.welcome.subtitle")}
           </p>
         </div>
-        <button
+        <Button
           type="button"
+          variant="primary"
+          size="lg"
           disabled={!configLoaded || !emailCodeAvailable}
           onClick={() => setStep("email")}
-          className="min-h-11 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-50"
         >
           {t("campus.onboarding.welcome.connect")}
-        </button>
+        </Button>
         {configLoaded && !emailCodeAvailable && (
           <p className="text-sm text-danger" role="alert">
             {t("campus.onboarding.errors.authMethodUnavailable")}
@@ -302,22 +312,14 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
               >
                 {t("campus.onboarding.email.serverLabel")}
               </label>
-              <div className="flex items-center gap-2 rounded-lg border border-mid-gray/20 bg-white px-3 py-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
-                <Server
-                  size={18}
-                  className="text-text-secondary"
-                  aria-hidden="true"
-                />
-                <input
-                  id="campus-server"
-                  type="url"
-                  value={serverUrl}
-                  disabled={isLoading}
-                  onChange={(event) => setServerUrl(event.target.value)}
-                  placeholder={t("campus.onboarding.email.serverPlaceholder")}
-                  className="flex-1 bg-transparent text-sm text-text outline-none placeholder:text-text-secondary/60"
-                />
-              </div>
+              <Input
+                id="campus-server"
+                type="url"
+                value={serverUrl}
+                disabled={isLoading}
+                onChange={(event) => setServerUrl(event.target.value)}
+                placeholder={t("campus.onboarding.email.serverPlaceholder")}
+              />
               <p className="text-xs text-text-secondary">
                 {t("campus.onboarding.email.serverHelp")}
               </p>
@@ -331,24 +333,16 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
             >
               {t("campus.onboarding.email.emailLabel")}
             </label>
-            <div className="flex items-center gap-2 rounded-lg border border-mid-gray/20 bg-white px-3 py-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
-              <Mail
-                size={18}
-                className="text-text-secondary"
-                aria-hidden="true"
-              />
-              <input
-                id="campus-email"
-                type="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                disabled={isLoading}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder={t("campus.onboarding.email.emailPlaceholder")}
-                className="flex-1 bg-transparent text-sm text-text outline-none placeholder:text-text-secondary/60"
-              />
-            </div>
+            <Input
+              id="campus-email"
+              type="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              disabled={isLoading}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder={t("campus.onboarding.email.emailPlaceholder")}
+            />
           </div>
 
           {error && (
@@ -426,7 +420,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
           </span>
         </div>
         <dl className="divide-y divide-hairline border-y border-hairline text-sm">
-          <div className="grid grid-cols-[8rem_1fr] gap-3 py-3">
+          <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
               {t("campus.onboarding.ready.organization")}
             </dt>
@@ -434,13 +428,13 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
               {campusOrganizationLabel(organization)}
             </dd>
           </div>
-          <div className="grid grid-cols-[8rem_1fr] gap-3 py-3">
+          <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
               {t("campus.onboarding.ready.account")}
             </dt>
             <dd className="font-medium text-text">{maskCampusEmail(email)}</dd>
           </div>
-          <div className="grid grid-cols-[8rem_1fr] gap-3 py-3">
+          <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
               {t("campus.onboarding.ready.processing")}
             </dt>
@@ -454,10 +448,6 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
             <ManagedBy organizationName={organizationName} />
           </div>
         )}
-        <div className="flex items-center justify-center gap-2 text-xs text-text-secondary">
-          <Building2 size={14} aria-hidden="true" />
-          {t("campus.onboarding.ready.managed")}
-        </div>
       </div>
     </OnboardingStepShell>
   );

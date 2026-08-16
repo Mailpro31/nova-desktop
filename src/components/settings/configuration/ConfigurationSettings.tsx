@@ -16,7 +16,7 @@ const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
 /**
  * « Configuration » regroupe les anciennes sections Général / Modèles /
  * Avancé sous une seule entrée de barre latérale, avec un sélecteur segmenté
- * façon macOS pour naviguer entre les trois. Aucun réglage ni clé de
+ * compact pour naviguer entre les trois. Aucun réglage ni clé de
  * configuration n'a bougé — seule la présentation change.
  */
 export const ConfigurationSettings: React.FC = () => {

@@ -6,6 +6,7 @@ import { useSettings } from "../../hooks/useSettings";
 import { useOsType } from "../../hooks/useOsType";
 import { formatKeyCombination } from "../../lib/utils/keyboard";
 import OnboardingStepShell from "./OnboardingStepShell";
+import { Kbd } from "@/components/ui/Kbd";
 
 const SAMPLE_SENTENCE =
   "Bonjour, ceci est un essai de dictée avec Nova, virgule pour voir le résultat.";
@@ -100,21 +101,19 @@ const TutorialOnboarding: React.FC<TutorialOnboardingProps> = ({
       }
     >
       <div className="space-y-4">
-        <div className="flex flex-col items-center gap-3 rounded-xl border border-mid-gray/20 px-4 py-5">
-          <span className="px-3 py-1.5 rounded-md border border-logo-primary/50 bg-logo-primary/10 text-sm font-semibold text-logo-primary">
-            {shortcutLabel}
-          </span>
-          <p className="text-sm text-text/70 text-center max-w-sm">
+        <div className="flex flex-col items-center gap-3 border-y border-hairline px-4 py-5">
+          <Kbd className="px-3 text-sm text-accent">{shortcutLabel}</Kbd>
+          <p className="max-w-sm text-center text-sm leading-relaxed text-text-secondary">
             {instructions}
           </p>
-          <p className="text-xs text-text/45 italic text-center max-w-sm">
+          <p className="max-w-sm text-center text-xs italic text-text-secondary">
             {t("onboarding.tutorial.suggestion", { sentence: SAMPLE_SENTENCE })}
           </p>
         </div>
 
-        <div className="rounded-xl border border-mid-gray/20 px-4 py-4 min-h-[110px] flex flex-col justify-center gap-2">
+        <div className="flex min-h-[110px] flex-col justify-center gap-2 border border-hairline bg-surface px-4 py-4 [border-radius:var(--nova-radius-card)]">
           {phase === "waiting" && (
-            <p className="text-sm text-text/50 text-center">
+            <p className="text-center text-sm text-text-secondary">
               {t("onboarding.tutorial.awaiting")}
             </p>
           )}
@@ -122,8 +121,11 @@ const TutorialOnboarding: React.FC<TutorialOnboardingProps> = ({
           {phase === "captured" && (
             <div className="space-y-2">
               <p className="text-sm text-text/80">{rawText}</p>
-              <div className="flex items-center gap-2 text-xs text-text/50">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <div className="flex items-center gap-2 text-xs text-text-secondary">
+                <Loader2
+                  className="h-3.5 w-3.5 animate-spin motion-reduce:animate-none"
+                  aria-hidden="true"
+                />
                 {t("onboarding.tutorial.polishing")}
               </div>
             </div>
@@ -131,13 +133,13 @@ const TutorialOnboarding: React.FC<TutorialOnboardingProps> = ({
 
           {phase === "polished" && (
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-emerald-400 text-sm font-medium">
-                <Check className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-sm font-medium text-success">
+                <Check className="h-4 w-4" aria-hidden="true" />
                 {t("onboarding.tutorial.success")}
               </div>
               <p className="text-sm text-text font-medium">{polishedText}</p>
               {rawText && rawText !== polishedText && (
-                <p className="text-xs text-text/40">
+                <p className="text-xs text-text-secondary">
                   {t("onboarding.tutorial.originalWas", { text: rawText })}
                 </p>
               )}
@@ -146,8 +148,8 @@ const TutorialOnboarding: React.FC<TutorialOnboardingProps> = ({
         </div>
 
         {phase !== "polished" && (
-          <div className="flex items-center gap-1.5 justify-center text-xs text-text/40">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="flex items-center justify-center gap-1.5 text-xs text-text-secondary">
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
             {t("onboarding.tutorial.hint")}
           </div>
         )}

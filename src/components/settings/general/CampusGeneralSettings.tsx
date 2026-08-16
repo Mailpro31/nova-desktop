@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -32,6 +32,7 @@ import { CampusPrivacySummary } from "@/components/campus/CampusPrivacySummary";
 import { ManagedBy } from "@/components/campus/ManagedBy";
 import { campusOrganizationLabel } from "@/lib/campusPolicy";
 import { useCampusStore } from "@/stores/campusStore";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 type CampusSettingsTab = "general" | "writing" | "campus" | "advanced";
 
@@ -48,7 +49,7 @@ const SettingsSection: React.FC<SettingsSectionProps> = ({
   description,
   children,
 }) => (
-  <section className="overflow-hidden rounded-xl border border-hairline bg-white">
+  <section className="overflow-hidden border border-hairline bg-surface [border-radius:var(--nova-radius-card)]">
     <div className="flex items-start gap-3 border-b border-hairline px-4 py-3.5">
       <Icon
         size={17}
@@ -76,6 +77,7 @@ export const CampusGeneralSettings: React.FC = () => {
   const isLinux = type() === "linux";
   const [tab, setTab] = useState<CampusSettingsTab>("general");
   const [version, setVersion] = useState("");
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
     void getVersion()
@@ -103,30 +105,49 @@ export const CampusGeneralSettings: React.FC = () => {
     [hasWritingPreferences, t],
   );
 
+  const handleTabKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    let nextIndex: number | null = null;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
+    if (event.key === "ArrowLeft")
+      nextIndex = (index - 1 + tabs.length) % tabs.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = tabs.length - 1;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    setTab(tabs[nextIndex].id);
+    tabRefs.current[nextIndex]?.focus();
+  };
+
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-5">
-      <div className="space-y-1 px-1">
-        <h1 className="text-3xl font-semibold tracking-tight text-text">
-          {t("campus.settings.title")}
-        </h1>
-        <p className="text-base text-text-secondary">
-          {t("campus.settings.generalSubtitle")}
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-[760px] space-y-8">
+      <PageHeader
+        title={t("campus.settings.title")}
+        description={t("campus.settings.generalSubtitle")}
+      />
 
       <div
         className="flex gap-1 overflow-x-auto border-b border-hairline"
         role="tablist"
         aria-label={t("campus.settings.title")}
       >
-        {tabs.map((item) => (
+        {tabs.map((item, index) => (
           <button
             key={item.id}
+            ref={(element) => {
+              tabRefs.current[index] = element;
+            }}
             type="button"
             role="tab"
+            id={`campus-settings-tab-${item.id}`}
+            aria-controls={`campus-settings-panel-${item.id}`}
             aria-selected={tab === item.id}
+            tabIndex={tab === item.id ? 0 : -1}
             onClick={() => setTab(item.id)}
-            className={`shrink-0 border-b-2 px-3 py-2 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+            onKeyDown={(event) => handleTabKeyDown(event, index)}
+            className={`min-h-10 shrink-0 border-b-2 px-3 py-2 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none ${
               tab === item.id
                 ? "border-accent text-text"
                 : "border-transparent text-text-secondary hover:text-text"
@@ -138,7 +159,12 @@ export const CampusGeneralSettings: React.FC = () => {
       </div>
 
       {tab === "general" && (
-        <div className="space-y-4" role="tabpanel">
+        <div
+          id="campus-settings-panel-general"
+          aria-labelledby="campus-settings-tab-general"
+          className="space-y-4"
+          role="tabpanel"
+        >
           <SettingsSection
             icon={Keyboard}
             title={t("campus.settings.shortcuts.title")}
@@ -170,7 +196,12 @@ export const CampusGeneralSettings: React.FC = () => {
       )}
 
       {tab === "writing" && hasWritingPreferences && (
-        <div className="space-y-4" role="tabpanel">
+        <div
+          id="campus-settings-panel-writing"
+          aria-labelledby="campus-settings-tab-writing"
+          className="space-y-4"
+          role="tabpanel"
+        >
           {context.capabilities.dictionary && (
             <SettingsSection
               icon={BookA}
@@ -202,7 +233,12 @@ export const CampusGeneralSettings: React.FC = () => {
       )}
 
       {tab === "campus" && (
-        <div className="space-y-4" role="tabpanel">
+        <div
+          id="campus-settings-panel-campus"
+          aria-labelledby="campus-settings-tab-campus"
+          className="space-y-4"
+          role="tabpanel"
+        >
           <SettingsSection
             icon={Building2}
             title={campusOrganizationLabel(context.organization)}
@@ -228,7 +264,12 @@ export const CampusGeneralSettings: React.FC = () => {
       )}
 
       {tab === "advanced" && (
-        <div className="space-y-4" role="tabpanel">
+        <div
+          id="campus-settings-panel-advanced"
+          aria-labelledby="campus-settings-tab-advanced"
+          className="space-y-4"
+          role="tabpanel"
+        >
           <SettingsSection
             icon={Info}
             title={t("campus.settings.advanced.title")}

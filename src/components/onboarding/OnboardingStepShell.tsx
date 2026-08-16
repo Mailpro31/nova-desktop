@@ -1,5 +1,6 @@
 import React from "react";
 import HandyTextLogo from "../icons/HandyTextLogo";
+import { Button } from "../ui/Button";
 
 interface OnboardingStepShellProps {
   title: string;
@@ -34,14 +35,21 @@ const OnboardingStepShell: React.FC<OnboardingStepShellProps> = ({
   children,
 }) => {
   return (
-    <div className="h-screen w-screen flex flex-col items-center p-6 gap-5 overflow-y-auto">
-      <div className="flex flex-col items-center gap-3 shrink-0">
-        <HandyTextLogo width={140} />
-        <div className="flex items-center gap-1.5" aria-hidden="true">
+    <div className="flex h-screen w-screen flex-col items-center gap-6 overflow-y-auto px-4 py-8 sm:px-6">
+      <div className="flex shrink-0 flex-col items-center gap-4">
+        <HandyTextLogo width={132} />
+        <div
+          className="flex items-center gap-1.5"
+          role="progressbar"
+          aria-label={title}
+          aria-valuemin={1}
+          aria-valuemax={stepCount}
+          aria-valuenow={stepIndex + 1}
+        >
           {Array.from({ length: stepCount }).map((_, i) => (
             <span
               key={i}
-              className={`h-1.5 rounded-full transition-all duration-200 ${
+              className={`h-1 rounded-full transition-all duration-200 motion-reduce:transition-none ${
                 i === stepIndex ? "w-5 bg-logo-primary" : "w-1.5 bg-mid-gray/30"
               }`}
             />
@@ -49,37 +57,38 @@ const OnboardingStepShell: React.FC<OnboardingStepShellProps> = ({
         </div>
       </div>
 
-      <div className="max-w-[560px] w-full flex flex-col items-center gap-1 text-center shrink-0">
-        <h2 className="text-xl font-semibold text-text">{title}</h2>
+      <div className="flex w-full max-w-[480px] shrink-0 flex-col items-center gap-2 text-center">
+        <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.025em] text-text">
+          {title}
+        </h1>
         {subtitle && (
-          <p className="text-sm text-text/60 max-w-md">{subtitle}</p>
+          <p className="max-w-md text-sm leading-relaxed text-text-secondary">
+            {subtitle}
+          </p>
         )}
       </div>
 
-      <div className="max-w-[560px] w-full flex-1 min-h-0 flex flex-col">
+      <div className="flex min-h-0 w-full max-w-[480px] flex-1 flex-col">
         {children}
       </div>
 
-      <div className="max-w-[560px] w-full flex items-center justify-between shrink-0 pt-2">
+      <div className="flex w-full max-w-[480px] shrink-0 items-center justify-between gap-3 border-t border-hairline pt-4">
         {onSkip ? (
-          <button
-            type="button"
-            onClick={onSkip}
-            className="text-sm font-medium text-text/50 hover:text-text/80 transition-colors px-2 py-2"
-          >
+          <Button type="button" variant="ghost" size="md" onClick={onSkip}>
             {skipLabel}
-          </button>
+          </Button>
         ) : (
           <span />
         )}
-        <button
+        <Button
           type="button"
+          variant="primary"
+          size="md"
           onClick={onContinue}
           disabled={continueDisabled}
-          className="px-5 py-2 rounded-lg bg-logo-primary hover:bg-logo-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium transition-colors"
         >
           {continueLabel}
-        </button>
+        </Button>
       </div>
     </div>
   );

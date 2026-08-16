@@ -6,6 +6,7 @@ interface MockOptions {
   onboardingCompleted?: boolean;
   reachable?: boolean;
   language?: string;
+  theme?: "light" | "dark" | "system";
   prompts?: Array<{ id: string; name: string; prompt: string }>;
 }
 
@@ -16,6 +17,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
     let currentSession = settings.session ?? null;
     const appSettings = {
       app_language: settings.language ?? "en",
+      theme: settings.theme ?? "system",
       onboarding_completed: settings.onboardingCompleted ?? true,
       debug_mode: false,
       push_to_talk: false,

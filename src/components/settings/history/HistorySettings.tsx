@@ -15,6 +15,8 @@ import { useOsType } from "@/hooks/useOsType";
 import { formatDateTime } from "@/utils/dateFormat";
 import { AudioPlayer } from "../../ui/AudioPlayer";
 import { Button } from "../../ui/Button";
+import { PageHeader } from "../../ui/PageHeader";
+import { isCampusMode } from "@/lib/mode";
 
 const IconButton: React.FC<{
   onClick: () => void;
@@ -24,9 +26,11 @@ const IconButton: React.FC<{
   children: React.ReactNode;
 }> = ({ onClick, title, disabled, active, children }) => (
   <button
+    type="button"
     onClick={onClick}
     disabled={disabled}
-    className={`p-1.5 rounded-md flex items-center justify-center transition-colors cursor-pointer disabled:cursor-not-allowed disabled:text-text/20 ${
+    aria-label={title}
+    className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors disabled:cursor-not-allowed disabled:text-text-secondary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
       active
         ? "text-logo-primary hover:text-logo-primary/80"
         : "text-text/50 hover:text-logo-primary"
@@ -62,6 +66,7 @@ const OpenRecordingsButton: React.FC<OpenRecordingsButtonProps> = ({
 
 export const HistorySettings: React.FC = () => {
   const { t } = useTranslation();
+  const campusMode = isCampusMode();
   const osType = useOsType();
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -264,6 +269,7 @@ export const HistorySettings: React.FC = () => {
               getAudioUrl={getAudioUrl}
               deleteAudio={deleteAudioEntry}
               retryTranscription={retryHistoryEntry}
+              campusMode={campusMode}
             />
           ))}
         </div>
@@ -273,21 +279,38 @@ export const HistorySettings: React.FC = () => {
     );
   }
 
+  if (campusMode) {
+    return (
+      <div className="mx-auto w-full max-w-[760px] space-y-8">
+        <PageHeader
+          title={t("settings.history.title")}
+          actions={
+            <OpenRecordingsButton
+              onClick={openRecordingsFolder}
+              label={t("settings.history.openFolder")}
+            />
+          }
+        />
+        <div className="overflow-visible border-y border-hairline">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
+    <div className="mx-auto w-full max-w-3xl space-y-6">
       <div className="space-y-2">
-        <div className="px-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-xs font-medium text-mid-gray uppercase tracking-wide">
-              {t("settings.history.title")}
-            </h2>
-          </div>
+        <div className="flex items-center justify-between px-4">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-mid-gray">
+            {t("settings.history.title")}
+          </h2>
           <OpenRecordingsButton
             onClick={openRecordingsFolder}
             label={t("settings.history.openFolder")}
           />
         </div>
-        <div className="bg-background border border-mid-gray/20 rounded-lg overflow-visible">
+        <div className="overflow-visible rounded-lg border border-mid-gray/20 bg-background">
           {content}
         </div>
       </div>
@@ -302,6 +325,7 @@ interface HistoryEntryProps {
   getAudioUrl: (fileName: string) => Promise<string | null>;
   deleteAudio: (id: number) => Promise<void>;
   retryTranscription: (id: number) => Promise<void>;
+  campusMode: boolean;
 }
 
 const HistoryEntryComponent: React.FC<HistoryEntryProps> = ({
@@ -311,6 +335,7 @@ const HistoryEntryComponent: React.FC<HistoryEntryProps> = ({
   getAudioUrl,
   deleteAudio,
   retryTranscription,
+  campusMode,
 }) => {
   const { t, i18n } = useTranslation();
   const [showCopied, setShowCopied] = useState(false);
@@ -357,7 +382,9 @@ const HistoryEntryComponent: React.FC<HistoryEntryProps> = ({
   const formattedDate = formatDateTime(String(entry.timestamp), i18n.language);
 
   return (
-    <div className="px-4 py-2 pb-5 flex flex-col gap-3">
+    <article
+      className={`flex flex-col gap-3 ${campusMode ? "px-2 py-4" : "px-4 py-2 pb-5"}`}
+    >
       <div className="flex justify-between items-center">
         <p className="text-sm font-medium">{formattedDate}</p>
         <div className="flex items-center">
@@ -414,27 +441,14 @@ const HistoryEntryComponent: React.FC<HistoryEntryProps> = ({
       </div>
 
       <p
-        className={`italic text-sm pb-2 ${
+        className={`text-sm leading-relaxed ${campusMode ? "pb-1" : "pb-2 italic"} ${
           retrying
-            ? ""
+            ? "animate-pulse motion-reduce:animate-none"
             : hasTranscription
               ? "text-text/90 select-text cursor-text whitespace-pre-wrap break-words"
               : "text-text/40"
         }`}
-        style={
-          retrying
-            ? { animation: "transcribe-pulse 3s ease-in-out infinite" }
-            : undefined
-        }
       >
-        {retrying && (
-          <style>{`
-            @keyframes transcribe-pulse {
-              0%, 100% { color: color-mix(in srgb, var(--color-text) 40%, transparent); }
-              50% { color: color-mix(in srgb, var(--color-text) 90%, transparent); }
-            }
-          `}</style>
-        )}
         {retrying
           ? t("settings.history.transcribing")
           : hasTranscription
@@ -443,6 +457,6 @@ const HistoryEntryComponent: React.FC<HistoryEntryProps> = ({
       </p>
 
       <AudioPlayer onLoadRequest={handleLoadAudio} className="w-full" />
-    </div>
+    </article>
   );
 };

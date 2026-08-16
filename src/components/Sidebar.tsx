@@ -101,7 +101,7 @@ export const SECTIONS_CONFIG = {
   },
   configuration: {
     labelKey: "sidebar.configuration",
-    campusLabelKey: "sidebar.general",
+    campusLabelKey: "campus.settings.title",
     icon: Cog,
     // Regroupe les anciennes sections Général / Modèles / Avancé sous une
     // seule entrée (sous-onglets internes, voir ConfigurationSettings).
@@ -181,12 +181,12 @@ export const SECTIONS_CONFIG = {
 } as const satisfies Record<string, SectionConfig>;
 
 // Ordre des entrées de la sidebar en mode campus.
-// Spec : Accueil / Styles / Historique / Réglages / Personnalisation
+// Campus keeps the common path first, with administration one level deeper.
 export const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
   "home",
-  "campus",
   "postprocessing",
   "history",
+  "campus",
   "configuration",
 ];
 
@@ -196,10 +196,8 @@ export function getCampusLabelKey(section: SidebarSection): string {
   return config.campusLabelKey ?? config.labelKey;
 }
 
-// Icônes carrées colorées façon macOS (Réglages système). Chaque catégorie a
-// sa couleur d'identité — ce ne sont PAS des actions (l'accent d'action unique
-// reste le bleu #0A84FF, réservé à la sélection). « home » affiche l'orbe
-// Nova directement, sans carré.
+// Legacy category colors used by the Personal shell. CampusNavigation keeps
+// its iconography neutral and reserves Nova blue for selection and actions.
 export const SECTION_COLORS: Record<string, string> = {
   home: "",
   configuration: "#8E8E93",

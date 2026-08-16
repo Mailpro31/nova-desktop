@@ -19,27 +19,26 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    "font-medium rounded-lg border focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
+    "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium [border-radius:var(--nova-radius-control)] transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-[0.985] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-55 motion-reduce:transform-none motion-reduce:transition-none";
 
   const variantClasses = {
     primary:
-      "text-white bg-background-ui border-background-ui hover:bg-background-ui/80 hover:border-background-ui/80 focus:ring-1 focus:ring-background-ui",
+      "border-accent bg-accent text-white hover:border-accent-hover hover:bg-accent-hover",
     "primary-soft":
-      "text-text bg-logo-primary/20 border-transparent hover:bg-logo-primary/30 focus:ring-1 focus:ring-logo-primary",
-    secondary:
-      "bg-mid-gray/10 border-mid-gray/20 hover:bg-background-ui/30 hover:border-logo-primary focus:outline-none",
+      "border-transparent bg-accent/12 text-accent hover:bg-accent/18",
+    secondary: "border-transparent bg-inset text-text hover:bg-mid-gray/20",
     danger:
-      "text-white bg-red-600 border-mid-gray/20 hover:bg-red-700 hover:border-red-700 focus:ring-1 focus:ring-red-500",
+      "border-danger bg-danger text-white hover:brightness-90 focus-visible:ring-danger",
     "danger-ghost":
-      "text-red-400 border-transparent hover:text-red-300 hover:bg-red-500/10 focus:bg-red-500/20",
+      "border-transparent text-danger hover:bg-danger/10 focus-visible:ring-danger",
     ghost:
-      "text-current border-transparent hover:bg-mid-gray/10 hover:border-logo-primary focus:bg-mid-gray/20",
+      "border-transparent bg-transparent text-current hover:bg-mid-gray/10",
   };
 
   const sizeClasses = {
-    sm: "px-2 py-1 text-xs",
-    md: "px-4 py-[5px] text-sm",
-    lg: "px-4 py-2 text-base",
+    sm: "min-h-8 px-3 py-1 text-xs",
+    md: "min-h-10 px-4 py-2 text-sm",
+    lg: "min-h-10 px-[18px] py-2 text-sm font-semibold",
   };
 
   return (

@@ -15,6 +15,7 @@ import {
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
+import { Textarea } from "../../ui/Textarea";
 import { loadCampusSession } from "@/lib/campusSession";
 import { CampusApi, campusErrorText } from "@/lib/campusApi";
 import type {
@@ -241,19 +242,29 @@ export const CampusDictionarySection: React.FC = () => {
             size="sm"
             onClick={loadVocabulary}
             disabled={loading}
-            className="inline-flex items-center gap-1.5"
+            aria-label={t("campus.account.refresh")}
+            title={t("campus.account.refresh")}
           >
-            <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
+            <RefreshCw
+              size={14}
+              className={
+                loading ? "animate-spin motion-reduce:animate-none" : ""
+              }
+              aria-hidden="true"
+            />
           </Button>
         </div>
       </div>
 
       {/* Document Analysis Box */}
       {showAnalyze && (
-        <div className="p-4 rounded-2xl bg-accent/5 border border-accent/20 space-y-3">
+        <div className="space-y-3 border-s-2 border-accent bg-accent/5 px-4 py-3">
           <div className="flex items-center gap-2">
             <Sparkles size={16} className="text-accent" />
-            <h4 className="text-sm font-semibold text-text">
+            <h4
+              id="campus-document-analysis-title"
+              className="text-sm font-semibold text-text"
+            >
               {t("campus.dictionary.analyzeDocTitle")}
             </h4>
           </div>
@@ -261,12 +272,13 @@ export const CampusDictionarySection: React.FC = () => {
             {t("campus.dictionary.analyzeDocDescription")}
           </p>
 
-          <textarea
+          <Textarea
             value={analyzeText}
             onChange={(e) => setAnalyzeText(e.target.value)}
             placeholder={t("campus.dictionary.analyzeDocPlaceholder")}
             rows={4}
-            className="w-full text-xs font-mono p-2.5 rounded-xl border border-hairline bg-white focus:outline-none focus:ring-1 focus:ring-accent"
+            aria-labelledby="campus-document-analysis-title"
+            className="font-mono text-xs"
           />
 
           <div className="flex items-center justify-between gap-2">
@@ -303,7 +315,11 @@ export const CampusDictionarySection: React.FC = () => {
               >
                 {analyzing ? (
                   <>
-                    <RefreshCw size={14} className="animate-spin" />
+                    <RefreshCw
+                      size={14}
+                      className="animate-spin motion-reduce:animate-none"
+                      aria-hidden="true"
+                    />
                     {t("campus.dictionary.analyzing")}
                   </>
                 ) : (
@@ -325,7 +341,7 @@ export const CampusDictionarySection: React.FC = () => {
           <h3 className="text-sm font-semibold text-text">
             {t("campus.dictionary.sharedTitle")}
           </h3>
-          <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-full bg-mid-gray/15 text-text-secondary">
+          <span className="rounded-full bg-inset px-2 py-0.5 text-[11px] font-medium text-text-secondary">
             {t("campus.dictionary.sharedBadge")}
           </span>
         </div>
@@ -334,7 +350,7 @@ export const CampusDictionarySection: React.FC = () => {
         </p>
 
         {shared.length === 0 ? (
-          <p className="text-xs text-text-secondary/70 italic py-2">
+          <p className="py-2 text-xs text-text-secondary">
             {t("campus.dictionary.sharedEmpty")}
           </p>
         ) : (
@@ -342,7 +358,7 @@ export const CampusDictionarySection: React.FC = () => {
             {shared.map((item) => (
               <div
                 key={item.id}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-hairline shadow-xs text-xs font-medium"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-inset px-3 py-1.5 text-xs font-medium"
               >
                 <span className="text-text">{item.term}</span>
                 {item.replacement && (
@@ -372,27 +388,39 @@ export const CampusDictionarySection: React.FC = () => {
         </p>
 
         {/* Add personal term form */}
-        <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2">
-          <Input
-            type="text"
-            value={newTerm}
-            onChange={(e) => setNewTerm(e.target.value)}
-            placeholder={t("campus.dictionary.termPlaceholder")}
-            className="flex-1 text-sm"
-          />
-          <Input
-            type="text"
-            value={newReplacement}
-            onChange={(e) => setNewReplacement(e.target.value)}
-            placeholder={t("campus.dictionary.replacementPlaceholder")}
-            className="flex-1 text-sm"
-          />
+        <form onSubmit={handleAdd} className="grid gap-3 sm:grid-cols-2">
+          <label
+            className="block space-y-1.5 text-xs font-medium text-text"
+            htmlFor="campus-dictionary-term"
+          >
+            {t("campus.dictionary.termLabel")}
+            <Input
+              id="campus-dictionary-term"
+              type="text"
+              value={newTerm}
+              onChange={(e) => setNewTerm(e.target.value)}
+              placeholder={t("campus.dictionary.termPlaceholder")}
+            />
+          </label>
+          <label
+            className="block space-y-1.5 text-xs font-medium text-text"
+            htmlFor="campus-dictionary-replacement"
+          >
+            {t("campus.dictionary.replacementLabel")}
+            <Input
+              id="campus-dictionary-replacement"
+              type="text"
+              value={newReplacement}
+              onChange={(e) => setNewReplacement(e.target.value)}
+              placeholder={t("campus.dictionary.replacementPlaceholder")}
+            />
+          </label>
           <Button
             type="submit"
             variant="primary"
             size="md"
             disabled={!newTerm.trim() || adding}
-            className="inline-flex items-center justify-center gap-1.5 shrink-0"
+            className="sm:col-start-2 sm:justify-self-end"
           >
             <Plus size={16} />
             {t("campus.dictionary.addTerm")}
@@ -401,21 +429,21 @@ export const CampusDictionarySection: React.FC = () => {
 
         {/* Personal terms list */}
         {personal.length === 0 ? (
-          <p className="text-xs text-text-secondary/70 italic py-2">
+          <p className="py-2 text-xs text-text-secondary">
             {t("campus.dictionary.personalEmpty")}
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+          <div className="divide-y divide-hairline border-y border-hairline">
             {personal.map((item) => {
               const isLearned = item.source === "learned";
               return (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white border border-hairline shadow-xs group"
+                  className="group flex min-h-12 items-center justify-between gap-2 px-2 py-2"
                 >
                   <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span
-                      className={`text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-md shrink-0 ${
+                      className={`shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium ${
                         isLearned
                           ? "bg-accent/10 text-accent"
                           : "bg-mid-gray/15 text-text-secondary"
@@ -437,10 +465,11 @@ export const CampusDictionarySection: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDelete(item.id)}
-                    className="p-1 rounded-lg text-text-secondary/50 hover:text-danger hover:bg-danger/10 transition-colors shrink-0"
+                    aria-label={t("common.delete")}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-danger/10 hover:text-danger focus:outline-none focus-visible:ring-2 focus-visible:ring-danger"
                     title={t("common.delete")}
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={14} aria-hidden="true" />
                   </button>
                 </div>
               );

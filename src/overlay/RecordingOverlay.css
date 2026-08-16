@@ -1,13 +1,14 @@
 @import "../styles/theme.css";
 
 :root {
-  --s-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --s-font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   /* Near-opaque app surface (theme.css --color-background at 98%). Auto-flips
      light/dark with --color-background, so no dark-mode override is needed. */
   --s-surface: color-mix(in srgb, var(--color-background) 98%, transparent);
-  /* Apple blue is the only action accent; the glass orb keeps its identity. */
-  --s-accent: #0a84ff;
+  /* Nova blue is the only action accent; the glass orb keeps its identity. */
+  --s-accent: var(--color-accent);
   --s-accent-soft: color-mix(in srgb, var(--s-accent) 16%, transparent);
+  --s-danger: var(--color-danger);
   /* Neutrals. Hairlines reuse the app's mid-gray at low opacity — same vocabulary
      as the app's border-mid-gray/* utilities. muted/faint are overlay-specific
      secondary/tertiary text grays (no theme equivalent). */
@@ -66,7 +67,7 @@
    morphs). */
 .ov-fade {
   opacity: 0;
-  transition: opacity 200ms ease-out;
+  transition: opacity var(--nova-motion-standard) ease-out;
 }
 .ov-fade.show {
   opacity: 1;
@@ -126,17 +127,17 @@
   border: 1px solid var(--s-border);
   /* Flat: no drop shadow, no backdrop blur/saturate (was a glassy gradient look). */
   /* pop-in plays on mount; morph (width/radius) is a transition */
-  animation: scard-pop 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: scard-pop var(--nova-motion-standard) var(--nova-ease);
   transition:
-    width 460ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius 460ms cubic-bezier(0.22, 1, 0.36, 1);
+    width var(--nova-motion-panel) var(--nova-ease),
+    border-radius var(--nova-motion-panel) var(--nova-ease);
   will-change: transform, width, opacity;
 }
 @keyframes scard-pop {
   from {
     opacity: 0;
     /* Scale from the anchored edge (transform-origin) — never translate past it. */
-    transform: scale(0.92);
+    transform: scale(0.97);
   }
   to {
     opacity: 1;
@@ -145,10 +146,10 @@
 }
 .scard.leaving {
   opacity: 0;
-  transform: scale(0.96);
+  transform: scale(0.98);
   transition:
-    opacity 240ms ease,
-    transform 300ms ease;
+    opacity var(--nova-motion-standard) ease,
+    transform var(--nova-motion-standard) var(--nova-ease);
 }
 .scard.open {
   width: var(--ov-open-w);
@@ -178,8 +179,8 @@
   grid-template-rows: 0fr;
   opacity: 0;
   transition:
-    grid-template-rows 440ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 260ms ease;
+    grid-template-rows var(--nova-motion-panel) var(--nova-ease),
+    opacity var(--nova-motion-standard) ease;
 }
 .scard.open .stext {
   grid-template-rows: 1fr;
@@ -297,7 +298,7 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity 240ms ease 80ms;
+  transition: opacity var(--nova-motion-standard) ease;
 }
 .scard.open .stimer {
   opacity: 1;
@@ -348,9 +349,9 @@
   opacity: 0;
   transform: translateY(2px);
   transition:
-    opacity 260ms ease,
-    transform 260ms ease,
-    color 260ms ease;
+    opacity var(--nova-motion-standard) ease,
+    transform var(--nova-motion-standard) var(--nova-ease),
+    color var(--nova-motion-standard) ease;
 }
 .smic-hint.show {
   opacity: 0.9;
@@ -362,8 +363,8 @@
   color: var(--s-muted);
 }
 .sx {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   flex: none;
   padding: 0;
@@ -389,10 +390,9 @@
 .sx:hover {
   background: var(--s-accent-soft);
   color: var(--color-text);
-  transform: scale(1.05);
 }
 .sx:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 .sfinish {
   color: var(--color-background);
@@ -421,7 +421,7 @@
   height: 19px;
   flex: none;
   fill: none;
-  stroke: #ff453a;
+  stroke: var(--s-danger);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -532,7 +532,7 @@
      (au lieu d'un « linear » mécanique à 0.7 s), doublée d'une respiration
      d'opacité calée sur la même période que l'orbe au repos (sorb-breath 2.4 s).
      La pilule « réfléchit » sobrement, visible du coin de l'œil sans happer le
-     regard — cohérent avec l'identité Apple/Nova. */
+     regard — cohérent avec l'identité Nova. */
   animation:
     sspin 1.15s cubic-bezier(0.66, 0, 0.34, 1) infinite,
     sspin-breath 2.4s ease-in-out infinite;
@@ -553,9 +553,8 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  /* Accessibilité : pas de rotation, seulement la respiration douce. */
   .sspinner {
-    animation: sspin-breath 2.4s ease-in-out infinite;
+    animation: none;
   }
 }
 .swork-label {
@@ -591,8 +590,8 @@
 
 /* ============================================================
    Bulle au repos (mode « toujours affichée ») + menu de choix de Style.
-   Orbe + engrenage ; le menu liste les Styles avec une pastille couleur.
-   Accent d'action bleu Apple (sélection / coche), identité orbe conservée.
+   Orbe + engrenage ; le menu liste les Styles avec un repère neutre.
+   L'accent Nova est réservé à la sélection et à la coche.
    ============================================================ */
 .sidle-col {
   display: flex;
@@ -643,7 +642,7 @@
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: #ff453a;
+  background: var(--s-danger);
   box-shadow: 0 0 0 2px var(--s-surface);
 }
 .scard.sidle .sdot::before {
@@ -675,7 +674,7 @@
   background: var(--s-hair);
 }
 .sgear.open {
-  color: var(--color-accent, #0a84ff);
+  color: var(--s-accent);
 }
 .sgear svg {
   width: 17px;
@@ -709,7 +708,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  animation: scard-pop 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: scard-pop var(--nova-motion-standard) var(--nova-ease);
 }
 .smenu-item {
   display: flex;
@@ -730,7 +729,7 @@
   background: var(--s-hair);
 }
 .smenu-item.active {
-  background: color-mix(in srgb, var(--color-accent, #0a84ff) 16%, transparent);
+  background: color-mix(in srgb, var(--s-accent) 16%, transparent);
 }
 .smenu-item.locked {
   opacity: 0.5;
@@ -739,11 +738,8 @@
 .smenu-item.locked:hover {
   background: transparent;
 }
-/* Badge « Nécessite Nova Pro / Ultra » sur un Style verrouillé, compact pour la
-   bulle. Bleu Apple (accent) : seule couleur d'action de l'UI. */
-/* Verrou de Style dans l'overlay : même langage « premium » (dégradé + lueur)
-   que PremiumBadge/TierBadge, mis à l'échelle du menu compact. Pro en bleu
-   d'action, Ultra en lilas. */
+/* Compact entitlement label. It stays neutral so the action accent remains
+   reserved for selection and direct action. */
 .smenu-lock {
   flex: none;
   font-size: 8.5px;
@@ -751,29 +747,27 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #fff;
-  border: none;
+  color: var(--s-muted);
+  border: 1px solid var(--s-border);
   border-radius: 999px;
   padding: 1.5px 6px;
-  background: linear-gradient(135deg, #7fb6ff 0%, #0a84ff 45%, #0060df 100%);
-  box-shadow: 0 1px 6px rgba(10, 132, 255, 0.35);
+  background: var(--s-hair);
 }
 .smenu-lock.ultra {
-  color: #1f1f22;
-  background: linear-gradient(
-    135deg,
-    #d9c8f7 0%,
-    var(--color-ultra, #c9b6f0) 45%,
-    #9f86d9 100%
-  );
-  box-shadow: 0 1px 6px rgba(159, 134, 217, 0.35);
+  color: var(--s-muted);
+  background: var(--s-hair);
 }
 .smenu-dot {
   width: 12px;
   height: 12px;
   border-radius: 999px;
   flex: none;
-  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.45);
+  background: var(--s-faint);
+  opacity: 0.55;
+}
+.smenu-item.active .smenu-dot {
+  background: var(--s-accent);
+  opacity: 1;
 }
 .smenu-name {
   flex: 1;
@@ -784,14 +778,14 @@
 .smenu-check {
   width: 15px;
   height: 15px;
-  color: var(--color-accent, #0a84ff);
+  color: var(--s-accent);
   flex: none;
 }
 
 /* Suggestion de Style contextuelle discrète (point 5). Même vocabulaire visuel
    que le menu (surface + filet + arrondi 12), sobre et premium. Empilée dans
    `.sidle-col`, elle se place au-dessus (bas) / en dessous (haut) de la pilule,
-   comme le menu. Action UNIQUE en bleu Apple ; « ne plus afficher » discret. */
+   comme le menu. Une seule action accentuée ; « ne plus afficher » discret. */
 .ssuggest {
   width: 248px;
   box-sizing: border-box;
@@ -802,7 +796,7 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
-  animation: scard-pop 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: scard-pop var(--nova-motion-standard) var(--nova-ease);
 }
 .ssuggest-text {
   margin: 0;
@@ -835,7 +829,7 @@
 }
 .ssuggest-apply {
   border: none;
-  background: var(--color-accent, #0a84ff);
+  background: var(--s-accent);
   color: #fff;
   font-size: 12px;
   font-weight: 600;
@@ -846,4 +840,41 @@
 }
 .ssuggest-apply:hover {
   filter: brightness(1.08);
+}
+
+.sx:focus-visible,
+.scapture-error button:focus-visible,
+.sfallback-close:focus-visible,
+.sfallback-copy:focus-visible,
+.sgear:focus-visible,
+.smenu-item:focus-visible,
+.ssuggest-dismiss:focus-visible,
+.ssuggest-apply:focus-visible {
+  outline: 2px solid var(--s-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scard,
+  .smenu,
+  .ssuggest,
+  .sdot,
+  .scaret,
+  .sspinner {
+    animation: none;
+  }
+
+  .ov-fade,
+  .scard,
+  .stext,
+  .stimer,
+  .smic-hint,
+  .sx,
+  .sgear,
+  .smenu-item,
+  .ssuggest-dismiss,
+  .ssuggest-apply,
+  .sthinking-track i {
+    transition-duration: 1ms;
+  }
 }

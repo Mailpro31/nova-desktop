@@ -12,20 +12,22 @@ export const SettingsGroup: React.FC<SettingsGroupProps> = ({
   children,
 }) => {
   return (
-    <div className="space-y-2">
+    <section className="space-y-3">
       {title && (
-        <div className="px-4">
-          <h2 className="text-xs font-medium text-mid-gray uppercase tracking-wide">
+        <div className="px-1">
+          <h2 className="text-base font-semibold leading-tight text-text">
             {title}
           </h2>
           {description && (
-            <p className="text-xs text-mid-gray mt-1">{description}</p>
+            <p className="mt-1 text-sm leading-relaxed text-text-secondary">
+              {description}
+            </p>
           )}
         </div>
       )}
-      <div className="bg-surface border border-mid-gray/20 rounded-[13px] overflow-visible">
-        <div className="divide-y divide-mid-gray/20">{children}</div>
+      <div className="overflow-visible border border-hairline bg-surface [border-radius:var(--nova-radius-card)]">
+        <div className="divide-y divide-hairline">{children}</div>
       </div>
-    </div>
+    </section>
   );
 };

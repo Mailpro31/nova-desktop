@@ -79,6 +79,7 @@ const renderSettingsContent = (
 
 function App() {
   const { t, i18n } = useTranslation();
+  const campusMode = isCampusMode();
   const [onboardingStep, setOnboardingStep] = useState<OnboardingStep | null>(
     null,
   );
@@ -107,12 +108,12 @@ function App() {
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
-    if (isCampusMode()) {
+    if (campusMode) {
       commands.setCampusMode(true).catch((e) => {
         console.warn("Failed to set campus mode:", e);
       });
     }
-  }, []);
+  }, [campusMode]);
 
   // Initialize RTL direction when language changes
   useEffect(() => {
@@ -470,7 +471,7 @@ function App() {
     // New users need to select a model (personal) or authenticate (campus)
     if (isReturningUser) {
       setOnboardingStep("done");
-    } else if (isCampusMode()) {
+    } else if (campusMode) {
       setOnboardingStep("campus");
     } else {
       setOnboardingStep("model");
@@ -575,15 +576,18 @@ function App() {
       >
         <WhatsNewGate />
         <LexiconSuggestions />
-        {isCampusMode() && (
-          <CampusNavigation
-            activeSection={currentSection}
-            onNavigate={setCurrentSection}
-          />
-        )}
         {/* Main content area that takes remaining space */}
-        <div className="flex-1 flex overflow-hidden">
-          {!isCampusMode() && (
+        <div
+          className={`flex min-h-0 flex-1 overflow-hidden ${
+            campusMode ? "flex-col md:flex-row" : "flex-row"
+          }`}
+        >
+          {campusMode ? (
+            <CampusNavigation
+              activeSection={currentSection}
+              onNavigate={setCurrentSection}
+            />
+          ) : (
             <Sidebar
               activeSection={currentSection}
               onSectionChange={setCurrentSection}
@@ -592,7 +596,13 @@ function App() {
           {/* Scrollable content area */}
           <div className="flex-1 flex flex-col overflow-hidden">
             <div ref={contentScrollRef} className="flex-1 overflow-y-auto">
-              <div className="flex flex-col items-center p-4 gap-4">
+              <div
+                className={
+                  campusMode
+                    ? "mx-auto flex w-full max-w-[960px] flex-col px-6 py-8 sm:px-8 md:px-10 lg:px-12 lg:py-10"
+                    : "flex flex-col items-center gap-4 p-4"
+                }
+              >
                 <AccessibilityPermissions />
                 <Suspense
                   fallback={
@@ -608,7 +618,7 @@ function App() {
           </div>
         </div>
         {/* Fixed footer at bottom */}
-        <Footer />
+        {!campusMode && <Footer />}
       </div>
     );
   }

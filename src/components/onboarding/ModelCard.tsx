@@ -107,7 +107,7 @@ const ModelCard: React.FC<ModelCardProps> = ({
   );
 
   const baseClasses =
-    "flex flex-col rounded-xl px-4 py-3 gap-2 text-left transition-all duration-200";
+    "flex flex-col rounded-xl px-4 py-3 gap-2 text-left transition-[background-color,border-color,box-shadow,transform] duration-200 motion-reduce:transition-none";
 
   const getVariantClasses = () => {
     if (status === "active") {
@@ -122,7 +122,7 @@ const ModelCard: React.FC<ModelCardProps> = ({
   const getInteractiveClasses = () => {
     if (!isClickable) return "";
     if (disabled) return "opacity-50 cursor-not-allowed";
-    return "cursor-pointer hover:border-logo-primary/50 hover:bg-logo-primary/5 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] group";
+    return "cursor-pointer hover:border-logo-primary/50 hover:bg-logo-primary/5 hover:shadow-sm active:scale-[0.99] motion-reduce:active:scale-100 group";
   };
 
   const handleClick = () => {
@@ -286,7 +286,7 @@ const ModelCard: React.FC<ModelCardProps> = ({
         <div className="w-full mt-3">
           <div className="w-full h-1.5 bg-mid-gray/20 rounded-full overflow-hidden">
             <div
-              className="h-full bg-logo-primary rounded-full transition-all duration-300"
+              className="h-full bg-logo-primary rounded-full transition-[width] duration-200 motion-reduce:transition-none"
               style={{ width: `${downloadProgress}%` }}
             />
           </div>

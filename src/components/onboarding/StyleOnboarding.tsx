@@ -4,7 +4,7 @@ import { Check, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { invoke } from "@tauri-apps/api/core";
 import { useSettings } from "../../hooks/useSettings";
-import { styleColor } from "../../lib/styleColors";
+import { isCampusMode } from "@/lib/mode";
 import OnboardingStepShell from "./OnboardingStepShell";
 
 const AUTO_STYLE_ID = "auto";
@@ -41,7 +41,8 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
       .catch(() => setFeatures({}));
   }, []);
 
-  const hasAutoStyleAccess = features["all_styles"] ?? false;
+  const hasAutoStyleAccess =
+    isCampusMode() || (features["all_styles"] ?? false);
   const defaultStyleForTier = hasAutoStyleAccess
     ? AUTO_STYLE_ID
     : "default_improve_transcriptions";
@@ -107,89 +108,88 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
           type="button"
           onClick={() => hasAutoStyleAccess && setMode("auto")}
           disabled={!hasAutoStyleAccess}
-          className={`w-full text-left flex items-start gap-3 rounded-xl px-4 py-3 border-2 transition-all duration-150 ${
+          className={`flex w-full items-start gap-3 border bg-surface px-4 py-3 text-start [border-radius:var(--nova-radius-card)] transition-colors duration-150 motion-reduce:transition-none ${
             !hasAutoStyleAccess ? "opacity-50 cursor-not-allowed" : ""
           } ${
             mode === "auto"
-              ? "border-logo-primary/60 bg-logo-primary/10"
-              : "border-mid-gray/20 hover:border-logo-primary/40"
+              ? "border-accent/60"
+              : "border-hairline hover:border-text-secondary/35"
           }`}
         >
-          <span
-            className="w-3 h-3 rounded-full mt-1 shrink-0"
-            style={{ background: styleColor(AUTO_STYLE_ID) }}
-            aria-hidden="true"
-          />
           <span className="flex-1 min-w-0">
             <span className="flex items-center gap-2 flex-wrap">
               <span className="font-semibold text-text">
                 {t("onboarding.style.auto.title")}
               </span>
               {!hasAutoStyleAccess ? (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-500/20 text-red-400">
+                <span className="inline-flex items-center gap-1 rounded-full bg-inset px-2 py-0.5 text-[11px] font-medium text-text-secondary">
                   <Lock className="w-3 h-3" aria-hidden="true" />
                   {t("license.requiresTier", { tier: "NOVA PRO" })}
                 </span>
               ) : (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-logo-primary/20 text-logo-primary">
+                <span className="inline-flex items-center rounded-full bg-accent/10 px-2 py-0.5 text-[11px] font-medium text-accent">
                   {t("onboarding.style.recommended")}
                 </span>
               )}
             </span>
-            <span className="block text-sm text-text/60 mt-0.5">
+            <span className="mt-1 block text-sm leading-relaxed text-text-secondary">
               {t("onboarding.style.auto.description")}
             </span>
           </span>
           {mode === "auto" && (
-            <Check className="w-5 h-5 text-logo-primary shrink-0 mt-0.5" />
+            <Check
+              className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+              aria-hidden="true"
+            />
           )}
         </button>
 
         <button
           type="button"
           onClick={() => setMode("manual")}
-          className={`w-full text-left flex items-start gap-3 rounded-xl px-4 py-3 border-2 transition-all duration-150 ${
+          className={`flex w-full items-start gap-3 border bg-surface px-4 py-3 text-start [border-radius:var(--nova-radius-card)] transition-colors duration-150 motion-reduce:transition-none ${
             mode === "manual"
-              ? "border-logo-primary/60 bg-logo-primary/10"
-              : "border-mid-gray/20 hover:border-logo-primary/40"
+              ? "border-accent/60"
+              : "border-hairline hover:border-text-secondary/35"
           }`}
         >
           <span className="flex-1 min-w-0">
             <span className="font-semibold text-text">
               {t("onboarding.style.manual.title")}
             </span>
-            <span className="block text-sm text-text/60 mt-0.5">
+            <span className="mt-1 block text-sm leading-relaxed text-text-secondary">
               {t("onboarding.style.manual.description")}
             </span>
           </span>
           {mode === "manual" && (
-            <Check className="w-5 h-5 text-logo-primary shrink-0 mt-0.5" />
+            <Check
+              className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+              aria-hidden="true"
+            />
           )}
         </button>
 
         {mode === "manual" && (
-          <div className="grid grid-cols-2 gap-2 pt-1">
+          <div className="grid gap-2 pt-1 sm:grid-cols-2">
             {prompts.map((prompt) => (
               <button
                 key={prompt.id}
                 type="button"
                 onClick={() => setManualPromptId(prompt.id)}
-                className={`flex items-center gap-2 rounded-lg px-3 py-2 border-2 text-left transition-all duration-150 ${
+                className={`flex min-h-10 items-center gap-2 border bg-surface px-3 py-2 text-start [border-radius:var(--nova-radius-control)] transition-colors duration-150 motion-reduce:transition-none ${
                   manualPromptId === prompt.id
-                    ? "border-logo-primary/60 bg-logo-primary/10"
-                    : "border-mid-gray/20 hover:border-logo-primary/40"
+                    ? "border-accent/60"
+                    : "border-hairline hover:border-text-secondary/35"
                 }`}
               >
-                <span
-                  className="w-2.5 h-2.5 rounded-full shrink-0"
-                  style={{ background: styleColor(prompt.id) }}
-                  aria-hidden="true"
-                />
                 <span className="text-sm font-medium text-text truncate flex-1">
                   {prompt.name}
                 </span>
                 {manualPromptId === prompt.id && (
-                  <Check className="w-4 h-4 text-logo-primary shrink-0" />
+                  <Check
+                    className="h-4 w-4 shrink-0 text-accent"
+                    aria-hidden="true"
+                  />
                 )}
               </button>
             ))}

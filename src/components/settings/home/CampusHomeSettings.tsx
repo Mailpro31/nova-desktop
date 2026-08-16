@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, FileAudio, History, Mic, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  FileAudio,
+  SlidersHorizontal,
+  Sparkles,
+} from "lucide-react";
 import {
   commands,
   events,
@@ -13,17 +18,13 @@ import { campusOrganizationLabel } from "@/lib/campusPolicy";
 import { formatDateTime } from "@/utils/dateFormat";
 import { useCampusStore } from "@/stores/campusStore";
 import type { SidebarSection } from "@/components/Sidebar";
+import HandyHand from "@/components/icons/HandyHand";
+import { Button, Kbd, PageHeader } from "@/components/ui";
 import { CampusFileTranscribeModal } from "./CampusFileTranscribeModal";
 
 interface CampusHomeSettingsProps {
   onNavigate?: (section: SidebarSection) => void;
 }
-
-const Shortcut: React.FC<{ value?: string }> = ({ value }) => (
-  <kbd className="inline-flex min-h-7 items-center rounded-md border border-hairline bg-white px-2 text-xs font-semibold text-text-secondary shadow-sm">
-    {value || "—"}
-  </kbd>
-);
 
 export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
   onNavigate,
@@ -94,45 +95,41 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
     .join(" · ");
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-8 py-2">
-      <header className="space-y-2 px-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-text-secondary">
-          {identity || t("campus.navigation.campus")}
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight text-text">
-          {t("campus.home.title")}
-        </h1>
-        <p className="max-w-2xl text-base leading-relaxed text-text-secondary">
-          {t("campus.home.subtitle", { shortcut: transcribeBinding || "F9" })}
-        </p>
-      </header>
+    <div className="mx-auto w-full max-w-[760px] space-y-8">
+      <PageHeader
+        eyebrow={identity || t("campus.navigation.campus")}
+        title={t("campus.home.title")}
+        description={t("campus.home.subtitle", {
+          shortcut: transcribeBinding || "F9",
+        })}
+      />
 
-      <section className="rounded-2xl border border-accent/15 bg-accent/[0.045] px-5 py-5 sm:px-6 sm:py-6">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-white">
-              <Mic size={21} strokeWidth={1.8} aria-hidden="true" />
-            </span>
-            <div>
-              <h2 className="text-lg font-semibold text-text">
-                {t("campus.home.primary.title", {
-                  shortcut: transcribeBinding || "F9",
-                })}
-              </h2>
-              <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                {t("campus.home.primary.description")}
-              </p>
-            </div>
-          </div>
-          <div className="flex shrink-0 items-center gap-2 sm:flex-col sm:items-end">
-            <Shortcut value={transcribeBinding} />
-            <button
+      <section className="border-y border-hairline py-8 text-center sm:py-10">
+        <div className="mx-auto flex max-w-xl flex-col items-center">
+          <span
+            className="mb-5 flex h-16 w-16 items-center justify-center"
+            aria-hidden="true"
+          >
+            <HandyHand width={58} height={58} />
+          </span>
+          <h2 className="text-xl font-semibold tracking-[-0.015em] text-text">
+            {t("campus.home.primary.title", {
+              shortcut: transcribeBinding || "F9",
+            })}
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+            {t("campus.home.primary.description")}
+          </p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            <Kbd>{transcribeBinding || "F9"}</Kbd>
+            <Button
               type="button"
+              variant="primary"
+              size="md"
               onClick={() => void commands.triggerTranscription("transcribe")}
-              className="min-h-11 rounded-lg bg-accent px-3 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               {t("campus.home.primary.start")}
-            </button>
+            </Button>
           </div>
         </div>
       </section>
@@ -140,11 +137,11 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
       <section aria-labelledby="campus-secondary-actions">
         <h2
           id="campus-secondary-actions"
-          className="text-xs font-semibold uppercase tracking-[0.12em] text-text-secondary"
+          className="text-xs font-medium text-text-secondary"
         >
           {t("campus.home.secondary.title")}
         </h2>
-        <div className="mt-2 divide-y divide-hairline border-y border-hairline">
+        <div className="mt-3 grid overflow-hidden border-y border-hairline sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:divide-hairline">
           {capabilities.rewrite && (
             <button
               type="button"
@@ -153,7 +150,7 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
                   "transcribe_with_post_process",
                 )
               }
-              className="flex w-full items-center gap-3 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex min-h-14 w-full items-center gap-3 px-3 py-3 text-start transition-colors duration-150 hover:bg-inset focus:outline-none focus-visible:ring-2 focus-visible:ring-inset motion-reduce:transition-none"
             >
               <Sparkles
                 size={18}
@@ -163,14 +160,14 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
               <span className="flex-1 text-sm font-medium text-text">
                 {t("campus.home.secondary.rewrite")}
               </span>
-              <Shortcut value={rewriteBinding} />
+              <Kbd>{rewriteBinding || "—"}</Kbd>
             </button>
           )}
           {capabilities.fileTranscription && (
             <button
               type="button"
               onClick={() => setIsFileModalOpen(true)}
-              className="flex w-full items-center gap-3 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex min-h-14 w-full items-center gap-3 px-3 py-3 text-start transition-colors duration-150 hover:bg-inset focus:outline-none focus-visible:ring-2 focus-visible:ring-inset motion-reduce:transition-none"
             >
               <FileAudio
                 size={18}
@@ -180,20 +177,15 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
               <span className="flex-1 text-sm font-medium text-text">
                 {t("campus.files.actionButton")}
               </span>
-              <ArrowRight
-                size={15}
-                className="text-text-secondary"
-                aria-hidden="true"
-              />
             </button>
           )}
           {capabilities.styles && (
             <button
               type="button"
               onClick={() => onNavigate?.("postprocessing")}
-              className="flex w-full items-center gap-3 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex min-h-14 w-full items-center gap-3 px-3 py-3 text-start transition-colors duration-150 hover:bg-inset focus:outline-none focus-visible:ring-2 focus-visible:ring-inset motion-reduce:transition-none"
             >
-              <Sparkles
+              <SlidersHorizontal
                 size={18}
                 className="text-text-secondary"
                 aria-hidden="true"
@@ -201,14 +193,9 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
               <span className="flex-1 text-sm font-medium text-text">
                 {t("campus.home.secondary.chooseStyle")}
               </span>
-              <span className="max-w-40 truncate text-sm text-text-secondary">
+              <span className="max-w-28 truncate text-xs text-text-secondary">
                 {currentStyle}
               </span>
-              <ArrowRight
-                size={15}
-                className="text-text-secondary"
-                aria-hidden="true"
-              />
             </button>
           )}
         </div>
@@ -218,27 +205,25 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
         <div className="flex items-center justify-between">
           <h2
             id="campus-recent-title"
-            className="flex items-center gap-2 text-sm font-semibold text-text"
+            className="text-base font-semibold text-text"
           >
-            <History
-              size={16}
-              className="text-text-secondary"
-              aria-hidden="true"
-            />
             {t("campus.home.recentTitle")}
           </h2>
           <button
             type="button"
             onClick={() => onNavigate?.("history")}
-            className="min-h-11 rounded-md px-1 text-sm font-medium text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-accent transition-colors hover:bg-accent/8 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t("campus.home.viewHistory")}
+            <ArrowRight size={14} aria-hidden="true" />
           </button>
         </div>
         {recentEntries.length === 0 ? (
-          <p className="mt-3 text-sm text-text-secondary">
-            {t("campus.home.recentEmpty")}
-          </p>
+          <div className="mt-3 border-y border-hairline py-5">
+            <p className="text-sm text-text-secondary">
+              {t("campus.home.recentEmpty")}
+            </p>
+          </div>
         ) : (
           <div className="mt-2 divide-y divide-hairline border-y border-hairline">
             {recentEntries.map((entry) => (
@@ -246,7 +231,7 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
                 key={entry.id}
                 type="button"
                 onClick={() => onNavigate?.("history")}
-                className="grid w-full gap-1 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:grid-cols-[9rem_1fr]"
+                className="grid w-full gap-1 px-2 py-3 text-start transition-colors duration-150 hover:bg-inset focus:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:grid-cols-[9rem_1fr]"
               >
                 <span className="text-xs text-text-secondary">
                   {formatDateTime(String(entry.timestamp), i18n.language)}

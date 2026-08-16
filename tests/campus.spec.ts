@@ -56,9 +56,11 @@ test.describe("Nova Campus", () => {
     await page.goto("/");
     await page.getByRole("button", { name: "Continue" }).click();
     await page.getByLabel("Campus server").fill("https://campus.example.edu");
-    await page.getByLabel("School email").fill("invalid");
+    await page.getByRole("textbox", { name: "School email" }).fill("invalid");
     await expect(page.getByRole("button", { name: "Continue" })).toBeDisabled();
-    await page.getByLabel("School email").fill("student@example.edu");
+    await page
+      .getByRole("textbox", { name: "School email" })
+      .fill("student@example.edu");
     await page.getByRole("button", { name: "Continue" }).click();
     await expect(
       page.getByRole("heading", { name: "Check your inbox" }),
@@ -77,7 +79,9 @@ test.describe("Nova Campus", () => {
     });
     await page.goto("/");
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByLabel("School email").fill("student@example.edu");
+    await page
+      .getByRole("textbox", { name: "School email" })
+      .fill("student@example.edu");
     await page.getByRole("button", { name: "Continue" }).click();
     for (let position = 1; position <= 6; position += 1) {
       await page.getByLabel(`Code digit ${position}`).fill(String(position));
@@ -100,7 +104,7 @@ test.describe("Nova Campus", () => {
       config: campusConfig,
       onboardingCompleted: true,
     });
-    await page.setViewportSize({ width: 720, height: 540 });
+    await page.setViewportSize({ width: 820, height: 600 });
     await page.goto("/");
     await expect(
       page.getByRole("heading", { name: "Speak. Nova writes." }),
@@ -118,7 +122,7 @@ test.describe("Nova Campus", () => {
     await page.getByRole("button", { name: "History" }).click();
     await expect(page.getByRole("heading", { name: "History" })).toBeVisible();
 
-    await page.getByRole("button", { name: "General" }).click();
+    await page.getByRole("button", { name: "Settings" }).click();
     await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
     await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
   });
@@ -165,11 +169,9 @@ test.describe("Nova Campus", () => {
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "Home" })).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("button", { name: "Campus" })).toBeFocused();
+    await expect(page.getByRole("button", { name: "Styles" })).toBeFocused();
     await page.keyboard.press("Enter");
-    await expect(
-      page.getByRole("heading", { name: "EES · Paris" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Styles" })).toBeVisible();
 
     await page.getByRole("button", { name: "Home" }).click();
     const fileButton = page.getByRole("button", { name: "Transcribe a file" });
@@ -186,4 +188,35 @@ test.describe("Nova Campus", () => {
     await expect(page.getByRole("dialog")).toHaveCount(0);
     await expect(fileButton).toBeFocused();
   });
+
+  for (const { language, direction } of [
+    { language: "fr", direction: "ltr" },
+    { language: "de", direction: "ltr" },
+    { language: "ar", direction: "rtl" },
+    { language: "he", direction: "rtl" },
+  ]) {
+    test(`${language} stays readable in a narrow window`, async ({ page }) => {
+      await mockTauri(page, {
+        session: {
+          server_url: "https://campus.example.edu",
+          email: "student@example.edu",
+        },
+        config: campusConfig,
+        onboardingCompleted: true,
+        language,
+      });
+      await page.setViewportSize({ width: 390, height: 760 });
+      await page.goto("/");
+
+      await expect(page.getByRole("heading").first()).toBeVisible();
+      await expect(page.locator("#root > div[dir]")).toHaveAttribute(
+        "dir",
+        direction,
+      );
+      const hasHorizontalOverflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > window.innerWidth + 1,
+      );
+      expect(hasHorizontalOverflow).toBe(false);
+    });
+  }
 });

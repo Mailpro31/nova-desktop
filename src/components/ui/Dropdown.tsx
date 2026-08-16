@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export interface DropdownOption {
@@ -29,19 +29,37 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const listboxId = useId();
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const selectedIndex = options.findIndex(
+      (option) => option.value === selectedValue && !option.disabled,
+    );
+    const firstEnabledIndex = options.findIndex((option) => !option.disabled);
+    const focusIndex = selectedIndex >= 0 ? selectedIndex : firstEnabledIndex;
+    const animationFrame = requestAnimationFrame(() => {
+      optionRefs.current[focusIndex]?.focus();
+    });
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isOpen, options, selectedValue]);
 
   const selectedOption = options.find(
     (option) => option.value === selectedValue,
@@ -50,32 +68,104 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const handleSelect = (value: string) => {
     onSelect(value);
     setIsOpen(false);
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  };
+
+  const openMenu = () => {
+    if (disabled || isOpen) return;
+    onRefresh?.();
+    setIsOpen(true);
   };
 
   const handleToggle = () => {
     if (disabled) return;
-    if (!isOpen && onRefresh) onRefresh();
-    setIsOpen(!isOpen);
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      openMenu();
+    }
+  };
+
+  const handleTriggerKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+  ) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      openMenu();
+    }
+  };
+
+  const handleListKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setIsOpen(false);
+      triggerRef.current?.focus();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      setIsOpen(false);
+      return;
+    }
+
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+      return;
+    }
+
+    event.preventDefault();
+    const enabledIndexes = options
+      .map((option, index) => (!option.disabled ? index : -1))
+      .filter((index) => index >= 0);
+    if (enabledIndexes.length === 0) return;
+
+    const currentIndex = optionRefs.current.findIndex(
+      (element) => element === document.activeElement,
+    );
+    const currentEnabledIndex = enabledIndexes.indexOf(currentIndex);
+    let nextIndex: number;
+
+    if (event.key === "Home") {
+      nextIndex = enabledIndexes[0];
+    } else if (event.key === "End") {
+      nextIndex = enabledIndexes[enabledIndexes.length - 1];
+    } else if (event.key === "ArrowUp") {
+      const previous =
+        currentEnabledIndex <= 0
+          ? enabledIndexes.length - 1
+          : currentEnabledIndex - 1;
+      nextIndex = enabledIndexes[previous];
+    } else {
+      const next =
+        currentEnabledIndex < 0 ||
+        currentEnabledIndex === enabledIndexes.length - 1
+          ? 0
+          : currentEnabledIndex + 1;
+      nextIndex = enabledIndexes[next];
+    }
+
+    optionRefs.current[nextIndex]?.focus();
   };
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
+        ref={triggerRef}
         type="button"
-        className={`px-2 py-[5px] text-sm font-semibold bg-mid-gray/10 border border-mid-gray/80 rounded-lg min-w-[200px] w-full text-start grid grid-cols-[1fr_auto] gap-2 items-center transition-all duration-150 ${
-          disabled
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-logo-primary/10 cursor-pointer hover:border-logo-primary"
-        }`}
+        className="grid min-h-10 w-full min-w-[200px] cursor-pointer grid-cols-[1fr_auto] items-center gap-2 border border-hairline bg-inset px-3 py-2 text-start text-sm font-medium text-text transition-colors duration-150 [border-radius:var(--nova-radius-control)] hover:border-accent/50 hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-55 motion-reduce:transition-none"
         onClick={handleToggle}
+        onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? listboxId : undefined}
       >
         <span className="truncate">{selectedOption?.label || placeholder}</span>
         <svg
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "transform rotate-180" : ""}`}
+          className={`h-4 w-4 transition-transform duration-150 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -86,21 +176,33 @@ export const Dropdown: React.FC<DropdownProps> = ({
         </svg>
       </button>
       {isOpen && !disabled && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-mid-gray/80 rounded-[10px] shadow-lg z-50 max-h-60 overflow-y-auto">
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-label={selectedOption?.label || placeholder}
+          className="absolute inset-x-0 top-full z-50 mt-1 max-h-60 overflow-y-auto border border-hairline bg-surface p-1 [border-radius:var(--nova-radius-card)] [box-shadow:var(--nova-shadow-floating)]"
+          onKeyDown={handleListKeyDown}
+        >
           {options.length === 0 ? (
-            <div className="px-2 py-1 text-sm text-mid-gray">
+            <div className="px-3 py-2 text-sm text-text-secondary">
               {t("common.noOptionsFound")}
             </div>
           ) : (
-            options.map((option) => (
+            options.map((option, index) => (
               <button
                 key={option.value}
+                ref={(element) => {
+                  optionRefs.current[index] = element;
+                }}
                 type="button"
-                className={`w-full px-2 py-1 text-sm text-start hover:bg-logo-primary/10 transition-colors duration-150 ${
+                role="option"
+                aria-selected={selectedValue === option.value}
+                tabIndex={-1}
+                className={`w-full cursor-pointer px-3 py-2 text-start text-sm transition-colors duration-150 [border-radius:var(--nova-radius-control)] hover:bg-inset focus:bg-inset focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none ${
                   selectedValue === option.value
-                    ? "bg-logo-primary/20 font-semibold"
-                    : ""
-                } ${option.disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                    ? "bg-accent/12 font-semibold text-text"
+                    : "text-text"
+                }`}
                 onClick={() => handleSelect(option.value)}
                 disabled={option.disabled}
               >

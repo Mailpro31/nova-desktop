@@ -16,12 +16,9 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useSettings } from "@/hooks/useSettings";
-import { styleColor } from "@/lib/styleColors";
 import { BUILTIN_STYLE_IDS } from "@/lib/builtinStyles";
 import { commands, type LLMPrompt } from "@/bindings";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
+import { Button, Dialog, Input, PageHeader, Textarea } from "@/components/ui";
 
 const STYLE_ORDER = [
   "auto",
@@ -84,22 +81,26 @@ const StyleRow: React.FC<StyleRowProps> = ({
       : kind === "builtin"
         ? t("settings.postProcessing.prompts.badgeBuiltin")
         : t("settings.postProcessing.prompts.badgeCustom");
+  const hasActions = Boolean(onEdit || onDuplicate || onDelete);
 
   return (
     <article
-      className={`flex items-center gap-2 rounded-xl border bg-white p-2 transition-colors duration-150 ${
-        active ? "border-accent/50" : "border-hairline hover:border-mid-gray/35"
+      className={`flex min-h-36 flex-col border bg-surface p-2 [border-radius:var(--nova-radius-card)] transition-colors duration-150 motion-reduce:transition-none ${
+        active
+          ? "border-accent/60"
+          : "border-hairline hover:border-text-secondary/35"
       }`}
     >
       <button
         type="button"
         onClick={onSelect}
         aria-pressed={active}
-        className="flex min-h-11 min-w-0 flex-1 items-center gap-3 rounded-lg p-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="flex min-h-0 min-w-0 flex-1 items-start gap-3 rounded-lg p-3 text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <span
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
-          style={{ backgroundColor: styleColor(id) }}
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+            active ? "bg-accent/12 text-accent" : "bg-inset text-text-secondary"
+          }`}
         >
           <Icon size={17} strokeWidth={1.75} aria-hidden="true" />
         </span>
@@ -108,11 +109,11 @@ const StyleRow: React.FC<StyleRowProps> = ({
             <span className="truncate text-sm font-semibold text-text">
               {name}
             </span>
-            <span className="shrink-0 rounded-full bg-mid-gray/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-secondary">
+            <span className="shrink-0 rounded-full bg-inset px-2 py-0.5 text-[11px] font-medium text-text-secondary">
               {badge}
             </span>
           </span>
-          <span className="mt-1 line-clamp-1 block text-xs text-text-secondary">
+          <span className="mt-1 line-clamp-2 block text-xs leading-relaxed text-text-secondary">
             {description}
           </span>
         </span>
@@ -123,38 +124,40 @@ const StyleRow: React.FC<StyleRowProps> = ({
         )}
       </button>
 
-      <div className="flex shrink-0 items-center gap-1 border-l border-hairline pl-2">
-        {onEdit && (
-          <button
-            type="button"
-            onClick={onEdit}
-            aria-label={`${t("settings.postProcessing.prompts.edit")} ${name}`}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 text-text-secondary hover:bg-mid-gray/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <Pencil size={15} aria-hidden="true" />
-          </button>
-        )}
-        {onDuplicate && (
-          <button
-            type="button"
-            onClick={onDuplicate}
-            aria-label={`${t("settings.postProcessing.prompts.duplicate")} ${name}`}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 text-text-secondary hover:bg-mid-gray/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <Copy size={15} aria-hidden="true" />
-          </button>
-        )}
-        {onDelete && (
-          <button
-            type="button"
-            onClick={onDelete}
-            aria-label={`${t("common.delete")} ${name}`}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 text-text-secondary hover:bg-danger/10 hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger"
-          >
-            <Trash2 size={15} aria-hidden="true" />
-          </button>
-        )}
-      </div>
+      {hasActions ? (
+        <div className="flex min-h-9 shrink-0 items-center justify-end gap-1 border-t border-hairline px-2 pt-2">
+          {onEdit ? (
+            <button
+              type="button"
+              onClick={onEdit}
+              aria-label={`${t("settings.postProcessing.prompts.edit")} ${name}`}
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary hover:bg-inset hover:text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Pencil size={15} aria-hidden="true" />
+            </button>
+          ) : null}
+          {onDuplicate ? (
+            <button
+              type="button"
+              onClick={onDuplicate}
+              aria-label={`${t("settings.postProcessing.prompts.duplicate")} ${name}`}
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary hover:bg-inset hover:text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Copy size={15} aria-hidden="true" />
+            </button>
+          ) : null}
+          {onDelete ? (
+            <button
+              type="button"
+              onClick={onDelete}
+              aria-label={`${t("common.delete")} ${name}`}
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary hover:bg-danger/10 hover:text-danger focus:outline-none focus-visible:ring-2 focus-visible:ring-danger"
+            >
+              <Trash2 size={15} aria-hidden="true" />
+            </button>
+          ) : null}
+        </div>
+      ) : null}
     </article>
   );
 };
@@ -284,23 +287,23 @@ export const CampusStylesSettings: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-5">
-      <div className="flex items-end justify-between gap-4 px-1">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-semibold tracking-tight text-text">
-            {t("sidebar.styles")}
-          </h1>
-          <p className="text-base text-text-secondary">
-            {t("campus.styles.subtitle")}
-          </p>
-        </div>
-        <Button variant="secondary" size="sm" onClick={() => setEditing("new")}>
-          <Plus size={14} className="mr-1" aria-hidden="true" />
-          {t("settings.postProcessing.prompts.createNew")}
-        </Button>
-      </div>
+    <div className="mx-auto w-full max-w-[760px] space-y-8">
+      <PageHeader
+        title={t("sidebar.styles")}
+        description={t("campus.styles.subtitle")}
+        actions={
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => setEditing("new")}
+          >
+            <Plus size={14} className="mr-1" aria-hidden="true" />
+            {t("settings.postProcessing.prompts.createNew")}
+          </Button>
+        }
+      />
 
-      <div className="space-y-2">
+      <div className="grid gap-3 md:grid-cols-2">
         {items.map((item) => (
           <StyleRow
             key={item.id}
@@ -324,13 +327,41 @@ export const CampusStylesSettings: React.FC = () => {
         ))}
       </div>
 
-      {editing && (
-        <section className="space-y-4 rounded-xl border border-hairline bg-white p-5">
-          <h2 className="text-base font-semibold text-text">
-            {editing === "new"
-              ? t("settings.postProcessing.prompts.createNew")
-              : t("settings.postProcessing.prompts.edit")}
-          </h2>
+      <Dialog
+        open={Boolean(editing)}
+        onOpenChange={(open) => {
+          if (!open) setEditing(null);
+        }}
+        title={
+          editing === "new"
+            ? t("settings.postProcessing.prompts.createNew")
+            : t("settings.postProcessing.prompts.edit")
+        }
+        closeLabel={t("common.close")}
+        contentFades={false}
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => setEditing(null)}
+            >
+              {t("settings.postProcessing.prompts.cancel")}
+            </Button>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => void saveStyle()}
+              disabled={!draftName.trim() || !draftText.trim()}
+            >
+              {editing === "new"
+                ? t("settings.postProcessing.prompts.createPrompt")
+                : t("settings.postProcessing.prompts.updatePrompt")}
+            </Button>
+          </>
+        }
+      >
+        {editing && (
           <div className="space-y-3">
             <label className="block space-y-1.5 text-sm font-medium text-text">
               {t("settings.postProcessing.prompts.promptLabel")}
@@ -349,27 +380,8 @@ export const CampusStylesSettings: React.FC = () => {
               />
             </label>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="primary"
-              size="md"
-              onClick={() => void saveStyle()}
-              disabled={!draftName.trim() || !draftText.trim()}
-            >
-              {editing === "new"
-                ? t("settings.postProcessing.prompts.createPrompt")
-                : t("settings.postProcessing.prompts.updatePrompt")}
-            </Button>
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={() => setEditing(null)}
-            >
-              {t("settings.postProcessing.prompts.cancel")}
-            </Button>
-          </div>
-        </section>
-      )}
+        )}
+      </Dialog>
     </div>
   );
 };

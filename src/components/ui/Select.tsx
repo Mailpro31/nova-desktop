@@ -39,28 +39,30 @@ type NonCreatableProps = {
 
 export type SelectProps = BaseProps & (CreatableProps | NonCreatableProps);
 
-const baseBackground =
-  "color-mix(in srgb, var(--color-mid-gray) 10%, transparent)";
+const baseBackground = "var(--color-inset)";
 const hoverBackground =
-  "color-mix(in srgb, var(--color-logo-primary) 12%, transparent)";
-const focusBackground =
-  "color-mix(in srgb, var(--color-logo-primary) 20%, transparent)";
-const neutralBorder =
-  "color-mix(in srgb, var(--color-mid-gray) 80%, transparent)";
+  "color-mix(in srgb, var(--color-text) 5%, var(--color-inset))";
+const focusBackground = "var(--color-surface)";
+const neutralBorder = "var(--color-hairline)";
 
 const selectStyles: StylesConfig<SelectOption, false> = {
   control: (base, state) => ({
     ...base,
-    minHeight: 40,
-    borderRadius: 6,
+    minHeight: "var(--nova-control-height)",
+    borderRadius: "var(--nova-radius-control)",
     borderColor: state.isFocused ? "var(--color-logo-primary)" : neutralBorder,
-    boxShadow: state.isFocused ? "0 0 0 1px var(--color-logo-primary)" : "none",
+    boxShadow: state.isFocused
+      ? "0 0 0 2px color-mix(in srgb, var(--color-accent) 20%, transparent)"
+      : "none",
     backgroundColor: state.isFocused ? focusBackground : baseBackground,
     fontSize: "0.875rem",
     color: "var(--color-text)",
-    transition: "all 150ms ease",
+    fontWeight: 400,
+    transition:
+      "background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease",
     ":hover": {
-      borderColor: "var(--color-logo-primary)",
+      borderColor:
+        "color-mix(in srgb, var(--color-text-secondary) 35%, transparent)",
       backgroundColor: hoverBackground,
     },
   }),
@@ -96,11 +98,12 @@ const selectStyles: StylesConfig<SelectOption, false> = {
   menu: (provided) => ({
     ...provided,
     zIndex: 30,
-    backgroundColor: "var(--color-background)",
+    backgroundColor: "var(--color-surface)",
     color: "var(--color-text)",
     border:
       "1px solid color-mix(in srgb, var(--color-mid-gray) 30%, transparent)",
-    boxShadow: "0 10px 30px rgba(15, 15, 15, 0.2)",
+    borderRadius: "var(--nova-radius-card)",
+    boxShadow: "var(--nova-shadow-floating)",
   }),
   option: (base, state) => ({
     ...base,

@@ -92,7 +92,7 @@ export const CampusFormattingSection: React.FC = () => {
           <h3 className="text-sm font-semibold text-text">
             {t("campus.formatting.sharedTitle")}
           </h3>
-          <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded-full bg-mid-gray/15 text-text-secondary">
+          <span className="rounded-full bg-inset px-2 py-0.5 text-[11px] font-medium text-text-secondary">
             {t("campus.dictionary.sharedBadge")}
           </span>
         </div>
@@ -101,15 +101,15 @@ export const CampusFormattingSection: React.FC = () => {
         </p>
 
         {sharedRules.length === 0 ? (
-          <p className="text-xs text-text-secondary/70 italic py-2">
+          <p className="py-2 text-xs text-text-secondary">
             {t("campus.formatting.sharedEmpty")}
           </p>
         ) : (
-          <div className="space-y-1.5 pt-1">
+          <div className="divide-y divide-hairline border-y border-hairline">
             {sharedRules.map((rule) => (
               <div
                 key={rule.id}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-hairline shadow-xs text-xs text-text"
+                className="flex min-h-11 items-center gap-2 px-2 py-2 text-xs text-text"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                 <span className="flex-1 leading-relaxed">{rule.rule}</span>
@@ -133,9 +133,17 @@ export const CampusFormattingSection: React.FC = () => {
             size="sm"
             onClick={loadRules}
             disabled={loading}
-            className="p-1 h-7 w-7 inline-flex items-center justify-center"
+            aria-label={t("campus.account.refresh")}
+            title={t("campus.account.refresh")}
+            className="h-9 w-9 p-0"
           >
-            <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
+            <RefreshCw
+              size={14}
+              className={
+                loading ? "animate-spin motion-reduce:animate-none" : ""
+              }
+              aria-hidden="true"
+            />
           </Button>
         </div>
         <p className="text-xs text-text-secondary">
@@ -143,14 +151,23 @@ export const CampusFormattingSection: React.FC = () => {
         </p>
 
         {/* Add personal rule form */}
-        <form onSubmit={handleAdd} className="flex gap-2">
-          <Input
-            type="text"
-            value={newRule}
-            onChange={(e) => setNewRule(e.target.value)}
-            placeholder={t("campus.formatting.rulePlaceholder")}
-            className="flex-1 text-sm"
-          />
+        <form
+          onSubmit={handleAdd}
+          className="flex flex-col gap-2 sm:flex-row sm:items-end"
+        >
+          <label
+            htmlFor="campus-formatting-rule"
+            className="flex flex-1 flex-col gap-1.5 text-xs font-medium text-text"
+          >
+            {t("campus.formatting.addRule")}
+            <Input
+              id="campus-formatting-rule"
+              type="text"
+              value={newRule}
+              onChange={(e) => setNewRule(e.target.value)}
+              placeholder={t("campus.formatting.rulePlaceholder")}
+            />
+          </label>
           <Button
             type="submit"
             variant="primary"
@@ -165,15 +182,15 @@ export const CampusFormattingSection: React.FC = () => {
 
         {/* Personal rules list */}
         {personalRules.length === 0 ? (
-          <p className="text-xs text-text-secondary/70 italic py-2">
+          <p className="py-2 text-xs text-text-secondary">
             {t("campus.formatting.personalEmpty")}
           </p>
         ) : (
-          <div className="space-y-1.5 pt-1">
+          <div className="divide-y divide-hairline border-y border-hairline">
             {personalRules.map((rule) => (
               <div
                 key={rule.id}
-                className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white border border-hairline shadow-xs group"
+                className="group flex min-h-12 items-center justify-between gap-2 px-2 py-2"
               >
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
@@ -184,10 +201,11 @@ export const CampusFormattingSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleDelete(rule.id)}
-                  className="p-1 rounded-lg text-text-secondary/50 hover:text-danger hover:bg-danger/10 transition-colors shrink-0"
+                  aria-label={t("common.delete")}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-danger/10 hover:text-danger focus:outline-none focus-visible:ring-2 focus-visible:ring-danger"
                   title={t("common.delete")}
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={14} aria-hidden="true" />
                 </button>
               </div>
             ))}

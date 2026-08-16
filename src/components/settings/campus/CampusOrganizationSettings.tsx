@@ -3,6 +3,7 @@ import { Check, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ManagedBy } from "@/components/campus/ManagedBy";
 import { CampusPrivacySummary } from "@/components/campus/CampusPrivacySummary";
+import { PageHeader, SectionHeader } from "@/components/ui";
 import {
   campusOrganizationLabel,
   type CampusCapabilities,
@@ -25,7 +26,6 @@ const FEATURE_KEYS: Array<{
 export const CampusOrganizationSettings: React.FC = () => {
   const { t } = useTranslation();
   const context = useCampusStore((state) => state.context);
-  const session = useCampusStore((state) => state.session);
   const connectionStatus = useCampusStore((state) => state.connectionStatus);
   const { organization, capabilities, privacy, authMethods, educationMode } =
     context;
@@ -36,39 +36,43 @@ export const CampusOrganizationSettings: React.FC = () => {
   const organizationName = organization.shortName ?? organization.name;
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-7">
-      <div className="space-y-1 px-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-text-secondary">
-          {t("campus.page.eyebrow")}
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-text">
-          {campusOrganizationLabel(organization)}
-        </h1>
-        {roleAndCohort && (
-          <p className="text-base text-text-secondary">{roleAndCohort}</p>
-        )}
-        {organization.managed && (
-          <div className="pt-2">
+    <div className="mx-auto w-full max-w-[760px] space-y-8">
+      <PageHeader
+        eyebrow={t("campus.page.eyebrow")}
+        title={campusOrganizationLabel(organization)}
+        description={roleAndCohort || undefined}
+        actions={
+          organization.managed ? (
             <ManagedBy organizationName={organizationName} />
-          </div>
-        )}
-      </div>
+          ) : undefined
+        }
+      />
 
       <section className="divide-y divide-hairline border-y border-hairline">
         <div className="py-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text-secondary">
-            {t("campus.page.processing.label")}
-          </p>
-          <h2 className="mt-2 text-base font-semibold text-text">
-            {connectionStatus === "connected"
-              ? t("campus.page.processing.campusTitle")
-              : t("campus.page.processing.localTitle")}
-          </h2>
-          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-text-secondary">
-            {connectionStatus === "connected"
-              ? t("campus.page.processing.campusDescription")
-              : t("campus.page.processing.localDescription")}
-          </p>
+          <SectionHeader
+            title={t("campus.page.processing.label")}
+            description={
+              connectionStatus === "connected"
+                ? t("campus.page.processing.campusDescription")
+                : t("campus.page.processing.localDescription")
+            }
+            actions={
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-text">
+                <span
+                  className={`h-2 w-2 rounded-full ${
+                    connectionStatus === "connected"
+                      ? "bg-success"
+                      : "bg-warning"
+                  }`}
+                  aria-hidden="true"
+                />
+                {connectionStatus === "connected"
+                  ? t("campus.page.processing.campusTitle")
+                  : t("campus.page.processing.localTitle")}
+              </span>
+            }
+          />
         </div>
 
         <div className="py-1">
@@ -76,9 +80,9 @@ export const CampusOrganizationSettings: React.FC = () => {
         </div>
 
         <div className="py-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text-secondary">
+          <h2 className="text-base font-semibold text-text">
             {t("campus.page.features")}
-          </p>
+          </h2>
           <ul className="mt-3 grid gap-2 sm:grid-cols-2">
             {FEATURE_KEYS.filter(
               ({ capability }) => capabilities[capability],
@@ -87,7 +91,7 @@ export const CampusOrganizationSettings: React.FC = () => {
                 key={capability}
                 className="flex items-center gap-2 text-sm text-text"
               >
-                <Check size={15} className="text-success" aria-hidden="true" />
+                <Check size={15} className="text-accent" aria-hidden="true" />
                 {t(labelKey)}
               </li>
             ))}
@@ -104,15 +108,7 @@ export const CampusOrganizationSettings: React.FC = () => {
             aria-hidden="true"
           />
         </summary>
-        <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
-          <div>
-            <dt className="text-text-secondary">
-              {t("campus.account.server")}
-            </dt>
-            <dd className="mt-0.5 break-all font-mono text-xs text-text">
-              {session?.server_url ?? t("campus.status.unavailable")}
-            </dd>
-          </div>
+        <dl className="mt-3 grid gap-4 text-sm sm:grid-cols-2">
           <div>
             <dt className="text-text-secondary">
               {t("campus.page.authMethod")}

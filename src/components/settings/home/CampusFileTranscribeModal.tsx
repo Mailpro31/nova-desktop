@@ -1,16 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  FileAudio,
-  UploadCloud,
-  X,
-  RefreshCw,
-  Copy,
-  Check,
-} from "lucide-react";
+import { UploadCloud, RefreshCw, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { Button } from "../../ui/Button";
+import { Dialog } from "../../ui/Dialog";
 import { loadCampusSession } from "@/lib/campusSession";
 import { CampusApi, campusErrorText } from "@/lib/campusApi";
 
@@ -29,53 +23,6 @@ export const CampusFileTranscribeModal: React.FC<
   const [copied, setCopied] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const transcribingRef = useRef(transcribing);
-
-  transcribingRef.current = transcribing;
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    const focusFrame = window.requestAnimationFrame(() => {
-      closeButtonRef.current?.focus();
-    });
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !transcribingRef.current) {
-        event.preventDefault();
-        onClose();
-        return;
-      }
-      if (event.key !== "Tab") return;
-
-      const focusable = Array.from(
-        dialogRef.current?.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ) ?? [],
-      ).filter((element) => !element.hasAttribute("disabled"));
-      if (focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.cancelAnimationFrame(focusFrame);
-      document.removeEventListener("keydown", handleKeyDown);
-      previouslyFocused?.focus();
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
@@ -135,55 +82,69 @@ export const CampusFileTranscribeModal: React.FC<
     toast.success(t("history.copied"));
   };
 
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget && !transcribing) onClose();
-      }}
-    >
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="campus-file-transcription-title"
-        aria-describedby="campus-file-transcription-description"
-        className="w-full max-w-lg space-y-5 rounded-xl border border-hairline bg-white p-6 shadow-2xl"
+  const footer = (
+    <>
+      <Button
+        variant="secondary"
+        size="md"
+        onClick={onClose}
+        disabled={transcribing}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-accent/10 text-accent">
-              <FileAudio size={20} />
-            </span>
-            <div>
-              <h3
-                id="campus-file-transcription-title"
-                className="text-base font-semibold text-text"
-              >
-                {t("campus.files.title")}
-              </h3>
-              <p
-                id="campus-file-transcription-description"
-                className="text-xs text-text-secondary"
-              >
-                {t("campus.files.description")}
-              </p>
-            </div>
-          </div>
-          <button
-            ref={closeButtonRef}
-            type="button"
-            onClick={onClose}
-            disabled={transcribing}
-            aria-label={t("common.close")}
-            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-1.5 text-text-secondary transition-colors hover:bg-mid-gray/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50"
-          >
-            <X size={18} aria-hidden="true" />
-          </button>
-        </div>
+        {t("common.cancel")}
+      </Button>
 
-        {/* Dropzone */}
+      {!resultText && (
+        <Button
+          variant="primary"
+          size="md"
+          disabled={!file || transcribing}
+          onClick={handleTranscribe}
+        >
+          {transcribing ? (
+            <>
+              <RefreshCw
+                size={16}
+                className="animate-spin motion-reduce:animate-none"
+                aria-hidden="true"
+              />
+              {t("campus.files.transcribing")}
+            </>
+          ) : (
+            t("campus.files.actionButton")
+          )}
+        </Button>
+      )}
+
+      {resultText && (
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => {
+            setFile(null);
+            setResultText(null);
+          }}
+        >
+          {t("campus.files.title")}
+        </Button>
+      )}
+    </>
+  );
+
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open && !transcribing) onClose();
+      }}
+      title={t("campus.files.title")}
+      description={t("campus.files.description")}
+      closeLabel={t("common.close")}
+      dismissible={!transcribing}
+      contentFades={false}
+      footer={footer}
+      size="md"
+    >
+      <div className="space-y-5" aria-busy={transcribing}>
         {!resultText && (
           <>
             <input
@@ -209,21 +170,21 @@ export const CampusFileTranscribeModal: React.FC<
                   fileInputRef.current?.click();
                 }
               }}
-              className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none ${
+              className={`flex min-h-44 cursor-pointer flex-col items-center justify-center border border-dashed p-6 text-center [border-radius:var(--nova-radius-card)] transition-[background-color,border-color] duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none ${
                 isDragOver
-                  ? "scale-[1.01] border-accent bg-accent/5"
-                  : "border-hairline hover:border-text-secondary/40 hover:bg-mid-gray/5"
+                  ? "border-accent bg-accent/5"
+                  : "border-text-secondary/30 bg-inset/55 hover:border-text-secondary/55 hover:bg-inset"
               }`}
             >
               <UploadCloud
-                size={36}
+                size={24}
                 aria-hidden="true"
-                className={`mb-2 ${isDragOver ? "text-accent" : "text-text-secondary"}`}
+                className={`mb-3 ${isDragOver ? "text-accent" : "text-text-secondary"}`}
               />
               <p className="text-sm font-medium text-text">
                 {file ? file.name : t("campus.files.dropzone")}
               </p>
-              <p className="text-xs text-text-secondary mt-1">
+              <p className="mt-1 text-xs text-text-secondary">
                 {file
                   ? `${(file.size / (1024 * 1024)).toFixed(2)} Mo`
                   : t("campus.files.supportedFormats")}
@@ -232,74 +193,28 @@ export const CampusFileTranscribeModal: React.FC<
           </>
         )}
 
-        {/* Transcribed Result */}
         {resultText && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-success flex items-center gap-1.5">
-                <Check size={14} />
+              <span className="flex items-center gap-1.5 text-xs font-medium text-success">
+                <Check size={14} aria-hidden="true" />
                 {t("campus.files.copiedToClipboard")}
               </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleCopyAgain}
-                className="inline-flex items-center gap-1.5 text-xs"
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
+              <Button variant="secondary" size="sm" onClick={handleCopyAgain}>
+                {copied ? (
+                  <Check size={14} aria-hidden="true" />
+                ) : (
+                  <Copy size={14} aria-hidden="true" />
+                )}
                 {t("history.copy")}
               </Button>
             </div>
-            <div className="max-h-48 overflow-y-auto p-3.5 rounded-2xl bg-mid-gray/10 text-sm text-text leading-relaxed font-normal whitespace-pre-wrap select-text">
+            <div className="max-h-52 select-text overflow-y-auto whitespace-pre-wrap border border-hairline bg-inset p-4 text-sm font-normal leading-relaxed text-text [border-radius:var(--nova-radius-card)]">
               {resultText}
             </div>
           </div>
         )}
-
-        {/* Footer actions */}
-        <div className="flex items-center justify-end gap-2 pt-2 border-t border-hairline">
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={onClose}
-            disabled={transcribing}
-          >
-            {t("common.cancel")}
-          </Button>
-
-          {!resultText && (
-            <Button
-              variant="primary"
-              size="md"
-              disabled={!file || transcribing}
-              onClick={handleTranscribe}
-              className="inline-flex items-center gap-2"
-            >
-              {transcribing ? (
-                <>
-                  <RefreshCw size={16} className="animate-spin" />
-                  {t("campus.files.transcribing")}
-                </>
-              ) : (
-                t("campus.files.actionButton")
-              )}
-            </Button>
-          )}
-
-          {resultText && (
-            <Button
-              variant="primary"
-              size="md"
-              onClick={() => {
-                setFile(null);
-                setResultText(null);
-              }}
-            >
-              {t("campus.files.title")}
-            </Button>
-          )}
-        </div>
       </div>
-    </div>
+    </Dialog>
   );
 };

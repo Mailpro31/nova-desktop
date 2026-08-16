@@ -7,6 +7,7 @@ import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
 import { DebugModeToggle } from "../DebugModeToggle";
 import { Button } from "../../ui/Button";
+import { PageHeader } from "../../ui/PageHeader";
 
 interface SectionCardProps {
   icon: React.ElementType;
@@ -21,7 +22,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   description,
   children,
 }) => (
-  <div className="bg-white rounded-3xl border border-hairline shadow-sm overflow-hidden">
+  <section className="overflow-hidden border border-hairline bg-surface [border-radius:var(--nova-radius-card)] [box-shadow:var(--nova-shadow-sm)]">
     <div className="px-5 py-4 border-b border-hairline">
       <div className="flex items-center gap-2.5">
         <Icon size={18} className="text-text-secondary" strokeWidth={1.75} />
@@ -32,7 +33,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
       </div>
     </div>
     <div className="p-1">{children}</div>
-  </div>
+  </section>
 );
 
 export const CampusAboutSettings: React.FC = () => {
@@ -54,15 +55,11 @@ export const CampusAboutSettings: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-5">
-      <div className="px-1 space-y-1">
-        <h1 className="text-3xl font-semibold tracking-tight text-text">
-          {t("sidebar.about")}
-        </h1>
-        <p className="text-base text-text-secondary">
-          {t("campus.settings.aboutSubtitle")}
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-[760px] space-y-5">
+      <PageHeader
+        title={t("sidebar.about")}
+        description={t("campus.settings.aboutSubtitle")}
+      />
 
       <SectionCard
         icon={Info}
