@@ -7,13 +7,7 @@ import {
   Suspense,
 } from "react";
 import { toast, Toaster } from "sonner";
-import {
-  CircleAlert,
-  CircleCheck,
-  Info,
-  Settings,
-  TriangleAlert,
-} from "lucide-react";
+import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -50,8 +44,7 @@ import {
   completeCampusOnboarding,
   clearCampusSession,
 } from "@/lib/campusSession";
-import CampusStatusBubble from "./components/CampusStatusBubble";
-import CampusSettingsDrawer from "./components/CampusSettingsDrawer";
+import { CampusNavigation } from "./components/campus/CampusNavigation";
 
 type OnboardingStep =
   | "accessibility"
@@ -93,7 +86,6 @@ function App() {
   // (vs a new user who needs full onboarding including model selection)
   const [isReturningUser, setIsReturningUser] = useState(false);
   const [currentSection, setCurrentSection] = useState<SidebarSection>("home");
-  const [campusSettingsOpen, setCampusSettingsOpen] = useState(false);
   const { settings, updateSetting } = useSettings();
   const direction = getLanguageDirection(i18n.language);
   const refreshAudioDevices = useSettingsStore(
@@ -103,10 +95,15 @@ function App() {
     (state) => state.refreshOutputDevices,
   );
   const hasCompletedPostOnboardingInit = useRef(false);
+  const contentScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     checkOnboardingStatus();
   }, []);
+
+  useEffect(() => {
+    contentScrollRef.current?.scrollTo({ top: 0 });
+  }, [currentSection]);
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
@@ -413,7 +410,11 @@ function App() {
         }
       }
 
-      if (hasCompletedOnboarding || campusSession !== null) {
+      const onboardingCompleteForMode = isCampusMode()
+        ? campusSession !== null
+        : hasCompletedOnboarding;
+
+      if (onboardingCompleteForMode) {
         // Returning user - check if they need to grant permissions first
         setIsReturningUser(true);
 
@@ -574,6 +575,12 @@ function App() {
       >
         <WhatsNewGate />
         <LexiconSuggestions />
+        {isCampusMode() && (
+          <CampusNavigation
+            activeSection={currentSection}
+            onNavigate={setCurrentSection}
+          />
+        )}
         {/* Main content area that takes remaining space */}
         <div className="flex-1 flex overflow-hidden">
           {!isCampusMode() && (
@@ -584,7 +591,7 @@ function App() {
           )}
           {/* Scrollable content area */}
           <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 overflow-y-auto">
+            <div ref={contentScrollRef} className="flex-1 overflow-y-auto">
               <div className="flex flex-col items-center p-4 gap-4">
                 <AccessibilityPermissions />
                 <Suspense
@@ -602,29 +609,6 @@ function App() {
         </div>
         {/* Fixed footer at bottom */}
         <Footer />
-
-        {isCampusMode() && (
-          <>
-            {/* Roue ancrée : ouvre le panneau latéral des réglages */}
-            <button
-              type="button"
-              onClick={() => setCampusSettingsOpen((v) => !v)}
-              className="fixed top-4 right-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-white text-text-secondary shadow-md transition-all hover:rotate-45 hover:text-accent cursor-pointer"
-              aria-label={t("campus.settings.drawerTitle")}
-            >
-              <Settings size={18} />
-            </button>
-            <CampusSettingsDrawer
-              open={campusSettingsOpen}
-              activeSection={currentSection}
-              onNavigate={(section) => {
-                setCurrentSection(section);
-                setCampusSettingsOpen(false);
-              }}
-              onClose={() => setCampusSettingsOpen(false)}
-            />
-          </>
-        )}
       </div>
     );
   }
@@ -633,7 +617,6 @@ function App() {
     <>
       {toaster}
       {content}
-      {isCampusMode() && <CampusStatusBubble />}
     </>
   );
 }

@@ -9,6 +9,7 @@ import {
   Sparkles,
   Palette,
   Users,
+  Building2,
 } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
@@ -23,6 +24,11 @@ const HomeSettings = lazy(() =>
 const ConfigurationSettings = lazy(() =>
   import("./settings/configuration/ConfigurationSettings").then((module) => ({
     default: module.ConfigurationSettings,
+  })),
+);
+const CampusOrganizationSettings = lazy(() =>
+  import("./settings/campus/CampusOrganizationSettings").then((module) => ({
+    default: module.CampusOrganizationSettings,
   })),
 );
 const PostProcessingSettings = lazy(() =>
@@ -103,6 +109,14 @@ export const SECTIONS_CONFIG = {
     enabled: () => true,
     campusVisible: true,
   },
+  campus: {
+    labelKey: "campus.navigation.campus",
+    campusLabelKey: "campus.navigation.campus",
+    icon: Building2,
+    component: CampusOrganizationSettings,
+    enabled: () => false,
+    campusVisible: true,
+  },
   postprocessing: {
     labelKey: "sidebar.postProcessing",
     campusLabelKey: "sidebar.styles",
@@ -128,7 +142,7 @@ export const SECTIONS_CONFIG = {
     icon: Palette,
     component: PersonalizationSettings,
     enabled: () => true,
-    campusVisible: true,
+    campusVisible: false,
   },
   account: {
     labelKey: "sidebar.account",
@@ -170,10 +184,10 @@ export const SECTIONS_CONFIG = {
 // Spec : Accueil / Styles / Historique / Réglages / Personnalisation
 export const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
   "home",
+  "campus",
   "postprocessing",
   "history",
   "configuration",
-  "personalization",
 ];
 
 // Libellé affiché pour une section en mode campus (priorité au libellé campus).
@@ -189,6 +203,7 @@ export function getCampusLabelKey(section: SidebarSection): string {
 export const SECTION_COLORS: Record<string, string> = {
   home: "",
   configuration: "#8E8E93",
+  campus: "#0A84FF",
   postprocessing: "#BF5AF2",
   meeting: "#30D158",
   personalization: "#FF375F",

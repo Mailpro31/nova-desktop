@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use specta::Type;
 use std::collections::HashMap;
 use std::path::Path;
@@ -14,6 +15,7 @@ use crate::settings::{get_settings, write_settings};
 const CAMPUS_CONFIG_FILENAME: &str = "campus-config.json";
 const CAMPUS_SESSION_STORE: &str = "campus_session.json";
 const CAMPUS_SESSION_KEY: &str = "campus_session";
+const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.campus";
 
 pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
 pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
@@ -21,13 +23,129 @@ pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusConfig {
     pub server_url: String,
+    #[serde(default)]
+    pub organization: Option<CampusOrganizationConfig>,
+    #[serde(default)]
+    pub capabilities: Option<CampusCapabilitiesConfig>,
+    #[serde(default)]
+    pub education_mode: Option<String>,
+    #[serde(default)]
+    pub auth_methods: Option<Vec<String>>,
+    #[serde(default)]
+    pub privacy: Option<CampusPrivacyConfig>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct CampusOrganizationConfig {
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub short_name: Option<String>,
+    #[serde(default)]
+    pub campus_name: Option<String>,
+    #[serde(default)]
+    pub role: Option<String>,
+    #[serde(default)]
+    pub cohort: Option<String>,
+    #[serde(default = "default_managed")]
+    pub managed: bool,
+    #[serde(default)]
+    pub branding: Option<CampusBrandingConfig>,
+    #[serde(default)]
+    pub support: Option<CampusSupportConfig>,
+}
+
+fn default_managed() -> bool {
+    true
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct CampusBrandingConfig {
+    #[serde(default)]
+    pub logo_url: Option<String>,
+    #[serde(default)]
+    pub accent_color: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusSupportConfig {
+    #[serde(default)]
+    pub email: Option<String>,
+    #[serde(default)]
+    pub website: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct CampusCapabilitiesConfig {
+    #[serde(default)]
+    pub dictation: Option<bool>,
+    #[serde(default)]
+    pub rewrite: Option<bool>,
+    #[serde(default)]
+    pub styles: Option<bool>,
+    #[serde(default)]
+    pub file_transcription: Option<bool>,
+    #[serde(default)]
+    pub commands: Option<bool>,
+    #[serde(default)]
+    pub dictionary: Option<bool>,
+    #[serde(default)]
+    pub snippets: Option<bool>,
+    #[serde(default)]
+    pub formatting_rules: Option<bool>,
+    #[serde(default)]
+    pub screen_context: Option<bool>,
+    #[serde(default)]
+    pub cloud_inference: Option<bool>,
+    #[serde(default)]
+    pub engineering_notes: Option<bool>,
+    #[serde(default)]
+    pub ai_skills: Option<bool>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct CampusPrivacyConfig {
+    #[serde(default)]
+    pub verified: Option<bool>,
+    #[serde(default)]
+    pub content_retention: Option<String>,
+    #[serde(default)]
+    pub usage_counters: Option<String>,
+    #[serde(default)]
+    pub infrastructure: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusSession {
     pub server_url: String,
-    pub token: String,
     pub email: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct StoredCampusSession {
+    server_url: String,
+    email: String,
+    /// Legacy field used only to migrate sessions created before secure storage.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    token: Option<String>,
+}
+
+#[derive(Debug, Clone)]
+pub struct CampusCredentials {
+    pub session: CampusSession,
+    token: String,
+}
+
+impl std::ops::Deref for CampusCredentials {
+    type Target = CampusSession;
+
+    fn deref(&self) -> &Self::Target {
+        &self.session
+    }
 }
 
 /// État runtime indiquant si le frontend a été buildé en mode campus.
@@ -79,41 +197,114 @@ fn campus_session_store(
         .map_err(|e| e.to_string())
 }
 
-#[tauri::command]
-#[specta::specta]
-pub fn load_campus_session(app: AppHandle) -> Result<Option<CampusSession>, String> {
-    let store = campus_session_store(&app)?;
+fn credential_username(session: &CampusSession) -> String {
+    let identity = format!(
+        "{}|{}",
+        normalize_base_url(&session.server_url),
+        session.email
+    );
+    format!("{:x}", Sha256::digest(identity.as_bytes()))
+}
+
+fn credential_entry(session: &CampusSession) -> Result<keyring::Entry, String> {
+    keyring::Entry::new(CAMPUS_CREDENTIAL_SERVICE, &credential_username(session))
+        .map_err(|e| format!("secure credential store unavailable: {e}"))
+}
+
+fn persist_session_metadata(app: &AppHandle, session: &CampusSession) -> Result<(), String> {
+    let store = campus_session_store(app)?;
+    let stored = StoredCampusSession {
+        server_url: session.server_url.clone(),
+        email: session.email.clone(),
+        token: None,
+    };
+    store.set(
+        CAMPUS_SESSION_KEY,
+        serde_json::to_value(stored).map_err(|e| e.to_string())?,
+    );
+    store.save().map_err(|e| e.to_string())
+}
+
+fn save_campus_credentials(
+    app: &AppHandle,
+    session: CampusSession,
+    token: String,
+) -> Result<(), String> {
+    let entry = credential_entry(&session)?;
+    entry
+        .set_password(&token)
+        .map_err(|e| format!("failed to protect campus credential: {e}"))?;
+    if let Err(error) = persist_session_metadata(app, &session) {
+        let _ = entry.delete_credential();
+        return Err(error);
+    }
+
+    let mut settings = get_settings(app);
+    settings.onboarding_completed = true;
+    write_settings(app, settings);
+    Ok(())
+}
+
+fn load_campus_credentials(app: &AppHandle) -> Result<Option<CampusCredentials>, String> {
+    let store = campus_session_store(app)?;
     let Some(value) = store.get(CAMPUS_SESSION_KEY) else {
         return Ok(None);
     };
     if value.is_null() {
         return Ok(None);
     }
-    let session: CampusSession = serde_json::from_value(value).map_err(|e| e.to_string())?;
-    Ok(Some(session))
+
+    let stored: StoredCampusSession = serde_json::from_value(value).map_err(|e| e.to_string())?;
+    let session = CampusSession {
+        server_url: stored.server_url,
+        email: stored.email,
+    };
+    let entry = credential_entry(&session)?;
+
+    // One-time migration from the previous plaintext tauri-store record.
+    let token = if let Some(legacy_token) = stored.token {
+        entry
+            .set_password(&legacy_token)
+            .map_err(|e| format!("failed to migrate campus credential: {e}"))?;
+        persist_session_metadata(app, &session)?;
+        legacy_token
+    } else {
+        entry.get_password().map_err(|e| match e {
+            keyring::Error::NoEntry => "campus credential is missing".to_string(),
+            other => format!("failed to read campus credential: {other}"),
+        })?
+    };
+
+    Ok(Some(CampusCredentials { session, token }))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn save_campus_session(app: AppHandle, session: CampusSession) -> Result<(), String> {
-    let store = campus_session_store(&app)?;
-    store.set(
-        CAMPUS_SESSION_KEY,
-        serde_json::to_value(&session).map_err(|e| e.to_string())?,
-    );
-    store.save().map_err(|e| e.to_string())?;
-
-    let mut settings = get_settings(&app);
-    settings.onboarding_completed = true;
-    write_settings(&app, settings);
-
-    Ok(())
+pub fn load_campus_session(app: AppHandle) -> Result<Option<CampusSession>, String> {
+    Ok(load_campus_credentials(&app)?.map(|credentials| credentials.session))
 }
 
 #[tauri::command]
 #[specta::specta]
 pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
     let store = campus_session_store(&app)?;
+    if let Some(value) = store.get(CAMPUS_SESSION_KEY) {
+        if !value.is_null() {
+            if let Ok(stored) = serde_json::from_value::<StoredCampusSession>(value) {
+                let session = CampusSession {
+                    server_url: stored.server_url,
+                    email: stored.email,
+                };
+                if let Ok(entry) = credential_entry(&session) {
+                    if let Err(error) = entry.delete_credential() {
+                        if !matches!(error, keyring::Error::NoEntry) {
+                            return Err(format!("failed to delete campus credential: {error}"));
+                        }
+                    }
+                }
+            }
+        }
+    }
     store.delete(CAMPUS_SESSION_KEY);
     store.save().map_err(|e| e.to_string())?;
     Ok(())
@@ -140,9 +331,9 @@ pub struct CampusAuthRequestResponse {
     pub sent: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusAuthVerifyResponse {
-    pub token: String,
+#[derive(Deserialize)]
+struct CampusTokenResponse {
+    token: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -235,11 +426,12 @@ pub async fn request_campus_auth(
 #[tauri::command]
 #[specta::specta]
 pub async fn verify_campus_auth(
+    app: AppHandle,
     server_url: String,
     email: String,
     code: String,
     machine: String,
-) -> Result<CampusAuthVerifyResponse, String> {
+) -> Result<CampusSession, String> {
     let base_url = normalize_base_url(&server_url);
     let client = campus_client_no_auth();
     let response = client
@@ -253,10 +445,16 @@ pub async fn verify_campus_auth(
         return Err(parse_error_text(response).await);
     }
 
-    response
-        .json::<CampusAuthVerifyResponse>()
+    let response = response
+        .json::<CampusTokenResponse>()
         .await
-        .map_err(|e| format!("invalid response: {}", e))
+        .map_err(|e| format!("invalid response: {}", e))?;
+    let session = CampusSession {
+        server_url: base_url,
+        email: email.to_lowercase(),
+    };
+    save_campus_credentials(&app, session.clone(), response.token)?;
+    Ok(session)
 }
 
 fn campus_client_with_token(token: &str) -> reqwest::Client {
@@ -272,15 +470,21 @@ fn campus_client_with_token(token: &str) -> reqwest::Client {
         .expect("reqwest client builds")
 }
 
+fn authenticated_client(app: &AppHandle) -> Result<(String, reqwest::Client), String> {
+    let credentials =
+        load_campus_credentials(app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
+    let client = campus_client_with_token(&credentials.token);
+    Ok((base_url, client))
+}
+
 #[tauri::command]
 #[specta::specta]
-pub async fn get_campus_me(
-    app: AppHandle,
-    server_url: String,
-    token: String,
-) -> Result<CampusMeResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
+    let credentials =
+        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
+    let client = campus_client_with_token(&credentials.token);
     let response = client
         .get(format!("{}/api/me", base_url))
         .send()
@@ -362,13 +566,8 @@ pub struct CampusCommandResponse {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_campus_vocabulary(
-    app: AppHandle,
-    server_url: String,
-    token: String,
-) -> Result<CampusVocabularyResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+pub async fn get_campus_vocabulary(app: AppHandle) -> Result<CampusVocabularyResponse, String> {
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/vocabulary", base_url))
         .send()
@@ -386,13 +585,10 @@ pub async fn get_campus_vocabulary(
 #[specta::specta]
 pub async fn add_campus_dictionary_entry(
     app: AppHandle,
-    server_url: String,
-    token: String,
     term: String,
     replacement: String,
 ) -> Result<CampusIdResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/dictionary", base_url))
         .json(&serde_json::json!({ "term": term, "replacement": replacement }))
@@ -409,14 +605,8 @@ pub async fn add_campus_dictionary_entry(
 
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_campus_dictionary_entry(
-    app: AppHandle,
-    server_url: String,
-    token: String,
-    entry_id: i64,
-) -> Result<(), String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+pub async fn delete_campus_dictionary_entry(app: AppHandle, entry_id: i64) -> Result<(), String> {
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .delete(format!("{}/api/dictionary/{}", base_url, entry_id))
         .send()
@@ -431,13 +621,10 @@ pub async fn delete_campus_dictionary_entry(
 #[specta::specta]
 pub async fn learn_campus_dictionary(
     app: AppHandle,
-    server_url: String,
-    token: String,
     heard: String,
     corrected: String,
 ) -> Result<CampusLearnResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/dictionary/learn", base_url))
         .json(&serde_json::json!({ "heard": heard, "corrected": corrected }))
@@ -454,13 +641,8 @@ pub async fn learn_campus_dictionary(
 
 #[tauri::command]
 #[specta::specta]
-pub async fn export_campus_dictionary(
-    app: AppHandle,
-    server_url: String,
-    token: String,
-) -> Result<String, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+pub async fn export_campus_dictionary(app: AppHandle) -> Result<String, String> {
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/dictionary/export", base_url))
         .send()
@@ -478,12 +660,9 @@ pub async fn export_campus_dictionary(
 #[specta::specta]
 pub async fn import_campus_dictionary(
     app: AppHandle,
-    server_url: String,
-    token: String,
     csv_content: String,
 ) -> Result<CampusImportResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+    let (base_url, client) = authenticated_client(&app)?;
 
     let part = reqwest::multipart::Part::bytes(csv_content.into_bytes())
         .file_name("dictionary.csv")
@@ -510,14 +689,14 @@ pub async fn import_campus_dictionary(
 #[specta::specta]
 pub async fn analyze_campus_document(
     app: AppHandle,
-    server_url: String,
-    token: String,
     text_content: String,
     filename: Option<String>,
 ) -> Result<CampusAnalyzeResponse, String> {
-    let base_url = normalize_base_url(&server_url);
+    let credentials =
+        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
     let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", token)
+    let auth_value = format!("Bearer {}", credentials.token)
         .parse()
         .expect("valid bearer header");
     headers.insert(reqwest::header::AUTHORIZATION, auth_value);
@@ -553,13 +732,10 @@ pub async fn analyze_campus_document(
 #[specta::specta]
 pub async fn add_campus_snippet(
     app: AppHandle,
-    server_url: String,
-    token: String,
     trigger: String,
     content: String,
 ) -> Result<CampusIdResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/snippets", base_url))
         .json(&serde_json::json!({ "trigger": trigger, "content": content }))
@@ -576,14 +752,8 @@ pub async fn add_campus_snippet(
 
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_campus_snippet(
-    app: AppHandle,
-    server_url: String,
-    token: String,
-    snippet_id: i64,
-) -> Result<(), String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+pub async fn delete_campus_snippet(app: AppHandle, snippet_id: i64) -> Result<(), String> {
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .delete(format!("{}/api/snippets/{}", base_url, snippet_id))
         .send()
@@ -598,11 +768,8 @@ pub async fn delete_campus_snippet(
 #[specta::specta]
 pub async fn get_campus_formatting_rules(
     app: AppHandle,
-    server_url: String,
-    token: String,
 ) -> Result<CampusFormattingRulesResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/formatting-rules", base_url))
         .send()
@@ -620,12 +787,9 @@ pub async fn get_campus_formatting_rules(
 #[specta::specta]
 pub async fn add_campus_formatting_rule(
     app: AppHandle,
-    server_url: String,
-    token: String,
     rule: String,
 ) -> Result<CampusIdResponse, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/formatting-rules", base_url))
         .json(&serde_json::json!({ "rule": rule }))
@@ -642,14 +806,8 @@ pub async fn add_campus_formatting_rule(
 
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_campus_formatting_rule(
-    app: AppHandle,
-    server_url: String,
-    token: String,
-    rule_id: i64,
-) -> Result<(), String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_with_token(&token);
+pub async fn delete_campus_formatting_rule(app: AppHandle, rule_id: i64) -> Result<(), String> {
+    let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .delete(format!("{}/api/formatting-rules/{}", base_url, rule_id))
         .send()
@@ -664,14 +822,14 @@ pub async fn delete_campus_formatting_rule(
 #[specta::specta]
 pub async fn execute_campus_command(
     app: AppHandle,
-    server_url: String,
-    token: String,
     instruction: String,
     text: String,
 ) -> Result<CampusCommandResponse, String> {
-    let base_url = normalize_base_url(&server_url);
+    let credentials =
+        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
     let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", token)
+    let auth_value = format!("Bearer {}", credentials.token)
         .parse()
         .expect("valid bearer header");
     headers.insert(reqwest::header::AUTHORIZATION, auth_value);
@@ -699,14 +857,14 @@ pub async fn execute_campus_command(
 #[specta::specta]
 pub async fn transcribe_campus_audio_file(
     app: AppHandle,
-    server_url: String,
-    token: String,
     file_bytes: Vec<u8>,
     filename: String,
 ) -> Result<String, String> {
-    let base_url = normalize_base_url(&server_url);
+    let credentials =
+        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
     let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", token)
+    let auth_value = format!("Bearer {}", credentials.token)
         .parse()
         .expect("valid bearer header");
     headers.insert(reqwest::header::AUTHORIZATION, auth_value);
@@ -804,7 +962,7 @@ struct ReformulateResponse {
 pub async fn transcribe_campus(
     _app: &AppHandle,
     wav_path: &Path,
-    session: &CampusSession,
+    session: &CampusCredentials,
 ) -> Result<String, CampusError> {
     let base_url = normalize_base_url(&session.server_url);
     let client = campus_client(&session.token);
@@ -839,7 +997,7 @@ pub async fn transcribe_campus(
 pub async fn reformulate_campus(
     text: &str,
     style_prompt: &str,
-    session: &CampusSession,
+    session: &CampusCredentials,
 ) -> Result<String, CampusError> {
     let base_url = normalize_base_url(&session.server_url);
     let client = campus_client(&session.token);
@@ -960,11 +1118,11 @@ pub fn has_campus_session(app: &AppHandle) -> bool {
     load_campus_session(app.clone()).ok().flatten().is_some()
 }
 
-pub async fn should_use_campus(app: &AppHandle) -> Option<CampusSession> {
+pub async fn should_use_campus(app: &AppHandle) -> Option<CampusCredentials> {
     if !is_campus_enabled(app) {
         return None;
     }
-    let session = load_campus_session(app.clone()).ok().flatten()?;
+    let session = load_campus_credentials(app).ok().flatten()?;
     match is_server_reachable_cached(&session.server_url) {
         Some(true) => Some(session),
         Some(false) => None,
@@ -983,5 +1141,49 @@ pub fn invalidate_server_reachability_cache(base_url: &str) {
     let mut cache_guard = REACHABILITY_CACHE.lock().unwrap_or_else(|e| e.into_inner());
     if let Some(cache) = cache_guard.as_mut() {
         cache.remove(&normalized);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn session_metadata_never_serializes_a_token() {
+        let stored = StoredCampusSession {
+            server_url: "https://campus.example.edu".to_string(),
+            email: "student@example.edu".to_string(),
+            token: None,
+        };
+
+        let value = serde_json::to_value(stored).expect("session metadata serializes");
+        assert_eq!(value.get("token"), None);
+        assert_eq!(value["email"], "student@example.edu");
+    }
+
+    #[test]
+    fn legacy_plaintext_session_can_be_migrated() {
+        let value = serde_json::json!({
+            "server_url": "https://campus.example.edu",
+            "email": "student@example.edu",
+            "token": "legacy-secret",
+        });
+
+        let stored: StoredCampusSession =
+            serde_json::from_value(value).expect("legacy session deserializes");
+        assert_eq!(stored.token.as_deref(), Some("legacy-secret"));
+    }
+
+    #[test]
+    fn credential_username_does_not_expose_account_identity() {
+        let session = CampusSession {
+            server_url: "https://campus.example.edu".to_string(),
+            email: "student@example.edu".to_string(),
+        };
+
+        let username = credential_username(&session);
+        assert_eq!(username.len(), 64);
+        assert!(!username.contains("student"));
+        assert!(!username.contains("example.edu"));
     }
 }

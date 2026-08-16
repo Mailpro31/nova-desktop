@@ -649,7 +649,6 @@ pub fn run(cli_args: CliArgs) {
             commands::campus::get_campus_config,
             commands::campus::set_campus_mode,
             commands::campus::load_campus_session,
-            commands::campus::save_campus_session,
             commands::campus::clear_campus_session,
             commands::campus::complete_campus_onboarding,
             commands::campus::check_campus_server_reachability,

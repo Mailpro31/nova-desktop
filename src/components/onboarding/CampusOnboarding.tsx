@@ -1,13 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { hostname } from "@tauri-apps/plugin-os";
-import { Check, Mail, Server } from "lucide-react";
+import { Building2, Check, Mail, Server } from "lucide-react";
 import HandyTextLogo from "../icons/HandyTextLogo";
 import OnboardingStepShell from "./OnboardingStepShell";
-import { useSettings } from "@/hooks/useSettings";
-import { CampusApi, CampusApiError } from "@/lib/campusApi";
-import { saveCampusSession, loadCampusConfig } from "@/lib/campusSession";
+import { CampusApi, CampusApiError, type CampusProfile } from "@/lib/campusApi";
+import { loadCampusConfig, type CampusConfig } from "@/lib/campusSession";
+import {
+  isValidCampusEmail,
+  isValidCampusServerUrl,
+  maskCampusEmail,
+  normalizeCampusServerUrl,
+  sanitizeCampusCode,
+  shouldShowCampusServerInput,
+} from "@/lib/campusOnboarding";
+import {
+  campusOrganizationLabel,
+  resolveCampusContext,
+} from "@/lib/campusPolicy";
+import { ManagedBy } from "@/components/campus/ManagedBy";
+import { refreshCampusContext } from "@/stores/campusStore";
 
 type CampusStep = "welcome" | "email" | "code" | "ready";
 
@@ -15,71 +34,76 @@ interface CampusOnboardingProps {
   onComplete: () => void;
 }
 
-function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function normalizeServerUrl(url: string): string {
-  const trimmed = url.trim().replace(/\/+$/, "");
-  if (!trimmed) return "";
-  if (!/^https?:\/\//i.test(trimmed)) {
-    return `https://${trimmed}`;
-  }
-  return trimmed;
-}
-
-function isValidServerUrl(url: string): boolean {
-  try {
-    new URL(normalizeServerUrl(url));
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-const CodeInput: React.FC<{
+interface CodeInputProps {
   value: string;
   onChange: (value: string) => void;
+  onComplete: () => void;
   disabled?: boolean;
-}> = ({ value, onChange, disabled }) => {
-  const digits = value.split("").concat(Array(6 - value.length).fill(""));
-  const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+  invalid?: boolean;
+  digitLabel: (position: number) => string;
+}
 
-  const handleChange = (index: number, char: string) => {
-    if (!/^\d?$/.test(char)) return;
-    const newValue = value.slice(0, index) + char + value.slice(index + 1);
-    const clamped = newValue.slice(0, 6);
-    onChange(clamped);
-    if (char && index < 5) {
-      inputsRef.current[index + 1]?.focus();
-    }
+const CodeInput: React.FC<CodeInputProps> = ({
+  value,
+  onChange,
+  onComplete,
+  disabled,
+  invalid,
+  digitLabel,
+}) => {
+  const digits = value.split("").concat(Array(6 - value.length).fill(""));
+  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+
+  useEffect(() => {
+    inputsRef.current[0]?.focus();
+  }, []);
+
+  const replaceDigit = (index: number, input: string) => {
+    const digit = sanitizeCampusCode(input).slice(-1);
+    if (!digit && input) return;
+    const next = `${value.slice(0, index)}${digit}${value.slice(index + 1)}`;
+    onChange(sanitizeCampusCode(next));
+    if (digit && index < 5) inputsRef.current[index + 1]?.focus();
   };
 
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
-    if (e.key === "Backspace" && !value[index] && index > 0) {
-      inputsRef.current[index - 1]?.focus();
-    }
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = sanitizeCampusCode(event.clipboardData.getData("text"));
+    if (!pasted) return;
+    event.preventDefault();
+    onChange(pasted);
+    inputsRef.current[Math.min(pasted.length, 6) - 1]?.focus();
   };
 
   return (
-    <div className="flex gap-2 justify-center">
-      {digits.map((digit, i) => (
+    <div className="flex justify-center gap-2" role="group">
+      {digits.map((digit, index) => (
         <input
-          key={i}
-          ref={(el) => {
-            inputsRef.current[i] = el;
+          key={index}
+          ref={(element) => {
+            inputsRef.current[index] = element;
           }}
           type="text"
           inputMode="numeric"
+          autoComplete={index === 0 ? "one-time-code" : "off"}
           maxLength={1}
           value={digit}
           disabled={disabled}
-          onChange={(e) => handleChange(i, e.target.value.slice(-1))}
-          onKeyDown={(e) => handleKeyDown(i, e)}
-          className="w-12 h-14 text-center text-xl rounded-lg bg-white/5 border border-mid-gray/20 text-text focus:border-logo-primary focus:outline-none disabled:opacity-50"
+          aria-label={digitLabel(index + 1)}
+          aria-invalid={invalid || undefined}
+          onPaste={handlePaste}
+          onChange={(event) => replaceDigit(index, event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Backspace" && !value[index] && index > 0) {
+              inputsRef.current[index - 1]?.focus();
+            } else if (event.key === "ArrowLeft" && index > 0) {
+              inputsRef.current[index - 1]?.focus();
+            } else if (event.key === "ArrowRight" && index < 5) {
+              inputsRef.current[index + 1]?.focus();
+            } else if (event.key === "Enter" && value.length === 6) {
+              onComplete();
+            }
+          }}
+          className="h-14 w-11 rounded-lg border border-mid-gray/25 bg-white text-center text-xl font-semibold text-text outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:opacity-50 sm:w-12"
         />
       ))}
     </div>
@@ -88,33 +112,30 @@ const CodeInput: React.FC<{
 
 const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
   const { t } = useTranslation();
-  const { settings } = useSettings();
-
   const [step, setStep] = useState<CampusStep>("welcome");
   const [email, setEmail] = useState("");
   const [serverUrl, setServerUrl] = useState("");
-  const [configLocked, setConfigLocked] = useState(false);
+  const [config, setConfig] = useState<CampusConfig | null>(null);
+  const [configLoaded, setConfigLoaded] = useState(false);
   const [code, setCode] = useState("");
-  const [machineName, setMachineName] = useState("");
+  const [machineName, setMachineName] = useState("unknown");
+  const [profile, setProfile] = useState<CampusProfile | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
+  const lastSubmittedCode = useRef("");
 
   useEffect(() => {
     let mounted = true;
-    const init = async () => {
-      const [name, config] = await Promise.all([
-        hostname().catch(() => null),
-        loadCampusConfig(),
-      ]);
-      if (!mounted) return;
-      setMachineName(name ?? "unknown");
-      if (config) {
-        setServerUrl(config.server_url);
-        setConfigLocked(true);
-      }
-    };
-    void init();
+    void Promise.all([hostname().catch(() => null), loadCampusConfig()]).then(
+      ([name, loadedConfig]) => {
+        if (!mounted) return;
+        setMachineName(name ?? "unknown");
+        setConfig(loadedConfig);
+        setServerUrl(loadedConfig?.server_url ?? "");
+        setConfigLoaded(true);
+      },
+    );
     return () => {
       mounted = false;
     };
@@ -122,37 +143,51 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
 
   useEffect(() => {
     if (cooldown <= 0) return;
-    const timer = window.setTimeout(() => setCooldown((c) => c - 1), 1000);
+    const timer = window.setTimeout(
+      () => setCooldown((value) => value - 1),
+      1000,
+    );
     return () => window.clearTimeout(timer);
   }, [cooldown]);
 
-  const api = new CampusApi(normalizeServerUrl(serverUrl));
+  const api = useMemo(
+    () => new CampusApi(normalizeCampusServerUrl(serverUrl)),
+    [serverUrl],
+  );
+  const context = useMemo(
+    () => resolveCampusContext(config, profile),
+    [config, profile],
+  );
 
-  const formatError = (err: unknown): string => {
-    if (err instanceof CampusApiError) {
-      const msg = err.message.toLowerCase();
-      if (
-        msg.includes("network error") ||
-        msg.includes("injoignable") ||
-        err.status === 0
-      ) {
-        return t("campus.onboarding.errors.network");
+  const formatError = useCallback(
+    (caught: unknown): string => {
+      if (caught instanceof CampusApiError) {
+        const message = caught.message.toLowerCase();
+        if (
+          message.includes("network error") ||
+          message.includes("injoignable") ||
+          caught.status === 0
+        ) {
+          return t("campus.onboarding.errors.network");
+        }
+        return caught.message;
       }
-      return err.message;
-    }
-    return t("campus.onboarding.errors.network");
-  };
+      return t("campus.onboarding.errors.network");
+    },
+    [t],
+  );
 
   const handleRequestCode = async () => {
-    if (!isValidEmail(email) || !isValidServerUrl(serverUrl)) return;
+    if (!isValidCampusEmail(email) || !isValidCampusServerUrl(serverUrl))
+      return;
     setIsLoading(true);
     setError(null);
     try {
-      await api.requestAuth(email, machineName);
+      await api.requestAuth(email.trim(), machineName);
       setCooldown(60);
       setStep("code");
-    } catch (err) {
-      setError(formatError(err));
+    } catch (caught) {
+      setError(formatError(caught));
     } finally {
       setIsLoading(false);
     }
@@ -163,34 +198,35 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     setIsLoading(true);
     setError(null);
     try {
-      await api.requestAuth(email, machineName);
+      await api.requestAuth(email.trim(), machineName);
       setCooldown(60);
       toast.success(t("campus.onboarding.code.resent"));
-    } catch (err) {
-      setError(formatError(err));
+    } catch (caught) {
+      setError(formatError(caught));
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleVerifyCode = async () => {
-    if (code.length !== 6) return;
+  const handleVerifyCode = useCallback(async () => {
+    if (code.length !== 6 || isLoading || lastSubmittedCode.current === code) {
+      return;
+    }
+    lastSubmittedCode.current = code;
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.verifyAuth(email, code, machineName);
-      await saveCampusSession({
-        server_url: normalizeServerUrl(serverUrl),
-        token: response.token,
-        email,
-      });
+      await api.verifyAuth(email.trim(), code, machineName);
+      const loadedProfile = await api.getMe().catch(() => null);
+      setProfile(loadedProfile);
+      await refreshCampusContext();
       setStep("ready");
-    } catch (err) {
-      let message = formatError(err);
-      if (err instanceof CampusApiError) {
-        if (err.status === 400) {
+    } catch (caught) {
+      let message = formatError(caught);
+      if (caught instanceof CampusApiError) {
+        if (caught.status === 400) {
           message = t("campus.onboarding.code.invalid");
-        } else if (err.status === 403) {
+        } else if (caught.status === 403) {
           message = t("campus.onboarding.code.forbidden");
         }
       }
@@ -198,36 +234,53 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [api, code, email, formatError, isLoading, machineName, t]);
 
-  const shortcut = settings?.bindings?.transcribe?.current_binding;
+  useEffect(() => {
+    if (step === "code" && code.length === 6) {
+      void handleVerifyCode();
+    }
+  }, [code, handleVerifyCode, step]);
 
   if (step === "welcome") {
+    const emailCodeAvailable = context.authMethods.includes("email_code");
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center p-6 gap-6">
-        <HandyTextLogo width={200} />
-        <div className="text-center max-w-md space-y-2">
-          <h2 className="text-xl font-semibold text-text">
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 p-6">
+        <HandyTextLogo width={180} />
+        <div className="max-w-md space-y-3 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            {t("campus.onboarding.label")}
+          </p>
+          <h1 className="text-3xl font-semibold tracking-tight text-text">
             {t("campus.onboarding.welcome.title")}
-          </h2>
-          <p className="text-text/70">
+          </h1>
+          <p className="leading-relaxed text-text-secondary">
             {t("campus.onboarding.welcome.subtitle")}
           </p>
         </div>
         <button
           type="button"
+          disabled={!configLoaded || !emailCodeAvailable}
           onClick={() => setStep("email")}
-          className="px-5 py-2 rounded-lg bg-logo-primary hover:bg-logo-primary/90 text-white text-sm font-medium transition-colors"
+          className="min-h-11 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-50"
         >
           {t("campus.onboarding.welcome.connect")}
         </button>
+        {configLoaded && !emailCodeAvailable && (
+          <p className="text-sm text-danger" role="alert">
+            {t("campus.onboarding.errors.authMethodUnavailable")}
+          </p>
+        )}
       </div>
     );
   }
 
   if (step === "email") {
+    const showServerInput = shouldShowCampusServerInput(config);
     const canContinue =
-      isValidEmail(email) && isValidServerUrl(serverUrl) && !isLoading;
+      isValidCampusEmail(email) &&
+      isValidCampusServerUrl(serverUrl) &&
+      !isLoading;
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.email.title")}
@@ -241,59 +294,87 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
         continueDisabled={!canContinue}
       >
         <div className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-text/80">
-              {t("campus.onboarding.email.serverLabel")}
-            </label>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-mid-gray/20">
-              <Server size={18} className="text-text/40" />
-              <input
-                type="url"
-                value={serverUrl}
-                disabled={configLocked || isLoading}
-                onChange={(e) => setServerUrl(e.target.value)}
-                placeholder={t("campus.onboarding.email.serverPlaceholder")}
-                className="flex-1 bg-transparent text-sm text-text placeholder:text-text/40 focus:outline-none disabled:opacity-60"
-              />
+          {showServerInput && (
+            <div className="space-y-1.5">
+              <label
+                htmlFor="campus-server"
+                className="text-sm font-medium text-text"
+              >
+                {t("campus.onboarding.email.serverLabel")}
+              </label>
+              <div className="flex items-center gap-2 rounded-lg border border-mid-gray/20 bg-white px-3 py-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
+                <Server
+                  size={18}
+                  className="text-text-secondary"
+                  aria-hidden="true"
+                />
+                <input
+                  id="campus-server"
+                  type="url"
+                  value={serverUrl}
+                  disabled={isLoading}
+                  onChange={(event) => setServerUrl(event.target.value)}
+                  placeholder={t("campus.onboarding.email.serverPlaceholder")}
+                  className="flex-1 bg-transparent text-sm text-text outline-none placeholder:text-text-secondary/60"
+                />
+              </div>
+              <p className="text-xs text-text-secondary">
+                {t("campus.onboarding.email.serverHelp")}
+              </p>
             </div>
-          </div>
+          )}
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-text/80">
+            <label
+              htmlFor="campus-email"
+              className="text-sm font-medium text-text"
+            >
               {t("campus.onboarding.email.emailLabel")}
             </label>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-mid-gray/20">
-              <Mail size={18} className="text-text/40" />
+            <div className="flex items-center gap-2 rounded-lg border border-mid-gray/20 bg-white px-3 py-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
+              <Mail
+                size={18}
+                className="text-text-secondary"
+                aria-hidden="true"
+              />
               <input
+                id="campus-email"
                 type="email"
+                autoComplete="email"
+                autoFocus
                 value={email}
                 disabled={isLoading}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder={t("campus.onboarding.email.emailPlaceholder")}
-                className="flex-1 bg-transparent text-sm text-text placeholder:text-text/40 focus:outline-none"
+                className="flex-1 bg-transparent text-sm text-text outline-none placeholder:text-text-secondary/60"
               />
             </div>
           </div>
 
-          {error && <p className="text-sm text-red-400 text-center">{error}</p>}
+          {error && (
+            <p className="text-center text-sm text-danger" role="alert">
+              {error}
+            </p>
+          )}
         </div>
       </OnboardingStepShell>
     );
   }
 
   if (step === "code") {
-    const canVerify = code.length === 6 && !isLoading;
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.code.title")}
-        subtitle={t("campus.onboarding.code.subtitle", { email })}
+        subtitle={t("campus.onboarding.code.subtitle", {
+          email: maskCampusEmail(email),
+        })}
         stepIndex={1}
         stepCount={3}
-        onContinue={handleVerifyCode}
+        onContinue={() => void handleVerifyCode()}
         continueLabel={
           isLoading ? t("common.loading") : t("onboarding.step.continue")
         }
-        continueDisabled={!canVerify}
+        continueDisabled={code.length !== 6 || isLoading}
         onSkip={cooldown > 0 ? undefined : () => void handleResendCode()}
         skipLabel={
           cooldown > 0
@@ -302,34 +383,81 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
         }
       >
         <div className="space-y-6">
-          <CodeInput value={code} onChange={setCode} disabled={isLoading} />
-
-          {error && <p className="text-sm text-red-400 text-center">{error}</p>}
+          <CodeInput
+            value={code}
+            disabled={isLoading}
+            invalid={Boolean(error)}
+            onChange={(value) => {
+              setCode(value);
+              setError(null);
+            }}
+            onComplete={() => void handleVerifyCode()}
+            digitLabel={(position) =>
+              t("campus.onboarding.code.digitLabel", { position })
+            }
+          />
+          {error && (
+            <p className="text-center text-sm text-danger" role="alert">
+              {error}
+            </p>
+          )}
         </div>
       </OnboardingStepShell>
     );
   }
 
+  const organization = context.organization;
+  const organizationName = organization.shortName ?? organization.name;
   return (
     <OnboardingStepShell
-      title={t("campus.onboarding.ready.title")}
-      subtitle={t("campus.onboarding.ready.subtitle", {
-        server: normalizeServerUrl(serverUrl),
+      title={t("campus.onboarding.ready.title", {
+        organization: organizationName,
       })}
+      subtitle={t("campus.onboarding.ready.subtitle")}
       stepIndex={2}
       stepCount={3}
       onContinue={onComplete}
       continueLabel={t("campus.onboarding.ready.start")}
     >
-      <div className="flex flex-col items-center gap-4 py-4">
-        <div className="p-4 rounded-full bg-emerald-500/20">
-          <Check className="w-10 h-10 text-emerald-400" />
+      <div className="space-y-5 py-2">
+        <div className="flex justify-center">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10 text-success">
+            <Check size={28} strokeWidth={2} aria-hidden="true" />
+          </span>
         </div>
-        <p className="text-sm text-text/70 text-center">
-          {shortcut
-            ? t("campus.onboarding.ready.shortcut", { shortcut })
-            : t("campus.onboarding.ready.shortcutFallback")}
-        </p>
+        <dl className="divide-y divide-hairline border-y border-hairline text-sm">
+          <div className="grid grid-cols-[8rem_1fr] gap-3 py-3">
+            <dt className="text-text-secondary">
+              {t("campus.onboarding.ready.organization")}
+            </dt>
+            <dd className="font-medium text-text">
+              {campusOrganizationLabel(organization)}
+            </dd>
+          </div>
+          <div className="grid grid-cols-[8rem_1fr] gap-3 py-3">
+            <dt className="text-text-secondary">
+              {t("campus.onboarding.ready.account")}
+            </dt>
+            <dd className="font-medium text-text">{maskCampusEmail(email)}</dd>
+          </div>
+          <div className="grid grid-cols-[8rem_1fr] gap-3 py-3">
+            <dt className="text-text-secondary">
+              {t("campus.onboarding.ready.processing")}
+            </dt>
+            <dd className="font-medium text-text">
+              {t("campus.onboarding.ready.campusInfrastructure")}
+            </dd>
+          </div>
+        </dl>
+        {organization.managed && (
+          <div className="flex justify-center">
+            <ManagedBy organizationName={organizationName} />
+          </div>
+        )}
+        <div className="flex items-center justify-center gap-2 text-xs text-text-secondary">
+          <Building2 size={14} aria-hidden="true" />
+          {t("campus.onboarding.ready.managed")}
+        </div>
       </div>
     </OnboardingStepShell>
   );

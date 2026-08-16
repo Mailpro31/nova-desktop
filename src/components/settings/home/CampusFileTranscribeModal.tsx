@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FileAudio,
@@ -29,6 +29,50 @@ export const CampusFileTranscribeModal: React.FC<
   const [copied, setCopied] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const transcribingRef = useRef(transcribing);
+
+  transcribingRef.current = transcribing;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const focusFrame = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !transcribingRef.current) {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const focusable = Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((element) => !element.hasAttribute("disabled"));
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -66,11 +110,7 @@ export const CampusFileTranscribeModal: React.FC<
       const buffer = await file.arrayBuffer();
       const bytes = new Uint8Array(buffer);
       const api = new CampusApi(session.server_url);
-      const text = await api.transcribeAudioFile(
-        session.token,
-        bytes,
-        file.name,
-      );
+      const text = await api.transcribeAudioFile(bytes, file.name);
 
       setResultText(text);
 
@@ -96,8 +136,20 @@ export const CampusFileTranscribeModal: React.FC<
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-      <div className="bg-white rounded-3xl border border-hairline shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget && !transcribing) onClose();
+      }}
+    >
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="campus-file-transcription-title"
+        aria-describedby="campus-file-transcription-description"
+        className="w-full max-w-lg space-y-5 rounded-xl border border-hairline bg-white p-6 shadow-2xl"
+      >
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -105,59 +157,79 @@ export const CampusFileTranscribeModal: React.FC<
               <FileAudio size={20} />
             </span>
             <div>
-              <h3 className="text-base font-semibold text-text">
+              <h3
+                id="campus-file-transcription-title"
+                className="text-base font-semibold text-text"
+              >
                 {t("campus.files.title")}
               </h3>
-              <p className="text-xs text-text-secondary">
+              <p
+                id="campus-file-transcription-description"
+                className="text-xs text-text-secondary"
+              >
                 {t("campus.files.description")}
               </p>
             </div>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-full text-text-secondary hover:bg-mid-gray/15 transition-colors"
+            disabled={transcribing}
+            aria-label={t("common.close")}
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-1.5 text-text-secondary transition-colors hover:bg-mid-gray/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50"
           >
-            <X size={18} />
+            <X size={18} aria-hidden="true" />
           </button>
         </div>
 
         {/* Dropzone */}
         {!resultText && (
-          <div
-            onDragOver={(e) => {
-              e.preventDefault();
-              setIsDragOver(true);
-            }}
-            onDragLeave={() => setIsDragOver(false)}
-            onDrop={handleFileDrop}
-            onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
-              isDragOver
-                ? "border-accent bg-accent/5 scale-[1.01]"
-                : "border-hairline hover:border-text-secondary/40 hover:bg-mid-gray/5"
-            }`}
-          >
+          <>
             <input
+              id="campus-audio-file"
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
               accept=".wav,.mp3,.m4a,.ogg,audio/*"
-              className="hidden"
+              className="sr-only"
             />
-            <UploadCloud
-              size={36}
-              className={`mb-2 ${isDragOver ? "text-accent" : "text-text-secondary"}`}
-            />
-            <p className="text-sm font-medium text-text">
-              {file ? file.name : t("campus.files.dropzone")}
-            </p>
-            <p className="text-xs text-text-secondary mt-1">
-              {file
-                ? `${(file.size / (1024 * 1024)).toFixed(2)} Mo`
-                : t("campus.files.supportedFormats")}
-            </p>
-          </div>
+            <label
+              htmlFor="campus-audio-file"
+              tabIndex={0}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragOver(true);
+              }}
+              onDragLeave={() => setIsDragOver(false)}
+              onDrop={handleFileDrop}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+              className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none ${
+                isDragOver
+                  ? "scale-[1.01] border-accent bg-accent/5"
+                  : "border-hairline hover:border-text-secondary/40 hover:bg-mid-gray/5"
+              }`}
+            >
+              <UploadCloud
+                size={36}
+                aria-hidden="true"
+                className={`mb-2 ${isDragOver ? "text-accent" : "text-text-secondary"}`}
+              />
+              <p className="text-sm font-medium text-text">
+                {file ? file.name : t("campus.files.dropzone")}
+              </p>
+              <p className="text-xs text-text-secondary mt-1">
+                {file
+                  ? `${(file.size / (1024 * 1024)).toFixed(2)} Mo`
+                  : t("campus.files.supportedFormats")}
+              </p>
+            </label>
+          </>
         )}
 
         {/* Transcribed Result */}
@@ -186,7 +258,12 @@ export const CampusFileTranscribeModal: React.FC<
 
         {/* Footer actions */}
         <div className="flex items-center justify-end gap-2 pt-2 border-t border-hairline">
-          <Button variant="secondary" size="md" onClick={onClose}>
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={onClose}
+            disabled={transcribing}
+          >
             {t("common.cancel")}
           </Button>
 

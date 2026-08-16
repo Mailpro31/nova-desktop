@@ -2,33 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Check,
-  Plus,
-  Trash2,
-  Sparkles,
-  Wand2,
+  CheckSquare,
+  Copy,
+  FileText,
   Mail,
   MessageSquare,
-  Terminal,
-  CheckSquare,
-  FileText,
-  MoreVertical,
-  Copy,
   Pencil,
+  Plus,
+  Sparkles,
+  Terminal,
+  Trash2,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useSettings } from "../../../hooks/useSettings";
-import { styleColor } from "../../../lib/styleColors";
-import { BUILTIN_STYLE_IDS } from "../../../lib/builtinStyles";
-import { commands } from "@/bindings";
-import { Button } from "../../ui/Button";
-import { Input } from "../../ui/Input";
-import { Textarea } from "../../ui/Textarea";
-import type { LLMPrompt } from "@/bindings";
-import type { SidebarSection } from "../../Sidebar";
-
-interface CampusStylesSettingsProps {
-  onNavigate?: (section: SidebarSection) => void;
-}
+import { useSettings } from "@/hooks/useSettings";
+import { styleColor } from "@/lib/styleColors";
+import { BUILTIN_STYLE_IDS } from "@/lib/builtinStyles";
+import { commands, type LLMPrompt } from "@/bindings";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Textarea } from "@/components/ui/Textarea";
 
 const STYLE_ORDER = [
   "auto",
@@ -55,17 +48,24 @@ const STYLE_ICONS: Record<string, React.ElementType> = {
   nova_style_notes: FileText,
 };
 
-const StyleCard: React.FC<{
+type StyleKind = "auto" | "builtin" | "custom";
+
+interface StyleItem {
   id: string;
   name: string;
   description: string;
-  kind: "auto" | "builtin" | "custom";
+  kind: StyleKind;
+}
+
+interface StyleRowProps extends StyleItem {
   active: boolean;
   onSelect: () => void;
   onEdit?: () => void;
   onDuplicate?: () => void;
   onDelete?: () => void;
-}> = ({
+}
+
+const StyleRow: React.FC<StyleRowProps> = ({
   id,
   name,
   description,
@@ -77,224 +77,170 @@ const StyleCard: React.FC<{
   onDelete,
 }) => {
   const { t } = useTranslation();
-  const [showMenu, setShowMenu] = useState(false);
   const Icon = STYLE_ICONS[id] ?? Sparkles;
-  const imageUrl = `/style-images/${id}.png`;
-  const fallbackGradient = styleColor(id);
+  const badge =
+    kind === "auto"
+      ? t("settings.postProcessing.prompts.badgeAuto")
+      : kind === "builtin"
+        ? t("settings.postProcessing.prompts.badgeBuiltin")
+        : t("settings.postProcessing.prompts.badgeCustom");
 
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      onMouseLeave={() => setShowMenu(false)}
-      className={`group relative w-full h-36 rounded-3xl overflow-hidden text-left transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${
-        active
-          ? "ring-2 ring-accent ring-offset-2 shadow-lg"
-          : "shadow-sm hover:shadow-lg hover:-translate-y-0.5"
+    <article
+      className={`flex items-center gap-2 rounded-xl border bg-white p-2 transition-colors duration-150 ${
+        active ? "border-accent/50" : "border-hairline hover:border-mid-gray/35"
       }`}
     >
-      {/* Background image or gradient */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-        style={{
-          backgroundImage: `url('${imageUrl}'), linear-gradient(135deg, ${fallbackGradient}, ${fallbackGradient})`,
-        }}
-      />
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-pressed={active}
+        className="flex min-h-11 min-w-0 flex-1 items-center gap-3 rounded-lg p-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      >
+        <span
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
+          style={{ backgroundColor: styleColor(id) }}
+        >
+          <Icon size={17} strokeWidth={1.75} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="flex items-center gap-2">
+            <span className="truncate text-sm font-semibold text-text">
+              {name}
+            </span>
+            <span className="shrink-0 rounded-full bg-mid-gray/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-secondary">
+              {badge}
+            </span>
+          </span>
+          <span className="mt-1 line-clamp-1 block text-xs text-text-secondary">
+            {description}
+          </span>
+        </span>
+        {active && (
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-white">
+            <Check size={13} strokeWidth={2.5} aria-hidden="true" />
+          </span>
+        )}
+      </button>
 
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-
-      {/* Actions menu */}
-      {(onEdit || onDuplicate || onDelete) && (
-        <div className="absolute top-3 right-3 z-20">
+      <div className="flex shrink-0 items-center gap-1 border-l border-hairline pl-2">
+        {onEdit && (
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowMenu(!showMenu);
-            }}
-            className="p-1.5 rounded-full bg-black/30 text-white/80 hover:bg-black/50 hover:text-white transition-colors"
+            onClick={onEdit}
+            aria-label={`${t("settings.postProcessing.prompts.edit")} ${name}`}
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 text-text-secondary hover:bg-mid-gray/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
-            <MoreVertical size={16} />
+            <Pencil size={15} aria-hidden="true" />
           </button>
-          {showMenu && (
-            <div
-              className="absolute right-0 mt-1 w-36 bg-white rounded-xl shadow-lg border border-hairline py-1 z-30"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {onEdit && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowMenu(false);
-                    onEdit();
-                  }}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-text hover:bg-mid-gray/10"
-                >
-                  <Pencil size={14} />
-                  {t("settings.postProcessing.prompts.edit")}
-                </button>
-              )}
-              {onDuplicate && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowMenu(false);
-                    onDuplicate();
-                  }}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-text hover:bg-mid-gray/10"
-                >
-                  <Copy size={14} />
-                  {t("settings.postProcessing.prompts.duplicate")}
-                </button>
-              )}
-              {onDelete && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowMenu(false);
-                    onDelete();
-                  }}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-danger hover:bg-mid-gray/10"
-                >
-                  <Trash2 size={14} />
-                  {t("common.delete")}
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Active check */}
-      {active && (
-        <div className="absolute top-3 left-3 z-20 flex items-center justify-center w-7 h-7 rounded-full bg-accent text-white shadow-sm">
-          <Check size={14} strokeWidth={2.5} />
-        </div>
-      )}
-
-      {/* Badge Intégré / Personnalisé / Automatique */}
-      <div className="absolute top-3 left-3 z-10" style={active ? { left: '2.75rem' } : undefined}>
-        <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/30 text-white/90 backdrop-blur-sm">
-          {kind === 'auto'
-            ? t('settings.postProcessing.prompts.badgeAuto')
-            : kind === 'builtin'
-              ? t('settings.postProcessing.prompts.badgeBuiltin')
-              : t('settings.postProcessing.prompts.badgeCustom')}
-        </span>
+        )}
+        {onDuplicate && (
+          <button
+            type="button"
+            onClick={onDuplicate}
+            aria-label={`${t("settings.postProcessing.prompts.duplicate")} ${name}`}
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 text-text-secondary hover:bg-mid-gray/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <Copy size={15} aria-hidden="true" />
+          </button>
+        )}
+        {onDelete && (
+          <button
+            type="button"
+            onClick={onDelete}
+            aria-label={`${t("common.delete")} ${name}`}
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 text-text-secondary hover:bg-danger/10 hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger"
+          >
+            <Trash2 size={15} aria-hidden="true" />
+          </button>
+        )}
       </div>
-
-      {/* Content */}
-      <div className="absolute inset-x-0 bottom-0 p-4 z-10">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm text-white">
-            <Icon size={18} strokeWidth={1.75} />
-          </span>
-        </div>
-        <h3 className="text-base font-semibold text-white truncate">{name}</h3>
-        <p className="text-sm text-white/80 leading-snug line-clamp-2 mt-1 transition-all duration-300 max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100">
-          {description}
-        </p>
-      </div>
-    </button>
+    </article>
   );
 };
 
-export const CampusStylesSettings: React.FC<CampusStylesSettingsProps> = () => {
+export const CampusStylesSettings: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, refreshSettings } = useSettings();
-
   const prompts = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
   const selectedPromptId =
     getSetting("post_process_selected_prompt_id") ?? "auto";
-
   const [editing, setEditing] = useState<string | null>(null);
   const [draftName, setDraftName] = useState("");
   const [draftText, setDraftText] = useState("");
 
   useEffect(() => {
-    if (editing && editing !== "new") {
-      const p = prompts.find((prompt) => prompt.id === editing);
-      if (p) {
-        setDraftName(p.name);
-        setDraftText(p.prompt);
-      }
-    } else if (editing === "new") {
+    if (editing === "new") {
       setDraftName("");
       setDraftText("");
+      return;
+    }
+    if (editing) {
+      const prompt = prompts.find((item) => item.id === editing);
+      if (prompt) {
+        setDraftName(prompt.name);
+        setDraftText(prompt.prompt);
+      }
     }
   }, [editing, prompts]);
 
-  const allItems: {
-    id: string;
-    name: string;
-    description: string;
-    kind: "auto" | "builtin" | "custom";
-  }[] = [
+  const items: StyleItem[] = [
     {
       id: "auto",
       name: t("settings.postProcessing.autoStyle.option"),
-      description: t("campus.styles.descriptions.auto", ""),
-      kind: "auto",
+      description: t("campus.styles.descriptions.auto"),
+      kind: "auto" as const,
     },
     ...prompts
-      .filter((p) => !HIDDEN_STYLE_IDS.has(p.id))
-      .map((p) => ({
-        id: p.id,
-        name: p.name,
-        description: BUILTIN_STYLE_IDS.includes(p.id)
-          ? t(`campus.styles.descriptions.${p.id}`, p.prompt.slice(0, 120))
-          : p.prompt.slice(0, 120),
-        kind: BUILTIN_STYLE_IDS.includes(p.id)
+      .filter((prompt) => !HIDDEN_STYLE_IDS.has(prompt.id))
+      .map((prompt) => ({
+        id: prompt.id,
+        name: prompt.name,
+        description: BUILTIN_STYLE_IDS.includes(prompt.id)
+          ? t(
+              `campus.styles.descriptions.${prompt.id}`,
+              prompt.prompt.slice(0, 120),
+            )
+          : prompt.prompt.slice(0, 120),
+        kind: BUILTIN_STYLE_IDS.includes(prompt.id)
           ? ("builtin" as const)
           : ("custom" as const),
       })),
-  ];
-
-  const sortedItems = [...allItems].sort((a, b) => {
-    const idxA = STYLE_ORDER.indexOf(a.id);
-    const idxB = STYLE_ORDER.indexOf(b.id);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    if (idxA !== -1) return -1;
-    if (idxB !== -1) return 1;
-    return a.name.localeCompare(b.name);
+  ].sort((left, right) => {
+    const leftIndex = STYLE_ORDER.indexOf(left.id);
+    const rightIndex = STYLE_ORDER.indexOf(right.id);
+    if (leftIndex !== -1 && rightIndex !== -1) return leftIndex - rightIndex;
+    if (leftIndex !== -1) return -1;
+    if (rightIndex !== -1) return 1;
+    return left.name.localeCompare(right.name);
   });
 
-  const handleSelect = (id: string) => {
-    updateSetting("post_process_selected_prompt_id", id).catch((e) => {
-      console.error("Failed to select style:", e);
+  const selectStyle = (id: string) => {
+    void updateSetting("post_process_selected_prompt_id", id).catch((error) => {
+      console.error("Failed to select style:", error);
       toast.error(t("settings.postProcessing.prompts.errors.save"));
     });
   };
 
-  const startCreate = () => {
-    setEditing("new");
-  };
-
-  const startDuplicate = (id: string) => {
-    const p = prompts.find((prompt) => prompt.id === id);
-    if (!p) return;
+  const duplicateStyle = (id: string) => {
+    const prompt = prompts.find((item) => item.id === id);
+    if (!prompt) return;
     setDraftName(
-      `${p.name} (${t("settings.postProcessing.prompts.copySuffix")})`,
+      `${prompt.name} (${t("settings.postProcessing.prompts.copySuffix")})`,
     );
-    setDraftText(p.prompt);
+    setDraftText(prompt.prompt);
     setEditing("new");
   };
 
-  const startEdit = (id: string) => {
-    const p = prompts.find((prompt) => prompt.id === id);
-    if (!p) return;
+  const editStyle = (id: string) => {
+    const prompt = prompts.find((item) => item.id === id);
+    if (!prompt) return;
+    setDraftName(prompt.name);
+    setDraftText(prompt.prompt);
     setEditing(id);
-    setDraftName(p.name);
-    setDraftText(p.prompt);
   };
 
-  const cancelEdit = () => setEditing(null);
-
-  const handleSave = async () => {
+  const saveStyle = async () => {
     if (!draftName.trim() || !draftText.trim()) return;
     try {
       if (editing === "new") {
@@ -304,8 +250,9 @@ export const CampusStylesSettings: React.FC<CampusStylesSettingsProps> = () => {
         );
         if (result.status === "ok") {
           await refreshSettings();
-          updateSetting("post_process_selected_prompt_id", result.data.id).catch(
-            () => {},
+          await updateSetting(
+            "post_process_selected_prompt_id",
+            result.data.id,
           );
         }
       } else if (editing) {
@@ -323,13 +270,12 @@ export const CampusStylesSettings: React.FC<CampusStylesSettingsProps> = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const deleteStyle = async (id: string) => {
     try {
       await commands.deletePostProcessPrompt(id);
       await refreshSettings();
-      if (editing === id) setEditing(null);
       if (selectedPromptId === id) {
-        updateSetting("post_process_selected_prompt_id", "auto").catch(() => {});
+        await updateSetting("post_process_selected_prompt_id", "auto");
       }
     } catch (error) {
       console.error("Failed to delete style:", error);
@@ -338,105 +284,91 @@ export const CampusStylesSettings: React.FC<CampusStylesSettingsProps> = () => {
   };
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-5">
-      <div className="px-1 space-y-1">
-        <h1 className="text-3xl font-semibold tracking-tight text-text">
-          {t("sidebar.styles")}
-        </h1>
-        <p className="text-base text-text-secondary">
-          {t("campus.styles.subtitle")}
-        </p>
+    <div className="mx-auto w-full max-w-3xl space-y-5">
+      <div className="flex items-end justify-between gap-4 px-1">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-semibold tracking-tight text-text">
+            {t("sidebar.styles")}
+          </h1>
+          <p className="text-base text-text-secondary">
+            {t("campus.styles.subtitle")}
+          </p>
+        </div>
+        <Button variant="secondary" size="sm" onClick={() => setEditing("new")}>
+          <Plus size={14} className="mr-1" aria-hidden="true" />
+          {t("settings.postProcessing.prompts.createNew")}
+        </Button>
       </div>
 
-      <div className="bg-white rounded-3xl border border-hairline shadow-sm p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles size={18} className="text-accent" strokeWidth={1.75} />
-            <h2 className="text-base font-semibold">
-              {t("campus.styles.listTitle")}
-            </h2>
-          </div>
-          <Button variant="secondary" size="sm" onClick={startCreate}>
-            <Plus size={14} className="mr-1" />
-            {t("settings.postProcessing.prompts.createNew")}
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {sortedItems.map((item) => {
-            const active = selectedPromptId === item.id;
-            const isCustom = item.kind === "custom";
-            const isBuiltin = item.kind === "builtin";
-
-            return (
-              <StyleCard
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                description={item.description}
-                kind={item.kind}
-                active={active}
-                onSelect={() => handleSelect(item.id)}
-                onEdit={isCustom ? () => startEdit(item.id) : undefined}
-                onDuplicate={isBuiltin ? () => startDuplicate(item.id) : undefined}
-                onDelete={isCustom ? () => handleDelete(item.id) : undefined}
-              />
-            );
-          })}
-        </div>
+      <div className="space-y-2">
+        {items.map((item) => (
+          <StyleRow
+            key={item.id}
+            {...item}
+            active={selectedPromptId === item.id}
+            onSelect={() => selectStyle(item.id)}
+            onEdit={
+              item.kind === "custom" ? () => editStyle(item.id) : undefined
+            }
+            onDuplicate={
+              item.kind === "builtin"
+                ? () => duplicateStyle(item.id)
+                : undefined
+            }
+            onDelete={
+              item.kind === "custom"
+                ? () => void deleteStyle(item.id)
+                : undefined
+            }
+          />
+        ))}
       </div>
 
-      {editing !== null && (
-        <div className="bg-white rounded-3xl border border-hairline shadow-sm p-5 space-y-4">
-          <h2 className="text-base font-semibold">
+      {editing && (
+        <section className="space-y-4 rounded-xl border border-hairline bg-white p-5">
+          <h2 className="text-base font-semibold text-text">
             {editing === "new"
               ? t("settings.postProcessing.prompts.createNew")
-              : t("settings.postProcessing.prompts.promptLabel")}
+              : t("settings.postProcessing.prompts.edit")}
           </h2>
           <div className="space-y-3">
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium">
-                {t("settings.postProcessing.prompts.promptLabel")}
-              </label>
+            <label className="block space-y-1.5 text-sm font-medium text-text">
+              {t("settings.postProcessing.prompts.promptLabel")}
               <Input
                 type="text"
                 value={draftName}
-                onChange={(e) => setDraftName(e.target.value)}
-                placeholder={t(
-                  "settings.postProcessing.prompts.promptLabelPlaceholder",
-                )}
+                onChange={(event) => setDraftName(event.target.value)}
                 variant="compact"
               />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium">
-                {t("settings.postProcessing.prompts.promptInstructions")}
-              </label>
+            </label>
+            <label className="block space-y-1.5 text-sm font-medium text-text">
+              {t("settings.postProcessing.prompts.promptInstructions")}
               <Textarea
                 value={draftText}
-                onChange={(e) => setDraftText(e.target.value)}
-                placeholder={t(
-                  "settings.postProcessing.prompts.promptInstructionsPlaceholder",
-                )}
+                onChange={(event) => setDraftText(event.target.value)}
               />
-            </div>
+            </label>
           </div>
           <div className="flex items-center gap-2">
             <Button
               variant="primary"
               size="md"
-              onClick={handleSave}
+              onClick={() => void saveStyle()}
               disabled={!draftName.trim() || !draftText.trim()}
             >
               {editing === "new"
                 ? t("settings.postProcessing.prompts.createPrompt")
                 : t("settings.postProcessing.prompts.updatePrompt")}
             </Button>
-            <Button variant="secondary" size="md" onClick={cancelEdit}>
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => setEditing(null)}
+            >
               {t("settings.postProcessing.prompts.cancel")}
             </Button>
           </div>
-        </div>
+        </section>
       )}
     </div>
   );

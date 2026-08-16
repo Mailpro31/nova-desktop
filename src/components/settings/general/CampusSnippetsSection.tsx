@@ -31,7 +31,7 @@ export const CampusSnippetsSection: React.FC = () => {
     setLoading(true);
     try {
       const api = new CampusApi(session.server_url);
-      const data = await api.getVocabulary(session.token);
+      const data = await api.getVocabulary();
       setSnippets(data.snippets || []);
     } catch (err) {
       console.error("Failed to load campus snippets:", err);
@@ -54,7 +54,7 @@ export const CampusSnippetsSection: React.FC = () => {
     setAdding(true);
     try {
       const api = new CampusApi(session.server_url);
-      await api.addSnippet(session.token, trigger.trim(), content.trim());
+      await api.addSnippet(trigger.trim(), content.trim());
       setTrigger("");
       setContent("");
       await loadSnippets();
@@ -74,7 +74,7 @@ export const CampusSnippetsSection: React.FC = () => {
 
     try {
       const api = new CampusApi(session.server_url);
-      await api.deleteSnippet(session.token, id);
+      await api.deleteSnippet(id);
       await loadSnippets();
     } catch (err) {
       console.error("Failed to delete snippet:", err);

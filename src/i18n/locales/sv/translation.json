@@ -930,7 +930,8 @@
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
-        "emailPlaceholder": "first.last@ipsa.fr"
+        "emailPlaceholder": "first.last@ipsa.fr",
+        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
       },
       "code": {
         "title": "Verification code",
@@ -939,14 +940,25 @@
         "resent": "Code resent",
         "resendCooldown": "Resend in {{seconds}}s",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator."
+        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "digitLabel": "Code digit {{position}}"
       },
       "ready": {
         "title": "Ready to dictate",
         "subtitle": "Connected to {{server}}.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
-        "start": "Get started"
+        "start": "Get started",
+        "organization": "Organization",
+        "account": "Account",
+        "processing": "Processing",
+        "campusInfrastructure": "Campus infrastructure",
+        "managed": "Your institution manages this Campus access."
+      },
+      "label": "Nova Campus",
+      "errors": {
+        "network": "Could not reach Campus. Check your connection and try again.",
+        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
       }
     },
     "account": {
@@ -993,7 +1005,18 @@
       "offline": "{{server}} — offline fallback",
       "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
       "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet"
+      "recentEmpty": "No recent transcription yet",
+      "primary": {
+        "title": "Hold {{shortcut}} to dictate",
+        "description": "Works in your email, notes, browser and documents.",
+        "start": "Start dictation"
+      },
+      "secondary": {
+        "title": "More ways to write",
+        "rewrite": "Rewrite",
+        "chooseStyle": "Choose a Style"
+      },
+      "viewHistory": "View history"
     },
     "settings": {
       "generalSubtitle": "Configure your dictation preferences.",
@@ -1018,7 +1041,18 @@
         "hide": "Hide bubble",
         "resetPosition": "Reset position"
       },
-      "drawerTitle": "Settings"
+      "drawerTitle": "Settings",
+      "title": "Settings",
+      "tabs": {
+        "general": "General",
+        "writing": "Writing",
+        "campus": "Campus",
+        "advanced": "Advanced"
+      },
+      "advanced": {
+        "title": "Troubleshooting",
+        "description": "Version, data, logs and diagnostic controls"
+      }
     },
     "styles": {
       "subtitle": "Choose or customize the writing style applied to your dictations.",
@@ -1112,6 +1146,51 @@
     "sessionExpiredTitle": "Session expired",
     "sessionExpired": "Please sign in again to continue using Nova Campus.",
     "serverUnreachableTitle": "Server unreachable",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available."
+    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "managedBy": "Managed by {{organization}}",
+    "roles": {
+      "student": "Student",
+      "teacher": "Teacher",
+      "staff": "Staff",
+      "partner": "Partner"
+    },
+    "navigation": {
+      "label": "Campus navigation",
+      "campus": "Campus"
+    },
+    "status": {
+      "checking": "Checking",
+      "connected": "Campus connected",
+      "local": "Nova Local active",
+      "unavailable": "Unavailable"
+    },
+    "privacy": {
+      "institutionPolicyTitle": "Privacy managed by your institution",
+      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
+      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
+      "privateByDesign": "Private by design",
+      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
+    },
+    "page": {
+      "eyebrow": "Organization",
+      "processing": {
+        "label": "Processing",
+        "campusTitle": "Campus infrastructure",
+        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
+        "localTitle": "Nova Local",
+        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
+      },
+      "features": "Features",
+      "privacy": "Privacy",
+      "systemStatus": "System status",
+      "authMethod": "Authentication",
+      "educationMode": "Education mode"
+    },
+    "features": {
+      "dictation": "Dictation",
+      "rewrite": "Rewrite",
+      "styles": "Styles",
+      "fileTranscription": "File transcription"
+    }
   }
 }

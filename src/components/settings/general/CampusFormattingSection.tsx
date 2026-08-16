@@ -31,7 +31,7 @@ export const CampusFormattingSection: React.FC = () => {
     setLoading(true);
     try {
       const api = new CampusApi(session.server_url);
-      const data = await api.getFormattingRules(session.token);
+      const data = await api.getFormattingRules();
       setSharedRules(data.shared || []);
       setPersonalRules(data.personal || []);
     } catch (err) {
@@ -55,7 +55,7 @@ export const CampusFormattingSection: React.FC = () => {
     setAdding(true);
     try {
       const api = new CampusApi(session.server_url);
-      await api.addFormattingRule(session.token, newRule.trim());
+      await api.addFormattingRule(newRule.trim());
       setNewRule("");
       await loadRules();
       toast.success(t("campus.formatting.addRule"));
@@ -74,7 +74,7 @@ export const CampusFormattingSection: React.FC = () => {
 
     try {
       const api = new CampusApi(session.server_url);
-      await api.deleteFormattingRule(session.token, id);
+      await api.deleteFormattingRule(id);
       await loadRules();
     } catch (err) {
       console.error("Failed to delete formatting rule:", err);

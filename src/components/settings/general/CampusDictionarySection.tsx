@@ -46,7 +46,7 @@ export const CampusDictionarySection: React.FC = () => {
     setLoading(true);
     try {
       const api = new CampusApi(session.server_url);
-      const data = await api.getVocabulary(session.token);
+      const data = await api.getVocabulary();
       setShared(data.shared || []);
       setPersonal(data.personal || []);
     } catch (err) {
@@ -70,11 +70,7 @@ export const CampusDictionarySection: React.FC = () => {
     setAdding(true);
     try {
       const api = new CampusApi(session.server_url);
-      await api.addDictionaryEntry(
-        session.token,
-        newTerm.trim(),
-        newReplacement.trim(),
-      );
+      await api.addDictionaryEntry(newTerm.trim(), newReplacement.trim());
       setNewTerm("");
       setNewReplacement("");
       await loadVocabulary();
@@ -94,7 +90,7 @@ export const CampusDictionarySection: React.FC = () => {
 
     try {
       const api = new CampusApi(session.server_url);
-      await api.deleteDictionaryEntry(session.token, id);
+      await api.deleteDictionaryEntry(id);
       await loadVocabulary();
     } catch (err) {
       console.error("Failed to delete dictionary entry:", err);
@@ -109,7 +105,7 @@ export const CampusDictionarySection: React.FC = () => {
 
     try {
       const api = new CampusApi(session.server_url);
-      const csv = await api.exportDictionary(session.token);
+      const csv = await api.exportDictionary();
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -137,7 +133,7 @@ export const CampusDictionarySection: React.FC = () => {
     try {
       const text = await file.text();
       const api = new CampusApi(session.server_url);
-      const res = await api.importDictionary(session.token, text);
+      const res = await api.importDictionary(text);
       await loadVocabulary();
       toast.success(
         t("campus.dictionary.importSuccess", { count: res.imported }),
@@ -176,7 +172,7 @@ export const CampusDictionarySection: React.FC = () => {
     setAnalyzing(true);
     try {
       const api = new CampusApi(session.server_url);
-      const res = await api.analyzeDocument(session.token, analyzeText.trim());
+      const res = await api.analyzeDocument(analyzeText.trim());
       await loadVocabulary();
       setShowAnalyze(false);
       setAnalyzeText("");

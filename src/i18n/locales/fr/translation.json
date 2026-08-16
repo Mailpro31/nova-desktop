@@ -920,33 +920,45 @@
   "campus": {
     "onboarding": {
       "welcome": {
-        "title": "Bienvenue sur Nova Campus",
-        "subtitle": "La dictée intelligente de votre établissement, sécurisée par email académique.",
-        "connect": "Se connecter"
+        "title": "Rejoignez votre Campus",
+        "subtitle": "Utilisez votre compte école pour accéder à Nova via votre établissement.",
+        "connect": "Continuer"
       },
       "email": {
-        "title": "Se connecter à Nova Campus",
-        "subtitle": "Saisissez l'adresse serveur de votre établissement et votre email académique.",
-        "serverLabel": "Serveur Nova",
-        "serverPlaceholder": "https://nova.ipsa.fr",
-        "emailLabel": "Email académique",
-        "emailPlaceholder": "prenom.nom@ipsa.fr"
+        "title": "Email école",
+        "subtitle": "Utilisez l'adresse fournie par votre établissement.",
+        "serverLabel": "Serveur Campus",
+        "serverPlaceholder": "https://nova.ecole.fr",
+        "emailLabel": "Email école",
+        "emailPlaceholder": "prenom.nom@ecole.fr",
+        "serverHelp": "Saisissez cette adresse uniquement si votre DSI n'a pas configuré Nova pour vous."
       },
       "code": {
-        "title": "Code de vérification",
-        "subtitle": "Un code à 6 chiffres a été envoyé à {{email}}.",
-        "resend": "Renvoyer",
+        "title": "Consultez votre boîte mail",
+        "subtitle": "Nous avons envoyé un code à 6 chiffres à {{email}}.",
+        "resend": "Renvoyer le code",
         "resent": "Code renvoyé",
         "resendCooldown": "Renvoyer dans {{seconds}} s",
-        "invalid": "Code incorrect ou expiré.",
-        "forbidden": "Sièges ou appareils épuisés. Contactez l'administrateur de votre établissement."
+        "invalid": "Ce code est incorrect ou a expiré.",
+        "forbidden": "L'accès est indisponible. Contactez votre administrateur.",
+        "digitLabel": "Chiffre {{position}} du code"
       },
       "ready": {
-        "title": "Prêt à dicter",
-        "subtitle": "Connecté à {{server}}.",
+        "title": "Vous êtes connecté à {{organization}}",
+        "subtitle": "Nova Campus est prêt sur cet ordinateur.",
         "shortcut": "Appuyez sur {{shortcut}} pour dicter.",
         "shortcutFallback": "Votre raccourci de dictée est configuré dans les réglages.",
-        "start": "Commencer"
+        "start": "Commencer à utiliser Nova",
+        "organization": "Organisation",
+        "account": "Compte",
+        "processing": "Traitement",
+        "campusInfrastructure": "Infrastructure Campus",
+        "managed": "Votre établissement gère cet accès Campus."
+      },
+      "label": "Nova Campus",
+      "errors": {
+        "network": "Impossible de joindre Campus. Vérifiez votre connexion et réessayez.",
+        "authMethodUnavailable": "Cet établissement exige une méthode d'authentification non prise en charge par cette version."
       }
     },
     "account": {
@@ -979,8 +991,8 @@
       "network": "Impossible de joindre le serveur. Vérifiez l'adresse et votre connexion."
     },
     "home": {
-      "title": "Dictez, n'écrivez plus",
-      "subtitle": "La dictée vocale de votre établissement, à un raccourci de distance.",
+      "title": "Parlez. Nova écrit.",
+      "subtitle": "Maintenez {{shortcut}} et parlez naturellement. Nova écrit là où se trouve votre curseur.",
       "action": {
         "dictate": "Dicter",
         "cancel": "Annuler",
@@ -992,11 +1004,22 @@
       "connected": "Connecté à {{server}}",
       "offline": "{{server}} — hors ligne, mode secours",
       "privacyNote": "Vos données restent sur le réseau de votre établissement. Seul le texte transcrit et la consigne du Style actif sont envoyés au serveur.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet"
+      "recentTitle": "Récent",
+      "recentEmpty": "Aucune transcription récente.",
+      "primary": {
+        "title": "Maintenez {{shortcut}} pour dicter",
+        "description": "Fonctionne dans vos emails, notes, navigateurs et documents.",
+        "start": "Démarrer la dictée"
+      },
+      "secondary": {
+        "title": "Autres façons d'écrire",
+        "rewrite": "Reformuler",
+        "chooseStyle": "Choisir un Style"
+      },
+      "viewHistory": "Voir l'historique"
     },
     "settings": {
-      "generalSubtitle": "Configurez vos préférences de dictée.",
+      "generalSubtitle": "Configurez Nova sans exposer les contrôles techniques.",
       "aboutSubtitle": "Informations et outils de diagnostic pour Nova Campus.",
       "shortcuts": {
         "title": "Raccourcis clavier",
@@ -1018,7 +1041,18 @@
         "hide": "Masquer la bulle",
         "resetPosition": "Réinitialiser la position"
       },
-      "drawerTitle": "Settings"
+      "drawerTitle": "Settings",
+      "title": "Réglages",
+      "tabs": {
+        "general": "Général",
+        "writing": "Écriture",
+        "campus": "Campus",
+        "advanced": "Avancé"
+      },
+      "advanced": {
+        "title": "Dépannage",
+        "description": "Version, données, journaux et outils de diagnostic"
+      }
     },
     "styles": {
       "subtitle": "Choisissez ou personnalisez le style d'écriture appliqué à vos dictées.",
@@ -1112,6 +1146,51 @@
     "sessionExpiredTitle": "Session expirée",
     "sessionExpired": "Veuillez vous reconnecter pour continuer à utiliser Nova Campus.",
     "serverUnreachableTitle": "Serveur injoignable",
-    "serverUnreachable": "Le serveur Nova Campus est indisponible et aucun secours local n'était disponible."
+    "serverUnreachable": "Campus est temporairement indisponible. Nova poursuit le traitement en local.",
+    "managedBy": "Géré par {{organization}}",
+    "roles": {
+      "student": "Étudiant",
+      "teacher": "Enseignant",
+      "staff": "Personnel",
+      "partner": "Partenaire"
+    },
+    "navigation": {
+      "label": "Navigation Campus",
+      "campus": "Campus"
+    },
+    "status": {
+      "checking": "Vérification",
+      "connected": "Campus connecté",
+      "local": "Nova Local actif",
+      "unavailable": "Indisponible"
+    },
+    "privacy": {
+      "institutionPolicyTitle": "Confidentialité gérée par votre établissement",
+      "institutionPolicyDescription": "Votre établissement définit la politique de traitement et de conservation de ce service Campus.",
+      "notStoredTitle": "Le contenu de vos dictées n'est pas stocké par Nova Campus",
+      "privateByDesign": "Confidentiel par conception",
+      "countersOnly": "Votre établissement peut recevoir des compteurs d'usage sans accéder à vos dictées."
+    },
+    "page": {
+      "eyebrow": "Organisation",
+      "processing": {
+        "label": "Traitement",
+        "campusTitle": "Infrastructure Campus",
+        "campusDescription": "Nova utilise l'infrastructure approuvée par votre établissement lorsque Campus est disponible.",
+        "localTitle": "Nova Local",
+        "localDescription": "Campus est temporairement indisponible. La dictée continue en local."
+      },
+      "features": "Fonctionnalités",
+      "privacy": "Confidentialité",
+      "systemStatus": "État du système",
+      "authMethod": "Authentification",
+      "educationMode": "Mode éducatif"
+    },
+    "features": {
+      "dictation": "Dictée",
+      "rewrite": "Reformulation",
+      "styles": "Styles",
+      "fileTranscription": "Transcription de fichiers"
+    }
   }
 }

@@ -11,7 +11,8 @@ export const AuthRequestResponseSchema = z.object({
 });
 
 export const AuthVerifyResponseSchema = z.object({
-  token: z.string(),
+  server_url: z.string(),
+  email: z.string(),
 });
 
 export type HealthResponse = z.infer<typeof HealthResponseSchema>;
@@ -132,26 +133,28 @@ export class CampusApi {
     }
   }
 
-  async getVocabulary(token: string): Promise<CampusVocabularyResponse> {
+  async getMe(): Promise<CampusProfile> {
     try {
-      return await invoke<CampusVocabularyResponse>("get_campus_vocabulary", {
-        serverUrl: this.baseUrl,
-        token,
-      });
+      return await invoke<CampusProfile>("get_campus_me");
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
+  async getVocabulary(): Promise<CampusVocabularyResponse> {
+    try {
+      return await invoke<CampusVocabularyResponse>("get_campus_vocabulary");
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
   async addDictionaryEntry(
-    token: string,
     term: string,
     replacement: string,
   ): Promise<CampusIdResponse> {
     try {
       return await invoke<CampusIdResponse>("add_campus_dictionary_entry", {
-        serverUrl: this.baseUrl,
-        token,
         term,
         replacement,
       });
@@ -160,11 +163,9 @@ export class CampusApi {
     }
   }
 
-  async deleteDictionaryEntry(token: string, entryId: number): Promise<void> {
+  async deleteDictionaryEntry(entryId: number): Promise<void> {
     try {
       await invoke("delete_campus_dictionary_entry", {
-        serverUrl: this.baseUrl,
-        token,
         entryId,
       });
     } catch (err) {
@@ -173,14 +174,11 @@ export class CampusApi {
   }
 
   async learnDictionary(
-    token: string,
     heard: string,
     corrected: string,
   ): Promise<CampusLearnResponse> {
     try {
       return await invoke<CampusLearnResponse>("learn_campus_dictionary", {
-        serverUrl: this.baseUrl,
-        token,
         heard,
         corrected,
       });
@@ -189,25 +187,17 @@ export class CampusApi {
     }
   }
 
-  async exportDictionary(token: string): Promise<string> {
+  async exportDictionary(): Promise<string> {
     try {
-      return await invoke<string>("export_campus_dictionary", {
-        serverUrl: this.baseUrl,
-        token,
-      });
+      return await invoke<string>("export_campus_dictionary");
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async importDictionary(
-    token: string,
-    csvContent: string,
-  ): Promise<CampusImportResponse> {
+  async importDictionary(csvContent: string): Promise<CampusImportResponse> {
     try {
       return await invoke<CampusImportResponse>("import_campus_dictionary", {
-        serverUrl: this.baseUrl,
-        token,
         csvContent,
       });
     } catch (err) {
@@ -216,14 +206,11 @@ export class CampusApi {
   }
 
   async analyzeDocument(
-    token: string,
     textContent: string,
     filename?: string,
   ): Promise<CampusAnalyzeResponse> {
     try {
       return await invoke<CampusAnalyzeResponse>("analyze_campus_document", {
-        serverUrl: this.baseUrl,
-        token,
         textContent,
         filename,
       });
@@ -233,14 +220,11 @@ export class CampusApi {
   }
 
   async addSnippet(
-    token: string,
     trigger: string,
     content: string,
   ): Promise<CampusIdResponse> {
     try {
       return await invoke<CampusIdResponse>("add_campus_snippet", {
-        serverUrl: this.baseUrl,
-        token,
         trigger,
         content,
       });
@@ -249,11 +233,9 @@ export class CampusApi {
     }
   }
 
-  async deleteSnippet(token: string, snippetId: number): Promise<void> {
+  async deleteSnippet(snippetId: number): Promise<void> {
     try {
       await invoke("delete_campus_snippet", {
-        serverUrl: this.baseUrl,
-        token,
         snippetId,
       });
     } catch (err) {
@@ -261,30 +243,19 @@ export class CampusApi {
     }
   }
 
-  async getFormattingRules(
-    token: string,
-  ): Promise<CampusFormattingRulesResponse> {
+  async getFormattingRules(): Promise<CampusFormattingRulesResponse> {
     try {
       return await invoke<CampusFormattingRulesResponse>(
         "get_campus_formatting_rules",
-        {
-          serverUrl: this.baseUrl,
-          token,
-        },
       );
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async addFormattingRule(
-    token: string,
-    rule: string,
-  ): Promise<CampusIdResponse> {
+  async addFormattingRule(rule: string): Promise<CampusIdResponse> {
     try {
       return await invoke<CampusIdResponse>("add_campus_formatting_rule", {
-        serverUrl: this.baseUrl,
-        token,
         rule,
       });
     } catch (err) {
@@ -292,11 +263,9 @@ export class CampusApi {
     }
   }
 
-  async deleteFormattingRule(token: string, ruleId: number): Promise<void> {
+  async deleteFormattingRule(ruleId: number): Promise<void> {
     try {
       await invoke("delete_campus_formatting_rule", {
-        serverUrl: this.baseUrl,
-        token,
         ruleId,
       });
     } catch (err) {
@@ -305,14 +274,11 @@ export class CampusApi {
   }
 
   async executeCommand(
-    token: string,
     instruction: string,
     text: string,
   ): Promise<CampusCommandResponse> {
     try {
       return await invoke<CampusCommandResponse>("execute_campus_command", {
-        serverUrl: this.baseUrl,
-        token,
         instruction,
         text,
       });
@@ -322,15 +288,12 @@ export class CampusApi {
   }
 
   async transcribeAudioFile(
-    token: string,
     fileBytes: number[] | Uint8Array,
     filename: string,
   ): Promise<string> {
     try {
       const bytes = Array.from(fileBytes);
       return await invoke<string>("transcribe_campus_audio_file", {
-        serverUrl: this.baseUrl,
-        token,
         fileBytes: bytes,
         filename,
       });
@@ -393,6 +356,12 @@ export interface CampusFormattingRulesResponse {
 
 export interface CampusCommandResponse {
   text: string;
+}
+
+export interface CampusProfile {
+  email: string;
+  role: string;
+  cohort: string;
 }
 
 interface ReachabilityCache {

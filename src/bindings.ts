@@ -620,14 +620,6 @@ async loadCampusSession() : Promise<Result<CampusSession | null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
-async saveCampusSession(session: CampusSession) : Promise<Result<null, string>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("save_campus_session", { session }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
 async clearCampusSession() : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("clear_campus_session") };
@@ -663,7 +655,7 @@ async requestCampusAuth(serverUrl: string, email: string, machine: string) : Pro
     else return { status: "error", error: e  as any };
 }
 },
-async verifyCampusAuth(serverUrl: string, email: string, code: string, machine: string) : Promise<Result<CampusAuthVerifyResponse, string>> {
+async verifyCampusAuth(serverUrl: string, email: string, code: string, machine: string) : Promise<Result<CampusSession, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("verify_campus_auth", { serverUrl, email, code, machine }) };
 } catch (e) {
@@ -671,121 +663,121 @@ async verifyCampusAuth(serverUrl: string, email: string, code: string, machine: 
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusMe(serverUrl: string, token: string) : Promise<Result<CampusMeResponse, string>> {
+async getCampusMe() : Promise<Result<CampusMeResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_me", { serverUrl, token }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_campus_me") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusVocabulary(serverUrl: string, token: string) : Promise<Result<CampusVocabularyResponse, string>> {
+async getCampusVocabulary() : Promise<Result<CampusVocabularyResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_vocabulary", { serverUrl, token }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_campus_vocabulary") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async addCampusDictionaryEntry(serverUrl: string, token: string, term: string, replacement: string) : Promise<Result<CampusIdResponse, string>> {
+async addCampusDictionaryEntry(term: string, replacement: string) : Promise<Result<CampusIdResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("add_campus_dictionary_entry", { serverUrl, token, term, replacement }) };
+    return { status: "ok", data: await TAURI_INVOKE("add_campus_dictionary_entry", { term, replacement }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async deleteCampusDictionaryEntry(serverUrl: string, token: string, entryId: number) : Promise<Result<null, string>> {
+async deleteCampusDictionaryEntry(entryId: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("delete_campus_dictionary_entry", { serverUrl, token, entryId }) };
+    return { status: "ok", data: await TAURI_INVOKE("delete_campus_dictionary_entry", { entryId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async learnCampusDictionary(serverUrl: string, token: string, heard: string, corrected: string) : Promise<Result<CampusLearnResponse, string>> {
+async learnCampusDictionary(heard: string, corrected: string) : Promise<Result<CampusLearnResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("learn_campus_dictionary", { serverUrl, token, heard, corrected }) };
+    return { status: "ok", data: await TAURI_INVOKE("learn_campus_dictionary", { heard, corrected }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async exportCampusDictionary(serverUrl: string, token: string) : Promise<Result<string, string>> {
+async exportCampusDictionary() : Promise<Result<string, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("export_campus_dictionary", { serverUrl, token }) };
+    return { status: "ok", data: await TAURI_INVOKE("export_campus_dictionary") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async importCampusDictionary(serverUrl: string, token: string, csvContent: string) : Promise<Result<CampusImportResponse, string>> {
+async importCampusDictionary(csvContent: string) : Promise<Result<CampusImportResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("import_campus_dictionary", { serverUrl, token, csvContent }) };
+    return { status: "ok", data: await TAURI_INVOKE("import_campus_dictionary", { csvContent }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async analyzeCampusDocument(serverUrl: string, token: string, textContent: string, filename: string | null) : Promise<Result<CampusAnalyzeResponse, string>> {
+async analyzeCampusDocument(textContent: string, filename: string | null) : Promise<Result<CampusAnalyzeResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("analyze_campus_document", { serverUrl, token, textContent, filename }) };
+    return { status: "ok", data: await TAURI_INVOKE("analyze_campus_document", { textContent, filename }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async addCampusSnippet(serverUrl: string, token: string, trigger: string, content: string) : Promise<Result<CampusIdResponse, string>> {
+async addCampusSnippet(trigger: string, content: string) : Promise<Result<CampusIdResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("add_campus_snippet", { serverUrl, token, trigger, content }) };
+    return { status: "ok", data: await TAURI_INVOKE("add_campus_snippet", { trigger, content }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async deleteCampusSnippet(serverUrl: string, token: string, snippetId: number) : Promise<Result<null, string>> {
+async deleteCampusSnippet(snippetId: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("delete_campus_snippet", { serverUrl, token, snippetId }) };
+    return { status: "ok", data: await TAURI_INVOKE("delete_campus_snippet", { snippetId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusFormattingRules(serverUrl: string, token: string) : Promise<Result<CampusFormattingRulesResponse, string>> {
+async getCampusFormattingRules() : Promise<Result<CampusFormattingRulesResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_formatting_rules", { serverUrl, token }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_campus_formatting_rules") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async addCampusFormattingRule(serverUrl: string, token: string, rule: string) : Promise<Result<CampusIdResponse, string>> {
+async addCampusFormattingRule(rule: string) : Promise<Result<CampusIdResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("add_campus_formatting_rule", { serverUrl, token, rule }) };
+    return { status: "ok", data: await TAURI_INVOKE("add_campus_formatting_rule", { rule }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async deleteCampusFormattingRule(serverUrl: string, token: string, ruleId: number) : Promise<Result<null, string>> {
+async deleteCampusFormattingRule(ruleId: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("delete_campus_formatting_rule", { serverUrl, token, ruleId }) };
+    return { status: "ok", data: await TAURI_INVOKE("delete_campus_formatting_rule", { ruleId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async executeCampusCommand(serverUrl: string, token: string, instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
+async executeCampusCommand(instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("execute_campus_command", { serverUrl, token, instruction, text }) };
+    return { status: "ok", data: await TAURI_INVOKE("execute_campus_command", { instruction, text }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async transcribeCampusAudioFile(serverUrl: string, token: string, fileBytes: number[], filename: string) : Promise<Result<string, string>> {
+async transcribeCampusAudioFile(fileBytes: number[], filename: string) : Promise<Result<string, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("transcribe_campus_audio_file", { serverUrl, token, fileBytes, filename }) };
+    return { status: "ok", data: await TAURI_INVOKE("transcribe_campus_audio_file", { fileBytes, filename }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1565,9 +1557,13 @@ export type AvailableAccelerators = { transcribe: string[]; ort: string[]; gpu_d
 export type BindingResponse = { success: boolean; binding: ShortcutBinding | null; error: string | null }
 export type CampusAnalyzeResponse = { terms_added: number }
 export type CampusAuthRequestResponse = { sent: boolean }
-export type CampusAuthVerifyResponse = { token: string }
 export type CampusCommandResponse = { text: string }
-export type CampusConfig = { server_url: string }
+export type CampusConfig = { server_url: string; organization: CampusOrganizationConfig | null; capabilities: CampusCapabilitiesConfig | null; education_mode: string | null; auth_methods: string[] | null; privacy: CampusPrivacyConfig | null }
+export type CampusOrganizationConfig = { id: string; name: string; shortName: string | null; campusName: string | null; role: string | null; cohort: string | null; managed: boolean; branding: CampusBrandingConfig | null; support: CampusSupportConfig | null }
+export type CampusBrandingConfig = { logoUrl: string | null; accentColor: string | null }
+export type CampusSupportConfig = { email: string | null; website: string | null }
+export type CampusCapabilitiesConfig = { dictation: boolean | null; rewrite: boolean | null; styles: boolean | null; fileTranscription: boolean | null; commands: boolean | null; dictionary: boolean | null; snippets: boolean | null; formattingRules: boolean | null; screenContext: boolean | null; cloudInference: boolean | null; engineeringNotes: boolean | null; aiSkills: boolean | null }
+export type CampusPrivacyConfig = { verified: boolean | null; contentRetention: string | null; usageCounters: string | null; infrastructure: string | null }
 export type CampusFormattingRulesResponse = { shared: CampusRuleEntry[]; personal: CampusRuleEntry[] }
 export type CampusIdResponse = { id: number }
 export type CampusImportResponse = { imported: number }
@@ -1575,7 +1571,7 @@ export type CampusLearnResponse = { learned: boolean }
 export type CampusMeResponse = { email: string; role: string; cohort: string }
 export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
 export type CampusRuleEntry = { id: number; rule: string }
-export type CampusSession = { server_url: string; token: string; email: string }
+export type CampusSession = { server_url: string; email: string }
 export type CampusSharedDictEntry = { id: number; term: string; replacement: string }
 export type CampusSnippetEntry = { id: number; trigger: string; content: string }
 export type CampusVocabularyResponse = { shared: CampusSharedDictEntry[]; personal: CampusPersonalDictEntry[]; snippets: CampusSnippetEntry[] }

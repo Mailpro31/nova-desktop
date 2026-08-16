@@ -1,371 +1,272 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ArrowRight, FileAudio, History, Mic, Sparkles } from "lucide-react";
 import {
-  Mic,
-  X,
-  Sparkles,
-  Check,
-  Shield,
-  ChevronRight,
-  FileAudio,
-  History,
-} from "lucide-react";
-import { toast } from "sonner";
-import { useSettings } from "../../../hooks/useSettings";
-import { loadCampusSession } from "@/lib/campusSession";
-import { isServerReachable } from "@/lib/campusApi";
-import { styleColor } from "@/lib/styleColors";
-import { CampusFileTranscribeModal } from "./CampusFileTranscribeModal";
-import { commands, events, type HistoryEntry } from "@/bindings";
+  commands,
+  events,
+  type HistoryEntry,
+  type LLMPrompt,
+  type ShortcutBinding,
+} from "@/bindings";
+import { useSettings } from "@/hooks/useSettings";
+import { campusOrganizationLabel } from "@/lib/campusPolicy";
 import { formatDateTime } from "@/utils/dateFormat";
-import type { SidebarSection } from "../../Sidebar";
-import type { ShortcutBinding, LLMPrompt } from "@/bindings";
+import { useCampusStore } from "@/stores/campusStore";
+import type { SidebarSection } from "@/components/Sidebar";
+import { CampusFileTranscribeModal } from "./CampusFileTranscribeModal";
 
 interface CampusHomeSettingsProps {
   onNavigate?: (section: SidebarSection) => void;
 }
 
-interface StyleItem {
-  id: string;
-  name: string;
-}
-
-interface ActionCardProps {
-  icon: React.ElementType;
-  label: string;
-  shortcut?: string;
-  onClick?: () => void;
-  tone?: string;
-}
-
-const ActionCard: React.FC<ActionCardProps> = ({
-  icon: Icon,
-  label,
-  shortcut,
-  onClick,
-  tone,
-}) => {
-  const renderShortcut = () => {
-    if (!shortcut) return null;
-    const parts = shortcut.split(/\s+/);
-    return (
-      <span className="inline-flex items-center gap-1">
-        {parts.map((part, i) => (
-          <kbd
-            key={i}
-            className="inline-flex items-center justify-center px-1.5 py-0.5 min-w-[1.5rem] h-5 text-[11px] font-medium rounded bg-white border border-hairline shadow-sm text-text-secondary"
-          >
-            {part}
-          </kbd>
-        ))}
-      </span>
-    );
-  };
-
-  const Content = (
-    <>
-      <span
-        className="flex items-center justify-center w-10 h-10 rounded-xl bg-mid-gray/10 text-text group-hover:scale-105 transition-all"
-        style={tone ? { backgroundColor: `${tone}1A`, color: tone } : undefined}
-      >
-        <Icon size={20} strokeWidth={1.75} />
-      </span>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-text">{label}</p>
-        {shortcut && <div className="mt-0.5">{renderShortcut()}</div>}
-      </div>
-    </>
-  );
-
-  if (onClick) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        className="group flex items-center gap-3 p-3 rounded-2xl bg-white border border-hairline shadow-sm hover:border-accent/40 hover:shadow-md transition-all text-left w-full"
-      >
-        {Content}
-      </button>
-    );
-  }
-
-  return (
-    <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-hairline shadow-sm">
-      {Content}
-    </div>
-  );
-};
-
-const StyleMiniCard: React.FC<{
-  style: StyleItem;
-  active: boolean;
-  onSelect: () => void;
-}> = ({ style, active, onSelect }) => (
-  <button
-    type="button"
-    onClick={onSelect}
-    className={`flex items-center gap-2.5 p-2.5 rounded-xl border transition-colors text-left cursor-pointer ${
-      active
-        ? "bg-white border-accent/40 shadow-sm"
-        : "bg-white border-hairline hover:border-accent/40 hover:shadow-sm"
-    }`}
-  >
-    <span
-      className="w-2.5 h-2.5 rounded-full shrink-0"
-      style={{ background: styleColor(style.id) }}
-    />
-    <span className="text-sm font-medium truncate flex-1">{style.name}</span>
-    {active && <Check size={14} className="text-accent shrink-0" />}
-  </button>
+const Shortcut: React.FC<{ value?: string }> = ({ value }) => (
+  <kbd className="inline-flex min-h-7 items-center rounded-md border border-hairline bg-white px-2 text-xs font-semibold text-text-secondary shadow-sm">
+    {value || "—"}
+  </kbd>
 );
 
 export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
   onNavigate,
 }) => {
   const { t, i18n } = useTranslation();
-  const { getSetting, updateSetting } = useSettings();
-  const [serverUrl, setServerUrl] = useState<string | null>(null);
-  const [reachable, setReachable] = useState<boolean>(false);
+  const { getSetting } = useSettings();
+  const { organization, capabilities } = useCampusStore(
+    (state) => state.context,
+  );
   const [recentEntries, setRecentEntries] = useState<HistoryEntry[]>([]);
+  const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
   const bindings = getSetting("bindings") ?? {};
   const transcribeBinding = (bindings as Record<string, ShortcutBinding>)[
     "transcribe"
   ]?.current_binding;
-  const cancelBinding = (bindings as Record<string, ShortcutBinding>)["cancel"]
-    ?.current_binding;
-  const postProcessBinding = (bindings as Record<string, ShortcutBinding>)[
+  const rewriteBinding = (bindings as Record<string, ShortcutBinding>)[
     "transcribe_with_post_process"
   ]?.current_binding;
-
-  const [isFileModalOpen, setIsFileModalOpen] = useState(false);
-
   const prompts = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
   const selectedPromptId =
     getSetting("post_process_selected_prompt_id") ?? "auto";
-
-  const visibleStyles: StyleItem[] = [
-    { id: "auto", name: t("settings.postProcessing.autoStyle.option") },
-    ...prompts.slice(0, 5).map((p) => ({ id: p.id, name: p.name })),
-  ];
-
-  const handleSelectStyle = (id: string) => {
-    updateSetting("post_process_selected_prompt_id", id).catch((e) => {
-      console.error("Failed to select style:", e);
-      toast.error(t("settings.postProcessing.prompts.errors.save"));
-    });
-  };
-
-  useEffect(() => {
-    let alive = true;
-    loadCampusSession().then((session) => {
-      if (!alive) return;
-      if (session) {
-        setServerUrl(session.server_url);
-        isServerReachable(session.server_url).then((r) => {
-          if (alive) setReachable(r);
-        });
-      }
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
+  const currentStyle = useMemo(
+    () =>
+      selectedPromptId === "auto"
+        ? t("settings.postProcessing.autoStyle.option")
+        : (prompts.find((prompt) => prompt.id === selectedPromptId)?.name ??
+          t("settings.postProcessing.autoStyle.option")),
+    [prompts, selectedPromptId, t],
+  );
 
   const loadRecent = useCallback(async () => {
     try {
-      const result = await commands.getHistoryEntries(null, 5);
+      const result = await commands.getHistoryEntries(null, 3);
       if (result.status === "ok") {
-        setRecentEntries(result.data.entries);
+        setRecentEntries(result.data.entries.slice(0, 3));
       }
-    } catch (e) {
-      console.error("Failed to load recent transcriptions:", e);
+    } catch (error) {
+      console.error("Failed to load recent transcriptions:", error);
     }
   }, []);
 
   useEffect(() => {
-    loadRecent();
+    void loadRecent();
   }, [loadRecent]);
 
-  // Nouvelles transcriptions (pipeline) : on préfixe la liste des récentes.
   useEffect(() => {
     const unlisten = events.historyUpdatePayload.listen((event) => {
       const payload = event.payload;
       if (payload.action === "added") {
-        setRecentEntries((prev) => [payload.entry, ...prev].slice(0, 5));
+        setRecentEntries((entries) => [payload.entry, ...entries].slice(0, 3));
       } else if (payload.action === "updated") {
-        setRecentEntries((prev) =>
-          prev.map((e) => (e.id === payload.entry.id ? payload.entry : e)),
+        setRecentEntries((entries) =>
+          entries.map((entry) =>
+            entry.id === payload.entry.id ? payload.entry : entry,
+          ),
         );
       }
     });
-    return () => {
-      unlisten.then((fn) => fn());
-    };
+    return () => void unlisten.then((stop) => stop());
   }, []);
 
-  const serverName = serverUrl
-    ? (() => {
-        try {
-          return new URL(serverUrl).hostname;
-        } catch {
-          return serverUrl;
-        }
-      })()
-    : t("campus.account.server");
+  const role = organization.role
+    ? t(`campus.roles.${organization.role}`)
+    : null;
+  const identity = [campusOrganizationLabel(organization), role]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
-      <div className="flex items-start justify-between gap-4 px-1">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-semibold tracking-tight text-text">
-            {t("campus.home.title")}
-          </h1>
-          <p className="text-base text-text-secondary">
-            {t("campus.home.subtitle")}
-          </p>
+    <div className="mx-auto w-full max-w-3xl space-y-8 py-2">
+      <header className="space-y-2 px-1">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-text-secondary">
+          {identity || t("campus.navigation.campus")}
+        </p>
+        <h1 className="text-4xl font-semibold tracking-tight text-text">
+          {t("campus.home.title")}
+        </h1>
+        <p className="max-w-2xl text-base leading-relaxed text-text-secondary">
+          {t("campus.home.subtitle", { shortcut: transcribeBinding || "F9" })}
+        </p>
+      </header>
+
+      <section className="rounded-2xl border border-accent/15 bg-accent/[0.045] px-5 py-5 sm:px-6 sm:py-6">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-white">
+              <Mic size={21} strokeWidth={1.8} aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="text-lg font-semibold text-text">
+                {t("campus.home.primary.title", {
+                  shortcut: transcribeBinding || "F9",
+                })}
+              </h2>
+              <p className="mt-1 text-sm leading-relaxed text-text-secondary">
+                {t("campus.home.primary.description")}
+              </p>
+            </div>
+          </div>
+          <div className="flex shrink-0 items-center gap-2 sm:flex-col sm:items-end">
+            <Shortcut value={transcribeBinding} />
+            <button
+              type="button"
+              onClick={() => void commands.triggerTranscription("transcribe")}
+              className="min-h-11 rounded-lg bg-accent px-3 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            >
+              {t("campus.home.primary.start")}
+            </button>
+          </div>
         </div>
-        <div
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium shrink-0 ${
-            reachable
-              ? "bg-success/10 border-success/20 text-success"
-              : "bg-orange-400/10 border-orange-400/20 text-orange-400"
-          }`}
+      </section>
+
+      <section aria-labelledby="campus-secondary-actions">
+        <h2
+          id="campus-secondary-actions"
+          className="text-xs font-semibold uppercase tracking-[0.12em] text-text-secondary"
         >
-          <span
-            className={`w-2 h-2 rounded-full ${
-              reachable ? "bg-success" : "bg-orange-400"
-            }`}
-          />
-          <span className="max-w-[200px] truncate">
-            {reachable
-              ? t("campus.home.connected", { server: serverName })
-              : t("campus.home.offline", { server: serverName })}
-          </span>
+          {t("campus.home.secondary.title")}
+        </h2>
+        <div className="mt-2 divide-y divide-hairline border-y border-hairline">
+          {capabilities.rewrite && (
+            <button
+              type="button"
+              onClick={() =>
+                void commands.triggerTranscription(
+                  "transcribe_with_post_process",
+                )
+              }
+              className="flex w-full items-center gap-3 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Sparkles
+                size={18}
+                className="text-text-secondary"
+                aria-hidden="true"
+              />
+              <span className="flex-1 text-sm font-medium text-text">
+                {t("campus.home.secondary.rewrite")}
+              </span>
+              <Shortcut value={rewriteBinding} />
+            </button>
+          )}
+          {capabilities.fileTranscription && (
+            <button
+              type="button"
+              onClick={() => setIsFileModalOpen(true)}
+              className="flex w-full items-center gap-3 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <FileAudio
+                size={18}
+                className="text-text-secondary"
+                aria-hidden="true"
+              />
+              <span className="flex-1 text-sm font-medium text-text">
+                {t("campus.files.actionButton")}
+              </span>
+              <ArrowRight
+                size={15}
+                className="text-text-secondary"
+                aria-hidden="true"
+              />
+            </button>
+          )}
+          {capabilities.styles && (
+            <button
+              type="button"
+              onClick={() => onNavigate?.("postprocessing")}
+              className="flex w-full items-center gap-3 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Sparkles
+                size={18}
+                className="text-text-secondary"
+                aria-hidden="true"
+              />
+              <span className="flex-1 text-sm font-medium text-text">
+                {t("campus.home.secondary.chooseStyle")}
+              </span>
+              <span className="max-w-40 truncate text-sm text-text-secondary">
+                {currentStyle}
+              </span>
+              <ArrowRight
+                size={15}
+                className="text-text-secondary"
+                aria-hidden="true"
+              />
+            </button>
+          )}
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-        <ActionCard
-          icon={Mic}
-          label={t("campus.home.action.dictate")}
-          shortcut={transcribeBinding || "—"}
-          tone="#0A84FF"
-          onClick={() => commands.triggerTranscription("transcribe")}
-        />
-        <ActionCard
-          icon={X}
-          label={t("campus.home.action.cancel")}
-          shortcut={cancelBinding || "—"}
-          tone="#FF9F0A"
-          onClick={() => commands.cancelOperation()}
-        />
-        <ActionCard
-          icon={Sparkles}
-          label={t("campus.home.action.postProcess")}
-          shortcut={postProcessBinding || "—"}
-          tone="#BF5AF2"
-          onClick={() =>
-            commands.triggerTranscription("transcribe_with_post_process")
-          }
-        />
-        <ActionCard
-          icon={FileAudio}
-          label={t("campus.files.actionButton")}
-          tone="#30D158"
-          onClick={() => setIsFileModalOpen(true)}
-        />
-      </div>
-
-      <CampusFileTranscribeModal
-        isOpen={isFileModalOpen}
-        onClose={() => setIsFileModalOpen(false)}
-      />
-
-      <div className="bg-white rounded-3xl border border-hairline shadow-sm p-5 space-y-4">
+      <section aria-labelledby="campus-recent-title">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles size={18} className="text-accent" strokeWidth={1.75} />
-            <h2 className="text-base font-semibold">
-              {t("campus.home.stylesTitle")}
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={() => onNavigate?.("postprocessing")}
-            className="flex items-center gap-1 text-sm text-accent hover:underline"
+          <h2
+            id="campus-recent-title"
+            className="flex items-center gap-2 text-sm font-semibold text-text"
           >
-            {t("campus.home.seeAll")}
-            <ChevronRight size={14} />
-          </button>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-          {visibleStyles.map((style) => (
-            <StyleMiniCard
-              key={style.id}
-              style={style}
-              active={style.id === selectedPromptId}
-              onSelect={() => handleSelectStyle(style.id)}
+            <History
+              size={16}
+              className="text-text-secondary"
+              aria-hidden="true"
             />
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-white rounded-3xl border border-hairline shadow-sm p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <History size={18} className="text-accent" strokeWidth={1.75} />
-            <h2 className="text-base font-semibold">
-              {t("campus.home.recentTitle")}
-            </h2>
-          </div>
+            {t("campus.home.recentTitle")}
+          </h2>
           <button
             type="button"
             onClick={() => onNavigate?.("history")}
-            className="flex items-center gap-1 text-sm text-accent hover:underline"
+            className="min-h-11 rounded-md px-1 text-sm font-medium text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
-            {t("campus.home.seeAll")}
-            <ChevronRight size={14} />
+            {t("campus.home.viewHistory")}
           </button>
         </div>
-
         {recentEntries.length === 0 ? (
-          <p className="text-sm text-text-secondary">
+          <p className="mt-3 text-sm text-text-secondary">
             {t("campus.home.recentEmpty")}
           </p>
         ) : (
-          <div className="space-y-1">
+          <div className="mt-2 divide-y divide-hairline border-y border-hairline">
             {recentEntries.map((entry) => (
               <button
                 key={entry.id}
                 type="button"
                 onClick={() => onNavigate?.("history")}
-                className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-mid-gray/10 transition-colors"
+                className="grid w-full gap-1 px-1 py-3 text-left transition-colors duration-150 hover:bg-mid-gray/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:grid-cols-[9rem_1fr]"
               >
-                <p className="text-xs font-medium text-text-secondary">
+                <span className="text-xs text-text-secondary">
                   {formatDateTime(String(entry.timestamp), i18n.language)}
-                </p>
-                <p className="text-sm text-text line-clamp-2 whitespace-pre-wrap break-words">
-                  {entry.transcription_text.trim().length > 0
-                    ? entry.transcription_text
-                    : t("settings.history.transcriptionFailed")}
-                </p>
+                </span>
+                <span className="line-clamp-1 text-sm text-text">
+                  {entry.transcription_text.trim() ||
+                    t("settings.history.transcriptionFailed")}
+                </span>
               </button>
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      <div className="flex items-start gap-2.5 rounded-2xl bg-mid-gray/10 px-4 py-3">
-        <Shield
-          size={16}
-          className="text-success shrink-0 mt-0.5"
-          strokeWidth={1.75}
+      {capabilities.fileTranscription && (
+        <CampusFileTranscribeModal
+          isOpen={isFileModalOpen}
+          onClose={() => setIsFileModalOpen(false)}
         />
-        <p className="text-xs text-text-secondary/90 leading-relaxed">
-          {t("campus.home.privacyNote")}
-        </p>
-      </div>
+      )}
     </div>
   );
 };
