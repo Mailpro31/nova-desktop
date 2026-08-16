@@ -1,5 +1,13 @@
 # NOVA CAMPUS — Notes de progression pour l'agent suivant
 
+> Mise à jour Campus 1.0 (2026-08-16) : l'audit courant et la matrice de
+> compatibilité avec `nova-server/master` sont dans `NOVA_CAMPUS_AUDIT.md`.
+> Les fonctionnalités avancées décrites plus bas (dictionnaire, snippets,
+> formatage, commande) existent côté client mais ne sont **pas** disponibles sur
+> le serveur de production. Elles sont désormais masquées par les capacités sûres
+> par défaut. Les mentions « implémentation complète » ci-dessous décrivent
+> l'historique de la branche, pas l'état déployable de bout en bout.
+
 > Source de vérité : `nova-server/SPEC_NOVA_CAMPUS.md` (NE PAS modifier `nova-server/`).
 > Discipline : `bun run build` + `bun run lint` verts entre chaque phase. Ne passer
 > à la phase suivante qu'après validation utilisateur.
@@ -16,11 +24,13 @@ Commits : rien n'est commité. Ne pas committer sans demande explicite.
 ## Validé — Phase 1 (Fondations + auth)
 
 Tout présent et vert. Déviation acceptée par l'utilisateur :
+
 - `campusApi.ts` passe par des **commandes Rust** (`invoke` → reqwest, Bearer
   côté Rust) au lieu d'un `fetch` JS direct. Équivalent fonctionnel, évite
   CORS/mixed-content. NE PAS réécrire en fetch.
 
 Éléments clés :
+
 - `src/lib/mode.ts` — flag `VITE_NOVA_MODE` (défaut `personal`), typé dans `vite-env.d.ts`.
 - `src/lib/campusApi.ts` — zod schemas, `isServerReachable` cache 30 s.
 - `src/lib/campusSession.ts` — wrappers bindings.
@@ -38,6 +48,7 @@ désactive la reformulation locale (pas de double traitement). 401 → session
 supprimée + retour onboarding. Fallback local en cas d'échec (jamais de perte).
 
 **Correction appliquée ce jour** (écart vs spec Feature B) :
+
 - Avant : notification « Serveur injoignable » seulement si AUCUN secours local.
 - Maintenant : notification discrète émise dès que le serveur est injoignable
   et qu'on bascule sur le repli local.
@@ -58,6 +69,7 @@ Vérifications vertes : `bun run build` (personal + campus), `bun run lint`,
 8 écarts identifiés et corrigés contre la spec :
 
 ### Feature D — Sidebar + masquage (5 écarts)
+
 - **D1** (CRITIQUE) : `home.campusVisible` était `false` → Accueil absent de la
   sidebar campus. Corrigé → `true`.
 - **D2** (CRITIQUE) : `meeting.campusVisible` était `true` → Meeting visible en
@@ -73,8 +85,9 @@ Vérifications vertes : `bun run build` (personal + campus), `bun run lint`,
   clés i18n `campus.account.logoutConfirmDescription` en `en` + `fr`.
 
 ### Feature C — Styles (3 écarts)
+
 - **C1** (BUG) : `CampusStylesSettings.startEdit()` cherchait `prompt.id ===
-  editing` (état, `null` au moment de l'appel) au lieu de `prompt.id === id`
+editing` (état, `null` au moment de l'appel) au lieu de `prompt.id === id`
   (paramètre). L'édition de styles personnalisés était cassée. Corrigé.
 - **C2** (MINEUR) : les cartes de styles campus ne montraient pas les badges
   « Intégré »/« Personnalisé ». Ajouté badge semi-transparent (texte blanc sur
@@ -93,6 +106,7 @@ Vérifications vertes : `bun run build` (campus + personal), `bun run lint`,
 Implémentation complète des 5 fonctionnalités avancées :
 
 ### Feature E — Dictionnaire (dans Réglages)
+
 - Section `CampusDictionarySection.tsx` intégrée dans `CampusGeneralSettings.tsx`.
 - **Partagé** : liste en lecture seule du vocabulaire de l'établissement.
 - **Personnel** : ajout/suppression de termes (`terme` → `correction`), badge visuel « Appris » (`source: learned`) vs « Personnel ».
@@ -101,6 +115,7 @@ Implémentation complète des 5 fonctionnalités avancées :
 - API Backend Rust : `get_campus_vocabulary`, `add_campus_dictionary_entry`, `delete_campus_dictionary_entry`, `learn_campus_dictionary`, `export_campus_dictionary`, `import_campus_dictionary`, `analyze_campus_document`.
 
 ### Feature F — Snippets vocaux (dans Réglages)
+
 - Section `CampusSnippetsSection.tsx` intégrée dans `CampusGeneralSettings.tsx`.
 - Liste des snippets existants + formulaire d'ajout rapide (« expression » → « contenu »).
 - Suppression de snippets.
@@ -108,16 +123,19 @@ Implémentation complète des 5 fonctionnalités avancées :
 - API Backend Rust : `add_campus_snippet`, `delete_campus_snippet`.
 
 ### Feature G — Règles de formatage (dans Réglages)
+
 - Section `CampusFormattingSection.tsx` intégrée dans `CampusGeneralSettings.tsx`.
 - **Règles partagées** : liste en lecture seule imposée par la charte de l'établissement.
 - **Règles personnelles** : ajout et suppression (`/api/formatting-rules`).
 - API Backend Rust : `get_campus_formatting_rules`, `add_campus_formatting_rule`, `delete_campus_formatting_rule`.
 
 ### Feature H — Mode commande
+
 - Commande Backend Rust `execute_campus_command` connectée à `POST /api/command {instruction, text}`.
 - Méthode frontend `executeCommand` dans `CampusApi`.
 
 ### Feature I — Transcription de fichiers
+
 - Bouton / carte d'action **« Transcrire un fichier »** sur l'Accueil campus (`CampusHomeSettings.tsx`).
 - Modal `CampusFileTranscribeModal.tsx` avec zone de glisser-déposer / sélecteur audio (WAV, MP3, M4A, OGG).
 - Envoi vers `/api/transcribe` via la commande Rust `transcribe_campus_audio_file`.
