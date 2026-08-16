@@ -14,6 +14,11 @@
   },
   "auth_methods": ["email_code"],
   "education_mode": "normal",
+  "ai_skills": {
+    "enabled": true,
+    "required": false,
+    "trackProgress": true
+  },
   "capabilities": {
     "dictation": true,
     "rewrite": true,
@@ -26,7 +31,8 @@
     "screenContext": false,
     "cloudInference": true,
     "engineeringNotes": false,
-    "aiSkills": false
+    "aiSkills": true,
+    "personalization": true
   },
   "privacy": {
     "verified": true,

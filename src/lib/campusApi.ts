@@ -133,6 +133,28 @@ export class CampusApi {
     }
   }
 
+  async startMicrosoftAuth(machine: string): Promise<CampusEntraStartResponse> {
+    try {
+      return await invoke<CampusEntraStartResponse>("start_campus_entra_auth", {
+        serverUrl: this.baseUrl,
+        machine,
+      });
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
+  async pollMicrosoftAuth(flowId: string): Promise<CampusEntraPollResponse> {
+    try {
+      return await invoke<CampusEntraPollResponse>("poll_campus_entra_auth", {
+        serverUrl: this.baseUrl,
+        flowId,
+      });
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
   async getMe(): Promise<CampusProfile> {
     try {
       return await invoke<CampusProfile>("get_campus_me");
@@ -287,6 +309,28 @@ export class CampusApi {
     }
   }
 
+  async getAiSkills(): Promise<CampusAiSkillsResponse> {
+    try {
+      return await invoke<CampusAiSkillsResponse>("get_campus_ai_skills");
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
+  async formatEngineeringNotes(
+    text: string,
+    instruction = "",
+  ): Promise<CampusCommandResponse> {
+    try {
+      return await invoke<CampusCommandResponse>(
+        "format_campus_engineering_notes",
+        { instruction, text },
+      );
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
   async transcribeAudioFile(
     fileBytes: number[] | Uint8Array,
     filename: string,
@@ -356,6 +400,34 @@ export interface CampusFormattingRulesResponse {
 
 export interface CampusCommandResponse {
   text: string;
+}
+
+export interface CampusEntraStartResponse {
+  flow_id: string;
+  user_code: string;
+  verification_uri: string;
+  verification_uri_complete?: string | null;
+  expires_in: number;
+  interval: number;
+  message: string;
+}
+
+export interface CampusEntraPollResponse {
+  status: "pending" | "complete" | "expired" | string;
+  email?: string | null;
+  retry_after?: number | null;
+}
+
+export interface CampusAiSkill {
+  id: string;
+  title: string;
+  summary: string;
+  practice: string;
+  duration_minutes: number;
+}
+
+export interface CampusAiSkillsResponse {
+  skills: CampusAiSkill[];
 }
 
 export interface CampusProfile {

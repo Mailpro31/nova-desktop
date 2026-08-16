@@ -30,9 +30,22 @@ pub struct CampusConfig {
     #[serde(default)]
     pub education_mode: Option<String>,
     #[serde(default)]
+    pub ai_skills: Option<CampusAiSkillsPolicyConfig>,
+    #[serde(default)]
     pub auth_methods: Option<Vec<String>>,
     #[serde(default)]
     pub privacy: Option<CampusPrivacyConfig>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct CampusAiSkillsPolicyConfig {
+    #[serde(default)]
+    pub enabled: Option<bool>,
+    #[serde(default)]
+    pub required: Option<bool>,
+    #[serde(default)]
+    pub track_progress: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -104,6 +117,8 @@ pub struct CampusCapabilitiesConfig {
     pub engineering_notes: Option<bool>,
     #[serde(default)]
     pub ai_skills: Option<bool>,
+    #[serde(default)]
+    pub personalization: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -331,6 +346,32 @@ pub struct CampusAuthRequestResponse {
     pub sent: bool,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusEntraStartResponse {
+    pub flow_id: String,
+    pub user_code: String,
+    pub verification_uri: String,
+    pub verification_uri_complete: Option<String>,
+    pub expires_in: i64,
+    pub interval: i64,
+    pub message: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusEntraPollResponse {
+    pub status: String,
+    pub email: Option<String>,
+    pub retry_after: Option<i64>,
+}
+
+#[derive(Deserialize)]
+struct CampusEntraPollServerResponse {
+    status: String,
+    email: Option<String>,
+    token: Option<String>,
+    retry_after: Option<i64>,
+}
+
 #[derive(Deserialize)]
 struct CampusTokenResponse {
     token: String,
@@ -399,6 +440,27 @@ pub async fn check_campus_server_reachability(server_url: String) -> Result<bool
 
 #[tauri::command]
 #[specta::specta]
+pub async fn fetch_campus_server_config(server_url: String) -> Result<CampusConfig, String> {
+    let base_url = normalize_base_url(&server_url);
+    let client = campus_client_no_auth();
+    let response = client
+        .get(format!("{}/api/config", base_url))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    if !response.status().is_success() {
+        return Err(parse_error_text(response).await);
+    }
+    let mut value = response
+        .json::<serde_json::Value>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))?;
+    value["server_url"] = serde_json::Value::String(base_url);
+    serde_json::from_value(value).map_err(|e| format!("invalid campus config: {}", e))
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn request_campus_auth(
     server_url: String,
     email: String,
@@ -421,6 +483,73 @@ pub async fn request_campus_auth(
         .json::<CampusAuthRequestResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn start_campus_entra_auth(
+    server_url: String,
+    machine: String,
+) -> Result<CampusEntraStartResponse, String> {
+    let base_url = normalize_base_url(&server_url);
+    let response = campus_client_no_auth()
+        .post(format!("{}/api/auth/entra/start", base_url))
+        .json(&serde_json::json!({ "machine": machine }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    if !response.status().is_success() {
+        return Err(parse_error_text(response).await);
+    }
+    response
+        .json::<CampusEntraStartResponse>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn poll_campus_entra_auth(
+    app: AppHandle,
+    server_url: String,
+    flow_id: String,
+) -> Result<CampusEntraPollResponse, String> {
+    let base_url = normalize_base_url(&server_url);
+    let response = campus_client_no_auth()
+        .post(format!("{}/api/auth/entra/poll", base_url))
+        .json(&serde_json::json!({ "flow_id": flow_id }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    if !response.status().is_success() {
+        return Err(parse_error_text(response).await);
+    }
+    let response = response
+        .json::<CampusEntraPollServerResponse>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))?;
+    if response.status == "complete" {
+        let email = response
+            .email
+            .clone()
+            .ok_or_else(|| "Microsoft response is missing email".to_string())?;
+        let token = response
+            .token
+            .ok_or_else(|| "Microsoft response is missing token".to_string())?;
+        save_campus_credentials(
+            &app,
+            CampusSession {
+                server_url: base_url,
+                email,
+            },
+            token,
+        )?;
+    }
+    Ok(CampusEntraPollResponse {
+        status: response.status,
+        email: response.email,
+        retry_after: response.retry_after,
+    })
 }
 
 #[tauri::command]
@@ -476,6 +605,20 @@ fn authenticated_client(app: &AppHandle) -> Result<(String, reqwest::Client), St
     let base_url = normalize_base_url(&credentials.session.server_url);
     let client = campus_client_with_token(&credentials.token);
     Ok((base_url, client))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn logout_campus_session(app: AppHandle) -> Result<(), String> {
+    if let Some(credentials) = load_campus_credentials(&app)? {
+        let base_url = normalize_base_url(&credentials.session.server_url);
+        let response = campus_client_with_token(&credentials.token)
+            .post(format!("{}/api/auth/logout", base_url))
+            .send()
+            .await;
+        let _ = response;
+    }
+    clear_campus_session(app)
 }
 
 #[tauri::command]
@@ -562,6 +705,20 @@ pub struct CampusFormattingRulesResponse {
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusCommandResponse {
     pub text: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusAiSkill {
+    pub id: String,
+    pub title: String,
+    pub summary: String,
+    pub practice: String,
+    pub duration_minutes: i64,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusAiSkillsResponse {
+    pub skills: Vec<CampusAiSkill>,
 }
 
 #[tauri::command]
@@ -841,6 +998,45 @@ pub async fn execute_campus_command(
 
     let response = client
         .post(format!("{}/api/command", base_url))
+        .json(&serde_json::json!({ "instruction": instruction, "text": text }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+
+    response
+        .json::<CampusCommandResponse>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn get_campus_ai_skills(app: AppHandle) -> Result<CampusAiSkillsResponse, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .get(format!("{}/api/ai-skills", base_url))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+
+    response
+        .json::<CampusAiSkillsResponse>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn format_campus_engineering_notes(
+    app: AppHandle,
+    instruction: String,
+    text: String,
+) -> Result<CampusCommandResponse, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .post(format!("{}/api/engineering-notes", base_url))
         .json(&serde_json::json!({ "instruction": instruction, "text": text }))
         .send()
         .await

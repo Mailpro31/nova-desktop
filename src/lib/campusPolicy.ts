@@ -37,6 +37,7 @@ export interface CampusCapabilities {
   cloudInference: boolean;
   engineeringNotes: boolean;
   aiSkills: boolean;
+  personalization: boolean;
 }
 
 export interface CampusPrivacyPolicy {
@@ -52,6 +53,11 @@ export interface CampusContext {
   educationMode: CampusEducationMode;
   authMethods: CampusAuthMethod[];
   privacy: CampusPrivacyPolicy;
+  aiSkillsPolicy: {
+    enabled: boolean;
+    required: boolean;
+    trackProgress: boolean;
+  };
 }
 
 const roleSchema = z.enum(["student", "teacher", "staff", "partner"]);
@@ -94,6 +100,7 @@ const capabilitiesSchema = z
     cloudInference: z.boolean().optional(),
     engineeringNotes: z.boolean().optional(),
     aiSkills: z.boolean().optional(),
+    personalization: z.boolean().optional(),
   })
   .strict();
 
@@ -105,6 +112,14 @@ const privacySchema = z
       .optional(),
     usageCounters: z.enum(["counts_only", "none", "unknown"]).optional(),
     infrastructure: z.enum(["campus", "cloud", "hybrid", "unknown"]).optional(),
+  })
+  .strict();
+
+const aiSkillsPolicySchema = z
+  .object({
+    enabled: z.boolean().optional(),
+    required: z.boolean().optional(),
+    trackProgress: z.boolean().optional(),
   })
   .strict();
 
@@ -127,6 +142,7 @@ const NORMAL_CAPABILITIES: CampusCapabilities = {
   cloudInference: true,
   engineeringNotes: false,
   aiSkills: false,
+  personalization: true,
 };
 
 const ASSESSMENT_CAPABILITIES: CampusCapabilities = {
@@ -185,6 +201,9 @@ export function resolveCampusContext(
       : NORMAL_CAPABILITIES;
   const privacy = privacySchema.safeParse(compactConfigValue(config?.privacy));
   const authMethods = z.array(authMethodSchema).safeParse(config?.auth_methods);
+  const aiSkillsPolicy = aiSkillsPolicySchema.safeParse(
+    compactConfigValue(config?.ai_skills),
+  );
 
   return {
     organization: {
@@ -204,6 +223,14 @@ export function resolveCampusContext(
     privacy: {
       ...DEFAULT_CAMPUS_PRIVACY,
       ...(privacy.success ? privacy.data : {}),
+    },
+    aiSkillsPolicy: {
+      enabled: capabilities.success
+        ? (capabilities.data.aiSkills ?? modeDefaults.aiSkills)
+        : modeDefaults.aiSkills,
+      required: false,
+      trackProgress: true,
+      ...(aiSkillsPolicy.success ? aiSkillsPolicy.data : {}),
     },
   };
 }

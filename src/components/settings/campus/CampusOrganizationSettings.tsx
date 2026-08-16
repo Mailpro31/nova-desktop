@@ -21,6 +21,15 @@ const FEATURE_KEYS: Array<{
     capability: "fileTranscription",
     labelKey: "campus.features.fileTranscription",
   },
+  {
+    capability: "engineeringNotes",
+    labelKey: "campus.features.engineeringNotes",
+  },
+  { capability: "aiSkills", labelKey: "campus.features.aiSkills" },
+  {
+    capability: "personalization",
+    labelKey: "campus.features.personalization",
+  },
 ];
 
 export const CampusOrganizationSettings: React.FC = () => {

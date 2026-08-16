@@ -6,6 +6,7 @@ import {
 } from "@/lib/campusApi";
 import {
   loadCampusConfig,
+  loadCampusServerConfig,
   loadCampusSession,
   type CampusConfig,
   type CampusSession,
@@ -61,8 +62,11 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
       }
 
       const reachable = await isServerReachable(session.server_url);
+      let effectiveConfig = config;
       let profile: CampusProfile | null = null;
       if (reachable) {
+        effectiveConfig =
+          (await loadCampusServerConfig(session.server_url)) ?? config;
         try {
           profile = await new CampusApi(session.server_url).getMe();
         } catch {
@@ -70,10 +74,10 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
         }
       }
       set({
-        config,
+        config: effectiveConfig,
         session,
         profile,
-        context: resolveCampusContext(config, profile),
+        context: resolveCampusContext(effectiveConfig, profile),
         connectionStatus: reachable ? "connected" : "local",
         initialized: true,
       });

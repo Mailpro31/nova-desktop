@@ -6,6 +6,7 @@ import { type } from "@tauri-apps/plugin-os";
 import {
   BookA,
   Building2,
+  FlaskConical,
   Info,
   Keyboard,
   ListFilter,
@@ -26,7 +27,8 @@ import { CampusSnippetsSection } from "./CampusSnippetsSection";
 import { CampusFormattingSection } from "./CampusFormattingSection";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
-import { LogDirectory } from "../debug";
+import { LogDirectory, LogLevelSelector } from "../debug";
+import { LiveLogViewer } from "../debug/LiveLogViewer";
 import { DebugModeToggle } from "../DebugModeToggle";
 import { CampusPrivacySummary } from "@/components/campus/CampusPrivacySummary";
 import { ManagedBy } from "@/components/campus/ManagedBy";
@@ -74,6 +76,7 @@ export const CampusGeneralSettings: React.FC = () => {
   const context = useCampusStore((state) => state.context);
   const session = useCampusStore((state) => state.session);
   const pushToTalk = getSetting("push_to_talk");
+  const debugMode = getSetting("debug_mode") ?? false;
   const isLinux = type() === "linux";
   const [tab, setTab] = useState<CampusSettingsTab>("general");
   const [version, setVersion] = useState("");
@@ -308,6 +311,16 @@ export const CampusGeneralSettings: React.FC = () => {
             <LogDirectory grouped={true} />
             <DebugModeToggle descriptionMode="tooltip" grouped={true} />
           </SettingsSection>
+          {debugMode && (
+            <SettingsSection
+              icon={FlaskConical}
+              title={t("settings.debug.title")}
+              description={t("campus.settings.aboutSubtitle")}
+            >
+              <LogLevelSelector grouped={true} />
+              <LiveLogViewer descriptionMode="tooltip" grouped={true} />
+            </SettingsSection>
+          )}
         </div>
       )}
     </div>

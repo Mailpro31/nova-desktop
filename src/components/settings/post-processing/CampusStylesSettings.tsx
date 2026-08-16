@@ -19,6 +19,8 @@ import { useSettings } from "@/hooks/useSettings";
 import { BUILTIN_STYLE_IDS } from "@/lib/builtinStyles";
 import { commands, type LLMPrompt } from "@/bindings";
 import { Button, Dialog, Input, PageHeader, Textarea } from "@/components/ui";
+import { CampusEngineeringNotes } from "@/components/settings/campus/CampusEngineeringNotes";
+import { useCampusStore } from "@/stores/campusStore";
 
 const STYLE_ORDER = [
   "auto",
@@ -165,6 +167,9 @@ const StyleRow: React.FC<StyleRowProps> = ({
 export const CampusStylesSettings: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, refreshSettings } = useSettings();
+  const engineeringNotesEnabled = useCampusStore(
+    (state) => state.context.capabilities.engineeringNotes,
+  );
   const prompts = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
   const selectedPromptId =
     getSetting("post_process_selected_prompt_id") ?? "auto";
@@ -326,6 +331,8 @@ export const CampusStylesSettings: React.FC = () => {
           />
         ))}
       </div>
+
+      {engineeringNotesEnabled && <CampusEngineeringNotes />}
 
       <Dialog
         open={Boolean(editing)}

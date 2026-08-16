@@ -2,9 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ArrowRight,
+  BookOpen,
   FileAudio,
   SlidersHorizontal,
   Sparkles,
+  X,
 } from "lucide-react";
 import {
   commands,
@@ -21,6 +23,8 @@ import type { SidebarSection } from "@/components/Sidebar";
 import HandyHand from "@/components/icons/HandyHand";
 import { Button, Kbd, PageHeader } from "@/components/ui";
 import { CampusFileTranscribeModal } from "./CampusFileTranscribeModal";
+import { useAiSkillsProgress } from "@/hooks/useAiSkillsProgress";
+import { AI_ESSENTIALS_TRACK, educationalHintStorageKey } from "@/lib/aiSkills";
 
 interface CampusHomeSettingsProps {
   onNavigate?: (section: SidebarSection) => void;
@@ -31,11 +35,18 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const { getSetting } = useSettings();
-  const { organization, capabilities } = useCampusStore(
+  const { organization, capabilities, aiSkillsPolicy } = useCampusStore(
     (state) => state.context,
   );
+  const session = useCampusStore((state) => state.session);
   const [recentEntries, setRecentEntries] = useState<HistoryEntry[]>([]);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
+  const [showVerificationHint, setShowVerificationHint] = useState(false);
+  const { progress: aiProgress } = useAiSkillsProgress(
+    organization.id,
+    session?.email ?? "anonymous",
+    aiSkillsPolicy.trackProgress,
+  );
 
   const bindings = getSetting("bindings") ?? {};
   const transcribeBinding = (bindings as Record<string, ShortcutBinding>)[
@@ -70,6 +81,19 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
   useEffect(() => {
     void loadRecent();
   }, [loadRecent]);
+
+  useEffect(() => {
+    if (!session || !recentEntries.some((entry) => entry.post_processed_text)) {
+      setShowVerificationHint(false);
+      return;
+    }
+    const key = educationalHintStorageKey(
+      organization.id,
+      session.email,
+      "verification",
+    );
+    setShowVerificationHint(window.localStorage.getItem(key) !== "dismissed");
+  }, [organization.id, recentEntries, session]);
 
   useEffect(() => {
     const unlisten = events.historyUpdatePayload.listen((event) => {
@@ -200,6 +224,77 @@ export const CampusHomeSettings: React.FC<CampusHomeSettingsProps> = ({
           )}
         </div>
       </section>
+
+      {capabilities.aiSkills && aiSkillsPolicy.enabled && (
+        <section
+          className="border-y border-hairline py-5"
+          aria-labelledby="campus-home-ai-skills"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-inset text-text-secondary">
+              <BookOpen size={17} aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2
+                id="campus-home-ai-skills"
+                className="text-sm font-semibold text-text"
+              >
+                {t("campus.aiSkills.title")}
+              </h2>
+              <p className="mt-0.5 text-xs text-text-secondary">
+                {aiProgress.startedAt
+                  ? t("campus.firstRun.homeAiSkillsProgress", {
+                      completed: aiProgress.completedModuleIds.length,
+                      total: AI_ESSENTIALS_TRACK.modules.length,
+                    })
+                  : t("campus.firstRun.homeAiSkillsStart")}
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => onNavigate?.("aiSkills")}
+            >
+              {aiProgress.startedAt
+                ? t("campus.aiCurriculum.continue")
+                : t("campus.aiCurriculum.start")}
+              <ArrowRight size={14} className="ml-1" aria-hidden="true" />
+            </Button>
+          </div>
+        </section>
+      )}
+
+      {showVerificationHint && session && (
+        <aside className="flex items-start gap-3 bg-inset px-4 py-3 [border-radius:var(--nova-radius-card)]">
+          <Sparkles
+            size={16}
+            className="mt-0.5 shrink-0 text-accent"
+            aria-hidden="true"
+          />
+          <p className="flex-1 text-sm leading-relaxed text-text-secondary">
+            {t("campus.firstRun.verificationHint")}
+          </p>
+          <button
+            type="button"
+            aria-label={t("common.close")}
+            onClick={() => {
+              window.localStorage.setItem(
+                educationalHintStorageKey(
+                  organization.id,
+                  session.email,
+                  "verification",
+                ),
+                "dismissed",
+              );
+              setShowVerificationHint(false);
+            }}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-text-secondary hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <X size={14} aria-hidden="true" />
+          </button>
+        </aside>
+      )}
 
       <section aria-labelledby="campus-recent-title">
         <div className="flex items-center justify-between">

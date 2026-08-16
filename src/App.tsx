@@ -23,6 +23,7 @@ import Footer from "./components/footer";
 import Onboarding, {
   AccessibilityOnboarding,
   CampusOnboarding,
+  CampusFirstRun,
   StyleOnboarding,
   QuickVariablesOnboarding,
   TutorialOnboarding,
@@ -45,11 +46,14 @@ import {
   clearCampusSession,
 } from "@/lib/campusSession";
 import { CampusNavigation } from "./components/campus/CampusNavigation";
+import { firstRunStorageKey, loadCampusFirstRun } from "@/lib/aiSkills";
+import { refreshCampusContext, useCampusStore } from "@/stores/campusStore";
 
 type OnboardingStep =
   | "accessibility"
   | "model"
   | "campus"
+  | "campus-first-run"
   | "style"
   | "variables"
   | "tutorial"
@@ -86,6 +90,7 @@ function App() {
   // Track if this is a returning user who just needs to grant permissions
   // (vs a new user who needs full onboarding including model selection)
   const [isReturningUser, setIsReturningUser] = useState(false);
+  const [needsCampusFirstRun, setNeedsCampusFirstRun] = useState(false);
   const [currentSection, setCurrentSection] = useState<SidebarSection>("home");
   const { settings, updateSetting } = useSettings();
   const direction = getLanguageDirection(i18n.language);
@@ -409,6 +414,15 @@ function App() {
         if (campusSession && !hasCompletedOnboarding) {
           await completeCampusOnboarding().catch(() => {});
         }
+        if (campusSession) {
+          await refreshCampusContext().catch(() => undefined);
+          const organizationId =
+            useCampusStore.getState().context.organization.id;
+          const firstRun = loadCampusFirstRun(
+            firstRunStorageKey(organizationId, campusSession.email),
+          );
+          setNeedsCampusFirstRun(!firstRun.completed);
+        }
       }
 
       const onboardingCompleteForMode = isCampusMode()
@@ -454,7 +468,18 @@ function App() {
           }
         }
 
-        setOnboardingStep("done");
+        setOnboardingStep(
+          isCampusMode() &&
+            campusSession &&
+            !loadCampusFirstRun(
+              firstRunStorageKey(
+                useCampusStore.getState().context.organization.id,
+                campusSession.email,
+              ),
+            ).completed
+            ? "campus-first-run"
+            : "done",
+        );
       } else {
         // New user - start full onboarding
         setIsReturningUser(false);
@@ -470,7 +495,9 @@ function App() {
     // Returning users already have models, skip to main app
     // New users need to select a model (personal) or authenticate (campus)
     if (isReturningUser) {
-      setOnboardingStep("done");
+      setOnboardingStep(
+        campusMode && needsCampusFirstRun ? "campus-first-run" : "done",
+      );
     } else if (campusMode) {
       setOnboardingStep("campus");
     } else {
@@ -486,7 +513,13 @@ function App() {
   };
 
   const handleCampusOnboardingComplete = () => {
-    setOnboardingStep("style");
+    setNeedsCampusFirstRun(true);
+    setOnboardingStep("campus-first-run");
+  };
+
+  const handleCampusFirstRunComplete = () => {
+    setNeedsCampusFirstRun(false);
+    setOnboardingStep("done");
   };
 
   const handleStyleDone = () => {
@@ -544,6 +577,8 @@ function App() {
     content = <Onboarding onModelSelected={handleModelSelected} />;
   } else if (onboardingStep === "campus") {
     content = <CampusOnboarding onComplete={handleCampusOnboardingComplete} />;
+  } else if (onboardingStep === "campus-first-run") {
+    content = <CampusFirstRun onComplete={handleCampusFirstRunComplete} />;
   } else if (onboardingStep === "style") {
     content = (
       <StyleOnboarding

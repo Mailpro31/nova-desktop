@@ -22,6 +22,10 @@ export const CampusNavigation: React.FC<CampusNavigationProps> = ({
   const { t } = useTranslation();
   const connectionStatus = useCampusStore((state) => state.connectionStatus);
   const organization = useCampusStore((state) => state.context.organization);
+  const capabilities = useCampusStore((state) => state.context.capabilities);
+  const aiSkillsEnabled = useCampusStore(
+    (state) => state.context.aiSkillsPolicy.enabled,
+  );
   const refresh = useCampusStore((state) => state.refresh);
 
   useEffect(() => {
@@ -55,7 +59,13 @@ export const CampusNavigation: React.FC<CampusNavigationProps> = ({
         className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto py-1 md:flex-col md:items-stretch md:overflow-y-auto md:py-0"
         aria-label={t("campus.navigation.label")}
       >
-        {CAMPUS_SIDEBAR_ORDER.map((section) => {
+        {CAMPUS_SIDEBAR_ORDER.filter((section) => {
+          if (section === "aiSkills")
+            return capabilities.aiSkills && aiSkillsEnabled;
+          if (section === "personalization")
+            return capabilities.personalization;
+          return true;
+        }).map((section) => {
           const active = activeSection === section;
           const Icon = SECTIONS_CONFIG[section].icon;
           return (

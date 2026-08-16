@@ -15,8 +15,12 @@ const campusConfig = {
     rewrite: true,
     styles: true,
     fileTranscription: true,
+    aiSkills: true,
+    personalization: true,
+    engineeringNotes: true,
   },
   auth_methods: ["email_code"],
+  ai_skills: { enabled: true, required: false, trackProgress: true },
   privacy: {
     verified: true,
     contentRetention: "not_stored",
@@ -80,5 +84,60 @@ test.describe("Nova Campus visual reference", () => {
       document.documentElement.dataset.theme = "dark";
     });
     await capture(page, testInfo, "campus-home-dark");
+  });
+
+  test("captures Welcome, AI Essentials and Smart Setup", async ({
+    page,
+  }, testInfo) => {
+    await mockTauri(page, {
+      session: connectedSession,
+      config: campusConfig,
+      onboardingCompleted: true,
+      firstRunCompleted: false,
+      theme: "light",
+      prompts: [
+        { id: "nova_style_notes", name: "Notes", prompt: "Notes" },
+        { id: "nova_style_email", name: "Email", prompt: "Email" },
+        {
+          id: "nova_style_prompt",
+          name: "AI prompt",
+          prompt: "Prompt",
+        },
+        {
+          id: "default_improve_transcriptions",
+          name: "Clean up",
+          prompt: "Clean",
+        },
+      ],
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: /Welcome to EES, Student/ }),
+    ).toBeVisible();
+    await capture(page, testInfo, "campus-welcome-light");
+
+    await page
+      .getByRole("button", { name: "Start with AI Essentials" })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Working with AI" }),
+    ).toBeVisible();
+    await capture(page, testInfo, "campus-ai-module-light");
+
+    await page.getByRole("button", { name: "Continue later" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Set up Nova" }),
+    ).toBeVisible();
+    await capture(page, testInfo, "campus-smart-setup-light");
+
+    await page.getByRole("button", { name: "Use recommended setup" }).click();
+    await expect(page.getByRole("heading", { name: "Try Nova" })).toBeVisible();
+    await capture(page, testInfo, "campus-first-dictation-light");
+    await page.getByRole("button", { name: "Start dictation" }).click();
+    await expect(
+      page.getByRole("heading", { name: "That's it." }),
+    ).toBeVisible();
+    await capture(page, testInfo, "campus-first-success-light");
   });
 });

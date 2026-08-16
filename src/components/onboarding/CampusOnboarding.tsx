@@ -8,11 +8,21 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { hostname } from "@tauri-apps/plugin-os";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { Check } from "lucide-react";
 import HandyTextLogo from "../icons/HandyTextLogo";
 import OnboardingStepShell from "./OnboardingStepShell";
-import { CampusApi, CampusApiError, type CampusProfile } from "@/lib/campusApi";
-import { loadCampusConfig, type CampusConfig } from "@/lib/campusSession";
+import {
+  CampusApi,
+  CampusApiError,
+  type CampusEntraStartResponse,
+  type CampusProfile,
+} from "@/lib/campusApi";
+import {
+  loadCampusConfig,
+  loadCampusServerConfig,
+  type CampusConfig,
+} from "@/lib/campusSession";
 import {
   isValidCampusEmail,
   isValidCampusServerUrl,
@@ -130,6 +140,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
   const [machineName, setMachineName] = useState("unknown");
   const [profile, setProfile] = useState<CampusProfile | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [microsoftFlow, setMicrosoftFlow] =
+    useState<CampusEntraStartResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
   const lastSubmittedCode = useRef("");
@@ -149,6 +161,22 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!isValidCampusServerUrl(serverUrl)) return;
+    let active = true;
+    const timer = window.setTimeout(() => {
+      void loadCampusServerConfig(normalizeCampusServerUrl(serverUrl)).then(
+        (remoteConfig) => {
+          if (active && remoteConfig) setConfig(remoteConfig);
+        },
+      );
+    }, 250);
+    return () => {
+      active = false;
+      window.clearTimeout(timer);
+    };
+  }, [serverUrl]);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -217,6 +245,61 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     }
   };
 
+  const handleStartMicrosoft = async () => {
+    if (!isValidCampusServerUrl(serverUrl) || isLoading) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const flow = await api.startMicrosoftAuth(machineName);
+      setMicrosoftFlow(flow);
+      await openUrl(flow.verification_uri_complete ?? flow.verification_uri);
+    } catch (caught) {
+      setError(formatError(caught));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!microsoftFlow) return;
+    let active = true;
+    let timer: number | undefined;
+
+    const poll = async () => {
+      try {
+        const result = await api.pollMicrosoftAuth(microsoftFlow.flow_id);
+        if (!active) return;
+        if (result.status === "complete") {
+          const loadedProfile = await api.getMe().catch(() => null);
+          if (!active) return;
+          setEmail(result.email ?? loadedProfile?.email ?? "");
+          setProfile(loadedProfile);
+          setMicrosoftFlow(null);
+          await refreshCampusContext();
+          if (active) setStep("ready");
+          return;
+        }
+        if (result.status === "expired") {
+          setMicrosoftFlow(null);
+          setError(t("campus.microsoft.expired"));
+          return;
+        }
+        const retrySeconds = result.retry_after ?? microsoftFlow.interval;
+        timer = window.setTimeout(poll, Math.max(1, retrySeconds) * 1000);
+      } catch (caught) {
+        if (!active) return;
+        setMicrosoftFlow(null);
+        setError(formatError(caught));
+      }
+    };
+
+    timer = window.setTimeout(poll, Math.max(1, microsoftFlow.interval) * 1000);
+    return () => {
+      active = false;
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, [api, formatError, microsoftFlow, t]);
+
   const handleVerifyCode = useCallback(async () => {
     if (code.length !== 6 || isLoading || lastSubmittedCode.current === code) {
       return;
@@ -253,6 +336,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
 
   if (step === "welcome") {
     const emailCodeAvailable = context.authMethods.includes("email_code");
+    const entraAvailable = context.authMethods.includes("entra");
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
@@ -271,12 +355,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
           type="button"
           variant="primary"
           size="lg"
-          disabled={!configLoaded || !emailCodeAvailable}
+          disabled={!configLoaded || (!emailCodeAvailable && !entraAvailable)}
           onClick={() => setStep("email")}
         >
           {t("campus.onboarding.welcome.connect")}
         </Button>
-        {configLoaded && !emailCodeAvailable && (
+        {configLoaded && !emailCodeAvailable && !entraAvailable && (
           <p className="text-sm text-danger" role="alert">
             {t("campus.onboarding.errors.authMethodUnavailable")}
           </p>
@@ -291,6 +375,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       isValidCampusEmail(email) &&
       isValidCampusServerUrl(serverUrl) &&
       !isLoading;
+    const entraAvailable = context.authMethods.includes("entra");
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.email.title")}
@@ -344,6 +429,44 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
               placeholder={t("campus.onboarding.email.emailPlaceholder")}
             />
           </div>
+
+          {entraAvailable && (
+            <div className="space-y-3 border-t border-hairline pt-4">
+              <Button
+                type="button"
+                variant="secondary"
+                size="lg"
+                className="w-full"
+                disabled={isLoading || Boolean(microsoftFlow)}
+                onClick={() => void handleStartMicrosoft()}
+              >
+                {isLoading
+                  ? t("common.loading")
+                  : t("campus.microsoft.connect")}
+              </Button>
+              {microsoftFlow && (
+                <div
+                  className="space-y-2 border border-hairline bg-inset px-4 py-3 text-center [border-radius:var(--nova-radius-card)]"
+                  role="status"
+                >
+                  <p className="text-sm text-text-secondary">
+                    {t("campus.microsoft.browserHelp")}
+                  </p>
+                  <p className="font-mono text-lg font-semibold tracking-[0.12em] text-text">
+                    {microsoftFlow.user_code}
+                  </p>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setMicrosoftFlow(null)}
+                  >
+                    {t("settings.postProcessing.prompts.cancel")}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
 
           {error && (
             <p className="text-center text-sm text-danger" role="alert">

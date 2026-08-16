@@ -10,6 +10,7 @@ import {
   sanitizeCampusCode,
   shouldShowCampusServerInput,
 } from "../src/lib/campusOnboarding";
+import { AI_ESSENTIALS_TRACK } from "../src/lib/aiSkills";
 
 describe("Campus policy", () => {
   test("uses production-safe capability defaults", () => {
@@ -24,6 +25,8 @@ describe("Campus policy", () => {
     expect(context.capabilities.formattingRules).toBe(false);
     expect(context.capabilities.engineeringNotes).toBe(false);
     expect(context.capabilities.aiSkills).toBe(false);
+    expect(context.capabilities.personalization).toBe(true);
+    expect(context.aiSkillsPolicy.required).toBe(false);
   });
 
   test("starts Assessment mode conservatively", () => {
@@ -70,6 +73,32 @@ describe("Campus policy", () => {
     });
 
     expect(context.privacy.verified).toBe(false);
+  });
+
+  test("accepts institution AI Skills policy without making it mandatory by default", () => {
+    const context = resolveCampusContext({
+      server_url: "https://campus.example.edu",
+      capabilities: { aiSkills: true },
+      ai_skills: { enabled: true, required: false, trackProgress: true },
+    });
+
+    expect(context.aiSkillsPolicy).toEqual({
+      enabled: true,
+      required: false,
+      trackProgress: true,
+    });
+  });
+});
+
+describe("AI Skills architecture", () => {
+  test("ships a short extensible engineering foundation track", () => {
+    expect(AI_ESSENTIALS_TRACK.level).toBe("foundation");
+    expect(AI_ESSENTIALS_TRACK.modules).toHaveLength(6);
+    for (const module of AI_ESSENTIALS_TRACK.modules) {
+      expect(module.durationMinutes).toBeGreaterThanOrEqual(2);
+      expect(module.durationMinutes).toBeLessThanOrEqual(5);
+      expect(module.lessons[0].question.options).toHaveLength(3);
+    }
   });
 });
 

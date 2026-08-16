@@ -1190,7 +1190,213 @@
       "dictation": "Dictation",
       "rewrite": "Rewrite",
       "styles": "Styles",
-      "fileTranscription": "File transcription"
+      "fileTranscription": "File transcription",
+      "engineeringNotes": "Engineering Notes",
+      "aiSkills": "AI Skills",
+      "personalization": "Personalization"
+    },
+    "microsoft": {
+      "connect": "Continue with Microsoft",
+      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
+      "expired": "The Microsoft sign-in request expired. Start again."
+    },
+    "aiSkills": {
+      "title": "AI Skills",
+      "description": "Five short modules for using AI critically, effectively and safely in your studies.",
+      "progress": "{{completed}} of {{total}} modules completed",
+      "minutes": "About {{count}} min",
+      "practice": "Try it",
+      "markComplete": "Mark as completed",
+      "completed": "Completed",
+      "unavailable": "The course is temporarily unavailable."
+    },
+    "engineeringNotes": {
+      "title": "Engineering Notes",
+      "description": "Turn raw observations into a concise, traceable engineering note.",
+      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
+      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
+      "action": "Structure notes",
+      "working": "Structuring...",
+      "result": "Structured note",
+      "copied": "Note copied",
+      "error": "The notes could not be structured."
+    },
+    "personalization": {
+      "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
+      "appearance": "Appearance",
+      "orb": "Nova orb",
+      "orbColor": "Orb color",
+      "orbDescription": "Choose the accent used by Nova's dock and recording indicator.",
+      "bubble": "Connection bubble",
+      "alwaysVisible": "Always show the bubble",
+      "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
+    },
+    "firstRun": {
+      "skipForNow": "Skip for now",
+      "continueLater": "Continue later",
+      "useNovaNow": "Use Nova now",
+      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
+      "homeAiSkillsStart": "Learn to work with AI effectively.",
+      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
+      "welcome": {
+        "title": "Welcome to {{organization}}, {{name}}.",
+        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
+        "aiEssentials": "Start with AI Essentials",
+        "recommended": "Recommended · about 6 minutes",
+        "setupNow": "Set up Nova now"
+      },
+      "setup": {
+        "title": "Set up Nova",
+        "description": "We've prepared the recommended setup for you.",
+        "microphone": "Microphone",
+        "language": "Language",
+        "shortcut": "Dictation shortcut",
+        "style": "Writing style",
+        "processing": "Processing",
+        "ready": "Ready",
+        "checkRequired": "Check required",
+        "noMicrophone": "No microphone detected",
+        "autoDetect": "Auto detect",
+        "useRecommended": "Use recommended setup",
+        "customize": "Customize",
+        "useRecommendations": "Use recommendations",
+        "purposeQuestion": "What do you use Nova for most?",
+        "writingQuestion": "How should Nova usually write?",
+        "languageQuestion": "Preferred dictation language",
+        "purposes": {
+          "classes": "Classes & notes",
+          "engineering": "Engineering projects",
+          "emails": "Emails & communication",
+          "coding": "Coding",
+          "everything": "A bit of everything",
+          "courseNotes": "Course notes",
+          "feedback": "Feedback",
+          "documents": "Documents"
+        },
+        "writing": {
+          "keep": "Keep my words",
+          "clean": "Clean them up",
+          "professional": "Professional",
+          "auto": "Auto"
+        }
+      },
+      "try": {
+        "title": "Try Nova",
+        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
+        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
+        "start": "Start dictation",
+        "listening": "Listening...",
+        "successTitle": "That's it.",
+        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
+        "openNova": "Open Nova"
+      }
+    },
+    "aiCurriculum": {
+      "title": "AI Essentials",
+      "modulePosition": "Module {{current}} of {{total}}",
+      "correct": "Correct",
+      "considerThis": "Consider this",
+      "nextModule": "Next",
+      "continue": "Continue learning",
+      "start": "Start",
+      "next": "Next",
+      "modulesTitle": "Foundation skills",
+      "mastery": "Mastery levels",
+      "foundationCompleted": "Foundation completed · {{date}}",
+      "foundationDescription": "Core habits for effective, responsible AI use.",
+      "futureLevel": "Available in a future Campus track.",
+      "levels": {
+        "foundation": "Foundation",
+        "practitioner": "Practitioner",
+        "advanced": "Advanced"
+      },
+      "modules": {
+        "working-with-ai": {
+          "title": "Working with AI",
+          "summary": "Understand what AI can and cannot do.",
+          "skill": "AI fundamentals",
+          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
+          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
+          "question": "What is the most useful role for the AI here?",
+          "options": {
+            "a": "Replace the engineering decision.",
+            "b": "Provide a candidate solution for an engineer to evaluate.",
+            "c": "Approve the choice because the explanation sounds technical."
+          },
+          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+        },
+        "ask-better": {
+          "title": "Ask better",
+          "summary": "Give enough context and define a useful outcome.",
+          "skill": "Prompting",
+          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
+          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
+          "question": "Which request gives the safest, most useful starting point?",
+          "options": {
+            "a": "Fix my code.",
+            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
+            "c": "Write a longer answer."
+          },
+          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+        },
+        "verify-output": {
+          "title": "Verify the output",
+          "summary": "Check calculations, sources, claims and assumptions.",
+          "skill": "Verification",
+          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
+          "scenario": "An AI gives you a load calculation for a structural analysis.",
+          "question": "What should you do before using it?",
+          "options": {
+            "a": "Use it directly because the units are shown.",
+            "b": "Verify assumptions, units and calculations independently.",
+            "c": "Ask the AI whether it is sure."
+          },
+          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+        },
+        "confidential-information": {
+          "title": "Confidential information",
+          "summary": "Know what must not be sent to an unauthorized system.",
+          "skill": "Privacy",
+          "idea": "Only share data that the tool and your institution are authorized to process.",
+          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
+          "question": "What is the responsible next step?",
+          "options": {
+            "a": "Paste everything because the task is academic.",
+            "b": "Remove only the student names.",
+            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+          },
+          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+        },
+        "ai-in-engineering": {
+          "title": "AI in engineering",
+          "summary": "Use AI as a tool, not a replacement for reasoning.",
+          "skill": "Engineering AI",
+          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
+          "scenario": "You are comparing two concepts for a small satellite subsystem.",
+          "question": "Which workflow best uses AI?",
+          "options": {
+            "a": "Let the AI select the concept and copy its justification.",
+            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
+            "c": "Avoid documenting assumptions to keep the report short."
+          },
+          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+        },
+        "responsible-use": {
+          "title": "Responsible use",
+          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
+          "skill": "Responsible practice",
+          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
+          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
+          "question": "What should you do?",
+          "options": {
+            "a": "Use AI silently because everyone probably does.",
+            "b": "Let AI produce the final submission, then change a few words.",
+            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+          },
+          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+        }
+      }
     }
   }
 }

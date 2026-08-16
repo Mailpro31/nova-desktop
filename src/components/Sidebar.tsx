@@ -10,6 +10,7 @@ import {
   Palette,
   Users,
   Building2,
+  BookOpen,
 } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
@@ -29,6 +30,11 @@ const ConfigurationSettings = lazy(() =>
 const CampusOrganizationSettings = lazy(() =>
   import("./settings/campus/CampusOrganizationSettings").then((module) => ({
     default: module.CampusOrganizationSettings,
+  })),
+);
+const CampusAiSkills = lazy(() =>
+  import("./settings/campus/CampusAiSkills").then((module) => ({
+    default: module.CampusAiSkills,
   })),
 );
 const PostProcessingSettings = lazy(() =>
@@ -117,6 +123,14 @@ export const SECTIONS_CONFIG = {
     enabled: () => false,
     campusVisible: true,
   },
+  aiSkills: {
+    labelKey: "campus.aiSkills.title",
+    campusLabelKey: "campus.aiSkills.title",
+    icon: BookOpen,
+    component: CampusAiSkills,
+    enabled: () => false,
+    campusVisible: true,
+  },
   postprocessing: {
     labelKey: "sidebar.postProcessing",
     campusLabelKey: "sidebar.styles",
@@ -138,11 +152,11 @@ export const SECTIONS_CONFIG = {
   },
   personalization: {
     labelKey: "sidebar.personalization",
-    campusLabelKey: undefined,
+    campusLabelKey: "sidebar.personalization",
     icon: Palette,
     component: PersonalizationSettings,
     enabled: () => true,
-    campusVisible: false,
+    campusVisible: true,
   },
   account: {
     labelKey: "sidebar.account",
@@ -184,7 +198,9 @@ export const SECTIONS_CONFIG = {
 // Campus keeps the common path first, with administration one level deeper.
 export const CAMPUS_SIDEBAR_ORDER: SidebarSection[] = [
   "home",
+  "aiSkills",
   "postprocessing",
+  "personalization",
   "history",
   "campus",
   "configuration",
@@ -202,6 +218,7 @@ export const SECTION_COLORS: Record<string, string> = {
   home: "",
   configuration: "#8E8E93",
   campus: "#0A84FF",
+  aiSkills: "#0A84FF",
   postprocessing: "#BF5AF2",
   meeting: "#30D158",
   personalization: "#FF375F",
