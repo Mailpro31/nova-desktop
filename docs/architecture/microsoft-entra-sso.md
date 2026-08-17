@@ -408,46 +408,135 @@ session tient.
 | | |
 |---|---|
 | **Date** | 17 août 2026 |
-| **Résultat** | **NON EFFECTUÉE — bloquée** |
-| **Type de tenant** | aucun tenant réel disponible |
-| **Flux testé** | aucun bout-en-bout réel |
-| **dev / packagé** | ni l'un ni l'autre |
-| **MFA** | non observé |
-| **Consentement** | non observé |
-| **Redirect réel** | non observé |
+| **Résultat** | ✅ **RÉUSSIE** — flux complet, tenant réel |
+| **Type de tenant** | établissement d'enseignement supérieur, tenant Entra réel (domaines vérifiés `*.fr`) |
+| **Flux testé** | Authorization Code + PKCE S256, de bout en bout |
+| **Environnement** | `tauri dev` (build packagé : voir plus bas) |
+| **MFA** | déclenché par le tenant, effectué par l'utilisateur |
+| **Consentement** | écran affiché, portant uniquement `openid profile email` |
+| **Redirect réel** | `http://127.0.0.1:<port éphémère>/callback` — accepté par Entra |
 
-### Ce qui bloque
+### Enregistrement d'application effectivement utilisé
 
-L'application Entra n'existe pas. Constaté dans la configuration réelle :
+Créé via Microsoft Graph (Azure CLI), le portail refusant le schéma `http` sur
+une adresse de bouclage :
 
-- `NOVA_ENTRA_CLIENT_ID` : **vide** ;
-- `NOVA_ENTRA_TENANT_ID` : vaut encore le mot-clé `organizations`, pas un
-  identifiant de répertoire ;
-- `NOVA_ENTRA_ALLOWED_TENANT_ID` : **absent** ;
-- `organizations.entra_tenant_id` en base : `NULL` — aucun tenant rattaché.
+```
+signInAudience            AzureADMultipleOrgs
+publicClient.redirectUris ["http://127.0.0.1/callback"]   ← chemin compris
+isFallbackPublicClient    true      (garde le Device Code hérité utilisable)
+passwordCredentials       0         aucun secret
+keyCredentials            0         aucun certificat
+requiredResourceAccess    []        aucune permission Graph
+```
 
-Créer une application Entra suppose de se connecter au portail Azure avec un
-compte administrateur du tenant et d'y créer une ressource cloud. C'est une
-action qui appartient à l'exploitant, pas à l'outil : aucune valeur n'a donc été
-inventée, et aucun succès n'a été simulé.
+La correction du § 16 s'est révélée nécessaire : sans le chemin `/callback`
+dans l'enregistrement, Entra aurait refusé la redirection.
 
-### Ce qui a quand même été vérifié
+### Chaîne vérifiée, maillon par maillon
 
-La **stratégie de redirection** a été confrontée à la documentation officielle
-Microsoft, et la recette du § 16 était fausse : elle demandait d'enregistrer
-`http://127.0.0.1` sans chemin, ce qui aurait produit un `AADSTS50011` dès la
-première connexion réelle. Elle est corrigée, avec la manipulation du manifeste
-que le portail impose pour une adresse de bouclage en `http`.
+| Maillon | Preuve |
+|---|---|
+| Autorisation Microsoft | URL réelle vers `login.microsoftonline.com/organizations/…/authorize`, `code_challenge_method=S256`, sans `client_secret` |
+| Callback loopback | retour reçu, `state` validé |
+| Échange du code | effectué **par le serveur**, jamais par le poste |
+| Validation JWKS | signature RS256 vérifiée contre les clés du tenant ; un échec aurait produit `ID_TOKEN_INVALID` et aucune session |
+| `nonce`, `iss`, `aud`, `exp`, `tid`, `oid` | tous exigés par le validateur ; la session n'existe que s'ils sont passés |
+| Mapping de tenant | `organizations.entra_tenant_id` ← tenant réel, rapproché en base |
+| Identité fédérée | 1 ligne, `provider=microsoft_entra`, **`verification=verified`** |
+| Sujet externe | GUID de 36 caractères, **sans `@`**, différent de l'adresse |
+| Session Nova | jeton opaque de 43 caractères, stocké haché en base (`h:<empreinte>`) |
+| `/api/me` | contrat legacy **et** v2 cohérents |
+| Trousseau | contient **uniquement** le jeton Nova |
+
+### Membership réel
+
+`member_type = student`, **`security_role = member`**, `status = active`,
+0 groupe, `identity.provider = microsoft_entra`. Se connecter par Microsoft n'a
+accordé **aucun** privilège d'administration : le rôle vient de Nova.
+
+Type de rattachement observé : **création d'un nouveau membre** (aucun compte
+historique ni identité fédérée préexistants).
+
+### Redémarrage
+
+Nova fermé puis relancé, serveur laissé en marche : session retrouvée depuis le
+trousseau, **aucune nouvelle authentification Microsoft demandée** (0 occurrence
+dans les journaux), session toujours active côté serveur.
+
+### Écouteur de bouclage
+
+Après la connexion, **aucun port en écoute** n'appartient au processus Nova : le
+listener est bien refermé.
+
+### Journaux
+
+Aucun code d'autorisation, jeton Microsoft, `code_verifier`, `nonce` ni jeton de
+session dans les journaux. Le seul marqueur est
+`[auth] provider=microsoft_entra result=success`.
+
+> Observation annexe, sans rapport avec le SSO : en mode `DEBUG`, le vidage des
+> réglages au démarrage inclut `free_token` et `license_key`. Défaut d'hygiène
+> de journalisation préexistant, à traiter séparément.
+
+### Réseau
+
+Poste → serveur Nova ; navigateur → `login.microsoftonline.com` ; serveur →
+point de terminaison de jeton Microsoft ; serveur → métadonnées/JWKS Microsoft.
+**Aucun appel Microsoft Graph.**
+
+### Déconnexion et seconde connexion
+
+Les deux ont été effectuées réellement, et la base le confirme :
+
+| | |
+|---|---|
+| Sessions en base | 2 : la première **révoquée** (`active=0`), la seconde active |
+| Trousseau | contient exactement la **seconde** session — l'empreinte du jeton du trousseau correspond à la ligne active, pas à l'ancienne |
+| Identité fédérée | **1 seule ligne**, `last_seen` postérieur à `created_at` → **réutilisée**, pas recréée |
+| Comptes | **1 seul**, même `user_id`, même organisation, même `member_type` |
+| Rôle de sécurité | reste `member` après reconnexion |
+| Marqueurs | deux `[auth] provider=microsoft_entra result=success`, à 20 minutes d'intervalle |
+
+La déconnexion révoque donc bien côté serveur **et** efface le trousseau ; la
+reconnexion retrouve l'identité par `(provider, oid)` au lieu d'en créer une
+seconde.
+
+### Build Windows packagé
+
+Produit en 19 min 54 s :
+
+```
+bundle/nsis/Nova_<version>_x64-setup.exe    22,5 Mo
+bundle/msi/Nova_<version>_x64_en-US.msi     55,4 Mo
+```
+
+`!define INSTALLMODE "perMachine"` confirmé dans le script NSIS généré — la
+configuration Organization est bien appliquée.
+
+Audit des artefacts, sans installation : **aucun** identifiant de tenant, **aucun**
+identifiant d'application, **aucun** `.env`, **aucune** URL de serveur de test,
+et **aucun** `campus-config.json` de développement embarqué. Les seules
+occurrences de `localhost` dans le binaire sont les schémas internes de Tauri
+(`tauri://localhost`, `asset.localhost`, `ipc.localhost`) ; le motif `8787` est
+un fragment de hachage de commit d'une dépendance.
+
+> **Installation non effectuée.** La machine porte déjà deux installations Nova
+> de même version — une `perMachine` dans `Program Files` et une `perUser` dans
+> le profil. Installer ce paquet écraserait la première. La recette packagée
+> demande donc une décision d'exploitation, pas une action automatique : voir
+> les étapes humaines dans le compte rendu de phase.
 
 ### Éléments non testés
 
-Connexion réelle, MFA, écran de consentement, échange de code réel, JWKS réel et
-son cache, revendications réelles, rattachement de compte réel, persistance de
-session après redémarrage, déconnexion et reconnexion, cas d'erreur réels,
-validation multi-tenant réelle, et validation sur un build Windows packagé.
-
-Tout cela reste couvert par 59 tests automatisés — ce qui prouve la logique,
-pas l'accord avec le service réel.
+- **multi-tenant réel** : un seul tenant disponible. `REAL SINGLE-TENANT
+  VALIDATED` / `MULTI-TENANT REAL VALIDATION NOT TESTED` — l'isolation reste
+  couverte par les tests automatisés ;
+- réutilisation du cache JWKS lors d'une seconde connexion (non observable de
+  l'extérieur, le cache étant en mémoire du processus) ;
+- cas d'erreur réels (refus de consentement, tenant non rattaché) ;
+- **installation** et connexion depuis le build Windows packagé : le paquet est
+  produit et audité, mais non installé (voir l'encadré ci-dessus).
 
 ---
 
