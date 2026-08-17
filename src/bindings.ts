@@ -603,7 +603,7 @@ async novaCommandCaptureSelection() : Promise<Result<SelectionCapture, CommandEr
 },
 /**
  * Colle un résultat en restaurant le presse-papiers.
- *
+ * 
  * **Expérimental.** N'est appelé que depuis l'action « Remplacer » d'un
  * aperçu : rien ne remplace automatiquement le texte de l'utilisateur.
  */
@@ -622,11 +622,19 @@ async novaCommandDiagnostics() : Promise<CommandsDiagnostics> {
     return await TAURI_INVOKE("nova_command_diagnostics");
 },
 /**
- * Lit le fichier `campus-config.json` placé à côté de l'exécutable par l'IT.
+ * Lit la configuration Campus déposée par l'IT. Voir `resolve_campus_config_path`.
  */
 async getCampusConfig() : Promise<Result<CampusConfig | null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_campus_config") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async fetchCampusServerConfig(serverUrl: string) : Promise<Result<CampusConfig, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("fetch_campus_server_config", { serverUrl }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -654,6 +662,14 @@ async loadCampusSession() : Promise<Result<CampusSession | null, string>> {
 async clearCampusSession() : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("clear_campus_session") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async logoutCampusSession() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("logout_campus_session") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -689,6 +705,22 @@ async requestCampusAuth(serverUrl: string, email: string, machine: string) : Pro
 async verifyCampusAuth(serverUrl: string, email: string, code: string, machine: string) : Promise<Result<CampusSession, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("verify_campus_auth", { serverUrl, email, code, machine }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async startCampusEntraAuth(serverUrl: string, machine: string) : Promise<Result<CampusEntraStartResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("start_campus_entra_auth", { serverUrl, machine }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async pollCampusEntraAuth(serverUrl: string, flowId: string) : Promise<Result<CampusEntraPollResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("poll_campus_entra_auth", { serverUrl, flowId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -801,6 +833,22 @@ async deleteCampusFormattingRule(ruleId: number) : Promise<Result<null, string>>
 async executeCampusCommand(instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("execute_campus_command", { instruction, text }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getCampusAiSkills() : Promise<Result<CampusAiSkillsResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_campus_ai_skills") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async formatCampusEngineeringNotes(instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("format_campus_engineering_notes", { instruction, text }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1596,96 +1644,117 @@ export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
 export type AvailableAccelerators = { transcribe: string[]; ort: string[]; gpu_devices: GpuDeviceOption[] }
 export type BindingResponse = { success: boolean; binding: ShortcutBinding | null; error: string | null }
+export type CampusAiSkill = { id: string; title: string; summary: string; practice: string; duration_minutes: number }
+export type CampusAiSkillsPolicyConfig = { enabled?: boolean | null; required?: boolean | null; trackProgress?: boolean | null }
+export type CampusAiSkillsResponse = { skills: CampusAiSkill[] }
 export type CampusAnalyzeResponse = { terms_added: number }
 export type CampusAuthRequestResponse = { sent: boolean }
+export type CampusBrandingConfig = { logoUrl?: string | null; accentColor?: string | null }
+export type CampusCapabilitiesConfig = { dictation?: boolean | null; rewrite?: boolean | null; styles?: boolean | null; fileTranscription?: boolean | null; commands?: boolean | null; dictionary?: boolean | null; snippets?: boolean | null; formattingRules?: boolean | null; screenContext?: boolean | null; cloudInference?: boolean | null; engineeringNotes?: boolean | null; aiSkills?: boolean | null; personalization?: boolean | null }
 export type CampusCommandResponse = { text: string }
-export type CampusConfig = { server_url: string; organization: CampusOrganizationConfig | null; capabilities: CampusCapabilitiesConfig | null; education_mode: string | null; auth_methods: string[] | null; privacy: CampusPrivacyConfig | null }
-export type CampusOrganizationConfig = { id: string; name: string; shortName: string | null; campusName: string | null; role: string | null; cohort: string | null; managed: boolean; branding: CampusBrandingConfig | null; support: CampusSupportConfig | null }
-export type CampusBrandingConfig = { logoUrl: string | null; accentColor: string | null }
-export type CampusSupportConfig = { email: string | null; website: string | null }
-export type CampusCapabilitiesConfig = { dictation: boolean | null; rewrite: boolean | null; styles: boolean | null; fileTranscription: boolean | null; commands: boolean | null; dictionary: boolean | null; snippets: boolean | null; formattingRules: boolean | null; screenContext: boolean | null; cloudInference: boolean | null; engineeringNotes: boolean | null; aiSkills: boolean | null }
-export type CampusPrivacyConfig = { verified: boolean | null; contentRetention: string | null; usageCounters: string | null; infrastructure: string | null }
+export type CampusConfig = { server_url: string; organization?: CampusOrganizationConfig | null; capabilities?: CampusCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: CampusAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: CampusPrivacyConfig | null }
+export type CampusEntraPollResponse = { status: string; email: string | null; retry_after: number | null }
+export type CampusEntraStartResponse = { flow_id: string; user_code: string; verification_uri: string; verification_uri_complete: string | null; expires_in: number; interval: number; message: string }
 export type CampusFormattingRulesResponse = { shared: CampusRuleEntry[]; personal: CampusRuleEntry[] }
+/**
+ * Groupe annoncé par le serveur (promo, filière, équipe, service).
+ */
+export type CampusGroup = { id: string; label: string; source: string; external_group_id?: string | null }
 export type CampusIdResponse = { id: number }
+/**
+ * Mode d'authentification employé. Le sujet externe n'est pas transmis au
+ * poste : il n'en a aucun usage.
+ */
+export type CampusIdentityInfo = { provider?: string | null; has_external_identity?: boolean | null }
 export type CampusImportResponse = { imported: number }
 export type CampusLearnResponse = { learned: boolean }
-export type CampusMeResponse = { email: string; role: string; cohort: string; organization: string }
+/**
+ * Réponse de `GET /api/me`.
+ * 
+ * Les quatre premiers champs sont le contrat historique ; tout le reste est
+ * **optionnel**, parce qu'un serveur d'établissement plus ancien que le poste
+ * est un cas normal. `organization` reste une **chaîne** — le nom d'affichage :
+ * en faire un objet casserait chaque poste déjà déployé.
+ */
+export type CampusMeResponse = { email: string; role: string; cohort: string; 
+/**
+ * Nom de l'établissement, déduit côté serveur du domaine de l'adresse.
+ * Absent des anciennes réponses : `default` évite de casser la
+ * désérialisation contre un serveur non mis à jour.
+ */
+organization?: string; 
+/**
+ * `None` avec un serveur antérieur au contrat étendu.
+ */
+contract_version?: number | null; user_id?: string | null; 
+/**
+ * Identifiant de tenant immuable, attribué par le serveur.
+ */
+organization_id?: string | null; organization_type?: string | null; membership?: CampusMembership | null; identity?: CampusIdentityInfo | null; 
+/**
+ * Capacités déclarées par l'organisation. Ne peut jamais fermer une
+ * capacité du Nova Core — voir `src/lib/organization/resolve.ts`.
+ */
+capabilities?: string[] | null }
+/**
+ * Appartenance du membre à l'organisation, telle que le serveur la décide.
+ */
+export type CampusMembership = { member_type?: string | null; security_role?: string | null; groups?: CampusGroup[] | null; status?: string | null }
+export type CampusOrganizationConfig = { id: string; name: string; shortName?: string | null; campusName?: string | null; role?: string | null; cohort?: string | null; managed?: boolean; branding?: CampusBrandingConfig | null; support?: CampusSupportConfig | null }
 export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
+export type CampusPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
 export type CampusRuleEntry = { id: number; rule: string }
 export type CampusSession = { server_url: string; email: string }
 export type CampusSharedDictEntry = { id: number; term: string; replacement: string }
 export type CampusSnippetEntry = { id: number; trigger: string; content: string }
+export type CampusSupportConfig = { email?: string | null; website?: string | null }
 export type CampusVocabularyResponse = { shared: CampusSharedDictEntry[]; personal: CampusPersonalDictEntry[]; snippets: CampusSnippetEntry[] }
 export type ClipboardHandling = "dont_modify" | "copy_to_clipboard"
-export type CommandError =
+export type CommandError = 
 /**
  * Une autre commande est déjà en cours.
  */
-{ kind: "Busy" } |
+{ kind: "Busy" } | 
 /**
  * Le presse-papiers contient un contenu non textuel qu'on ne saurait
  * restaurer : on refuse plutôt que de le détruire.
  */
-{ kind: "NonTextClipboard" } |
+{ kind: "NonTextClipboard" } | 
 /**
  * Aucun texte n'a été copié dans le délai imparti.
  */
-{ kind: "NoSelection" } |
+{ kind: "NoSelection" } | 
 /**
  * Plateforme sans détection fiable de changement de presse-papiers.
  */
-{ kind: "Unsupported" } |
+{ kind: "Unsupported" } | 
 /**
  * La fenêtre cible n'est plus celle d'où venait la sélection.
  */
 { kind: "TargetChanged" } | { kind: "Clipboard"; detail: string } | { kind: "Input"; detail: string }
 /**
  * Rapport de diagnostic du moteur, destiné au **test manuel sur Windows**.
- *
+ * 
  * Volontairement hors de l'interface utilisateur : il sert à valider la
  * couche native avant toute activation par défaut.
  */
-export type CommandsDiagnostics = {
+export type CommandsDiagnostics = { 
 /**
  * La plateforme fournit-elle une détection fiable de changement ?
  */
-sequence_detection: boolean;
+sequence_detection: boolean; 
 /**
  * Nature du presse-papiers courant : `empty`, `text`, `non-text`.
  */
-clipboard_kind: string;
+clipboard_kind: string; 
 /**
  * Le presse-papiers pourrait-il être restauré après capture ?
  */
-clipboard_restorable: boolean; foreground_process: string; foreground_pid: number;
+clipboard_restorable: boolean; foreground_process: string; foreground_pid: number; 
 /**
  * Le réglage expérimental est-il actif ?
  */
 enabled: boolean }
-/**
- * Nature d'un échec, quand elle change ce que l'utilisateur peut faire.
- */
-export type DictationErrorKind =
-/**
- * La capture audio n'a pas démarré — micro absent, occupé ou refusé.
- */
-"microphone" |
-/**
- * Le texte n'a pas pu être inséré. Il est dans le presse-papiers : la
- * dictée n'est jamais perdue (voir `clipboard::paste_via_clipboard`).
- */
-"insertion"
-/**
- * Ce que l'utilisateur perçoit. Le moteur connaît davantage de nuances —
- * préparation du modèle, flux en direct, transcription puis reformulation —
- * mais aucune ne demande une réaction différente de sa part.
- */
-export type DictationState = "idle" | "listening" | "processing" | "error"
-export type DictationStateEvent = { state: DictationState;
-/**
- * Renseigné uniquement quand `state` vaut `Error`.
- */
-error: DictationErrorKind | null }
 export type CustomSounds = { start: boolean; stop: boolean }
 /**
  * Raccourci personnel (« variable ») : un mot-clé et sa valeur. Lors de la
@@ -1696,6 +1765,32 @@ export type CustomVariable = { key: string; value: string }
 export type DeviceProfile = { class: AdaptiveClass; total_memory_mb: number; available_memory_mb: number; logical_cpus: number; cpu_name: string; cpu_score: number; gpu_count: number; cpu_only_fallback: boolean; recommended_model_unload: string; recommended_accelerator: string }
 export type DiagnosticCheck = { id: string; status: DiagnosticStatus; detail: string }
 export type DiagnosticStatus = "ok" | "warning" | "error"
+/**
+ * Nature d'un échec, quand elle change ce que l'utilisateur peut faire.
+ */
+export type DictationErrorKind = 
+/**
+ * La capture audio n'a pas démarré — micro absent, occupé ou refusé.
+ */
+"microphone" | 
+/**
+ * Le texte n'a pas pu être inséré. Il est dans le presse-papiers : la
+ * dictée n'est jamais perdue (voir `clipboard::paste_via_clipboard`).
+ */
+"insertion"
+/**
+ * Ce que l'utilisateur perçoit. Le moteur connaît davantage de nuances —
+ * préparation du modèle, flux en direct, transcription puis reformulation —
+ * mais aucune ne demande une réaction différente de sa part : dans les deux
+ * cas il attend. Multiplier les libellés ferait clignoter l'interface sans
+ * rien lui apprendre.
+ */
+export type DictationState = "idle" | "listening" | "processing" | "error"
+export type DictationStateEvent = { state: DictationState; 
+/**
+ * Renseigné uniquement quand `state` vaut `Error`.
+ */
+error: DictationErrorKind | null }
 export type EngineType = 
 /**
  * Any GGML/GGUF model loaded through transcribe-cpp (Whisper, Parakeet,
@@ -1869,7 +1964,7 @@ sha256: string | null } } |
 export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "min_10" | "min_15" | "hour_1" | "sec_15"
 /**
  * Résultat d'une capture déclenchée par le raccourci, poussé vers l'interface.
- *
+ * 
  * Un seul des deux champs est renseigné. Le texte capturé y transite parce que
  * l'interface doit l'afficher ; il n'est ni journalisé ni persisté.
  */
@@ -1938,23 +2033,23 @@ export type StreamTextEvent = { committed: string; tentative: string }
  */
 export type StreamWorkKind = "transcribing" | "polishing"
 /**
- * UI appearance mode. `System` follows the OS `prefers-color-scheme`; `Light`
- * and `Dark` force one of the two palettes Handy already ships.
- */
-export type Theme = "system" | "light" | "dark"
-/**
  * Fenêtre à laquelle la sélection appartient, mémorisée avant toute prise de
  * focus par l'interface Nova.
  */
-export type TargetWindow = {
+export type TargetWindow = { 
 /**
  * Nom du processus, à visée de diagnostic uniquement.
  */
-process: string;
+process: string; 
 /**
  * Identité forte de la cible.
  */
 pid: number }
+/**
+ * UI appearance mode. `System` follows the OS `prefers-color-scheme`; `Light`
+ * and `Dark` force one of the two palettes Handy already ships.
+ */
+export type Theme = "system" | "light" | "dark"
 export type Tier = "free" | "pro" | "ultra" | "business"
 export type TranscribeAcceleratorSetting = "auto" | "cpu" | "gpu"
 export type TypingTool = "auto" | "wtype" | "kwtype" | "dotool" | "ydotool" | "xdotool"

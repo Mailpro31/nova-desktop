@@ -4,8 +4,24 @@
 
 Le serveur est celui de l'établissement (ex. `https://nova.ipsa.fr`). Son
 adresse est soit saisie par l'utilisateur, soit **pré-remplie et verrouillée**
-par la DSI via un fichier `campus-config.json` déposé à côté de l'exécutable.
-Dans ce cas le champ serveur est visible mais non modifiable.
+par la DSI via un fichier `campus-config.json`. Dans ce cas le champ serveur est
+visible mais non modifiable.
+
+Nova cherche ce fichier dans cet ordre :
+
+1. `%ProgramData%\Nova\campus-config.json` — la configuration **du poste**,
+   celle qu'un déploiement Intune ou GPO écrit une fois pour tous les comptes.
+   Elle est lisible sans droits administrateur, modifiable seulement avec, et
+   survit aux mises à jour de Nova puisqu'elle vit hors du répertoire
+   d'installation ;
+2. à côté de `Nova.exe` — l'emplacement historique, conservé pour les postes
+   déjà déployés et pour l'installation portable, qui n'a pas de configuration
+   de poste ;
+3. rien : l'utilisateur saisit lui-même l'adresse.
+
+Un fichier laissé à côté de l'exécutable ne peut donc pas détourner un poste
+géré. Sur macOS l'équivalent est `/Library/Application Support/Nova`, sur Linux
+`/etc/nova`.
 
 ```
 Bienvenue ──▶ E-mail + serveur ──▶ Code à 6 chiffres ──▶ Prêt

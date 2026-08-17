@@ -20,6 +20,7 @@ import { AiSkillModulePlayer } from "@/components/campus/AiSkillModulePlayer";
 import HandyTextLogo from "@/components/icons/HandyTextLogo";
 import { Button, Kbd } from "@/components/ui";
 import { useAiSkillsProgress } from "@/hooks/useAiSkillsProgress";
+import { useCapability } from "@/hooks/useOrganizationContext";
 import { useSettings } from "@/hooks/useSettings";
 import {
   AI_ESSENTIALS_TRACK,
@@ -79,8 +80,11 @@ export const CampusFirstRun: React.FC<CampusFirstRunProps> = ({
   const { getSetting, updateSetting, audioDevices, refreshAudioDevices } =
     useSettings();
   const organizationLabel = campusOrganizationLabel(context.organization);
-  const aiSkillsEnabled =
-    context.capabilities.aiSkills && context.aiSkillsPolicy.enabled;
+  // Capacités lues dans l'OrganizationContext : le serveur en est
+  // l'autorité quand il les annonce, la configuration Campus sinon.
+  const canUseAiSkills = useCapability("aiSkills");
+  const canRewrite = useCapability("rewrite");
+  const aiSkillsEnabled = canUseAiSkills && context.aiSkillsPolicy.enabled;
   const aiSkillsRequired = aiSkillsEnabled && context.aiSkillsPolicy.required;
   const storageKey = useMemo(
     () =>
@@ -212,8 +216,7 @@ export const CampusFirstRun: React.FC<CampusFirstRunProps> = ({
       ),
       updateSetting(
         "post_process_enabled",
-        context.capabilities.rewrite &&
-          selectedPrompt !== "nova_style_voice_to_text",
+        canRewrite && selectedPrompt !== "nova_style_voice_to_text",
       ),
     ]).catch(() => undefined);
     moveTo("try-nova");

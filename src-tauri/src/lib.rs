@@ -23,6 +23,9 @@ mod meeting_segmenter;
 mod meeting_session;
 mod meeting_transcript;
 mod nova_commands;
+/// Modèle d'organisation partagé (éditions, membres, groupes). Voir
+/// `docs/architecture/organization-foundation.md`.
+pub mod organization;
 mod overlay;
 mod performance;
 pub mod portable;

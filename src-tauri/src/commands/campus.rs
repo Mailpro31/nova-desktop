@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use specta::Type;
 use std::collections::HashMap;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -186,7 +186,50 @@ pub fn is_campus_enabled(app: &AppHandle) -> bool {
         .unwrap_or(false)
 }
 
-/// Lit le fichier `campus-config.json` placé à côté de l'exécutable par l'IT.
+/// Répertoire de configuration **à l'échelle de la machine**, déposé par la DSI.
+///
+/// Sur Windows, `%ProgramData%\Nova` est l'emplacement prévu par le système pour
+/// une donnée d'application commune à tous les comptes : lisible par un
+/// utilisateur standard, modifiable seulement par un administrateur, et situé
+/// hors du répertoire d'installation — donc préservé par une mise à jour de
+/// Nova. Un déploiement Intune ou GPO y écrit une fois pour le poste, là où un
+/// fichier dans le profil devrait être recopié pour chaque étudiant.
+#[cfg(windows)]
+fn machine_config_dir() -> Option<PathBuf> {
+    std::env::var_os("ProgramData").map(|dir| PathBuf::from(dir).join("Nova"))
+}
+
+#[cfg(target_os = "macos")]
+fn machine_config_dir() -> Option<PathBuf> {
+    Some(PathBuf::from("/Library/Application Support/Nova"))
+}
+
+#[cfg(all(unix, not(target_os = "macos")))]
+fn machine_config_dir() -> Option<PathBuf> {
+    Some(PathBuf::from("/etc/nova"))
+}
+
+/// Choisit la configuration Campus à lire, de la plus gérée à la moins gérée.
+///
+/// 1. la configuration machine, déployée par la DSI ;
+/// 2. le fichier à côté de l'exécutable — l'emplacement historique, conservé
+///    pour les postes déjà déployés ainsi que pour l'installation portable, qui
+///    n'a par définition aucune configuration machine ;
+/// 3. rien : l'utilisateur saisit lui-même l'adresse du serveur.
+///
+/// Aucune adresse n'est codée en dur : sans fichier, Nova ne connaît aucun
+/// établissement.
+fn resolve_campus_config_path(machine_dir: Option<&Path>, exe_dir: &Path) -> Option<PathBuf> {
+    let managed = machine_dir.map(|dir| dir.join(CAMPUS_CONFIG_FILENAME));
+    if let Some(path) = managed.filter(|path| path.is_file()) {
+        return Some(path);
+    }
+
+    let beside_executable = exe_dir.join(CAMPUS_CONFIG_FILENAME);
+    beside_executable.is_file().then_some(beside_executable)
+}
+
+/// Lit la configuration Campus déposée par l'IT. Voir `resolve_campus_config_path`.
 #[tauri::command]
 #[specta::specta]
 pub fn get_campus_config() -> Result<Option<CampusConfig>, String> {
@@ -194,11 +237,11 @@ pub fn get_campus_config() -> Result<Option<CampusConfig>, String> {
     let exe_dir = exe_path
         .parent()
         .ok_or("Could not determine executable directory")?;
-    let config_path = exe_dir.join(CAMPUS_CONFIG_FILENAME);
 
-    if !config_path.exists() {
+    let machine_dir = machine_config_dir();
+    let Some(config_path) = resolve_campus_config_path(machine_dir.as_deref(), exe_dir) else {
         return Ok(None);
-    }
+    };
 
     let content = std::fs::read_to_string(&config_path).map_err(|e| e.to_string())?;
     let config: CampusConfig = serde_json::from_str(&content).map_err(|e| e.to_string())?;
@@ -377,6 +420,45 @@ struct CampusTokenResponse {
     token: String,
 }
 
+/// Groupe annoncé par le serveur (promo, filière, équipe, service).
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusGroup {
+    pub id: String,
+    pub label: String,
+    pub source: String,
+    #[serde(default)]
+    pub external_group_id: Option<String>,
+}
+
+/// Appartenance du membre à l'organisation, telle que le serveur la décide.
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusMembership {
+    #[serde(default)]
+    pub member_type: Option<String>,
+    #[serde(default)]
+    pub security_role: Option<String>,
+    #[serde(default)]
+    pub groups: Option<Vec<CampusGroup>>,
+    #[serde(default)]
+    pub status: Option<String>,
+}
+
+/// Mode d'authentification employé. Le sujet externe n'est pas transmis au
+/// poste : il n'en a aucun usage.
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusIdentityInfo {
+    #[serde(default)]
+    pub provider: Option<String>,
+    #[serde(default)]
+    pub has_external_identity: Option<bool>,
+}
+
+/// Réponse de `GET /api/me`.
+///
+/// Les quatre premiers champs sont le contrat historique ; tout le reste est
+/// **optionnel**, parce qu'un serveur d'établissement plus ancien que le poste
+/// est un cas normal. `organization` reste une **chaîne** — le nom d'affichage :
+/// en faire un objet casserait chaque poste déjà déployé.
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusMeResponse {
     pub email: String,
@@ -387,6 +469,24 @@ pub struct CampusMeResponse {
     /// désérialisation contre un serveur non mis à jour.
     #[serde(default)]
     pub organization: String,
+    /// `None` avec un serveur antérieur au contrat étendu.
+    #[serde(default)]
+    pub contract_version: Option<i32>,
+    #[serde(default)]
+    pub user_id: Option<String>,
+    /// Identifiant de tenant immuable, attribué par le serveur.
+    #[serde(default)]
+    pub organization_id: Option<String>,
+    #[serde(default)]
+    pub organization_type: Option<String>,
+    #[serde(default)]
+    pub membership: Option<CampusMembership>,
+    #[serde(default)]
+    pub identity: Option<CampusIdentityInfo>,
+    /// Capacités déclarées par l'organisation. Ne peut jamais fermer une
+    /// capacité du Nova Core — voir `src/lib/organization/resolve.ts`.
+    #[serde(default)]
+    pub capabilities: Option<Vec<String>>,
 }
 
 fn campus_client_no_auth() -> reqwest::Client {
@@ -1386,5 +1486,152 @@ mod tests {
         assert_eq!(username.len(), 64);
         assert!(!username.contains("student"));
         assert!(!username.contains("example.edu"));
+    }
+
+    // ── Où la configuration Campus est lue ──────────────────────────────
+
+    fn write_config(dir: &Path) {
+        std::fs::create_dir_all(dir).expect("config directory is created");
+        std::fs::write(
+            dir.join(CAMPUS_CONFIG_FILENAME),
+            r#"{"server_url":"https://campus.example.edu"}"#,
+        )
+        .expect("config is written");
+    }
+
+    #[test]
+    fn a_machine_wide_configuration_is_found() {
+        let machine = tempfile::tempdir().expect("machine directory");
+        let exe = tempfile::tempdir().expect("executable directory");
+        write_config(machine.path());
+
+        assert_eq!(
+            resolve_campus_config_path(Some(machine.path()), exe.path()),
+            Some(machine.path().join(CAMPUS_CONFIG_FILENAME))
+        );
+    }
+
+    #[test]
+    fn a_configuration_beside_the_executable_still_works() {
+        // Postes déjà déployés et installation portable : ni l'un ni l'autre
+        // n'a de configuration machine.
+        let machine = tempfile::tempdir().expect("machine directory");
+        let exe = tempfile::tempdir().expect("executable directory");
+        write_config(exe.path());
+
+        assert_eq!(
+            resolve_campus_config_path(Some(machine.path()), exe.path()),
+            Some(exe.path().join(CAMPUS_CONFIG_FILENAME))
+        );
+    }
+
+    #[test]
+    fn the_managed_configuration_wins_over_the_one_beside_the_executable() {
+        // Un fichier laissé à côté de l'exécutable ne doit pas pouvoir
+        // détourner un poste géré par la DSI.
+        let machine = tempfile::tempdir().expect("machine directory");
+        let exe = tempfile::tempdir().expect("executable directory");
+        write_config(machine.path());
+        write_config(exe.path());
+
+        assert_eq!(
+            resolve_campus_config_path(Some(machine.path()), exe.path()),
+            Some(machine.path().join(CAMPUS_CONFIG_FILENAME))
+        );
+    }
+
+    #[test]
+    fn without_any_configuration_nova_stays_unmanaged() {
+        // Comportement inchangé : l'utilisateur saisit lui-même son serveur.
+        let machine = tempfile::tempdir().expect("machine directory");
+        let exe = tempfile::tempdir().expect("executable directory");
+
+        assert_eq!(
+            resolve_campus_config_path(Some(machine.path()), exe.path()),
+            None
+        );
+        assert_eq!(resolve_campus_config_path(None, exe.path()), None);
+    }
+
+    #[test]
+    fn a_missing_machine_directory_falls_back_instead_of_failing() {
+        let exe = tempfile::tempdir().expect("executable directory");
+        write_config(exe.path());
+        let absent = exe.path().join("no-such-directory");
+
+        assert_eq!(
+            resolve_campus_config_path(Some(&absent), exe.path()),
+            Some(exe.path().join(CAMPUS_CONFIG_FILENAME))
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn the_machine_directory_is_program_data() {
+        // ProgramData, et non un chemin dans le profil : la configuration doit
+        // être commune à tous les comptes du poste.
+        let dir = machine_config_dir().expect("ProgramData is defined on Windows");
+        assert!(dir.ends_with("Nova"));
+        assert_eq!(
+            dir.parent().map(Path::to_path_buf),
+            std::env::var_os("ProgramData").map(PathBuf::from)
+        );
+    }
+
+    #[test]
+    fn no_server_address_is_hard_coded() {
+        // Nova ne connaît aucun établissement : l'adresse vient toujours de la
+        // configuration déployée, ou de l'utilisateur. Le marqueur est
+        // reconstruit pour que cette chaîne ne se coupe pas elle-même.
+        let marker = format!("#[cfg({})]", "test");
+        let production = include_str!("campus.rs")
+            .split(&marker)
+            .next()
+            .expect("the file has a production section");
+
+        assert!(
+            !production.contains("https://") && !production.contains("http://"),
+            "an absolute server address must never be compiled into Nova"
+        );
+    }
+
+    // ── Ce que chaque édition installe ──────────────────────────────────
+
+    #[test]
+    fn personal_installs_for_the_current_user_only() {
+        // Nova Personal ne doit jamais réclamer de droits administrateur :
+        // absence d'`installMode` = `currentUser`, le défaut de Tauri.
+        let config: serde_json::Value = serde_json::from_str(include_str!("../../tauri.conf.json"))
+            .expect("tauri.conf.json parses");
+
+        assert_eq!(
+            config.pointer("/bundle/windows/nsis/installMode"),
+            None,
+            "adding installMode here would change Nova Personal too"
+        );
+    }
+
+    #[test]
+    fn the_installer_never_touches_the_machine_configuration() {
+        // La configuration de l'établissement doit survivre à une mise à jour
+        // comme à une réinstallation : l'installateur n'a rien à faire dans le
+        // répertoire machine.
+        let installer = include_str!("../../nsis/installer.nsi");
+        assert!(
+            !installer.to_lowercase().contains("programdata"),
+            "the installer must never write to or delete the machine configuration directory"
+        );
+    }
+
+    #[test]
+    fn campus_installs_for_the_whole_machine() {
+        let config: serde_json::Value =
+            serde_json::from_str(include_str!("../../tauri.campus.conf.json"))
+                .expect("tauri.campus.conf.json parses");
+
+        assert_eq!(
+            config.pointer("/bundle/windows/nsis/installMode"),
+            Some(&serde_json::Value::String("perMachine".to_string()))
+        );
     }
 }

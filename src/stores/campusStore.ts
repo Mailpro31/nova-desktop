@@ -12,6 +12,10 @@ import {
   type CampusSession,
 } from "@/lib/campusSession";
 import { resolveCampusContext, type CampusContext } from "@/lib/campusPolicy";
+import {
+  parseServerIdentity,
+  type ServerIdentitySnapshot,
+} from "@/lib/organization";
 
 export type CampusConnectionStatus =
   | "checking"
@@ -24,6 +28,15 @@ interface CampusStoreState {
   session: CampusSession | null;
   profile: CampusProfile | null;
   context: CampusContext;
+  /**
+   * Ce que le serveur a annoncé sur le membre connecté, quand il porte le
+   * contrat étendu. `null` avec un serveur plus ancien, hors ligne, ou avant la
+   * première réponse — et c'est alors la compatibilité Campus qui s'applique.
+   *
+   * Ne contient jamais de jeton : la commande Rust ne renvoie ni le jeton de
+   * session, ni le sujet externe de l'identité fédérée.
+   */
+  serverIdentity: ServerIdentitySnapshot | null;
   connectionStatus: CampusConnectionStatus;
   initialized: boolean;
   refreshing: boolean;
@@ -38,6 +51,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
   session: null,
   profile: null,
   context: emptyContext,
+  serverIdentity: null,
   connectionStatus: "checking",
   initialized: false,
   refreshing: false,
@@ -55,6 +69,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
           session: null,
           profile: null,
           context: resolveCampusContext(config),
+          serverIdentity: null,
           connectionStatus: "signed_out",
           initialized: true,
         });
@@ -78,6 +93,9 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
         session,
         profile,
         context: resolveCampusContext(effectiveConfig, profile),
+        // Hors ligne, aucune identité serveur : mieux vaut l'absence qu'une
+        // réponse périmée présentée comme autoritative.
+        serverIdentity: profile ? parseServerIdentity(profile) : null,
         connectionStatus: reachable ? "connected" : "local",
         initialized: true,
       });
@@ -91,6 +109,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
       session: null,
       profile: null,
       context: emptyContext,
+      serverIdentity: null,
       connectionStatus: "signed_out",
       initialized: true,
       refreshing: false,

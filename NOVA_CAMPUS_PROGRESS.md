@@ -35,7 +35,8 @@ Tout présent et vert. Déviation acceptée par l'utilisateur :
 - `src/lib/campusApi.ts` — zod schemas, `isServerReachable` cache 30 s.
 - `src/lib/campusSession.ts` — wrappers bindings.
 - `src-tauri/src/commands/campus.rs` — session store (`campus_session`),
-  `get_campus_config` (lit `campus-config.json` à côté de l'exe), auth request/verify.
+  `get_campus_config` (lit `campus-config.json` : `%ProgramData%\Nova` puis, en
+  repli, à côté de l'exe), auth request/verify.
 - `src/components/onboarding/CampusOnboarding.tsx` — Bienvenue/Email/Code/Prêt,
   cooldown 60 s, champ serveur verrouillé si config IT, `machine`=`hostname()`.
 

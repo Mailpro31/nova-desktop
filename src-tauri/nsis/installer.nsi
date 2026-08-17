@@ -218,15 +218,31 @@ Function PageLeaveInstallType
   ${If} $0 = ${BST_CHECKED}
     StrCpy $PortableMode 1
     ; --- PORTABLE MODE --- Switch default directory to Desktop\Nova for portable
+    ; Only move a directory the user has not chosen themselves. The default
+    ; depends on the install mode, so every default this installer can have been
+    ; built with is listed here.
     ${If} $INSTDIR == "${PLACEHOLDER_INSTALL_DIR}"
     ${OrIf} $INSTDIR == "$LOCALAPPDATA\${PRODUCTNAME}"
+    ${OrIf} $INSTDIR == "$PROGRAMFILES64\${PRODUCTNAME}"
+    ${OrIf} $INSTDIR == "$PROGRAMFILES\${PRODUCTNAME}"
       StrCpy $INSTDIR "$DESKTOP\${PRODUCTNAME}"
     ${EndIf}
   ${Else}
     StrCpy $PortableMode 0
-    ; Restore normal default if user switched back from portable
+    ; Restore the normal default if the user switched back from portable. It
+    ; must follow the install mode: PLACEHOLDER_INSTALL_DIR is a marker, not a
+    ; path, and a hardcoded LOCALAPPDATA would drop a perMachine install back
+    ; into the user profile after asking for administrator rights.
     ${If} $INSTDIR == "$DESKTOP\${PRODUCTNAME}"
-      StrCpy $INSTDIR "$LOCALAPPDATA\${PRODUCTNAME}"
+      !if "${INSTALLMODE}" == "perMachine"
+        ${If} ${RunningX64}
+          StrCpy $INSTDIR "$PROGRAMFILES64\${PRODUCTNAME}"
+        ${Else}
+          StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCTNAME}"
+        ${EndIf}
+      !else
+        StrCpy $INSTDIR "$LOCALAPPDATA\${PRODUCTNAME}"
+      !endif
     ${EndIf}
   ${EndIf}
 FunctionEnd

@@ -430,10 +430,28 @@ export interface CampusAiSkillsResponse {
   skills: CampusAiSkill[];
 }
 
+/**
+ * Profil renvoyé par `GET /api/me`.
+ *
+ * Les trois premiers champs sont le contrat historique, toujours présents. Le
+ * reste n'est lu que par `parseServerIdentity` (`@/lib/organization`), qui sait
+ * qu'un serveur d'établissement plus ancien que le poste ne les envoie pas.
+ * Le type reste large ici : la validation se fait à un seul endroit, pas à
+ * chaque site d'appel.
+ */
 export interface CampusProfile {
   email: string;
   role: string;
   cohort: string;
+  /** Nom d'affichage de l'établissement. Reste une chaîne — voir bindings. */
+  organization?: string;
+  contract_version?: number | null;
+  user_id?: string | null;
+  organization_id?: string | null;
+  organization_type?: string | null;
+  membership?: unknown;
+  identity?: unknown;
+  capabilities?: string[] | null;
 }
 
 interface ReachabilityCache {
