@@ -138,10 +138,10 @@ découverte existe.
 
 ## 5. Ce qui manque avant un Control Plane réel
 
-1. **État de flux partagé.** `SSO_FLOWS` vit en mémoire de processus : une
-   connexion en cours ne survit ni à un redémarrage, ni à un routage vers un
-   autre worker. Un stockage éphémère partagé est un préalable, pas une
-   optimisation ;
+1. ~~**État de flux partagé.**~~ ✅ **Fait en Phase 20** — l'état des tentatives
+   vit en base, et `start` peut atterrir sur un worker différent d'`exchange`.
+   Voir [`shared-sso-flow-state.md`](./shared-sso-flow-state.md). Reste une
+   exception documentée : le Device Code hérité, toujours lié à son processus ;
 2. **Découverte d'organisation**, avec sa propre analyse de menace — c'est un
    endpoint public qui répond « cette organisation existe » ;
 3. **Références de secret** plutôt que des secrets en base (voir
