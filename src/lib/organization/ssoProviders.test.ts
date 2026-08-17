@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   DEFAULT_OIDC_LABEL,
   oidcLabel,
+  organizationSignInButtons,
   organizationSignInOptions,
 } from "./ssoProviders";
 
@@ -126,6 +127,58 @@ describe("Fournisseurs de connexion proposés", () => {
     expect(oidcLabel(none)).toBe(DEFAULT_OIDC_LABEL);
     // Jamais le code technique à l'écran.
     expect(oidcLabel(none)).not.toBe("oidc");
+  });
+
+  test("un bouton par configuration annoncée", () => {
+    const buttons = organizationSignInButtons({
+      edition: "organization",
+      providers: {
+        ...none,
+        oidc: true,
+        configs: [
+          { id: "cfg-1", type: "oidc", display_name: "Okta" },
+          { id: "cfg-2", type: "oidc", display_name: "Lab SSO" },
+        ],
+      },
+    });
+    // Deux IdP OIDC pour une même organisation : ce que des booléens par type
+    // ne sauraient pas représenter.
+    expect(buttons.map((b) => b.display_name)).toEqual(["Okta", "Lab SSO"]);
+    expect(new Set(buttons.map((b) => b.id)).size).toBe(2);
+  });
+
+  test("un serveur ancien retombe sur un bouton par type", () => {
+    const buttons = organizationSignInButtons({
+      edition: "organization",
+      providers: { microsoft_entra: true, google_workspace: true, oidc: false },
+    });
+    expect(buttons.map((b) => b.type)).toEqual([
+      "microsoft_entra",
+      "google_workspace",
+    ]);
+    // Le code par adresse n'est pas un bouton de fournisseur.
+    expect(buttons.map((b) => b.type)).not.toContain("legacy_email_code");
+  });
+
+  test("Personal n'a aucun bouton, même avec des configurations", () => {
+    expect(
+      organizationSignInButtons({
+        edition: "personal",
+        providers: {
+          ...none,
+          configs: [{ id: "cfg-1", type: "oidc", display_name: "Okta" }],
+        },
+      }),
+    ).toEqual([]);
+  });
+
+  test("aucune configuration annoncée, aucun bouton", () => {
+    expect(
+      organizationSignInButtons({
+        edition: "organization",
+        providers: { ...none, configs: [] },
+      }),
+    ).toEqual([]);
   });
 
   test("aucun bouton inopérant ne peut apparaître", () => {

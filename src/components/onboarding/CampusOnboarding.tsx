@@ -322,7 +322,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
    * L'utilisateur ne voit pas la différence, et n'a rien à savoir de PKCE, du
    * tenant ou de l'identifiant d'application.
    */
-  const handleStartSso = async (provider: SsoProvider) => {
+  const handleStartSso = async (
+    provider: SsoProvider,
+    providerConfigId: string | null = null,
+  ) => {
     if (!isValidCampusServerUrl(serverUrl) || isLoading) return;
     setIsLoading(true);
     setError(null);
@@ -332,6 +335,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
           provider,
           serverUrl,
           machineName,
+          providerConfigId,
         );
         if (result.status === "error") {
           setError(formatSsoError(result.error, t));
@@ -442,6 +446,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     const entraAvailable = signInOptions.includes("microsoft_entra");
     const googleAvailable = signInOptions.includes("google_workspace");
     const oidcAvailable = signInOptions.includes("oidc");
+    // Le poste relaie l'identifiant tel que le serveur l'a annoncé ; il ne le
+    // fabrique jamais, et le serveur le revérifie dans son organisation.
+    const configIdFor = (type: string) =>
+      ssoProviders.configs?.find((config) => config.type === type)?.id ?? null;
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
@@ -490,6 +498,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     const entraAvailable = signInOptions.includes("microsoft_entra");
     const googleAvailable = signInOptions.includes("google_workspace");
     const oidcAvailable = signInOptions.includes("oidc");
+    // Le poste relaie l'identifiant tel que le serveur l'a annoncé ; il ne le
+    // fabrique jamais, et le serveur le revérifie dans son organisation.
+    const configIdFor = (type: string) =>
+      ssoProviders.configs?.find((config) => config.type === type)?.id ?? null;
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.email.title")}
@@ -565,7 +577,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
                   size="lg"
                   className="w-full"
                   disabled={isLoading || Boolean(microsoftFlow)}
-                  onClick={() => void handleStartSso("google_workspace")}
+                  onClick={() =>
+                    void handleStartSso(
+                      "google_workspace",
+                      configIdFor("google_workspace"),
+                    )
+                  }
                 >
                   {isLoading ? t("common.loading") : t("campus.google.connect")}
                 </Button>
@@ -577,7 +594,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
                   size="lg"
                   className="w-full"
                   disabled={isLoading || Boolean(microsoftFlow)}
-                  onClick={() => void handleStartSso("oidc")}
+                  onClick={() =>
+                    void handleStartSso("oidc", configIdFor("oidc"))
+                  }
                 >
                   {isLoading
                     ? t("common.loading")

@@ -19,6 +19,52 @@ export interface AnnouncedProviders {
    * uniquement** — il n'entre dans aucune décision de sécurité.
    */
   oidc_display_name?: string | null;
+  /**
+   * Liste détaillée, une entrée par configuration de fournisseur.
+   *
+   * C'est la forme à privilégier : une organisation peut avoir deux IdP OIDC,
+   * ce que des booléens par type ne savent pas représenter. Absente d'un
+   * serveur antérieur — d'où le repli sur les booléens.
+   */
+  configs?: readonly ProviderConfigView[];
+}
+
+/** Ce que le serveur annonce d'une configuration. Rien de plus n'est utile. */
+export interface ProviderConfigView {
+  id: string;
+  type: string;
+  display_name: string;
+}
+
+/**
+ * Boutons à dessiner, un par configuration annoncée.
+ *
+ * Contrairement à `organizationSignInOptions`, cette forme distingue deux
+ * configurations d'un même type — le cas de deux IdP OIDC pour une même
+ * organisation.
+ */
+export function organizationSignInButtons(
+  input: SignInOptionsInput,
+): ProviderConfigView[] {
+  if (input.edition !== "organization") return [];
+  const configs = input.providers.configs ?? [];
+  if (configs.length > 0) {
+    // Le serveur a la forme détaillée : on lui fait confiance telle quelle.
+    return [...configs];
+  }
+  // Repli pour un serveur antérieur : un bouton par type annoncé.
+  return organizationSignInOptions(input)
+    .filter((option) => option !== "legacy_email_code")
+    .map((option) => ({
+      id: option,
+      type: option,
+      display_name:
+        option === "oidc"
+          ? oidcLabel(input.providers)
+          : option === "google_workspace"
+            ? "Google"
+            : "Microsoft",
+    }));
 }
 
 export type SignInOption =

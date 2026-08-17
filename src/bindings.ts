@@ -658,9 +658,9 @@ async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
  * délai dépassé, il n'est ni écrit sur disque, ni journalisé, ni transmis
  * ailleurs qu'au serveur de l'établissement au moment de l'échange.
  */
-async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string) : Promise<Result<CampusSession, SsoError>> {
+async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string, providerConfigId: string | null) : Promise<Result<CampusSession, SsoError>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_organization", { provider, serverUrl, machine }) };
+    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_organization", { provider, serverUrl, machine, providerConfigId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -2021,7 +2021,14 @@ legacy_email_code: boolean;
  * « Company SSO », « IPSA SSO ». **Affichage uniquement** : il n'entre
  * dans aucune décision, et le serveur en fournit toujours un.
  */
-oidc_display_name: string | null }
+oidc_display_name: string | null; 
+/**
+ * Liste détaillée, une entrée par configuration. C'est la forme que
+ * l'interface doit consommer : une organisation peut avoir deux IdP OIDC,
+ * ce que des booléens par type ne sauraient pas représenter. Les champs
+ * booléens ci-dessus restent pour les postes déjà déployés.
+ */
+configs: ProviderConfigView[] }
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
 /**
@@ -2036,6 +2043,19 @@ export type PasteMethod = "ctrl_v" | "direct" | "none" | "shift_insert" | "ctrl_
 export type PerformanceReport = { device: DeviceProfile; latency: LatencyStats[]; checks: DiagnosticCheck[]; adaptive_enabled: boolean }
 export type PermissionAccess = "allowed" | "denied" | "unknown"
 export type PostProcessProvider = { id: string; label: string; base_url: string; allow_base_url_edit?: boolean; models_endpoint?: string | null; supports_structured_output?: boolean }
+/**
+ * Une configuration de fournisseur, telle que le poste a le droit de la voir.
+ * 
+ * Le strict minimum pour dessiner un bouton : un identifiant, un type, un
+ * libellé. Ni émetteur, ni identifiant client, ni tenant — rien de tout cela
+ * n'aide à afficher un bouton, et tout cela renseignerait sur
+ * l'infrastructure de l'organisation.
+ */
+export type ProviderConfigView = { id: string; 
+/**
+ * `microsoft_entra` | `google_workspace` | `oidc`
+ */
+type: string; display_name: string }
 /**
  * État du quota renvoyé au frontend (barre de progression + information).
  */

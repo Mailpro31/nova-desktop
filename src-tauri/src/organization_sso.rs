@@ -345,6 +345,21 @@ struct PkceExchangeResponse {
     token: String,
 }
 
+/// Une configuration de fournisseur, telle que le poste a le droit de la voir.
+///
+/// Le strict minimum pour dessiner un bouton : un identifiant, un type, un
+/// libellé. Ni émetteur, ni identifiant client, ni tenant — rien de tout cela
+/// n'aide à afficher un bouton, et tout cela renseignerait sur
+/// l'infrastructure de l'organisation.
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct ProviderConfigView {
+    pub id: String,
+    /// `microsoft_entra` | `google_workspace` | `oidc`
+    #[serde(rename = "type")]
+    pub provider_type: String,
+    pub display_name: String,
+}
+
 /// Les fournisseurs que l'établissement propose réellement.
 ///
 /// Chaque champ n'est vrai que si le serveur a **tout** ce qu'il lui faut :
@@ -363,6 +378,11 @@ pub struct OrganizationAuthProviders {
     /// « Company SSO », « IPSA SSO ». **Affichage uniquement** : il n'entre
     /// dans aucune décision, et le serveur en fournit toujours un.
     pub oidc_display_name: Option<String>,
+    /// Liste détaillée, une entrée par configuration. C'est la forme que
+    /// l'interface doit consommer : une organisation peut avoir deux IdP OIDC,
+    /// ce que des booléens par type ne sauraient pas représenter. Les champs
+    /// booléens ci-dessus restent pour les postes déjà déployés.
+    pub configs: Vec<ProviderConfigView>,
 }
 
 /// Fournisseur d'identité utilisable pour une connexion Organization.
@@ -412,6 +432,10 @@ struct AvailabilityResponse {
     providers: Vec<String>,
     #[serde(default)]
     display_names: std::collections::HashMap<String, String>,
+    /// Absent d'un serveur antérieur à cette forme : le poste retombe alors
+    /// sur les booléens par type.
+    #[serde(default)]
+    provider_configs: Vec<ProviderConfigView>,
 }
 
 fn sso_client() -> reqwest::Client {
@@ -468,6 +492,7 @@ pub async fn organization_auth_providers(
         .unwrap_or(AvailabilityResponse {
             providers: Vec::new(),
             display_names: std::collections::HashMap::new(),
+            provider_configs: Vec::new(),
         });
     let providers = body.providers;
     Ok(OrganizationAuthProviders {
@@ -477,6 +502,7 @@ pub async fn organization_auth_providers(
         legacy_email_code: providers.iter().any(|p| p == "legacy_email_code")
             || providers.is_empty(),
         oidc_display_name: body.display_names.get("oidc").cloned(),
+        configs: body.provider_configs,
     })
 }
 
@@ -489,6 +515,7 @@ fn legacy_only_providers() -> OrganizationAuthProviders {
         oidc: false,
         legacy_email_code: true,
         oidc_display_name: None,
+        configs: Vec::new(),
     }
 }
 
@@ -504,11 +531,15 @@ pub async fn sign_in_with_organization(
     provider: SsoProvider,
     server_url: String,
     machine: String,
+    // Configuration précise à employer. Le poste la relaie telle que le serveur
+    // la lui a annoncée ; il ne la fabrique jamais, et le serveur la revérifie
+    // dans son organisation active.
+    provider_config_id: Option<String>,
 ) -> Result<CampusSession, SsoError> {
     // Journalisation de sécurité : fournisseur, issue et **code de raison**.
     // Jamais le vérificateur, le code d'autorisation, le `state`, le `nonce`,
     // le jeton de session ni l'adresse complète.
-    match run_organization_sign_in(app, provider, server_url, machine).await {
+    match run_organization_sign_in(app, provider, server_url, machine, provider_config_id).await {
         Ok(session) => {
             log::info!("[auth] provider={} result=success", provider.id());
             Ok(session)
@@ -529,6 +560,7 @@ async fn run_organization_sign_in(
     provider: SsoProvider,
     server_url: String,
     machine: String,
+    provider_config_id: Option<String>,
 ) -> Result<CampusSession, SsoError> {
     let _guard = SignInGuard::acquire()?;
     let base_url = normalize_base_url(&server_url);
@@ -554,6 +586,7 @@ async fn run_organization_sign_in(
             "nonce": nonce,
             "redirect_uri": redirect_uri,
             "machine": machine,
+            "provider_config_id": provider_config_id,
         }))
         .send()
         .await
