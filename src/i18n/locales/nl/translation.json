@@ -1243,6 +1243,9 @@
       "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
       "accessRevoked": "Uw toegang is niet meer beschikbaar. Neem contact op met uw beheerder."
     },
+    "google": {
+      "connect": "Doorgaan met Google"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

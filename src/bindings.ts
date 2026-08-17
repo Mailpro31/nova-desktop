@@ -652,15 +652,15 @@ async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
 }
 },
 /**
- * Connexion Organization par Microsoft, de bout en bout.
+ * Connexion Organization, de bout en bout, quel que soit le fournisseur.
  * 
  * Le secret PKCE vit dans cette fonction et meurt avec elle : succès, échec ou
  * délai dépassé, il n'est ni écrit sur disque, ni journalisé, ni transmis
  * ailleurs qu'au serveur de l'établissement au moment de l'échange.
  */
-async signInWithMicrosoft(serverUrl: string, machine: string) : Promise<Result<CampusSession, SsoError>> {
+async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string) : Promise<Result<CampusSession, SsoError>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_microsoft", { serverUrl, machine }) };
+    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_organization", { provider, serverUrl, machine }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -2001,13 +2001,13 @@ export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "
 export type NovaCommandCaptureEvent = { capture: SelectionCapture | null; error: CommandError | null }
 /**
  * Les fournisseurs que l'établissement propose réellement.
+ * 
+ * Chaque champ n'est vrai que si le serveur a **tout** ce qu'il lui faut :
+ * identifiant d'application, secret quand le fournisseur l'exige, et
+ * rattachement d'organisation déclaré. Le poste n'en décide rien — il ne peut
+ * donc pas afficher un bouton inopérant.
  */
-export type OrganizationAuthProviders = { 
-/**
- * `true` seulement si l'identifiant d'application **et** le rattachement
- * de tenant sont configurés côté serveur.
- */
-microsoft_entra: boolean; 
+export type OrganizationAuthProviders = { microsoft_entra: boolean; google_workspace: boolean; 
 /**
  * Le code par adresse reste disponible partout.
  */
@@ -2079,6 +2079,13 @@ export type SsoError =
  * Le serveur a refusé, avec son propre code (`TENANT_NOT_ALLOWED`, …).
  */
 { code: "Server"; detail: string }
+/**
+ * Fournisseur d'identité utilisable pour une connexion Organization.
+ * 
+ * Les identifiants correspondent exactement à ceux du modèle partagé
+ * (`IdentityProvider`) : pas de second vocabulaire.
+ */
+export type SsoProvider = "microsoft_entra" | "google_workspace"
 /**
  * Phase of the streaming overlay card, emitted to drive its UI state.
  */

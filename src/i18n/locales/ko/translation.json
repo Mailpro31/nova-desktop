@@ -1243,6 +1243,9 @@
       "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
       "accessRevoked": "액세스를 더 이상 사용할 수 없습니다. 관리자에게 문의하세요."
     },
+    "google": {
+      "connect": "Google 계정으로 계속"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

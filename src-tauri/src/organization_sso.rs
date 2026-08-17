@@ -1,22 +1,29 @@
-//! Connexion Organization par Microsoft Entra ID : Authorization Code + PKCE.
+//! Connexion Organization par SSO : Authorization Code + PKCE.
+//!
+//! Un seul moteur pour Microsoft Entra et Google Workspace. Ce qui distingue
+//! les deux fournisseurs — point d'autorisation, secret exigé à l'échange,
+//! revendication de rattachement — vit **côté serveur** : le poste ne connaît
+//! qu'un identifiant de fournisseur et deux routes.
 //!
 //! ## Ce que fait ce module, et ce qu'il ne fait pas
 //!
 //! Il prépare une tentative de connexion, ouvre le **navigateur système**,
 //! attend le retour sur une adresse de bouclage, puis transmet le code
 //! d'autorisation au serveur Nova. Il ne valide aucune identité et ne reçoit
-//! aucun jeton Microsoft : c'est le serveur qui échange le code auprès de
-//! Microsoft, vérifie cryptographiquement le jeton d'identité et décide de
+//! aucun jeton du fournisseur : c'est le serveur qui échange le code auprès de
+//! celui-ci, vérifie cryptographiquement le jeton d'identité et décide de
 //! l'organisation.
 //!
-//! Autrement dit, ce poste ne dit jamais au serveur « fais-moi confiance,
-//! tid=X, oid=Y ». Un poste modifié peut au pire tenter une connexion, jamais
-//! en fabriquer une.
+//! Autrement dit, ce poste ne dit jamais au serveur « fais-moi confiance, je
+//! suis X dans l'organisation Y ». Un poste modifié peut au pire tenter une
+//! connexion, jamais en fabriquer une.
 //!
 //! ## Client public
 //!
 //! Nova est un client public : **aucun secret client** n'est embarqué, ni ici,
-//! ni dans un fichier de configuration. Ce qui prouve qu'un code d'autorisation
+//! ni dans un fichier de configuration. Google exige un secret à l'échange pour
+//! ses clients « Desktop » ; il vit côté serveur, puisque c'est le serveur qui
+//! échange — le poste n'en a jamais connaissance. Ce qui prouve qu'un code d'autorisation
 //! revient bien à celui qui l'a demandé, c'est le `code_verifier` de PKCE — un
 //! secret créé pour l'occasion, gardé en mémoire, détruit à la fin.
 //!
@@ -132,7 +139,8 @@ pub fn generate_code_verifier() -> Result<String, SsoError> {
 
 /// Empreinte publique du vérificateur : `BASE64URL(SHA256(verifier))`.
 ///
-/// C'est elle qui part vers Microsoft. Le vérificateur, lui, ne quitte le poste
+/// C'est elle qui part vers le fournisseur. Le vérificateur, lui, ne quitte le
+/// poste
 /// qu'au moment de l'échange, ce qui rend un code d'autorisation intercepté
 /// inutilisable.
 pub fn code_challenge_s256(verifier: &str) -> String {
@@ -338,13 +346,55 @@ struct PkceExchangeResponse {
 }
 
 /// Les fournisseurs que l'établissement propose réellement.
+///
+/// Chaque champ n'est vrai que si le serveur a **tout** ce qu'il lui faut :
+/// identifiant d'application, secret quand le fournisseur l'exige, et
+/// rattachement d'organisation déclaré. Le poste n'en décide rien — il ne peut
+/// donc pas afficher un bouton inopérant.
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct OrganizationAuthProviders {
-    /// `true` seulement si l'identifiant d'application **et** le rattachement
-    /// de tenant sont configurés côté serveur.
     pub microsoft_entra: bool,
+    pub google_workspace: bool,
     /// Le code par adresse reste disponible partout.
     pub legacy_email_code: bool,
+}
+
+/// Fournisseur d'identité utilisable pour une connexion Organization.
+///
+/// Les identifiants correspondent exactement à ceux du modèle partagé
+/// (`IdentityProvider`) : pas de second vocabulaire.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum SsoProvider {
+    MicrosoftEntra,
+    GoogleWorkspace,
+}
+
+impl SsoProvider {
+    fn id(self) -> &'static str {
+        match self {
+            SsoProvider::MicrosoftEntra => "microsoft_entra",
+            SsoProvider::GoogleWorkspace => "google_workspace",
+        }
+    }
+
+    /// Routes du serveur pour ce fournisseur.
+    ///
+    /// Microsoft conserve ses routes historiques : elles sont déployées et
+    /// éprouvées en conditions réelles, et rien ne justifie de les remplacer.
+    /// Google — et les fournisseurs suivants — passent par la route générique.
+    fn endpoints(self, base_url: &str) -> (String, String) {
+        match self {
+            SsoProvider::MicrosoftEntra => (
+                format!("{base_url}/api/auth/entra/pkce/start"),
+                format!("{base_url}/api/auth/entra/pkce/exchange"),
+            ),
+            other => (
+                format!("{base_url}/api/auth/sso/{}/start", other.id()),
+                format!("{base_url}/api/auth/sso/{}/exchange", other.id()),
+            ),
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -397,12 +447,14 @@ pub async fn organization_auth_providers(
     let Ok(response) = response else {
         return Ok(OrganizationAuthProviders {
             microsoft_entra: false,
+            google_workspace: false,
             legacy_email_code: true,
         });
     };
     if !response.status().is_success() {
         return Ok(OrganizationAuthProviders {
             microsoft_entra: false,
+            google_workspace: false,
             legacy_email_code: true,
         });
     }
@@ -413,34 +465,37 @@ pub async fn organization_auth_providers(
         .unwrap_or_default();
     Ok(OrganizationAuthProviders {
         microsoft_entra: providers.iter().any(|p| p == "microsoft_entra"),
+        google_workspace: providers.iter().any(|p| p == "google_workspace"),
         legacy_email_code: providers.iter().any(|p| p == "legacy_email_code")
             || providers.is_empty(),
     })
 }
 
-/// Connexion Organization par Microsoft, de bout en bout.
+/// Connexion Organization, de bout en bout, quel que soit le fournisseur.
 ///
 /// Le secret PKCE vit dans cette fonction et meurt avec elle : succès, échec ou
 /// délai dépassé, il n'est ni écrit sur disque, ni journalisé, ni transmis
 /// ailleurs qu'au serveur de l'établissement au moment de l'échange.
 #[tauri::command]
 #[specta::specta]
-pub async fn sign_in_with_microsoft(
+pub async fn sign_in_with_organization(
     app: AppHandle,
+    provider: SsoProvider,
     server_url: String,
     machine: String,
 ) -> Result<CampusSession, SsoError> {
     // Journalisation de sécurité : fournisseur, issue et **code de raison**.
     // Jamais le vérificateur, le code d'autorisation, le `state`, le `nonce`,
     // le jeton de session ni l'adresse complète.
-    match run_microsoft_sign_in(app, server_url, machine).await {
+    match run_organization_sign_in(app, provider, server_url, machine).await {
         Ok(session) => {
-            log::info!("[auth] provider=microsoft_entra result=success");
+            log::info!("[auth] provider={} result=success", provider.id());
             Ok(session)
         }
         Err(error) => {
             log::warn!(
-                "[auth] provider=microsoft_entra result=failure reason={}",
+                "[auth] provider={} result=failure reason={}",
+                provider.id(),
                 error.code()
             );
             Err(error)
@@ -448,8 +503,9 @@ pub async fn sign_in_with_microsoft(
     }
 }
 
-async fn run_microsoft_sign_in(
+async fn run_organization_sign_in(
     app: AppHandle,
+    provider: SsoProvider,
     server_url: String,
     machine: String,
 ) -> Result<CampusSession, SsoError> {
@@ -468,9 +524,10 @@ async fn run_microsoft_sign_in(
         .port();
     let redirect_uri = redirect_uri_for_port(port);
 
+    let (start_url, exchange_url) = provider.endpoints(&base_url);
     let client = sso_client();
     let response = client
-        .post(format!("{}/api/auth/entra/pkce/start", base_url))
+        .post(&start_url)
         .json(&serde_json::json!({
             "code_challenge": challenge,
             "nonce": nonce,
@@ -503,7 +560,7 @@ async fn run_microsoft_sign_in(
             .map_err(|_| SsoError::AuthTimeout)??;
 
     let response = client
-        .post(format!("{}/api/auth/entra/pkce/exchange", base_url))
+        .post(&exchange_url)
         .json(&serde_json::json!({
             "flow_id": start.flow_id,
             "code": code,
@@ -687,6 +744,60 @@ mod tests {
         // Le verrou est rendu : une nouvelle tentative reste possible après un
         // échec ou une annulation.
         assert!(SignInGuard::acquire().is_ok());
+    }
+
+    #[test]
+    fn each_provider_keeps_its_own_routes() {
+        let (start, exchange) = SsoProvider::MicrosoftEntra.endpoints("https://nova.test");
+        // Microsoft garde ses routes historiques : elles sont déployées et
+        // éprouvées, les remplacer serait un risque sans contrepartie.
+        assert_eq!(start, "https://nova.test/api/auth/entra/pkce/start");
+        assert_eq!(exchange, "https://nova.test/api/auth/entra/pkce/exchange");
+
+        let (start, exchange) = SsoProvider::GoogleWorkspace.endpoints("https://nova.test");
+        assert_eq!(
+            start,
+            "https://nova.test/api/auth/sso/google_workspace/start"
+        );
+        assert_eq!(
+            exchange,
+            "https://nova.test/api/auth/sso/google_workspace/exchange"
+        );
+    }
+
+    #[test]
+    fn provider_identifiers_match_the_shared_model() {
+        // Une seule source de vérité : ces chaînes sont celles du modèle
+        // d'identité partagé. Un second vocabulaire (« google », « entra »…)
+        // produirait deux fournisseurs là où il n'y en a qu'un.
+        assert_eq!(SsoProvider::MicrosoftEntra.id(), "microsoft_entra");
+        assert_eq!(SsoProvider::GoogleWorkspace.id(), "google_workspace");
+    }
+
+    #[test]
+    fn one_provider_cannot_borrow_another_s_attempt() {
+        // Le verrou est global au poste : tant qu'une connexion Microsoft est
+        // ouverte, une tentative Google est refusée, et réciproquement. Aucun
+        // retour de navigateur ne peut donc atterrir sur l'écouteur de l'autre.
+        let first = SignInGuard::acquire().expect("première tentative");
+        assert_eq!(
+            SignInGuard::acquire().unwrap_err(),
+            SsoError::AlreadyInProgress
+        );
+        drop(first);
+        assert!(SignInGuard::acquire().is_ok());
+    }
+
+    #[test]
+    fn pkce_generation_is_provider_independent() {
+        // Le même générateur sert les deux fournisseurs : rien dans le
+        // vérificateur ni dans le challenge ne dépend de la destination.
+        let verifier = generate_code_verifier().unwrap();
+        let challenge = code_challenge_s256(&verifier);
+        for provider in [SsoProvider::MicrosoftEntra, SsoProvider::GoogleWorkspace] {
+            assert!(!challenge.contains(provider.id()));
+            assert!(!verifier.contains(provider.id()));
+        }
     }
 
     #[test]

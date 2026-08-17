@@ -1243,6 +1243,9 @@
       "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
       "accessRevoked": "アクセスは利用できなくなりました。管理者にお問い合わせください。"
     },
+    "google": {
+      "connect": "Google で続行"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

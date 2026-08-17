@@ -1243,6 +1243,9 @@
       "notInOrganization": "Esta conta Microsoft não pertence à sua instituição.",
       "accessRevoked": "O seu acesso já não está disponível. Contacte o administrador."
     },
+    "google": {
+      "connect": "Continuar com o Google"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

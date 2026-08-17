@@ -1243,6 +1243,9 @@
       "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
       "accessRevoked": "Erişiminiz artık kullanılamıyor. Yöneticinizle iletişime geçin."
     },
+    "google": {
+      "connect": "Google ile devam et"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

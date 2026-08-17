@@ -1243,6 +1243,9 @@
       "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
       "accessRevoked": "Votre accès n'est plus disponible. Contactez votre administrateur."
     },
+    "google": {
+      "connect": "Continuer avec Google"
+    },
     "aiSkills": {
       "title": "Compétences IA",
       "description": "Cinq modules courts pour utiliser l'IA de façon critique, efficace et sûre dans vos études.",

@@ -36,8 +36,9 @@ import {
   resolveCampusContext,
 } from "@/lib/campusPolicy";
 import { ManagedBy } from "@/components/campus/ManagedBy";
-import { commands } from "@/bindings";
+import { commands, type SsoProvider } from "@/bindings";
 import { formatSsoError } from "@/lib/organization/ssoErrors";
+import { organizationSignInOptions } from "@/lib/organization/ssoProviders";
 import { refreshCampusContext } from "@/stores/campusStore";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -138,10 +139,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
   const [serverUrl, setServerUrl] = useState("");
   const [config, setConfig] = useState<CampusConfig | null>(null);
   const [configLoaded, setConfigLoaded] = useState(false);
-  // `true` quand l'établissement a configuré le SSO moderne : identifiant
-  // d'application **et** tenant rattaché. Le poste ne le devine pas, il le
-  // demande au serveur — un serveur plus ancien répond simplement non.
-  const [modernSsoAvailable, setModernSsoAvailable] = useState(false);
+  // Ce que l'établissement propose réellement. Le poste ne le devine pas, il le
+  // demande au serveur — un serveur plus ancien répond simplement « rien ».
+  const [ssoProviders, setSsoProviders] = useState({
+    microsoft_entra: false,
+    google_workspace: false,
+  });
   const [code, setCode] = useState("");
   const [machineName, setMachineName] = useState("unknown");
   const [profile, setProfile] = useState<CampusProfile | null>(null);
@@ -192,7 +195,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
    */
   useEffect(() => {
     if (!isValidCampusServerUrl(serverUrl)) {
-      setModernSsoAvailable(false);
+      setSsoProviders({ microsoft_entra: false, google_workspace: false });
       return;
     }
     let active = true;
@@ -200,12 +203,18 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       .organizationAuthProviders(normalizeCampusServerUrl(serverUrl))
       .then((result) => {
         if (!active) return;
-        setModernSsoAvailable(
-          result.status === "ok" && result.data.microsoft_entra,
+        setSsoProviders(
+          result.status === "ok"
+            ? {
+                microsoft_entra: result.data.microsoft_entra,
+                google_workspace: result.data.google_workspace,
+              }
+            : { microsoft_entra: false, google_workspace: false },
         );
       })
       .catch(() => {
-        if (active) setModernSsoAvailable(false);
+        if (active)
+          setSsoProviders({ microsoft_entra: false, google_workspace: false });
       });
     return () => {
       active = false;
@@ -290,13 +299,14 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
    * L'utilisateur ne voit pas la différence, et n'a rien à savoir de PKCE, du
    * tenant ou de l'identifiant d'application.
    */
-  const handleStartMicrosoft = async () => {
+  const handleStartSso = async (provider: SsoProvider) => {
     if (!isValidCampusServerUrl(serverUrl) || isLoading) return;
     setIsLoading(true);
     setError(null);
     try {
-      if (modernSsoAvailable) {
-        const result = await commands.signInWithMicrosoft(
+      if (ssoProviders[provider]) {
+        const result = await commands.signInWithOrganization(
+          provider,
           serverUrl,
           machineName,
         );
@@ -312,6 +322,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
         return;
       }
 
+      // Repli hérité : Device Code, qui n'existe que chez Microsoft.
       const flow = await api.startMicrosoftAuth(machineName);
       setMicrosoftFlow(flow);
       await openUrl(flow.verification_uri_complete ?? flow.verification_uri);
@@ -400,8 +411,13 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     const emailCodeAvailable = context.authMethods.includes("email_code");
     // Le SSO moderne suffit à proposer Microsoft, même si la configuration
     // publique de l'établissement ne liste pas encore « entra ».
-    const entraAvailable =
-      context.authMethods.includes("entra") || modernSsoAvailable;
+    const signInOptions = organizationSignInOptions({
+      edition: "organization",
+      providers: ssoProviders,
+      authMethods: context.authMethods,
+    });
+    const entraAvailable = signInOptions.includes("microsoft_entra");
+    const googleAvailable = signInOptions.includes("google_workspace");
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
@@ -442,8 +458,13 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       !isLoading;
     // Le SSO moderne suffit à proposer Microsoft, même si la configuration
     // publique de l'établissement ne liste pas encore « entra ».
-    const entraAvailable =
-      context.authMethods.includes("entra") || modernSsoAvailable;
+    const signInOptions = organizationSignInOptions({
+      edition: "organization",
+      providers: ssoProviders,
+      authMethods: context.authMethods,
+    });
+    const entraAvailable = signInOptions.includes("microsoft_entra");
+    const googleAvailable = signInOptions.includes("google_workspace");
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.email.title")}
@@ -506,12 +527,24 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
                 size="lg"
                 className="w-full"
                 disabled={isLoading || Boolean(microsoftFlow)}
-                onClick={() => void handleStartMicrosoft()}
+                onClick={() => void handleStartSso("microsoft_entra")}
               >
                 {isLoading
                   ? t("common.loading")
                   : t("campus.microsoft.connect")}
               </Button>
+              {googleAvailable && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                  disabled={isLoading || Boolean(microsoftFlow)}
+                  onClick={() => void handleStartSso("google_workspace")}
+                >
+                  {isLoading ? t("common.loading") : t("campus.google.connect")}
+                </Button>
+              )}
               {microsoftFlow && (
                 <div
                   className="space-y-2 border border-hairline bg-inset px-4 py-3 text-center [border-radius:var(--nova-radius-card)]"

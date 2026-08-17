@@ -1243,6 +1243,9 @@
       "notInOrganization": "此 Microsoft 帳戶不屬於您的機構。",
       "accessRevoked": "您的存取權限已無法使用，請聯絡管理員。"
     },
+    "google": {
+      "connect": "使用 Google 繼續"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

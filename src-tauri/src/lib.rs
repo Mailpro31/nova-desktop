@@ -9,9 +9,6 @@ pub mod cli;
 mod clipboard;
 mod commands;
 mod dictation_state;
-/// Connexion Organization par Microsoft Entra (Authorization Code + PKCE).
-/// Voir `docs/architecture/microsoft-entra-sso.md`.
-mod entra_pkce;
 mod helpers;
 mod input;
 mod lexicon_learning;
@@ -29,6 +26,10 @@ mod nova_commands;
 /// Modèle d'organisation partagé (éditions, membres, groupes). Voir
 /// `docs/architecture/organization-foundation.md`.
 pub mod organization;
+/// Connexion Organization par SSO (Authorization Code + PKCE), Microsoft Entra
+/// et Google Workspace. Voir `docs/architecture/microsoft-entra-sso.md` et
+/// `docs/architecture/google-workspace-sso.md`.
+mod organization_sso;
 mod overlay;
 mod performance;
 pub mod portable;
@@ -660,8 +661,8 @@ pub fn run(cli_args: CliArgs) {
             commands::campus::get_campus_config,
             commands::campus::fetch_campus_server_config,
             commands::campus::set_campus_mode,
-            entra_pkce::sign_in_with_microsoft,
-            entra_pkce::organization_auth_providers,
+            organization_sso::sign_in_with_organization,
+            organization_sso::organization_auth_providers,
             commands::campus::load_campus_session,
             commands::campus::clear_campus_session,
             commands::campus::logout_campus_session,

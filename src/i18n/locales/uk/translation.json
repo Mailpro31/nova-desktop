@@ -1243,6 +1243,9 @@
       "notInOrganization": "Цей обліковий запис Microsoft не належить вашому закладу.",
       "accessRevoked": "Ваш доступ більше недоступний. Зверніться до адміністратора."
     },
+    "google": {
+      "connect": "Продовжити з Google"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

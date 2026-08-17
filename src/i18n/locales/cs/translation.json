@@ -1243,6 +1243,9 @@
       "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
       "accessRevoked": "Váš přístup již není dostupný. Obraťte se na správce."
     },
+    "google": {
+      "connect": "Pokračovat přes Google"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",
