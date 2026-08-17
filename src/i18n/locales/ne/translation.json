@@ -1246,6 +1246,9 @@
     "google": {
       "connect": "Google मार्फत जारी राख्नुहोस्"
     },
+    "sso": {
+      "connect": "{{provider}} मार्फत जारी राख्नुहोस्"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

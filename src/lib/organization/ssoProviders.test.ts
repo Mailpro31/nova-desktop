@@ -1,8 +1,12 @@
 import { describe, expect, test } from "bun:test";
 
-import { organizationSignInOptions } from "./ssoProviders";
+import {
+  DEFAULT_OIDC_LABEL,
+  oidcLabel,
+  organizationSignInOptions,
+} from "./ssoProviders";
 
-const none = { microsoft_entra: false, google_workspace: false };
+const none = { microsoft_entra: false, google_workspace: false, oidc: false };
 
 describe("Fournisseurs de connexion proposés", () => {
   test("Personal n'affiche aucun fournisseur d'organisation", () => {
@@ -70,6 +74,58 @@ describe("Fournisseurs de connexion proposés", () => {
         authMethods: ["google", "google_workspace", "oidc"],
       }),
     ).toEqual(["legacy_email_code"]);
+  });
+
+  test("OIDC seul, avec son libellé", () => {
+    expect(
+      organizationSignInOptions({
+        edition: "organization",
+        providers: { ...none, oidc: true },
+      }),
+    ).toEqual(["oidc", "legacy_email_code"]);
+  });
+
+  test("les trois fournisseurs, dans un ordre stable", () => {
+    expect(
+      organizationSignInOptions({
+        edition: "organization",
+        providers: {
+          microsoft_entra: true,
+          google_workspace: true,
+          oidc: true,
+        },
+      }),
+    ).toEqual([
+      "microsoft_entra",
+      "google_workspace",
+      "oidc",
+      "legacy_email_code",
+    ]);
+  });
+
+  test("Personal n'affiche aucun OIDC non plus", () => {
+    expect(
+      organizationSignInOptions({
+        edition: "personal",
+        providers: {
+          microsoft_entra: true,
+          google_workspace: true,
+          oidc: true,
+        },
+      }),
+    ).toEqual([]);
+  });
+
+  test("le libellé OIDC vient du serveur, avec un repli propre", () => {
+    expect(oidcLabel({ ...none, oidc_display_name: "IPSA SSO" })).toBe(
+      "IPSA SSO",
+    );
+    expect(oidcLabel({ ...none, oidc_display_name: "  " })).toBe(
+      DEFAULT_OIDC_LABEL,
+    );
+    expect(oidcLabel(none)).toBe(DEFAULT_OIDC_LABEL);
+    // Jamais le code technique à l'écran.
+    expect(oidcLabel(none)).not.toBe("oidc");
   });
 
   test("aucun bouton inopérant ne peut apparaître", () => {

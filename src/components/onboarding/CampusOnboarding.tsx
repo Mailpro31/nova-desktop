@@ -38,7 +38,11 @@ import {
 import { ManagedBy } from "@/components/campus/ManagedBy";
 import { commands, type SsoProvider } from "@/bindings";
 import { formatSsoError } from "@/lib/organization/ssoErrors";
-import { organizationSignInOptions } from "@/lib/organization/ssoProviders";
+import {
+  oidcLabel,
+  organizationSignInOptions,
+  type AnnouncedProviders,
+} from "@/lib/organization/ssoProviders";
 import { refreshCampusContext } from "@/stores/campusStore";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -141,9 +145,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
   const [configLoaded, setConfigLoaded] = useState(false);
   // Ce que l'établissement propose réellement. Le poste ne le devine pas, il le
   // demande au serveur — un serveur plus ancien répond simplement « rien ».
-  const [ssoProviders, setSsoProviders] = useState({
+  const [ssoProviders, setSsoProviders] = useState<AnnouncedProviders>({
     microsoft_entra: false,
     google_workspace: false,
+    oidc: false,
+    oidc_display_name: null,
   });
   const [code, setCode] = useState("");
   const [machineName, setMachineName] = useState("unknown");
@@ -195,7 +201,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
    */
   useEffect(() => {
     if (!isValidCampusServerUrl(serverUrl)) {
-      setSsoProviders({ microsoft_entra: false, google_workspace: false });
+      setSsoProviders({
+        microsoft_entra: false,
+        google_workspace: false,
+        oidc: false,
+        oidc_display_name: null,
+      });
       return;
     }
     let active = true;
@@ -208,13 +219,25 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
             ? {
                 microsoft_entra: result.data.microsoft_entra,
                 google_workspace: result.data.google_workspace,
+                oidc: result.data.oidc,
+                oidc_display_name: result.data.oidc_display_name,
               }
-            : { microsoft_entra: false, google_workspace: false },
+            : {
+                microsoft_entra: false,
+                google_workspace: false,
+                oidc: false,
+                oidc_display_name: null,
+              },
         );
       })
       .catch(() => {
         if (active)
-          setSsoProviders({ microsoft_entra: false, google_workspace: false });
+          setSsoProviders({
+            microsoft_entra: false,
+            google_workspace: false,
+            oidc: false,
+            oidc_display_name: null,
+          });
       });
     return () => {
       active = false;
@@ -304,7 +327,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     setIsLoading(true);
     setError(null);
     try {
-      if (ssoProviders[provider]) {
+      if (provider !== "microsoft_entra" || ssoProviders.microsoft_entra) {
         const result = await commands.signInWithOrganization(
           provider,
           serverUrl,
@@ -418,6 +441,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     });
     const entraAvailable = signInOptions.includes("microsoft_entra");
     const googleAvailable = signInOptions.includes("google_workspace");
+    const oidcAvailable = signInOptions.includes("oidc");
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
@@ -465,6 +489,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     });
     const entraAvailable = signInOptions.includes("microsoft_entra");
     const googleAvailable = signInOptions.includes("google_workspace");
+    const oidcAvailable = signInOptions.includes("oidc");
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.email.title")}
@@ -543,6 +568,22 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
                   onClick={() => void handleStartSso("google_workspace")}
                 >
                   {isLoading ? t("common.loading") : t("campus.google.connect")}
+                </Button>
+              )}
+              {oidcAvailable && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                  disabled={isLoading || Boolean(microsoftFlow)}
+                  onClick={() => void handleStartSso("oidc")}
+                >
+                  {isLoading
+                    ? t("common.loading")
+                    : t("campus.sso.connect", {
+                        provider: oidcLabel(ssoProviders),
+                      })}
                 </Button>
               )}
               {microsoftFlow && (

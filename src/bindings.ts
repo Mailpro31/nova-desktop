@@ -2009,9 +2009,19 @@ export type NovaCommandCaptureEvent = { capture: SelectionCapture | null; error:
  */
 export type OrganizationAuthProviders = { microsoft_entra: boolean; google_workspace: boolean; 
 /**
+ * Fournisseur OIDC générique, si l'organisation en a déclaré un.
+ */
+oidc: boolean; 
+/**
  * Le code par adresse reste disponible partout.
  */
-legacy_email_code: boolean }
+legacy_email_code: boolean; 
+/**
+ * Libellé du bouton OIDC, choisi par l'organisation — « Okta »,
+ * « Company SSO », « IPSA SSO ». **Affichage uniquement** : il n'entre
+ * dans aucune décision, et le serveur en fournit toujours un.
+ */
+oidc_display_name: string | null }
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
 /**
@@ -2085,7 +2095,12 @@ export type SsoError =
  * Les identifiants correspondent exactement à ceux du modèle partagé
  * (`IdentityProvider`) : pas de second vocabulaire.
  */
-export type SsoProvider = "microsoft_entra" | "google_workspace"
+export type SsoProvider = "microsoft_entra" | "google_workspace" | 
+/**
+ * Tout IdP OpenID Connect standard : Okta, Keycloak, Auth0, Ping…
+ * Un seul adaptateur, configuré côté serveur.
+ */
+"oidc"
 /**
  * Phase of the streaming overlay card, emitted to drive its UI state.
  */

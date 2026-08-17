@@ -355,8 +355,14 @@ struct PkceExchangeResponse {
 pub struct OrganizationAuthProviders {
     pub microsoft_entra: bool,
     pub google_workspace: bool,
+    /// Fournisseur OIDC générique, si l'organisation en a déclaré un.
+    pub oidc: bool,
     /// Le code par adresse reste disponible partout.
     pub legacy_email_code: bool,
+    /// Libellé du bouton OIDC, choisi par l'organisation — « Okta »,
+    /// « Company SSO », « IPSA SSO ». **Affichage uniquement** : il n'entre
+    /// dans aucune décision, et le serveur en fournit toujours un.
+    pub oidc_display_name: Option<String>,
 }
 
 /// Fournisseur d'identité utilisable pour une connexion Organization.
@@ -368,6 +374,9 @@ pub struct OrganizationAuthProviders {
 pub enum SsoProvider {
     MicrosoftEntra,
     GoogleWorkspace,
+    /// Tout IdP OpenID Connect standard : Okta, Keycloak, Auth0, Ping…
+    /// Un seul adaptateur, configuré côté serveur.
+    Oidc,
 }
 
 impl SsoProvider {
@@ -375,6 +384,7 @@ impl SsoProvider {
         match self {
             SsoProvider::MicrosoftEntra => "microsoft_entra",
             SsoProvider::GoogleWorkspace => "google_workspace",
+            SsoProvider::Oidc => "oidc",
         }
     }
 
@@ -400,6 +410,8 @@ impl SsoProvider {
 #[derive(Deserialize)]
 struct AvailabilityResponse {
     providers: Vec<String>,
+    #[serde(default)]
+    display_names: std::collections::HashMap<String, String>,
 }
 
 fn sso_client() -> reqwest::Client {
@@ -445,30 +457,39 @@ pub async fn organization_auth_providers(
     // Un serveur plus ancien ne connaît pas cette route : le code par adresse
     // reste alors le seul chemin, exactement comme aujourd'hui.
     let Ok(response) = response else {
-        return Ok(OrganizationAuthProviders {
-            microsoft_entra: false,
-            google_workspace: false,
-            legacy_email_code: true,
-        });
+        return Ok(legacy_only_providers());
     };
     if !response.status().is_success() {
-        return Ok(OrganizationAuthProviders {
-            microsoft_entra: false,
-            google_workspace: false,
-            legacy_email_code: true,
-        });
+        return Ok(legacy_only_providers());
     }
-    let providers = response
+    let body = response
         .json::<AvailabilityResponse>()
         .await
-        .map(|body| body.providers)
-        .unwrap_or_default();
+        .unwrap_or(AvailabilityResponse {
+            providers: Vec::new(),
+            display_names: std::collections::HashMap::new(),
+        });
+    let providers = body.providers;
     Ok(OrganizationAuthProviders {
         microsoft_entra: providers.iter().any(|p| p == "microsoft_entra"),
         google_workspace: providers.iter().any(|p| p == "google_workspace"),
+        oidc: providers.iter().any(|p| p == "oidc"),
         legacy_email_code: providers.iter().any(|p| p == "legacy_email_code")
             || providers.is_empty(),
+        oidc_display_name: body.display_names.get("oidc").cloned(),
     })
+}
+
+/// Ce qu'annonce un serveur qui ne connaît pas le SSO moderne : le code par
+/// adresse, et rien d'autre.
+fn legacy_only_providers() -> OrganizationAuthProviders {
+    OrganizationAuthProviders {
+        microsoft_entra: false,
+        google_workspace: false,
+        oidc: false,
+        legacy_email_code: true,
+        oidc_display_name: None,
+    }
 }
 
 /// Connexion Organization, de bout en bout, quel que soit le fournisseur.
@@ -744,6 +765,16 @@ mod tests {
         // Le verrou est rendu : une nouvelle tentative reste possible après un
         // échec ou une annulation.
         assert!(SignInGuard::acquire().is_ok());
+    }
+
+    #[test]
+    fn the_generic_route_serves_every_new_provider() {
+        // Microsoft garde ses routes historiques ; tout le reste passe par la
+        // route générique, y compris les fournisseurs à venir.
+        let (start, exchange) = SsoProvider::Oidc.endpoints("https://nova.test");
+        assert_eq!(start, "https://nova.test/api/auth/sso/oidc/start");
+        assert_eq!(exchange, "https://nova.test/api/auth/sso/oidc/exchange");
+        assert_eq!(SsoProvider::Oidc.id(), "oidc");
     }
 
     #[test]

@@ -13,12 +13,32 @@ import type { Edition } from "./model";
 export interface AnnouncedProviders {
   microsoft_entra: boolean;
   google_workspace: boolean;
+  oidc?: boolean;
+  /**
+   * Libellé du bouton OIDC, choisi par l'organisation. **Affichage
+   * uniquement** — il n'entre dans aucune décision de sécurité.
+   */
+  oidc_display_name?: string | null;
 }
 
 export type SignInOption =
   | "microsoft_entra"
   | "google_workspace"
+  | "oidc"
   | "legacy_email_code";
+
+/**
+ * Libellé du bouton OIDC.
+ *
+ * Le serveur en fournit toujours un ; ce repli ne sert qu'au cas où il
+ * l'omettrait. « Continue with OIDC » ne dirait rien à un utilisateur — le nom
+ * du fournisseur, ou celui de l'établissement, oui.
+ */
+export const DEFAULT_OIDC_LABEL = "Company SSO";
+
+export function oidcLabel(providers: AnnouncedProviders): string {
+  return providers.oidc_display_name?.trim() || DEFAULT_OIDC_LABEL;
+}
 
 export interface SignInOptionsInput {
   edition: Edition;
@@ -59,6 +79,10 @@ export function organizationSignInOptions(
   // configuré, mapping de domaine compris.
   if (input.providers.google_workspace) {
     options.push("google_workspace");
+  }
+  // Idem pour l'OIDC générique : sans émetteur déclaré, aucun bouton.
+  if (input.providers.oidc) {
+    options.push("oidc");
   }
   options.push("legacy_email_code");
   return options;

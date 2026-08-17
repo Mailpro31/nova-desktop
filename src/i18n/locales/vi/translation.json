@@ -1246,6 +1246,9 @@
     "google": {
       "connect": "Tiếp tục với Google"
     },
+    "sso": {
+      "connect": "Tiếp tục với {{provider}}"
+    },
     "aiSkills": {
       "title": "AI Skills",
       "description": "Five short modules for using AI critically, effectively and safely in your studies.",

@@ -1246,6 +1246,9 @@
     "google": {
       "connect": "Continuer avec Google"
     },
+    "sso": {
+      "connect": "Continuer avec {{provider}}"
+    },
     "aiSkills": {
       "title": "Compétences IA",
       "description": "Cinq modules courts pour utiliser l'IA de façon critique, efficace et sûre dans vos études.",
