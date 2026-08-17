@@ -313,24 +313,67 @@ demandent un tenant réel.
      (Any Microsoft Entra ID tenant – Multitenant)** — cohérent avec l'autorité
      `organizations` et le multi-tenant Nova. **Pas** de comptes personnels ;
 2. **Authentication → Add a platform → Mobile and desktop applications**
-   - URI de redirection : `http://localhost` **et** `http://127.0.0.1`
-     (Entra autorise un port dynamique sur le bouclage pour un client public ;
-     Nova émet `http://127.0.0.1:<port>/callback`) ;
    - *Allow public client flows* : **Oui** ;
+   - URI de redirection : **`http://127.0.0.1/callback`** — voir l'encadré
+     ci-dessous, le chemin n'est pas optionnel ;
+   - facultatif, par prudence : ajouter aussi `http://localhost/callback`.
+
+> ### ⚠️ Enregistrer l'adresse de bouclage correctement
+>
+> Deux règles Microsoft rendent cette étape moins évidente qu'elle n'en a
+> l'air. Les ignorer produit un `AADSTS50011: The reply URL specified in the
+> request does not match the reply URLs configured for the application` à la
+> première connexion réelle — et rien avant.
+>
+> **1. Seul le *port* est ignoré lors de la comparaison.** Pour une adresse de
+> bouclage, Entra compare le schéma, l'hôte et **le chemin** à l'identique ; il
+> n'ignore que le port, précisément pour permettre les ports éphémères. Nova
+> émet `http://127.0.0.1:<port>/callback` : l'enregistrement doit donc porter
+> `http://127.0.0.1/callback`, **chemin compris**. Un enregistrement réduit à
+> `http://127.0.0.1` ne correspondrait pas. La comparaison du chemin est
+> **sensible à la casse**.
+>
+> **2. Le portail refuse les adresses de bouclage en `http`.** Le champ
+> *Redirect URIs* rejette le schéma `http` sur `127.0.0.1`. Il faut passer par
+> **Manage → Manifest** et ajouter l'entrée dans `replyUrlsWithType` :
+>
+> ```jsonc
+> "replyUrlsWithType": [
+>   { "url": "http://127.0.0.1/callback", "type": "InstalledClient" }
+> ]
+> ```
+>
+> **Pourquoi `127.0.0.1` et pas `localhost`** : la RFC 8252 et Microsoft
+> recommandent tous deux l'adresse littérale, qui ne dépend d'aucune résolution
+> de noms — donc ni d'un fichier `hosts` modifié, ni d'une interface renommée.
+> La documentation Microsoft formule toutefois la règle du port ignoré en
+> parlant de « localhost ». Si une première tentative réelle échouait malgré un
+> enregistrement correct, ajouter `http://localhost/callback` au manifeste est
+> le repli à essayer — et il faudrait alors assouplir `is_loopback_redirect()`
+> côté serveur, qui n'accepte aujourd'hui que l'adresse littérale.
+>
+> **Ce point n'a pas été vérifié contre un tenant réel** : il vient de la
+> documentation officielle, pas d'une observation.
 3. **API permissions** : `openid`, `profile`, `email` (déléguées, consentement
    utilisateur). **Aucune** permission Graph, donc aucun consentement
    administrateur requis pour se connecter ;
 4. **Ne pas créer de secret client.**
 5. Relever l'**Application (client) ID** et le **Directory (tenant) ID**.
-6. Côté serveur Nova :
+6. Côté serveur Nova, dans `.env` (jamais versionné) :
    ```
    NOVA_ENTRA_CLIENT_ID=<application (client) ID>
    NOVA_ENTRA_ALLOWED_TENANT_ID=<directory (tenant) ID>
    ```
    Le second alimente `organizations.entra_tenant_id` au démarrage : c'est le
-   mapping explicite tenant → organisation.
+   mapping explicite tenant → organisation. Sans lui, le SSO moderne reste
+   annoncé indisponible, même avec un identifiant d'application valide.
 7. Redémarrer le serveur, puis vérifier
    `GET /api/auth/entra/pkce/available` → `{"available": true}`.
+
+> **Note d'exploitation.** `NOVA_ENV` vaut `production` par défaut. Sur un poste
+> de développement sans SMTP, le code par adresse échoue alors volontairement
+> plutôt que d'imprimer le code dans les journaux : déclarer
+> `NOVA_ENV=development` pour retrouver ce repli pendant la recette.
 
 ### Recette manuelle
 
@@ -360,7 +403,55 @@ session tient.
 
 ---
 
-## 18. Ce qui n'est pas construit
+## 18. REAL ENTRA VALIDATION
+
+| | |
+|---|---|
+| **Date** | 17 août 2026 |
+| **Résultat** | **NON EFFECTUÉE — bloquée** |
+| **Type de tenant** | aucun tenant réel disponible |
+| **Flux testé** | aucun bout-en-bout réel |
+| **dev / packagé** | ni l'un ni l'autre |
+| **MFA** | non observé |
+| **Consentement** | non observé |
+| **Redirect réel** | non observé |
+
+### Ce qui bloque
+
+L'application Entra n'existe pas. Constaté dans la configuration réelle :
+
+- `NOVA_ENTRA_CLIENT_ID` : **vide** ;
+- `NOVA_ENTRA_TENANT_ID` : vaut encore le mot-clé `organizations`, pas un
+  identifiant de répertoire ;
+- `NOVA_ENTRA_ALLOWED_TENANT_ID` : **absent** ;
+- `organizations.entra_tenant_id` en base : `NULL` — aucun tenant rattaché.
+
+Créer une application Entra suppose de se connecter au portail Azure avec un
+compte administrateur du tenant et d'y créer une ressource cloud. C'est une
+action qui appartient à l'exploitant, pas à l'outil : aucune valeur n'a donc été
+inventée, et aucun succès n'a été simulé.
+
+### Ce qui a quand même été vérifié
+
+La **stratégie de redirection** a été confrontée à la documentation officielle
+Microsoft, et la recette du § 16 était fausse : elle demandait d'enregistrer
+`http://127.0.0.1` sans chemin, ce qui aurait produit un `AADSTS50011` dès la
+première connexion réelle. Elle est corrigée, avec la manipulation du manifeste
+que le portail impose pour une adresse de bouclage en `http`.
+
+### Éléments non testés
+
+Connexion réelle, MFA, écran de consentement, échange de code réel, JWKS réel et
+son cache, revendications réelles, rattachement de compte réel, persistance de
+session après redémarrage, déconnexion et reconnexion, cas d'erreur réels,
+validation multi-tenant réelle, et validation sur un build Windows packagé.
+
+Tout cela reste couvert par 59 tests automatisés — ce qui prouve la logique,
+pas l'accord avec le service réel.
+
+---
+
+## 19. Ce qui n'est pas construit
 
 Google Workspace, OIDC générique, SCIM, Nova Admin, Control Plane, découverte
 d'organisation, écrans Business, AI Learn, moteur de policies.

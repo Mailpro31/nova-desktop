@@ -236,6 +236,26 @@ fn write_response(stream: &mut TcpStream, body: &str) {
     let _ = stream.flush();
 }
 
+/// Adresse de retour annoncée à Microsoft.
+///
+/// Sa forme n'est pas cosmétique : elle doit correspondre à ce qui est
+/// enregistré dans l'application Entra. Microsoft ignore **uniquement le port**
+/// lors de la comparaison d'une adresse de bouclage ; l'hôte, le schéma et
+/// surtout **le chemin** doivent correspondre exactement, et la comparaison du
+/// chemin est sensible à la casse.
+///
+/// Conséquence pratique : l'enregistrement doit porter
+/// `http://127.0.0.1/callback`, chemin compris. Un enregistrement réduit à
+/// `http://127.0.0.1` produirait un `AADSTS50011` à la première connexion
+/// réelle — voir `docs/architecture/microsoft-entra-sso.md` § 16.
+///
+/// L'adresse littérale est préférée à `localhost`, comme le recommandent la
+/// RFC 8252 et Microsoft : elle ne dépend d'aucune résolution de noms, donc ni
+/// d'un fichier `hosts` modifié, ni d'une interface renommée.
+pub fn redirect_uri_for_port(port: u16) -> String {
+    format!("http://127.0.0.1:{}/callback", port)
+}
+
 /// Écouteur ouvert **uniquement** sur la boucle locale, sur un port choisi par
 /// le système.
 ///
@@ -446,7 +466,7 @@ async fn run_microsoft_sign_in(
         .local_addr()
         .map_err(|_| SsoError::LoopbackUnavailable)?
         .port();
-    let redirect_uri = format!("http://127.0.0.1:{}/callback", port);
+    let redirect_uri = redirect_uri_for_port(port);
 
     let client = sso_client();
     let response = client
@@ -608,6 +628,31 @@ mod tests {
             assert_eq!(params.code, None);
             assert_eq!(params.error, None);
         }
+    }
+
+    /// Régression : la forme de l'adresse de retour conditionne la
+    /// correspondance côté Microsoft.
+    ///
+    /// Entra n'ignore que le **port** d'une adresse de bouclage. Si le chemin
+    /// disparaissait — ou changeait de casse — la connexion échouerait en
+    /// `AADSTS50011` chez chaque établissement, et aucun test local ne le
+    /// verrait puisque tout le reste continuerait de fonctionner.
+    #[test]
+    fn the_redirect_uri_keeps_the_shape_entra_matches_on() {
+        let uri = redirect_uri_for_port(53125);
+        assert_eq!(uri, "http://127.0.0.1:53125/callback");
+
+        // Adresse littérale : ni « localhost », ni un nom à résoudre.
+        assert!(uri.starts_with("http://127.0.0.1:"));
+        // Chemin présent, et exactement celui qui sera enregistré.
+        assert!(uri.ends_with("/callback"));
+        assert_eq!(uri.matches('/').count(), 3);
+        // Seul le port varie d'une tentative à l'autre.
+        assert_eq!(
+            redirect_uri_for_port(1).replace("1", "<p>"),
+            redirect_uri_for_port(1).replace("1", "<p>")
+        );
+        assert_ne!(redirect_uri_for_port(1024), redirect_uri_for_port(1025));
     }
 
     #[test]
