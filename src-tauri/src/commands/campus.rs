@@ -283,7 +283,7 @@ fn persist_session_metadata(app: &AppHandle, session: &CampusSession) -> Result<
     store.save().map_err(|e| e.to_string())
 }
 
-fn save_campus_credentials(
+pub(crate) fn save_campus_credentials(
     app: &AppHandle,
     session: CampusSession,
     token: String,
@@ -1231,7 +1231,7 @@ impl std::fmt::Display for CampusError {
 
 impl std::error::Error for CampusError {}
 
-fn normalize_base_url(url: &str) -> String {
+pub(crate) fn normalize_base_url(url: &str) -> String {
     url.trim_end_matches('/').to_string()
 }
 

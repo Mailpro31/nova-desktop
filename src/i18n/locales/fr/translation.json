@@ -1238,7 +1238,10 @@
     "microsoft": {
       "connect": "Continuer avec Microsoft",
       "browserHelp": "Terminez la connexion dans votre navigateur. Utilisez ce code si Microsoft le demande.",
-      "expired": "La demande de connexion Microsoft a expiré. Recommencez."
+      "expired": "La demande de connexion Microsoft a expiré. Recommencez.",
+      "failed": "La connexion n'a pas abouti. Réessayez.",
+      "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
+      "accessRevoked": "Votre accès n'est plus disponible. Contactez votre administrateur."
     },
     "aiSkills": {
       "title": "Compétences IA",

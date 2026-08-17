@@ -651,6 +651,36 @@ async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Connexion Organization par Microsoft, de bout en bout.
+ * 
+ * Le secret PKCE vit dans cette fonction et meurt avec elle : succès, échec ou
+ * délai dépassé, il n'est ni écrit sur disque, ni journalisé, ni transmis
+ * ailleurs qu'au serveur de l'établissement au moment de l'échange.
+ */
+async signInWithMicrosoft(serverUrl: string, machine: string) : Promise<Result<CampusSession, SsoError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_microsoft", { serverUrl, machine }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Fournisseurs proposés par l'établissement.
+ * 
+ * Le poste ne décide pas seul quoi afficher : c'est le serveur qui dit ce
+ * qu'il sait faire. Un établissement resté au code par adresse ne voit donc
+ * jamais apparaître un bouton Microsoft inopérant.
+ */
+async organizationAuthProviders(serverUrl: string) : Promise<Result<OrganizationAuthProviders, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("organization_auth_providers", { serverUrl }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async loadCampusSession() : Promise<Result<CampusSession | null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("load_campus_session") };
@@ -1969,6 +1999,19 @@ export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "
  * l'interface doit l'afficher ; il n'est ni journalisé ni persisté.
  */
 export type NovaCommandCaptureEvent = { capture: SelectionCapture | null; error: CommandError | null }
+/**
+ * Les fournisseurs que l'établissement propose réellement.
+ */
+export type OrganizationAuthProviders = { 
+/**
+ * `true` seulement si l'identifiant d'application **et** le rattachement
+ * de tenant sont configurés côté serveur.
+ */
+microsoft_entra: boolean; 
+/**
+ * Le code par adresse reste disponible partout.
+ */
+legacy_email_code: boolean }
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
 /**
@@ -2000,6 +2043,42 @@ export type SecretMap = Partial<{ [key in string]: string }>
 export type SelectionCapture = { text: string; target: TargetWindow }
 export type ShortcutBinding = { id: string; name: string; description: string; default_binding: string; current_binding: string }
 export type SoundTheme = "marimba" | "pop" | "custom"
+/**
+ * Motifs d'échec, énumérés plutôt que rédigés.
+ * 
+ * L'interface choisit le libellé ; ce code sert au diagnostic et ne contient
+ * jamais de secret. Les variantes correspondent aux codes que le serveur
+ * renvoie, pour qu'une cause serveur ne se perde pas en route.
+ */
+export type SsoError = 
+/**
+ * Une autre tentative de connexion est déjà ouverte.
+ */
+{ code: "AlreadyInProgress" } | 
+/**
+ * L'utilisateur a fermé le navigateur ou refusé le consentement.
+ */
+{ code: "AuthCancelled" } | 
+/**
+ * Aucun retour dans le délai imparti.
+ */
+{ code: "AuthTimeout" } | 
+/**
+ * Le retour ne correspond pas à la tentative en cours.
+ */
+{ code: "StateMismatch" } | 
+/**
+ * Impossible d'ouvrir un écouteur de bouclage.
+ */
+{ code: "LoopbackUnavailable" } | 
+/**
+ * Le serveur de l'établissement n'a pas pu être joint.
+ */
+{ code: "NetworkError" } | 
+/**
+ * Le serveur a refusé, avec son propre code (`TENANT_NOT_ALLOWED`, …).
+ */
+{ code: "Server"; detail: string }
 /**
  * Phase of the streaming overlay card, emitted to drive its UI state.
  */

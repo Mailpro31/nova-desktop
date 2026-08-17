@@ -36,6 +36,8 @@ import {
   resolveCampusContext,
 } from "@/lib/campusPolicy";
 import { ManagedBy } from "@/components/campus/ManagedBy";
+import { commands } from "@/bindings";
+import { formatSsoError } from "@/lib/organization/ssoErrors";
 import { refreshCampusContext } from "@/stores/campusStore";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -136,6 +138,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
   const [serverUrl, setServerUrl] = useState("");
   const [config, setConfig] = useState<CampusConfig | null>(null);
   const [configLoaded, setConfigLoaded] = useState(false);
+  // `true` quand l'établissement a configuré le SSO moderne : identifiant
+  // d'application **et** tenant rattaché. Le poste ne le devine pas, il le
+  // demande au serveur — un serveur plus ancien répond simplement non.
+  const [modernSsoAvailable, setModernSsoAvailable] = useState(false);
   const [code, setCode] = useState("");
   const [machineName, setMachineName] = useState("unknown");
   const [profile, setProfile] = useState<CampusProfile | null>(null);
@@ -175,6 +181,34 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     return () => {
       active = false;
       window.clearTimeout(timer);
+    };
+  }, [serverUrl]);
+
+  /**
+   * Le poste ne décide pas seul quel fournisseur proposer : il demande au
+   * serveur ce qu'il sait faire. Un établissement resté au code par adresse ne
+   * verra donc jamais apparaître un bouton Microsoft inopérant, et un
+   * établissement Microsoft obtient le flux moderne sans configuration locale.
+   */
+  useEffect(() => {
+    if (!isValidCampusServerUrl(serverUrl)) {
+      setModernSsoAvailable(false);
+      return;
+    }
+    let active = true;
+    void commands
+      .organizationAuthProviders(normalizeCampusServerUrl(serverUrl))
+      .then((result) => {
+        if (!active) return;
+        setModernSsoAvailable(
+          result.status === "ok" && result.data.microsoft_entra,
+        );
+      })
+      .catch(() => {
+        if (active) setModernSsoAvailable(false);
+      });
+    return () => {
+      active = false;
     };
   }, [serverUrl]);
 
@@ -245,11 +279,39 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     }
   };
 
+  /**
+   * Connexion Microsoft.
+   *
+   * Deux chemins derrière un seul bouton. Quand l'établissement a configuré le
+   * SSO moderne, c'est Authorization Code + PKCE qui s'exécute : le navigateur
+   * système s'ouvre et Nova reprend la main toute seule. Sinon, on retombe sur
+   * le Device Code historique, avec son code à recopier.
+   *
+   * L'utilisateur ne voit pas la différence, et n'a rien à savoir de PKCE, du
+   * tenant ou de l'identifiant d'application.
+   */
   const handleStartMicrosoft = async () => {
     if (!isValidCampusServerUrl(serverUrl) || isLoading) return;
     setIsLoading(true);
     setError(null);
     try {
+      if (modernSsoAvailable) {
+        const result = await commands.signInWithMicrosoft(
+          serverUrl,
+          machineName,
+        );
+        if (result.status === "error") {
+          setError(formatSsoError(result.error, t));
+          return;
+        }
+        const loadedProfile = await api.getMe().catch(() => null);
+        setEmail(result.data.email);
+        setProfile(loadedProfile);
+        await refreshCampusContext();
+        setStep("ready");
+        return;
+      }
+
       const flow = await api.startMicrosoftAuth(machineName);
       setMicrosoftFlow(flow);
       await openUrl(flow.verification_uri_complete ?? flow.verification_uri);
@@ -336,7 +398,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
 
   if (step === "welcome") {
     const emailCodeAvailable = context.authMethods.includes("email_code");
-    const entraAvailable = context.authMethods.includes("entra");
+    // Le SSO moderne suffit à proposer Microsoft, même si la configuration
+    // publique de l'établissement ne liste pas encore « entra ».
+    const entraAvailable =
+      context.authMethods.includes("entra") || modernSsoAvailable;
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
@@ -375,7 +440,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       isValidCampusEmail(email) &&
       isValidCampusServerUrl(serverUrl) &&
       !isLoading;
-    const entraAvailable = context.authMethods.includes("entra");
+    // Le SSO moderne suffit à proposer Microsoft, même si la configuration
+    // publique de l'établissement ne liste pas encore « entra ».
+    const entraAvailable =
+      context.authMethods.includes("entra") || modernSsoAvailable;
     return (
       <OnboardingStepShell
         title={t("campus.onboarding.email.title")}

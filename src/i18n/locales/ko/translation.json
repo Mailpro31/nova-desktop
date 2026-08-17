@@ -1238,7 +1238,10 @@
     "microsoft": {
       "connect": "Continue with Microsoft",
       "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again."
+      "expired": "The Microsoft sign-in request expired. Start again.",
+      "failed": "로그인이 완료되지 않았습니다. 다시 시도하세요.",
+      "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
+      "accessRevoked": "액세스를 더 이상 사용할 수 없습니다. 관리자에게 문의하세요."
     },
     "aiSkills": {
       "title": "AI Skills",

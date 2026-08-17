@@ -308,13 +308,14 @@ de garantie explicite, `federated_identities.verification` :
 
 | Niveau | Signification | Produit par |
 |---|---|---|
-| `transport_only` | revendications lues d'un jeton reçu en TLS serveur-à-serveur, **signature non vérifiée** | Device Code actuel |
-| `verified` | signature, émetteur, audience et expiration vérifiés | **aucun flux** |
+| `transport_only` | revendications lues d'un jeton reçu en TLS serveur-à-serveur, **signature non vérifiée** | Device Code hérité |
+| `verified` | signature, émetteur, audience, expiration, `nonce` et tenant vérifiés | **Authorization Code + PKCE** (Phase 15) |
 
-Rien ne consulte cette table pour autoriser : ce qui autorise reste le domaine
-de l'adresse et, s'il est configuré, le mapping de tenant. L'identité est
-conservée pour préparer la migration, pas pour décider. Elle ne deviendra
-autoritative qu'une fois la validation JWKS en place.
+Le Device Code reste `transport_only` : rien ne consulte son identité pour
+autoriser, ce qui autorise là reste le domaine de l'adresse et le mapping de
+tenant. Le flux PKCE, lui, produit une identité `verified` et le tenant vérifié
+décide de l'organisation — voir
+[`microsoft-entra-sso.md`](./microsoft-entra-sso.md).
 
 `decode_jwt_claims()` lit la charge utile **sans vérifier la signature**. C'est
 légitime ici et seulement ici : le jeton est reçu directement de
@@ -360,11 +361,10 @@ configuration n'est créé.
 | Ergonomie | code à recopier | un clic |
 | Liaison à la requête | aucune | `state` + `nonce` + `code_verifier` |
 
-**Recommandation pour la phase suivante** : implémenter Authorization Code +
-PKCE (S256) avec navigateur système et redirection en boucle locale
-(`http://127.0.0.1:<port aléatoire>`), en **conservant** Device Code comme
-repli pour les postes sans navigateur utilisable. Ce n'est pas un remplacement :
-les deux coexistent, et Device Code reste le chemin de secours.
+**Réalisé en Phase 15** : Authorization Code + PKCE (S256), navigateur système
+et redirection en boucle locale, avec validation JWKS complète côté serveur —
+voir [`microsoft-entra-sso.md`](./microsoft-entra-sso.md). Device Code est
+conservé comme repli ; ce n'est pas un remplacement, les deux coexistent.
 
 Points de vérification obligatoires côté serveur pour tout jeton reçu d'un
 client : signature (JWKS), `iss`, `aud`, `exp`, `nonce`, et `tid` rapporté au

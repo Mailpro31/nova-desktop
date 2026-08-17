@@ -1238,7 +1238,10 @@
     "microsoft": {
       "connect": "Continue with Microsoft",
       "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again."
+      "expired": "The Microsoft sign-in request expired. Start again.",
+      "failed": "Sign-in did not complete. Please try again.",
+      "notInOrganization": "This Microsoft account is not part of your institution.",
+      "accessRevoked": "Your access is no longer available. Contact your administrator."
     },
     "aiSkills": {
       "title": "AI Skills",

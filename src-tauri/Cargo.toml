@@ -71,6 +71,8 @@ rusqlite = { version = "0.37", features = ["bundled"] }
 tar = "0.4.44"
 flate2 = "1.0"
 sha2 = "0.10"
+# Aléa cryptographique pour PKCE (code_verifier, state, nonce).
+getrandom = "0.2"
 # Vérification locale des licences Nova (jetons NOVA1 signés Ed25519).
 ed25519-dalek = "2"
 base64 = "0.22"

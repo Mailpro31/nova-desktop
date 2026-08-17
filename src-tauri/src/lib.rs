@@ -9,6 +9,9 @@ pub mod cli;
 mod clipboard;
 mod commands;
 mod dictation_state;
+/// Connexion Organization par Microsoft Entra (Authorization Code + PKCE).
+/// Voir `docs/architecture/microsoft-entra-sso.md`.
+mod entra_pkce;
 mod helpers;
 mod input;
 mod lexicon_learning;
@@ -657,6 +660,8 @@ pub fn run(cli_args: CliArgs) {
             commands::campus::get_campus_config,
             commands::campus::fetch_campus_server_config,
             commands::campus::set_campus_mode,
+            entra_pkce::sign_in_with_microsoft,
+            entra_pkce::organization_auth_providers,
             commands::campus::load_campus_session,
             commands::campus::clear_campus_session,
             commands::campus::logout_campus_session,
