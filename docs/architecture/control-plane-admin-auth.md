@@ -362,7 +362,8 @@ portage de schéma, pas une réécriture.
 
 ## 18. Ce qui n'est pas construit
 
-- **Nova Admin UI** — cette phase construit le backend qu'elle consommera ;
+- ~~**Nova Admin UI**~~ ✅ **faite en Phase 25** — voir
+  [`nova-admin-foundation.md`](./nova-admin-foundation.md) ;
 - **Nova Control operator** — documenté comme identité future séparée (§ 14) ;
 - **routes de gestion des administrateurs** : accorder un rôle passe par le CLI
   d'opérateur, volontairement ;

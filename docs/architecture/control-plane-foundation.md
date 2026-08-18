@@ -5,7 +5,8 @@ Ce document définit la frontière entre ce qui **administre** Nova et ce qui
 c'est un contrat d'architecture, écrit maintenant pour éviter qu'il se décide
 tout seul, plus tard, par accumulation.
 
-Rien de ce qui suit n'existe encore, sauf mention explicite du contraire.
+Écrit quand rien n'existait. Depuis, les phases 19 à 25 en ont construit une
+bonne part : chaque section dit ce qui est fait et ce qui reste.
 
 ---
 
@@ -165,9 +166,26 @@ découverte existe.
 
 ---
 
-## 6. Ce que cette fondation n'autorise pas
+## 6. Nova Admin
 
-Écrire ce document ne construit ni Nova Admin, ni le Control Plane, ni les
-policies, ni les packages, ni SCIM. Il fixe une frontière pour que, le jour où
-ces briques arriveront, la question « et si on faisait passer la transcription
-par le plan de contrôle ? » ait déjà sa réponse.
+La console web d'administration d'une organisation existe depuis la **Phase 25** :
+découverte, SSO, réauthentification, puis six pages de configuration. Elle
+consomme le Control Plane et ne franchit jamais la frontière du § 1 — aucun
+contenu dicté n'y transite. Voir
+[`nova-admin-foundation.md`](./nova-admin-foundation.md).
+
+Nova Admin est **client-facing et cadrée à une organisation**. L'outil interne de
+l'équipe Nova — celui qui verrait plusieurs tenants — reste non construit, et
+séparé par principe (§ 14 de
+[`control-plane-admin-auth.md`](./control-plane-admin-auth.md)).
+
+---
+
+## 7. Ce que cette fondation n'autorise pas
+
+Ce document fixe une frontière, il ne construit rien. Nova Admin et
+l'authentification d'administration sont arrivés depuis ; les policies, les
+packages, SCIM et le Control Plane mutualisé restent à faire.
+
+Ce qui ne change pas : le jour où ces briques arriveront, la question « et si on
+faisait passer la transcription par le plan de contrôle ? » a déjà sa réponse.
