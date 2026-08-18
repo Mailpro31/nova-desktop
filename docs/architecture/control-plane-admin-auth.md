@@ -188,6 +188,11 @@ python admin_cli.py revoke <email>
 python admin_cli.py list
 ```
 
+Depuis la **Phase 26**, Nova Admin gère les administrateurs **suivants** — voir
+[`admin-identity-management.md`](./admin-identity-management.md). La ligne de
+commande reste celle du premier, et le chemin de récupération quand plus personne
+ne peut se connecter.
+
 `set_security_role()` n'est exposée par aucune route. La route
 `POST /api/admin/user/{email}` modifie le rôle **métier** (`users.role`) — jamais
 le rôle de sécurité. Aucun chemin HTTP n'accorde de privilège, et un test
@@ -365,8 +370,8 @@ portage de schéma, pas une réécriture.
 - ~~**Nova Admin UI**~~ ✅ **faite en Phase 25** — voir
   [`nova-admin-foundation.md`](./nova-admin-foundation.md) ;
 - **Nova Control operator** — documenté comme identité future séparée (§ 14) ;
-- **routes de gestion des administrateurs** : accorder un rôle passe par le CLI
-  d'opérateur, volontairement ;
+- ~~**routes de gestion des administrateurs**~~ ✅ **faites en Phase 26**, avec
+  garde-fou du dernier gestionnaire ;
 - **migration PostgreSQL** (§ 17), **limitation d'appels** (§ 16) ;
 - **step-up par action** pendant une session d'administration — le mécanisme
   existe depuis la Phase 24, la granularité non ;

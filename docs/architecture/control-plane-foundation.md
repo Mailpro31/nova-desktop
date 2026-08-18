@@ -5,7 +5,7 @@ Ce document définit la frontière entre ce qui **administre** Nova et ce qui
 c'est un contrat d'architecture, écrit maintenant pour éviter qu'il se décide
 tout seul, plus tard, par accumulation.
 
-Écrit quand rien n'existait. Depuis, les phases 19 à 25 en ont construit une
+Écrit quand rien n'existait. Depuis, les phases 19 à 26 en ont construit une
 bonne part : chaque section dit ce qui est fait et ce qui reste.
 
 ---
@@ -67,10 +67,11 @@ contrôle mutualisé.
 | **Deployment** | où tourne le Data Plane de l'organisation, quelle version | ❌ à venir |
 | **Policy** | ce que l'organisation autorise, hiérarchie de précédence | ❌ à venir |
 | **Package** | Styles, vocabulaire, AI Skills distribués | ❌ à venir |
-| **Admin / audit** | qui a changé quoi, et quand | ❌ à venir |
+| **Admin / audit** | qui a changé quoi, et quand | ✅ existe |
 
-Les trois premiers existent déjà en base : c'est ce que les phases 12 à 19 ont
-construit, sans jamais l'appeler Control Plane.
+Les trois premiers ont été construits par les phases 12 à 19 sans jamais
+s'appeler Control Plane ; l'audit et l'administration sont arrivés avec les
+phases 22 et 26. Restent le déploiement, les policies et les packages.
 
 ---
 
@@ -154,8 +155,9 @@ découverte existe.
    organisations peuvent compter chacune la même adresse : ce sont deux
    personnes. Voir
    [`multi-tenant-user-identity.md`](./multi-tenant-user-identity.md) ;
-5. ~~**Journal d'audit.**~~ ✅ **Fait en Phase 22** — `admin_audit_log`, en ajout
-   seul par l'application, sans jamais y écrire un secret. L'immuabilité de
+5. ~~**Journal d'audit.**~~ ✅ **Fait en Phase 22**, **lisible depuis la Phase 26**
+   — `admin_audit_log` en ajout seul par l'application, sans jamais y écrire un
+   secret, désormais consultable et paginé dans Nova Admin. L'immuabilité de
    stockage reste hors de portée de SQLite, et c'est dit ;
 6. ~~**Authentification d'administration.**~~ ✅ **Fait en Phase 22** — identité
    issue du SSO de l'organisation, rôles de sécurité décidés par Nova, sessions

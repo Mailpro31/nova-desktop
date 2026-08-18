@@ -213,6 +213,7 @@ Masquer un bouton n'est pas une protection : c'est une politesse.
 |---|---|
 | **Overview** | organisation, statut, modes, résumé des fournisseurs, votre accès |
 | **Identity** | fournisseurs d'identité, état, détail, remplacement de secret, désactivation |
+| **Administrators** | qui administre, attribution et retrait de rôle — Phase 26 |
 | **Deployment** | mode, adresse de service, identifiant de découverte |
 | **Configuration** | découverte : état, identifiant, adresse annoncée et son éventuel refus |
 | **Security** | rôle, capacités, expiration de session, authentification moderne, MFA amont |
@@ -335,11 +336,11 @@ rien casser. Le reste attend un hébergement réel.
 
 ## 16. Ce qui n'est pas construit
 
-- **Audit à l'écran** : les actions sont enregistrées côté serveur, mais aucun
-  endpoint ne les expose. Plutôt que d'ajouter une route mal pensée pour remplir
-  un écran, la page Security le dit ;
-- **gestion des administrateurs** : accorder un rôle passe toujours par le CLI
-  d'opérateur ;
+- ~~**Audit à l'écran**~~ ✅ **fait en Phase 26** — lecture paginée dans Security,
+  voir [`admin-identity-management.md`](./admin-identity-management.md) ;
+- ~~**gestion des administrateurs**~~ ✅ **faite en Phase 26** — le premier
+  administrateur naît toujours de la ligne de commande, qui reste aussi le
+  chemin de récupération ;
 - **parc de postes, canaux de mise à jour, télémétrie de déploiement** : le
   serveur n'en sait rien ;
 - **Policies, Packages, SCIM, Learn, Nova Control, passerelle privée, SAML** ;
