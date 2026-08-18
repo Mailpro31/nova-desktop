@@ -37,7 +37,7 @@ import type { CapabilityId, CapabilityMap } from "./model";
  */
 
 /** Version du schéma que ce poste sait lire. */
-export const POLICY_SCHEMA_VERSION = 1;
+export const POLICY_SCHEMA_VERSION = 2;
 
 /** Une policy jamais configurée porte la révision 0 — « personne n'a rien changé ». */
 export const UNCONFIGURED_POLICY_REVISION = 0;
@@ -45,6 +45,14 @@ export const UNCONFIGURED_POLICY_REVISION = 0;
 export interface OrganizationPolicySettings {
   /** Les membres peuvent-ils utiliser les AI Skills ? */
   readonly aiSkillsEnabled: boolean;
+  /** Le vocabulaire distribué par l'organisation est-il disponible ? */
+  readonly organizationVocabularyEnabled: boolean;
+  /** Les commandes vocales sont-elles autorisées ? */
+  readonly voiceCommandsEnabled: boolean;
+  /** Les notes d'ingénierie sont-elles autorisées ? */
+  readonly engineeringNotesEnabled: boolean;
+  /** L'import d'un fichier audio déjà enregistré est-il autorisé ? */
+  readonly fileImportEnabled: boolean;
 }
 
 export interface OrganizationPolicy {
@@ -70,6 +78,10 @@ export interface OrganizationPolicy {
 export const DEFAULT_ORGANIZATION_POLICY_SETTINGS: OrganizationPolicySettings =
   Object.freeze({
     aiSkillsEnabled: true,
+    organizationVocabularyEnabled: true,
+    voiceCommandsEnabled: true,
+    engineeringNotesEnabled: true,
+    fileImportEnabled: true,
   });
 
 export const DEFAULT_ORGANIZATION_POLICY: OrganizationPolicy = Object.freeze({
@@ -89,6 +101,10 @@ const GOVERNED_CAPABILITY: Readonly<
   Record<keyof OrganizationPolicySettings, CapabilityId>
 > = Object.freeze({
   aiSkillsEnabled: "aiSkills",
+  organizationVocabularyEnabled: "organizationVocabulary",
+  voiceCommandsEnabled: "commands",
+  engineeringNotesEnabled: "engineeringNotes",
+  fileImportEnabled: "fileTranscription",
 });
 
 /** Nom serveur (`snake_case`) → nom Nova. Le serveur possède le schéma. */
@@ -96,6 +112,10 @@ const SETTING_BY_SERVER_KEY: Readonly<
   Record<string, keyof OrganizationPolicySettings>
 > = Object.freeze({
   ai_skills_enabled: "aiSkillsEnabled",
+  organization_vocabulary_enabled: "organizationVocabularyEnabled",
+  voice_commands_enabled: "voiceCommandsEnabled",
+  engineering_notes_enabled: "engineeringNotesEnabled",
+  file_import_enabled: "fileImportEnabled",
 });
 
 /**

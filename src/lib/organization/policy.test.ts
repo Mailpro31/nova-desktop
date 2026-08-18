@@ -18,7 +18,7 @@ function policy(
   return {
     schemaVersion: POLICY_SCHEMA_VERSION,
     revision: 1,
-    settings: { aiSkillsEnabled },
+    settings: { ...DEFAULT_ORGANIZATION_POLICY_SETTINGS, aiSkillsEnabled },
     known: true,
     ...overrides,
   };
@@ -95,6 +95,69 @@ describe("Effective capability formula", () => {
   });
 });
 
+describe("Every governed capability, four cases", () => {
+  // Table-driven : ajouter une policy sans son quadruplet ferait echouer le
+  // test de couverture ci-dessous.
+  const GOVERNED: [keyof typeof DEFAULT_ORGANIZATION_POLICY_SETTINGS, string][] =
+    [
+      ["aiSkillsEnabled", "aiSkills"],
+      ["organizationVocabularyEnabled", "organizationVocabulary"],
+      ["voiceCommandsEnabled", "commands"],
+      ["engineeringNotesEnabled", "engineeringNotes"],
+      ["fileImportEnabled", "fileTranscription"],
+    ];
+
+  test("covers every declared policy", () => {
+    expect(GOVERNED.map(([key]) => key).sort()).toEqual(
+      Object.keys(DEFAULT_ORGANIZATION_POLICY_SETTINGS).sort(),
+    );
+  });
+
+  for (const [key, capability] of GOVERNED) {
+    const resolve = (baseValue: boolean, policyValue: boolean) =>
+      resolveEffectiveCapabilities(base({ [capability]: baseValue }), {
+        schemaVersion: POLICY_SCHEMA_VERSION,
+        revision: 1,
+        settings: {
+          ...DEFAULT_ORGANIZATION_POLICY_SETTINGS,
+          [key]: policyValue,
+        },
+        known: true,
+      })[capability as keyof ReturnType<typeof base>];
+
+    test(`${key}: base false / policy false -> false`, () => {
+      expect(resolve(false, false)).toBe(false);
+    });
+    test(`${key}: base false / policy true -> false`, () => {
+      // Une policy n'invente jamais une capacite que le produit ne fournit
+      // pas — c'est aussi ce qui preserve les restrictions de mode.
+      expect(resolve(false, true)).toBe(false);
+    });
+    test(`${key}: base true / policy false -> false`, () => {
+      expect(resolve(true, false)).toBe(false);
+    });
+    test(`${key}: base true / policy true -> true`, () => {
+      expect(resolve(true, true)).toBe(true);
+    });
+  }
+});
+
+describe("Mode composition", () => {
+  test("a classroom restriction survives a permissive policy", () => {
+    // Le mode vit dans la capacite de base : l'intersection le preserve, sans
+    // qu'aucune regle de priorite n'ait a etre ecrite ni retenue.
+    const classroom = base({ commands: false, engineeringNotes: false });
+    const effective = resolveEffectiveCapabilities(classroom, {
+      schemaVersion: POLICY_SCHEMA_VERSION,
+      revision: 1,
+      settings: DEFAULT_ORGANIZATION_POLICY_SETTINGS,
+      known: true,
+    });
+    expect(effective.commands).toBe(false);
+    expect(effective.engineeringNotes).toBe(false);
+  });
+});
+
 describe("Policy parsing", () => {
   test("reads a well-formed document", () => {
     const parsed = parseOrganizationPolicy({
@@ -122,7 +185,10 @@ describe("Policy parsing", () => {
       revision: 2,
       settings: { ai_skills_enabled: false, venu_du_futur: true },
     });
-    expect(parsed.settings).toEqual({ aiSkillsEnabled: false });
+    expect(parsed.settings).toEqual({
+      ...DEFAULT_ORGANIZATION_POLICY_SETTINGS,
+      aiSkillsEnabled: false,
+    });
   });
 
   test("a wrong type falls back to its default", () => {

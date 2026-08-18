@@ -79,9 +79,10 @@ interface.
 
 ---
 
-## 4. Une seule clé, et c'est un choix
+## 4. Cinq clés, et c'est un choix
 
-`ai_skills_enabled`. Pas quarante interrupteurs « pour plus tard ».
+Phase 29 en avait posé une ; la Phase 30 en ajoute quatre. Pas quarante
+interrupteurs « pour plus tard ».
 
 Une policy n'est légitime que si **trois** conditions tiennent :
 
@@ -91,11 +92,19 @@ Une policy n'est légitime que si **trois** conditions tiennent :
 
 | Candidat | Verdict |
 |---|---|
-| **AI Skills** | ✅ route serveur, page du poste, premier lancement ; refus univoque |
-| Personal Styles | ❌ la capacité `personalStyles` n'est lue **nulle part** dans l'interface — le refus ne s'appliquerait à rien |
+| **AI Skills** | ✅ `/api/ai-skills` — Phase 29 |
+| **Vocabulaire d'organisation** | ✅ `/api/vocabulary`, `/api/dictionary/*` |
+| **Commandes vocales** | ✅ `/api/command` |
+| **Notes d'ingénierie** | ✅ `/api/engineering-notes` |
+| **Import de fichier audio** | ✅ `/api/import/transcribe` — route créée pour cela, § 9 |
+| Styles personnels | ❌ la capacité `personalStyles` n'est lue **nulle part** — le refus ne s'appliquerait à rien |
+| Styles d'organisation | ❌ aucun serveur n'en distribue ; c'est du contenu, pas une règle (§ 10) |
+| Historique | ❌ essentiellement local ; une policy serveur n'efface pas ce qui est déjà sur le poste, et le prétendre serait une fausse promesse |
 | Repli local | ❌ son refus signifie « plus de dictée hors ligne » — voir § 3 |
 | Learning | ❌ **la fonction n'existe pas** ; `learning` vaut `false` en dur |
-| Styles d'organisation | ❌ aucun serveur n'en distribue ; c'est du contenu, pas une règle (§ 10) |
+
+Chacune des cinq retenues gouverne une **route serveur réelle** : le refus est
+donc opposable à n'importe quel client, pas seulement à l'interface.
 
 Un panneau de configuration dont la plupart des lignes ne font rien est pire
 qu'un panneau court : on n'y sait bientôt plus lesquelles comptent.
@@ -105,7 +114,7 @@ qu'un panneau court : on n'y sait bientôt plus lesquelles comptent.
 ## 5. Le schéma appartient au serveur
 
 ```
-POLICY_SCHEMA_VERSION = 1
+POLICY_SCHEMA_VERSION = 2
 
 organization_policies(
   organization_id     TEXT PRIMARY KEY,   -- une policy active, la clé l'impose
@@ -140,11 +149,26 @@ La dissymétrie est voulue :
 
 ---
 
-## 6. Les défauts protègent l'existant
+## 6. Les défauts protègent l'existant — et seules les surcharges sont stockées
 
 ```python
-DEFAULT_ORGANIZATION_POLICY = {"ai_skills_enabled": True}
+DEFAULT_ORGANIZATION_POLICY = {
+    "ai_skills_enabled":              True,
+    "organization_vocabulary_enabled": True,
+    "voice_commands_enabled":          True,
+    "engineering_notes_enabled":       True,
+    "file_import_enabled":             True,
+}
 ```
+
+**La base ne contient que les surcharges explicites.** Recopier les défauts les
+figerait : le jour où un défaut produit change, les organisations qui n'avaient
+rien demandé garderaient l'ancien comportement sans l'avoir choisi.
+
+Une console qui renvoie l'état complet obtient donc gratuitement le « revenir au
+défaut » — reposer une valeur sur son défaut efface la surcharge. L'API expose
+les trois formes : `overrides` (ce qui a été décidé), `defaults`, et `settings`
+(ce qui s'applique).
 
 **Tous les défauts sont permissifs**, et un test parcourt le dictionnaire pour
 s'en assurer. C'est ce qui garantit qu'une organisation déjà déployée ne perd
@@ -214,6 +238,32 @@ gouvernance ; il a besoin de savoir ce qu'il peut utiliser.
 
 ---
 
+## 8 bis. Composition avec le mode du déploiement
+
+```
+support produit  ∩  policy d'organisation  ∩  restriction de contexte
+                                           =  capacité effective
+```
+
+Le mode pédagogique du déploiement — `normal`, `classroom`, `assessment` — vit
+**dans la capacité de base**. L'intersection le préserve donc sans traitement
+particulier : `classroom` ferme les commandes et les notes d'ingénierie, et une
+policy permissive ne les rouvre pas, parce que `False and True` vaut `False`.
+
+C'est la propriété qui compte, et elle vaut mieux qu'une règle de priorité
+écrite quelque part : **il n'y a rien à se rappeler**. Une policy ne peut
+qu'ôter, jamais rendre.
+
+| mode | policy | effectif |
+|---|:--:|:--:|
+| `normal` | ✅ | ✅ |
+| `normal` | ❌ | ❌ |
+| `classroom` | ✅ | ❌ *(commandes, notes)* |
+| `classroom` | ❌ | ❌ |
+| `assessment` | ✅ | ❌ |
+
+---
+
 ## 9. Application réelle
 
 La policy n'est pas un panneau décoratif. `ai_skills_enabled=false` produit :
@@ -230,6 +280,31 @@ Le refus serveur est le point important. Le poste masque déjà l'entrée quand 
 capacité est fermée, mais **un poste est une interface** : il peut être ancien,
 modifié, ou appeler la route directement. Le catalogue vient du serveur — c'est
 donc au serveur de ne pas le donner.
+
+Les cinq refus partagent un contrat :
+
+```jsonc
+403 { "code": "ORGANIZATION_POLICY_DISABLED", "feature": "file_import" }
+```
+
+Le nom de la fonction, et rien d'autre — ni état interne, ni configuration.
+Cinq codes différents auraient obligé chaque client à les traiter un par un.
+
+### La dictée n'est jamais gouvernée
+
+`/api/transcribe` servait **à la fois** la dictée au micro et l'import de
+fichier. Gouverner l'import y aurait coupé la dictée — le cœur du produit — sur
+une case cochée dans un panneau d'import.
+
+```
+/api/transcribe          dictée micro    aucune policy ne la ferme
+/api/import/transcribe   import fichier  file_import_enabled
+```
+
+Deux routes, **un seul moteur** : `transcribe_audio()`. Rien n'est dupliqué —
+ni le modèle, ni le comptage d'usage, ni la gestion d'erreur — et les deux
+usages redeviennent distinguables, ce qu'ils n'auraient jamais dû cesser
+d'être. Un test vérifie que fermer l'import laisse la dictée répondre.
 
 ---
 
@@ -310,6 +385,13 @@ d'organisation ne change pas à la seconde.
 organization_policy.update
   { old_revision, new_revision, changed_keys }
 ```
+
+**Enregistrer sans rien changer n'est pas un événement** : ni révision, ni ligne
+d'audit. Une révision qui avance sans qu'aucune valeur ne bouge rend le compteur
+illisible, et un journal qui note des non-événements finit par ne plus être lu.
+
+Modifier quatre interrupteurs produit **une** révision et **une** ligne, dont
+`changed_keys` porte exactement les quatre noms.
 
 Les **noms** des clés modifiées, pas le document. Savoir que `ai_skills_enabled`
 a bougé suffit ; recopier la configuration entière à chaque écriture ferait
