@@ -72,11 +72,16 @@ distingue est qu'elle n'a pas de sujet externe.
 Identifiant interne stable, distinct de l'adresse.
 
 ```
-user_id           UUID Nova, attribué à la création, jamais réattribué
-email             clé historique, conservée (toutes les tables la référencent)
+user_id           UUID Nova, attribué à la création, jamais réattribué — clé primaire
 organization_id   organisation d'appartenance
+email             attribut mutable ; unique par (organization_id, email normalisé)
 status            active | disabled | deprovisioned
 ```
+
+Depuis la **Phase 23**, `user_id` est la clé primaire et l'adresse n'est plus
+qu'un attribut : deux organisations peuvent compter chacune une
+`alex@example.com`, et changer d'adresse ne change plus d'identité. Voir
+[`multi-tenant-user-identity.md`](./multi-tenant-user-identity.md).
 
 ### FederatedIdentity
 

@@ -148,10 +148,15 @@ découverte existe.
    Reste à faire au niveau de la passerelle : la limitation d'appels ;
 3. **Références de secret** plutôt que des secrets en base (voir
    [`organization-provider-configs.md`](./organization-provider-configs.md)) ;
-4. ~~**Journal d'audit.**~~ ✅ **Fait en Phase 22** — `admin_audit_log`, en ajout
+4. ~~**Identité multi-tenant.**~~ ✅ **Fait en Phase 23** — `user_id` est
+   l'identité stable, et l'unicité de l'adresse devient locale au tenant. Deux
+   organisations peuvent compter chacune la même adresse : ce sont deux
+   personnes. Voir
+   [`multi-tenant-user-identity.md`](./multi-tenant-user-identity.md) ;
+5. ~~**Journal d'audit.**~~ ✅ **Fait en Phase 22** — `admin_audit_log`, en ajout
    seul par l'application, sans jamais y écrire un secret. L'immuabilité de
    stockage reste hors de portée de SQLite, et c'est dit ;
-5. ~~**Authentification d'administration.**~~ ✅ **Fait en Phase 22** — identité
+6. ~~**Authentification d'administration.**~~ ✅ **Fait en Phase 22** — identité
    issue du SSO de l'organisation, rôles de sécurité décidés par Nova, sessions
    d'administration courtes et révocables, autorisation par capacité, isolation
    par organisation. `X-Admin-Token` devient hérité : accepté en mode dédié,
