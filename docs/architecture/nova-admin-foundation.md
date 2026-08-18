@@ -214,6 +214,7 @@ Masquer un bouton n'est pas une protection : c'est une politesse.
 | **Overview** | organisation, statut, modes, résumé des fournisseurs, votre accès |
 | **Identity** | fournisseurs d'identité, état, détail, remplacement de secret, désactivation |
 | **Administrators** | qui administre, attribution et retrait de rôle — Phase 26 |
+| **Members** | comptes, statut, métier, groupes, appareils — Phase 27 |
 | **Deployment** | mode, adresse de service, identifiant de découverte |
 | **Configuration** | découverte : état, identifiant, adresse annoncée et son éventuel refus |
 | **Security** | rôle, capacités, expiration de session, authentification moderne, MFA amont |

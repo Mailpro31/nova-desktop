@@ -242,6 +242,11 @@ est affiché au démarrage s'il est actif hors développement.
 La comparaison est passée en temps constant (`hmac.compare_digest`) : la
 comparaison naïve précédente fuyait la longueur du préfixe correct.
 
+Depuis la **Phase 27**, il n'authentifie plus aucune console : `admin.html` est
+supprimée, et `require_admin` — devenue du code mort dès la Phase 22 — l'est
+aussi. Ne restent que les automatisations d'exploitation, seule chose qui retient
+encore sa suppression.
+
 **Nova Admin ne devra jamais l'utiliser.**
 
 ---

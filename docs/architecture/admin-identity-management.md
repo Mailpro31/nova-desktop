@@ -137,11 +137,11 @@ construit, et le restera séparément.
 
 ### Recherche de comptes, volontairement étroite
 
-Choisir qui nommer suppose de le trouver. La recherche est donc là, mais bornée :
-préfixe seulement, deux caractères minimum, 25 résultats au plus, et **aucun
-listing sans terme**. Une console d'administration n'a pas besoin de déverser
-l'annuaire de l'organisation pour attribuer un rôle — et un annuaire complet
-exporté est exactement ce qu'on ne veut pas laisser derrière soi.
+Choisir qui nommer suppose de le trouver. La recherche partage désormais sa
+route avec la liste des membres (Phase 27) : **paginée et plafonnée**, elle se
+restreint quand on lui donne un terme. Ce qui reste interdit, c'est l'export —
+un annuaire complet exporté est exactement ce qu'on ne veut pas laisser derrière
+soi. Voir [`member-management.md`](./member-management.md).
 
 ---
 
@@ -185,35 +185,20 @@ laisser croire à une garantie qui n'existe pas.
 
 ### Écriture et transaction
 
-L'audit est écrit après la mutation, dans une connexion séparée. En cas de panne
-entre les deux, la mutation resterait sans trace — le contraire d'un journal qui
-mentirait sur une action non effectuée, ce qui serait pire. Une transaction
-unique demanderait de faire descendre la connexion à travers les helpers ; c'est
-faisable et noté comme dette, pas fait ici.
+Depuis la **Phase 27**, `record_admin_action` accepte la connexion de l'appelant :
+la mutation et sa trace partagent une transaction, et les deux réussissent ou
+aucune. Les appels qui ne mutent rien gardent leur connexion propre.
 
 ---
 
-## 9. La console héritée
+## 9. La console héritée — supprimée
 
-`admin.html` — l'ancienne console à jeton partagé — n'est **plus exposée par
-défaut**. `GET /admin` renvoie `404` sauf si `NOVA_LEGACY_ADMIN_UI=true`.
+`admin.html` a été **supprimée en Phase 27**, avec ses sept routes et le drapeau
+`NOVA_LEGACY_ADMIN_UI`. Sa condition de départ — que Nova Admin gère les
+membres — était remplie. Voir [`member-management.md`](./member-management.md).
 
-Elle contourne tout le modèle moderne : pas d'identité, pas de rôle, pas de
-réauthentification, et un journal d'audit qui ne peut écrire que « quelqu'un qui
-détenait le jeton ».
-
-Elle n'est pas supprimée, parce qu'elle porte encore ce que Nova Admin ne couvre
-pas : gestion des comptes métier, cohortes, suppression d'utilisateur, révocation
-d'appareils. La retirer aujourd'hui serait une régression fonctionnelle déguisée
-en progrès.
-
-**Condition de suppression** : quand Nova Admin gérera les membres — pas
-seulement les administrateurs. Un avertissement s'affiche au démarrage si elle
-est réactivée.
-
-`X-Admin-Token` reste accepté côté API en mode dédié, pour les usages
-automatisés historiques. Il est refusé par construction en mode Control Plane, et
-destiné à disparaître avec elle.
+`X-Admin-Token` reste accepté côté API en mode dédié, pour les automatisations
+qui en dépendent encore. Il est refusé par construction en mode Control Plane.
 
 ---
 
@@ -231,11 +216,10 @@ la granularité, non.
 
 ## 11. Ce qui n'est pas construit
 
-- **gestion des membres** dans Nova Admin (§ 9) — c'est ce qui bloque la
-  suppression de la console héritée ;
+- ~~**gestion des membres**~~ ✅ **faite en Phase 27** ;
 - **invitation et provisionnement** de personnes, SCIM ;
 - **step-up par action** (§ 10) ;
-- **audit dans la même transaction que la mutation** (§ 8) ;
+- ~~**audit dans la même transaction que la mutation**~~ ✅ **fait en Phase 27** ;
 - **filtres d'audit avancés** : action et curseur seulement, pas de moteur de
   recherche ;
 - **Policies, Packages, Nova Control, passerelle privée.**
