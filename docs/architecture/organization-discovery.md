@@ -122,7 +122,24 @@ configuration erronée d'un côté, une réponse hostile de l'autre.
 Une adresse locale annoncée en production signifie que quelque chose s'est
 substitué au service : le poste ne doit pas y envoyer sa session. Le
 développement dispose d'un assouplissement explicite, qui est un **paramètre du
-poste** — jamais une valeur venue du réseau.
+poste** — et, côté serveur, un paramètre d'exploitation. Jamais une valeur venue
+du réseau.
+
+Les motifs ci-dessus sont ceux du poste. Le serveur applique la même politique
+en réutilisant `host_is_publicly_routable`, le contrôle réseau écrit pour le
+SSRF de l'adaptateur OIDC : il résout le nom et refuse dès qu'**une seule** des
+adresses obtenues est interne — un nom qui résout à la fois vers une adresse
+publique et vers une adresse interne servirait de pont. Il nomme ce refus
+`internal_address`, et couvre en plus l'IPv6 link-local, les adresses
+non spécifiées, réservées et multicast.
+
+Une différence assumée entre les deux côtés : le serveur **n'exige pas** que le
+nom soit résolvable. Il annonce cette adresse, il ne la contacte pas — et un
+service peut n'être joignable que depuis le réseau des postes. Refuser sur une
+non-résolution rendrait la découverte indisponible pour un déploiement sain.
+L'adaptateur OIDC, lui, l'exige, parce qu'il va réellement émettre la requête.
+Une IP littérale interne ou un nom en `localhost` restent refusés sans qu'aucun
+DNS n'ait à répondre.
 
 ---
 
