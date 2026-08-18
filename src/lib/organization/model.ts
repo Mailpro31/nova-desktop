@@ -151,7 +151,8 @@ export type CapabilityMap = Readonly<Record<CapabilityId, boolean>>;
  * latence, dictée, presse-papiers, overlay, Styles, Automatic, historique, IA
  * locale, performance, stabilité, UX) bénéficie par défaut à Personal, Campus
  * et Business. Une édition Organization ne perd une capacité Core que si une
- * policy explicite l'impose — mécanisme qui n'existe pas encore.
+ * policy explicite l'impose — mécanisme construit en Phase 29, voir
+ * `policy.ts`. Aucune policy ne gouverne une capacité Core aujourd'hui.
  */
 export const CORE_CAPABILITIES: readonly CapabilityId[] = [
   "dictation",

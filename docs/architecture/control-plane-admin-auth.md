@@ -290,9 +290,22 @@ permissive serait exactement la porte dérobée que ce retrait cherchait à ferm
 Table `admin_audit_log` : organisation, acteur, rôle, action, cible, identifiant
 de corrélation, horodatage serveur, métadonnées minimales.
 
-Actions enregistrées : `admin_session.create`, `provider_config.create|update|
-disable`, `discovery.update`, `user.update|delete|revoke_machines`,
-`cohort.disable`.
+Actions enregistrées aujourd'hui :
+
+```
+admin_session.create · admin_step_up.success
+admin_role.grant|change|revoke
+member.disable|enable|type_change|group_change|sessions_revoke|delete
+provider_config.create|update|disable · discovery.update
+organization_policy.update
+```
+
+> **Quatre noms de plus vivent dans la table de libellés** —
+> `user.update|delete|revoke_machines` et `cohort.disable`. Plus aucune route
+> ne les écrit : elles sont parties avec la console héritée en Phase 27. Leurs
+> libellés restent pour que les lignes **déjà écrites** se lisent encore. Un
+> journal dont les anciennes entrées deviendraient illisibles au fil des
+> versions ne servirait plus à répondre à « qui a fait cela ? ».
 
 **Ce qui n'y entre jamais** : jeton d'administration, jeton de session, secret
 client, code d'autorisation, `id_token`, jeton de rafraîchissement, `nonce`,

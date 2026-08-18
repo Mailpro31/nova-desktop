@@ -344,5 +344,7 @@ rien casser. Le reste attend un hébergement réel.
   chemin de récupération ;
 - **parc de postes, canaux de mise à jour, télémétrie de déploiement** : le
   serveur n'en sait rien ;
-- **Policies, Packages, SCIM, Learn, Nova Control, passerelle privée, SAML** ;
+- ~~**Policies**~~ ✅ **faites en Phase 29** — dans Configuration, voir
+  [`organization-policies.md`](./organization-policies.md) ;
+- **Packages, SCIM, Learn, Nova Control, passerelle privée, SAML** ;
 - **modèle cookie + CSRF** (§ 5), **en-têtes de production** (§ 15).

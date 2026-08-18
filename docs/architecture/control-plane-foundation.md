@@ -65,13 +65,15 @@ contrôle mutualisé.
 | **OrganizationProviderConfig** | fournisseurs d'identité de l'organisation | ✅ existe |
 | **OrganizationMembership** | appartenance, métier, rôle de sécurité | ✅ existe |
 | **Deployment** | où tourne le Data Plane de l'organisation, quelle version | ❌ à venir |
-| **Policy** | ce que l'organisation autorise, hiérarchie de précédence | ❌ à venir |
+| **Policy** | ce que l'organisation autorise à ses membres | ✅ existe — organisation entière ; pas de hiérarchie de précédence |
 | **Package** | Styles, vocabulaire, AI Skills distribués | ❌ à venir |
 | **Admin / audit** | qui a changé quoi, et quand | ✅ existe |
 
 Les trois premiers ont été construits par les phases 12 à 19 sans jamais
 s'appeler Control Plane ; l'audit et l'administration sont arrivés avec les
-phases 22 et 26. Restent le déploiement, les policies et les packages.
+phases 22 et 26, les policies avec la phase 29. Restent le déploiement, les
+packages, et la hiérarchie de précédence des policies — voir
+[`organization-policies.md`](./organization-policies.md).
 
 ---
 

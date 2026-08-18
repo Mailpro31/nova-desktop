@@ -5,6 +5,11 @@ import {
   unknownOrganizationCapabilities,
 } from "./capabilities";
 import type { ServerIdentitySnapshot } from "./identity";
+import type { OrganizationPolicy } from "./policy";
+import {
+  DEFAULT_ORGANIZATION_POLICY,
+  resolveEffectiveCapabilities,
+} from "./policy";
 import type {
   CapabilityId,
   CapabilityMap,
@@ -215,6 +220,14 @@ export interface ResolveOrganizationContextInput {
    * exactement comme avant.
    */
   server?: ServerIdentitySnapshot | null;
+  /**
+   * Policy produit de l'organisation, quand elle est connue.
+   *
+   * Absente, les défauts permissifs s'appliquent : une organisation qui n'a
+   * rien configuré — ou un serveur qui n'en parle pas encore — ne doit rien
+   * perdre. Ignorée en édition Personal, qui ne reçoit aucune gouvernance.
+   */
+  policy?: OrganizationPolicy | null;
 }
 
 /**
@@ -228,6 +241,10 @@ export function resolveOrganizationContext(
   input: ResolveOrganizationContextInput,
 ): OrganizationContext {
   if (input.edition === "personal") {
+    // Aucune policy n'est appliquée ici, et `input.policy` est délibérément
+    // ignoré : Nova Personal ne dépend d'aucun plan de contrôle. Lui laisser
+    // subir une gouvernance d'organisation ferait dépendre le produit
+    // individuel d'un serveur qu'il n'a pas.
     return {
       edition: "personal",
       organization: null,
@@ -253,8 +270,16 @@ export function resolveOrganizationContext(
       type: server?.organizationType ?? organization.type,
     },
     member: resolveMember(campus, server),
-    capabilities: server?.capabilities
-      ? applyServerCapabilities(capabilities, server.capabilities)
-      : capabilities,
+    // La policy s'applique **en dernier**, sur ce que le serveur a annoncé.
+    // Le serveur a déjà filtré ce qu'il annonce ; l'intersection est
+    // idempotente, et la reposer ici garantit que l'interface ne montre jamais
+    // plus que ce que l'organisation autorise, même si un contrat plus ancien
+    // laissait passer une capacité gouvernée.
+    capabilities: resolveEffectiveCapabilities(
+      server?.capabilities
+        ? applyServerCapabilities(capabilities, server.capabilities)
+        : capabilities,
+      input.policy ?? DEFAULT_ORGANIZATION_POLICY,
+    ),
   };
 }

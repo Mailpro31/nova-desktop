@@ -284,25 +284,31 @@ la main. Aucun endpoint SCIM n'existe.
 
 ---
 
-## 12. Policies futures (non construites)
+## 12. Policies — la première couche existe
 
 Ordre de priorité prévu, du plus fort au plus faible :
 
 ```
 Contraintes de sécurité Nova
         ↓
-Policy d'organisation
+Policy d'organisation      ← construite en Phase 29
         ↓
-Policy de groupe
+Policy de groupe           ← non construite
         ↓
 Préférence utilisateur
 ```
 
-Le moteur n'est pas construit. La fondation se contente de ne pas le rendre
-impossible : les capacités sont résolues en **un seul endroit**
-(`resolveOrganizationContext`) à partir d'un contexte explicite, et non
-dispersées en conditions d'édition. Insérer une couche de policy revient donc à
-insérer une étape dans cette résolution.
+Le pari de cette fondation a tenu : les capacités étant résolues en **un seul
+endroit** (`resolveOrganizationContext`), insérer la couche de policy s'est
+réduit à insérer une étape dans cette résolution — sans toucher aux appelants.
+
+`capacité de base ∩ policy = capacité effective`, et l'intersection ne va que
+dans un sens : une policy restreint, elle n'accorde jamais. Voir
+[`organization-policies.md`](./organization-policies.md).
+
+**Aucun moteur de précédence** n'existe pour autant : la policy porte sur
+l'organisation entière, et il n'y a ni groupe, ni cohorte, ni exception
+individuelle.
 
 ---
 
@@ -310,4 +316,5 @@ insérer une étape dans cette résolution.
 
 Microsoft SSO, Google SSO, interface OAuth, Nova Admin, Nova Control Plane,
 écrans Business, AI Learn, distribution de Styles d'organisation, distribution
-d'AI Skills d'organisation, SCIM, moteur de policies, analytique.
+d'AI Skills d'organisation, SCIM, moteur de précédence des policies,
+analytique.
