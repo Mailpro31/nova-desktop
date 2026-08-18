@@ -69,11 +69,16 @@ referme.
 SSO de l'organisation
         ↓
   session Nova (utilisateur)
-        ↓  POST /api/admin/session — le serveur vérifie le rôle
+        ↓  POST /api/admin/step-up/start — rôle vérifié
+  réauthentification auprès de l'IdP (Phase 24)
+        ↓  POST /api/admin/step-up/complete — fraîcheur et identité vérifiées
   session d'administration (courte)
         ↓
   /api/admin/*  /api/control/*
 ```
+
+Depuis la **Phase 24**, une session utilisateur ne suffit plus : il faut une
+authentification **récente**. Voir [`admin-step-up.md`](./admin-step-up.md).
 
 ---
 
@@ -279,17 +284,15 @@ Nova ne vérifie aucun second facteur, et n'en gère aucun. Si Microsoft, Google
 Okta imposent un MFA, il se produit chez eux, avant que Nova voie quoi que ce
 soit. **Nova Admin s'appuie sur la politique d'authentification de l'IdP amont.**
 
-### Dette : pas de step-up
+### Step-up — ✅ fait en Phase 24
 
-Ouvrir une session d'administration devrait idéalement exiger une
-authentification *récente*, ou un second facteur au moment de l'élévation. Nova
-ne peut pas l'offrir honnêtement aujourd'hui : rien dans le flux actuel ne lui
-prouve qu'un facteur vient d'être présenté.
+Ouvrir une session d'administration exige désormais une authentification
+**récente** : `max_age` à l'autorisation, puis vérification d'`auth_time` dans
+l'`id_token`. Nova n'invente toujours aucun second facteur — il redemande une
+authentification à l'IdP et vérifie sa fraîcheur. Ce que l'IdP exige alors le
+regarde seul.
 
-Plutôt que de simuler un MFA que nous ne contrôlons pas, la session est courte,
-ouverte depuis une session utilisateur valide, et revérifiée à chaque appel. Le
-step-up réel — `max_age` / `prompt=login` à l'autorisation, puis lecture de
-`auth_time` dans l'`id_token` — est une dette identifiée, pas un oubli.
+Voir [`admin-step-up.md`](./admin-step-up.md).
 
 ---
 
@@ -363,6 +366,7 @@ portage de schéma, pas une réécriture.
 - **Nova Control operator** — documenté comme identité future séparée (§ 14) ;
 - **routes de gestion des administrateurs** : accorder un rôle passe par le CLI
   d'opérateur, volontairement ;
-- **step-up / MFA contrôlé par Nova** (§ 13), **migration PostgreSQL** (§ 17),
-  **limitation d'appels** (§ 16) ;
+- **migration PostgreSQL** (§ 17), **limitation d'appels** (§ 16) ;
+- **step-up par action** pendant une session d'administration — le mécanisme
+  existe depuis la Phase 24, la granularité non ;
 - **SCIM, policies, packages, SAML, passerelle privée**.
