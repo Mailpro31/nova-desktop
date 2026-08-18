@@ -162,8 +162,8 @@ découverte existe.
 6. ~~**Authentification d'administration.**~~ ✅ **Fait en Phase 22** — identité
    issue du SSO de l'organisation, rôles de sécurité décidés par Nova, sessions
    d'administration courtes et révocables, autorisation par capacité, isolation
-   par organisation. `X-Admin-Token` devient hérité : accepté en mode dédié,
-   refusé par construction en mode Control Plane. Voir
+   par organisation. Le jeton statique partagé, d'abord cadré puis déprécié, a
+   été **retiré en Phase 28** : plus aucun secret d'administration partagé. Voir
    [`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
 
 ---

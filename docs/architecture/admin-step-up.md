@@ -257,17 +257,15 @@ ce qui reviendrait à en réimplémenter une version périmée.
 
 ---
 
-## 13. Limite : `X-Admin-Token`
+## 13. Le contournement qui existait
 
-Le jeton d'administration hérité **contourne nécessairement le step-up**. Il
-n'est rattaché à aucune personne, donc à aucune identité à reprouver.
+Le jeton d'administration hérité **contournait nécessairement le step-up** : il
+n'était rattaché à aucune personne, donc à aucune identité à reprouver. C'était
+un P1 assumé.
 
-**Jeton hérité ≠ sécurité d'administration moderne.** Tant qu'il est activé, la
-propriété décrite ici ne vaut pas pour lui : c'est un P1 connu, et il est refusé
-par construction en mode Control Plane.
-
-Recommandation explicite : en production dédiée, `NOVA_LEGACY_ADMIN_TOKEN=false`
-une fois le premier administrateur déclaré.
+Il a été **retiré en Phase 28**. La propriété décrite dans ce document n'a donc
+plus d'exception : administrer exige une authentification récente, sans autre
+chemin.
 
 Le CLI d'opérateur, lui, ne change pas : il attribue un rôle, il n'ouvre aucune
 session. Son titulaire devra ensuite se connecter par SSO puis passer le step-up.

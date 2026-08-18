@@ -314,12 +314,13 @@ pub fn member_type_from_campus_role(role: &str) -> Option<MemberType> {
     }
 }
 
-/// Rôle de sécurité d'un membre Campus.
+/// Rôle de sécurité déduit d'un rôle **métier** Campus.
 ///
-/// Toujours `Member` : aucune source actuelle n'annonce de rôle de sécurité.
-/// Le panneau d'administration du serveur s'authentifie par un jeton
-/// `X-Admin-Token`, hors du modèle utilisateur — il ne fait donc de personne un
-/// administrateur au sens de Nova.
+/// Toujours `Member`, et c'est le point : un métier ne confère aucun privilège.
+/// Un enseignant n'administre pas parce qu'il enseigne.
+///
+/// Le rôle de sécurité réel est décidé par le serveur et annoncé par `/api/me` ;
+/// le poste le lit, il ne le calcule jamais.
 pub fn security_role_from_campus_role(_role: &str) -> SecurityRole {
     SecurityRole::Member
 }

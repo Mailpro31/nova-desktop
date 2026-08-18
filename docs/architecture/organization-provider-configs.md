@@ -222,8 +222,9 @@ Quatre routes sur l'organisation active uniquement : lister (y compris le cassé
 avec son motif), créer, mettre à jour, désactiver.
 
 Depuis la Phase 22, elles exigent la capacité `provider_manage` — en lecture,
-`organization_read` — et leurs mutations sont auditées. `X-Admin-Token` y reste
-accepté en mode dédié, comme chemin hérité. Voir
+`organization_read` — et leurs mutations sont auditées. Le jeton partagé qui y
+donnait accès a été retiré en Phase 28 : seule une session d'administration
+ouvre ces routes. Voir
 [`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
 
 Ce n'est toujours pas Nova Admin : pas d'interface, pas de gestion des

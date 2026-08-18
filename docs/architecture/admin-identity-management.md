@@ -197,8 +197,9 @@ aucune. Les appels qui ne mutent rien gardent leur connexion propre.
 `NOVA_LEGACY_ADMIN_UI`. Sa condition de départ — que Nova Admin gère les
 membres — était remplie. Voir [`member-management.md`](./member-management.md).
 
-`X-Admin-Token` reste accepté côté API en mode dédié, pour les automatisations
-qui en dépendent encore. Il est refusé par construction en mode Control Plane.
+Le jeton partagé a été retiré en **Phase 28** : l'administration n'a plus qu'un
+seul chemin. Voir
+[`control-plane-admin-auth.md`](./control-plane-admin-auth.md) § 10.
 
 ---
 

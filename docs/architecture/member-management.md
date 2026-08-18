@@ -168,22 +168,12 @@ Il compte des personnes, pas des sessions.
 
 ---
 
-## 7. `X-Admin-Token` — ce qui le retient
+## 7. Le jeton partagé — retiré depuis
 
-Il n'authentifie plus aucune console : `admin_principal` l'accepte encore comme
-chemin d'identification pour les **automatisations** qui en dépendent en mode
-dédié.
-
-| | |
-|---|---|
-| Mode `dedicated` | accepté, désactivable par `NOVA_LEGACY_ADMIN_TOKEN=false` |
-| Mode `control_plane` | **refusé par construction** |
-| Consommateur connu restant | scripts d'exploitation locaux |
-
-**Condition de suppression** : quand aucun script d'exploitation ne l'utilise
-plus. Il n'y a plus d'obstacle produit — seulement la vérification que rien
-d'automatisé ne casse. Il ne porte aucune identité, et un journal d'audit
-alimenté par lui n'écrit que « quelqu'un qui le détenait ».
+La condition posée ici a été vérifiée puis remplie : aucun consommateur
+versionné, et le seul trou restant — l'amorçage de la découverte — comblé par
+`admin_cli.py discovery`. Le mécanisme a été supprimé en **Phase 28**. Voir
+[`control-plane-admin-auth.md`](./control-plane-admin-auth.md) § 10.
 
 ---
 
@@ -234,7 +224,6 @@ jeton, ni le moindre contenu.
 - **SCIM et synchronisation d'annuaire** (§ 9) ;
 - **groupes réels** — la cohorte historique reste la seule notion (§ 3) ;
 - **invitation, import de masse** ;
-- **suppression de `X-Admin-Token`** — il ne tient plus qu'à la vérification des
-  automatisations (§ 7) ;
+- ~~**suppression de `X-Admin-Token`**~~ ✅ **faite en Phase 28** (§ 7) ;
 - **step-up par action** pour les gestes destructeurs ;
 - **Policies, Packages, Nova Control, passerelle privée.**

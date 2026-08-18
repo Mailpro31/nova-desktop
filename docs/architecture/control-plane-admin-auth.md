@@ -11,7 +11,9 @@ Implémentation : `nova-server/main.py` § *Administration moderne*,
 
 ## 1. Ce que cela remplace
 
-`X-Admin-Token` authentifie **une machine, pas une personne**.
+Un jeton statique partagé — `X-Admin-Token` — authentifiait **une machine, pas
+une personne**. Il a été retiré en Phase 28 ; ce document explique pourquoi, et
+ce qui l'a remplacé.
 
 Un unique secret partagé, écrit dans une variable d'environnement, circulant
 entre tous ceux qui administrent. Il ne se révoque pas individuellement — le
@@ -222,34 +224,66 @@ Un `organization_id` fourni par le client, en paramètre ou en en-tête, n'a
 
 ---
 
-## 10. `X-Admin-Token` : conservé, cadré, déprécié
+## 10. Le jeton partagé — retiré
 
-Il n'est pas supprimé — les déploiements existants s'en servent.
+Il n'existe plus. Depuis la **Phase 28**, l'administration n'a qu'un seul
+chemin : SSO, puis réauthentification, puis session d'administration.
 
-| | Mode `dedicated` | Mode `control_plane` |
-|---|---|---|
-| Jeton hérité | accepté (désactivable) | **refusé, par construction** |
+Ce qui a été supprimé : la variable `NOVA_ADMIN_TOKEN`, le drapeau
+`NOVA_LEGACY_ADMIN_TOKEN`, l'en-tête `X-Admin-Token`, la comparaison, et la
+valeur aléatoire fabriquée au démarrage quand la variable manquait — un secret
+par défaut est un secret partagé par tous les déploiements qui l'oublient.
 
-`LEGACY_ADMIN_TOKEN_ENABLED` est **dérivé** du mode de serveur : la combinaison
-« Control Plane + jeton hérité actif » n'est pas atteignable par configuration.
-Sur un serveur multi-organisations, ce jeton autoriserait son porteur à
-administrer une organisation qui n'est pas la sienne.
+Présenter cet en-tête, avec n'importe quelle valeur, ne donne désormais rien :
+`401 ADMIN_REQUIRED`. Des tests le vérifient sur plusieurs valeurs, dont
+l'ancienne valeur de fixture qui ouvrait tout.
 
-En mode dédié, il reste cadré à l'organisation servie et ne peut jamais en
-atteindre une autre. `NOVA_LEGACY_ADMIN_TOKEN=false` l'éteint. Un avertissement
-est affiché au démarrage s'il est actif hors développement.
+### Ce qui a rendu ce retrait possible
 
-La comparaison est passée en temps constant (`hmac.compare_digest`) : la
-comparaison naïve précédente fuyait la longueur du préfixe correct.
+Il fallait d'abord que rien d'essentiel n'en dépende. Trois phases l'ont
+préparé : Nova Admin (25), la gestion des administrateurs (26), celle des
+membres et la suppression de l'ancienne console (27).
 
-Depuis la **Phase 27**, il n'authentifie plus aucune console : `admin.html` est
-supprimée, et `require_admin` — devenue du code mort dès la Phase 22 — l'est
-aussi. Ne restent que les automatisations d'exploitation, seule chose qui retient
-encore sa suppression.
+Restait un trou, découvert en Phase 28 : **activer la découverte d'une
+organisation** demandait une session d'administration, qui demandait Nova Admin,
+qui ne démarrait pas sans découverte. Le jeton servait de sortie de secours à cet
+amorçage circulaire. `admin_cli.py discovery` prend sa place — au bon endroit,
+sur le serveur, comme le reste de l'amorçage.
 
-**Nova Admin ne devra jamais l'utiliser.**
+### Migration
 
----
+| Avant | Maintenant |
+|---|---|
+| `X-Admin-Token` sur `/api/admin/*` | Nova Admin : SSO + réauthentification |
+| Premier administrateur | `admin_cli.py grant <email> organization_admin` |
+| Activer la découverte | `admin_cli.py discovery enable --endpoint <url>` |
+| Récupération | la ligne de commande, sur le serveur |
+
+Aucun nouveau mécanisme n'a été introduit : ni clés d'API, ni comptes de service,
+ni jetons machine. Le jour où une automatisation en aura réellement besoin, ce
+sera une décision à prendre, pas un reste à conserver.
+
+### Les quatre chemins, une fois pour toutes
+
+| | |
+|---|---|
+| **Premier administrateur** | `admin_cli.py grant`, sur le serveur |
+| **Première découverte** | `admin_cli.py discovery enable` |
+| **Administration courante** | Nova Admin — SSO puis réauthentification |
+| **Récupération** | la ligne de commande locale |
+
+La ligne de commande n'est **ni une API distante, ni un mécanisme machine** :
+elle ne crée aucune session, n'émet aucun jeton et n'expose aucune route. Son
+autorité est celle de qui détient déjà le serveur. Un test le vérifie.
+
+### Couverture de la ligne de commande
+
+`admin_cli.py discovery` est devenu un chemin d'amorçage critique ; il est donc
+couvert automatiquement, dans `test_admin_cli.py` : lecture, activation,
+désactivation, contrat de conservation de l'adresse, entrées invalides, et —
+surtout — la preuve que la commande **délègue** la validation d'adresse au même
+helper que l'API, avec le drapeau du serveur. Une validation parallèle plus
+permissive serait exactement la porte dérobée que ce retrait cherchait à fermer.
 
 ## 11. Journal d'audit
 

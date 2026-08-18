@@ -47,11 +47,10 @@ export type MemberType =
 /**
  * Droits de sécurité Nova.
  *
- * Aucune source actuelle n'en fournit : `nova-server` n'a pas de champ de rôle
- * de sécurité, et son panneau d'administration s'authentifie par un jeton
- * `X-Admin-Token` hors du modèle utilisateur. Tant qu'un serveur ne l'annonce
- * pas explicitement, tout membre connecté est `member` — y compris un
- * enseignant ou un responsable.
+ * Décidés par le serveur, jamais par le poste : `/api/me` les annonce, et le
+ * Desktop se contente de les lire. Un serveur qui n'en annonce pas laisse tout
+ * membre connecté en `member` — y compris un enseignant ou un responsable,
+ * parce qu'un métier ne confère aucun privilège.
  */
 export type SecurityRole = "member" | "organization_admin" | "it_admin";
 
