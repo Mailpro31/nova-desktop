@@ -658,9 +658,9 @@ async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
  * délai dépassé, il n'est ni écrit sur disque, ni journalisé, ni transmis
  * ailleurs qu'au serveur de l'établissement au moment de l'échange.
  */
-async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string, providerConfigId: string | null) : Promise<Result<CampusSession, SsoError>> {
+async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string, providerConfigId: string | null, organizationCode: string | null) : Promise<Result<CampusSession, SsoError>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_organization", { provider, serverUrl, machine, providerConfigId }) };
+    return { status: "ok", data: await TAURI_INVOKE("sign_in_with_organization", { provider, serverUrl, machine, providerConfigId, organizationCode }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -676,6 +676,26 @@ async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: 
 async organizationAuthProviders(serverUrl: string) : Promise<Result<OrganizationAuthProviders, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("organization_auth_providers", { serverUrl }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Résout une organisation en adresse de service.
+ * 
+ * L'identifiant part dans le corps plutôt que dans l'URL : il n'est pas
+ * secret, mais il n'a pas besoin de se retrouver dans les journaux de chaque
+ * intermédiaire réseau.
+ * 
+ * > **Ce que Nova apprend.** Appeler la découverte révèle au service que « ce
+ * > poste cherche l'organisation X ». C'est une métadonnée réelle, et il faut
+ * > le dire plutôt que prétendre le contraire. Aucun contenu de travail ne
+ * > transite en revanche par ce chemin.
+ */
+async discoverOrganization(discoveryBaseUrl: string, organization: string, allowInsecureEndpoint: boolean) : Promise<Result<OrganizationBootstrap, DiscoveryError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("discover_organization", { discoveryBaseUrl, organization, allowInsecureEndpoint }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1682,7 +1702,21 @@ export type CampusAuthRequestResponse = { sent: boolean }
 export type CampusBrandingConfig = { logoUrl?: string | null; accentColor?: string | null }
 export type CampusCapabilitiesConfig = { dictation?: boolean | null; rewrite?: boolean | null; styles?: boolean | null; fileTranscription?: boolean | null; commands?: boolean | null; dictionary?: boolean | null; snippets?: boolean | null; formattingRules?: boolean | null; screenContext?: boolean | null; cloudInference?: boolean | null; engineeringNotes?: boolean | null; aiSkills?: boolean | null; personalization?: boolean | null }
 export type CampusCommandResponse = { text: string }
-export type CampusConfig = { server_url: string; organization?: CampusOrganizationConfig | null; capabilities?: CampusCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: CampusAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: CampusPrivacyConfig | null }
+export type CampusConfig = { 
+/**
+ * Adresse du serveur — schéma historique. Vide quand la DSI déclare
+ * plutôt une organisation à découvrir.
+ */
+server_url?: string; 
+/**
+ * Identifiant d'organisation, pour le mode découverte. Ce n'est pas un
+ * secret : le connaître ne donne rien.
+ */
+organization_code?: string | null; 
+/**
+ * `dedicated` (défaut, schéma historique) ou `discovery`.
+ */
+bootstrap_mode?: string | null; organization?: CampusOrganizationConfig | null; capabilities?: CampusCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: CampusAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: CampusPrivacyConfig | null }
 export type CampusEntraPollResponse = { status: string; email: string | null; retry_after: number | null }
 export type CampusEntraStartResponse = { flow_id: string; user_code: string; verification_uri: string; verification_uri_complete: string | null; expires_in: number; interval: number; message: string }
 export type CampusFormattingRulesResponse = { shared: CampusRuleEntry[]; personal: CampusRuleEntry[] }
@@ -1734,7 +1768,14 @@ export type CampusOrganizationConfig = { id: string; name: string; shortName?: s
 export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
 export type CampusPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
 export type CampusRuleEntry = { id: number; rule: string }
-export type CampusSession = { server_url: string; email: string }
+export type CampusSession = { server_url: string; email: string; 
+/**
+ * Identifiant d'organisation, quand il est connu.
+ * 
+ * Il sert de **périmètre du trousseau** : voir `credential_username`.
+ * Absent des sessions créées avant la découverte, d'où l'`Option`.
+ */
+organization?: string | null }
 export type CampusSharedDictEntry = { id: number; term: string; replacement: string }
 export type CampusSnippetEntry = { id: number; trigger: string; content: string }
 export type CampusSupportConfig = { email?: string | null; website?: string | null }
@@ -1821,6 +1862,32 @@ export type DictationStateEvent = { state: DictationState;
  * Renseigné uniquement quand `state` vaut `Error`.
  */
 error: DictationErrorKind | null }
+/**
+ * Motifs d'échec d'une découverte. Codes stables, jamais de détail technique.
+ */
+export type DiscoveryError = 
+/**
+ * Le service de découverte n'a pas pu être joint.
+ */
+{ code: "DiscoveryUnavailable" } | 
+/**
+ * L'organisation est inconnue, suspendue ou n'a pas publié d'adresse.
+ * Volontairement indistinct : le serveur lui-même ne fait pas la
+ * différence dans sa réponse publique.
+ */
+{ code: "OrganizationNotAvailable" } | 
+/**
+ * Réponse illisible ou incomplète.
+ */
+{ code: "DiscoveryResponseInvalid" } | 
+/**
+ * Contrat plus récent que ce que ce poste sait lire.
+ */
+{ code: "DiscoveryVersionUnsupported" } | 
+/**
+ * L'adresse annoncée n'est pas une destination acceptable.
+ */
+{ code: "ServiceEndpointInvalid" }
 export type EngineType = 
 /**
  * Any GGML/GGUF model loaded through transcribe-cpp (Whisper, Parakeet,
@@ -2029,6 +2096,23 @@ oidc_display_name: string | null;
  * booléens ci-dessus restent pour les postes déjà déployés.
  */
 configs: ProviderConfigView[] }
+/**
+ * Ce que le poste retient d'une découverte réussie.
+ * 
+ * Aucun secret : un identifiant public, un nom affichable, une adresse, une
+ * version. C'est tout ce qu'il faut pour joindre l'organisation, et rien de
+ * plus n'a de raison d'être conservé.
+ */
+export type OrganizationBootstrap = { 
+/**
+ * Identifiant public de l'organisation — pas une donnée d'authentification.
+ */
+organization: string; display_name: string; 
+/**
+ * Adresse à laquelle s'adresser ensuite. Elle peut changer : une
+ * organisation doit pouvoir déménager sans réinstaller Nova.
+ */
+service_endpoint: string; deployment_mode: string; contract_version: number }
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
 /**

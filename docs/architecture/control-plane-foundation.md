@@ -142,8 +142,10 @@ découverte existe.
    vit en base, et `start` peut atterrir sur un worker différent d'`exchange`.
    Voir [`shared-sso-flow-state.md`](./shared-sso-flow-state.md). Reste une
    exception documentée : le Device Code hérité, toujours lié à son processus ;
-2. **Découverte d'organisation**, avec sa propre analyse de menace — c'est un
-   endpoint public qui répond « cette organisation existe » ;
+2. ~~**Découverte d'organisation.**~~ ✅ **Fait en Phase 21** — endpoint public,
+   réponse identique dans tous les cas négatifs, adresse de service validée des
+   deux côtés. Voir [`organization-discovery.md`](./organization-discovery.md).
+   Reste à faire au niveau de la passerelle : la limitation d'appels ;
 3. **Références de secret** plutôt que des secrets en base (voir
    [`organization-provider-configs.md`](./organization-provider-configs.md)) ;
 4. **Journal d'audit** : `created_by` / `updated_by` existent déjà, vides ;

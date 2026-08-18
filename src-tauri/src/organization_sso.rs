@@ -535,11 +535,21 @@ pub async fn sign_in_with_organization(
     // la lui a annoncée ; il ne la fabrique jamais, et le serveur la revérifie
     // dans son organisation active.
     provider_config_id: Option<String>,
+    organization_code: Option<String>,
 ) -> Result<CampusSession, SsoError> {
     // Journalisation de sécurité : fournisseur, issue et **code de raison**.
     // Jamais le vérificateur, le code d'autorisation, le `state`, le `nonce`,
     // le jeton de session ni l'adresse complète.
-    match run_organization_sign_in(app, provider, server_url, machine, provider_config_id).await {
+    match run_organization_sign_in(
+        app,
+        provider,
+        server_url,
+        machine,
+        provider_config_id,
+        organization_code,
+    )
+    .await
+    {
         Ok(session) => {
             log::info!("[auth] provider={} result=success", provider.id());
             Ok(session)
@@ -561,6 +571,7 @@ async fn run_organization_sign_in(
     server_url: String,
     machine: String,
     provider_config_id: Option<String>,
+    organization_code: Option<String>,
 ) -> Result<CampusSession, SsoError> {
     let _guard = SignInGuard::acquire()?;
     let base_url = normalize_base_url(&server_url);
@@ -635,6 +646,10 @@ async fn run_organization_sign_in(
     let session = CampusSession {
         server_url: base_url,
         email: exchange.email.to_lowercase(),
+        // Renseignée quand le poste a découvert son organisation : le
+        // trousseau suit alors l'organisation plutôt que l'adresse, et une
+        // migration de serveur ne perd plus la session.
+        organization: organization_code,
     };
     // Seule la session Nova est conservée durablement, dans le trousseau du
     // système. Aucun jeton Microsoft n'a transité par ce poste.

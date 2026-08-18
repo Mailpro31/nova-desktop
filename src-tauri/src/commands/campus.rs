@@ -22,7 +22,17 @@ pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusConfig {
+    /// Adresse du serveur — schéma historique. Vide quand la DSI déclare
+    /// plutôt une organisation à découvrir.
+    #[serde(default)]
     pub server_url: String,
+    /// Identifiant d'organisation, pour le mode découverte. Ce n'est pas un
+    /// secret : le connaître ne donne rien.
+    #[serde(default)]
+    pub organization_code: Option<String>,
+    /// `dedicated` (défaut, schéma historique) ou `discovery`.
+    #[serde(default)]
+    pub bootstrap_mode: Option<String>,
     #[serde(default)]
     pub organization: Option<CampusOrganizationConfig>,
     #[serde(default)]
@@ -138,12 +148,20 @@ pub struct CampusPrivacyConfig {
 pub struct CampusSession {
     pub server_url: String,
     pub email: String,
+    /// Identifiant d'organisation, quand il est connu.
+    ///
+    /// Il sert de **périmètre du trousseau** : voir `credential_username`.
+    /// Absent des sessions créées avant la découverte, d'où l'`Option`.
+    #[serde(default)]
+    pub organization: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct StoredCampusSession {
     server_url: String,
     email: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    organization: Option<String>,
     /// Legacy field used only to migrate sessions created before secure storage.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     token: Option<String>,
@@ -255,12 +273,30 @@ fn campus_session_store(
         .map_err(|e| e.to_string())
 }
 
+/// Emplacement de la session dans le trousseau du système.
+///
+/// ## Pourquoi l'organisation plutôt que l'adresse
+///
+/// Cette clé était dérivée de l'adresse du serveur. C'était correct tant qu'une
+/// organisation avait une adresse fixe — mais une organisation doit pouvoir
+/// déménager, et la découverte rend ce déménagement banal. Avec l'ancienne
+/// clé, un changement d'adresse **perdait silencieusement la session** : le
+/// poste redemandait une connexion sans que personne comprenne pourquoi.
+///
+/// La clé suit donc l'identité de l'organisation, qui ne change pas quand son
+/// hébergement change.
+///
+/// ## Compatibilité
+///
+/// Les sessions créées avant la découverte n'ont pas d'organisation : elles
+/// gardent la clé dérivée de l'adresse, et continuent de fonctionner. Aucune
+/// migration forcée, aucune reconnexion imposée.
 fn credential_username(session: &CampusSession) -> String {
-    let identity = format!(
-        "{}|{}",
-        normalize_base_url(&session.server_url),
-        session.email
-    );
+    let scope = match session.organization.as_deref().map(str::trim) {
+        Some(organization) if !organization.is_empty() => organization.to_string(),
+        _ => normalize_base_url(&session.server_url),
+    };
+    let identity = format!("{}|{}", scope, session.email);
     format!("{:x}", Sha256::digest(identity.as_bytes()))
 }
 
@@ -274,6 +310,7 @@ fn persist_session_metadata(app: &AppHandle, session: &CampusSession) -> Result<
     let stored = StoredCampusSession {
         server_url: session.server_url.clone(),
         email: session.email.clone(),
+        organization: session.organization.clone(),
         token: None,
     };
     store.set(
@@ -316,6 +353,7 @@ fn load_campus_credentials(app: &AppHandle) -> Result<Option<CampusCredentials>,
     let session = CampusSession {
         server_url: stored.server_url,
         email: stored.email,
+        organization: stored.organization,
     };
     let entry = credential_entry(&session)?;
 
@@ -352,6 +390,7 @@ pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
                 let session = CampusSession {
                     server_url: stored.server_url,
                     email: stored.email,
+                    organization: stored.organization,
                 };
                 if let Ok(entry) = credential_entry(&session) {
                     if let Err(error) = entry.delete_credential() {
@@ -646,6 +685,7 @@ pub async fn poll_campus_entra_auth(
             CampusSession {
                 server_url: base_url,
                 email,
+                organization: None,
             },
             token,
         )?;
@@ -686,6 +726,7 @@ pub async fn verify_campus_auth(
     let session = CampusSession {
         server_url: base_url,
         email: email.to_lowercase(),
+        organization: None,
     };
     save_campus_credentials(&app, session.clone(), response.token)?;
     Ok(session)
@@ -1454,6 +1495,7 @@ mod tests {
         let stored = StoredCampusSession {
             server_url: "https://campus.example.edu".to_string(),
             email: "student@example.edu".to_string(),
+            organization: None,
             token: None,
         };
 
@@ -1480,12 +1522,59 @@ mod tests {
         let session = CampusSession {
             server_url: "https://campus.example.edu".to_string(),
             email: "student@example.edu".to_string(),
+            organization: None,
         };
 
         let username = credential_username(&session);
         assert_eq!(username.len(), 64);
         assert!(!username.contains("student"));
         assert!(!username.contains("example.edu"));
+    }
+
+    #[test]
+    fn a_session_survives_a_change_of_server_address() {
+        // Le défaut que la découverte rendait inévitable : une organisation qui
+        // déménage perdait sa session, sans que personne comprenne pourquoi.
+        let before = CampusSession {
+            server_url: "https://avant.example.edu".to_string(),
+            email: "etudiant@example.edu".to_string(),
+            organization: Some("ecole".to_string()),
+        };
+        let after = CampusSession {
+            server_url: "https://apres.example.edu".to_string(),
+            ..before.clone()
+        };
+        assert_eq!(credential_username(&before), credential_username(&after));
+    }
+
+    #[test]
+    fn two_organizations_never_share_a_keyring_entry() {
+        let first = CampusSession {
+            server_url: "https://nova.example.edu".to_string(),
+            email: "personne@example.edu".to_string(),
+            organization: Some("ecole-a".to_string()),
+        };
+        let second = CampusSession {
+            organization: Some("ecole-b".to_string()),
+            ..first.clone()
+        };
+        assert_ne!(credential_username(&first), credential_username(&second));
+    }
+
+    #[test]
+    fn a_session_without_an_organization_keeps_its_legacy_entry() {
+        // Les sessions créées avant la découverte continuent de fonctionner :
+        // aucune migration forcée, aucune reconnexion imposée.
+        let legacy = CampusSession {
+            server_url: "https://campus.example.edu".to_string(),
+            email: "student@example.edu".to_string(),
+            organization: None,
+        };
+        let expected = format!(
+            "{:x}",
+            Sha256::digest("https://campus.example.edu|student@example.edu".as_bytes())
+        );
+        assert_eq!(credential_username(&legacy), expected);
     }
 
     // ── Où la configuration Campus est lue ──────────────────────────────

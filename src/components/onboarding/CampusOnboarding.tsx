@@ -336,6 +336,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
           serverUrl,
           machineName,
           providerConfigId,
+          // Renseigné quand le poste a découvert son organisation : le
+          // trousseau suit alors l'organisation plutôt que l'adresse.
+          config?.organization_code ?? null,
         );
         if (result.status === "error") {
           setError(formatSsoError(result.error, t));

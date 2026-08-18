@@ -46,7 +46,12 @@ export async function loadCampusServerConfig(
 }
 
 export interface CampusConfig {
-  server_url: string;
+  /** Vide quand la DSI déclare une organisation à découvrir plutôt qu'une adresse. */
+  server_url?: string;
+  /** Identifiant d'organisation, pour le mode découverte. Pas un secret. */
+  organization_code?: string | null;
+  /** `dedicated` (défaut) ou `discovery`. */
+  bootstrap_mode?: string | null;
   organization?: unknown;
   capabilities?: unknown;
   education_mode?: string | null;

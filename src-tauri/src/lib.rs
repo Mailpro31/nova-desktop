@@ -26,6 +26,9 @@ mod nova_commands;
 /// Modèle d'organisation partagé (éditions, membres, groupes). Voir
 /// `docs/architecture/organization-foundation.md`.
 pub mod organization;
+/// Découverte d'organisation : trouver son service sans taper une adresse.
+/// Voir `docs/architecture/organization-discovery.md`.
+mod organization_discovery;
 /// Connexion Organization par SSO (Authorization Code + PKCE), Microsoft Entra
 /// et Google Workspace. Voir `docs/architecture/microsoft-entra-sso.md` et
 /// `docs/architecture/google-workspace-sso.md`.
@@ -663,6 +666,7 @@ pub fn run(cli_args: CliArgs) {
             commands::campus::set_campus_mode,
             organization_sso::sign_in_with_organization,
             organization_sso::organization_auth_providers,
+            organization_discovery::discover_organization,
             commands::campus::load_campus_session,
             commands::campus::clear_campus_session,
             commands::campus::logout_campus_session,
