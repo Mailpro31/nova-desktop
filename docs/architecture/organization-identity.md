@@ -178,11 +178,14 @@ employer le même identifiant externe.
 
 `member | organization_admin | it_admin`.
 
-**Aucune source actuelle ne produit autre chose que `member`.**
-`security_role_for()` renvoie `member` quel que soit le métier ; les tests le
-vérifient pour `student`, `teacher`, `staff`, `partner`, `employee` et
-`manager`. Le panneau d'administration s'authentifie par `X-Admin-Token`, hors
-du modèle utilisateur : il ne fait de personne un `organization_admin`.
+**Aucun métier ne produit autre chose que `member`.** `security_role_for()`
+ignore le métier : les tests le vérifient pour `student`, `teacher`, `staff`,
+`partner`, `employee` et `manager`.
+
+Depuis la Phase 22, le rôle est lu dans la colonne `users.security_role`, écrite
+par un opérateur et par lui seul — jamais déduite d'un métier, d'un domaine
+d'adresse, d'un groupe d'annuaire ou d'une revendication d'IdP. Voir
+[`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
 
 ---
 

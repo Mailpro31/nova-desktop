@@ -101,10 +101,10 @@ configurations de fournisseur
 boutons de connexion
 ```
 
-C'est le seul point réellement nouveau, et il n'est pas résolu ici. La
-découverte n'est **pas** construite : ni endpoint public global, ni résolution
-par domaine d'adresse — cette dernière serait d'ailleurs contraire à tout ce que
-le modèle d'identité impose depuis la Phase 13.
+La découverte existe depuis la Phase 21 — voir
+[`organization-discovery.md`](./organization-discovery.md). Reste non construite,
+et volontairement : la résolution par **domaine d'adresse**, contraire à tout ce
+que le modèle d'identité impose depuis la Phase 13.
 
 **Ne pas mélanger les deux modes.** Un serveur dédié qui commencerait à
 répondre pour des organisations qu'il ne sert pas serait un multi-tenant
@@ -148,10 +148,15 @@ découverte existe.
    Reste à faire au niveau de la passerelle : la limitation d'appels ;
 3. **Références de secret** plutôt que des secrets en base (voir
    [`organization-provider-configs.md`](./organization-provider-configs.md)) ;
-4. **Journal d'audit** : `created_by` / `updated_by` existent déjà, vides ;
-5. **Authentification d'administration** digne de ce nom — `X-Admin-Token` est
-   un jeton unique partagé, acceptable pour une instance dédiée, insuffisant
-   pour un plan de contrôle mutualisé.
+4. ~~**Journal d'audit.**~~ ✅ **Fait en Phase 22** — `admin_audit_log`, en ajout
+   seul par l'application, sans jamais y écrire un secret. L'immuabilité de
+   stockage reste hors de portée de SQLite, et c'est dit ;
+5. ~~**Authentification d'administration.**~~ ✅ **Fait en Phase 22** — identité
+   issue du SSO de l'organisation, rôles de sécurité décidés par Nova, sessions
+   d'administration courtes et révocables, autorisation par capacité, isolation
+   par organisation. `X-Admin-Token` devient hérité : accepté en mode dédié,
+   refusé par construction en mode Control Plane. Voir
+   [`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
 
 ---
 

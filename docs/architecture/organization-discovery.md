@@ -265,4 +265,6 @@ du CDN qui exposera l'endpoint. Elle est notée comme telle, sans faux-semblant.
   données le supporte (le trousseau est cloisonné par organisation) ; l'interface
   ne le propose pas ;
 - **Nova Admin** : la configuration de découverte se lit et se modifie par
-  l'API d'administration existante, sous `X-Admin-Token`.
+  l'API d'administration existante, qui exige depuis la Phase 22 la capacité
+  `discovery_manage` — voir
+  [`control-plane-admin-auth.md`](./control-plane-admin-auth.md).

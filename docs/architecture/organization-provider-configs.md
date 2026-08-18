@@ -218,11 +218,16 @@ manquait, et elle rend le registre réutilisable pour un serveur multi-tenant.
 
 ## 11. Administration interne
 
-Quatre routes sous `X-Admin-Token`, sur l'organisation active uniquement :
-lister (y compris le cassé, avec son motif), créer, mettre à jour, désactiver.
+Quatre routes sur l'organisation active uniquement : lister (y compris le cassé,
+avec son motif), créer, mettre à jour, désactiver.
 
-Ce n'est pas Nova Admin : pas d'interface, pas de gestion d'utilisateurs, pas de
-journal d'audit. Juste de quoi ne pas manipuler SQLite à la main.
+Depuis la Phase 22, elles exigent la capacité `provider_manage` — en lecture,
+`organization_read` — et leurs mutations sont auditées. `X-Admin-Token` y reste
+accepté en mode dédié, comme chemin hérité. Voir
+[`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
+
+Ce n'est toujours pas Nova Admin : pas d'interface, pas de gestion des
+administrateurs. Juste de quoi ne pas manipuler SQLite à la main.
 
 ---
 
