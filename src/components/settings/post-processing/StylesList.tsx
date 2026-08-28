@@ -9,6 +9,7 @@ import { Dialog } from "../../ui/Dialog";
 import { Input } from "../../ui/Input";
 import { Textarea } from "../../ui/Textarea";
 import { getStatus, TIER_FOR_FEATURE } from "../license/TierBadge";
+import { useCampusStore } from "@/stores/campusStore";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
 import { BUILTIN_STYLE_IDS, styleLockFeature } from "@/lib/builtinStyles";
@@ -36,7 +37,12 @@ interface StyleItem {
   id: string;
   name: string;
   description: string;
-  kind: "builtin" | "personal";
+  /**
+   * Provenance, et non simple catégorie d'affichage : elle décide aussi de
+   * l'autorisation. Un Style d'organisation n'exige aucun palier personnel —
+   * l'établissement paie déjà son déploiement.
+   */
+  kind: "builtin" | "organization" | "personal";
   /** Fonctionnalité de palier manquante, `null` si le Style est accessible. */
   lockedBy: string | null;
 }
@@ -83,6 +89,27 @@ export const StylesList: React.FC = () => {
       return feature && !features[feature] ? feature : null;
     },
     [campusMode, features],
+  );
+
+  // Publiés par l'organisation, et distincts des réglages de l'utilisateur :
+  // ils ne s'y écrivent pas, ne s'y modifient pas, et disparaissent avec la
+  // session. Voir `organization_packages.rs`.
+  const organizationStyles = useCampusStore(
+    (state) => state.organizationCatalog?.styles,
+  );
+
+  const organization = useMemo<StyleItem[]>(
+    () =>
+      (organizationStyles ?? []).map((style) => ({
+        id: style.id,
+        name: style.name,
+        description: "",
+        kind: "organization" as const,
+        // Jamais verrouillé par un palier : l'autorisation vient de
+        // l'appartenance à l'organisation et des policies, pas d'Ultra.
+        lockedBy: null,
+      })),
+    [organizationStyles],
   );
 
   const { builtins, personal } = useMemo(() => {
@@ -202,6 +229,34 @@ export const StylesList: React.FC = () => {
           ))}
         </ul>
       </section>
+
+      {organization.length > 0 && (
+        <section aria-labelledby="styles-organization">
+          <SectionTitle id="styles-organization">
+            {t("styles.section.organization")}
+          </SectionTitle>
+          <ul>
+            {organization.map((item) => (
+              <li key={item.id}>
+                <StyleRow
+                  name={item.name}
+                  description={item.description}
+                  active={activeId === item.id}
+                  lockedBy={item.lockedBy}
+                  onSelect={() => select(item.id)}
+                />
+              </li>
+            ))}
+          </ul>
+          {/* Ni modification ni suppression : ce contenu appartient à
+              l'organisation. Un bouton « supprimer » ne pourrait signifier que
+              « jusqu'à la prochaine synchronisation », ce qui n'est ni une
+              suppression ni un refus. */}
+          <p className="px-2 py-2 text-sm text-text-secondary">
+            {t("styles.organizationManaged")}
+          </p>
+        </section>
+      )}
 
       {(personal.length > 0 || canEdit) && (
         <section aria-labelledby="styles-personal">

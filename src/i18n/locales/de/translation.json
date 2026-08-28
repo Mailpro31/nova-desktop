@@ -24,7 +24,8 @@
     "styles": "Nachbearbeitung",
     "aiSkills": "AI Skills",
     "settings": "Einstellungen",
-    "organization": "Organisation"
+    "organization": "Organisation",
+    "learn": "Lernen"
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatisch",
       "builtin": "Stile",
-      "personal": "Ihre Stile"
+      "personal": "Ihre Stile",
+      "organization": "Von Ihrer Organisation"
     },
     "automaticHow": "Nova liest den Namen der Anwendung im Vordergrund und wendet den passenden Stil an. Von Ihnen gesperrte Anwendungen werden nie ausgelesen.",
     "active": "Aktiv",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Der Stil konnte nicht gespeichert werden.",
       "delete": "Der Stil konnte nicht gelöscht werden."
-    }
+    },
+    "organizationManaged": "Diese Stile werden von Ihrer Organisation veröffentlicht. Sie können hier nicht bearbeitet werden."
   },
   "history": {
     "subtitle": "Alles, was Sie mit Nova diktiert haben.",
@@ -1665,5 +1668,28 @@
     "appearance": "Erscheinungsbild",
     "orb": "Orb",
     "overlay": "Überlagerung"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Fertige KI-Aktionen für beliebigen Text.",
+    "builtin": "Integriert",
+    "noBuiltin": "Noch keine integrierten AI Skills.",
+    "organization": "Von Ihrer Organisation",
+    "noOrganization": "Ihre Organisation hat keine AI Skills veröffentlicht.",
+    "fromOrganization": "Von Ihrer Organisation",
+    "howToUse": "So verwenden Sie es",
+    "inputPlaceholder": "Text zum Bearbeiten einfügen oder eingeben",
+    "run": "Ausführen",
+    "running": "Wird ausgeführt...",
+    "error": "Diese AI Skill konnte nicht ausgeführt werden.",
+    "signedOut": "Melden Sie sich an, um AI Skills zu nutzen."
+  },
+  "campusConnection": {
+    "title": "Organisation",
+    "description": "Verbinden Sie Nova mit Ihrer Organisation, um deren Inhalte und Einstellungen zu nutzen.",
+    "connect": "Organisation verbinden",
+    "connected": "Verbunden",
+    "local": "Offline mit den zuletzt bekannten Einstellungen",
+    "signedOut": "Abgemeldet"
   }
 }

@@ -24,7 +24,8 @@
     "styles": "معالجة لاحقة",
     "aiSkills": "AI Skills",
     "settings": "الإعدادات",
-    "organization": "المؤسسة"
+    "organization": "المؤسسة",
+    "learn": "تعلّم"
   },
   "onboarding": {
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "تلقائي",
       "builtin": "الأساليب",
-      "personal": "أساليبك"
+      "personal": "أساليبك",
+      "organization": "من مؤسستك"
     },
     "automaticHow": "تقرأ Nova اسم التطبيق في المقدمة وتطبّق الأسلوب المناسب. التطبيقات التي تحظرها لا تُفحص أبدًا.",
     "active": "نشط",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "تعذّر حفظ الأسلوب.",
       "delete": "تعذّر حذف الأسلوب."
-    }
+    },
+    "organizationManaged": "تنشر مؤسستك هذه الأنماط. لا يمكن تعديلها هنا."
   },
   "history": {
     "subtitle": "كل ما أمليته باستخدام Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "المظهر",
     "orb": "الكرة",
     "overlay": "الطبقة"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "إجراءات ذكاء اصطناعي جاهزة لأي نص.",
+    "builtin": "المدمجة",
+    "noBuiltin": "لا توجد AI Skills مدمجة بعد.",
+    "organization": "من مؤسستك",
+    "noOrganization": "لم تنشر مؤسستك أي AI Skills.",
+    "fromOrganization": "من مؤسستك",
+    "howToUse": "كيفية الاستخدام",
+    "inputPlaceholder": "الصق أو اكتب النص المراد معالجته",
+    "run": "تشغيل",
+    "running": "جارٍ التشغيل...",
+    "error": "تعذّر تشغيل هذه الـ AI Skill.",
+    "signedOut": "سجّل الدخول لاستخدام AI Skills."
+  },
+  "campusConnection": {
+    "title": "المؤسسة",
+    "description": "اربط Nova بمؤسستك لاستخدام المحتوى والإعدادات التي توفّرها.",
+    "connect": "ربط المؤسسة",
+    "connected": "متصل",
+    "local": "غير متصل، بآخر إعدادات معروفة",
+    "signedOut": "تم تسجيل الخروج"
   }
 }

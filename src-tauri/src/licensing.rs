@@ -112,9 +112,63 @@ pub const BUILTIN_STYLE_IDS: &[&str] = &[
     "nova_style_voice_to_text",
 ];
 
+/// Préfixe des Styles publiés par une organisation. Attribué par le serveur
+/// (`package_identifier`), jamais saisi par un auteur : un Style d'organisation
+/// ne peut donc ni masquer un preset intégré, ni se faire passer pour un Style
+/// personnel.
+pub const ORGANIZATION_STYLE_PREFIX: &str = "org_style_";
+
+/// Provenance d'un Style. Trois origines, trois règles d'autorisation.
+///
+/// Jusqu'ici le code ne connaissait que deux cas — intégré, ou « le reste ».
+/// « Le reste » signifiait Style personnel, donc Nova Ultra. Un Style distribué
+/// par un établissement y tombait par défaut, et ses membres auraient dû
+/// acheter Ultra pour utiliser le contenu que leur organisation leur fournit.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StyleOrigin {
+    /// Preset livré avec Nova. Palier Free ou Pro selon le Style.
+    Builtin,
+    /// Publié par l'organisation. **Aucun palier personnel exigé** :
+    /// l'organisation paie déjà son déploiement, et facturer deux fois le même
+    /// contenu se défendrait mal. L'autorisation vient de l'appartenance à
+    /// l'organisation, du package actif et des policies applicables.
+    Organization,
+    /// Créé par l'utilisateur. Reste Nova Ultra (`custom_styles`).
+    Personal,
+}
+
+pub fn style_origin(id: &str) -> StyleOrigin {
+    if BUILTIN_STYLE_IDS.contains(&id) {
+        StyleOrigin::Builtin
+    } else if id.starts_with(ORGANIZATION_STYLE_PREFIX) {
+        StyleOrigin::Organization
+    } else {
+        StyleOrigin::Personal
+    }
+}
+
 /// Un Style est-il un preset intégré (par opposition à un Style personnel) ?
 pub fn is_builtin_style(id: &str) -> bool {
     BUILTIN_STYLE_IDS.contains(&id)
+}
+
+/// Un Style est-il distribué par l'organisation ?
+pub fn is_organization_style(id: &str) -> bool {
+    style_origin(id) == StyleOrigin::Organization
+}
+
+/// Le palier requis pour appliquer un Style, ou `None` si aucun ne l'est.
+///
+/// C'est le seul endroit qui traduit une provenance en exigence commerciale.
+/// Le dupliquer ferait diverger la règle entre la liste et l'exécution — et
+/// c'est à l'exécution que l'utilisateur s'en apercevrait.
+pub fn style_required_feature(id: &str) -> Option<&'static str> {
+    match style_origin(id) {
+        StyleOrigin::Builtin if FREE_STYLE_IDS.contains(&id) => None,
+        StyleOrigin::Builtin => Some("all_styles"),
+        StyleOrigin::Organization => None,
+        StyleOrigin::Personal => Some("custom_styles"),
+    }
 }
 
 /// Infos extraites d'un jeton valide.

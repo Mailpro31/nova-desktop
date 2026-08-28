@@ -44,12 +44,19 @@ import {
   type AnnouncedProviders,
 } from "@/lib/organization/ssoProviders";
 import { refreshCampusContext } from "@/stores/campusStore";
+import { useCampusStatus } from "@/hooks/useCampusStatus";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 type CampusStep = "welcome" | "email" | "code" | "ready";
 
 interface CampusOnboardingProps {
+  /**
+   * Le parcours d'authentification est partagé, mais sa sortie dépend de la
+   * surface qui l'a ouvert : le premier lancement présente un récapitulatif,
+   * tandis que Settings revient immédiatement dans Nova.
+   */
+  flowContext: "onboarding" | "settings";
   onComplete: () => void;
 }
 
@@ -136,8 +143,12 @@ const CodeInput: React.FC<CodeInputProps> = ({
   );
 };
 
-const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
+const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
+  flowContext,
+  onComplete,
+}) => {
   const { t } = useTranslation();
+  const { refresh: refreshCampusStatus } = useCampusStatus();
   const [step, setStep] = useState<CampusStep>("welcome");
   const [email, setEmail] = useState("");
   const [serverUrl, setServerUrl] = useState("");
@@ -262,6 +273,34 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     [config, profile],
   );
 
+  /**
+   * Termine le flow sans dupliquer discovery ni authentification.
+   *
+   * Le contexte Organization est rafraîchi par chaque chemin d'authentification
+   * avant cet appel. Settings peut donc fermer le flow immédiatement ; le
+   * premier lancement, lui, conserve son écran récapitulatif historique.
+   */
+  const finishFlow = useCallback(() => {
+    if (flowContext === "settings") {
+      onComplete();
+      return;
+    }
+    setStep("ready");
+  }, [flowContext, onComplete]);
+
+  /**
+   * Relit les deux projections encore consommées par l'interface Campus.
+   *
+   * Le store Organization porte le profil et les packages, tandis que la
+   * navigation historique lit encore `useCampusStatus` pour savoir si une
+   * session existe. Rafraîchir seulement le premier chargeait bien `/api/me`
+   * et le catalogue, mais laissait Settings et la sidebar visuellement
+   * déconnectés jusqu'au redémarrage suivant.
+   */
+  const refreshConnectedCampusState = useCallback(async () => {
+    await Promise.all([refreshCampusContext(), refreshCampusStatus()]);
+  }, [refreshCampusStatus]);
+
   const formatError = useCallback(
     (caught: unknown): string => {
       if (caught instanceof CampusApiError) {
@@ -347,8 +386,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
         const loadedProfile = await api.getMe().catch(() => null);
         setEmail(result.data.email);
         setProfile(loadedProfile);
-        await refreshCampusContext();
-        setStep("ready");
+        await refreshConnectedCampusState();
+        finishFlow();
         return;
       }
 
@@ -378,8 +417,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
           setEmail(result.email ?? loadedProfile?.email ?? "");
           setProfile(loadedProfile);
           setMicrosoftFlow(null);
-          await refreshCampusContext();
-          if (active) setStep("ready");
+          await refreshConnectedCampusState();
+          if (active) finishFlow();
           return;
         }
         if (result.status === "expired") {
@@ -401,7 +440,14 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       active = false;
       if (timer !== undefined) window.clearTimeout(timer);
     };
-  }, [api, formatError, microsoftFlow, t]);
+  }, [
+    api,
+    finishFlow,
+    formatError,
+    microsoftFlow,
+    refreshConnectedCampusState,
+    t,
+  ]);
 
   const handleVerifyCode = useCallback(async () => {
     if (code.length !== 6 || isLoading || lastSubmittedCode.current === code) {
@@ -414,8 +460,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
       await api.verifyAuth(email.trim(), code, machineName);
       const loadedProfile = await api.getMe().catch(() => null);
       setProfile(loadedProfile);
-      await refreshCampusContext();
-      setStep("ready");
+      await refreshConnectedCampusState();
+      finishFlow();
     } catch (caught) {
       let message = formatError(caught);
       if (caught instanceof CampusApiError) {
@@ -429,7 +475,17 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({ onComplete }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [api, code, email, formatError, isLoading, machineName, t]);
+  }, [
+    api,
+    code,
+    email,
+    finishFlow,
+    formatError,
+    isLoading,
+    machineName,
+    refreshConnectedCampusState,
+    t,
+  ]);
 
   useEffect(() => {
     if (step === "code" && code.length === 6) {

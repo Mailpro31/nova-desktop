@@ -24,7 +24,8 @@
     "styles": "Styles",
     "aiSkills": "AI Skills",
     "settings": "Réglages",
-    "organization": "Organisation"
+    "organization": "Organisation",
+    "learn": "Apprendre"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatique",
       "builtin": "Styles",
-      "personal": "Vos styles"
+      "personal": "Vos styles",
+      "organization": "De votre organisation"
     },
     "automaticHow": "Nova lit le nom de l'application au premier plan et applique le style correspondant. Les applications que vous bloquez ne sont jamais inspectées.",
     "active": "Actif",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Le style n'a pas pu être enregistré.",
       "delete": "Le style n'a pas pu être supprimé."
-    }
+    },
+    "organizationManaged": "Ces Styles sont publiés par votre organisation. Ils ne peuvent pas être modifiés ici."
   },
   "history": {
     "subtitle": "Tout ce que vous avez dicté avec Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Apparence",
     "orb": "Orbe",
     "overlay": "Bulle"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Des actions IA prêtes à l'emploi, applicables à n'importe quel texte.",
+    "builtin": "Intégrées",
+    "noBuiltin": "Aucune AI Skill intégrée pour l'instant.",
+    "organization": "De votre organisation",
+    "noOrganization": "Votre organisation n'a publié aucune AI Skill.",
+    "fromOrganization": "De votre organisation",
+    "howToUse": "Comment l'utiliser",
+    "inputPlaceholder": "Collez ou saisissez le texte à traiter",
+    "run": "Exécuter",
+    "running": "Exécution...",
+    "error": "Impossible d'exécuter cette AI Skill.",
+    "signedOut": "Connectez-vous pour utiliser les AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organisation",
+    "description": "Connectez Nova à votre organisation pour utiliser le contenu et les réglages qu'elle fournit.",
+    "connect": "Connecter l'organisation",
+    "connected": "Connecté",
+    "local": "Hors ligne, avec les derniers réglages connus",
+    "signedOut": "Déconnecté"
   }
 }

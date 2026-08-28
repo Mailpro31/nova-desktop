@@ -24,7 +24,8 @@
     "styles": "Post-Elaborazione",
     "aiSkills": "AI Skills",
     "settings": "Impostazioni",
-    "organization": "Organizzazione"
+    "organization": "Organizzazione",
+    "learn": "Impara"
   },
   "onboarding": {
     "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatico",
       "builtin": "Stili",
-      "personal": "I tuoi stili"
+      "personal": "I tuoi stili",
+      "organization": "Dalla tua organizzazione"
     },
     "automaticHow": "Nova legge il nome dell'applicazione in primo piano e applica lo stile corrispondente. Le applicazioni che blocchi non vengono mai ispezionate.",
     "active": "Attivo",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Impossibile salvare lo stile.",
       "delete": "Impossibile eliminare lo stile."
-    }
+    },
+    "organizationManaged": "Questi stili sono pubblicati dalla tua organizzazione. Non possono essere modificati qui."
   },
   "history": {
     "subtitle": "Tutto ciò che hai dettato con Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Aspetto",
     "orb": "Sfera",
     "overlay": "Riquadro"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Azioni IA pronte all'uso su qualsiasi testo.",
+    "builtin": "Integrate",
+    "noBuiltin": "Nessuna AI Skill integrata per ora.",
+    "organization": "Dalla tua organizzazione",
+    "noOrganization": "La tua organizzazione non ha pubblicato AI Skill.",
+    "fromOrganization": "Dalla tua organizzazione",
+    "howToUse": "Come si usa",
+    "inputPlaceholder": "Incolla o scrivi il testo da elaborare",
+    "run": "Esegui",
+    "running": "Esecuzione...",
+    "error": "Impossibile eseguire questa AI Skill.",
+    "signedOut": "Accedi per usare le AI Skill."
+  },
+  "campusConnection": {
+    "title": "Organizzazione",
+    "description": "Collega Nova alla tua organizzazione per usare i contenuti e le impostazioni che fornisce.",
+    "connect": "Collega organizzazione",
+    "connected": "Connesso",
+    "local": "Offline con le ultime impostazioni note",
+    "signedOut": "Disconnesso"
   }
 }

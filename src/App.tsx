@@ -39,6 +39,7 @@ import { useSystemReadiness } from "./hooks/useSystemReadiness";
 import { useOnboardingFlow } from "./hooks/useOnboardingFlow";
 import { reconcileWithLegacySetting } from "./lib/onboarding/progress";
 import { useSettingsStore } from "./stores/settingsStore";
+import { refreshCampusContext } from "./stores/campusStore";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
 import {
@@ -107,6 +108,14 @@ function App() {
 
   useEffect(() => {
     checkOnboardingStatus();
+  }, []);
+
+  // Une session Organization peut déjà exister au lancement. Dans ce cas le
+  // parcours de connexion ne se remonte pas, donc c'est l'application qui doit
+  // amorcer l'identité, les policies et le catalogue de packages partagés.
+  useEffect(() => {
+    if (!isCampusMode()) return;
+    void refreshCampusContext();
   }, []);
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
@@ -503,6 +512,7 @@ function App() {
   } else if (flow.current === "campus") {
     content = (
       <CampusOnboarding
+        flowContext="onboarding"
         onComplete={() => {
           refreshCampusStatus();
           flow.next();

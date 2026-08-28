@@ -17,7 +17,7 @@ export interface CampusStatus {
   /** Hôte du serveur de l'établissement, prêt à afficher. */
   serverName: string | null;
   /** Relit la session : à appeler après une déconnexion ou une expiration. */
-  refresh: () => void;
+  refresh: () => Promise<void>;
 }
 
 interface Snapshot {
@@ -108,8 +108,9 @@ export function useCampusStatus(): CampusStatus {
     };
   }, []);
 
-  const refresh = useCallback(() => {
-    void loadSession().then(() => void checkReachability());
+  const refresh = useCallback(async () => {
+    await loadSession();
+    await checkReachability();
   }, []);
 
   const serverName = local.session

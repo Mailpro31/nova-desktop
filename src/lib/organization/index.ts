@@ -11,4 +11,5 @@ export * from "./identity";
 export * from "./ssoProviders";
 export * from "./capabilities";
 export * from "./policy";
+export * from "./packages";
 export * from "./resolve";

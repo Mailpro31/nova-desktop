@@ -29,6 +29,7 @@ pub mod organization;
 /// Découverte d'organisation : trouver son service sans taper une adresse.
 /// Voir `docs/architecture/organization-discovery.md`.
 mod organization_discovery;
+mod organization_packages;
 /// Connexion Organization par SSO (Authorization Code + PKCE), Microsoft Entra
 /// et Google Workspace. Voir `docs/architecture/microsoft-entra-sso.md` et
 /// `docs/architecture/google-workspace-sso.md`.
@@ -691,6 +692,9 @@ pub fn run(cli_args: CliArgs) {
             commands::campus::delete_campus_formatting_rule,
             commands::campus::execute_campus_command,
             commands::campus::get_campus_ai_skills,
+            commands::campus::refresh_organization_packages,
+            commands::campus::clear_organization_packages,
+            commands::campus::run_organization_skill,
             commands::campus::format_campus_engineering_notes,
             commands::campus::transcribe_campus_audio_file,
             commands::get_lexicon_suggestions,

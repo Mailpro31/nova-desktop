@@ -24,7 +24,8 @@
     "account": "Account",
     "aiSkills": "AI Skills",
     "settings": "Settings",
-    "organization": "Organization"
+    "organization": "Organization",
+    "learn": "Learn"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatic",
       "builtin": "Styles",
-      "personal": "Your styles"
+      "personal": "Your styles",
+      "organization": "From your organization"
     },
     "automaticHow": "Nova reads the name of the app in front and applies the matching style. Apps you block are never inspected.",
     "active": "Active",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Could not save the style.",
       "delete": "Could not delete the style."
-    }
+    },
+    "organizationManaged": "These styles are published by your organization. They cannot be edited here."
   },
   "history": {
     "subtitle": "Everything you have dictated with Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Appearance",
     "orb": "Orb",
     "overlay": "Overlay"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Ready-made AI actions you can run on any text.",
+    "builtin": "Built-in",
+    "noBuiltin": "No built-in AI Skills yet.",
+    "organization": "From your organization",
+    "noOrganization": "Your organization has not published any AI Skills.",
+    "fromOrganization": "From your organization",
+    "howToUse": "How to use it",
+    "inputPlaceholder": "Paste or type the text to work on",
+    "run": "Run",
+    "running": "Running...",
+    "error": "Could not run this AI Skill.",
+    "signedOut": "Sign in to use AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organization",
+    "description": "Connect Nova to your organization to use the content and settings it provides.",
+    "connect": "Connect organization",
+    "connected": "Connected",
+    "local": "Working offline with the last known settings",
+    "signedOut": "Signed out"
   }
 }

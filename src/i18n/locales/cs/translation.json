@@ -24,7 +24,8 @@
     "styles": "Následné zpracování",
     "aiSkills": "AI Skills",
     "settings": "Nastavení",
-    "organization": "Organizace"
+    "organization": "Organizace",
+    "learn": "Učit se"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatický",
       "builtin": "Styly",
-      "personal": "Vaše styly"
+      "personal": "Vaše styly",
+      "organization": "Od vaší organizace"
     },
     "automaticHow": "Nova přečte název aplikace v popředí a použije odpovídající styl. Zablokované aplikace se nikdy nezkoumají.",
     "active": "Aktivní",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Styl se nepodařilo uložit.",
       "delete": "Styl se nepodařilo smazat."
-    }
+    },
+    "organizationManaged": "Tyto styly publikuje vaše organizace. Zde je nelze upravovat."
   },
   "history": {
     "subtitle": "Vše, co jste s Novou nadiktovali.",
@@ -1665,5 +1668,28 @@
     "appearance": "Vzhled",
     "orb": "Koule",
     "overlay": "Překryv"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Připravené akce AI pro libovolný text.",
+    "builtin": "Vestavěné",
+    "noBuiltin": "Zatím žádné vestavěné AI Skills.",
+    "organization": "Od vaší organizace",
+    "noOrganization": "Vaše organizace nezveřejnila žádné AI Skills.",
+    "fromOrganization": "Od vaší organizace",
+    "howToUse": "Jak to použít",
+    "inputPlaceholder": "Vložte nebo napište text ke zpracování",
+    "run": "Spustit",
+    "running": "Probíhá...",
+    "error": "Tuto AI Skill se nepodařilo spustit.",
+    "signedOut": "Přihlaste se pro použití AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organizace",
+    "description": "Připojte Nova ke své organizaci a využívejte obsah a nastavení, které poskytuje.",
+    "connect": "Připojit organizaci",
+    "connected": "Připojeno",
+    "local": "Offline s posledními známými nastaveními",
+    "signedOut": "Odhlášeno"
   }
 }

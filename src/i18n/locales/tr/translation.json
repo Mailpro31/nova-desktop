@@ -24,7 +24,8 @@
     "styles": "Son İşlem",
     "aiSkills": "AI Skills",
     "settings": "Ayarlar",
-    "organization": "Kuruluş"
+    "organization": "Kuruluş",
+    "learn": "Öğren"
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Otomatik",
       "builtin": "Biçemler",
-      "personal": "Biçemleriniz"
+      "personal": "Biçemleriniz",
+      "organization": "Kuruluşunuzdan"
     },
     "automaticHow": "Nova öndeki uygulamanın adını okur ve uygun biçemi uygular. Engellediğiniz uygulamalar hiçbir zaman incelenmez.",
     "active": "Etkin",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Biçem kaydedilemedi.",
       "delete": "Biçem silinemedi."
-    }
+    },
+    "organizationManaged": "Bu stiller kuruluşunuz tarafından yayınlanır. Burada düzenlenemez."
   },
   "history": {
     "subtitle": "Nova ile dikte ettiğiniz her şey.",
@@ -1665,5 +1668,28 @@
     "appearance": "Görünüm",
     "orb": "Küre",
     "overlay": "Katman"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Herhangi bir metne uygulanabilen hazır yapay zekâ eylemleri.",
+    "builtin": "Yerleşik",
+    "noBuiltin": "Henüz yerleşik AI Skill yok.",
+    "organization": "Kuruluşunuzdan",
+    "noOrganization": "Kuruluşunuz hiç AI Skill yayınlamadı.",
+    "fromOrganization": "Kuruluşunuzdan",
+    "howToUse": "Nasıl kullanılır",
+    "inputPlaceholder": "İşlenecek metni yapıştırın veya yazın",
+    "run": "Çalıştır",
+    "running": "Çalışıyor...",
+    "error": "Bu AI Skill çalıştırılamadı.",
+    "signedOut": "AI Skills kullanmak için oturum açın."
+  },
+  "campusConnection": {
+    "title": "Kuruluş",
+    "description": "Kuruluşunuzun sağladığı içerik ve ayarları kullanmak için Nova'yı bağlayın.",
+    "connect": "Kuruluşu bağla",
+    "connected": "Bağlı",
+    "local": "Çevrimdışı, son bilinen ayarlarla",
+    "signedOut": "Oturum kapalı"
   }
 }

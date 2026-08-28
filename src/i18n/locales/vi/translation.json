@@ -24,7 +24,8 @@
     "styles": "Xử lý sau",
     "aiSkills": "AI Skills",
     "settings": "Cài đặt",
-    "organization": "Tổ chức"
+    "organization": "Tổ chức",
+    "learn": "Học"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Tự động",
       "builtin": "Lối viết",
-      "personal": "Lối viết của bạn"
+      "personal": "Lối viết của bạn",
+      "organization": "Từ tổ chức của bạn"
     },
     "automaticHow": "Nova đọc tên ứng dụng đang ở phía trước và áp dụng lối viết tương ứng. Ứng dụng bạn chặn sẽ không bao giờ bị xem xét.",
     "active": "Đang dùng",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Không lưu được lối viết.",
       "delete": "Không xoá được lối viết."
-    }
+    },
+    "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây."
   },
   "history": {
     "subtitle": "Mọi thứ bạn đã đọc chính tả với Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Giao diện",
     "orb": "Quả cầu",
     "overlay": "Lớp phủ"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Các thao tác AI dùng ngay cho mọi văn bản.",
+    "builtin": "Tích hợp sẵn",
+    "noBuiltin": "Chưa có AI Skills tích hợp sẵn.",
+    "organization": "Từ tổ chức của bạn",
+    "noOrganization": "Tổ chức của bạn chưa phát hành AI Skills nào.",
+    "fromOrganization": "Từ tổ chức của bạn",
+    "howToUse": "Cách sử dụng",
+    "inputPlaceholder": "Dán hoặc nhập văn bản cần xử lý",
+    "run": "Chạy",
+    "running": "Đang chạy...",
+    "error": "Không thể chạy AI Skill này.",
+    "signedOut": "Đăng nhập để dùng AI Skills."
+  },
+  "campusConnection": {
+    "title": "Tổ chức",
+    "description": "Kết nối Nova với tổ chức của bạn để dùng nội dung và cài đặt mà tổ chức cung cấp.",
+    "connect": "Kết nối tổ chức",
+    "connected": "Đã kết nối",
+    "local": "Ngoại tuyến, dùng cài đặt biết gần nhất",
+    "signedOut": "Đã đăng xuất"
   }
 }

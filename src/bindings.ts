@@ -896,6 +896,49 @@ async getCampusAiSkills() : Promise<Result<CampusAiSkillsResponse, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Charge le contenu publié par l'organisation et le rend disponible au poste.
+ * 
+ * Le catalogue reçu **remplace** le précédent : garder des morceaux de l'ancien
+ * produirait un mélange de versions, et personne ne saurait dire laquelle
+ * s'applique. C'est aussi ce qui rend le changement de version — et le retour
+ * arrière — immédiat, sans redémarrage.
+ * 
+ * Le serveur a déjà filtré selon les policies : ce qui arrive ici est ce que
+ * l'organisation autorise **et** distribue. Le poste ne réinvente pas ce
+ * tri, il applique ce qu'il reçoit.
+ */
+async refreshOrganizationPackages() : Promise<Result<OrganizationCatalogSnapshot, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("refresh_organization_packages") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Oublie le contenu de l'organisation — déconnexion, ou changement d'organisation.
+ */
+async clearOrganizationPackages() : Promise<void> {
+    await TAURI_INVOKE("clear_organization_packages");
+},
+/**
+ * Exécute un AI Skill publié par l'organisation.
+ * 
+ * Le poste envoie un **identifiant**, jamais l'instruction : c'est le serveur
+ * qui la retrouve dans le package actif. S'il acceptait une instruction du
+ * client, n'importe qui pourrait faire exécuter n'importe quoi au modèle en se
+ * réclamant d'un Skill, et le catalogue publié ne serait plus qu'une
+ * suggestion.
+ */
+async runOrganizationSkill(skillId: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("run_organization_skill", { skillId, text }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async formatCampusEngineeringNotes(instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("format_campus_engineering_notes", { instruction, text }) };
@@ -2113,6 +2156,30 @@ organization: string; display_name: string;
  * organisation doit pouvoir déménager sans réinstaller Nova.
  */
 service_endpoint: string; deployment_mode: string; contract_version: number }
+/**
+ * Ce que l'interface reçoit après un rafraîchissement.
+ */
+export type OrganizationCatalogSnapshot = { catalog_version: string; styles: OrganizationStyle[]; skills: OrganizationSkill[] }
+/**
+ * Un AI Skill publié par l'organisation.
+ * 
+ * **Déclaratif, et rien d'autre.** Pas de script, pas d'URL à exécuter : le
+ * serveur refuse déjà ces champs, et le poste ne saurait pas quoi en faire —
+ * mais la structure le dit aussi, pour que personne n'ait l'idée de l'étendre.
+ */
+export type OrganizationSkill = { id: string; title: string; summary: string; practice: string; duration_minutes: number; steps: string[] }
+/**
+ * Un Style publié par l'organisation, réduit à ce que l'exécution demande.
+ */
+export type OrganizationStyle = { 
+/**
+ * Identifiant préfixé, attribué par le serveur.
+ */
+id: string; name: string; 
+/**
+ * La consigne réellement envoyée au modèle.
+ */
+instruction: string }
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
 /**

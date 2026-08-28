@@ -24,7 +24,8 @@
     "styles": "עיבוד משלים",
     "aiSkills": "AI Skills",
     "settings": "הגדרות",
-    "organization": "ארגון"
+    "organization": "ארגון",
+    "learn": "למידה"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "אוטומטי",
       "builtin": "סגנונות",
-      "personal": "הסגנונות שלכם"
+      "personal": "הסגנונות שלכם",
+      "organization": "מהארגון שלך"
     },
     "automaticHow": "‏Nova קוראת את שם היישום שבחזית ומחילה את הסגנון המתאים. יישומים שחסמתם אינם נבדקים לעולם.",
     "active": "פעיל",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "לא ניתן היה לשמור את הסגנון.",
       "delete": "לא ניתן היה למחוק את הסגנון."
-    }
+    },
+    "organizationManaged": "סגנונות אלה מפורסמים על ידי הארגון שלך. לא ניתן לערוך אותם כאן."
   },
   "history": {
     "subtitle": "כל מה שהכתבתם ב־Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "מראה",
     "orb": "ספירה",
     "overlay": "שכבה"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "פעולות AI מוכנות לשימוש על כל טקסט.",
+    "builtin": "מובנות",
+    "noBuiltin": "אין עדיין AI Skills מובנות.",
+    "organization": "מהארגון שלך",
+    "noOrganization": "הארגון שלך לא פרסם AI Skills.",
+    "fromOrganization": "מהארגון שלך",
+    "howToUse": "איך משתמשים",
+    "inputPlaceholder": "הדביקו או הקלידו את הטקסט לעיבוד",
+    "run": "הפעל",
+    "running": "מפעיל...",
+    "error": "לא ניתן להפעיל את ה-AI Skill הזה.",
+    "signedOut": "היכנסו כדי להשתמש ב-AI Skills."
+  },
+  "campusConnection": {
+    "title": "ארגון",
+    "description": "חברו את Nova לארגון שלכם כדי להשתמש בתוכן ובהגדרות שהוא מספק.",
+    "connect": "חיבור ארגון",
+    "connected": "מחובר",
+    "local": "לא מקוון, עם ההגדרות האחרונות הידועות",
+    "signedOut": "מנותק"
   }
 }

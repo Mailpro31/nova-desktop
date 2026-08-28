@@ -1286,21 +1286,43 @@ pub async fn fetch_post_process_models(
 #[specta::specta]
 pub fn set_post_process_selected_prompt(app: AppHandle, id: String) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
+    let organization_catalog = crate::organization_packages::current_catalog();
 
     // "auto" (le Style « Automatique ») est un sentinel réservé, jamais un
     // vrai LLMPrompt (voir auto_style::AUTO_STYLE_ID) : il ne doit pas être
     // vérifié contre post_process_prompts, sinon la sélection est
     // silencieusement rejetée et l'utilisateur ne peut plus jamais revenir en
     // mode Automatique une fois passé sur un Style concret.
-    if id != crate::auto_style::AUTO_STYLE_ID
-        && !settings.post_process_prompts.iter().any(|p| p.id == id)
-    {
+    //
+    // Un Style d'organisation vit volontairement hors de
+    // `post_process_prompts` : son contenu appartient au catalogue éphémère de
+    // l'organisation, pas aux réglages personnels. Il reste sélectionnable si
+    // — et seulement si — le catalogue courant, lui-même cadré par
+    // organisation, le porte réellement.
+    if !is_selectable_post_process_prompt(&settings, &id, organization_catalog.as_ref()) {
         return Err(format!("Prompt with id '{}' not found", id));
     }
 
     settings.post_process_selected_prompt_id = Some(id);
     settings::write_settings(&app, settings);
     Ok(())
+}
+
+fn is_selectable_post_process_prompt(
+    settings: &settings::AppSettings,
+    id: &str,
+    organization_catalog: Option<&crate::organization_packages::OrganizationCatalog>,
+) -> bool {
+    id == crate::auto_style::AUTO_STYLE_ID
+        || settings
+            .post_process_prompts
+            .iter()
+            .any(|prompt| prompt.id == id)
+        || organization_catalog.is_some_and(|catalog| {
+            catalog.organization_id.is_some()
+                && id.starts_with(crate::licensing::ORGANIZATION_STYLE_PREFIX)
+                && catalog.styles.iter().any(|style| style.id == id)
+        })
 }
 
 #[tauri::command]
@@ -1428,4 +1450,70 @@ pub async fn get_available_accelerators() -> crate::managers::transcription::Ava
     tauri::async_runtime::spawn_blocking(crate::managers::transcription::get_available_accelerators)
         .await
         .expect("get_available_accelerators panicked")
+}
+
+#[cfg(test)]
+mod organization_style_selection_tests {
+    use super::*;
+
+    fn catalog(
+        owner: Option<&str>,
+        style_id: &str,
+    ) -> crate::organization_packages::OrganizationCatalog {
+        crate::organization_packages::OrganizationCatalog {
+            organization_id: owner.map(str::to_string),
+            catalog_version: "recipe-v1".to_string(),
+            styles: vec![crate::organization_packages::OrganizationStyle {
+                id: style_id.to_string(),
+                name: "Organization Style".to_string(),
+                instruction: "Write plainly.".to_string(),
+            }],
+            skills: vec![],
+        }
+    }
+
+    #[test]
+    fn an_owned_organization_style_is_selectable_without_copying_it_to_personal_settings() {
+        let settings = settings::AppSettings::default();
+        let style_id = format!(
+            "{}{}",
+            crate::licensing::ORGANIZATION_STYLE_PREFIX,
+            "recipe-style"
+        );
+        let organization_catalog = catalog(Some("org-recipe"), &style_id);
+
+        assert!(!settings
+            .post_process_prompts
+            .iter()
+            .any(|prompt| prompt.id == style_id));
+        assert!(is_selectable_post_process_prompt(
+            &settings,
+            &style_id,
+            Some(&organization_catalog)
+        ));
+    }
+
+    #[test]
+    fn an_unowned_or_unprefixed_catalog_entry_is_not_selectable() {
+        let settings = settings::AppSettings::default();
+        let style_id = format!(
+            "{}{}",
+            crate::licensing::ORGANIZATION_STYLE_PREFIX,
+            "recipe-style"
+        );
+
+        assert!(!is_selectable_post_process_prompt(
+            &settings,
+            &style_id,
+            Some(&catalog(None, &style_id))
+        ));
+        assert!(!is_selectable_post_process_prompt(
+            &settings,
+            "unprefixed-organization-style",
+            Some(&catalog(
+                Some("org-recipe"),
+                "unprefixed-organization-style"
+            ))
+        ));
+    }
 }

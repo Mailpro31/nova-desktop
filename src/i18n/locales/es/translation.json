@@ -24,7 +24,8 @@
     "styles": "Post Proceso",
     "aiSkills": "AI Skills",
     "settings": "Ajustes",
-    "organization": "Organización"
+    "organization": "Organización",
+    "learn": "Aprender"
   },
   "onboarding": {
     "subtitle": "Para comenzar, elige un modelo de transcripción",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automático",
       "builtin": "Estilos",
-      "personal": "Tus estilos"
+      "personal": "Tus estilos",
+      "organization": "De tu organización"
     },
     "automaticHow": "Nova lee el nombre de la aplicación en primer plano y aplica el estilo correspondiente. Las aplicaciones que bloquees nunca se inspeccionan.",
     "active": "Activo",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "No se pudo guardar el estilo.",
       "delete": "No se pudo eliminar el estilo."
-    }
+    },
+    "organizationManaged": "Estos estilos los publica tu organización. No se pueden editar aquí."
   },
   "history": {
     "subtitle": "Todo lo que has dictado con Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Apariencia",
     "orb": "Orbe",
     "overlay": "Burbuja"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Acciones de IA listas para usar en cualquier texto.",
+    "builtin": "Integradas",
+    "noBuiltin": "Todavía no hay AI Skills integradas.",
+    "organization": "De tu organización",
+    "noOrganization": "Tu organización no ha publicado ninguna AI Skill.",
+    "fromOrganization": "De tu organización",
+    "howToUse": "Cómo usarlo",
+    "inputPlaceholder": "Pega o escribe el texto a procesar",
+    "run": "Ejecutar",
+    "running": "Ejecutando...",
+    "error": "No se pudo ejecutar esta AI Skill.",
+    "signedOut": "Inicia sesión para usar AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organización",
+    "description": "Conecta Nova con tu organización para usar el contenido y los ajustes que proporciona.",
+    "connect": "Conectar organización",
+    "connected": "Conectado",
+    "local": "Sin conexión, con los últimos ajustes conocidos",
+    "signedOut": "Sesión cerrada"
   }
 }

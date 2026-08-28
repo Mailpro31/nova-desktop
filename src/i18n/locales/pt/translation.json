@@ -24,7 +24,8 @@
     "styles": "Pós-Processamento",
     "aiSkills": "AI Skills",
     "settings": "Definições",
-    "organization": "Organização"
+    "organization": "Organização",
+    "learn": "Aprender"
   },
   "onboarding": {
     "subtitle": "Para começar, escolha um modelo de transcrição",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automático",
       "builtin": "Estilos",
-      "personal": "Os seus estilos"
+      "personal": "Os seus estilos",
+      "organization": "Da sua organização"
     },
     "automaticHow": "A Nova lê o nome da aplicação em primeiro plano e aplica o estilo correspondente. As aplicações que bloquear nunca são inspecionadas.",
     "active": "Ativo",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Não foi possível guardar o estilo.",
       "delete": "Não foi possível eliminar o estilo."
-    }
+    },
+    "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui."
   },
   "history": {
     "subtitle": "Tudo o que ditou com a Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Aparência",
     "orb": "Orbe",
     "overlay": "Bolha"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Ações de IA prontas para usar em qualquer texto.",
+    "builtin": "Integradas",
+    "noBuiltin": "Ainda não há AI Skills integradas.",
+    "organization": "Da sua organização",
+    "noOrganization": "A sua organização não publicou nenhuma AI Skill.",
+    "fromOrganization": "Da sua organização",
+    "howToUse": "Como utilizar",
+    "inputPlaceholder": "Cole ou escreva o texto a processar",
+    "run": "Executar",
+    "running": "A executar...",
+    "error": "Não foi possível executar esta AI Skill.",
+    "signedOut": "Inicie sessão para usar AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organização",
+    "description": "Ligue o Nova à sua organização para usar o conteúdo e as definições que fornece.",
+    "connect": "Ligar organização",
+    "connected": "Ligado",
+    "local": "Offline com as últimas definições conhecidas",
+    "signedOut": "Sessão terminada"
   }
 }

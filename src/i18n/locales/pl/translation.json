@@ -24,7 +24,8 @@
     "styles": "Postproces",
     "aiSkills": "AI Skills",
     "settings": "Ustawienia",
-    "organization": "Organizacja"
+    "organization": "Organizacja",
+    "learn": "Nauka"
   },
   "onboarding": {
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatyczny",
       "builtin": "Style",
-      "personal": "Twoje style"
+      "personal": "Twoje style",
+      "organization": "Od Twojej organizacji"
     },
     "automaticHow": "Nova odczytuje nazwę aplikacji na pierwszym planie i stosuje odpowiedni styl. Zablokowane aplikacje nigdy nie są sprawdzane.",
     "active": "Aktywny",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Nie udało się zapisać stylu.",
       "delete": "Nie udało się usunąć stylu."
-    }
+    },
+    "organizationManaged": "Te style są publikowane przez Twoją organizację. Nie można ich tu edytować."
   },
   "history": {
     "subtitle": "Wszystko, co podyktowano w Novie.",
@@ -1665,5 +1668,28 @@
     "appearance": "Wygląd",
     "orb": "Kula",
     "overlay": "Nakładka"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Gotowe akcje AI do zastosowania na dowolnym tekście.",
+    "builtin": "Wbudowane",
+    "noBuiltin": "Brak wbudowanych AI Skills.",
+    "organization": "Od Twojej organizacji",
+    "noOrganization": "Twoja organizacja nie opublikowała żadnych AI Skills.",
+    "fromOrganization": "Od Twojej organizacji",
+    "howToUse": "Jak używać",
+    "inputPlaceholder": "Wklej lub wpisz tekst do przetworzenia",
+    "run": "Uruchom",
+    "running": "Trwa...",
+    "error": "Nie udało się uruchomić tej AI Skill.",
+    "signedOut": "Zaloguj się, aby używać AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organizacja",
+    "description": "Połącz Nova ze swoją organizacją, aby korzystać z udostępnianych treści i ustawień.",
+    "connect": "Połącz organizację",
+    "connected": "Połączono",
+    "local": "Offline z ostatnio znanymi ustawieniami",
+    "signedOut": "Wylogowano"
   }
 }

@@ -24,7 +24,8 @@
     "styles": "Naverwerking",
     "aiSkills": "AI Skills",
     "settings": "Instellingen",
-    "organization": "Organisatie"
+    "organization": "Organisatie",
+    "learn": "Leren"
   },
   "onboarding": {
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatisch",
       "builtin": "Stijlen",
-      "personal": "Uw stijlen"
+      "personal": "Uw stijlen",
+      "organization": "Van je organisatie"
     },
     "automaticHow": "Nova leest de naam van de toepassing op de voorgrond en past de bijbehorende stijl toe. Geblokkeerde toepassingen worden nooit bekeken.",
     "active": "Actief",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "De stijl kon niet worden opgeslagen.",
       "delete": "De stijl kon niet worden verwijderd."
-    }
+    },
+    "organizationManaged": "Deze stijlen worden gepubliceerd door je organisatie. Ze kunnen hier niet worden bewerkt."
   },
   "history": {
     "subtitle": "Alles wat u met Nova hebt gedicteerd.",
@@ -1665,5 +1668,28 @@
     "appearance": "Weergave",
     "orb": "Orb",
     "overlay": "Overlay"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Kant-en-klare AI-acties voor elke tekst.",
+    "builtin": "Ingebouwd",
+    "noBuiltin": "Nog geen ingebouwde AI Skills.",
+    "organization": "Van je organisatie",
+    "noOrganization": "Je organisatie heeft geen AI Skills gepubliceerd.",
+    "fromOrganization": "Van je organisatie",
+    "howToUse": "Hoe te gebruiken",
+    "inputPlaceholder": "Plak of typ de te verwerken tekst",
+    "run": "Uitvoeren",
+    "running": "Bezig...",
+    "error": "Kan deze AI Skill niet uitvoeren.",
+    "signedOut": "Meld je aan om AI Skills te gebruiken."
+  },
+  "campusConnection": {
+    "title": "Organisatie",
+    "description": "Verbind Nova met je organisatie om de content en instellingen te gebruiken die zij aanbiedt.",
+    "connect": "Organisatie verbinden",
+    "connected": "Verbonden",
+    "local": "Offline met de laatst bekende instellingen",
+    "signedOut": "Afgemeld"
   }
 }

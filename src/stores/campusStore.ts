@@ -1,8 +1,10 @@
 import { create } from "zustand";
+import { invoke } from "@tauri-apps/api/core";
 import {
   CampusApi,
   isServerReachable,
   type CampusProfile,
+  type OrganizationCatalogSnapshot,
 } from "@/lib/campusApi";
 import {
   loadCampusConfig,
@@ -37,6 +39,14 @@ interface CampusStoreState {
    * session, ni le sujet externe de l'identité fédérée.
    */
   serverIdentity: ServerIdentitySnapshot | null;
+  /**
+   * Contenu publié par l'organisation — Styles et AI Skills.
+   *
+   * Récupéré **ici**, avec le reste du contexte : un fetch par écran finirait
+   * par produire des versions différentes selon la page ouverte. `null` tant
+   * que rien n'a été reçu, ce qui n'est pas la même chose qu'un catalogue vide.
+   */
+  organizationCatalog: OrganizationCatalogSnapshot | null;
   connectionStatus: CampusConnectionStatus;
   initialized: boolean;
   refreshing: boolean;
@@ -52,6 +62,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
   profile: null,
   context: emptyContext,
   serverIdentity: null,
+  organizationCatalog: null,
   connectionStatus: "checking",
   initialized: false,
   refreshing: false,
@@ -64,12 +75,16 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
         loadCampusSession(),
       ]);
       if (!session) {
+        // Déconnecté : le contenu de l'organisation ne doit rien laisser
+        // derrière lui, côté interface comme côté Rust.
+        void invoke("clear_organization_packages").catch(() => {});
         set({
           config,
           session: null,
           profile: null,
           context: resolveCampusContext(config),
           serverIdentity: null,
+          organizationCatalog: null,
           connectionStatus: "signed_out",
           initialized: true,
         });
@@ -79,13 +94,22 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
       const reachable = await isServerReachable(session.server_url);
       let effectiveConfig = config;
       let profile: CampusProfile | null = null;
+      let catalog = get().organizationCatalog;
       if (reachable) {
+        const api = new CampusApi(session.server_url);
         effectiveConfig =
           (await loadCampusServerConfig(session.server_url)) ?? config;
         try {
-          profile = await new CampusApi(session.server_url).getMe();
+          profile = await api.getMe();
         } catch {
           profile = null;
+        }
+        try {
+          catalog = await api.refreshOrganizationPackages();
+        } catch {
+          // Hors d'atteinte ou serveur plus ancien : on garde le dernier
+          // catalogue connu plutôt que de retirer un contenu que
+          // l'organisation n'a pas dépublié.
         }
       }
       set({
@@ -96,6 +120,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
         // Hors ligne, aucune identité serveur : mieux vaut l'absence qu'une
         // réponse périmée présentée comme autoritative.
         serverIdentity: profile ? parseServerIdentity(profile) : null,
+        organizationCatalog: catalog,
         connectionStatus: reachable ? "connected" : "local",
         initialized: true,
       });
@@ -103,17 +128,20 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
       set({ refreshing: false });
     }
   },
-  reset: () =>
+  reset: () => {
+    void invoke("clear_organization_packages").catch(() => {});
     set({
       config: null,
       session: null,
       profile: null,
       context: emptyContext,
       serverIdentity: null,
+      organizationCatalog: null,
       connectionStatus: "signed_out",
       initialized: true,
       refreshing: false,
-    }),
+    });
+  },
 }));
 
 export function refreshCampusContext(): Promise<void> {

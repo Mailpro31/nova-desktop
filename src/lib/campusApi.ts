@@ -81,6 +81,29 @@ export function campusErrorText(err: unknown, fallback: string): string | null {
   return fallback;
 }
 
+/** Un Style publié par l'organisation. `id` porte le préfixe `org_style_`. */
+export interface OrganizationStyleEntry {
+  id: string;
+  name: string;
+  instruction: string;
+}
+
+/** Un AI Skill publié par l'organisation — déclaratif, jamais exécutable. */
+export interface OrganizationSkillEntry {
+  id: string;
+  title: string;
+  summary: string;
+  practice: string;
+  duration_minutes: number;
+  steps: string[];
+}
+
+export interface OrganizationCatalogSnapshot {
+  catalog_version: string;
+  styles: OrganizationStyleEntry[];
+  skills: OrganizationSkillEntry[];
+}
+
 export class CampusApi {
   private baseUrl: string;
 
@@ -302,6 +325,42 @@ export class CampusApi {
     try {
       return await invoke<CampusCommandResponse>("execute_campus_command", {
         instruction,
+        text,
+      });
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
+  /**
+   * Charge le contenu publié par l'organisation.
+   *
+   * Le catalogue reçu remplace le précédent côté Rust — c'est ce qui rend le
+   * changement de version, et le retour arrière, immédiats sans redémarrage.
+   */
+  async refreshOrganizationPackages(): Promise<OrganizationCatalogSnapshot> {
+    try {
+      return await invoke<OrganizationCatalogSnapshot>(
+        "refresh_organization_packages",
+      );
+    } catch (err) {
+      throw parseCommandError(err);
+    }
+  }
+
+  /**
+   * Exécute un AI Skill publié par l'organisation.
+   *
+   * On envoie un **identifiant**, jamais l'instruction : c'est le serveur qui
+   * la retrouve dans le package actif.
+   */
+  async runSkill(
+    skillId: string,
+    text: string,
+  ): Promise<CampusCommandResponse> {
+    try {
+      return await invoke<CampusCommandResponse>("run_organization_skill", {
+        skillId,
         text,
       });
     } catch (err) {

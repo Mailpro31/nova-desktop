@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CampusConnection } from "../campus/CampusConnection";
 import { GeneralSettings } from "../general/GeneralSettings";
 import {
   CampusGeneralSettings,
@@ -118,6 +119,10 @@ const CampusGeneralTab: React.FC = () => {
         <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
         <ThemeSelector descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
+      {/* Toujours rendu, lié ou non : c'est la seule surface d'où l'on peut
+          rattacher un compte, et la cacher tant qu'aucune organisation
+          n'existe la rendait inatteignable au moment où elle sert. */}
+      <CampusConnection />
     </div>
   );
 };

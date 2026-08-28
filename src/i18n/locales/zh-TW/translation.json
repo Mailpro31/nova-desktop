@@ -24,7 +24,8 @@
     "styles": "後處理",
     "aiSkills": "AI Skills",
     "settings": "設定",
-    "organization": "組織"
+    "organization": "組織",
+    "learn": "學習"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "自動",
       "builtin": "風格",
-      "personal": "你的風格"
+      "personal": "你的風格",
+      "organization": "來自您的組織"
     },
     "automaticHow": "Nova 會讀取前景應用程式的名稱並套用對應風格。你封鎖的應用程式永遠不會被讀取。",
     "active": "使用中",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "無法儲存這個風格。",
       "delete": "無法刪除這個風格。"
-    }
+    },
+    "organizationManaged": "這些風格由您的組織發布，無法在此編輯。"
   },
   "history": {
     "subtitle": "你用 Nova 語音輸入的全部內容。",
@@ -1665,5 +1668,28 @@
     "appearance": "外觀",
     "orb": "光球",
     "overlay": "浮層"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "可對任意文字直接執行的 AI 操作。",
+    "builtin": "內建",
+    "noBuiltin": "目前沒有內建 AI Skills。",
+    "organization": "來自您的組織",
+    "noOrganization": "您的組織尚未發布任何 AI Skills。",
+    "fromOrganization": "來自您的組織",
+    "howToUse": "如何使用",
+    "inputPlaceholder": "貼上或輸入要處理的文字",
+    "run": "執行",
+    "running": "執行中...",
+    "error": "無法執行此 AI Skill。",
+    "signedOut": "請登入以使用 AI Skills。"
+  },
+  "campusConnection": {
+    "title": "組織",
+    "description": "將 Nova 連接到您的組織，以使用其提供的內容和設定。",
+    "connect": "連接組織",
+    "connected": "已連接",
+    "local": "離線，使用最後已知的設定",
+    "signedOut": "已登出"
   }
 }

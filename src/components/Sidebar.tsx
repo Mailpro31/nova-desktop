@@ -70,6 +70,12 @@ const AboutSettings = lazy(() =>
     default: module.AboutSettings,
   })),
 );
+const OrganizationAiSkills = lazy(() =>
+  import("./settings/ai-skills/OrganizationAiSkills").then((module) => ({
+    default: module.OrganizationAiSkills,
+  })),
+);
+
 const AiSkillsSettings = lazy(() =>
   import("./settings/ai-skills/AiSkillsSettings").then((module) => ({
     default: module.AiSkillsSettings,
@@ -112,14 +118,25 @@ export const SECTIONS_CONFIG = {
     campusVisible: true,
   },
   aiskills: {
-    labelKey: "sidebar.aiSkills",
+    // Cet écran présente une piste d'apprentissage — modules, exercice,
+    // progression. C'est du Learn, et le libellé le dit désormais : deux
+    // entrées nommées « AI Skills » auraient été indiscernables.
+    labelKey: "sidebar.learn",
     campusLabelKey: undefined,
     icon: BookOpen,
     component: AiSkillsSettings,
-    // Campus uniquement. Un AI Skill s'exécute sur `/api/command` ; il n'existe
-    // aucun moteur local. Montrer la page en personnel présenterait des
-    // capacités qui ne pourraient jamais s'y déclencher. (Elle y était visible
-    // tant qu'« AI Skills » désignait les Styles — ce n'est plus le cas.)
+    // Campus uniquement : le contenu vient de l'établissement.
+    enabled: () => isCampusMode(),
+    campusVisible: true,
+  },
+  aiskilltools: {
+    // Les vraies actions IA, exécutables. Distinctes de l'apprentissage :
+    // « apprendre à écrire une consigne » et « appliquer une consigne » ne se
+    // cherchent pas au même moment.
+    labelKey: "sidebar.aiSkills",
+    campusLabelKey: undefined,
+    icon: Sparkles,
+    component: OrganizationAiSkills,
     enabled: () => isCampusMode(),
     campusVisible: true,
   },
@@ -207,8 +224,13 @@ export const SECTIONS_CONFIG = {
  * L'établissement et les réglages vivent dans le bloc bas, séparés
  * visuellement : accessibles en permanence sans occuper le même rang.
  */
+// En mode Campus la navigation suit cette liste, pas l'ensemble des sections
+// declarees : ajouter une entree a `SECTIONS_CONFIG` ne suffit pas a la faire
+// apparaitre ici. C'est volontaire — l'ordre compte — mais c'est aussi ce qui
+// a fait disparaitre « AI Skills » lors de la recette de la Phase 31B.
 const CAMPUS_PRIMARY: SidebarSection[] = [
   "home",
+  "aiskilltools",
   "aiskills",
   "postprocessing",
   "history",

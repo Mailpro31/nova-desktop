@@ -24,7 +24,8 @@
     "styles": "Efterbearbetning",
     "aiSkills": "AI Skills",
     "settings": "Inställningar",
-    "organization": "Organisation"
+    "organization": "Organisation",
+    "learn": "Lär dig"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "Automatiskt",
       "builtin": "Stilar",
-      "personal": "Dina stilar"
+      "personal": "Dina stilar",
+      "organization": "Från din organisation"
     },
     "automaticHow": "Nova läser namnet på programmet i förgrunden och tillämpar motsvarande stil. Program du blockerar granskas aldrig.",
     "active": "Aktiv",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "Stilen kunde inte sparas.",
       "delete": "Stilen kunde inte tas bort."
-    }
+    },
+    "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här."
   },
   "history": {
     "subtitle": "Allt du har dikterat med Nova.",
@@ -1665,5 +1668,28 @@
     "appearance": "Utseende",
     "orb": "Orb",
     "overlay": "Överlägg"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Färdiga AI-åtgärder för valfri text.",
+    "builtin": "Inbyggda",
+    "noBuiltin": "Inga inbyggda AI Skills ännu.",
+    "organization": "Från din organisation",
+    "noOrganization": "Din organisation har inte publicerat några AI Skills.",
+    "fromOrganization": "Från din organisation",
+    "howToUse": "Så använder du den",
+    "inputPlaceholder": "Klistra in eller skriv texten som ska bearbetas",
+    "run": "Kör",
+    "running": "Kör...",
+    "error": "Kunde inte köra denna AI Skill.",
+    "signedOut": "Logga in för att använda AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organisation",
+    "description": "Anslut Nova till din organisation för att använda innehållet och inställningarna den tillhandahåller.",
+    "connect": "Anslut organisation",
+    "connected": "Ansluten",
+    "local": "Offline med de senast kända inställningarna",
+    "signedOut": "Utloggad"
   }
 }

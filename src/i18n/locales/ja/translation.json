@@ -24,7 +24,8 @@
     "styles": "後処理",
     "aiSkills": "AI Skills",
     "settings": "設定",
-    "organization": "組織"
+    "organization": "組織",
+    "learn": "学ぶ"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "自動",
       "builtin": "文体",
-      "personal": "あなたの文体"
+      "personal": "あなたの文体",
+      "organization": "組織から提供"
     },
     "automaticHow": "Nova は前面のアプリ名を読み取り、対応する文体を適用します。除外したアプリは一切参照しません。",
     "active": "使用中",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "文体を保存できませんでした。",
       "delete": "文体を削除できませんでした。"
-    }
+    },
+    "organizationManaged": "これらのスタイルは組織が公開しています。ここでは編集できません。"
   },
   "history": {
     "subtitle": "Nova で音声入力したすべて。",
@@ -1665,5 +1668,28 @@
     "appearance": "外観",
     "orb": "オーブ",
     "overlay": "オーバーレイ"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "任意のテキストに使える、すぐ実行できるAIアクション。",
+    "builtin": "組み込み",
+    "noBuiltin": "組み込みのAI Skillsはまだありません。",
+    "organization": "組織から提供",
+    "noOrganization": "組織はAI Skillsを公開していません。",
+    "fromOrganization": "組織から提供",
+    "howToUse": "使い方",
+    "inputPlaceholder": "処理するテキストを貼り付けるか入力",
+    "run": "実行",
+    "running": "実行中...",
+    "error": "このAI Skillを実行できませんでした。",
+    "signedOut": "AI Skillsを使うにはサインインしてください。"
+  },
+  "campusConnection": {
+    "title": "組織",
+    "description": "組織が提供するコンテンツと設定を使うには、Nova を組織に接続します。",
+    "connect": "組織に接続",
+    "connected": "接続済み",
+    "local": "オフライン（最後に取得した設定を使用）",
+    "signedOut": "サインアウト済み"
   }
 }

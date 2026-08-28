@@ -24,7 +24,8 @@
     "styles": "후처리",
     "aiSkills": "AI Skills",
     "settings": "설정",
-    "organization": "조직"
+    "organization": "조직",
+    "learn": "학습"
   },
   "onboarding": {
     "subtitle": "시작하려면 음성 인식 모델을 선택하세요",
@@ -1633,7 +1634,8 @@
     "section": {
       "automatic": "자동",
       "builtin": "스타일",
-      "personal": "내 스타일"
+      "personal": "내 스타일",
+      "organization": "조직에서 제공"
     },
     "automaticHow": "Nova는 앞에 있는 앱 이름을 읽고 알맞은 스타일을 적용합니다. 차단한 앱은 절대 확인하지 않습니다.",
     "active": "사용 중",
@@ -1642,7 +1644,8 @@
     "error": {
       "save": "스타일을 저장하지 못했습니다.",
       "delete": "스타일을 삭제하지 못했습니다."
-    }
+    },
+    "organizationManaged": "이 스타일은 조직에서 게시합니다. 여기서는 편집할 수 없습니다."
   },
   "history": {
     "subtitle": "Nova로 받아쓴 모든 내용.",
@@ -1665,5 +1668,28 @@
     "appearance": "모양",
     "orb": "오브",
     "overlay": "오버레이"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "어떤 텍스트에도 바로 실행할 수 있는 AI 작업입니다.",
+    "builtin": "기본 제공",
+    "noBuiltin": "기본 제공 AI Skills가 아직 없습니다.",
+    "organization": "조직에서 제공",
+    "noOrganization": "조직에서 게시한 AI Skills가 없습니다.",
+    "fromOrganization": "조직에서 제공",
+    "howToUse": "사용 방법",
+    "inputPlaceholder": "처리할 텍스트를 붙여넣거나 입력하세요",
+    "run": "실행",
+    "running": "실행 중...",
+    "error": "이 AI Skill을 실행할 수 없습니다.",
+    "signedOut": "AI Skills를 사용하려면 로그인하세요."
+  },
+  "campusConnection": {
+    "title": "조직",
+    "description": "조직이 제공하는 콘텐츠와 설정을 사용하려면 Nova를 조직에 연결하세요.",
+    "connect": "조직 연결",
+    "connected": "연결됨",
+    "local": "오프라인 - 마지막으로 알려진 설정 사용",
+    "signedOut": "로그아웃됨"
   }
 }

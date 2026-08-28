@@ -1089,23 +1089,12 @@ pub(crate) fn resolve_effective_style_prompt(
         None => settings.post_process_selected_prompt_id.clone()?,
     };
 
-    let prompt = settings
-        .post_process_prompts
-        .iter()
-        .find(|prompt| prompt.id == selected_prompt_id)
-        .map(|prompt| prompt.prompt.clone())?;
+    let prompt = resolve_style_prompt(&settings, &selected_prompt_id)?;
 
-    let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
-    let required_feature = if crate::licensing::is_builtin_style(&selected_prompt_id) {
-        "all_styles"
-    } else {
-        "custom_styles"
-    };
-
-    if !style_is_free && !crate::licensing::has(required_feature, license_key, 0) {
+    if style_is_locked(&selected_prompt_id, license_key) {
         debug!(
-            "Style '{}' réservé ({}) — repli sur le Style gratuit",
-            selected_prompt_id, required_feature
+            "Style '{}' réservé — repli sur le Style gratuit",
+            selected_prompt_id
         );
         settings
             .post_process_prompts
@@ -1114,6 +1103,50 @@ pub(crate) fn resolve_effective_style_prompt(
             .map(|p| p.prompt.clone())
     } else {
         Some(prompt)
+    }
+}
+
+/// La consigne d'un Style, quelle que soit sa provenance.
+///
+/// Trois origines, un seul point de résolution :
+///
+/// - **intégré** et **personnel** vivent dans `post_process_prompts`, les
+///   réglages de l'utilisateur ;
+/// - **organisation** vit dans le catalogue publié, séparément — ces réglages
+///   appartiennent à l'utilisateur, et y écrire du contenu que l'organisation
+///   contrôle mélangerait deux durées de vie et deux autorités.
+///
+/// Chercher dans le catalogue **d'abord** : un Style d'organisation porte un
+/// préfixe réservé, donc aucune collision n'est possible, et l'ordre rend la
+/// lecture évidente.
+fn resolve_style_prompt(settings: &crate::settings::AppSettings, style_id: &str) -> Option<String> {
+    if let Some(instruction) =
+        crate::organization_packages::style_instruction(active_organization().as_deref(), style_id)
+    {
+        return Some(instruction);
+    }
+    settings
+        .post_process_prompts
+        .iter()
+        .find(|prompt| prompt.id == style_id)
+        .map(|prompt| prompt.prompt.clone())
+}
+
+/// L'organisation dont le poste consomme le contenu, s'il y en a une.
+fn active_organization() -> Option<String> {
+    crate::organization_packages::current_catalog().and_then(|catalog| catalog.organization_id)
+}
+
+/// Le palier requis manque-t-il pour ce Style ?
+///
+/// Un Style d'organisation n'en exige aucun : l'établissement paie déjà son
+/// déploiement, et lui facturer une seconde fois le contenu qu'il distribue à
+/// ses propres membres se défendrait mal. Son autorisation vient d'ailleurs —
+/// appartenance, package actif, policies.
+fn style_is_locked(style_id: &str, license_key: &str) -> bool {
+    match crate::licensing::style_required_feature(style_id) {
+        None => false,
+        Some(feature) => !crate::licensing::has(feature, license_key, 0),
     }
 }
 
@@ -1153,12 +1186,8 @@ async fn post_process_with_provider(
         },
     };
 
-    let prompt = match settings
-        .post_process_prompts
-        .iter()
-        .find(|prompt| prompt.id == selected_prompt_id)
-    {
-        Some(prompt) => prompt.prompt.clone(),
+    let prompt = match resolve_style_prompt(&settings, &selected_prompt_id) {
+        Some(prompt) => prompt,
         None => {
             debug!(
                 "Post-processing skipped because prompt '{}' was not found",
@@ -1173,19 +1202,13 @@ async fn post_process_with_provider(
     // Nova Ultra (`custom_styles`). Sans le palier requis, on retombe sur le
     // Style « Transcription améliorée » (gratuit) — la dictée est quand même
     // nettoyée, jamais bloquée.
-    let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
-    let required_feature = if crate::licensing::is_builtin_style(&selected_prompt_id) {
-        "all_styles"
-    } else {
-        "custom_styles"
-    };
     // Style effectivement appliqué (après repli éventuel sur le gratuit) : sert à
     // choisir la température (fidèle vs libre) cohérente avec le prompt réel.
     let mut effective_style_id = selected_prompt_id.clone();
-    let prompt = if !style_is_free && !crate::licensing::has(required_feature, license_key, 0) {
+    let prompt = if style_is_locked(&selected_prompt_id, license_key) {
         debug!(
-            "Style '{}' réservé ({}) — repli sur le Style gratuit",
-            selected_prompt_id, required_feature
+            "Style '{}' réservé — repli sur le Style gratuit",
+            selected_prompt_id
         );
         effective_style_id = "default_improve_transcriptions".to_string();
         settings

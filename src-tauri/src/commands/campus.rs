@@ -745,6 +745,30 @@ fn campus_client_with_token(token: &str) -> reqwest::Client {
         .expect("reqwest client builds")
 }
 
+#[derive(Deserialize, Debug)]
+struct OrganizationPackageEntry {
+    id: String,
+    #[serde(rename = "type")]
+    package_type: String,
+    content: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Deserialize, Debug)]
+struct OrganizationPackagesResponse {
+    #[serde(default)]
+    packages: Vec<OrganizationPackageEntry>,
+    #[serde(default)]
+    catalog_version: String,
+}
+
+/// Ce que l'interface reçoit après un rafraîchissement.
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct OrganizationCatalogSnapshot {
+    pub catalog_version: String,
+    pub styles: Vec<crate::organization_packages::OrganizationStyle>,
+    pub skills: Vec<crate::organization_packages::OrganizationSkill>,
+}
+
 fn authenticated_client(app: &AppHandle) -> Result<(String, reqwest::Client), String> {
     let credentials =
         load_campus_credentials(app)?.ok_or_else(|| "campus session is missing".to_string())?;
@@ -1154,6 +1178,157 @@ pub async fn execute_campus_command(
         .json::<CampusCommandResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
+}
+
+/// Charge le contenu publié par l'organisation et le rend disponible au poste.
+///
+/// Le catalogue reçu **remplace** le précédent : garder des morceaux de l'ancien
+/// produirait un mélange de versions, et personne ne saurait dire laquelle
+/// s'applique. C'est aussi ce qui rend le changement de version — et le retour
+/// arrière — immédiat, sans redémarrage.
+///
+/// Le serveur a déjà filtré selon les policies : ce qui arrive ici est ce que
+/// l'organisation autorise **et** distribue. Le poste ne réinvente pas ce
+/// tri, il applique ce qu'il reçoit.
+#[tauri::command]
+#[specta::specta]
+pub async fn refresh_organization_packages(
+    app: AppHandle,
+) -> Result<OrganizationCatalogSnapshot, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .get(format!("{}/api/organization/packages", base_url))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    let payload = response
+        .json::<OrganizationPackagesResponse>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))?;
+
+    // L'organisation vient de `/api/me`, jamais de la réponse du catalogue :
+    // c'est elle qui décide à qui ce contenu appartient, et un catalogue qui
+    // se déclarerait lui-même propriétaire ne prouverait rien.
+    let organization_id = current_organization_id(&app).await;
+
+    let mut styles = Vec::new();
+    let mut skills = Vec::new();
+    for entry in payload.packages {
+        match entry.package_type.as_str() {
+            "style" => {
+                if let (Some(name), Some(instruction)) = (
+                    entry.content.get("name").and_then(|v| v.as_str()),
+                    entry.content.get("instruction").and_then(|v| v.as_str()),
+                ) {
+                    styles.push(crate::organization_packages::OrganizationStyle {
+                        id: entry.id.clone(),
+                        name: name.to_string(),
+                        instruction: instruction.to_string(),
+                    });
+                }
+            }
+            "ai_skill" => {
+                if let Some(title) = entry.content.get("title").and_then(|v| v.as_str()) {
+                    skills.push(crate::organization_packages::OrganizationSkill {
+                        id: entry.id.clone(),
+                        title: title.to_string(),
+                        summary: text_field(&entry.content, "summary"),
+                        practice: text_field(&entry.content, "practice"),
+                        duration_minutes: entry
+                            .content
+                            .get("duration_minutes")
+                            .and_then(|v| v.as_u64())
+                            .unwrap_or(5) as u32,
+                        steps: entry
+                            .content
+                            .get("steps")
+                            .and_then(|v| v.as_array())
+                            .map(|items| {
+                                items
+                                    .iter()
+                                    .filter_map(|item| item.as_str().map(str::to_string))
+                                    .collect()
+                            })
+                            .unwrap_or_default(),
+                    });
+                }
+            }
+            // Le vocabulaire est appliqué par le serveur, dans la consigne de
+            // reformulation : le poste n'a rien à en faire.
+            _ => {}
+        }
+    }
+
+    let catalog = crate::organization_packages::OrganizationCatalog {
+        organization_id,
+        catalog_version: payload.catalog_version,
+        styles,
+        skills,
+    };
+    crate::organization_packages::set_catalog(catalog.clone());
+    Ok(OrganizationCatalogSnapshot {
+        catalog_version: catalog.catalog_version,
+        styles: catalog.styles,
+        skills: catalog.skills,
+    })
+}
+
+/// Exécute un AI Skill publié par l'organisation.
+///
+/// Le poste envoie un **identifiant**, jamais l'instruction : c'est le serveur
+/// qui la retrouve dans le package actif. S'il acceptait une instruction du
+/// client, n'importe qui pourrait faire exécuter n'importe quoi au modèle en se
+/// réclamant d'un Skill, et le catalogue publié ne serait plus qu'une
+/// suggestion.
+#[tauri::command]
+#[specta::specta]
+pub async fn run_organization_skill(
+    app: AppHandle,
+    skill_id: String,
+    text: String,
+) -> Result<CampusCommandResponse, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .post(format!("{}/api/skills/run", base_url))
+        .json(&serde_json::json!({ "skill_id": skill_id, "text": text }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    response
+        .json::<CampusCommandResponse>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+/// Oublie le contenu de l'organisation — déconnexion, ou changement d'organisation.
+#[tauri::command]
+#[specta::specta]
+pub fn clear_organization_packages() {
+    crate::organization_packages::clear_catalog();
+}
+
+fn text_field(content: &serde_json::Map<String, serde_json::Value>, key: &str) -> String {
+    content
+        .get(key)
+        .and_then(|value| value.as_str())
+        .unwrap_or_default()
+        .to_string()
+}
+
+async fn current_organization_id(app: &AppHandle) -> Option<String> {
+    let (base_url, client) = authenticated_client(app).ok()?;
+    let response = client
+        .get(format!("{}/api/me", base_url))
+        .send()
+        .await
+        .ok()?;
+    let profile = response.json::<serde_json::Value>().await.ok()?;
+    profile
+        .get("organization_id")
+        .and_then(|value| value.as_str())
+        .map(str::to_string)
 }
 
 #[tauri::command]
