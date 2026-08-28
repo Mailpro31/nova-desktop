@@ -1511,8 +1511,17 @@ pub async fn transcribe_campus(
     handle_campus_response(response).await
 }
 
+/// Reformule côté serveur, en désignant le Style appliqué.
+///
+/// `style_id` accompagne toujours la consigne. Pour un Style **intégré** ou
+/// **personnel**, la consigne appartient à l'utilisateur et le serveur
+/// l'applique telle quelle. Pour un Style **d'organisation**, l'identifiant
+/// porte un préfixe réservé et le serveur retrouve lui-même la consigne dans
+/// le package actif : le poste n'y fait pas autorité, et un Style dépublié
+/// cesse d'être exécutable même si le catalogue local est en retard.
 pub async fn reformulate_campus(
     text: &str,
+    style_id: &str,
     style_prompt: &str,
     session: &CampusCredentials,
 ) -> Result<String, CampusError> {
@@ -1521,6 +1530,7 @@ pub async fn reformulate_campus(
 
     let body = serde_json::json!({
         "text": text,
+        "style_id": style_id,
         "style_prompt": style_prompt,
     });
 

@@ -1074,13 +1074,31 @@ pub(crate) async fn post_process_transcription(
     result
 }
 
-/// Résout le prompt effectif à envoyer au serveur Nova Campus pour la
+/// Le Style réellement appliqué : son identifiant **et** sa consigne.
+///
+/// Les deux voyagent ensemble parce qu'ils doivent rester d'accord. Le serveur
+/// se sert de l'identifiant pour reconnaître un Style d'organisation et en
+/// résoudre lui-même la consigne ; s'il recevait un identifiant qui ne
+/// correspond pas au prompt appliqué ici, il exécuterait autre chose que ce
+/// que l'utilisateur a choisi.
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct ResolvedStyle {
+    pub id: String,
+    pub prompt: String,
+}
+
+/// Résout le Style effectif à envoyer au serveur Nova Campus pour la
 /// reformulation. Tient compte du Style automatique, du Style sélectionné et
 /// du repli sur le style gratuit si le palier n'est pas disponible.
-pub(crate) fn resolve_effective_style_prompt(
+///
+/// Le repli déplace **l'identifiant en même temps que la consigne**. Ne
+/// déplacer que la consigne laisserait partir l'identifiant d'un Style que le
+/// poste a justement refusé d'appliquer, et le serveur — qui fait autorité sur
+/// les Styles d'organisation — résoudrait celui-là.
+pub(crate) fn resolve_effective_style(
     app: &AppHandle,
     auto_style_override: Option<&str>,
-) -> Option<String> {
+) -> Option<ResolvedStyle> {
     let settings = get_settings(app);
     let license_key = settings.license_key.as_deref().unwrap_or("");
 
@@ -1089,20 +1107,32 @@ pub(crate) fn resolve_effective_style_prompt(
         None => settings.post_process_selected_prompt_id.clone()?,
     };
 
-    let prompt = resolve_style_prompt(&settings, &selected_prompt_id)?;
+    effective_style(&settings, &selected_prompt_id, license_key)
+}
 
-    if style_is_locked(&selected_prompt_id, license_key) {
-        debug!(
-            "Style '{}' réservé — repli sur le Style gratuit",
-            selected_prompt_id
-        );
+/// La décision seule, sans `AppHandle` : c'est elle qui doit rester vraie.
+fn effective_style(
+    settings: &AppSettings,
+    selected_prompt_id: &str,
+    license_key: &str,
+) -> Option<ResolvedStyle> {
+    let prompt = resolve_style_prompt(settings, selected_prompt_id)?;
+
+    if style_is_locked(selected_prompt_id, license_key) {
+        debug!("Style '{selected_prompt_id}' réservé — repli sur le Style gratuit");
         settings
             .post_process_prompts
             .iter()
             .find(|p| p.id == "default_improve_transcriptions")
-            .map(|p| p.prompt.clone())
+            .map(|p| ResolvedStyle {
+                id: p.id.clone(),
+                prompt: p.prompt.clone(),
+            })
     } else {
-        Some(prompt)
+        Some(ResolvedStyle {
+            id: selected_prompt_id.to_string(),
+            prompt,
+        })
     }
 }
 
@@ -2193,13 +2223,14 @@ impl ShortcutAction for TranscribeAction {
                                         &session.server_url,
                                     );
                                     if post_process {
-                                        if let Some(style_prompt) = resolve_effective_style_prompt(
+                                        if let Some(style) = resolve_effective_style(
                                             &ah,
                                             auto_style_override.as_deref(),
                                         ) {
                                             match campus::reformulate_campus(
                                                 &text,
-                                                &style_prompt,
+                                                &style.id,
+                                                &style.prompt,
                                                 &session,
                                             )
                                             .await
@@ -2544,17 +2575,77 @@ mod tests {
     use super::{
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
         clean_llm_output, complete_unless_cancelled, context_looks_like_current_draft,
-        custom_variables_block, is_blank_transcription, local_primary_timeout,
+        custom_variables_block, effective_style, is_blank_transcription, local_primary_timeout,
         protect_custom_variables, protect_lexicon, replace_keyword_ci, resolve_variable_tokens,
         restore_lexicon, should_use_streaming_overlay, temperature_for_style, validate_rewrite,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
+    use crate::settings::{AppSettings, LLMPrompt};
     use std::future;
     use std::sync::atomic::{AtomicBool, Ordering};
     use std::sync::Arc;
     use std::thread;
     use std::time::Duration;
+
+    // --- Le Style effectif envoyé au serveur : identifiant ET consigne ---
+
+    /// Des réglages nus, puis les Styles dont le test a besoin.
+    ///
+    /// `AppSettings` porte `#[serde(default)]` : partir d'un objet vide donne
+    /// les défauts sans avoir à énumérer trente champs sans rapport.
+    fn settings_with(prompts: &[(&str, &str)]) -> AppSettings {
+        let mut settings: AppSettings = serde_json::from_str("{}").expect("défauts");
+        settings.post_process_prompts = prompts
+            .iter()
+            .map(|(id, prompt)| LLMPrompt {
+                id: (*id).to_string(),
+                name: (*id).to_string(),
+                prompt: (*prompt).to_string(),
+            })
+            .collect();
+        settings
+    }
+
+    #[test]
+    fn effective_style_keeps_the_identifier_of_the_style_it_applies() {
+        let settings = settings_with(&[(
+            "default_improve_transcriptions",
+            "Améliore la transcription.",
+        )]);
+        let resolved = effective_style(&settings, "default_improve_transcriptions", "")
+            .expect("Style gratuit résolu");
+        assert_eq!(resolved.id, "default_improve_transcriptions");
+        assert_eq!(resolved.prompt, "Améliore la transcription.");
+    }
+
+    #[test]
+    fn a_locked_style_moves_its_identifier_with_its_prompt() {
+        // L'invariant du chemin campus : le serveur fait autorité sur les
+        // Styles d'organisation et résout la consigne à partir de
+        // l'identifiant. Replier la consigne sans replier l'identifiant lui
+        // ferait exécuter le Style que le poste vient justement de refuser.
+        let settings = settings_with(&[
+            (
+                "default_improve_transcriptions",
+                "Améliore la transcription.",
+            ),
+            ("style-personnel-1742", "Écris en vers."),
+        ]);
+        let resolved = effective_style(&settings, "style-personnel-1742", "")
+            .expect("repli sur le Style gratuit");
+        assert_eq!(resolved.id, "default_improve_transcriptions");
+        assert_eq!(resolved.prompt, "Améliore la transcription.");
+    }
+
+    #[test]
+    fn an_unknown_style_resolves_to_nothing_rather_than_to_a_guess() {
+        let settings = settings_with(&[(
+            "default_improve_transcriptions",
+            "Améliore la transcription.",
+        )]);
+        assert!(effective_style(&settings, "style-absent", "").is_none());
+    }
 
     // --- Protection du lexique personnel autour de la reformulation ---
 
