@@ -1886,15 +1886,87 @@ mod tests {
     }
 
     #[test]
-    fn the_installer_never_touches_the_machine_configuration() {
-        // La configuration de l'établissement doit survivre à une mise à jour
-        // comme à une réinstallation : l'installateur n'a rien à faire dans le
-        // répertoire machine.
+    fn the_installer_never_touches_the_legacy_machine_configuration() {
+        // L'installateur écrit désormais la configuration de déploiement
+        // d'entreprise (`organization.json`) — c'est tout l'objet du
+        // déploiement géré. Mais `campus-config.json`, déposé par la DSI par
+        // un mécanisme séparé, ne lui appartient toujours pas : une mise à
+        // jour qui l'écraserait déconnecterait silencieusement un pilote.
         let installer = include_str!("../../nsis/installer.nsi");
         assert!(
-            !installer.to_lowercase().contains("programdata"),
-            "the installer must never write to or delete the machine configuration directory"
+            !installer.to_lowercase().contains("campus-config"),
+            "the installer must never write to or delete the legacy machine configuration"
         );
+    }
+
+    #[test]
+    fn the_installer_writes_the_machine_configuration_only_when_asked() {
+        // L'invariant qui compte n'est plus « ne touche pas au répertoire
+        // machine » mais « ne le réécrit pas tout seul » : une mise à jour
+        // lancée sans paramètre de déploiement doit préserver le rattachement
+        // à l'organisation.
+        let installer = include_str!("../../nsis/installer.nsi");
+        let write = installer
+            .find(r#"CopyFiles /SILENT "$ManagedConfigSource""#)
+            .expect("the managed configuration is written somewhere");
+        let guard = installer
+            .find(r#"${If} $DeploymentId != """#)
+            .expect("the write is guarded by a deployment parameter");
+        assert!(
+            guard < write,
+            "the machine configuration must only be written when this run carries one"
+        );
+    }
+
+    #[test]
+    fn only_an_explicit_purge_deletes_the_machine_configuration() {
+        // Une désinstallation ordinaire, une réparation et une mise à jour
+        // conservent la configuration. La purger est une action
+        // administrative distincte, demandée explicitement.
+        let installer = include_str!("../../nsis/installer.nsi");
+        let purge = installer
+            .find("${If} $PurgeConfigMode = 1")
+            .expect("a purge guard exists");
+        for deletion in [
+            r#"Delete "$COMMONPROGRAMDATA\Nova\organization.json""#,
+            r#"Delete "$COMMONPROGRAMDATA\Nova\device.json""#,
+            r#"RMDir /r "$COMMONPROGRAMDATA\Nova\logs""#,
+            r#"RMDir "$COMMONPROGRAMDATA\Nova""#,
+        ] {
+            let at = installer
+                .find(deletion)
+                .unwrap_or_else(|| panic!("deletion not found: {deletion}"));
+            assert!(
+                purge < at,
+                "{deletion} must sit behind the explicit purge guard"
+            );
+        }
+        // Et rien ne supprime le répertoire machine en bloc.
+        assert!(
+            !installer.contains(r#"RMDir /r "$COMMONPROGRAMDATA\Nova""#),
+            "the machine configuration directory must never be removed recursively"
+        );
+    }
+
+    #[test]
+    fn the_installer_accepts_no_dangerous_parameter() {
+        // Ni adresse de serveur libre, ni commande, ni script, ni secret : un
+        // installeur qui les accepterait deviendrait un moyen d'execution
+        // arbitraire declenchable par n'importe quel outil de deploiement.
+        let installer = include_str!("../../nsis/installer.nsi");
+        for forbidden in [
+            "/SERVER_URL",
+            "/COMMAND=",
+            "/SCRIPT",
+            "/TOKEN",
+            "/PASSWORD",
+            "/SECRET",
+        ] {
+            assert!(
+                !installer.contains(forbidden),
+                "the installer must not accept {forbidden}"
+            );
+        }
     }
 
     #[test]

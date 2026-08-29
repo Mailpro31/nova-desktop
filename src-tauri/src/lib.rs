@@ -8,6 +8,7 @@ mod catalog;
 pub mod cli;
 mod clipboard;
 mod commands;
+mod deployment;
 mod dictation_state;
 mod helpers;
 mod input;
@@ -668,6 +669,7 @@ pub fn run(cli_args: CliArgs) {
             organization_sso::sign_in_with_organization,
             organization_sso::organization_auth_providers,
             organization_discovery::discover_organization,
+            deployment::get_deployment_state,
             commands::campus::load_campus_session,
             commands::campus::clear_campus_session,
             commands::campus::logout_campus_session,
