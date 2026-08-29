@@ -181,8 +181,16 @@ describe("Organization navigation", () => {
   });
 
   test("the learning screen keeps its own entry, renamed", () => {
+    // L'entree existe toujours et reste listee. Son libelle est desormais
+    // « Nova Commands » : « Learn » designe l'ecran Learn, qui a le sien.
     expect(primaryList()).toContain('"aiskills"');
-    expect(code(SIDEBAR)).toContain('labelKey: "sidebar.learn"');
+    const source = code(SIDEBAR).replace(/\s+/g, " ");
+    expect(source).toContain(
+      'labelKey: "sidebar.novaCommands", campusLabelKey: undefined, icon: BookOpen, component: AiSkillsSettings,',
+    );
+    expect(source).toContain(
+      'labelKey: "sidebar.learn", campusLabelKey: undefined, icon: GraduationCap, component: LearnSettings,',
+    );
   });
 
   test("executable AI Skills belong to every organization", () => {
@@ -207,8 +215,10 @@ describe("Organization navigation", () => {
   test("each destination is filtered by its own enabled predicate", () => {
     // Sans ce filtre, « Learn » apparaîtrait dans une entreprise : l'ordre est
     // fixe, la visibilité ne l'est pas.
+    // `visible` s'y ajoute sans le remplacer : `enabled` dit si l'entree
+    // existe pour ce poste, `visible` si la capacite qui la porte est ouverte.
     expect(code(SIDEBAR).replace(/\s+/g, " ")).toContain(
-      "ORGANIZATION_PRIMARY.filter((id) => SECTIONS_CONFIG[id].enabled(settings),",
+      "ORGANIZATION_PRIMARY.filter( (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),",
     );
   });
 });

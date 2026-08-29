@@ -35,7 +35,7 @@ describe("navigation Learn", () => {
     // Déclarer une section ne suffit pas : la barre suit une liste explicite,
     // et c'est cet oubli qui avait fait disparaître AI Skills en Phase 31B.
     const code = source(SIDEBAR);
-    const primary = code.slice(code.indexOf("const CAMPUS_PRIMARY"));
+    const primary = code.slice(code.indexOf("const ORGANIZATION_PRIMARY"));
     expect(primary.slice(0, 220)).toContain('"learn"');
   });
 
@@ -55,7 +55,9 @@ describe("navigation Learn", () => {
     // Une seule des deux filtrées laisserait Learn visible dans l'autre après
     // qu'une organisation l'a fermé.
     const code = source(SIDEBAR);
-    expect(code).toContain("CAMPUS_PRIMARY.filter(visible)");
+    expect(code.replace(/\s+/g, " ")).toContain(
+      "ORGANIZATION_PRIMARY.filter( (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),",
+    );
     expect(code).toContain("visible(id as SidebarSection)");
   });
 
