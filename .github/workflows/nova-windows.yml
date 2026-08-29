@@ -26,7 +26,7 @@ jobs:
       target: "x86_64-pc-windows-msvc"
       # Campus s'installe pour toute la machine (déploiement DSI / Intune / GPO) ;
       # Personal garde l'installation par utilisateur de tauri.conf.json.
-      build-args: ${{ inputs.nova_mode == 'campus' && '--config tauri.campus.conf.json' || '' }}
+      build-args: ${{ inputs.nova_mode == 'campus' && '--config src-tauri/tauri.campus.conf.json' || '' }}
       sign-binaries: false
       asset-prefix: "Nova"
       upload-artifacts: true

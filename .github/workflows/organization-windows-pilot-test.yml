@@ -139,7 +139,7 @@ jobs:
           # signature updater n'est requise.
           VITE_NOVA_MODE: campus
         with:
-          args: --config tauri.campus.conf.json --bundles nsis
+          args: --config src-tauri/tauri.campus.conf.json --bundles nsis
 
       - name: Publier le paquet pour le job d'installation
         uses: actions/upload-artifact@v7
