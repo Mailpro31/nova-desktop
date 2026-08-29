@@ -68,7 +68,45 @@ env:
   NOVA_SENTRY_DSN: ${{ secrets.NOVA_SENTRY_DSN }}
 
 jobs:
+  # ── Garde-fou d'approvisionnement ────────────────────────────────────────
+  #
+  # Corriger `pr-test-build.yml` suffisait à refermer la faille du jour. Cela ne
+  # protège pas du lendemain : un appelant ajouté plus tard, ou une ligne
+  # remise « le temps de tester », rouvrirait exactement la même porte sans que
+  # personne ne le voie passer en revue.
+  #
+  # La règle vit donc ici, du côté qui détient les credentials, et elle est
+  # posée dans un job séparé dont `build` dépend : le refus tombe avant qu'une
+  # seule étape n'ait touché une clé, pas au milieu du build.
+  #
+  # Ce job ne lit rien, n'écrit rien, ne clone rien — il ne compare que des
+  # entrées. Aucun secret ne peut donc fuir par lui, et rien n'est journalisé
+  # d'autre que le nom de la référence refusée.
+  supply-chain-guard:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Refuser la signature d'une référence non fiable
+        if: ${{ startsWith(inputs.ref, 'refs/pull/') && inputs.sign-binaries }}
+        run: |
+          echo "::error::Signature refusée : '${{ inputs.ref }}' désigne une pull request." \
+               "Le code d'une PR n'est pas revu, et le signer reviendrait à confier la clé" \
+               "privée à son auteur. Construire une PR est légitime — la signer ne l'est pas."
+          exit 1
+
+      - name: Refuser la publication depuis une référence non fiable
+        if: ${{ startsWith(inputs.ref, 'refs/pull/') && (inputs.release-id != '' || inputs.releases-repo != '') }}
+        run: |
+          echo "::error::Publication refusée : '${{ inputs.ref }}' désigne une pull request." \
+               "Une release se construit depuis une référence intégrée, jamais depuis du code" \
+               "en cours de revue."
+          exit 1
+
+      - name: Référence acceptée
+        run: echo "ref='${{ inputs.ref }}' sign-binaries='${{ inputs.sign-binaries }}' — contrôles passés."
+
   build:
+    needs: supply-chain-guard
     permissions:
       contents: write
     runs-on: ${{ inputs.platform }}
@@ -512,7 +550,14 @@ jobs:
       # tout espace, et TAURI_SIGNING_PRIVATE_KEY pointe sur ce fichier (tauri
       # accepte indifféremment le contenu de la clé ou un chemin vers elle). La
       # clé n'est jamais imprimée dans les logs.
+      # Cette étape écrit la clé privée updater sur le disque du runner. Elle est
+      # donc sautée pour une référence de pull request : sans `secrets: inherit`
+      # la valeur serait déjà vide, mais écrire un fichier de clé au milieu d'un
+      # build qui exécute du code non revu n'a aucune raison d'exister. La clé
+      # ne sert qu'aux builds qui activent `createUpdaterArtifacts`, c'est-à-dire
+      # aux releases — jamais à un build de test.
       - name: Normaliser la clé + le mot de passe de signature updater
+        if: ${{ !startsWith(inputs.ref, 'refs/pull/') }}
         shell: bash
         env:
           RAW_UPDATER_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
@@ -546,7 +591,9 @@ jobs:
           # ne concerne que la signature de CODE Windows/Apple). Elle n'est
           # utilisée que lorsqu'un build active createUpdaterArtifacts (release) ;
           # les builds de test le laissent à false et ne signent donc rien.
-          TAURI_SIGNING_PRIVATE_KEY: ${{ runner.temp }}/nova-updater.key
+          # Vide sur une référence de pull request : le fichier de clé n'y est
+          # pas écrit (voir l'étape de normalisation ci-dessus).
+          TAURI_SIGNING_PRIVATE_KEY: ${{ startsWith(inputs.ref, 'refs/pull/') && '' || format('{0}/nova-updater.key', runner.temp) }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ env.NOVA_UPDATER_PW }}
           VITE_NOVA_MODE: ${{ inputs.nova_mode }}
         with:
