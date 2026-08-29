@@ -50,8 +50,12 @@ const ORGANIZATION_ONLY: CapabilityId[] = [
   "organizationFormattingRules",
   "organizationStyles",
   "aiSkills",
-  "learning",
 ];
+
+// `learning` ne figure ni ici ni dans le Nova Core : c'est une capacité Core
+// qu'une policy peut fermer. Personal la garde toujours ; une organisation la
+// reçoit ouverte et peut la refermer.
+
 
 describe("Édition Personal", () => {
   const context = resolveOrganizationContext({ edition: "personal" });
@@ -72,6 +76,11 @@ describe("Édition Personal", () => {
     for (const capability of ORGANIZATION_ONLY) {
       expect(can(context, capability)).toBe(false);
     }
+  });
+
+  test("garde Learn, qui appartient au Core", () => {
+    // Learn n'est pas une surface d'organisation : il vaut sans serveur.
+    expect(can(context, "learning")).toBe(true);
   });
 });
 
@@ -112,13 +121,23 @@ describe("Campus hérité", () => {
     expect(can(withSkills, "aiSkills")).toBe(true);
   });
 
-  test("ne promet ni Styles d'organisation ni parcours d'apprentissage", () => {
+  test("ne promet pas de Styles d'organisation", () => {
     // Aucun serveur n'en distribue : les annoncer serait une promesse creuse.
     const context = campusOrganizationContext(
       campusConfig({ capabilities: { styles: true } }),
     );
     expect(can(context, "organizationStyles")).toBe(false);
-    expect(can(context, "learning")).toBe(false);
+  });
+
+  test("ouvre Learn par défaut, et le referme si la policy le dit", () => {
+    // Learn appartient au Core : un établissement qui n'a rien configuré le
+    // garde. Fermer une capacité doit rester une décision, jamais un défaut.
+    expect(can(campusOrganizationContext(), "learning")).toBe(true);
+
+    const closed = campusOrganizationContext(
+      campusConfig({ capabilities: { learning: false } }),
+    );
+    expect(can(closed, "learning")).toBe(false);
   });
 
   test("suit le mode examen de l'établissement", () => {

@@ -200,11 +200,14 @@ function resolveCapabilities(campus: CampusContext | null): CapabilityMap {
     organizationVocabulary: capabilities.dictionary,
     organizationSnippets: capabilities.snippets,
     organizationFormattingRules: capabilities.formattingRules,
-    // Aucun serveur ne distribue de Styles d'organisation ni de parcours
-    // d'apprentissage aujourd'hui — voir `campusCapabilities.ts`.
+    // Aucun serveur ne distribue de Styles d'organisation aujourd'hui —
+    // voir `campusCapabilities.ts`.
     organizationStyles: false,
     aiSkills: capabilities.aiSkills,
-    learning: false,
+    // Learn suit la policy de l'organisation, comme le reste de ce qui passe
+    // par le serveur. Ce n'est pas une surface d'organisation : c'est du Core
+    // qu'une policy peut fermer.
+    learning: capabilities.learning,
   });
 }
 

@@ -769,6 +769,197 @@ pub struct OrganizationCatalogSnapshot {
     pub skills: Vec<crate::organization_packages::OrganizationSkill>,
 }
 
+// ──────────────────────────────── Learn ────────────────────────────────
+//
+// Learn appartient au Nova Core, et ces commandes n'en decident rien : elles
+// transportent. Le catalogue, la progression et le retour d'un exercice
+// viennent tous du serveur, qui applique la capacite `learning` et la policy de
+// l'organisation. Le poste ne reconstruit aucun de ces tris.
+//
+// Le contenu des blocs reste `serde_json::Value` : le moteur de rendu est
+// generique cote interface, et figer ici une structure par type de bloc
+// obligerait a recompiler l'application pour ajouter un type de contenu — soit
+// exactement ce que le catalogue versionne cherche a eviter.
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningBlock {
+    pub id: String,
+    #[serde(rename = "type")]
+    pub block_type: String,
+    pub order: i64,
+    pub content: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningLesson {
+    pub id: String,
+    pub title: String,
+    pub description: String,
+    pub estimated_minutes: i64,
+    pub difficulty: String,
+    pub order: i64,
+    pub version: i64,
+    #[serde(default)]
+    pub tags: Vec<String>,
+    pub blocks: Vec<LearningBlock>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningModule {
+    pub id: String,
+    pub title: String,
+    pub description: String,
+    pub order: i64,
+    pub lessons: Vec<LearningLesson>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningPath {
+    pub id: String,
+    pub pillar: String,
+    pub title: String,
+    pub description: String,
+    #[serde(default)]
+    pub icon: Option<String>,
+    pub order: i64,
+    #[serde(default)]
+    pub tags: Vec<String>,
+    pub modules: Vec<LearningModule>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningCatalog {
+    pub catalog_version: i64,
+    pub locale: String,
+    pub paths: Vec<LearningPath>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningLessonProgress {
+    pub lesson_id: String,
+    pub status: String,
+    pub lesson_version: i64,
+    pub completed_blocks: Vec<String>,
+    pub last_block_id: Option<String>,
+    pub started_at: Option<f64>,
+    pub updated_at: f64,
+    pub completed_at: Option<f64>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningProgressSnapshot {
+    pub catalog_version: i64,
+    pub lessons: Vec<LearningLessonProgress>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct LearningExerciseFeedback {
+    pub exercise_id: String,
+    pub feedback: String,
+}
+
+#[derive(Serialize)]
+struct LearningProgressBody {
+    completed_blocks: Vec<String>,
+    last_block_id: Option<String>,
+}
+
+#[derive(Serialize)]
+struct LearningExerciseBody {
+    text: String,
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn fetch_learning_catalog(app: AppHandle) -> Result<LearningCatalog, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .get(format!("{}/api/learning/catalog", base_url))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    response
+        .json::<LearningCatalog>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn fetch_learning_progress(app: AppHandle) -> Result<LearningProgressSnapshot, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .get(format!("{}/api/learning/progress", base_url))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    response
+        .json::<LearningProgressSnapshot>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+/// Avance la progression sur une lecon.
+///
+/// Le corps ne porte que ce qui a ete traite. L'etat — `in_progress`,
+/// `completed` — est calcule par le serveur : c'est lui qui sait ce qu'une
+/// lecon exige, et une completion annoncee par le poste ne voudrait rien dire.
+#[tauri::command]
+#[specta::specta]
+pub async fn update_learning_progress(
+    app: AppHandle,
+    lesson_id: String,
+    completed_blocks: Vec<String>,
+    last_block_id: Option<String>,
+) -> Result<LearningLessonProgress, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .put(format!("{}/api/learning/progress/{}", base_url, lesson_id))
+        .json(&LearningProgressBody {
+            completed_blocks,
+            last_block_id,
+        })
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    response
+        .json::<LearningLessonProgress>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
+/// Demande un retour pedagogique sur ce que la personne vient d'ecrire.
+///
+/// Seul le texte part. L'instruction destinee au modele vit dans le catalogue
+/// du serveur et n'a jamais transite jusqu'ici — il n'y a donc aucun parametre
+/// par lequel le poste pourrait la remplacer.
+#[tauri::command]
+#[specta::specta]
+pub async fn request_learning_feedback(
+    app: AppHandle,
+    exercise_id: String,
+    text: String,
+) -> Result<LearningExerciseFeedback, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .post(format!(
+            "{}/api/learning/exercises/{}/feedback",
+            base_url, exercise_id
+        ))
+        .json(&LearningExerciseBody { text })
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    response
+        .json::<LearningExerciseFeedback>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
 fn authenticated_client(app: &AppHandle) -> Result<(String, reqwest::Client), String> {
     let credentials =
         load_campus_credentials(app)?.ok_or_else(|| "campus session is missing".to_string())?;

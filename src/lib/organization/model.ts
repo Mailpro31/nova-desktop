@@ -152,7 +152,8 @@ export type CapabilityMap = Readonly<Record<CapabilityId, boolean>>;
  * locale, performance, stabilité, UX) bénéficie par défaut à Personal, Campus
  * et Business. Une édition Organization ne perd une capacité Core que si une
  * policy explicite l'impose — mécanisme construit en Phase 29, voir
- * `policy.ts`. Aucune policy ne gouverne une capacité Core aujourd'hui.
+ * `policy.ts`. `learning` est le premier cas : Learn appartient au Core, et une
+ * organisation peut néanmoins le fermer.
  */
 export const CORE_CAPABILITIES: readonly CapabilityId[] = [
   "dictation",

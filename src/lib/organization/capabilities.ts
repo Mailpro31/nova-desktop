@@ -34,7 +34,9 @@ const PERSONAL_CAPABILITIES: CapabilityMap = Object.freeze({
   organizationFormattingRules: false,
   organizationStyles: false,
   aiSkills: false,
-  learning: false,
+  // Learn est du Nova Core : il vaut pour Personal comme pour une
+  // organisation. C'est la capacite qui decide, jamais l'edition.
+  learning: true,
 });
 
 /**

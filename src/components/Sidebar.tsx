@@ -6,6 +6,7 @@ import {
   Cog,
   CreditCard,
   FlaskConical,
+  GraduationCap,
   History,
   House,
   Info,
@@ -20,6 +21,7 @@ import { useSettings } from "../hooks/useSettings";
 import { useCampusStatus } from "../hooks/useCampusStatus";
 import { useOrganization } from "../hooks/useOrganization";
 import { isCampusMode } from "@/lib/mode";
+import { useCapability } from "../hooks/useOrganizationContext";
 
 const HomeSettings = lazy(() =>
   import("./settings/home/HomeSettings").then((module) => ({
@@ -81,6 +83,11 @@ const AiSkillsSettings = lazy(() =>
     default: module.AiSkillsSettings,
   })),
 );
+const LearnSettings = lazy(() =>
+  import("./settings/learn/LearnSettings").then((module) => ({
+    default: module.LearnSettings,
+  })),
+);
 const CampusOrganizationSettings = lazy(() =>
   import("./settings/organization/CampusOrganizationSettings").then(
     (module) => ({
@@ -117,11 +124,25 @@ export const SECTIONS_CONFIG = {
     enabled: () => true,
     campusVisible: true,
   },
-  aiskills: {
-    // Cet écran présente une piste d'apprentissage — modules, exercice,
-    // progression. C'est du Learn, et le libellé le dit désormais : deux
-    // entrées nommées « AI Skills » auraient été indiscernables.
+  learn: {
+    // Learn — les trois piliers, les micro-leçons, la progression.
+    //
+    // `enabled` ne demande pas quelle édition est installée : Learn appartient
+    // au Nova Core et vaut pour Personal comme pour une organisation. C'est la
+    // capacité `learning` qui décide, et une policy peut la fermer.
     labelKey: "sidebar.learn",
+    campusLabelKey: undefined,
+    icon: GraduationCap,
+    component: LearnSettings,
+    enabled: () => true,
+    campusVisible: true,
+  },
+  aiskills: {
+    // La palette Nova Commands et le catalogue de skills intégrés. Cet écran
+    // portait le libellé « Learn » alors qu'il en ouvrait un autre : deux
+    // entrées disaient « AI Skills » et une troisième promettait Learn sans
+    // le montrer. Chaque entrée nomme désormais ce qu'elle ouvre.
+    labelKey: "sidebar.novaCommands",
     campusLabelKey: undefined,
     icon: BookOpen,
     component: AiSkillsSettings,
@@ -230,6 +251,7 @@ export const SECTIONS_CONFIG = {
 // a fait disparaitre « AI Skills » lors de la recette de la Phase 31B.
 const CAMPUS_PRIMARY: SidebarSection[] = [
   "home",
+  "learn",
   "aiskilltools",
   "aiskills",
   "postprocessing",
@@ -286,6 +308,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const campusMode = isCampusMode();
   const organization = useOrganization();
   const { connection } = useCampusStatus();
+  // Learn se masque quand la capacité est fermée. La question posée est « cette
+  // capacité est-elle ouverte ? », pas « quelle édition est installée ? » : une
+  // organisation qui ferme Learn le ferme pour tout le monde, et Personal le
+  // garde sans qu'aucune condition d'édition n'ait à l'énoncer.
+  const learningOpen = useCapability("learning");
+  const visible = (id: SidebarSection) => id !== "learn" || learningOpen;
 
   if (campusMode) {
     return (
@@ -298,7 +326,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </span>
         </div>
 
-        {CAMPUS_PRIMARY.map((id) => {
+        {CAMPUS_PRIMARY.filter(visible).map((id) => {
           const config = SECTIONS_CONFIG[id];
           const Icon = config.icon;
           return (
@@ -387,7 +415,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // ── Mode personnel : liste et ordre inchangés, seule la présentation suit
   // la planche de fondation (état actif sobre, tokens, icônes homogènes).
   const availableSections = Object.entries(SECTIONS_CONFIG)
-    .filter(([, config]) => config.enabled(settings))
+    .filter(([id, config]) => config.enabled(settings) && visible(id as SidebarSection))
     .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
 
   return (

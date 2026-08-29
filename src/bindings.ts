@@ -908,6 +908,52 @@ async getCampusAiSkills() : Promise<Result<CampusAiSkillsResponse, string>> {
  * l'organisation autorise **et** distribue. Le poste ne réinvente pas ce
  * tri, il applique ce qu'il reçoit.
  */
+async fetchLearningCatalog() : Promise<Result<LearningCatalog, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("fetch_learning_catalog") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async fetchLearningProgress() : Promise<Result<LearningProgressSnapshot, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("fetch_learning_progress") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Avance la progression sur une lecon.
+ *
+ * Le corps ne porte que ce qui a ete traite. L'etat — `in_progress`,
+ * `completed` — est calcule par le serveur : c'est lui qui sait ce qu'une
+ * lecon exige, et une completion annoncee par le poste ne voudrait rien dire.
+ */
+async updateLearningProgress(lessonId: string, completedBlocks: string[], lastBlockId: string | null) : Promise<Result<LearningLessonProgress, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_learning_progress", { lessonId, completedBlocks, lastBlockId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Demande un retour pedagogique sur ce que la personne vient d'ecrire.
+ *
+ * Seul le texte part. L'instruction destinee au modele vit dans le catalogue
+ * du serveur et n'a jamais transite jusqu'ici — il n'y a donc aucun parametre
+ * par lequel le poste pourrait la remplacer.
+ */
+async requestLearningFeedback(exerciseId: string, text: string) : Promise<Result<LearningExerciseFeedback, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("request_learning_feedback", { exerciseId, text }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async refreshOrganizationPackages() : Promise<Result<OrganizationCatalogSnapshot, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("refresh_organization_packages") };
@@ -2159,6 +2205,15 @@ service_endpoint: string; deployment_mode: string; contract_version: number }
 /**
  * Ce que l'interface reçoit après un rafraîchissement.
  */
+export type JsonValue = null | boolean | number | string | JsonValue[] | { [key in string]: JsonValue }
+export type LearningBlock = { id: string; type: string; order: number; content: { [key in string]: JsonValue } }
+export type LearningCatalog = { catalog_version: number; locale: string; paths: LearningPath[] }
+export type LearningExerciseFeedback = { exercise_id: string; feedback: string }
+export type LearningLesson = { id: string; title: string; description: string; estimated_minutes: number; difficulty: string; order: number; version: number; tags: string[]; blocks: LearningBlock[] }
+export type LearningLessonProgress = { lesson_id: string; status: string; lesson_version: number; completed_blocks: string[]; last_block_id: string | null; started_at: number | null; updated_at: number; completed_at: number | null }
+export type LearningModule = { id: string; title: string; description: string; order: number; lessons: LearningLesson[] }
+export type LearningPath = { id: string; pillar: string; title: string; description: string; icon: string | null; order: number; tags: string[]; modules: LearningModule[] }
+export type LearningProgressSnapshot = { catalog_version: number; lessons: LearningLessonProgress[] }
 export type OrganizationCatalogSnapshot = { catalog_version: string; styles: OrganizationStyle[]; skills: OrganizationSkill[] }
 /**
  * Un AI Skill publié par l'organisation.

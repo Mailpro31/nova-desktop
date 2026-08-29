@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Settings",
     "organization": "Organization",
-    "learn": "Learn"
+    "learn": "Learn",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -1691,5 +1692,57 @@
     "connected": "Connected",
     "local": "Working offline with the last known settings",
     "signedOut": "Signed out"
+  },
+  "learn": {
+    "title": "Learn",
+    "subtitle": "Get better with AI, a few minutes at a time.",
+    "loading": "Loading…",
+    "empty": "No lessons are available yet.",
+    "continue": "Continue",
+    "recommended": "Recommended for you",
+    "start": "Start",
+    "resume": "Resume",
+    "back": "Back to Learn",
+    "status": {
+      "inProgress": "In progress",
+      "completed": "Completed"
+    },
+    "progress": {
+      "summary": "{{completed}} of {{total}} lessons completed",
+      "notSynced": "Saved on this device. It will sync when the server is reachable again."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Continue",
+      "finish": "Finish lesson",
+      "answerFirst": "Answer to continue."
+    },
+    "quiz": {
+      "correct": "Correct",
+      "incorrect": "Not quite"
+    },
+    "compare": {
+      "worse": "Weaker",
+      "better": "Stronger"
+    },
+    "exercise": {
+      "compare": "Compare with an example",
+      "sample": "One way to write it",
+      "askNova": "Ask Nova",
+      "running": "Thinking…",
+      "feedback": "Feedback",
+      "unavailable": "Nova could not answer right now. The rest of the lesson still works."
+    },
+    "block": {
+      "tip": "Tip",
+      "warning": "Careful",
+      "takeaway": "Takeaway",
+      "unsupported": "This part needs a newer version of Nova."
+    },
+    "error": {
+      "catalog": "Learn is unavailable right now. Try again in a moment."
+    }
   }
 }

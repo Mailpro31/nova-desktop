@@ -37,6 +37,7 @@ export interface CampusCapabilities {
   cloudInference: boolean;
   engineeringNotes: boolean;
   aiSkills: boolean;
+  learning: boolean;
   personalization: boolean;
 }
 
@@ -100,6 +101,7 @@ const capabilitiesSchema = z
     cloudInference: z.boolean().optional(),
     engineeringNotes: z.boolean().optional(),
     aiSkills: z.boolean().optional(),
+    learning: z.boolean().optional(),
     personalization: z.boolean().optional(),
   })
   .strict();
@@ -142,6 +144,9 @@ const NORMAL_CAPABILITIES: CampusCapabilities = {
   cloudInference: true,
   engineeringNotes: false,
   aiSkills: false,
+  // Learn appartient au Nova Core : ouvert par defaut, comme la dictee.
+  // Un serveur plus ancien qui ne l'annonce pas ne doit pas le fermer.
+  learning: true,
   personalization: true,
 };
 
