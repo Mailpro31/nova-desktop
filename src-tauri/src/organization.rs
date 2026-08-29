@@ -35,7 +35,9 @@ pub enum Edition {
     Organization,
 }
 
-/// Nature de l'organisation. `Business` est déclaré, jamais produit aujourd'hui.
+/// Nature de l'organisation. Décidée par le serveur du tenant, jamais par le
+/// paquet installé : un build Organization sert aussi bien une école qu'une
+/// entreprise, et c'est cette valeur qui les distingue.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum OrganizationType {
@@ -278,11 +280,11 @@ pub fn resolve_organization_for_tenant<'a>(
         .map(|mapping| mapping.organization_id.as_str())
 }
 
-/// Édition correspondant à l'état Campus du backend.
+/// Édition correspondant à l'état Organization du backend.
 ///
 /// Campus n'est pas une édition à part : c'est une organisation de type
-/// éducation. Le jour où un build Organization servira Business, seul
-/// `organization_type_for` changera.
+/// éducation, et Business une organisation de type entreprise. Le drapeau ne
+/// répond qu'à « ce poste est-il géré par une organisation ? ».
 pub fn edition_for(campus_enabled: bool) -> Edition {
     if campus_enabled {
         Edition::Organization
@@ -291,11 +293,39 @@ pub fn edition_for(campus_enabled: bool) -> Edition {
     }
 }
 
+/// Repli de nature d'organisation, quand aucune source ne l'a annoncée.
+///
+/// `Education` et non `Business` : c'est le comportement de tous les postes
+/// déjà déployés. Un défaut qui change le comportement d'un parc existant n'est
+/// pas un défaut, c'est une régression.
+pub const FALLBACK_ORGANIZATION_TYPE: OrganizationType = OrganizationType::Education;
+
 /// Nature de l'organisation, `None` en édition Personal.
-pub fn organization_type_for(edition: Edition) -> Option<OrganizationType> {
+///
+/// `announced` est ce que le serveur du tenant a dit — `/api/me` d'abord,
+/// `/api/config` ensuite. Le build ne le décide pas : il ne sait pas quelle
+/// organisation le poste sert. Une valeur absente retombe sur le repli plutôt
+/// que de faire disparaître l'organisation, ce qui reviendrait à traiter un
+/// poste géré comme un poste personnel.
+pub fn organization_type_for(
+    edition: Edition,
+    announced: Option<OrganizationType>,
+) -> Option<OrganizationType> {
     match edition {
-        Edition::Organization => Some(OrganizationType::Education),
+        Edition::Organization => Some(announced.unwrap_or(FALLBACK_ORGANIZATION_TYPE)),
         Edition::Personal => None,
+    }
+}
+
+/// Nature annoncée par le serveur, `None` si la chaîne ne désigne rien de connu.
+///
+/// Une valeur inconnue — champ vide, serveur d'une version future — ne produit
+/// pas une nature inventée : l'appelant retombera sur le repli.
+pub fn organization_type_from_server(value: &str) -> Option<OrganizationType> {
+    match value.trim().to_ascii_lowercase().as_str() {
+        "education" => Some(OrganizationType::Education),
+        "business" => Some(OrganizationType::Business),
+        _ => None,
     }
 }
 
@@ -309,6 +339,10 @@ pub fn member_type_from_campus_role(role: &str) -> Option<MemberType> {
         "student" => Some(MemberType::Student),
         "teacher" => Some(MemberType::Teacher),
         "staff" => Some(MemberType::Staff),
+        // Métiers d'entreprise. `manager` reste un métier : encadrer une équipe
+        // n'administre pas Nova, exactement comme enseigner ne l'administre pas.
+        "employee" => Some(MemberType::Employee),
+        "manager" => Some(MemberType::Manager),
         "partner" => Some(MemberType::Other),
         _ => None,
     }
@@ -357,11 +391,41 @@ mod tests {
     use super::*;
 
     #[test]
-    fn campus_build_is_an_education_organization() {
+    fn an_organization_build_without_an_announcement_stays_education() {
+        // Le parc déployé : un poste Campus servi par un serveur qui n'annonce
+        // rien doit continuer à se comporter exactement comme avant.
         let edition = edition_for(true);
         assert_eq!(edition, Edition::Organization);
         assert_eq!(
-            organization_type_for(edition),
+            organization_type_for(edition, None),
+            Some(OrganizationType::Education)
+        );
+    }
+
+    #[test]
+    fn the_server_decides_the_nature_of_the_organization() {
+        let edition = edition_for(true);
+        assert_eq!(
+            organization_type_for(edition, Some(OrganizationType::Business)),
+            Some(OrganizationType::Business)
+        );
+        assert_eq!(
+            organization_type_for(edition, Some(OrganizationType::Education)),
+            Some(OrganizationType::Education)
+        );
+    }
+
+    #[test]
+    fn an_unknown_announcement_produces_no_nature() {
+        for value in ["", "   ", "school", "entreprise", "ecole"] {
+            assert_eq!(organization_type_from_server(value), None, "{value}");
+        }
+        assert_eq!(
+            organization_type_from_server(" Business "),
+            Some(OrganizationType::Business)
+        );
+        assert_eq!(
+            organization_type_from_server("EDUCATION"),
             Some(OrganizationType::Education)
         );
     }
@@ -370,7 +434,29 @@ mod tests {
     fn personal_build_has_no_organization() {
         let edition = edition_for(false);
         assert_eq!(edition, Edition::Personal);
-        assert_eq!(organization_type_for(edition), None);
+        // Même si une valeur traînait, Personal reste Personal : aucune
+        // annonce serveur ne fait entrer un poste personnel dans une
+        // organisation.
+        assert_eq!(organization_type_for(edition, None), None);
+        assert_eq!(
+            organization_type_for(edition, Some(OrganizationType::Business)),
+            None
+        );
+    }
+
+    #[test]
+    fn a_business_metier_is_a_metier_and_nothing_more() {
+        assert_eq!(
+            member_type_from_campus_role("employee"),
+            Some(MemberType::Employee)
+        );
+        assert_eq!(
+            member_type_from_campus_role("manager"),
+            Some(MemberType::Manager)
+        );
+        for role in ["employee", "manager"] {
+            assert_eq!(security_role_from_campus_role(role), SecurityRole::Member);
+        }
     }
 
     #[test]

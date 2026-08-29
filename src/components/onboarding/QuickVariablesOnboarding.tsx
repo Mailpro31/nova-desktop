@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { TierBadge } from "../settings/license/TierBadge";
 import { Input } from "../ui/Input";
 import OnboardingStepShell from "./OnboardingStepShell";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 type PresetVariable = { key: string; value: string; placeholder: string };
 
@@ -101,7 +101,7 @@ const QuickVariablesOnboarding: React.FC<QuickVariablesOnboardingProps> = ({
     >
       <div className="space-y-3">
         <div className="flex justify-center">
-          {!isCampusMode() && <TierBadge feature="custom_variables" />}
+          {!isOrganizationMode() && <TierBadge feature="custom_variables" />}
         </div>
 
         <div className="divide-y divide-hairline overflow-hidden border border-hairline bg-surface [border-radius:var(--nova-radius-card)]">

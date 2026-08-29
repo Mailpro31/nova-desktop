@@ -14,7 +14,7 @@ import { PageHeader } from "../../shell/PageHeader";
 import { ModelsSettings } from "../models/ModelsSettings";
 import { AdvancedSettings } from "../advanced/AdvancedSettings";
 import { PersonalizationSettings } from "../personalization/PersonalizationSettings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 type ConfigTab =
   | "general"
@@ -53,7 +53,7 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
  */
 export const ConfigurationSettings: React.FC = () => {
   const { t } = useTranslation();
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
   const tabs = campusMode ? CAMPUS_TABS : ALL_TABS;
   const [tab, setTab] = useState<ConfigTab>("general");
 

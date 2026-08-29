@@ -2,7 +2,21 @@ import { z } from "zod";
 import type { CampusConfig } from "@/lib/campusSession";
 import type { CampusProfile } from "@/lib/campusApi";
 
-export type CampusRole = "student" | "teacher" | "staff" | "partner";
+/**
+ * `users.role` du serveur : un **métier**, jamais un droit.
+ *
+ * Les métiers d'entreprise (`employee`, `manager`) figurent dans la même liste
+ * que ceux d'un établissement : une organisation Business n'a pas de modèle de
+ * membre à part, elle emploie d'autres métiers. Le nom du type reste `Campus*`
+ * comme le reste de ce module, dont le vocabulaire est historique.
+ */
+export type CampusRole =
+  | "student"
+  | "teacher"
+  | "staff"
+  | "employee"
+  | "manager"
+  | "partner";
 export type CampusAuthMethod = "email_code" | "entra" | "oidc";
 export type CampusEducationMode = "normal" | "classroom" | "assessment";
 
@@ -61,7 +75,14 @@ export interface CampusContext {
   };
 }
 
-const roleSchema = z.enum(["student", "teacher", "staff", "partner"]);
+const roleSchema = z.enum([
+  "student",
+  "teacher",
+  "staff",
+  "employee",
+  "manager",
+  "partner",
+]);
 const authMethodSchema = z.enum(["email_code", "entra", "oidc"]);
 const educationModeSchema = z.enum(["normal", "classroom", "assessment"]);
 

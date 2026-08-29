@@ -6,7 +6,7 @@ import {
   type DictationState,
   type LLMPrompt,
 } from "@/bindings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import { hasMilestone } from "@/lib/milestones";
 import { useCampusStatus } from "../../../hooks/useCampusStatus";
 import { useDictationState } from "../../../hooks/useDictationState";
@@ -75,7 +75,7 @@ export function useHomeState(): HomeState {
   const dictation = useDictationState();
   const { getSetting } = useSettings();
   const { session, connection } = useCampusStatus();
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
 
   // L'horodatage est réactualisé par les événements d'historique plutôt que
   // par un sondage : l'accueil est affiché souvent et longtemps.

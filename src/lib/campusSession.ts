@@ -52,6 +52,15 @@ export interface CampusConfig {
   organization_code?: string | null;
   /** `dedicated` (défaut) ou `discovery`. */
   bootstrap_mode?: string | null;
+  /**
+   * `education` ou `business`, tel que l'organisation le déclare.
+   *
+   * C'est l'**amorçage** de la nature du tenant : il permet au poste de savoir
+   * quoi présenter avant toute authentification. `/api/me` reste l'autorité une
+   * fois le membre connecté — voir `organizationType.ts`. Absent avec un
+   * serveur plus ancien, et le repli historique `education` s'applique alors.
+   */
+  organization_type?: string | null;
   organization?: unknown;
   capabilities?: unknown;
   education_mode?: string | null;

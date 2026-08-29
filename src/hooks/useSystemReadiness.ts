@@ -6,7 +6,7 @@ import {
 } from "tauri-plugin-macos-permissions-api";
 
 import { commands } from "@/bindings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import { useSettings } from "./useSettings";
 import { useSettingsStore } from "@/stores/settingsStore";
 import { useCampusStatus } from "./useCampusStatus";
@@ -138,7 +138,7 @@ export function useSystemReadiness(): SystemReadiness {
 
   // ── Modèles locaux : pertinent hors campus uniquement.
   useEffect(() => {
-    if (isCampusMode()) {
+    if (isOrganizationMode()) {
       setModels([]);
       return;
     }
@@ -157,7 +157,7 @@ export function useSystemReadiness(): SystemReadiness {
     };
   }, [tick]);
 
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
   const selectedMicrophone = getSetting("selected_microphone") ?? null;
   const microphoneName = selectedMicrophone ?? audioDevices[0]?.name ?? null;
 

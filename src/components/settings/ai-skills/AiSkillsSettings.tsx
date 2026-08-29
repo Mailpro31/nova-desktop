@@ -6,7 +6,7 @@ import NovaCommandsExperiment from "./NovaCommandsExperiment";
 import PreviewBadge from "./PreviewBadge";
 import { useSettings } from "../../../hooks/useSettings";
 import { useCampusStatus } from "../../../hooks/useCampusStatus";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import {
   ASK_NOVA,
   NOVA_COMMAND_SKILLS,
@@ -41,7 +41,7 @@ export const AiSkillsSettings: React.FC = () => {
   const { getSetting } = useSettings();
   const { connection } = useCampusStatus();
 
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
   const debugMode = getSetting("debug_mode") ?? false;
   const offline = campusMode && connection === "local";
 

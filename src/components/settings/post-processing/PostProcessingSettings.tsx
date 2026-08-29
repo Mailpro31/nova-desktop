@@ -35,7 +35,7 @@ import StylesList from "./StylesList";
 import { PageHeader } from "../../shell/PageHeader";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { useSettings } from "../../../hooks/useSettings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 const PostProcessingSettingsApiComponent: React.FC = () => {
   const { t } = useTranslation();
@@ -196,7 +196,7 @@ PostProcessingSettingsApi.displayName = "PostProcessingSettingsApi";
 
 export const PostProcessingSettings: React.FC = () => {
   const { t } = useTranslation();
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
 
   if (campusMode) {
     return <CampusStylesSettings />;

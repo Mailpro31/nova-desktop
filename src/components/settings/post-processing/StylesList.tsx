@@ -13,7 +13,7 @@ import { useCampusStore } from "@/stores/campusStore";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
 import { BUILTIN_STYLE_IDS, styleLockFeature } from "@/lib/builtinStyles";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 /** Ordre d'affichage des presets : du plus courant au plus spécialisé. */
 const STYLE_ORDER = [
@@ -64,7 +64,7 @@ interface StyleItem {
 export const StylesList: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, refreshSettings } = useSettings();
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
 
   const [features, setFeatures] = useState<Record<string, boolean> | null>(
     null,

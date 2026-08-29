@@ -5,7 +5,7 @@ import { AlertTriangle, Check } from "lucide-react";
 import OnboardingStepShell from "./OnboardingStepShell";
 import { formatKeyCombination } from "../../lib/utils/keyboard";
 import { useOsType } from "../../hooks/useOsType";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import type { SystemReadiness } from "../../hooks/useSystemReadiness";
 
 interface SmartSetupStepProps {
@@ -46,7 +46,7 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
 }) => {
   const { t } = useTranslation();
   const osType = useOsType();
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
 
   const rows: Row[] = [
     {

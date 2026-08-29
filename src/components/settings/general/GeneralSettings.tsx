@@ -12,7 +12,7 @@ import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
 import { CampusGeneralSettings } from "./CampusGeneralSettings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 export const GeneralSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ export const GeneralSettings: React.FC = () => {
   const pushToTalk = getSetting("push_to_talk");
   const isLinux = type() === "linux";
 
-  if (isCampusMode()) {
+  if (isOrganizationMode()) {
     return <CampusGeneralSettings />;
   }
 

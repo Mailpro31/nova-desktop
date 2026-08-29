@@ -15,7 +15,9 @@ import {
 } from "@/lib/campusSession";
 import { resolveCampusContext, type CampusContext } from "@/lib/campusPolicy";
 import {
+  forgetOrganizationType,
   parseServerIdentity,
+  rememberOrganizationType,
   type ServerIdentitySnapshot,
 } from "@/lib/organization";
 
@@ -76,8 +78,11 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
       ]);
       if (!session) {
         // Déconnecté : le contenu de l'organisation ne doit rien laisser
-        // derrière lui, côté interface comme côté Rust.
+        // derrière lui, côté interface comme côté Rust. La nature du tenant
+        // non plus — un poste ne doit pas continuer à se présenter comme
+        // l'organisation qu'il servait pour quelqu'un qui n'y appartient plus.
         void invoke("clear_organization_packages").catch(() => {});
+        forgetOrganizationType();
         set({
           config,
           session: null,
@@ -112,6 +117,13 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
           // l'organisation n'a pas dépublié.
         }
       }
+      // La nature du tenant, dans l'ordre d'autorité : ce que `/api/me` annonce
+      // d'abord, ce que la configuration publique déclare ensuite. Une source
+      // muette n'efface rien — voir `organizationType.ts`.
+      const identity = profile ? parseServerIdentity(profile) : null;
+      rememberOrganizationType(effectiveConfig?.organization_type);
+      rememberOrganizationType(identity?.organizationType);
+
       set({
         config: effectiveConfig,
         session,
@@ -119,7 +131,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
         context: resolveCampusContext(effectiveConfig, profile),
         // Hors ligne, aucune identité serveur : mieux vaut l'absence qu'une
         // réponse périmée présentée comme autoritative.
-        serverIdentity: profile ? parseServerIdentity(profile) : null,
+        serverIdentity: identity,
         organizationCatalog: catalog,
         connectionStatus: reachable ? "connected" : "local",
         initialized: true,
@@ -130,6 +142,7 @@ export const useCampusStore = create<CampusStoreState>((set, get) => ({
   },
   reset: () => {
     void invoke("clear_organization_packages").catch(() => {});
+    forgetOrganizationType();
     set({
       config: null,
       session: null,

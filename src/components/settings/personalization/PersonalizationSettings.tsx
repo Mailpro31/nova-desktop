@@ -9,7 +9,7 @@ import { TierBadge } from "../license/TierBadge";
 import { ThemeSelector } from "../ThemeSelector";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ShowOverlay } from "../ShowOverlay";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import { useSettings } from "../../../hooks/useSettings";
 import {
@@ -50,7 +50,7 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
 
 export const PersonalizationSettings: React.FC = () => {
   const { t } = useTranslation();
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
   const [selected, setSelected] = useState<string>(getOrbThemeId());
   const [canCustomize, setCanCustomize] = useState(true);
   const { settings, refreshSettings } = useSettings();

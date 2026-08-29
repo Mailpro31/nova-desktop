@@ -1805,7 +1805,16 @@ organization_code?: string | null;
 /**
  * `dedicated` (défaut, schéma historique) ou `discovery`.
  */
-bootstrap_mode?: string | null; organization?: CampusOrganizationConfig | null; capabilities?: CampusCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: CampusAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: CampusPrivacyConfig | null }
+bootstrap_mode?: string | null; 
+/**
+ * Nature de l'organisation : `education` ou `business`.
+ * 
+ * C'est l'**amorçage** de la nature du tenant — ce que le déploiement
+ * annonce avant toute authentification. `/api/me` reste l'autorité une
+ * fois le membre connecté. Absent d'un serveur plus ancien, et le repli
+ * historique `education` s'applique alors côté poste.
+ */
+organization_type?: string | null; organization?: CampusOrganizationConfig | null; capabilities?: CampusCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: CampusAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: CampusPrivacyConfig | null }
 export type CampusEntraPollResponse = { status: string; email: string | null; retry_after: number | null }
 export type CampusEntraStartResponse = { flow_id: string; user_code: string; verification_uri: string; verification_uri_complete: string | null; expires_in: number; interval: number; message: string }
 export type CampusFormattingRulesResponse = { shared: CampusRuleEntry[]; personal: CampusRuleEntry[] }

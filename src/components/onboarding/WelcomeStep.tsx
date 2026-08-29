@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../ui/Button";
 import HandyHand from "../icons/HandyHand";
 import { useOrganization } from "../../hooks/useOrganization";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 interface WelcomeStepProps {
   onContinue: () => void;
@@ -20,7 +20,7 @@ interface WelcomeStepProps {
 export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onContinue }) => {
   const { t } = useTranslation();
   const organization = useOrganization();
-  const showOrganization = isCampusMode() && organization !== null;
+  const showOrganization = isOrganizationMode() && organization !== null;
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center gap-5 bg-background text-text px-6 text-center">

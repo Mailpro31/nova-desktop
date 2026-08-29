@@ -46,7 +46,7 @@ import {
   markAttentionSeen,
   showAttentionToast,
 } from "@/lib/attentionNotifications";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import {
   loadCampusSession,
   completeCampusOnboarding,
@@ -114,13 +114,13 @@ function App() {
   // parcours de connexion ne se remonte pas, donc c'est l'application qui doit
   // amorcer l'identité, les policies et le catalogue de packages partagés.
   useEffect(() => {
-    if (!isCampusMode()) return;
+    if (!isOrganizationMode()) return;
     void refreshCampusContext();
   }, []);
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
-    if (isCampusMode()) {
+    if (isOrganizationMode()) {
       commands.setCampusMode(true).catch((e) => {
         console.warn("Failed to set campus mode:", e);
       });
@@ -329,7 +329,7 @@ function App() {
   // ignorée silencieusement côté Rust — on explique au lieu de laisser croire
   // à un bug. Inutile en mode campus (tout est débloqué par l'établissement).
   useEffect(() => {
-    if (isCampusMode()) return;
+    if (isOrganizationMode()) return;
     const unlisten = listen("online-engine-locked", () => {
       showAttentionToast("info", t("license.onlineEngineLockedTitle"), {
         description: t("license.onlineEngineLocked"),
@@ -357,7 +357,7 @@ function App() {
   // Rust. On informe et on propose de passer à un palier supérieur. Inutile en
   // mode campus (pas de quota).
   useEffect(() => {
-    if (isCampusMode()) return;
+    if (isOrganizationMode()) return;
     const unlisten = listen("quota-blocked", () => {
       showAttentionToast("error", t("quota.blockedTitle"), {
         description: t("quota.blockedDescription"),
@@ -427,7 +427,7 @@ function App() {
         settingsResult.data.onboarding_completed === true;
 
       let campusSession = null;
-      if (isCampusMode()) {
+      if (isOrganizationMode()) {
         campusSession = await loadCampusSession();
         if (campusSession && !hasCompletedOnboarding) {
           await completeCampusOnboarding().catch(() => {});

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { isServerReachable } from "@/lib/campusApi";
 import { loadCampusSession, type CampusSession } from "@/lib/campusSession";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 /** Intervalle de re-vérification de la joignabilité du serveur. */
 const POLL_MS = 30_000;
@@ -91,7 +91,7 @@ export function useCampusStatus(): CampusStatus {
   const [local, setLocal] = useState<Snapshot>(snapshot);
 
   useEffect(() => {
-    if (!isCampusMode()) return;
+    if (!isOrganizationMode()) return;
 
     subscribers.add(setLocal);
     // Le premier abonné amorce ; les suivants héritent de l'état courant.

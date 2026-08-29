@@ -10,7 +10,7 @@ import { ShowWhatsNewOnUpdate } from "../ShowWhatsNewOnUpdate";
 import { LogDirectory } from "../debug";
 import { DebugModeToggle } from "../DebugModeToggle";
 import { CampusAboutSettings } from "./CampusAboutSettings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 
 export const AboutSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -30,7 +30,7 @@ export const AboutSettings: React.FC = () => {
     fetchVersion();
   }, []);
 
-  if (isCampusMode()) {
+  if (isOrganizationMode()) {
     return <CampusAboutSettings />;
   }
 

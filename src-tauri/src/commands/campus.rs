@@ -33,6 +33,14 @@ pub struct CampusConfig {
     /// `dedicated` (défaut, schéma historique) ou `discovery`.
     #[serde(default)]
     pub bootstrap_mode: Option<String>,
+    /// Nature de l'organisation : `education` ou `business`.
+    ///
+    /// C'est l'**amorçage** de la nature du tenant — ce que le déploiement
+    /// annonce avant toute authentification. `/api/me` reste l'autorité une
+    /// fois le membre connecté. Absent d'un serveur plus ancien, et le repli
+    /// historique `education` s'applique alors côté poste.
+    #[serde(default)]
+    pub organization_type: Option<String>,
     #[serde(default)]
     pub organization: Option<CampusOrganizationConfig>,
     #[serde(default)]

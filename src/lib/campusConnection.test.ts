@@ -125,8 +125,10 @@ describe("Already linked", () => {
     expect(source).toContain(
       'import { refreshCampusContext } from "./stores/campusStore"',
     );
+    // `isOrganizationMode()` et non `isCampusMode()` : l'amorçage du contexte
+    // vaut pour toute organisation, entreprise comprise.
     expect(source.replace(/\s+/g, " ")).toContain(
-      "if (!isCampusMode()) return; void refreshCampusContext();",
+      "if (!isOrganizationMode()) return; void refreshCampusContext();",
     );
   });
 
@@ -166,21 +168,47 @@ describe("Personal is untouched", () => {
   });
 });
 
-describe("Campus navigation", () => {
-  test("AI Skills is listed among the Campus destinations", () => {
-    // Déclarer une section ne suffit pas : la barre Campus suit une liste
+describe("Organization navigation", () => {
+  const primaryList = () =>
+    code(SIDEBAR)
+      .slice(code(SIDEBAR).indexOf("const ORGANIZATION_PRIMARY"))
+      .slice(0, 200);
+
+  test("AI Skills is listed among the Organization destinations", () => {
+    // Déclarer une section ne suffit pas : la barre gérée suit une liste
     // explicite, et c'est ce qui l'avait fait disparaître en recette.
-    const primary = code(SIDEBAR).slice(
-      code(SIDEBAR).indexOf("const CAMPUS_PRIMARY"),
-    );
-    expect(primary.slice(0, 200)).toContain('"aiskilltools"');
+    expect(primaryList()).toContain('"aiskilltools"');
   });
 
   test("the learning screen keeps its own entry, renamed", () => {
-    const primary = code(SIDEBAR).slice(
-      code(SIDEBAR).indexOf("const CAMPUS_PRIMARY"),
-    );
-    expect(primary.slice(0, 200)).toContain('"aiskills"');
+    expect(primaryList()).toContain('"aiskills"');
     expect(code(SIDEBAR)).toContain('labelKey: "sidebar.learn"');
+  });
+
+  test("executable AI Skills belong to every organization", () => {
+    // Le catalogue vient des Organization Packages : une entreprise les publie
+    // exactement comme un établissement.
+    const source = code(SIDEBAR).replace(/\s+/g, " ");
+    expect(source).toContain(
+      "component: OrganizationAiSkills, enabled: () => isOrganizationMode(),",
+    );
+  });
+
+  test("the learning track stays education-only", () => {
+    // Une entreprise n'a pas de programme pédagogique : cette entrée reste la
+    // seule destination de la barre à interroger `isCampusMode()`.
+    const source = code(SIDEBAR).replace(/\s+/g, " ");
+    expect(source).toContain(
+      "component: AiSkillsSettings, enabled: () => isCampusMode(),",
+    );
+    expect(source.match(/isCampusMode\(\)/g)).toHaveLength(1);
+  });
+
+  test("each destination is filtered by its own enabled predicate", () => {
+    // Sans ce filtre, « Learn » apparaîtrait dans une entreprise : l'ordre est
+    // fixe, la visibilité ne l'est pas.
+    expect(code(SIDEBAR).replace(/\s+/g, " ")).toContain(
+      "ORGANIZATION_PRIMARY.filter((id) => SECTIONS_CONFIG[id].enabled(settings),",
+    );
   });
 });

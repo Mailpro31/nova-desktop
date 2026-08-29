@@ -20,7 +20,7 @@ import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
 import { useCampusStatus } from "../hooks/useCampusStatus";
 import { useOrganization } from "../hooks/useOrganization";
-import { isCampusMode } from "@/lib/mode";
+import { isCampusMode, isOrganizationMode } from "@/lib/mode";
 import { useCapability } from "../hooks/useOrganizationContext";
 
 const HomeSettings = lazy(() =>
@@ -146,7 +146,11 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: BookOpen,
     component: AiSkillsSettings,
-    // Campus uniquement : le contenu vient de l'établissement.
+    // Éducation uniquement, et c'est bien `isCampusMode()` ici : le catalogue
+    // intégré que cet écran présente est une piste fournie par l'établissement.
+    // Une entreprise n'en a pas — elle a des AI Skills exécutables, qui sont
+    // l'entrée suivante. Décision Business conservée telle quelle : le
+    // renommage en « Nova Commands » a corrigé le libellé, pas le périmètre.
     enabled: () => isCampusMode(),
     campusVisible: true,
   },
@@ -158,7 +162,9 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: Sparkles,
     component: OrganizationAiSkills,
-    enabled: () => isCampusMode(),
+    // Toute organisation : le catalogue vient des Organization Packages, qu'une
+    // école et une entreprise publient de la même façon.
+    enabled: () => isOrganizationMode(),
     campusVisible: true,
   },
   configuration: {
@@ -241,15 +247,19 @@ export const SECTIONS_CONFIG = {
 } as const satisfies Record<string, SectionConfig>;
 
 /**
- * Destinations principales du mode campus — quatre, pas davantage.
- * L'établissement et les réglages vivent dans le bloc bas, séparés
+ * Destinations principales d'un poste d'organisation — quatre ou cinq, pas
+ * davantage. L'organisation et les réglages vivent dans le bloc bas, séparés
  * visuellement : accessibles en permanence sans occuper le même rang.
  */
-// En mode Campus la navigation suit cette liste, pas l'ensemble des sections
-// declarees : ajouter une entree a `SECTIONS_CONFIG` ne suffit pas a la faire
-// apparaitre ici. C'est volontaire — l'ordre compte — mais c'est aussi ce qui
-// a fait disparaitre « AI Skills » lors de la recette de la Phase 31B.
-const CAMPUS_PRIMARY: SidebarSection[] = [
+// La navigation suit cette liste, pas l'ensemble des sections declarees :
+// ajouter une entree a `SECTIONS_CONFIG` ne suffit pas a la faire apparaitre
+// ici. C'est volontaire — l'ordre compte — mais c'est aussi ce qui a fait
+// disparaitre « AI Skills » lors de la recette de la Phase 31B.
+//
+// L'ordre est fixe ; la visibilite de chaque entree reste decidee par son
+// `enabled`, ce qui retire « Learn » a une organisation qui n'est pas un
+// etablissement sans qu'une seconde liste ait a etre tenue a jour.
+const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "home",
   "learn",
   "aiskilltools",
@@ -305,7 +315,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { settings } = useSettings();
-  const campusMode = isCampusMode();
+  // La barre latérale gérée vaut pour toute organisation — école comme
+  // entreprise. Ce qui reste propre à l'une ou l'autre se décide entrée par
+  // entrée, dans `SECTIONS_CONFIG.enabled`.
+  const organizationMode = isOrganizationMode();
   const organization = useOrganization();
   const { connection } = useCampusStatus();
   // Learn se masque quand la capacité est fermée. La question posée est « cette
@@ -315,7 +328,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const learningOpen = useCapability("learning");
   const visible = (id: SidebarSection) => id !== "learn" || learningOpen;
 
-  if (campusMode) {
+  if (organizationMode) {
     return (
       <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
         <div className="flex items-center gap-2.5 px-2.5 pb-4">
@@ -326,7 +339,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </span>
         </div>
 
-        {CAMPUS_PRIMARY.filter(visible).map((id) => {
+        {/* Deux filtres, deux questions distinctes. `enabled` dit si l'entree
+            existe pour ce poste — une ecole, une entreprise, toute
+            organisation ; `visible` dit si la capacite qui la porte est
+            ouverte. Learn passe le premier partout et se ferme sur le second
+            quand la policy le decide. */}
+        {ORGANIZATION_PRIMARY.filter(
+          (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),
+        ).map((id) => {
           const config = SECTIONS_CONFIG[id];
           const Icon = config.icon;
           return (

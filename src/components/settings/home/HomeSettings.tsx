@@ -7,7 +7,7 @@ import { useHomeState, type HeroSituation } from "./useHomeState";
 import { CampusFileTranscribeModal } from "./CampusFileTranscribeModal";
 import { Button } from "../../ui/Button";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import { formatRelativeTime } from "@/utils/dateFormat";
 import type { SidebarSection } from "../../Sidebar";
 
@@ -36,7 +36,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
   const { t, i18n } = useTranslation();
   const home = useHomeState();
   const [fileModalOpen, setFileModalOpen] = useState(false);
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
 
   const compact = !home.isNewUser;
 

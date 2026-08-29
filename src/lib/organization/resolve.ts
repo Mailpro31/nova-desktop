@@ -35,8 +35,10 @@ import type {
  * `users.role` côté serveur décrit un métier, pas un droit.
  *
  * `partner` devient `other` : c'est la catégorie fourre-tout du serveur, elle
- * ne désigne aucun métier. Aucune valeur ne produit de `SecurityRole` : voir
- * `resolveMember`.
+ * ne désigne aucun métier. `employee` et `manager` sont les métiers qu'une
+ * organisation Business emploie — et `manager` reste un métier : encadrer une
+ * équipe n'administre pas Nova. Aucune valeur ne produit de `SecurityRole` :
+ * voir `resolveMember`.
  */
 function toMemberType(role: CampusRole | undefined): MemberType | null {
   switch (role) {
@@ -46,6 +48,10 @@ function toMemberType(role: CampusRole | undefined): MemberType | null {
       return "teacher";
     case "staff":
       return "staff";
+    case "employee":
+      return "employee";
+    case "manager":
+      return "manager";
     case "partner":
       return "other";
     default:

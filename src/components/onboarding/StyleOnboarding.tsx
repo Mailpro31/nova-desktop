@@ -4,7 +4,7 @@ import { Check, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { invoke } from "@tauri-apps/api/core";
 import { useSettings } from "../../hooks/useSettings";
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import OnboardingStepShell from "./OnboardingStepShell";
 
 const AUTO_STYLE_ID = "auto";
@@ -42,7 +42,7 @@ const StyleOnboarding: React.FC<StyleOnboardingProps> = ({
   }, []);
 
   const hasAutoStyleAccess =
-    isCampusMode() || (features["all_styles"] ?? false);
+    isOrganizationMode() || (features["all_styles"] ?? false);
   const defaultStyleForTier = hasAutoStyleAccess
     ? AUTO_STYLE_ID
     : "default_improve_transcriptions";

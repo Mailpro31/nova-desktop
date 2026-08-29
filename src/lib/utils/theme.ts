@@ -26,7 +26,11 @@ const isTheme = (value: unknown): value is Theme =>
 
 /** Apply a theme to the document root and remember it for the next launch. */
 export const applyTheme = (theme: Theme): void => {
-  // En mode campus, le thème clair est imposé par la direction artistique.
+  // Le thème clair imposé est une décision de direction artistique **Campus**,
+  // et c'est bien `isCampusMode()` — pas `isOrganizationMode()` — qui la porte.
+  // Une entreprise n'a aucune raison d'hériter du parti pris esthétique d'un
+  // établissement : un poste Business suit le comportement Nova ordinaire, et
+  // ses employés choisissent leur thème comme tout le monde.
   const effectiveTheme: Theme = isCampusMode() ? "light" : theme;
   const root = document.documentElement;
   if (effectiveTheme === "system") {

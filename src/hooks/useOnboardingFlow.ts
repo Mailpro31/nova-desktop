@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { isCampusMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import {
   isSkipped,
   markSkipped,
@@ -66,7 +66,7 @@ export function useOnboardingFlow({
   isFirstRun,
   onFinished,
 }: Options): OnboardingFlow {
-  const campusMode = isCampusMode();
+  const campusMode = isOrganizationMode();
 
   // La liste est **figée** dès que l'état système est connu. La recalculer en
   // continu ferait disparaître l'écran courant au moment précis où
