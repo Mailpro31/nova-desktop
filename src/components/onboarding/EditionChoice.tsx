@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import HandyTextLogo from "../icons/HandyTextLogo";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import {
   rememberEditionChoice,
   rememberOrganizationKindIntent,
