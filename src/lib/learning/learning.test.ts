@@ -102,7 +102,11 @@ function realCatalog(): LearningCatalog {
           description: "d",
           order: 1,
           lessons: [1, 2, 3].map((n) =>
-            fixtureLesson(`${pillar}-${n}`, n, pillar === "adapt_ai" && n === 3),
+            fixtureLesson(
+              `${pillar}-${n}`,
+              n,
+              pillar === "adapt_ai" && n === 3,
+            ),
           ),
         },
       ],
@@ -301,7 +305,9 @@ describe("recommandation", () => {
     );
     const next = recommendedLesson(
       catalog,
-      snapshot(useAi.map((entry) => ({ id: entry.lesson.id, status: "completed" }))),
+      snapshot(
+        useAi.map((entry) => ({ id: entry.lesson.id, status: "completed" })),
+      ),
     );
     expect(next?.pillar).not.toBe("use_ai");
   });

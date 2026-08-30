@@ -5,7 +5,7 @@ une marque. Il complète [`microsoft-entra-sso.md`](./microsoft-entra-sso.md),
 [`google-workspace-sso.md`](./google-workspace-sso.md) et
 [`organization-identity.md`](./organization-identity.md).
 
-Implémentation : `nova-server/main.py` § *OIDC générique*,
+Implémentation : `nova-server/main.py` § _OIDC générique_,
 `src-tauri/src/organization_sso.rs`, `src/lib/organization/ssoProviders.ts`.
 
 ---
@@ -20,12 +20,12 @@ Le fournisseur canonique est `oidc` — celui déjà déclaré dans le modèle
 d'identité en Phase 13. Aucun second vocabulaire (`generic_oidc`, `custom_oidc`)
 n'a été introduit.
 
-| | Microsoft / Google | OIDC générique |
-|---|---|---|
-| Points de terminaison | connus d'avance | **découverts** |
-| Émetteur | déduit du tenant / fixe | **configuré**, vérifié |
-| Rattachement | revendication (`tid`, `hd`) | l'émetteur **est** le rattachement |
-| Secret | non / oui | selon la méthode déclarée |
+|                       | Microsoft / Google          | OIDC générique                     |
+| --------------------- | --------------------------- | ---------------------------------- |
+| Points de terminaison | connus d'avance             | **découverts**                     |
+| Émetteur              | déduit du tenant / fixe     | **configuré**, vérifié             |
+| Rattachement          | revendication (`tid`, `hd`) | l'émetteur **est** le rattachement |
+| Secret                | non / oui                   | selon la méthode déclarée          |
 
 Tout le reste — PKCE, `state`, `nonce`, bouclage, validation, cache JWKS,
 rattachement de compte, session, `/api/me` — est le moteur partagé, inchangé.
@@ -61,16 +61,16 @@ menace, et elle ne se corrige pas après coup.
 
 Politique par défaut, avant toute requête réseau :
 
-| Refusé | Motif |
-|---|---|
-| `http://`, `file://`, `ftp://` | `scheme_not_https` |
-| `https://user:pass@idp…` | `credentials_in_url` |
-| requête ou fragment dans l'URL | `not_a_base_url` |
-| `127.0.0.1`, `[::1]` | `internal_address` |
-| **`169.254.169.254`** (métadonnées cloud) | `internal_address` |
-| `10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12` | `internal_address` |
-| lien-local, réservé, multicast | `internal_address` |
-| hôte non résolvable | `unresolvable_host` |
+| Refusé                                          | Motif                |
+| ----------------------------------------------- | -------------------- |
+| `http://`, `file://`, `ftp://`                  | `scheme_not_https`   |
+| `https://user:pass@idp…`                        | `credentials_in_url` |
+| requête ou fragment dans l'URL                  | `not_a_base_url`     |
+| `127.0.0.1`, `[::1]`                            | `internal_address`   |
+| **`169.254.169.254`** (métadonnées cloud)       | `internal_address`   |
+| `10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12` | `internal_address`   |
+| lien-local, réservé, multicast                  | `internal_address`   |
+| hôte non résolvable                             | `unresolvable_host`  |
 
 Le nom est résolu et **toutes** ses adresses doivent être acceptables : un nom
 qui résout à la fois vers une adresse publique et vers une adresse interne
@@ -99,11 +99,11 @@ rien à voir, et un test le verrouille.
 
 ## 5. Authentification du client
 
-| Méthode | Comportement |
-|---|---|
-| `none` | client public, PKCE seul — le défaut |
-| `client_secret_post` | secret dans le corps de la requête de jeton |
-| `client_secret_basic` | secret dans l'en-tête `Authorization` |
+| Méthode               | Comportement                                |
+| --------------------- | ------------------------------------------- |
+| `none`                | client public, PKCE seul — le défaut        |
+| `client_secret_post`  | secret dans le corps de la requête de jeton |
+| `client_secret_basic` | secret dans l'en-tête `Authorization`       |
 
 Rien d'exotique : `private_key_jwt` et consorts sont refusés avec
 `PROVIDER_CONFIG_INVALID` plutôt que silencieusement ignorés.
@@ -264,12 +264,12 @@ seuls. Ils multiplient simplement les appels au démarrage de chaque worker.
 
 ## 15. REAL OIDC VALIDATION
 
-| | |
-|---|---|
-| **Date** | 17 août 2026 |
-| **IdP réel** | **aucun** |
-| **AUTOMATED OIDC VALIDATED** | ✅ 41 tests serveur + 7 tests poste |
-| **REAL OIDC NOT TESTED** | ❌ aucun Okta, Keycloak ou Auth0 disponible |
+|                              |                                             |
+| ---------------------------- | ------------------------------------------- |
+| **Date**                     | 17 août 2026                                |
+| **IdP réel**                 | **aucun**                                   |
+| **AUTOMATED OIDC VALIDATED** | ✅ 41 tests serveur + 7 tests poste         |
+| **REAL OIDC NOT TESTED**     | ❌ aucun Okta, Keycloak ou Auth0 disponible |
 
 Aucun IdP réel n'a été contacté et aucun succès n'a été simulé. Aucun service
 externe n'a été démarré pour fabriquer une preuve — la phase l'interdisait, et

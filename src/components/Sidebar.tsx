@@ -435,7 +435,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // ── Mode personnel : liste et ordre inchangés, seule la présentation suit
   // la planche de fondation (état actif sobre, tokens, icônes homogènes).
   const availableSections = Object.entries(SECTIONS_CONFIG)
-    .filter(([id, config]) => config.enabled(settings) && visible(id as SidebarSection))
+    .filter(
+      ([id, config]) =>
+        config.enabled(settings) && visible(id as SidebarSection),
+    )
     .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
 
   return (

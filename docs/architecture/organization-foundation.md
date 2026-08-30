@@ -59,12 +59,12 @@ Les capacités Core sont énumérées dans `CORE_CAPABILITIES`
 
 ## 3. Les quatre notions, et pourquoi elles ne se confondent pas
 
-| Notion | Question | Exemple | Source aujourd'hui |
-|---|---|---|---|
-| `MemberType` | quelle est la nature métier de la personne ? | `student` | `users.role` de `nova-server` |
-| `SecurityRole` | de quels droits Nova dispose-t-elle ? | `member` | **aucune** |
-| `Group` | dans quel segment est-elle ? | `AERO2` | `users.cohort` |
-| `Capability` | qu'est-ce que l'application ouvre ? | `aiSkills` | `/api/config` |
+| Notion         | Question                                     | Exemple    | Source aujourd'hui            |
+| -------------- | -------------------------------------------- | ---------- | ----------------------------- |
+| `MemberType`   | quelle est la nature métier de la personne ? | `student`  | `users.role` de `nova-server` |
+| `SecurityRole` | de quels droits Nova dispose-t-elle ?        | `member`   | **aucune**                    |
+| `Group`        | dans quel segment est-elle ?                 | `AERO2`    | `users.cohort`                |
+| `Capability`   | qu'est-ce que l'application ouvre ?          | `aiSkills` | `/api/config`                 |
 
 Trois déductions sont interdites dans tout le code de la fondation :
 
@@ -108,25 +108,25 @@ const context = useOrganizationContext();
 if (can(context, "aiSkills")) { … }
 ```
 
-| Capacité | Personal | Organization / Education |
-|---|---|---|
-| `dictation` | ✅ | politique établissement |
-| `rewrite` | ✅ | politique établissement |
-| `writingStyles` | ✅ | politique établissement (`styles`) |
-| `personalStyles` | ✅ | politique établissement (`personalization`) |
-| `fileTranscription` | ✅ | politique établissement |
-| `personalization` | ✅ | politique établissement |
-| `localFallback` | ✅ | ✅ toujours |
-| `commands` | ❌ (expérimental) | politique établissement |
-| `screenContext` | ✅ (verrou de licence) | politique établissement |
-| `cloudInference` | ✅ | politique établissement |
-| `engineeringNotes` | ❌ | politique établissement |
-| `organizationVocabulary` | ❌ | politique établissement (`dictionary`) |
-| `organizationSnippets` | ❌ | politique établissement (`snippets`) |
-| `organizationFormattingRules` | ❌ | politique établissement (`formattingRules`) |
-| `organizationStyles` | ❌ | ❌ — aucun serveur n'en distribue |
-| `aiSkills` | ❌ | politique établissement, fermé par défaut |
-| `learning` | ❌ | ❌ — non construit |
+| Capacité                      | Personal               | Organization / Education                    |
+| ----------------------------- | ---------------------- | ------------------------------------------- |
+| `dictation`                   | ✅                     | politique établissement                     |
+| `rewrite`                     | ✅                     | politique établissement                     |
+| `writingStyles`               | ✅                     | politique établissement (`styles`)          |
+| `personalStyles`              | ✅                     | politique établissement (`personalization`) |
+| `fileTranscription`           | ✅                     | politique établissement                     |
+| `personalization`             | ✅                     | politique établissement                     |
+| `localFallback`               | ✅                     | ✅ toujours                                 |
+| `commands`                    | ❌ (expérimental)      | politique établissement                     |
+| `screenContext`               | ✅ (verrou de licence) | politique établissement                     |
+| `cloudInference`              | ✅                     | politique établissement                     |
+| `engineeringNotes`            | ❌                     | politique établissement                     |
+| `organizationVocabulary`      | ❌                     | politique établissement (`dictionary`)      |
+| `organizationSnippets`        | ❌                     | politique établissement (`snippets`)        |
+| `organizationFormattingRules` | ❌                     | politique établissement (`formattingRules`) |
+| `organizationStyles`          | ❌                     | ❌ — aucun serveur n'en distribue           |
+| `aiSkills`                    | ❌                     | politique établissement, fermé par défaut   |
+| `learning`                    | ❌                     | ❌ — non construit                          |
 
 `organizationStyles` et `learning` restent fermés partout : les annoncer
 ouverts serait une promesse que rien ne tient.
@@ -260,7 +260,7 @@ Aucune modification n'a été apportée à `nova-server` dans cette étape.
 Le modèle déclare `FederatedIdentity` (forme détaillée en Phase 13, voir
 [`organization-identity.md`](./organization-identity.md)) :
 
-```ts
+```
 { provider, externalSubject, externalTenantId, organizationId }
 ```
 

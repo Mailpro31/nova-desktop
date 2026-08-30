@@ -5,7 +5,7 @@ Premier flux d'authentification Organization moderne de Nova. Il complète
 d'identité, et ne remplace ni le code par adresse, ni le Device Code.
 
 Implémentation : `src-tauri/src/entra_pkce.rs` (poste),
-`nova-server/main.py` § *SSO Entra : PKCE* (autorité),
+`nova-server/main.py` § _SSO Entra : PKCE_ (autorité),
 `src/lib/organization/ssoErrors.ts` (libellés).
 
 ---
@@ -67,11 +67,11 @@ normalement, côté serveur.
 
 ## 3. PKCE
 
-| | |
-|---|---|
-| `code_verifier` | 32 octets d'aléa cryptographique → 43 caractères base64url |
-| `code_challenge` | `BASE64URL(SHA256(verifier))` |
-| `code_challenge_method` | `S256` — jamais `plain` |
+|                         |                                                            |
+| ----------------------- | ---------------------------------------------------------- |
+| `code_verifier`         | 32 octets d'aléa cryptographique → 43 caractères base64url |
+| `code_challenge`        | `BASE64URL(SHA256(verifier))`                              |
+| `code_challenge_method` | `S256` — jamais `plain`                                    |
 
 Le vérificateur vit dans une variable de fonction et meurt avec elle : succès,
 échec ou délai dépassé. Il n'est ni écrit sur disque, ni journalisé, ni transmis
@@ -130,17 +130,17 @@ rien d'autre que « c'est terminé ». Un test le vérifie.
 
 Tout est vérifié avant que quoi que ce soit ne devienne autoritatif :
 
-| Contrôle | Détail |
-|---|---|
-| Signature | JWKS du tenant, via PyJWT + `cryptography` |
-| Algorithme | **imposé** `RS256` — accepter celui annoncé par le jeton laisserait passer `none` et les confusions HMAC/RSA |
-| Émetteur | `https://login.microsoftonline.com/{tid}/v2.0` |
-| Audience | `client_id` de l'application |
-| Expiration | `exp`, tolérance d'horloge 120 s |
-| Entrée en vigueur | `nbf` |
-| `nonce` | égal à celui de la tentative |
-| Tenant | `tid` présent, rapproché du mapping |
-| Sujet | `oid` présent |
+| Contrôle          | Détail                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| Signature         | JWKS du tenant, via PyJWT + `cryptography`                                                                   |
+| Algorithme        | **imposé** `RS256` — accepter celui annoncé par le jeton laisserait passer `none` et les confusions HMAC/RSA |
+| Émetteur          | `https://login.microsoftonline.com/{tid}/v2.0`                                                               |
+| Audience          | `client_id` de l'application                                                                                 |
+| Expiration        | `exp`, tolérance d'horloge 120 s                                                                             |
+| Entrée en vigueur | `nbf`                                                                                                        |
+| `nonce`           | égal à celui de la tentative                                                                                 |
+| Tenant            | `tid` présent, rapproché du mapping                                                                          |
+| Sujet             | `oid` présent                                                                                                |
 
 **JWKS** : l'URL est dérivée du **tenant**, jamais d'un champ du jeton — un
 en-tête `jku` fourni par un attaquant ne joue aucun rôle. Cache d'une heure par
@@ -183,9 +183,9 @@ domaine.
 
 ## 9. Identité fédérée : `verified`
 
-| Flux | Niveau |
-|---|---|
-| Device Code hérité | `transport_only` — signature jamais vérifiée |
+| Flux                          | Niveau                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| Device Code hérité            | `transport_only` — signature jamais vérifiée                                         |
 | **Authorization Code + PKCE** | **`verified`** — signature, émetteur, audience, expiration, nonce et tenant vérifiés |
 
 Le sujet externe retenu est `oid` : il identifie l'objet utilisateur dans le
@@ -236,14 +236,14 @@ session, dans le trousseau du système (Windows Credential Manager).
 
 ## 12. Annulation, délai, concurrence
 
-| Situation | Comportement |
-|---|---|
-| Navigateur fermé, consentement refusé | `AUTH_CANCELLED`, aucun message affiché |
-| Aucun retour en 5 minutes | `AUTH_TIMEOUT`, écouteur fermé |
-| Deuxième tentative pendant la première | `AUTH_ALREADY_IN_PROGRESS` |
-| Retour tardif ou d'une autre tentative | `STATE_MISMATCH` |
-| Rejeu d'un flux déjà consommé | `AUTH_TIMEOUT` (flux à usage unique) |
-| Deux instances de Nova | ports et `state` distincts — un retour n'authentifie jamais l'autre |
+| Situation                              | Comportement                                                        |
+| -------------------------------------- | ------------------------------------------------------------------- |
+| Navigateur fermé, consentement refusé  | `AUTH_CANCELLED`, aucun message affiché                             |
+| Aucun retour en 5 minutes              | `AUTH_TIMEOUT`, écouteur fermé                                      |
+| Deuxième tentative pendant la première | `AUTH_ALREADY_IN_PROGRESS`                                          |
+| Retour tardif ou d'une autre tentative | `STATE_MISMATCH`                                                    |
+| Rejeu d'un flux déjà consommé          | `AUTH_TIMEOUT` (flux à usage unique)                                |
+| Deux instances de Nova                 | ports et `state` distincts — un retour n'authentifie jamais l'autre |
 
 Une seule tentative active par poste, garantie par un verrou libéré même en cas
 de panique ou de retour anticipé. Pas de flux zombie : les tentatives expirées
@@ -282,11 +282,11 @@ jetons Microsoft, session Nova, jeton brut.
 
 ## 15. Cohabitation
 
-| Fournisseur | Statut |
-|---|---|
-| `microsoft_entra` (PKCE) | **chemin principal** dès que l'établissement l'a configuré |
-| Device Code | **hérité / repli** — conservé, plus jamais principal ; aucune architecture nouvelle ne s'appuie dessus |
-| `legacy_email_code` | conservé, sans aucune régression |
+| Fournisseur              | Statut                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `microsoft_entra` (PKCE) | **chemin principal** dès que l'établissement l'a configuré                                             |
+| Device Code              | **hérité / repli** — conservé, plus jamais principal ; aucune architecture nouvelle ne s'appuie dessus |
+| `legacy_email_code`      | conservé, sans aucune régression                                                                       |
 
 Le poste ne décide pas seul quoi proposer : `GET /api/auth/entra/pkce/available`
 dit ce que le serveur sait faire, et n'annonce Microsoft que si l'identifiant
@@ -296,8 +296,8 @@ chemin, exactement comme aujourd'hui. Aucun bouton Microsoft inopérant ne peut
 donc s'afficher.
 
 L'utilisateur ne voit ni adresse de serveur, ni tenant, ni identifiant
-d'application, ni le mot « OAuth » ou « PKCE ». Un seul bouton — *Continue with
-Microsoft* — derrière lequel le flux moderne ou le Device Code s'exécute selon
+d'application, ni le mot « OAuth » ou « PKCE ». Un seul bouton — _Continue with
+Microsoft_ — derrière lequel le flux moderne ou le Device Code s'exécute selon
 la configuration.
 
 ---
@@ -309,11 +309,11 @@ demandent un tenant réel.
 
 1. **Entra ID → App registrations → New registration**
    - nom : `Nova Desktop` ;
-   - *Supported account types* : **Accounts in any organizational directory
+   - _Supported account types_ : **Accounts in any organizational directory
      (Any Microsoft Entra ID tenant – Multitenant)** — cohérent avec l'autorité
      `organizations` et le multi-tenant Nova. **Pas** de comptes personnels ;
 2. **Authentication → Add a platform → Mobile and desktop applications**
-   - *Allow public client flows* : **Oui** ;
+   - _Allow public client flows_ : **Oui** ;
    - URI de redirection : **`http://127.0.0.1/callback`** — voir l'encadré
      ci-dessous, le chemin n'est pas optionnel ;
    - facultatif, par prudence : ajouter aussi `http://localhost/callback`.
@@ -321,11 +321,11 @@ demandent un tenant réel.
 > ### ⚠️ Enregistrer l'adresse de bouclage correctement
 >
 > Deux règles Microsoft rendent cette étape moins évidente qu'elle n'en a
-> l'air. Les ignorer produit un `AADSTS50011: The reply URL specified in the
-> request does not match the reply URLs configured for the application` à la
-> première connexion réelle — et rien avant.
+> l'air. Les ignorer produit un
+> `AADSTS50011: The reply URL specified in the request does not match the reply URLs configured for the application`
+> à la première connexion réelle — et rien avant.
 >
-> **1. Seul le *port* est ignoré lors de la comparaison.** Pour une adresse de
+> **1. Seul le _port_ est ignoré lors de la comparaison.** Pour une adresse de
 > bouclage, Entra compare le schéma, l'hôte et **le chemin** à l'identique ; il
 > n'ignore que le port, précisément pour permettre les ports éphémères. Nova
 > émet `http://127.0.0.1:<port>/callback` : l'enregistrement doit donc porter
@@ -334,7 +334,7 @@ demandent un tenant réel.
 > **sensible à la casse**.
 >
 > **2. Le portail refuse les adresses de bouclage en `http`.** Le champ
-> *Redirect URIs* rejette le schéma `http` sur `127.0.0.1`. Il faut passer par
+> _Redirect URIs_ rejette le schéma `http` sur `127.0.0.1`. Il faut passer par
 > **Manage → Manifest** et ajouter l'entrée dans `replyUrlsWithType` :
 >
 > ```jsonc
@@ -353,22 +353,19 @@ demandent un tenant réel.
 > côté serveur, qui n'accepte aujourd'hui que l'adresse littérale.
 >
 > **Ce point n'a pas été vérifié contre un tenant réel** : il vient de la
-> documentation officielle, pas d'une observation.
-3. **API permissions** : `openid`, `profile`, `email` (déléguées, consentement
-   utilisateur). **Aucune** permission Graph, donc aucun consentement
-   administrateur requis pour se connecter ;
-4. **Ne pas créer de secret client.**
-5. Relever l'**Application (client) ID** et le **Directory (tenant) ID**.
-6. Côté serveur Nova, dans `.env` (jamais versionné) :
-   ```
-   NOVA_ENTRA_CLIENT_ID=<application (client) ID>
-   NOVA_ENTRA_ALLOWED_TENANT_ID=<directory (tenant) ID>
-   ```
-   Le second alimente `organizations.entra_tenant_id` au démarrage : c'est le
-   mapping explicite tenant → organisation. Sans lui, le SSO moderne reste
-   annoncé indisponible, même avec un identifiant d'application valide.
-7. Redémarrer le serveur, puis vérifier
-   `GET /api/auth/entra/pkce/available` → `{"available": true}`.
+> documentation officielle, pas d'une observation. 3. **API permissions** : `openid`, `profile`, `email` (déléguées, consentement
+> utilisateur). **Aucune** permission Graph, donc aucun consentement
+> administrateur requis pour se connecter ; 4. **Ne pas créer de secret client.** 5. Relever l'**Application (client) ID** et le **Directory (tenant) ID**. 6. Côté serveur Nova, dans `.env` (jamais versionné) :
+
+```
+NOVA_ENTRA_CLIENT_ID=<application (client) ID>
+NOVA_ENTRA_ALLOWED_TENANT_ID=<directory (tenant) ID>
+```
+
+Le second alimente `organizations.entra_tenant_id` au démarrage : c'est le
+mapping explicite tenant → organisation. Sans lui, le SSO moderne reste
+annoncé indisponible, même avec un identifiant d'application valide. 7. Redémarrer le serveur, puis vérifier
+`GET /api/auth/entra/pkce/available` → `{"available": true}`.
 
 > **Note d'exploitation.** `NOVA_ENV` vaut `production` par défaut. Sur un poste
 > de développement sans SMTP, le code par adresse échoue alors volontairement
@@ -378,7 +375,7 @@ demandent un tenant réel.
 ### Recette manuelle
 
 App registration → client ID → redirect URI → type de comptes → client public →
-mapping de tenant côté serveur → lancer Nova → *Continue with Microsoft* → MFA
+mapping de tenant côté serveur → lancer Nova → _Continue with Microsoft_ → MFA
 éventuel → retour automatique → `/api/me` → redémarrer Nova et vérifier que la
 session tient.
 
@@ -386,35 +383,35 @@ session tient.
 
 ## 17. Modèle de menace — ce qui est couvert, ce qui ne l'est pas
 
-| Menace | Réponse |
-|---|---|
-| Interception du code d'autorisation | PKCE S256 : le code est inutilisable sans le vérificateur |
-| Injection d'un code d'une autre session | `state` vérifié avant exploitation |
-| Rejeu d'un jeton d'identité | `nonce` lié à la tentative, flux à usage unique |
-| Jeton forgé | signature JWKS, algorithme imposé |
-| Confusion d'algorithme (`none`, HMAC avec la clé publique) | algorithme imposé — testé |
-| `jku` hostile | URL JWKS dérivée du tenant, jamais du jeton |
-| Tenant voisin s'appropriant un compte | mapping explicite + contrôle d'organisation + refus du rattachement en conflit |
-| Poste modifié revendiquant un rôle | le serveur ne lit ni rôle ni organisation dans la requête |
-| Écouteur atteint depuis le réseau local | bouclage littéral uniquement, port éphémère, fermé hors connexion |
-| Secret extrait du binaire | aucun secret client n'y figure |
-| **Hameçonnage du consentement** | **non couvert** — l'utilisateur reste responsable de ce qu'il approuve dans un vrai écran Microsoft |
-| **Poste déjà compromis** | **hors périmètre** — un poste dont l'attaquant a le contrôle peut observer la session émise |
+| Menace                                                     | Réponse                                                                                             |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Interception du code d'autorisation                        | PKCE S256 : le code est inutilisable sans le vérificateur                                           |
+| Injection d'un code d'une autre session                    | `state` vérifié avant exploitation                                                                  |
+| Rejeu d'un jeton d'identité                                | `nonce` lié à la tentative, flux à usage unique                                                     |
+| Jeton forgé                                                | signature JWKS, algorithme imposé                                                                   |
+| Confusion d'algorithme (`none`, HMAC avec la clé publique) | algorithme imposé — testé                                                                           |
+| `jku` hostile                                              | URL JWKS dérivée du tenant, jamais du jeton                                                         |
+| Tenant voisin s'appropriant un compte                      | mapping explicite + contrôle d'organisation + refus du rattachement en conflit                      |
+| Poste modifié revendiquant un rôle                         | le serveur ne lit ni rôle ni organisation dans la requête                                           |
+| Écouteur atteint depuis le réseau local                    | bouclage littéral uniquement, port éphémère, fermé hors connexion                                   |
+| Secret extrait du binaire                                  | aucun secret client n'y figure                                                                      |
+| **Hameçonnage du consentement**                            | **non couvert** — l'utilisateur reste responsable de ce qu'il approuve dans un vrai écran Microsoft |
+| **Poste déjà compromis**                                   | **hors périmètre** — un poste dont l'attaquant a le contrôle peut observer la session émise         |
 
 ---
 
 ## 18. REAL ENTRA VALIDATION
 
-| | |
-|---|---|
-| **Date** | 17 août 2026 |
-| **Résultat** | ✅ **RÉUSSIE** — flux complet, tenant réel |
+|                    |                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| **Date**           | 17 août 2026                                                                         |
+| **Résultat**       | ✅ **RÉUSSIE** — flux complet, tenant réel                                           |
 | **Type de tenant** | établissement d'enseignement supérieur, tenant Entra réel (domaines vérifiés `*.fr`) |
-| **Flux testé** | Authorization Code + PKCE S256, de bout en bout |
-| **Environnement** | `tauri dev` (build packagé : voir plus bas) |
-| **MFA** | déclenché par le tenant, effectué par l'utilisateur |
-| **Consentement** | écran affiché, portant uniquement `openid profile email` |
-| **Redirect réel** | `http://127.0.0.1:<port éphémère>/callback` — accepté par Entra |
+| **Flux testé**     | Authorization Code + PKCE S256, de bout en bout                                      |
+| **Environnement**  | `tauri dev` (build packagé : voir plus bas)                                          |
+| **MFA**            | déclenché par le tenant, effectué par l'utilisateur                                  |
+| **Consentement**   | écran affiché, portant uniquement `openid profile email`                             |
+| **Redirect réel**  | `http://127.0.0.1:<port éphémère>/callback` — accepté par Entra                      |
 
 ### Enregistrement d'application effectivement utilisé
 
@@ -435,19 +432,19 @@ dans l'enregistrement, Entra aurait refusé la redirection.
 
 ### Chaîne vérifiée, maillon par maillon
 
-| Maillon | Preuve |
-|---|---|
-| Autorisation Microsoft | URL réelle vers `login.microsoftonline.com/organizations/…/authorize`, `code_challenge_method=S256`, sans `client_secret` |
-| Callback loopback | retour reçu, `state` validé |
-| Échange du code | effectué **par le serveur**, jamais par le poste |
-| Validation JWKS | signature RS256 vérifiée contre les clés du tenant ; un échec aurait produit `ID_TOKEN_INVALID` et aucune session |
-| `nonce`, `iss`, `aud`, `exp`, `tid`, `oid` | tous exigés par le validateur ; la session n'existe que s'ils sont passés |
-| Mapping de tenant | `organizations.entra_tenant_id` ← tenant réel, rapproché en base |
-| Identité fédérée | 1 ligne, `provider=microsoft_entra`, **`verification=verified`** |
-| Sujet externe | GUID de 36 caractères, **sans `@`**, différent de l'adresse |
-| Session Nova | jeton opaque de 43 caractères, stocké haché en base (`h:<empreinte>`) |
-| `/api/me` | contrat legacy **et** v2 cohérents |
-| Trousseau | contient **uniquement** le jeton Nova |
+| Maillon                                    | Preuve                                                                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Autorisation Microsoft                     | URL réelle vers `login.microsoftonline.com/organizations/…/authorize`, `code_challenge_method=S256`, sans `client_secret` |
+| Callback loopback                          | retour reçu, `state` validé                                                                                               |
+| Échange du code                            | effectué **par le serveur**, jamais par le poste                                                                          |
+| Validation JWKS                            | signature RS256 vérifiée contre les clés du tenant ; un échec aurait produit `ID_TOKEN_INVALID` et aucune session         |
+| `nonce`, `iss`, `aud`, `exp`, `tid`, `oid` | tous exigés par le validateur ; la session n'existe que s'ils sont passés                                                 |
+| Mapping de tenant                          | `organizations.entra_tenant_id` ← tenant réel, rapproché en base                                                          |
+| Identité fédérée                           | 1 ligne, `provider=microsoft_entra`, **`verification=verified`**                                                          |
+| Sujet externe                              | GUID de 36 caractères, **sans `@`**, différent de l'adresse                                                               |
+| Session Nova                               | jeton opaque de 43 caractères, stocké haché en base (`h:<empreinte>`)                                                     |
+| `/api/me`                                  | contrat legacy **et** v2 cohérents                                                                                        |
+| Trousseau                                  | contient **uniquement** le jeton Nova                                                                                     |
 
 ### Membership réel
 
@@ -489,14 +486,14 @@ point de terminaison de jeton Microsoft ; serveur → métadonnées/JWKS Microso
 
 Les deux ont été effectuées réellement, et la base le confirme :
 
-| | |
-|---|---|
-| Sessions en base | 2 : la première **révoquée** (`active=0`), la seconde active |
-| Trousseau | contient exactement la **seconde** session — l'empreinte du jeton du trousseau correspond à la ligne active, pas à l'ancienne |
-| Identité fédérée | **1 seule ligne**, `last_seen` postérieur à `created_at` → **réutilisée**, pas recréée |
-| Comptes | **1 seul**, même `user_id`, même organisation, même `member_type` |
-| Rôle de sécurité | reste `member` après reconnexion |
-| Marqueurs | deux `[auth] provider=microsoft_entra result=success`, à 20 minutes d'intervalle |
+|                  |                                                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Sessions en base | 2 : la première **révoquée** (`active=0`), la seconde active                                                                  |
+| Trousseau        | contient exactement la **seconde** session — l'empreinte du jeton du trousseau correspond à la ligne active, pas à l'ancienne |
+| Identité fédérée | **1 seule ligne**, `last_seen` postérieur à `created_at` → **réutilisée**, pas recréée                                        |
+| Comptes          | **1 seul**, même `user_id`, même organisation, même `member_type`                                                             |
+| Rôle de sécurité | reste `member` après reconnexion                                                                                              |
+| Marqueurs        | deux `[auth] provider=microsoft_entra result=success`, à 20 minutes d'intervalle                                              |
 
 La déconnexion révoque donc bien côté serveur **et** efface le trousseau ; la
 reconnexion retrouve l'identité par `(provider, oid)` au lieu d'en créer une
@@ -530,7 +527,7 @@ un fragment de hachage de commit d'une dépendance.
 ### Éléments non testés
 
 - **multi-tenant réel** : un seul tenant disponible. `REAL SINGLE-TENANT
-  VALIDATED` / `MULTI-TENANT REAL VALIDATION NOT TESTED` — l'isolation reste
+VALIDATED` / `MULTI-TENANT REAL VALIDATION NOT TESTED` — l'isolation reste
   couverte par les tests automatisés ;
 - réutilisation du cache JWKS lors d'une seconde connexion (non observable de
   l'extérieur, le cache étant en mémoire du processus) ;

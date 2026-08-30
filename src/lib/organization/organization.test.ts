@@ -56,7 +56,6 @@ const ORGANIZATION_ONLY: CapabilityId[] = [
 // qu'une policy peut fermer. Personal la garde toujours ; une organisation la
 // reçoit ouverte et peut la refermer.
 
-
 describe("Édition Personal", () => {
   const context = resolveOrganizationContext({ edition: "personal" });
 

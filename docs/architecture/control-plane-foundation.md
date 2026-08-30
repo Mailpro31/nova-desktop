@@ -45,29 +45,29 @@ pratique immédiate : un établissement qui héberge son propre serveur garde so
 audio chez lui, même le jour où Nova gère ses configurations depuis un plan de
 contrôle mutualisé.
 
-| | Control Plane | Data / AI Plane |
-|---|---|---|
-| Audio dicté | **jamais** | oui |
-| Texte à reformuler | **jamais** | oui |
-| Prompts, contexte d'écran | **jamais** | oui |
-| Identifiant d'organisation | oui | oui |
-| Configuration SSO | oui | lue |
-| Compteurs d'usage | agrégés | produits |
-| Secrets de fournisseur | oui | non |
+|                            | Control Plane | Data / AI Plane |
+| -------------------------- | ------------- | --------------- |
+| Audio dicté                | **jamais**    | oui             |
+| Texte à reformuler         | **jamais**    | oui             |
+| Prompts, contexte d'écran  | **jamais**    | oui             |
+| Identifiant d'organisation | oui           | oui             |
+| Configuration SSO          | oui           | lue             |
+| Compteurs d'usage          | agrégés       | produits        |
+| Secrets de fournisseur     | oui           | non             |
 
 ---
 
 ## 2. Objets du Control Plane
 
-| Objet | Rôle | État |
-|---|---|---|
-| **Organization** | tenant Nova, identifiant immuable | ✅ existe |
-| **OrganizationProviderConfig** | fournisseurs d'identité de l'organisation | ✅ existe |
-| **OrganizationMembership** | appartenance, métier, rôle de sécurité | ✅ existe |
-| **Deployment** | où tourne le Data Plane de l'organisation, quelle version | ❌ à venir |
-| **Policy** | ce que l'organisation autorise à ses membres | ✅ existe — organisation entière ; pas de hiérarchie de précédence |
-| **Package** | Styles, vocabulaire, AI Skills distribués | ❌ à venir |
-| **Admin / audit** | qui a changé quoi, et quand | ✅ existe |
+| Objet                          | Rôle                                                      | État                                                               |
+| ------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Organization**               | tenant Nova, identifiant immuable                         | ✅ existe                                                          |
+| **OrganizationProviderConfig** | fournisseurs d'identité de l'organisation                 | ✅ existe                                                          |
+| **OrganizationMembership**     | appartenance, métier, rôle de sécurité                    | ✅ existe                                                          |
+| **Deployment**                 | où tourne le Data Plane de l'organisation, quelle version | ❌ à venir                                                         |
+| **Policy**                     | ce que l'organisation autorise à ses membres              | ✅ existe — organisation entière ; pas de hiérarchie de précédence |
+| **Package**                    | Styles, vocabulaire, AI Skills distribués                 | ❌ à venir                                                         |
+| **Admin / audit**              | qui a changé quoi, et quand                               | ✅ existe                                                          |
 
 Les trois premiers ont été construits par les phases 12 à 19 sans jamais
 s'appeler Control Plane ; l'audit et l'administration sont arrivés avec les

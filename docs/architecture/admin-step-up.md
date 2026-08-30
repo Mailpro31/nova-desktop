@@ -4,7 +4,7 @@ Pourquoi une session Nova valide ne suffit pas à administrer une organisation, 
 ce que Nova exige à la place.
 
 Complète [`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
-Implémentation : `nova-server/main.py` § *Réauthentification (step-up)*.
+Implémentation : `nova-server/main.py` § _Réauthentification (step-up)_.
 
 ---
 
@@ -35,12 +35,12 @@ faire fuiter — par un cache, une sauvegarde, un poste non verrouillé —
 plus : il n'a pas les identifiants de la personne chez son fournisseur
 d'identité, et ne peut pas s'y authentifier à sa place.
 
-| Ce qu'il obtient | Ce qu'il n'obtient pas |
-|---|---|
-| dicter, lire son profil | ouvrir une session d'administration |
-| **commencer** un step-up (une URL) | produire une preuve d'identité |
-| — | une preuve *fraîche* |
-| — | une preuve résolvant *le même compte* |
+| Ce qu'il obtient                   | Ce qu'il n'obtient pas                |
+| ---------------------------------- | ------------------------------------- |
+| dicter, lire son profil            | ouvrir une session d'administration   |
+| **commencer** un step-up (une URL) | produire une preuve d'identité        |
+| —                                  | une preuve _fraîche_                  |
+| —                                  | une preuve résolvant _le même compte_ |
 
 Cette nuance est volontaire : démarrer un step-up ne donne rien. La preuve doit
 venir de l'IdP, être récente, et désigner exactement le même `user_id`. Un test
@@ -86,13 +86,13 @@ présence de la personne.
 
 Seule la revendication `auth_time` dit **quand elle s'est authentifiée**.
 
-| Cas | Décision |
-|---|---|
-| `auth_time` frais | accepté |
-| `auth_time` absent | **refusé** — `ADMIN_STEP_UP_TOO_OLD` |
-| `auth_time` trop ancien | refusé |
-| `auth_time` dans le futur au-delà de la tolérance | refusé |
-| valeur illisible | refusé |
+| Cas                                               | Décision                             |
+| ------------------------------------------------- | ------------------------------------ |
+| `auth_time` frais                                 | accepté                              |
+| `auth_time` absent                                | **refusé** — `ADMIN_STEP_UP_TOO_OLD` |
+| `auth_time` trop ancien                           | refusé                               |
+| `auth_time` dans le futur au-delà de la tolérance | refusé                               |
+| valeur illisible                                  | refusé                               |
 
 Le refus sur **absence** mérite d'être justifié : OpenID Connect impose à l'OP
 de renvoyer `auth_time` dès lors que `max_age` a été demandé. Un fournisseur qui
@@ -113,7 +113,7 @@ Les deux paramètres sont envoyés, et ils ne jouent pas le même rôle.
 - **`prompt=login`** demande une interaction. Microsoft et Google le documentent
   tous deux, et il évite qu'un OP interprète `max_age` avec largesse.
 
-Mais le serveur ne vérifie jamais la *présence* du paramètre — un IdP hostile ou
+Mais le serveur ne vérifie jamais la _présence_ du paramètre — un IdP hostile ou
 négligent pourrait l'ignorer. **Il vérifie `auth_time`**, la seule chose qui soit
 une preuve plutôt qu'une demande.
 
@@ -137,11 +137,11 @@ organisation — c'est même le cas de figure le plus courant sur un poste parta
 fédérée prouvée doit résoudre exactement le même `user_id` que celui qui a ouvert
 le parcours.
 
-| Fournisseur | Ce qui est comparé |
-|---|---|
-| Microsoft Entra | `oid` + tenant déclaré |
-| Google Workspace | `sub` |
-| OIDC générique | `issuer` + `sub` |
+| Fournisseur      | Ce qui est comparé     |
+| ---------------- | ---------------------- |
+| Microsoft Entra  | `oid` + tenant déclaré |
+| Google Workspace | `sub`                  |
+| OIDC générique   | `issuer` + `sub`       |
 
 L'adresse n'intervient jamais : elle n'a jamais été un identifiant, et depuis la
 Phase 23 elle est même mutable.
@@ -228,7 +228,7 @@ La session d'administration garde ses durées de la Phase 22 : 4 h absolues,
 30 min d'inactivité. **Une authentification fraîche n'achète pas une session
 éternelle.**
 
-`auth_time` **n'est pas** revérifié à chaque appel : il sert à *ouvrir* la
+`auth_time` **n'est pas** revérifié à chaque appel : il sert à _ouvrir_ la
 session, laquelle prend ensuite le relais avec ses propres expirations et
 révocations. Redemander une preuve à chaque requête rendrait l'administration
 inutilisable sans rien ajouter.

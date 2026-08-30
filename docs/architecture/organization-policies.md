@@ -5,7 +5,7 @@ pas la même chose que ce qu'un administrateur a le droit de modifier.
 
 Complète [`control-plane-admin-auth.md`](./control-plane-admin-auth.md) et
 [`organization-foundation.md`](./organization-foundation.md).
-Implémentation : `nova-server/main.py` § *Policies produit de l'organisation*,
+Implémentation : `nova-server/main.py` § _Policies produit de l'organisation_,
 `nova-server/admin-web/src/pages/Rest.tsx`, `src/lib/organization/policy.ts`.
 
 ---
@@ -14,12 +14,12 @@ Implémentation : `nova-server/main.py` § *Policies produit de l'organisation*,
 
 C'est la confusion qu'il fallait éviter en premier, parce qu'elle est facile :
 
-| | Capacité d'administration | Policy produit |
-|---|---|---|
-| Exemple | `policy_manage` | `ai_skills_enabled` |
+|          | Capacité d'administration                   | Policy produit                                         |
+| -------- | ------------------------------------------- | ------------------------------------------------------ |
+| Exemple  | `policy_manage`                             | `ai_skills_enabled`                                    |
 | Répond à | qu'un **administrateur** peut-il modifier ? | que l'**organisation** autorise-t-elle à ses membres ? |
-| Vit dans | `CAPABILITIES_BY_ROLE` | `POLICY_SETTINGS` |
-| Protège | la console | rien — elle **configure** |
+| Vit dans | `CAPABILITIES_BY_ROLE`                      | `POLICY_SETTINGS`                                      |
+| Protège  | la console                                  | rien — elle **configure**                              |
 
 `policy_manage` dit qui peut changer `ai_skills_enabled`. Il n'entre jamais dans
 le calcul de ce que voit un membre. Les fusionner produirait un système où
@@ -35,11 +35,11 @@ capacité de base  ∩  policy de l'organisation  =  capacité effective
 ```
 
 | base | policy | effective |
-|:--:|:--:|:--:|
-| ❌ | ❌ | ❌ |
-| ❌ | ✅ | ❌ |
-| ✅ | ❌ | ❌ |
-| ✅ | ✅ | ✅ |
+| :--: | :----: | :-------: |
+|  ❌  |   ❌   |    ❌     |
+|  ❌  |   ✅   |    ❌     |
+|  ✅  |   ❌   |    ❌     |
+|  ✅  |   ✅   |    ✅     |
 
 La deuxième ligne est la règle fondamentale : **une policy n'invente jamais une
 capacité**. Si une organisation pouvait ouvrir ce que le produit ne fournit pas,
@@ -90,18 +90,18 @@ Une policy n'est légitime que si **trois** conditions tiennent :
 2. on sait exactement ce que son refus signifie ;
 3. le refus peut s'appliquer ailleurs que dans l'affichage.
 
-| Candidat | Verdict |
-|---|---|
-| **AI Skills** | ✅ `/api/ai-skills` — Phase 29 |
-| **Vocabulaire d'organisation** | ✅ `/api/vocabulary`, `/api/dictionary/*` |
-| **Commandes vocales** | ✅ `/api/command` |
-| **Notes d'ingénierie** | ✅ `/api/engineering-notes` |
-| **Import de fichier audio** | ✅ `/api/import/transcribe` — route créée pour cela, § 9 |
-| Styles personnels | ❌ la capacité `personalStyles` n'est lue **nulle part** — le refus ne s'appliquerait à rien |
-| Styles d'organisation | ❌ aucun serveur n'en distribue ; c'est du contenu, pas une règle (§ 10) |
-| Historique | ❌ essentiellement local ; une policy serveur n'efface pas ce qui est déjà sur le poste, et le prétendre serait une fausse promesse |
-| Repli local | ❌ son refus signifie « plus de dictée hors ligne » — voir § 3 |
-| Learning | ❌ **la fonction n'existe pas** ; `learning` vaut `false` en dur |
+| Candidat                       | Verdict                                                                                                                             |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **AI Skills**                  | ✅ `/api/ai-skills` — Phase 29                                                                                                      |
+| **Vocabulaire d'organisation** | ✅ `/api/vocabulary`, `/api/dictionary/*`                                                                                           |
+| **Commandes vocales**          | ✅ `/api/command`                                                                                                                   |
+| **Notes d'ingénierie**         | ✅ `/api/engineering-notes`                                                                                                         |
+| **Import de fichier audio**    | ✅ `/api/import/transcribe` — route créée pour cela, § 9                                                                            |
+| Styles personnels              | ❌ la capacité `personalStyles` n'est lue **nulle part** — le refus ne s'appliquerait à rien                                        |
+| Styles d'organisation          | ❌ aucun serveur n'en distribue ; c'est du contenu, pas une règle (§ 10)                                                            |
+| Historique                     | ❌ essentiellement local ; une policy serveur n'efface pas ce qui est déjà sur le poste, et le prétendre serait une fausse promesse |
+| Repli local                    | ❌ son refus signifie « plus de dictée hors ligne » — voir § 3                                                                      |
+| Learning                       | ❌ **la fonction n'existe pas** ; `learning` vaut `false` en dur                                                                    |
 
 Chacune des cinq retenues gouverne une **route serveur réelle** : le refus est
 donc opposable à n'importe quel client, pas seulement à l'interface.
@@ -211,11 +211,11 @@ d'audit.
 
 ## 8. API
 
-| | |
-|---|---|
+|                                        |                                           |
+| -------------------------------------- | ----------------------------------------- |
 | `GET /api/control/organization/policy` | `organization_read` — tout administrateur |
-| `PUT /api/control/organization/policy` | `policy_manage` |
-| `GET /api/organization/policy` | session **utilisateur** ordinaire |
+| `PUT /api/control/organization/policy` | `policy_manage`                           |
+| `GET /api/organization/policy`         | session **utilisateur** ordinaire         |
 
 `policy_manage` va à `organization_admin`, et **pas** à `it_admin` : décider ce
 que l'organisation offre à ses membres est une décision d'organisation, pas
@@ -254,13 +254,13 @@ C'est la propriété qui compte, et elle vaut mieux qu'une règle de priorité
 écrite quelque part : **il n'y a rien à se rappeler**. Une policy ne peut
 qu'ôter, jamais rendre.
 
-| mode | policy | effectif |
-|---|:--:|:--:|
-| `normal` | ✅ | ✅ |
-| `normal` | ❌ | ❌ |
-| `classroom` | ✅ | ❌ *(commandes, notes)* |
-| `classroom` | ❌ | ❌ |
-| `assessment` | ✅ | ❌ |
+| mode         | policy |        effectif         |
+| ------------ | :----: | :---------------------: |
+| `normal`     |   ✅   |           ✅            |
+| `normal`     |   ❌   |           ❌            |
+| `classroom`  |   ✅   | ❌ _(commandes, notes)_ |
+| `classroom`  |   ❌   |           ❌            |
+| `assessment` |   ✅   |           ❌            |
 
 ---
 
@@ -321,7 +321,7 @@ Packages viendront séparément.
 
 ## 11. Côté poste
 
-```ts
+```
 resolveEffectiveCapabilities(base, policy)   // src/lib/organization/policy.ts
 ```
 
@@ -336,7 +336,9 @@ se décide localement.
 ### Personal n'est jamais gouverné
 
 ```ts
-if (input.edition === "personal") { /* input.policy est ignoré */ }
+if (input.edition === "personal") {
+  /* input.policy est ignoré */
+}
 ```
 
 Nova Personal ne dépend d'aucun plan de contrôle. Lui laisser subir une

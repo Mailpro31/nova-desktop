@@ -3,7 +3,7 @@
 Pourquoi une adresse e-mail ne peut pas être l'identité d'une personne, et ce
 que Nova utilise à la place.
 
-Implémentation : `nova-server/main.py` § *Accès aux comptes*,
+Implémentation : `nova-server/main.py` § _Accès aux comptes_,
 `nova-server/test_identity_migration.py`.
 
 ---
@@ -110,12 +110,12 @@ L'ancienne clé primaire était sensible à la casse. `alex@example.com` et
 `Alex@Example.com` pouvaient donc coexister — et deviennent, après
 normalisation, un conflit.
 
-| Situation | Comportement |
-|---|---|
-| deux comptes, même adresse normalisée, même organisation | **arrêt** |
-| `user_id` dupliqué | **arrêt** |
-| compte sans adresse | **arrêt** |
-| même adresse, organisations différentes | accepté — c'est le but |
+| Situation                                                | Comportement           |
+| -------------------------------------------------------- | ---------------------- |
+| deux comptes, même adresse normalisée, même organisation | **arrêt**              |
+| `user_id` dupliqué                                       | **arrêt**              |
+| compte sans adresse                                      | **arrêt**              |
+| même adresse, organisations différentes                  | accepté — c'est le but |
 
 **Aucun gagnant n'est choisi.** Décider lequel des deux comptes perd son
 historique n'est pas une décision technique, et personne ne s'en apercevrait
@@ -127,14 +127,14 @@ personnelles dans les journaux d'exploitation.
 
 ## 6. Ce qui suit l'identité
 
-| Table | Lien |
-|---|---|
-| `tokens` (sessions) | `user_id` + `organization_id` |
-| `admin_sessions` | `user_id` + `organization_id` (depuis la Phase 22) |
-| `federated_identities` | `user_id` |
-| `usage`, `personal_dictionary`, `snippets`, `formatting_rules` | `user_id` |
-| `admin_audit_log` | `actor_user_id` |
-| `auth_codes` | `organization_id` — l'identité n'existe pas encore à ce stade |
+| Table                                                          | Lien                                                          |
+| -------------------------------------------------------------- | ------------------------------------------------------------- |
+| `tokens` (sessions)                                            | `user_id` + `organization_id`                                 |
+| `admin_sessions`                                               | `user_id` + `organization_id` (depuis la Phase 22)            |
+| `federated_identities`                                         | `user_id`                                                     |
+| `usage`, `personal_dictionary`, `snippets`, `formatting_rules` | `user_id`                                                     |
+| `admin_audit_log`                                              | `actor_user_id`                                               |
+| `auth_codes`                                                   | `organization_id` — l'identité n'existe pas encore à ce stade |
 
 L'adresse reste présente là où elle sert de repère lisible — un instantané, pas
 un lien d'intégrité.
@@ -170,13 +170,13 @@ silence, sans qu'aucune alerte ne se déclenche.
 
 ## 8. Rattachement de comptes
 
-| Situation | Décision |
-|---|---|
-| identité fédérée connue | `user_id` exact |
-| compte historique, même organisation, même adresse | rattachement contrôlé |
-| identité fédérée d'une **autre** organisation | `403 ORGANIZATION_MISMATCH` |
-| même adresse dans une autre organisation | **aucun rattachement** — un compte distinct est créé ici |
-| même adresse chez deux fournisseurs | jamais de fusion automatique |
+| Situation                                          | Décision                                                 |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| identité fédérée connue                            | `user_id` exact                                          |
+| compte historique, même organisation, même adresse | rattachement contrôlé                                    |
+| identité fédérée d'une **autre** organisation      | `403 ORGANIZATION_MISMATCH`                              |
+| même adresse dans une autre organisation           | **aucun rattachement** — un compte distinct est créé ici |
+| même adresse chez deux fournisseurs                | jamais de fusion automatique                             |
 
 La quatrième ligne est un **changement de comportement**. Avant, un compte
 homonyme dans une autre organisation provoquait un refus. Désormais, la

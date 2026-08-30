@@ -4,7 +4,7 @@ Comment une connexion SSO cesse de dépendre du processus qui l'a commencée.
 Complète [`control-plane-foundation.md`](./control-plane-foundation.md) et les
 trois documents de fournisseurs.
 
-Implémentation : `nova-server/main.py` § *État des tentatives SSO*.
+Implémentation : `nova-server/main.py` § _État des tentatives SSO_.
 
 ---
 
@@ -59,7 +59,7 @@ lente, exactement comme pour les jetons Nova.
 
 Le `nonce` n'a **jamais besoin d'être relu en clair**. Le serveur le reçoit du
 poste au démarrage, le transmet au fournisseur, et n'a plus ensuite qu'une
-question à poser : *le jeton d'identité porte-t-il le bon ?* Comparer l'empreinte
+question à poser : _le jeton d'identité porte-t-il le bon ?_ Comparer l'empreinte
 de celui que porte le jeton à celle qui a été retenue répond exactement à cette
 question.
 
@@ -146,13 +146,13 @@ pas de minuterie : le ménage se fait au moment où l'on écrit de toute façon.
 
 ## 6. Ce à quoi une tentative reste liée
 
-| Lien | Effet |
-|---|---|
-| `provider_type` | un retour Google ne complète pas une tentative Microsoft |
-| `provider_config_id` | un retour d'un IdP OIDC n'en complète pas un autre |
-| `organization_id` | vient de la configuration, jamais du client |
-| `redirect_uri` | un retour sur une autre adresse est refusé |
-| `nonce_hash` | le poste ne « rappelle » pas son nonce à l'échange |
+| Lien                 | Effet                                                    |
+| -------------------- | -------------------------------------------------------- |
+| `provider_type`      | un retour Google ne complète pas une tentative Microsoft |
+| `provider_config_id` | un retour d'un IdP OIDC n'en complète pas un autre       |
+| `organization_id`    | vient de la configuration, jamais du client              |
+| `redirect_uri`       | un retour sur une autre adresse est refusé               |
+| `nonce_hash`         | le poste ne « rappelle » pas son nonce à l'échange       |
 
 **Désactivation en cours de route** : la configuration est relue au moment de
 l'échange. Un administrateur qui désactive un fournisseur pendant qu'une
@@ -198,11 +198,11 @@ besoin de demain.
 
 ## 8. Ce qui reste local, et pourquoi c'est correct
 
-| État | Portée | Justification |
-|---|---|---|
-| Cache JWKS | worker | reconstructible seul ; au pire un appel de plus au démarrage |
-| Cache métadonnées OIDC | worker | idem |
-| **`ENTRA_FLOWS`** (Device Code hérité) | **worker** | **voir ci-dessous** |
+| État                                   | Portée     | Justification                                                |
+| -------------------------------------- | ---------- | ------------------------------------------------------------ |
+| Cache JWKS                             | worker     | reconstructible seul ; au pire un appel de plus au démarrage |
+| Cache métadonnées OIDC                 | worker     | idem                                                         |
+| **`ENTRA_FLOWS`** (Device Code hérité) | **worker** | **voir ci-dessous**                                          |
 
 > ### ⚠️ LEGACY DEVICE CODE NOT HORIZONTAL-SAFE
 >

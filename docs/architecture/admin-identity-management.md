@@ -5,7 +5,7 @@ derrière lui, et ce que le journal d'audit retient.
 
 Complète [`control-plane-admin-auth.md`](./control-plane-admin-auth.md) et
 [`nova-admin-foundation.md`](./nova-admin-foundation.md).
-Implémentation : `nova-server/main.py` § *Administrateurs de l'organisation*,
+Implémentation : `nova-server/main.py` § _Administrateurs de l'organisation_,
 `nova-server/admin-web/src/pages/Administrators.tsx`.
 
 ---
@@ -35,13 +35,13 @@ l'écran, sans quoi on chercherait un bouton qui n'existera jamais.
 
 ## 2. Ce que la console fait, et ne fait pas
 
-| | |
-|---|---|
-| Attribuer un rôle à un compte existant | ✅ |
-| Changer le rôle d'un administrateur | ✅ |
-| Retirer l'accès d'administration | ✅ |
-| **Créer** une personne | ❌ |
-| Inviter, provisionner, SCIM | ❌ |
+|                                        |     |
+| -------------------------------------- | --- |
+| Attribuer un rôle à un compte existant | ✅  |
+| Changer le rôle d'un administrateur    | ✅  |
+| Retirer l'accès d'administration       | ✅  |
+| **Créer** une personne                 | ❌  |
+| Inviter, provisionner, SCIM            | ❌  |
 
 Un `user_id` inconnu renvoie `404`. Créer des comptes relève du provisionnement,
 pas de la gestion des privilèges — mélanger les deux ferait de cet écran l'endroit
@@ -70,7 +70,7 @@ Rien de tout cela n'aide à décider qui doit administrer.
 ## 4. Le client nomme un rôle, le serveur en déduit les capacités
 
 ```jsonc
-{ "security_role": "it_admin" }     // tout ce que le navigateur envoie
+{ "security_role": "it_admin" } // tout ce que le navigateur envoie
 ```
 
 Aucune capacité ne transite depuis le client. En accepter reviendrait à laisser
@@ -84,10 +84,10 @@ Un `it_admin` ne peut donc pas s'élever lui-même — **la matrice l'interdit, 
 une règle ajoutée**. C'est mieux ainsi : une règle spéciale s'oublie, une matrice
 se relit.
 
-| | `organization_admin` | `it_admin` | `read_only` |
-|---|:--:|:--:|:--:|
-| Gérer les administrateurs | ✅ | — | — |
-| Lire le journal d'audit | ✅ | — | — |
+|                           | `organization_admin` | `it_admin` | `read_only` |
+| ------------------------- | :------------------: | :--------: | :---------: |
+| Gérer les administrateurs |          ✅          |     —      |      —      |
+| Lire le journal d'audit   |          ✅          |     —      |      —      |
 
 ---
 

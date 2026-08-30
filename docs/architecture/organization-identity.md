@@ -39,11 +39,11 @@ envoyée par le Desktop.
 
 ## 2. Frontières de confiance
 
-| Couche | Rôle | Ce qu'elle **ne** fait **pas** |
-|---|---|---|
-| Desktop | expérience : masquer ce qui n'est pas disponible | autoriser quoi que ce soit |
-| `/api/*` | **autorité** : authentifier, autoriser, décider | faire confiance au corps de requête pour l'identité |
-| IdP (Entra, Google, OIDC) | attester une identité externe | décider des droits Nova |
+| Couche                    | Rôle                                             | Ce qu'elle **ne** fait **pas**                      |
+| ------------------------- | ------------------------------------------------ | --------------------------------------------------- |
+| Desktop                   | expérience : masquer ce qui n'est pas disponible | autoriser quoi que ce soit                          |
+| `/api/*`                  | **autorité** : authentifier, autoriser, décider  | faire confiance au corps de requête pour l'identité |
+| IdP (Entra, Google, OIDC) | attester une identité externe                    | décider des droits Nova                             |
 
 Un client modifié ne gagne rien : il peut s'afficher ce qu'il veut, il n'obtient
 pas pour autant une réponse du serveur. Un test le vérifie côté serveur
@@ -128,13 +128,13 @@ démarrages suivants
    ↓  lu dans `server_state` — le slug n'intervient plus
 ```
 
-| Événement | `organization_id` |
-|---|---|
-| redémarrage du serveur | inchangé |
-| renommage du `display_name` | inchangé |
-| **renommage du `slug`** | **inchangé** |
-| deux instances distinctes | toujours différents |
-| dérivé d'une adresse e-mail | jamais |
+| Événement                   | `organization_id`   |
+| --------------------------- | ------------------- |
+| redémarrage du serveur      | inchangé            |
+| renommage du `display_name` | inchangé            |
+| **renommage du `slug`**     | **inchangé**        |
+| deux instances distinctes   | toujours différents |
+| dérivé d'une adresse e-mail | jamais              |
 
 Le rattachement instance → organisation passe par `server_state`, pas par le
 slug. Sans cela, renommer le slug ferait échouer la recherche et créerait
@@ -204,7 +204,9 @@ données structurées vivent donc dans des champs nouveaux.
 ```jsonc
 {
   // historique — inchangé
-  "email": "…", "role": "student", "cohort": "AERO2",
+  "email": "…",
+  "role": "student",
+  "cohort": "AERO2",
   "organization": "IPSA Paris",
 
   // v2 — additif
@@ -215,13 +217,21 @@ données structurées vivent donc dans des champs nouveaux.
   "membership": {
     "member_type": "student",
     "security_role": "member",
-    "groups": [{ "id": "AERO2", "label": "AERO2",
-                 "source": "legacy_cohort", "external_group_id": null }],
-    "status": "active"
+    "groups": [
+      {
+        "id": "AERO2",
+        "label": "AERO2",
+        "source": "legacy_cohort",
+        "external_group_id": null,
+      },
+    ],
+    "status": "active",
   },
-  "identity": { "provider": "legacy_email_code",
-                "has_external_identity": false },
-  "capabilities": ["dictation", "rewrite", "…"]
+  "identity": {
+    "provider": "legacy_email_code",
+    "has_external_identity": false,
+  },
+  "capabilities": ["dictation", "rewrite", "…"],
 }
 ```
 
@@ -230,11 +240,11 @@ diffuser élargirait la surface pour rien.
 
 ### Stratégie de compatibilité — trois serveurs, un seul client
 
-| Serveur | Ce que le Desktop fait |
-|---|---|
+| Serveur                            | Ce que le Desktop fait                                                                                       |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **A. antérieur au contrat étendu** | `parseServerIdentity` produit un instantané vide ; la compatibilité Campus s'applique, comportement inchangé |
-| **B. contrat étendu (actuel)** | l'identité, l'organisation et les capacités annoncées deviennent autoritatives |
-| **C. futur serveur Organization** | les champs supplémentaires inconnus sont ignorés ; le contrat reste lisible |
+| **B. contrat étendu (actuel)**     | l'identité, l'organisation et les capacités annoncées deviennent autoritatives                               |
+| **C. futur serveur Organization**  | les champs supplémentaires inconnus sont ignorés ; le contrat reste lisible                                  |
 
 Ordre de priorité, jamais l'inverse :
 
@@ -314,10 +324,10 @@ revendication n'était lue : ni `tid`, ni `oid`, ni `sub`.
 **L'identité fédérée enregistrée n'est pas autoritative.** Elle porte un niveau
 de garantie explicite, `federated_identities.verification` :
 
-| Niveau | Signification | Produit par |
-|---|---|---|
-| `transport_only` | revendications lues d'un jeton reçu en TLS serveur-à-serveur, **signature non vérifiée** | Device Code hérité |
-| `verified` | signature, émetteur, audience, expiration, `nonce` et tenant vérifiés | **Authorization Code + PKCE** (Phase 15) |
+| Niveau           | Signification                                                                            | Produit par                              |
+| ---------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `transport_only` | revendications lues d'un jeton reçu en TLS serveur-à-serveur, **signature non vérifiée** | Device Code hérité                       |
+| `verified`       | signature, émetteur, audience, expiration, `nonce` et tenant vérifiés                    | **Authorization Code + PKCE** (Phase 15) |
 
 Le Device Code reste `transport_only` : rien ne consulte son identité pour
 autoriser, ce qui autorise là reste le domaine de l'adresse et le mapping de
@@ -345,10 +355,10 @@ Aucun nouveau bouton Microsoft n'est construit.
 
 Même structure, aucune implémentation :
 
-| | Sujet externe | Tenant |
-|---|---|---|
-| Google Workspace | `sub` | identifiant client Workspace |
-| OIDC générique (Okta, Auth0, Keycloak, Ping) | `sub` | `issuer` |
+|                                              | Sujet externe | Tenant                       |
+| -------------------------------------------- | ------------- | ---------------------------- |
+| Google Workspace                             | `sub`         | identifiant client Workspace |
+| OIDC générique (Okta, Auth0, Keycloak, Ping) | `sub`         | `issuer`                     |
 
 En OIDC générique, l'unicité d'un `sub` n'est garantie **que dans le périmètre
 de son `issuer`** : c'est le couple qui identifie, jamais le `sub` seul.
@@ -361,13 +371,13 @@ configuration n'est créé.
 
 ## 8. Sécurité d'application native — recommandation
 
-| | Device Code (actuel) | Authorization Code + PKCE (visé) |
-|---|---|---|
-| Secret client embarqué | non | non |
-| Navigateur système | non (l'utilisateur ouvre une URL et saisit un code) | oui |
-| Hameçonnage | **sensible** : un code valide saisi sur un vrai écran Microsoft à la demande d'un attaquant suffit | résistant : la redirection revient à l'application |
-| Ergonomie | code à recopier | un clic |
-| Liaison à la requête | aucune | `state` + `nonce` + `code_verifier` |
+|                        | Device Code (actuel)                                                                               | Authorization Code + PKCE (visé)                   |
+| ---------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Secret client embarqué | non                                                                                                | non                                                |
+| Navigateur système     | non (l'utilisateur ouvre une URL et saisit un code)                                                | oui                                                |
+| Hameçonnage            | **sensible** : un code valide saisi sur un vrai écran Microsoft à la demande d'un attaquant suffit | résistant : la redirection revient à l'application |
+| Ergonomie              | code à recopier                                                                                    | un clic                                            |
+| Liaison à la requête   | aucune                                                                                             | `state` + `nonce` + `code_verifier`                |
 
 **Réalisé en Phase 15** : Authorization Code + PKCE (S256), navigateur système
 et redirection en boucle locale, avec validation JWKS complète côté serveur —
@@ -384,11 +394,11 @@ mapping de tenant.
 
 **État audité, côté Desktop :**
 
-| | Emplacement | Forme |
-|---|---|---|
-| Jeton de session | trousseau du système (Windows Credential Manager via `keyring`) | protégé par le système |
-| Métadonnées (`server_url`, e-mail) | `campus_session.json` (tauri-store) | JSON en clair |
-| Clé du trousseau | — | SHA-256 de `serveur|e-mail` |
+|                                    | Emplacement                                                     | Forme                        |
+| ---------------------------------- | --------------------------------------------------------------- | ---------------------------- |
+| Jeton de session                   | trousseau du système (Windows Credential Manager via `keyring`) | protégé par le système       |
+| Métadonnées (`server_url`, e-mail) | `campus_session.json` (tauri-store)                             | JSON en clair                |
+| Clé du trousseau                   | —                                                               | SHA-256 de `serveur\|e-mail` |
 
 - une migration ponctuelle déplace les jetons de l'ancien stockage en clair vers
   le trousseau, puis efface le champ ;

@@ -4,7 +4,7 @@ Comment Nova sait **qui** administre une organisation, et **ce qu'il a le droit
 d'y faire**. Fondation backend du futur Nova Admin — qui n'existe pas encore.
 
 Complète [`control-plane-foundation.md`](./control-plane-foundation.md).
-Implémentation : `nova-server/main.py` § *Administration moderne*,
+Implémentation : `nova-server/main.py` § _Administration moderne_,
 `nova-server/admin_cli.py`.
 
 ---
@@ -86,10 +86,10 @@ authentification **récente**. Voir [`admin-step-up.md`](./admin-step-up.md).
 
 ## 4. Séparation stricte des deux jetons
 
-| | Routes utilisateur | Routes d'administration |
-|---|---|---|
-| Jeton de session Nova | ✅ | ❌ `401` |
-| Jeton de session admin | ❌ `401` | ✅ |
+|                        | Routes utilisateur | Routes d'administration |
+| ---------------------- | ------------------ | ----------------------- |
+| Jeton de session Nova  | ✅                 | ❌ `401`                |
+| Jeton de session admin | ❌ `401`           | ✅                      |
 
 Les deux voyagent en `Authorization: Bearer`. **Le client ne déclare jamais que
 son jeton est un jeton d'administration** — le serveur le sait parce qu'il le
@@ -125,13 +125,13 @@ sur la foi du client.
 Le rôle inscrit dans la session est **indicatif**. À chaque appel, le serveur
 revérifie l'état réel :
 
-| Vérification | Si elle échoue |
-|---|---|
-| session non révoquée | `401 ADMIN_SESSION_REVOKED` |
+| Vérification                                | Si elle échoue              |
+| ------------------------------------------- | --------------------------- |
+| session non révoquée                        | `401 ADMIN_SESSION_REVOKED` |
 | session non expirée (absolue et inactivité) | `401 ADMIN_SESSION_EXPIRED` |
-| compte actif | `403 ADMIN_REQUIRED` |
-| rôle toujours administrateur | `403 ADMIN_ROLE_REQUIRED` |
-| organisation active | `403 ADMIN_REQUIRED` |
+| compte actif                                | `403 ADMIN_REQUIRED`        |
+| rôle toujours administrateur                | `403 ADMIN_ROLE_REQUIRED`   |
+| organisation active                         | `403 ADMIN_REQUIRED`        |
 
 Retirer son rôle à quelqu'un lui ferme la porte **au prochain appel**, pas à la
 prochaine expiration. Un compte désactivé perd immédiatement l'accès. Une
@@ -149,15 +149,15 @@ Trois rôles d'administration. Ce que l'on vérifie dans le code, ce sont les
 **capacités** — sans quoi `if role ==` se disperse dans quarante routes et la
 matrice devient impossible à relire.
 
-| Capacité | `organization_admin` | `it_admin` | `read_only` |
-|---|:--:|:--:|:--:|
-| `organization_read` | ✅ | ✅ | ✅ |
-| `diagnostics_read` | ✅ | ✅ | ✅ |
-| `provider_manage` | ✅ | ✅ | — |
-| `discovery_manage` | ✅ | ✅ | — |
-| `identity_manage` | ✅ | — | — |
-| `security_manage` | ✅ | — | — |
-| `deployment_manage` | — | ✅ | — |
+| Capacité            | `organization_admin` | `it_admin` | `read_only` |
+| ------------------- | :------------------: | :--------: | :---------: |
+| `organization_read` |          ✅          |     ✅     |     ✅      |
+| `diagnostics_read`  |          ✅          |     ✅     |     ✅      |
+| `provider_manage`   |          ✅          |     ✅     |      —      |
+| `discovery_manage`  |          ✅          |     ✅     |      —      |
+| `identity_manage`   |          ✅          |     —      |      —      |
+| `security_manage`   |          ✅          |     —      |      —      |
+| `deployment_manage` |          —           |     ✅     |      —      |
 
 `organization_admin` gère **les personnes**, `it_admin` gère **la machine**.
 Aucun n'est un sur-ensemble de l'autre : trois rôles qui autorisent la même chose
@@ -252,12 +252,12 @@ sur le serveur, comme le reste de l'amorçage.
 
 ### Migration
 
-| Avant | Maintenant |
-|---|---|
-| `X-Admin-Token` sur `/api/admin/*` | Nova Admin : SSO + réauthentification |
-| Premier administrateur | `admin_cli.py grant <email> organization_admin` |
-| Activer la découverte | `admin_cli.py discovery enable --endpoint <url>` |
-| Récupération | la ligne de commande, sur le serveur |
+| Avant                              | Maintenant                                       |
+| ---------------------------------- | ------------------------------------------------ |
+| `X-Admin-Token` sur `/api/admin/*` | Nova Admin : SSO + réauthentification            |
+| Premier administrateur             | `admin_cli.py grant <email> organization_admin`  |
+| Activer la découverte              | `admin_cli.py discovery enable --endpoint <url>` |
+| Récupération                       | la ligne de commande, sur le serveur             |
 
 Aucun nouveau mécanisme n'a été introduit : ni clés d'API, ni comptes de service,
 ni jetons machine. Le jour où une automatisation en aura réellement besoin, ce
@@ -265,12 +265,12 @@ sera une décision à prendre, pas un reste à conserver.
 
 ### Les quatre chemins, une fois pour toutes
 
-| | |
-|---|---|
-| **Premier administrateur** | `admin_cli.py grant`, sur le serveur |
-| **Première découverte** | `admin_cli.py discovery enable` |
+|                             |                                          |
+| --------------------------- | ---------------------------------------- |
+| **Premier administrateur**  | `admin_cli.py grant`, sur le serveur     |
+| **Première découverte**     | `admin_cli.py discovery enable`          |
 | **Administration courante** | Nova Admin — SSO puis réauthentification |
-| **Récupération** | la ligne de commande locale |
+| **Récupération**            | la ligne de commande locale              |
 
 La ligne de commande n'est **ni une API distante, ni un mécanisme machine** :
 elle ne crée aucune session, n'émet aucun jeton et n'expose aucune route. Son
@@ -316,7 +316,7 @@ survivrait le plus longtemps. On enregistre qu'un secret **a été remplacé**
 Les lectures simples ne sont pas auditées : tout auditer produit un journal que
 personne ne lit.
 
-**Immuabilité, honnêtement** : le journal est en ajout seul *par l'application* —
+**Immuabilité, honnêtement** : le journal est en ajout seul _par l'application_ —
 aucune route ne le modifie ni ne le supprime, et les horodatages viennent du
 serveur. SQLite n'offre aucune immuabilité au niveau du stockage : quiconque
 tient le fichier tient le journal. Prétendre le contraire serait faux.
@@ -357,11 +357,11 @@ Voir [`admin-step-up.md`](./admin-step-up.md).
 
 Deux niveaux, à ne jamais confondre :
 
-| | Administrateur d'organisation | Opérateur Nova |
-|---|---|---|
-| Qui | le client | l'équipe Nova |
-| Portée | **son** organisation | les tenants, le provisionnement, les incidents |
-| Existe | ✅ | ❌ pas construit |
+|        | Administrateur d'organisation | Opérateur Nova                                 |
+| ------ | ----------------------------- | ---------------------------------------------- |
+| Qui    | le client                     | l'équipe Nova                                  |
+| Portée | **son** organisation          | les tenants, le provisionnement, les incidents |
+| Existe | ✅                            | ❌ pas construit                               |
 
 `organization_admin` ne reçoit **aucun** pouvoir global. Le jour où l'opérateur
 Nova existera, ce sera une identité séparée, avec son propre chemin

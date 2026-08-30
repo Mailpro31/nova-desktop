@@ -5,7 +5,7 @@ Second fournisseur d'identité Organization. Il complète
 [`organization-identity.md`](./organization-identity.md).
 
 Implémentation : `src-tauri/src/organization_sso.rs` (poste),
-`nova-server/main.py` § *SSO Organization : PKCE* (autorité),
+`nova-server/main.py` § _SSO Organization : PKCE_ (autorité),
 `src/lib/organization/ssoProviders.ts` (affichage).
 
 ---
@@ -19,15 +19,15 @@ les mêmes garanties.
 
 Ce qui les distingue tient en une entrée de table :
 
-| | Microsoft Entra | Google Workspace |
-|---|---|---|
-| Point d'autorisation | `login.microsoftonline.com/organizations/…` | `accounts.google.com/o/oauth2/v2/auth` |
-| Point de jeton | `login.microsoftonline.com/organizations/…/token` | `oauth2.googleapis.com/token` |
-| Émetteur attendu | `…/{tid}/v2.0` (dépend du tenant) | `https://accounts.google.com` (fixe) |
-| Clés publiques | `…/{tid}/discovery/v2.0/keys` | `googleapis.com/oauth2/v3/certs` |
-| Sujet immuable | `oid` | `sub` |
-| Rattachement | `tid` → `entra_tenant_id` | `hd` → `google_hosted_domain` |
-| Secret à l'échange | **non** | **oui** (voir § 3) |
+|                      | Microsoft Entra                                   | Google Workspace                       |
+| -------------------- | ------------------------------------------------- | -------------------------------------- |
+| Point d'autorisation | `login.microsoftonline.com/organizations/…`       | `accounts.google.com/o/oauth2/v2/auth` |
+| Point de jeton       | `login.microsoftonline.com/organizations/…/token` | `oauth2.googleapis.com/token`          |
+| Émetteur attendu     | `…/{tid}/v2.0` (dépend du tenant)                 | `https://accounts.google.com` (fixe)   |
+| Clés publiques       | `…/{tid}/discovery/v2.0/keys`                     | `googleapis.com/oauth2/v3/certs`       |
+| Sujet immuable       | `oid`                                             | `sub`                                  |
+| Rattachement         | `tid` → `entra_tenant_id`                         | `hd` → `google_hosted_domain`          |
+| Secret à l'échange   | **non**                                           | **oui** (voir § 3)                     |
 
 Tout le reste — état des tentatives, validation cryptographique, cache JWKS,
 rattachement de compte, émission de session, `/api/me` — n'a été écrit qu'une
@@ -114,16 +114,16 @@ automatiquement depuis un compte personnel — un test le verrouille.
 
 ## 5. Validation du jeton d'identité
 
-| Contrôle | Détail |
-|---|---|
-| Signature | JWKS Google, via PyJWT + `cryptography` |
-| Algorithme | **imposé** `RS256` — `none` et les confusions HMAC/RSA sont testées |
-| Émetteur | `https://accounts.google.com`, comparaison exacte |
-| Audience | `client_id` de l'application |
-| Expiration | `exp`, tolérance d'horloge 120 s |
-| `nonce` | égal à celui de la tentative |
-| Sujet | `sub` présent — unique parmi tous les comptes Google, jamais réattribué |
-| Rattachement | `hd` rapproché du mapping |
+| Contrôle     | Détail                                                                  |
+| ------------ | ----------------------------------------------------------------------- |
+| Signature    | JWKS Google, via PyJWT + `cryptography`                                 |
+| Algorithme   | **imposé** `RS256` — `none` et les confusions HMAC/RSA sont testées     |
+| Émetteur     | `https://accounts.google.com`, comparaison exacte                       |
+| Audience     | `client_id` de l'application                                            |
+| Expiration   | `exp`, tolérance d'horloge 120 s                                        |
+| `nonce`      | égal à celui de la tentative                                            |
+| Sujet        | `sub` présent — unique parmi tous les comptes Google, jamais réattribué |
+| Rattachement | `hd` rapproché du mapping                                               |
 
 L'URL des clés vient de la **configuration du fournisseur**, jamais d'un champ
 du jeton : un en-tête `jku` hostile ne joue aucun rôle. Cache d'une heure,
@@ -192,7 +192,7 @@ Non exécutées : elles demandent un compte Google et un projet Cloud réels.
    - type **Internal** si le Workspace est le seul public visé (aucune
      validation Google requise), **External** sinon ;
    - portées : `openid`, `email`, `profile` uniquement ;
-   - en mode **Testing**, seuls les *test users* déclarés peuvent se connecter,
+   - en mode **Testing**, seuls les _test users_ déclarés peuvent se connecter,
      et les jetons de rafraîchissement expirent en 7 jours. Passer en
      **Production** lève ces limites ; avec des portées non sensibles comme les
      nôtres, aucune revue Google n'est nécessaire ;
@@ -267,12 +267,12 @@ celle-ci.
 
 ## 14. REAL GOOGLE VALIDATION
 
-| | |
-|---|---|
-| **Date** | 17 août 2026 |
-| **Google Cloud project** | **aucun** |
-| **REAL GOOGLE OIDC VALIDATED** | ❌ non |
-| **REAL GOOGLE WORKSPACE VALIDATED** | ❌ non |
+|                                     |              |
+| ----------------------------------- | ------------ |
+| **Date**                            | 17 août 2026 |
+| **Google Cloud project**            | **aucun**    |
+| **REAL GOOGLE OIDC VALIDATED**      | ❌ non       |
+| **REAL GOOGLE WORKSPACE VALIDATED** | ❌ non       |
 
 Aucun projet Google Cloud, aucun client OAuth et aucun domaine Workspace ne sont
 configurés. Rien n'a été simulé : le fournisseur est annoncé indisponible tant

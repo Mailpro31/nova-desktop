@@ -59,7 +59,11 @@ const Callout: React.FC<{
           : "border-mid-gray/20 bg-mid-gray/5"
       }`}
     >
-      <Icon size={16} className="mt-0.5 shrink-0 text-text-secondary" aria-hidden />
+      <Icon
+        size={16}
+        className="mt-0.5 shrink-0 text-text-secondary"
+        aria-hidden
+      />
       <div className="space-y-2">
         <span className="sr-only">{label}</span>
         <Prose body={body} />
@@ -124,7 +128,10 @@ const MultipleChoice: React.FC<BlockProps> = ({ block, onSettled }) => {
         })}
       </div>
       {answered && (
-        <p role="status" className="text-sm leading-relaxed text-text-secondary">
+        <p
+          role="status"
+          className="text-sm leading-relaxed text-text-secondary"
+        >
           <span className="font-medium text-text">
             {right ? t("learn.quiz.correct") : t("learn.quiz.incorrect")}.{" "}
           </span>
@@ -294,7 +301,11 @@ export const BlockRenderer: React.FC<BlockProps> = (props) => {
             >
               <p className="mb-1 text-xs font-medium uppercase tracking-wide text-text-secondary">
                 {text(content, `${side}_label`) ||
-                  t(side === "worse" ? "learn.compare.worse" : "learn.compare.better")}
+                  t(
+                    side === "worse"
+                      ? "learn.compare.worse"
+                      : "learn.compare.better",
+                  )}
               </p>
               <p className="text-sm leading-relaxed text-text">
                 {text(content, side)}
@@ -311,7 +322,11 @@ export const BlockRenderer: React.FC<BlockProps> = (props) => {
 
     case "tip":
       return (
-        <Callout tone="tip" body={text(content, "body")} label={t("learn.block.tip")} />
+        <Callout
+          tone="tip"
+          body={text(content, "body")}
+          label={t("learn.block.tip")}
+        />
       );
 
     case "warning":

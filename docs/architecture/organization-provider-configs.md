@@ -5,8 +5,8 @@ devenir une propriété de l'organisation. Complète
 [`organization-identity.md`](./organization-identity.md) et les trois documents
 de fournisseurs.
 
-Implémentation : `nova-server/main.py` § *Configurations de fournisseur par
-organisation*, `src-tauri/src/organization_sso.rs`,
+Implémentation : `nova-server/main.py` § _Configurations de fournisseur par
+organisation_, `src-tauri/src/organization_sso.rs`,
 `src/lib/organization/ssoProviders.ts`.
 
 ---
@@ -39,11 +39,11 @@ Chaque configuration porte un identifiant Nova immuable — `provider_config_id`
 La distinction n'est pas cosmétique, et l'audit a tranché différemment selon les
 fournisseurs :
 
-| | Global à Nova | Par organisation |
-|---|---|---|
-| **Microsoft Entra** | l'App Registration multi-tenant | le `tid` autorisé |
-| **Google Workspace** | le client OAuth Nova | le domaine hébergé (`hd`) |
-| **OIDC** | rien | émetteur, identifiant client, secret, méthode d'authentification |
+|                      | Global à Nova                   | Par organisation                                                 |
+| -------------------- | ------------------------------- | ---------------------------------------------------------------- |
+| **Microsoft Entra**  | l'App Registration multi-tenant | le `tid` autorisé                                                |
+| **Google Workspace** | le client OAuth Nova            | le domaine hébergé (`hd`)                                        |
+| **OIDC**             | rien                            | émetteur, identifiant client, secret, méthode d'authentification |
 
 Autrement dit : **l'identité de Nova auprès du fournisseur est globale ; le
 rattachement d'une organisation est per-organisation.**
@@ -172,11 +172,11 @@ une organisation.
 {
   "provider_configs": [
     { "id": "…", "type": "microsoft_entra", "display_name": "Microsoft" },
-    { "id": "…", "type": "oidc",            "display_name": "Company SSO" }
+    { "id": "…", "type": "oidc", "display_name": "Company SSO" },
   ],
   // formes historiques, pour les postes déployés
   "providers": ["microsoft_entra", "oidc", "legacy_email_code"],
-  "display_names": { "microsoft_entra": "Microsoft", "oidc": "Company SSO" }
+  "display_names": { "microsoft_entra": "Microsoft", "oidc": "Company SSO" },
 }
 ```
 

@@ -5,7 +5,7 @@ sépare administrer des accès de surveiller des personnes.
 
 Complète [`admin-identity-management.md`](./admin-identity-management.md) et
 [`nova-admin-foundation.md`](./nova-admin-foundation.md).
-Implémentation : `nova-server/main.py` § *Membres de l'organisation*,
+Implémentation : `nova-server/main.py` § _Membres de l'organisation_,
 `nova-server/admin-web/src/pages/Members.tsx`.
 
 ---
@@ -31,14 +31,14 @@ La frontière tient à trois endroits, pas seulement dans l'intention :
 
 ## 2. Ce que Nova Admin gère désormais
 
-| Fonction | Route moderne |
-|---|---|
-| Liste et recherche | `GET …/members?query=&status=&limit=` |
-| Fiche d'un membre | `GET …/members/{user_id}` |
-| Suspendre / réactiver | `POST …/members/{user_id}/status` |
-| Métier, groupe, note | `POST …/members/{user_id}/profile` |
-| Déconnecter partout | `POST …/members/{user_id}/sessions/revoke` |
-| Supprimer | `DELETE …/members/{user_id}` |
+| Fonction              | Route moderne                              |
+| --------------------- | ------------------------------------------ |
+| Liste et recherche    | `GET …/members?query=&status=&limit=`      |
+| Fiche d'un membre     | `GET …/members/{user_id}`                  |
+| Suspendre / réactiver | `POST …/members/{user_id}/status`          |
+| Métier, groupe, note  | `POST …/members/{user_id}/profile`         |
+| Déconnecter partout   | `POST …/members/{user_id}/sessions/revoke` |
+| Supprimer             | `DELETE …/members/{user_id}`               |
 
 Toutes exigent `identity_manage`, donc `organization_admin`. `it_admin` gère la
 machine, pas les personnes — la matrice de la Phase 22 tient sans exception
@@ -55,9 +55,9 @@ inutilisable. Il est donc permis, **paginé et plafonné** (25 par défaut, 100 
 maximum). Ce qui reste interdit, c'est l'export : pas de « tout renvoyer », pas
 de curseur illimité.
 
-*(La recherche introduite en Phase 26 a fusionné avec cette route : deux
+_(La recherche introduite en Phase 26 a fusionné avec cette route : deux
 définitions pour la même URL se seraient disputé le routage, et une seule aurait
-gagné en silence.)*
+gagné en silence.)_
 
 ---
 
@@ -91,13 +91,13 @@ Pas de synchronisation d'annuaire, pas de SCIM : ce sera une autre phase.
 
 Trois gestes, trois portées, et il est facile de les confondre.
 
-| | Suspendre | Déconnecter partout | Supprimer |
-|---|---|---|---|
-| Sessions coupées | ✅ | ✅ | ✅ |
-| Peut se reconnecter | ❌ | ✅ **immédiatement** | ❌ |
-| Compte conservé | ✅ | ✅ | ❌ |
-| Identité fédérée | conservée | conservée | effacée |
-| Journal d'audit | conservé | conservé | **conservé** |
+|                     | Suspendre | Déconnecter partout  | Supprimer    |
+| ------------------- | --------- | -------------------- | ------------ |
+| Sessions coupées    | ✅        | ✅                   | ✅           |
+| Peut se reconnecter | ❌        | ✅ **immédiatement** | ❌           |
+| Compte conservé     | ✅        | ✅                   | ❌           |
+| Identité fédérée    | conservée | conservée            | effacée      |
+| Journal d'audit     | conservé  | conservé             | **conservé** |
 
 **Réactiver ne restaure aucune session.** La personne se reconnecte. Lui rendre
 ses anciens jetons serait la mauvaise façon de lui rendre son accès.

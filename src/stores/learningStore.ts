@@ -56,7 +56,11 @@ interface LearningState {
     completedBlocks: string[],
     lastBlockId: string | null,
   ) => Promise<void>;
-  runExercise: (blockId: string, exerciseId: string, text: string) => Promise<void>;
+  runExercise: (
+    blockId: string,
+    exerciseId: string,
+    text: string,
+  ) => Promise<void>;
   resetExercise: (blockId: string) => void;
   reset: () => void;
 }
@@ -90,7 +94,9 @@ function localAdvance(
   completedBlocks: string[],
   lastBlockId: string | null,
 ): ProgressSnapshot {
-  const existing = snapshot?.lessons.find((item) => item.lesson_id === lessonId);
+  const existing = snapshot?.lessons.find(
+    (item) => item.lesson_id === lessonId,
+  );
   const merged = Array.from(
     new Set([...(existing?.completed_blocks ?? []), ...completedBlocks]),
   );

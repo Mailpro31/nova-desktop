@@ -98,14 +98,16 @@ describe("Effective capability formula", () => {
 describe("Every governed capability, four cases", () => {
   // Table-driven : ajouter une policy sans son quadruplet ferait echouer le
   // test de couverture ci-dessous.
-  const GOVERNED: [keyof typeof DEFAULT_ORGANIZATION_POLICY_SETTINGS, string][] =
-    [
-      ["aiSkillsEnabled", "aiSkills"],
-      ["organizationVocabularyEnabled", "organizationVocabulary"],
-      ["voiceCommandsEnabled", "commands"],
-      ["engineeringNotesEnabled", "engineeringNotes"],
-      ["fileImportEnabled", "fileTranscription"],
-    ];
+  const GOVERNED: [
+    keyof typeof DEFAULT_ORGANIZATION_POLICY_SETTINGS,
+    string,
+  ][] = [
+    ["aiSkillsEnabled", "aiSkills"],
+    ["organizationVocabularyEnabled", "organizationVocabulary"],
+    ["voiceCommandsEnabled", "commands"],
+    ["engineeringNotesEnabled", "engineeringNotes"],
+    ["fileImportEnabled", "fileTranscription"],
+  ];
 
   test("covers every declared policy", () => {
     expect(GOVERNED.map(([key]) => key).sort()).toEqual(

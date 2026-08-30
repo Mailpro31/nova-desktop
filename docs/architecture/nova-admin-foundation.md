@@ -14,11 +14,11 @@ Implémentation : `nova-server/admin-web/`. Complète
 La distinction est la plus importante du document, parce qu'elle est facile à
 franchir par accident — il suffit d'ajouter une page « toutes les organisations ».
 
-| | **Nova Admin** | **Nova Control** |
-|---|---|---|
-| Pour qui | l'administrateur d'une organisation cliente | l'équipe Nova |
-| Portée | **une** organisation | la plateforme, les tenants |
-| Existe | ✅ cette phase | ❌ pas construit |
+|          | **Nova Admin**                              | **Nova Control**           |
+| -------- | ------------------------------------------- | -------------------------- |
+| Pour qui | l'administrateur d'une organisation cliente | l'équipe Nova              |
+| Portée   | **une** organisation                        | la plateforme, les tenants |
+| Existe   | ✅ cette phase                              | ❌ pas construit           |
 
 Aucune page de Nova Admin ne parle de plusieurs organisations, de tenants ou
 d'opérateur de plateforme. Des tests le vérifient sur le code source — une
@@ -78,7 +78,7 @@ console
 L'utilisateur ne saisit **jamais** une adresse : il donne un identifiant
 d'organisation, et la découverte répond. Il n'y a **aucun mot de passe Nova**.
 
-Administrer exige une authentification *récente*. Une session utilisateur seule
+Administrer exige une authentification _récente_. Une session utilisateur seule
 mène à l'écran de réauthentification, jamais à la console — c'est la propriété de
 la Phase 24, et elle est visible ici : `POST /api/admin/session` répond
 `ADMIN_STEP_UP_REQUIRED`.
@@ -111,12 +111,12 @@ complète.
 
 `handoff.ts` est la réponse minimale : un **sas**, pas un coffre.
 
-| | |
-|---|---|
+|         |                                                                                                                                     |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | Contenu | `code_verifier`, identifiant de tentative, adresse de retour, organisation, et le jeton **utilisateur** pour une réauthentification |
-| Durée | le seul aller-retour — **vidé dès qu'il est lu** |
-| Jamais | **le jeton d'administration** |
-| Support | `sessionStorage`, qui meurt avec l'onglet — jamais `localStorage` |
+| Durée   | le seul aller-retour — **vidé dès qu'il est lu**                                                                                    |
+| Jamais  | **le jeton d'administration**                                                                                                       |
+| Support | `sessionStorage`, qui meurt avec l'onglet — jamais `localStorage`                                                                   |
 
 Le jeton d'administration est obtenu au dernier retour, n'a aucune redirection à
 traverser, et ne passe donc jamais par le sas. C'est la propriété qui compte :
@@ -209,16 +209,16 @@ Masquer un bouton n'est pas une protection : c'est une politesse.
 
 ## 9. Les pages
 
-| Page | Contenu |
-|---|---|
-| **Overview** | organisation, statut, modes, résumé des fournisseurs, votre accès |
-| **Identity** | fournisseurs d'identité, état, détail, remplacement de secret, désactivation |
-| **Administrators** | qui administre, attribution et retrait de rôle — Phase 26 |
-| **Members** | comptes, statut, métier, groupes, appareils — Phase 27 |
-| **Deployment** | mode, adresse de service, identifiant de découverte |
-| **Configuration** | découverte : état, identifiant, adresse annoncée et son éventuel refus |
-| **Security** | rôle, capacités, expiration de session, authentification moderne, MFA amont |
-| **Diagnostics** | santé de l'API, version, découverte, fournisseurs |
+| Page               | Contenu                                                                      |
+| ------------------ | ---------------------------------------------------------------------------- |
+| **Overview**       | organisation, statut, modes, résumé des fournisseurs, votre accès            |
+| **Identity**       | fournisseurs d'identité, état, détail, remplacement de secret, désactivation |
+| **Administrators** | qui administre, attribution et retrait de rôle — Phase 26                    |
+| **Members**        | comptes, statut, métier, groupes, appareils — Phase 27                       |
+| **Deployment**     | mode, adresse de service, identifiant de découverte                          |
+| **Configuration**  | découverte : état, identifiant, adresse annoncée et son éventuel refus       |
+| **Security**       | rôle, capacités, expiration de session, authentification moderne, MFA amont  |
+| **Diagnostics**    | santé de l'API, version, découverte, fournisseurs                            |
 
 **Aucune donnée fabriquée.** Pas de nombre d'utilisateurs, pas de taux de
 disponibilité, pas de « santé » synthétique : le serveur ne les fournit pas. Une

@@ -4,7 +4,7 @@ Comment un poste trouve son organisation sans qu'on lui demande une adresse.
 Première brique publique du futur Control Plane — complète
 [`control-plane-foundation.md`](./control-plane-foundation.md).
 
-Implémentation : `nova-server/main.py` § *Découverte d'organisation*,
+Implémentation : `nova-server/main.py` § _Découverte d'organisation_,
 `src-tauri/src/organization_discovery.rs`.
 
 ---
@@ -40,13 +40,13 @@ organisation existe, est suspendue ou n'a rien publié devient un oracle. On y
 testerait des noms d'entreprises pour savoir lesquelles sont clientes, et
 lesquelles ont cessé de payer. Ce n'est l'affaire de personne.
 
-| Menace | Réponse |
-|---|---|
-| Énumération des clients | réponse **identique** dans tous les cas négatifs |
-| Recherche, liste, complétion | **n'existent pas** — on demande une organisation précise |
-| Constitution de listes via les journaux | l'identifiant demandé **n'est pas journalisé** |
+| Menace                                        | Réponse                                                          |
+| --------------------------------------------- | ---------------------------------------------------------------- |
+| Énumération des clients                       | réponse **identique** dans tous les cas négatifs                 |
+| Recherche, liste, complétion                  | **n'existent pas** — on demande une organisation précise         |
+| Constitution de listes via les journaux       | l'identifiant demandé **n'est pas journalisé**                   |
 | Réponse hostile détournant l'authentification | adresse revalidée par le **poste**, pas seulement par le serveur |
-| Fuite d'infrastructure | réponse réduite à quatre champs |
+| Fuite d'infrastructure                        | réponse réduite à quatre champs                                  |
 
 ---
 
@@ -78,7 +78,7 @@ POST /api/discovery/organization
   "contract_version": 1,
   "organization": { "slug": "ecole-exemple", "display_name": "École Exemple" },
   "deployment_mode": "dedicated",
-  "service_endpoint": "https://nova.exemple.fr"
+  "service_endpoint": "https://nova.exemple.fr",
 }
 ```
 
@@ -111,13 +111,13 @@ Validée **deux fois** : par le serveur avant de l'annoncer, par le poste avant
 de s'y fier. Les deux contrôles protègent contre des fautes différentes — une
 configuration erronée d'un côté, une réponse hostile de l'autre.
 
-| Refusé | Motif |
-|---|---|
-| `http://` en production | `scheme_not_https` |
-| `file://`, `ftp://`, `javascript:`, `data:` | `scheme_not_allowed` |
-| identifiants dans l'URL | `credentials_in_url` |
-| requête ou fragment | `not_a_base_url` |
-| `localhost`, `127.0.0.0/8`, `10/8`, `192.168/16`, `172.16-31/12`, `169.254/16` | `local_host` |
+| Refusé                                                                         | Motif                |
+| ------------------------------------------------------------------------------ | -------------------- |
+| `http://` en production                                                        | `scheme_not_https`   |
+| `file://`, `ftp://`, `javascript:`, `data:`                                    | `scheme_not_allowed` |
+| identifiants dans l'URL                                                        | `credentials_in_url` |
+| requête ou fragment                                                            | `not_a_base_url`     |
+| `localhost`, `127.0.0.0/8`, `10/8`, `192.168/16`, `172.16-31/12`, `169.254/16` | `local_host`         |
 
 Une adresse locale annoncée en production signifie que quelque chose s'est
 substitué au service : le poste ne doit pas y envoyer sa session. Le
@@ -258,7 +258,7 @@ du CDN qui exposera l'endpoint. Elle est notée comme telle, sans faux-semblant.
   une énumération de domaines et resterait ambiguë pour quiconque appartient à
   plusieurs organisations. Option future, pas un oubli ;
 - **passerelle privée / connecteur** : `Desktop → api.novaspeak.app → connecteur
-  → service privé`. La découverte y est prête — l'adresse annoncée peut devenir
+→ service privé`. La découverte y est prête — l'adresse annoncée peut devenir
   celle d'une passerelle sans que le poste change — mais le tunnel n'existe pas ;
 - **sélecteur multi-organisations** : changer d'organisation implique de
   déconnecter la session, d'effacer le bootstrap et de recommencer. Le modèle de
