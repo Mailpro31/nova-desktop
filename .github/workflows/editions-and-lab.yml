@@ -51,6 +51,21 @@ jobs:
           VITE_NOVA_MODE: ${{ matrix.edition }}
         run: bun run build
 
+  # Les tests unitaires TypeScript existent depuis longtemps mais rien ne les
+  # exécutait : `bun run test` ne lance qu'un seul fichier, et la CI Rust ne
+  # touche pas au frontend. Le périmètre est celui de la fondation Organization,
+  # là où se décident l'édition, l'identité et les fournisseurs.
+  organization-unit-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Organization unit tests
+        run: bun test src/lib/organization tests/campusPolicy.test.ts
+
   rust-lab-feature:
     runs-on: ubuntu-24.04
     steps:
