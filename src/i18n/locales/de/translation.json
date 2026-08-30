@@ -772,7 +772,8 @@
     "noOptionsFound": "Keine Optionen gefunden",
     "cancel": "Abbrechen",
     "remove": "Entfernen",
-    "selectOption": "Option wählen…"
+    "selectOption": "Option wählen…",
+    "back": "Zurück"
   },
   "accessibility": {
     "permissionsDescription": "Nova benötigt Bedienungshilfen-Berechtigungen, um transkribierten Text einzugeben.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Lernen ist gerade nicht verfügbar. Versuche es gleich noch einmal."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Wie möchten Sie Nova nutzen?",
+      "subtitle": "Sie können dies später in den Einstellungen ändern.",
+      "personal": {
+        "title": "Privat",
+        "description": "Nutzen Sie Nova für sich. Keine Anmeldung nötig, und nichts verlässt diesen Computer."
+      },
+      "organization": {
+        "title": "Organisation",
+        "description": "Treten Sie einer Schule oder einem Unternehmen bei, das Nova betreibt. Sie melden sich mit Ihrem Organisationskonto an."
+      },
+      "kind": {
+        "title": "Welche Art von Organisation?",
+        "subtitle": "Das bestimmt nur, was wir Ihnen zeigen. Ihre Organisation bestätigt den Rest bei der Anmeldung.",
+        "campus": {
+          "title": "Schule oder Universität",
+          "description": "Studierende und Beschäftigte mit einem Schulkonto."
+        },
+        "business": {
+          "title": "Unternehmen",
+          "description": "Mitarbeitende mit einem Geschäftskonto."
+        }
+      }
     }
   }
 }

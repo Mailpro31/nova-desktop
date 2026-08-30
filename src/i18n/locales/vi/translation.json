@@ -772,7 +772,8 @@
     "noOptionsFound": "Không tìm thấy tùy chọn",
     "cancel": "Huỷ",
     "remove": "Bỏ",
-    "selectOption": "Chọn một mục…"
+    "selectOption": "Chọn một mục…",
+    "back": "Quay lại"
   },
   "accessibility": {
     "permissionsDescription": "Nova cần quyền truy cập để gõ văn bản đã chuyển đổi.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Học hiện không khả dụng. Vui lòng thử lại sau giây lát."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Bạn sẽ dùng Nova như thế nào?",
+      "subtitle": "Bạn có thể thay đổi sau trong phần cài đặt.",
+      "personal": {
+        "title": "Cá nhân",
+        "description": "Dùng Nova cho riêng bạn. Không cần đăng nhập và không có gì rời khỏi máy tính này."
+      },
+      "organization": {
+        "title": "Tổ chức",
+        "description": "Tham gia một trường học hoặc công ty đang dùng Nova. Bạn sẽ đăng nhập bằng tài khoản tổ chức."
+      },
+      "kind": {
+        "title": "Loại tổ chức nào?",
+        "subtitle": "Điều này chỉ quyết định những gì chúng tôi hiển thị. Tổ chức của bạn xác nhận phần còn lại khi đăng nhập.",
+        "campus": {
+          "title": "Trường học hoặc đại học",
+          "description": "Học sinh, sinh viên và nhân viên đăng nhập bằng tài khoản trường."
+        },
+        "business": {
+          "title": "Công ty",
+          "description": "Nhân viên đăng nhập bằng tài khoản công việc."
+        }
+      }
     }
   }
 }

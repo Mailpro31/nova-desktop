@@ -772,7 +772,8 @@
     "noOptionsFound": "Nenalezeny žádné možnosti",
     "cancel": "Zrušit",
     "remove": "Odebrat",
-    "selectOption": "Vyberte možnost…"
+    "selectOption": "Vyberte možnost…",
+    "back": "Zpět"
   },
   "accessibility": {
     "permissionsDescription": "Nova potřebuje oprávnění usnadnění přístupu, aby mohlo psát přepsaný text.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Učit se je právě nedostupné. Zkuste to za chvíli znovu."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Jak budete Novu používat?",
+      "subtitle": "Můžete to později změnit v nastavení.",
+      "personal": {
+        "title": "Osobní",
+        "description": "Používejte Novu sami za sebe. Není se kam přihlašovat a nic neopouští tento počítač."
+      },
+      "organization": {
+        "title": "Organizace",
+        "description": "Připojte se ke škole nebo firmě, která Novu provozuje. Přihlásíte se účtem organizace."
+      },
+      "kind": {
+        "title": "Jaký typ organizace?",
+        "subtitle": "Tohle rozhoduje jen o tom, co vám ukážeme. Zbytek potvrdí vaše organizace při přihlášení.",
+        "campus": {
+          "title": "Škola nebo univerzita",
+          "description": "Studenti a zaměstnanci přihlašující se školním účtem."
+        },
+        "business": {
+          "title": "Firma",
+          "description": "Zaměstnanci přihlašující se pracovním účtem."
+        }
+      }
     }
   }
 }

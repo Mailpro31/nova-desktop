@@ -772,7 +772,8 @@
     "noOptionsFound": "Inga alternativ hittades",
     "cancel": "Avbryt",
     "remove": "Ta bort",
-    "selectOption": "Välj ett alternativ…"
+    "selectOption": "Välj ett alternativ…",
+    "back": "Tillbaka"
   },
   "accessibility": {
     "permissionsDescription": "Nova behöver behörighet för hjälpmedel för att kunna skriva transkriberad text.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Lär dig är inte tillgängligt just nu. Försök igen om en stund."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Hur ska du använda Nova?",
+      "subtitle": "Du kan ändra detta senare i inställningarna.",
+      "personal": {
+        "title": "Personligt",
+        "description": "Använd Nova på egen hand. Inget att logga in på, och inget lämnar den här datorn."
+      },
+      "organization": {
+        "title": "Organisation",
+        "description": "Anslut till en skola eller ett företag som kör Nova. Du loggar in med ditt organisationskonto."
+      },
+      "kind": {
+        "title": "Vilken typ av organisation?",
+        "subtitle": "Detta avgör bara vad vi visar dig. Din organisation bekräftar resten när du loggar in.",
+        "campus": {
+          "title": "Skola eller universitet",
+          "description": "Studenter och personal som loggar in med ett skolkonto."
+        },
+        "business": {
+          "title": "Företag",
+          "description": "Anställda som loggar in med ett arbetskonto."
+        }
+      }
     }
   }
 }

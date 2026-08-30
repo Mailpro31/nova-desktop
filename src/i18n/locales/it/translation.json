@@ -772,7 +772,8 @@
     "noOptionsFound": "Nessuna opzione trovata",
     "cancel": "Annulla",
     "remove": "Rimuovi",
-    "selectOption": "Scegli un'opzione…"
+    "selectOption": "Scegli un'opzione…",
+    "back": "Indietro"
   },
   "accessibility": {
     "permissionsDescription": "Nova ha bisogno dei permessi di accessibilità per digitare il testo trascritto.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Impara non è disponibile in questo momento. Riprova tra poco."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Come userai Nova?",
+      "subtitle": "Potrai cambiarlo più avanti nelle impostazioni.",
+      "personal": {
+        "title": "Personale",
+        "description": "Usa Nova per te. Nessun accesso richiesto e niente lascia questo computer."
+      },
+      "organization": {
+        "title": "Organizzazione",
+        "description": "Unisciti a una scuola o a un'azienda che usa Nova. Accederai con il tuo account dell'organizzazione."
+      },
+      "kind": {
+        "title": "Che tipo di organizzazione?",
+        "subtitle": "Questo decide solo ciò che ti mostriamo. La tua organizzazione conferma il resto all'accesso.",
+        "campus": {
+          "title": "Scuola o università",
+          "description": "Studenti e personale che accedono con un account scolastico."
+        },
+        "business": {
+          "title": "Azienda",
+          "description": "Dipendenti che accedono con un account di lavoro."
+        }
+      }
     }
   }
 }
