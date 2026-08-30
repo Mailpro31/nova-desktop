@@ -772,7 +772,8 @@
     "noOptionsFound": "Nenhuma opção encontrada",
     "cancel": "Cancelar",
     "remove": "Remover",
-    "selectOption": "Escolher uma opção…"
+    "selectOption": "Escolher uma opção…",
+    "back": "Voltar"
   },
   "accessibility": {
     "permissionsDescription": "O Nova precisa de permissões de acessibilidade para digitar o texto transcrito.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Aprender está indisponível no momento. Tente novamente em instantes."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Como vai usar o Nova?",
+      "subtitle": "Pode alterar isto mais tarde nas definições.",
+      "personal": {
+        "title": "Pessoal",
+        "description": "Use o Nova por si. Nada para iniciar sessão e nada sai deste computador."
+      },
+      "organization": {
+        "title": "Organização",
+        "description": "Junte-se a uma escola ou empresa que use o Nova. Vai iniciar sessão com a sua conta da organização."
+      },
+      "kind": {
+        "title": "Que tipo de organização?",
+        "subtitle": "Isto decide apenas o que lhe mostramos. A sua organização confirma o resto ao iniciar sessão.",
+        "campus": {
+          "title": "Escola ou universidade",
+          "description": "Estudantes e pessoal que iniciam sessão com uma conta escolar."
+        },
+        "business": {
+          "title": "Empresa",
+          "description": "Colaboradores que iniciam sessão com uma conta de trabalho."
+        }
+      }
     }
   }
 }

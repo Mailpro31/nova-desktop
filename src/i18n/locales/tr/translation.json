@@ -772,7 +772,8 @@
     "noOptionsFound": "Seçenek bulunamadı",
     "cancel": "Vazgeç",
     "remove": "Kaldır",
-    "selectOption": "Bir seçenek seçin…"
+    "selectOption": "Bir seçenek seçin…",
+    "back": "Geri"
   },
   "accessibility": {
     "permissionsDescription": "Nova, transkribe edilen metni yazabilmek için erişilebilirlik izinlerine ihtiyaç duyar.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Öğren şu anda kullanılamıyor. Birazdan tekrar deneyin."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Nova'yı nasıl kullanacaksınız?",
+      "subtitle": "Bunu daha sonra ayarlardan değiştirebilirsiniz.",
+      "personal": {
+        "title": "Kişisel",
+        "description": "Nova'yı kendiniz için kullanın. Oturum açmanız gerekmez ve hiçbir şey bu bilgisayardan çıkmaz."
+      },
+      "organization": {
+        "title": "Kuruluş",
+        "description": "Nova kullanan bir okula veya şirkete katılın. Kuruluş hesabınızla oturum açacaksınız."
+      },
+      "kind": {
+        "title": "Ne tür bir kuruluş?",
+        "subtitle": "Bu yalnızca size ne göstereceğimizi belirler. Gerisini oturum açtığınızda kuruluşunuz doğrular.",
+        "campus": {
+          "title": "Okul veya üniversite",
+          "description": "Okul hesabıyla oturum açan öğrenciler ve personel."
+        },
+        "business": {
+          "title": "Şirket",
+          "description": "İş hesabıyla oturum açan çalışanlar."
+        }
+      }
     }
   }
 }

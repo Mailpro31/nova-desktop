@@ -778,7 +778,8 @@
     "noOptionsFound": "Geen opties gevonden",
     "cancel": "Annuleren",
     "remove": "Verwijderen",
-    "selectOption": "Kies een optie…"
+    "selectOption": "Kies een optie…",
+    "back": "Terug"
   },
   "accessibility": {
     "permissionsDescription": "Nova heeft toegankelijkheidsmachtigingen nodig om getranscribeerde tekst te kunnen typen.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Leren is nu niet beschikbaar. Probeer het zo meteen opnieuw."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Hoe ga je Nova gebruiken?",
+      "subtitle": "Je kunt dit later wijzigen in de instellingen.",
+      "personal": {
+        "title": "Persoonlijk",
+        "description": "Gebruik Nova voor jezelf. Niets om op in te loggen, en niets verlaat deze computer."
+      },
+      "organization": {
+        "title": "Organisatie",
+        "description": "Sluit je aan bij een school of bedrijf dat Nova gebruikt. Je logt in met je organisatieaccount."
+      },
+      "kind": {
+        "title": "Wat voor organisatie?",
+        "subtitle": "Dit bepaalt alleen wat we je tonen. Je organisatie bevestigt de rest bij het inloggen.",
+        "campus": {
+          "title": "School of universiteit",
+          "description": "Studenten en medewerkers die inloggen met een schoolaccount."
+        },
+        "business": {
+          "title": "Bedrijf",
+          "description": "Medewerkers die inloggen met een werkaccount."
+        }
+      }
     }
   }
 }

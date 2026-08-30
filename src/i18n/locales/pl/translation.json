@@ -772,7 +772,8 @@
     "noOptionsFound": "Nie znaleziono opcji",
     "cancel": "Anuluj",
     "remove": "Usuń",
-    "selectOption": "Wybierz opcję…"
+    "selectOption": "Wybierz opcję…",
+    "back": "Wstecz"
   },
   "accessibility": {
     "permissionsDescription": "Nova potrzebuje uprawnień dostępności, aby wpisywać transkrybowany tekst.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Nauka jest teraz niedostępna. Spróbuj ponownie za chwilę."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Jak będziesz używać Novy?",
+      "subtitle": "Możesz to zmienić później w ustawieniach.",
+      "personal": {
+        "title": "Osobiste",
+        "description": "Używaj Novy dla siebie. Nie trzeba się logować i nic nie opuszcza tego komputera."
+      },
+      "organization": {
+        "title": "Organizacja",
+        "description": "Dołącz do szkoły lub firmy, która korzysta z Novy. Zalogujesz się kontem organizacji."
+      },
+      "kind": {
+        "title": "Jaki rodzaj organizacji?",
+        "subtitle": "To decyduje tylko o tym, co Ci pokazujemy. Twoja organizacja potwierdza resztę przy logowaniu.",
+        "campus": {
+          "title": "Szkoła lub uczelnia",
+          "description": "Uczniowie, studenci i pracownicy logujący się kontem szkolnym."
+        },
+        "business": {
+          "title": "Firma",
+          "description": "Pracownicy logujący się kontem służbowym."
+        }
+      }
     }
   }
 }

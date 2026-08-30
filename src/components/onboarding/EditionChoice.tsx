@@ -139,7 +139,11 @@ const EditionChoice: React.FC<EditionChoiceProps> = ({ onChosen }) => {
             </button>
           </div>
 
-          <Button type="button" variant="ghost" onClick={() => setStep("edition")}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setStep("edition")}
+          >
             {t("common.back")}
           </Button>
         </>

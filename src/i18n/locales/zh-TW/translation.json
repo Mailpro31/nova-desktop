@@ -772,7 +772,8 @@
     "noOptionsFound": "未找到選項",
     "cancel": "取消",
     "remove": "移除",
-    "selectOption": "請選擇…"
+    "selectOption": "請選擇…",
+    "back": "返回"
   },
   "accessibility": {
     "permissionsDescription": "Nova 需要輔助使用權限才能輸入轉錄的文字",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "學習目前無法使用，請稍後再試。"
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "你打算如何使用 Nova？",
+      "subtitle": "之後可以在設定中變更。",
+      "personal": {
+        "title": "個人",
+        "description": "自己使用 Nova。不需登入，也不會有任何內容離開這台電腦。"
+      },
+      "organization": {
+        "title": "組織",
+        "description": "加入使用 Nova 的學校或公司。你將以組織帳號登入。"
+      },
+      "kind": {
+        "title": "哪一種組織？",
+        "subtitle": "這只決定我們顯示的內容。其餘由你的組織在登入時確認。",
+        "campus": {
+          "title": "學校或大學",
+          "description": "以學校帳號登入的學生與教職員。"
+        },
+        "business": {
+          "title": "公司",
+          "description": "以工作帳號登入的員工。"
+        }
+      }
     }
   }
 }

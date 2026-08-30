@@ -772,7 +772,8 @@
     "noOptionsFound": "オプションが見つかりません",
     "cancel": "キャンセル",
     "remove": "削除",
-    "selectOption": "選択してください…"
+    "selectOption": "選択してください…",
+    "back": "戻る"
   },
   "accessibility": {
     "permissionsDescription": "Nova が文字起こしテキストを入力するには、アクセシビリティ権限が必要です。",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "学ぶは現在利用できません。しばらくしてからお試しください。"
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Nova をどのように使いますか？",
+      "subtitle": "この設定は後から変更できます。",
+      "personal": {
+        "title": "個人",
+        "description": "自分のために Nova を使います。ログインは不要で、データはこのパソコンから出ません。"
+      },
+      "organization": {
+        "title": "組織",
+        "description": "Nova を導入している学校や会社に参加します。組織のアカウントでサインインします。"
+      },
+      "kind": {
+        "title": "どのような組織ですか？",
+        "subtitle": "これは表示内容を決めるだけです。残りはサインイン時に組織が確認します。",
+        "campus": {
+          "title": "学校・大学",
+          "description": "学校のアカウントでサインインする学生・教職員。"
+        },
+        "business": {
+          "title": "企業",
+          "description": "業務用アカウントでサインインする従業員。"
+        }
+      }
     }
   }
 }
