@@ -12,11 +12,11 @@ mod deployment;
 mod dictation_state;
 mod helpers;
 mod input;
-mod lexicon_learning;
 /// Enrôlement d'un poste dans un Lab local. Ce code est exclu des binaires
 /// Nova ordinaires ; voir `Cargo.toml` feature `lab`.
 #[cfg(feature = "lab")]
 mod lab_enrollment;
+mod lexicon_learning;
 mod licensing;
 mod llm_client;
 mod local_llm;
@@ -790,9 +790,8 @@ pub fn run(cli_args: CliArgs) {
     // Desktop normal. Cette commande n'existe donc que dans l'artefact bâti
     // explicitement avec `--features lab`.
     #[cfg(feature = "lab")]
-    let specta_builder = specta_builder.commands(collect_commands![
-        lab_enrollment::enroll_lab_device,
-    ]);
+    let specta_builder =
+        specta_builder.commands(collect_commands![lab_enrollment::enroll_lab_device,]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
     specta_builder

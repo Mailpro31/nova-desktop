@@ -778,6 +778,17 @@ fn campus_client_with_token(token: &str) -> reqwest::Client {
 /// envoie le jeton de périphérique à chaque requête. Les builds ordinaires
 /// gardent exactement le transport historique.
 pub(crate) fn campus_request_client(token: Option<&str>) -> reqwest::Client {
+    campus_request_client_with_timeout(token, Duration::from_secs(30))
+}
+
+/// Variante conservant le transport Lab pour les opérations qui ont besoin
+/// d'un délai différent (document long, audio ou simple sonde de disponibilité).
+/// Aucun appel Campus ne doit reconstruire un client à côté de ce chemin : il
+/// perdrait sinon le certificat épinglé et le jeton du périphérique Lab.
+fn campus_request_client_with_timeout(
+    token: Option<&str>,
+    timeout: Duration,
+) -> reqwest::Client {
     let mut headers = reqwest::header::HeaderMap::new();
     if let Some(token) = token {
         let auth_value = format!("Bearer {}", token)
@@ -796,7 +807,7 @@ pub(crate) fn campus_request_client(token: Option<&str>) -> reqwest::Client {
         let certificate = reqwest::Certificate::from_der(&connection.certificate_der)
             .expect("Lab certificate was verified before being retained");
         return reqwest::Client::builder()
-            .timeout(Duration::from_secs(30))
+            .timeout(timeout)
             .https_only(true)
             .tls_built_in_root_certs(false)
             .add_root_certificate(certificate)
@@ -806,7 +817,7 @@ pub(crate) fn campus_request_client(token: Option<&str>) -> reqwest::Client {
     }
 
     reqwest::Client::builder()
-        .timeout(Duration::from_secs(30))
+        .timeout(timeout)
         .default_headers(headers)
         .build()
         .expect("reqwest client builds")
@@ -1280,16 +1291,10 @@ pub async fn analyze_campus_document(
     let credentials =
         load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", credentials.token)
-        .parse()
-        .expect("valid bearer header");
-    headers.insert(reqwest::header::AUTHORIZATION, auth_value);
-    let client = reqwest::Client::builder()
-        .timeout(Duration::from_secs(120))
-        .default_headers(headers)
-        .build()
-        .map_err(|e| e.to_string())?;
+    let client = campus_request_client_with_timeout(
+        Some(&credentials.token),
+        Duration::from_secs(120),
+    );
 
     let fname = filename.unwrap_or_else(|| "document.txt".to_string());
     let part = reqwest::multipart::Part::bytes(text_content.into_bytes())
@@ -1413,16 +1418,10 @@ pub async fn execute_campus_command(
     let credentials =
         load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", credentials.token)
-        .parse()
-        .expect("valid bearer header");
-    headers.insert(reqwest::header::AUTHORIZATION, auth_value);
-    let client = reqwest::Client::builder()
-        .timeout(Duration::from_secs(120))
-        .default_headers(headers)
-        .build()
-        .map_err(|e| e.to_string())?;
+    let client = campus_request_client_with_timeout(
+        Some(&credentials.token),
+        Duration::from_secs(120),
+    );
 
     let response = client
         .post(format!("{}/api/command", base_url))
@@ -1638,16 +1637,10 @@ pub async fn transcribe_campus_audio_file(
     let credentials =
         load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", credentials.token)
-        .parse()
-        .expect("valid bearer header");
-    headers.insert(reqwest::header::AUTHORIZATION, auth_value);
-    let client = reqwest::Client::builder()
-        .timeout(Duration::from_secs(300))
-        .default_headers(headers)
-        .build()
-        .map_err(|e| e.to_string())?;
+    let client = campus_request_client_with_timeout(
+        Some(&credentials.token),
+        Duration::from_secs(300),
+    );
 
     let mime = if filename.ends_with(".mp3") {
         "audio/mpeg"
@@ -1875,10 +1868,7 @@ async fn update_reachability_cache(base_url: &str) -> bool {
 }
 
 async fn check_server_reachability(base_url: &str) -> bool {
-    let client = reqwest::Client::builder()
-        .timeout(Duration::from_secs(2))
-        .build()
-        .expect("reqwest client builds");
+    let client = campus_request_client_with_timeout(None, Duration::from_secs(2));
     client
         .get(format!("{}/api/health", base_url))
         .send()

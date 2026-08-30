@@ -78,7 +78,9 @@ fn decode_invitation(code: &str) -> Result<Invitation, String> {
     let mut accumulator = first;
     let mut bits = 2u8;
     for character in characters {
-        let value = ALPHABET.find(character).ok_or_else(|| "LAB_CODE_INVALID".to_string())? as u32;
+        let value = ALPHABET
+            .find(character)
+            .ok_or_else(|| "LAB_CODE_INVALID".to_string())? as u32;
         accumulator = (accumulator << 5) | value;
         bits += 5;
         while bits >= 8 {
@@ -181,32 +183,20 @@ mod tests {
 
     #[test]
     fn a_real_layout_decodes_to_the_expected_endpoint_and_pin() {
-        // Version, 192.168.0.26, port 8443, then a 16-byte certificate pin.
-        let payload = [
-            1, 192, 168, 0, 26, 32, 251, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-            11, 12, 13, 14, 15, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0,
-        ];
-        // Encode with the three high-order padding bits specified by NOVA-LAB1.
-        // This gives a stable protocol vector without sharing the server's
-        // decoder implementation.
-        let mut bits = String::from("NOVALAB1");
-        let mut accumulator = 0u32;
-        let mut count = 3u8;
-        for byte in payload {
-            accumulator = (accumulator << 8) | byte as u32;
-            count += 8;
-            while count >= 5 {
-                count -= 5;
-                bits.push(ALPHABET.as_bytes()[((accumulator >> count) & 31) as usize] as char);
-            }
-        }
-        if count > 0 {
-            bits.push(ALPHABET.as_bytes()[((accumulator << (5 - count)) & 31) as usize] as char);
-        }
-        let invitation = decode_invitation(&bits).expect("valid code");
+        // Vecteur canonique produit par le serveur Python pour : version 1,
+        // 192.168.0.26:8443, empreinte 00..0f et secret 64..73. Garder une
+        // valeur littérale évite que le test partage (ou reproduise mal) son
+        // algorithme d'encodage avec l'implémentation testée.
+        let code = concat!(
+            "NOVA-LAB1-00W1A-0038G-FP001-081G8-1860W-40J2G-B1G6G-W3V4C-",
+            "NK6ET-39D9N-PRVBE-DXR72-WKK"
+        );
+        let invitation = decode_invitation(code).expect("valid code");
         assert_eq!(invitation.endpoint, "https://192.168.0.26:8443");
-        assert_eq!(invitation.certificate_pin, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+        assert_eq!(
+            invitation.certificate_pin,
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        );
     }
 
     #[test]
