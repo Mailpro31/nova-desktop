@@ -778,7 +778,8 @@
     "noOptionsFound": "No options found",
     "cancel": "Cancel",
     "remove": "Remove",
-    "selectOption": "Select an option…"
+    "selectOption": "Select an option…",
+    "back": "Back"
   },
   "accessibility": {
     "permissionsDescription": "Nova needs accessibility permissions to type transcribed text.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Learn is unavailable right now. Try again in a moment."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "How will you use Nova?",
+      "subtitle": "You can change this later in settings.",
+      "personal": {
+        "title": "Personal",
+        "description": "Use Nova on your own. Nothing to sign in to, and nothing leaves this computer."
+      },
+      "organization": {
+        "title": "Organization",
+        "description": "Join a school or a company that runs Nova. You will sign in with your organization account."
+      },
+      "kind": {
+        "title": "What kind of organization?",
+        "subtitle": "This only decides what we show you. Your organization confirms the rest when you sign in.",
+        "campus": {
+          "title": "School or university",
+          "description": "Students and staff signing in with a school account."
+        },
+        "business": {
+          "title": "Company",
+          "description": "Employees signing in with a work account."
+        }
+      }
     }
   }
 }

@@ -23,6 +23,7 @@ import AppShell from "./components/shell/AppShell";
 import NovaCommandsHost from "./components/commands/NovaCommandsHost";
 import Onboarding, {
   AccessibilityOnboarding,
+  EditionChoice,
   WritingStylesIntroStep,
   CampusOnboarding,
   CustomizeStep,
@@ -47,6 +48,7 @@ import {
   showAttentionToast,
 } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
+import { chosenEdition, declaresEdition } from "@/lib/organization";
 import {
   loadCampusSession,
   completeCampusOnboarding,
@@ -85,6 +87,16 @@ function App() {
   const readiness = useSystemReadiness();
   const { session: campusSessionState, refresh: refreshCampusStatus } =
     useCampusStatus();
+
+  // Un paquet unifié doit savoir s'il est personnel ou d'organisation avant
+  // que quoi que ce soit d'autre ne soit calculé : le parcours d'accueil fige
+  // sa liste d'étapes, et l'étape de connexion Organization n'y entrerait plus
+  // après coup. `editionSettled` ne bouge qu'une fois, quand l'utilisateur
+  // répond. Un paquet qui déclare son édition est déjà réglé, donc ne voit
+  // jamais cet écran.
+  const [editionSettled, setEditionSettled] = useState(
+    () => declaresEdition() || chosenEdition() !== null,
+  );
 
   const flow = useOnboardingFlow({
     readiness,
@@ -496,6 +508,17 @@ function App() {
       }}
     />
   );
+
+  // Avant tout le reste : quelle édition ? La question précède le parcours,
+  // elle n'en fait pas partie. Choisir « Personnel » ici n'émet aucune requête.
+  if (!editionSettled) {
+    return (
+      <>
+        <EditionChoice onChosen={() => setEditionSettled(true)} />
+        {toaster}
+      </>
+    );
+  }
 
   // L'état système n'est pas encore connu : ne rien afficher plutôt que de
   // faire clignoter un écran de parcours qui sera peut-être sauté.

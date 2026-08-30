@@ -772,7 +772,8 @@
     "noOptionsFound": "Aucune option trouvée",
     "cancel": "Annuler",
     "remove": "Retirer",
-    "selectOption": "Choisir une option…"
+    "selectOption": "Choisir une option…",
+    "back": "Retour"
   },
   "accessibility": {
     "permissionsDescription": "Nova a besoin des autorisations d'accessibilité pour taper le texte transcrit.",
@@ -1743,6 +1744,32 @@
     },
     "error": {
       "catalog": "Apprendre est indisponible pour le moment. Réessayez dans un instant."
+    }
+  },
+  "edition": {
+    "choice": {
+      "title": "Comment allez-vous utiliser Nova ?",
+      "subtitle": "Vous pourrez changer plus tard dans les réglages.",
+      "personal": {
+        "title": "Personnel",
+        "description": "Utilisez Nova pour vous. Rien à quoi se connecter, et rien ne quitte cet ordinateur."
+      },
+      "organization": {
+        "title": "Organisation",
+        "description": "Rejoignez une école ou une entreprise qui déploie Nova. Vous vous connecterez avec votre compte d'organisation."
+      },
+      "kind": {
+        "title": "Quel type d'organisation ?",
+        "subtitle": "Ce choix décide seulement de ce que nous affichons. Votre organisation confirme le reste à la connexion.",
+        "campus": {
+          "title": "École ou université",
+          "description": "Étudiants et personnels se connectant avec un compte scolaire."
+        },
+        "business": {
+          "title": "Entreprise",
+          "description": "Collaborateurs se connectant avec un compte professionnel."
+        }
+      }
     }
   }
 }

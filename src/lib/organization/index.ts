@@ -7,6 +7,7 @@
  */
 export * from "./model";
 export * from "./edition";
+export * from "./editionChoice";
 export * from "./organizationType";
 export * from "./identity";
 export * from "./ssoProviders";
