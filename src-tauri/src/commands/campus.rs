@@ -785,10 +785,7 @@ pub(crate) fn campus_request_client(token: Option<&str>) -> reqwest::Client {
 /// d'un délai différent (document long, audio ou simple sonde de disponibilité).
 /// Aucun appel Campus ne doit reconstruire un client à côté de ce chemin : il
 /// perdrait sinon le certificat épinglé et le jeton du périphérique Lab.
-fn campus_request_client_with_timeout(
-    token: Option<&str>,
-    timeout: Duration,
-) -> reqwest::Client {
+fn campus_request_client_with_timeout(token: Option<&str>, timeout: Duration) -> reqwest::Client {
     let mut headers = reqwest::header::HeaderMap::new();
     if let Some(token) = token {
         let auth_value = format!("Bearer {}", token)
@@ -1291,10 +1288,8 @@ pub async fn analyze_campus_document(
     let credentials =
         load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client = campus_request_client_with_timeout(
-        Some(&credentials.token),
-        Duration::from_secs(120),
-    );
+    let client =
+        campus_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(120));
 
     let fname = filename.unwrap_or_else(|| "document.txt".to_string());
     let part = reqwest::multipart::Part::bytes(text_content.into_bytes())
@@ -1418,10 +1413,8 @@ pub async fn execute_campus_command(
     let credentials =
         load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client = campus_request_client_with_timeout(
-        Some(&credentials.token),
-        Duration::from_secs(120),
-    );
+    let client =
+        campus_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(120));
 
     let response = client
         .post(format!("{}/api/command", base_url))
@@ -1637,10 +1630,8 @@ pub async fn transcribe_campus_audio_file(
     let credentials =
         load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client = campus_request_client_with_timeout(
-        Some(&credentials.token),
-        Duration::from_secs(300),
-    );
+    let client =
+        campus_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(300));
 
     let mime = if filename.ends_with(".mp3") {
         "audio/mpeg"
