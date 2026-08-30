@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Cài đặt",
     "organization": "Tổ chức",
-    "learn": "Học"
+    "learn": "Học",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -1691,5 +1692,57 @@
     "connected": "Đã kết nối",
     "local": "Ngoại tuyến, dùng cài đặt biết gần nhất",
     "signedOut": "Đã đăng xuất"
+  },
+  "learn": {
+    "title": "Học",
+    "subtitle": "Giỏi hơn cùng AI, mỗi lần vài phút.",
+    "loading": "Đang tải…",
+    "empty": "Chưa có bài học nào.",
+    "continue": "Tiếp tục",
+    "recommended": "Gợi ý cho bạn",
+    "start": "Bắt đầu",
+    "resume": "Tiếp tục",
+    "back": "Quay lại Học",
+    "status": {
+      "inProgress": "Đang học",
+      "completed": "Đã hoàn thành"
+    },
+    "progress": {
+      "summary": "Đã hoàn thành {{completed}}/{{total}} bài học",
+      "notSynced": "Đã lưu trên thiết bị này. Sẽ đồng bộ khi máy chủ có thể kết nối lại."
+    },
+    "lesson": {
+      "minutes": "{{count}} phút",
+      "minutes_one": "{{count}} phút",
+      "minutes_other": "{{count}} phút",
+      "continue": "Tiếp tục",
+      "finish": "Kết thúc bài học",
+      "answerFirst": "Hãy trả lời để tiếp tục."
+    },
+    "quiz": {
+      "correct": "Chính xác",
+      "incorrect": "Chưa đúng lắm"
+    },
+    "compare": {
+      "worse": "Yếu hơn",
+      "better": "Tốt hơn"
+    },
+    "exercise": {
+      "compare": "So sánh với ví dụ",
+      "sample": "Một cách để viết",
+      "askNova": "Hỏi Nova",
+      "running": "Đang suy nghĩ…",
+      "feedback": "Nhận xét",
+      "unavailable": "Nova chưa thể trả lời lúc này. Phần còn lại của bài học vẫn hoạt động."
+    },
+    "block": {
+      "tip": "Mẹo",
+      "warning": "Lưu ý",
+      "takeaway": "Điều cần nhớ",
+      "unsupported": "Phần này cần phiên bản Nova mới hơn."
+    },
+    "error": {
+      "catalog": "Học hiện không khả dụng. Vui lòng thử lại sau giây lát."
+    }
   }
 }

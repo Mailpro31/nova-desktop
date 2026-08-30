@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Ayarlar",
     "organization": "Kuruluş",
-    "learn": "Öğren"
+    "learn": "Öğren",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
@@ -1691,5 +1692,57 @@
     "connected": "Bağlı",
     "local": "Çevrimdışı, son bilinen ayarlarla",
     "signedOut": "Oturum kapalı"
+  },
+  "learn": {
+    "title": "Öğren",
+    "subtitle": "Yapay zekâyla birkaç dakikada bir adım ilerleyin.",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz ders yok.",
+    "continue": "Devam",
+    "recommended": "Sizin için önerilen",
+    "start": "Başla",
+    "resume": "Kaldığın yerden devam et",
+    "back": "Öğren'e dön",
+    "status": {
+      "inProgress": "Devam ediyor",
+      "completed": "Tamamlandı"
+    },
+    "progress": {
+      "summary": "{{total}} dersten {{completed}} tanesi tamamlandı",
+      "notSynced": "Bu cihaza kaydedildi. Sunucuya yeniden ulaşıldığında eşitlenecek."
+    },
+    "lesson": {
+      "minutes": "{{count}} dk",
+      "minutes_one": "{{count}} dk",
+      "minutes_other": "{{count}} dk",
+      "continue": "Devam",
+      "finish": "Dersi bitir",
+      "answerFirst": "Devam etmek için yanıtlayın."
+    },
+    "quiz": {
+      "correct": "Doğru",
+      "incorrect": "Tam değil"
+    },
+    "compare": {
+      "worse": "Daha zayıf",
+      "better": "Daha güçlü"
+    },
+    "exercise": {
+      "compare": "Bir örnekle karşılaştır",
+      "sample": "Yazmanın bir yolu",
+      "askNova": "Nova'ya sor",
+      "running": "Düşünüyor…",
+      "feedback": "Geri bildirim",
+      "unavailable": "Nova şu anda yanıt veremedi. Dersin geri kalanı çalışmaya devam ediyor."
+    },
+    "block": {
+      "tip": "İpucu",
+      "warning": "Dikkat",
+      "takeaway": "Akılda kalsın",
+      "unsupported": "Bu bölüm Nova'nın daha yeni bir sürümünü gerektiriyor."
+    },
+    "error": {
+      "catalog": "Öğren şu anda kullanılamıyor. Birazdan tekrar deneyin."
+    }
   }
 }

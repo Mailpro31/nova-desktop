@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Inställningar",
     "organization": "Organisation",
-    "learn": "Lär dig"
+    "learn": "Lär dig",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -1691,5 +1692,57 @@
     "connected": "Ansluten",
     "local": "Offline med de senast kända inställningarna",
     "signedOut": "Utloggad"
+  },
+  "learn": {
+    "title": "Lär dig",
+    "subtitle": "Bli bättre med AI, några minuter i taget.",
+    "loading": "Läser in…",
+    "empty": "Inga lektioner är tillgängliga än.",
+    "continue": "Fortsätt",
+    "recommended": "Rekommenderat för dig",
+    "start": "Börja",
+    "resume": "Återuppta",
+    "back": "Tillbaka till Lär dig",
+    "status": {
+      "inProgress": "Pågår",
+      "completed": "Klar"
+    },
+    "progress": {
+      "summary": "{{completed}} av {{total}} lektioner klara",
+      "notSynced": "Sparat på den här enheten. Det synkroniseras när servern går att nå igen."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Fortsätt",
+      "finish": "Avsluta lektionen",
+      "answerFirst": "Svara för att fortsätta."
+    },
+    "quiz": {
+      "correct": "Rätt",
+      "incorrect": "Inte riktigt"
+    },
+    "compare": {
+      "worse": "Svagare",
+      "better": "Starkare"
+    },
+    "exercise": {
+      "compare": "Jämför med ett exempel",
+      "sample": "Ett sätt att skriva det",
+      "askNova": "Fråga Nova",
+      "running": "Tänker…",
+      "feedback": "Återkoppling",
+      "unavailable": "Nova kunde inte svara just nu. Resten av lektionen fungerar ändå."
+    },
+    "block": {
+      "tip": "Tips",
+      "warning": "Se upp",
+      "takeaway": "Att ta med sig",
+      "unsupported": "Den här delen kräver en nyare version av Nova."
+    },
+    "error": {
+      "catalog": "Lär dig är inte tillgängligt just nu. Försök igen om en stund."
+    }
   }
 }

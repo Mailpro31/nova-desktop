@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Nastavení",
     "organization": "Organizace",
-    "learn": "Učit se"
+    "learn": "Učit se",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -1691,5 +1692,57 @@
     "connected": "Připojeno",
     "local": "Offline s posledními známými nastaveními",
     "signedOut": "Odhlášeno"
+  },
+  "learn": {
+    "title": "Učit se",
+    "subtitle": "Zlepšujte se s AI, vždy po pár minutách.",
+    "loading": "Načítání…",
+    "empty": "Zatím nejsou k dispozici žádné lekce.",
+    "continue": "Pokračovat",
+    "recommended": "Doporučeno pro vás",
+    "start": "Začít",
+    "resume": "Pokračovat",
+    "back": "Zpět na Učit se",
+    "status": {
+      "inProgress": "Probíhá",
+      "completed": "Dokončeno"
+    },
+    "progress": {
+      "summary": "Dokončeno {{completed}} z {{total}} lekcí",
+      "notSynced": "Uloženo v tomto zařízení. Synchronizace proběhne, jakmile bude server znovu dostupný."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Pokračovat",
+      "finish": "Dokončit lekci",
+      "answerFirst": "Odpovězte a pokračujte."
+    },
+    "quiz": {
+      "correct": "Správně",
+      "incorrect": "Ne tak úplně"
+    },
+    "compare": {
+      "worse": "Slabší",
+      "better": "Silnější"
+    },
+    "exercise": {
+      "compare": "Porovnat s příkladem",
+      "sample": "Jeden ze způsobů zápisu",
+      "askNova": "Zeptat se Novy",
+      "running": "Přemýšlí…",
+      "feedback": "Zpětná vazba",
+      "unavailable": "Nova teď nedokázala odpovědět. Zbytek lekce funguje dál."
+    },
+    "block": {
+      "tip": "Tip",
+      "warning": "Pozor",
+      "takeaway": "K zapamatování",
+      "unsupported": "Tato část vyžaduje novější verzi Novy."
+    },
+    "error": {
+      "catalog": "Učit se je právě nedostupné. Zkuste to za chvíli znovu."
+    }
   }
 }

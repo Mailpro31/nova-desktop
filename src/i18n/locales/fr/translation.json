@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Réglages",
     "organization": "Organisation",
-    "learn": "Apprendre"
+    "learn": "Apprendre",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -1691,5 +1692,57 @@
     "connected": "Connecté",
     "local": "Hors ligne, avec les derniers réglages connus",
     "signedOut": "Déconnecté"
+  },
+  "learn": {
+    "title": "Apprendre",
+    "subtitle": "Progressez avec l'IA, quelques minutes à la fois.",
+    "loading": "Chargement…",
+    "empty": "Aucune leçon n'est encore disponible.",
+    "continue": "Continuer",
+    "recommended": "Recommandé pour vous",
+    "start": "Commencer",
+    "resume": "Reprendre",
+    "back": "Retour à Apprendre",
+    "status": {
+      "inProgress": "En cours",
+      "completed": "Terminée"
+    },
+    "progress": {
+      "summary": "{{completed}} leçons terminées sur {{total}}",
+      "notSynced": "Enregistré sur cet appareil. La synchronisation reprendra dès que le serveur sera joignable."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Continuer",
+      "finish": "Terminer la leçon",
+      "answerFirst": "Répondez pour continuer."
+    },
+    "quiz": {
+      "correct": "Correct",
+      "incorrect": "Pas tout à fait"
+    },
+    "compare": {
+      "worse": "Plus faible",
+      "better": "Plus solide"
+    },
+    "exercise": {
+      "compare": "Comparer avec un exemple",
+      "sample": "Une façon de l'écrire",
+      "askNova": "Demander à Nova",
+      "running": "Réflexion…",
+      "feedback": "Retour",
+      "unavailable": "Nova n'a pas pu répondre pour le moment. Le reste de la leçon fonctionne."
+    },
+    "block": {
+      "tip": "Astuce",
+      "warning": "Attention",
+      "takeaway": "À retenir",
+      "unsupported": "Cette partie nécessite une version plus récente de Nova."
+    },
+    "error": {
+      "catalog": "Apprendre est indisponible pour le moment. Réessayez dans un instant."
+    }
   }
 }

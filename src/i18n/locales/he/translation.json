@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "הגדרות",
     "organization": "ארגון",
-    "learn": "למידה"
+    "learn": "למידה",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -1691,5 +1692,57 @@
     "connected": "מחובר",
     "local": "לא מקוון, עם ההגדרות האחרונות הידועות",
     "signedOut": "מנותק"
+  },
+  "learn": {
+    "title": "למידה",
+    "subtitle": "להשתפר עם AI, כמה דקות בכל פעם.",
+    "loading": "טוען…",
+    "empty": "אין עדיין שיעורים זמינים.",
+    "continue": "המשך",
+    "recommended": "מומלץ עבורך",
+    "start": "התחל",
+    "resume": "המשך מהמקום שבו הפסקת",
+    "back": "חזרה ללמידה",
+    "status": {
+      "inProgress": "בתהליך",
+      "completed": "הושלם"
+    },
+    "progress": {
+      "summary": "{{completed}} מתוך {{total}} שיעורים הושלמו",
+      "notSynced": "נשמר במכשיר הזה. הסנכרון יתבצע כשהשרת יהיה זמין שוב."
+    },
+    "lesson": {
+      "minutes": "{{count}} דק'",
+      "minutes_one": "{{count}} דק'",
+      "minutes_other": "{{count}} דק'",
+      "continue": "המשך",
+      "finish": "סיים את השיעור",
+      "answerFirst": "ענה כדי להמשיך."
+    },
+    "quiz": {
+      "correct": "נכון",
+      "incorrect": "לא בדיוק"
+    },
+    "compare": {
+      "worse": "חלש יותר",
+      "better": "חזק יותר"
+    },
+    "exercise": {
+      "compare": "השווה לדוגמה",
+      "sample": "דרך אחת לנסח את זה",
+      "askNova": "שאל את Nova",
+      "running": "חושב…",
+      "feedback": "משוב",
+      "unavailable": "Nova לא הצליחה לענות כרגע. שאר השיעור ממשיך לעבוד."
+    },
+    "block": {
+      "tip": "טיפ",
+      "warning": "שים לב",
+      "takeaway": "לזכור",
+      "unsupported": "החלק הזה דורש גרסה חדשה יותר של Nova."
+    },
+    "error": {
+      "catalog": "למידה אינה זמינה כרגע. נסה שוב בעוד רגע."
+    }
   }
 }

@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Einstellungen",
     "organization": "Organisation",
-    "learn": "Lernen"
+    "learn": "Lernen",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
@@ -1691,5 +1692,57 @@
     "connected": "Verbunden",
     "local": "Offline mit den zuletzt bekannten Einstellungen",
     "signedOut": "Abgemeldet"
+  },
+  "learn": {
+    "title": "Lernen",
+    "subtitle": "Werde besser mit KI – ein paar Minuten am Stück.",
+    "loading": "Wird geladen…",
+    "empty": "Es sind noch keine Lektionen verfügbar.",
+    "continue": "Weiter",
+    "recommended": "Für dich empfohlen",
+    "start": "Starten",
+    "resume": "Fortsetzen",
+    "back": "Zurück zu Lernen",
+    "status": {
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen"
+    },
+    "progress": {
+      "summary": "{{completed}} von {{total}} Lektionen abgeschlossen",
+      "notSynced": "Auf diesem Gerät gespeichert. Die Synchronisierung erfolgt, sobald der Server wieder erreichbar ist."
+    },
+    "lesson": {
+      "minutes": "{{count}} Min.",
+      "minutes_one": "{{count}} Min.",
+      "minutes_other": "{{count}} Min.",
+      "continue": "Weiter",
+      "finish": "Lektion abschließen",
+      "answerFirst": "Antworte, um fortzufahren."
+    },
+    "quiz": {
+      "correct": "Richtig",
+      "incorrect": "Nicht ganz"
+    },
+    "compare": {
+      "worse": "Schwächer",
+      "better": "Stärker"
+    },
+    "exercise": {
+      "compare": "Mit einem Beispiel vergleichen",
+      "sample": "Eine mögliche Formulierung",
+      "askNova": "Nova fragen",
+      "running": "Denkt nach…",
+      "feedback": "Rückmeldung",
+      "unavailable": "Nova konnte gerade nicht antworten. Der Rest der Lektion funktioniert weiterhin."
+    },
+    "block": {
+      "tip": "Tipp",
+      "warning": "Achtung",
+      "takeaway": "Zum Mitnehmen",
+      "unsupported": "Dieser Teil benötigt eine neuere Version von Nova."
+    },
+    "error": {
+      "catalog": "Lernen ist gerade nicht verfügbar. Versuche es gleich noch einmal."
+    }
   }
 }

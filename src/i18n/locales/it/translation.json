@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Impostazioni",
     "organization": "Organizzazione",
-    "learn": "Impara"
+    "learn": "Impara",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
@@ -1691,5 +1692,57 @@
     "connected": "Connesso",
     "local": "Offline con le ultime impostazioni note",
     "signedOut": "Disconnesso"
+  },
+  "learn": {
+    "title": "Impara",
+    "subtitle": "Migliora con l'IA, pochi minuti alla volta.",
+    "loading": "Caricamento…",
+    "empty": "Non è ancora disponibile nessuna lezione.",
+    "continue": "Continua",
+    "recommended": "Consigliato per te",
+    "start": "Inizia",
+    "resume": "Riprendi",
+    "back": "Torna a Impara",
+    "status": {
+      "inProgress": "In corso",
+      "completed": "Completata"
+    },
+    "progress": {
+      "summary": "{{completed}} lezioni completate su {{total}}",
+      "notSynced": "Salvato su questo dispositivo. Verrà sincronizzato quando il server sarà di nuovo raggiungibile."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Continua",
+      "finish": "Termina la lezione",
+      "answerFirst": "Rispondi per continuare."
+    },
+    "quiz": {
+      "correct": "Corretto",
+      "incorrect": "Non proprio"
+    },
+    "compare": {
+      "worse": "Più debole",
+      "better": "Più efficace"
+    },
+    "exercise": {
+      "compare": "Confronta con un esempio",
+      "sample": "Un modo per scriverlo",
+      "askNova": "Chiedi a Nova",
+      "running": "Sto pensando…",
+      "feedback": "Riscontro",
+      "unavailable": "Nova non è riuscita a rispondere in questo momento. Il resto della lezione funziona comunque."
+    },
+    "block": {
+      "tip": "Suggerimento",
+      "warning": "Attenzione",
+      "takeaway": "Da ricordare",
+      "unsupported": "Questa parte richiede una versione più recente di Nova."
+    },
+    "error": {
+      "catalog": "Impara non è disponibile in questo momento. Riprova tra poco."
+    }
   }
 }

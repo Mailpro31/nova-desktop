@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "設定",
     "organization": "組織",
-    "learn": "学ぶ"
+    "learn": "学ぶ",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -1691,5 +1692,57 @@
     "connected": "接続済み",
     "local": "オフライン（最後に取得した設定を使用）",
     "signedOut": "サインアウト済み"
+  },
+  "learn": {
+    "title": "学ぶ",
+    "subtitle": "AIとともに、数分ずつ上達しましょう。",
+    "loading": "読み込み中…",
+    "empty": "利用できるレッスンはまだありません。",
+    "continue": "次へ",
+    "recommended": "あなたへのおすすめ",
+    "start": "始める",
+    "resume": "再開する",
+    "back": "学ぶに戻る",
+    "status": {
+      "inProgress": "進行中",
+      "completed": "完了"
+    },
+    "progress": {
+      "summary": "{{total}} 件中 {{completed}} 件のレッスンが完了",
+      "notSynced": "この端末に保存しました。サーバーに再接続できたら同期されます。"
+    },
+    "lesson": {
+      "minutes": "{{count}} 分",
+      "minutes_one": "{{count}} 分",
+      "minutes_other": "{{count}} 分",
+      "continue": "次へ",
+      "finish": "レッスンを終える",
+      "answerFirst": "回答すると次へ進めます。"
+    },
+    "quiz": {
+      "correct": "正解",
+      "incorrect": "惜しい"
+    },
+    "compare": {
+      "worse": "弱い例",
+      "better": "強い例"
+    },
+    "exercise": {
+      "compare": "例と比べる",
+      "sample": "書き方の一例",
+      "askNova": "Nova に聞く",
+      "running": "考え中…",
+      "feedback": "フィードバック",
+      "unavailable": "Nova は今回答できませんでした。レッスンの続きはそのまま使えます。"
+    },
+    "block": {
+      "tip": "ヒント",
+      "warning": "注意",
+      "takeaway": "ポイント",
+      "unsupported": "この部分には新しいバージョンの Nova が必要です。"
+    },
+    "error": {
+      "catalog": "学ぶは現在利用できません。しばらくしてからお試しください。"
+    }
   }
 }

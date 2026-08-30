@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "설정",
     "organization": "조직",
-    "learn": "학습"
+    "learn": "학습",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "시작하려면 음성 인식 모델을 선택하세요",
@@ -1691,5 +1692,57 @@
     "connected": "연결됨",
     "local": "오프라인 - 마지막으로 알려진 설정 사용",
     "signedOut": "로그아웃됨"
+  },
+  "learn": {
+    "title": "학습",
+    "subtitle": "AI와 함께 몇 분씩 실력을 키워 보세요.",
+    "loading": "불러오는 중…",
+    "empty": "아직 사용할 수 있는 레슨이 없습니다.",
+    "continue": "계속",
+    "recommended": "추천 레슨",
+    "start": "시작",
+    "resume": "이어서 하기",
+    "back": "학습으로 돌아가기",
+    "status": {
+      "inProgress": "진행 중",
+      "completed": "완료됨"
+    },
+    "progress": {
+      "summary": "{{total}}개 중 {{completed}}개 레슨 완료",
+      "notSynced": "이 기기에 저장했습니다. 서버에 다시 연결되면 동기화됩니다."
+    },
+    "lesson": {
+      "minutes": "{{count}}분",
+      "minutes_one": "{{count}}분",
+      "minutes_other": "{{count}}분",
+      "continue": "계속",
+      "finish": "레슨 마치기",
+      "answerFirst": "답을 입력하면 계속할 수 있습니다."
+    },
+    "quiz": {
+      "correct": "정답",
+      "incorrect": "조금 아쉬워요"
+    },
+    "compare": {
+      "worse": "약한 예",
+      "better": "좋은 예"
+    },
+    "exercise": {
+      "compare": "예시와 비교하기",
+      "sample": "이렇게 쓸 수도 있어요",
+      "askNova": "Nova에게 묻기",
+      "running": "생각 중…",
+      "feedback": "피드백",
+      "unavailable": "지금은 Nova가 답할 수 없었습니다. 레슨의 나머지는 그대로 이용할 수 있습니다."
+    },
+    "block": {
+      "tip": "팁",
+      "warning": "주의",
+      "takeaway": "기억할 점",
+      "unsupported": "이 부분은 더 새로운 버전의 Nova가 필요합니다."
+    },
+    "error": {
+      "catalog": "학습을 지금 이용할 수 없습니다. 잠시 후 다시 시도해 주세요."
+    }
   }
 }

@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "設定",
     "organization": "組織",
-    "learn": "學習"
+    "learn": "學習",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -1691,5 +1692,57 @@
     "connected": "已連接",
     "local": "離線，使用最後已知的設定",
     "signedOut": "已登出"
+  },
+  "learn": {
+    "title": "學習",
+    "subtitle": "每次幾分鐘，和 AI 一起進步。",
+    "loading": "載入中…",
+    "empty": "目前還沒有課程。",
+    "continue": "繼續",
+    "recommended": "為你推薦",
+    "start": "開始",
+    "resume": "繼續學習",
+    "back": "返回學習",
+    "status": {
+      "inProgress": "進行中",
+      "completed": "已完成"
+    },
+    "progress": {
+      "summary": "已完成 {{total}} 堂課中的 {{completed}} 堂",
+      "notSynced": "已儲存在這台裝置。伺服器恢復連線後會自動同步。"
+    },
+    "lesson": {
+      "minutes": "{{count}} 分鐘",
+      "minutes_one": "{{count}} 分鐘",
+      "minutes_other": "{{count}} 分鐘",
+      "continue": "繼續",
+      "finish": "完成本課",
+      "answerFirst": "作答後即可繼續。"
+    },
+    "quiz": {
+      "correct": "正確",
+      "incorrect": "還差一點"
+    },
+    "compare": {
+      "worse": "較弱",
+      "better": "更好"
+    },
+    "exercise": {
+      "compare": "與範例比較",
+      "sample": "一種寫法",
+      "askNova": "問 Nova",
+      "running": "思考中…",
+      "feedback": "回饋",
+      "unavailable": "Nova 目前無法回答。本課的其餘部分仍可正常使用。"
+    },
+    "block": {
+      "tip": "提示",
+      "warning": "注意",
+      "takeaway": "重點",
+      "unsupported": "這個部分需要更新版本的 Nova。"
+    },
+    "error": {
+      "catalog": "學習目前無法使用，請稍後再試。"
+    }
   }
 }

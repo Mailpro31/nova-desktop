@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Ustawienia",
     "organization": "Organizacja",
-    "learn": "Nauka"
+    "learn": "Nauka",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
@@ -1691,5 +1692,57 @@
     "connected": "Połączono",
     "local": "Offline z ostatnio znanymi ustawieniami",
     "signedOut": "Wylogowano"
+  },
+  "learn": {
+    "title": "Nauka",
+    "subtitle": "Rozwijaj się z AI, po kilka minut naraz.",
+    "loading": "Wczytywanie…",
+    "empty": "Nie ma jeszcze żadnych lekcji.",
+    "continue": "Dalej",
+    "recommended": "Polecane dla Ciebie",
+    "start": "Zacznij",
+    "resume": "Wznów",
+    "back": "Powrót do Nauki",
+    "status": {
+      "inProgress": "W trakcie",
+      "completed": "Ukończono"
+    },
+    "progress": {
+      "summary": "Ukończono {{completed}} z {{total}} lekcji",
+      "notSynced": "Zapisano na tym urządzeniu. Synchronizacja nastąpi, gdy serwer znów będzie dostępny."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Dalej",
+      "finish": "Zakończ lekcję",
+      "answerFirst": "Odpowiedz, aby przejść dalej."
+    },
+    "quiz": {
+      "correct": "Poprawnie",
+      "incorrect": "Niezupełnie"
+    },
+    "compare": {
+      "worse": "Słabsze",
+      "better": "Mocniejsze"
+    },
+    "exercise": {
+      "compare": "Porównaj z przykładem",
+      "sample": "Jeden ze sposobów zapisu",
+      "askNova": "Zapytaj Novę",
+      "running": "Myśli…",
+      "feedback": "Informacja zwrotna",
+      "unavailable": "Nova nie mogła teraz odpowiedzieć. Reszta lekcji działa bez zmian."
+    },
+    "block": {
+      "tip": "Wskazówka",
+      "warning": "Uwaga",
+      "takeaway": "Do zapamiętania",
+      "unsupported": "Ta część wymaga nowszej wersji Novy."
+    },
+    "error": {
+      "catalog": "Nauka jest teraz niedostępna. Spróbuj ponownie za chwilę."
+    }
   }
 }

@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "Instellingen",
     "organization": "Organisatie",
-    "learn": "Leren"
+    "learn": "Leren",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
@@ -1691,5 +1692,57 @@
     "connected": "Verbonden",
     "local": "Offline met de laatst bekende instellingen",
     "signedOut": "Afgemeld"
+  },
+  "learn": {
+    "title": "Leren",
+    "subtitle": "Word beter met AI, een paar minuten per keer.",
+    "loading": "Laden…",
+    "empty": "Er zijn nog geen lessen beschikbaar.",
+    "continue": "Doorgaan",
+    "recommended": "Aanbevolen voor jou",
+    "start": "Beginnen",
+    "resume": "Hervatten",
+    "back": "Terug naar Leren",
+    "status": {
+      "inProgress": "Bezig",
+      "completed": "Voltooid"
+    },
+    "progress": {
+      "summary": "{{completed}} van {{total}} lessen voltooid",
+      "notSynced": "Opgeslagen op dit apparaat. Het wordt gesynchroniseerd zodra de server weer bereikbaar is."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Doorgaan",
+      "finish": "Les afronden",
+      "answerFirst": "Geef een antwoord om door te gaan."
+    },
+    "quiz": {
+      "correct": "Juist",
+      "incorrect": "Net niet"
+    },
+    "compare": {
+      "worse": "Zwakker",
+      "better": "Sterker"
+    },
+    "exercise": {
+      "compare": "Vergelijk met een voorbeeld",
+      "sample": "Eén manier om het te schrijven",
+      "askNova": "Nova vragen",
+      "running": "Denkt na…",
+      "feedback": "Feedback",
+      "unavailable": "Nova kon nu niet antwoorden. De rest van de les werkt gewoon."
+    },
+    "block": {
+      "tip": "Tip",
+      "warning": "Let op",
+      "takeaway": "Onthoud dit",
+      "unsupported": "Dit onderdeel vereist een nieuwere versie van Nova."
+    },
+    "error": {
+      "catalog": "Leren is nu niet beschikbaar. Probeer het zo meteen opnieuw."
+    }
   }
 }

@@ -25,7 +25,8 @@
     "aiSkills": "AI Skills",
     "settings": "الإعدادات",
     "organization": "المؤسسة",
-    "learn": "تعلّم"
+    "learn": "تعلّم",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
@@ -1691,5 +1692,57 @@
     "connected": "متصل",
     "local": "غير متصل، بآخر إعدادات معروفة",
     "signedOut": "تم تسجيل الخروج"
+  },
+  "learn": {
+    "title": "تعلّم",
+    "subtitle": "تطوّر مع الذكاء الاصطناعي، بضع دقائق في كل مرة.",
+    "loading": "جارٍ التحميل…",
+    "empty": "لا توجد دروس متاحة بعد.",
+    "continue": "متابعة",
+    "recommended": "مقترح لك",
+    "start": "ابدأ",
+    "resume": "استئناف",
+    "back": "العودة إلى تعلّم",
+    "status": {
+      "inProgress": "قيد التقدّم",
+      "completed": "مكتمل"
+    },
+    "progress": {
+      "summary": "اكتمل {{completed}} من {{total}} درسًا",
+      "notSynced": "تم الحفظ على هذا الجهاز. ستتم المزامنة عند عودة الخادم للعمل."
+    },
+    "lesson": {
+      "minutes": "{{count}} دقيقة",
+      "minutes_one": "{{count}} دقيقة",
+      "minutes_other": "{{count}} دقيقة",
+      "continue": "متابعة",
+      "finish": "إنهاء الدرس",
+      "answerFirst": "أجب للمتابعة."
+    },
+    "quiz": {
+      "correct": "صحيح",
+      "incorrect": "ليس تمامًا"
+    },
+    "compare": {
+      "worse": "أضعف",
+      "better": "أقوى"
+    },
+    "exercise": {
+      "compare": "قارن مع مثال",
+      "sample": "طريقة واحدة لصياغتها",
+      "askNova": "اسأل Nova",
+      "running": "جارٍ التفكير…",
+      "feedback": "ملاحظات",
+      "unavailable": "تعذّر على Nova الرد الآن. بقية الدرس تعمل كالمعتاد."
+    },
+    "block": {
+      "tip": "نصيحة",
+      "warning": "انتبه",
+      "takeaway": "الخلاصة",
+      "unsupported": "يتطلب هذا الجزء إصدارًا أحدث من Nova."
+    },
+    "error": {
+      "catalog": "تعلّم غير متاح الآن. حاول مرة أخرى بعد قليل."
+    }
   }
 }
