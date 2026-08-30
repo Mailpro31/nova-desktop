@@ -9,6 +9,9 @@ use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_store::StoreExt;
 
+#[cfg(feature = "lab")]
+use once_cell::sync::Lazy;
+
 use crate::portable;
 use crate::settings::{get_settings, write_settings};
 
@@ -193,6 +196,35 @@ impl std::ops::Deref for CampusCredentials {
 #[derive(Default)]
 pub struct CampusState {
     pub enabled: AtomicBool,
+}
+
+/// Connexion éphémère à un Lab. Le jeton est uniquement en mémoire : il ne
+/// survit ni à une fermeture de Nova ni à un redémarrage. Une version Lab
+/// ultérieure pourra proposer une reconnexion explicite, mais il ne faut pas
+/// écrire un jeton d'accès LAN en clair juste pour gagner cette commodité.
+#[cfg(feature = "lab")]
+#[derive(Clone)]
+pub(crate) struct LabConnection {
+    pub endpoint: String,
+    pub certificate_der: Vec<u8>,
+    pub device_token: String,
+}
+
+#[cfg(feature = "lab")]
+static LAB_CONNECTION: Lazy<Mutex<Option<LabConnection>>> = Lazy::new(|| Mutex::new(None));
+
+#[cfg(feature = "lab")]
+pub(crate) fn set_lab_connection(connection: LabConnection) -> Result<(), String> {
+    let mut stored = LAB_CONNECTION
+        .lock()
+        .map_err(|_| "LAB_CONNECTION_STATE_UNAVAILABLE".to_string())?;
+    *stored = Some(connection);
+    Ok(())
+}
+
+#[cfg(feature = "lab")]
+fn current_lab_connection() -> Option<LabConnection> {
+    LAB_CONNECTION.lock().ok()?.clone()
 }
 
 /// Active ou désactive la logique campus côté backend.
@@ -537,10 +569,7 @@ pub struct CampusMeResponse {
 }
 
 fn campus_client_no_auth() -> reqwest::Client {
-    reqwest::Client::builder()
-        .timeout(Duration::from_secs(30))
-        .build()
-        .expect("reqwest client builds")
+    campus_request_client(None)
 }
 
 async fn parse_error_text(response: reqwest::Response) -> String {
@@ -741,11 +770,41 @@ pub async fn verify_campus_auth(
 }
 
 fn campus_client_with_token(token: &str) -> reqwest::Client {
+    campus_request_client(Some(token))
+}
+
+/// Un seul constructeur de client pour le chemin Campus. En build Lab, après
+/// enrôlement, il accepte exclusivement le certificat épinglé par le code et
+/// envoie le jeton de périphérique à chaque requête. Les builds ordinaires
+/// gardent exactement le transport historique.
+pub(crate) fn campus_request_client(token: Option<&str>) -> reqwest::Client {
     let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", token)
-        .parse()
-        .expect("valid bearer header");
-    headers.insert(reqwest::header::AUTHORIZATION, auth_value);
+    if let Some(token) = token {
+        let auth_value = format!("Bearer {}", token)
+            .parse()
+            .expect("valid bearer header");
+        headers.insert(reqwest::header::AUTHORIZATION, auth_value);
+    }
+
+    #[cfg(feature = "lab")]
+    if let Some(connection) = current_lab_connection() {
+        let device_value = connection
+            .device_token
+            .parse()
+            .expect("valid Lab device header");
+        headers.insert("X-Nova-Lab-Device", device_value);
+        let certificate = reqwest::Certificate::from_der(&connection.certificate_der)
+            .expect("Lab certificate was verified before being retained");
+        return reqwest::Client::builder()
+            .timeout(Duration::from_secs(30))
+            .https_only(true)
+            .tls_built_in_root_certs(false)
+            .add_root_certificate(certificate)
+            .default_headers(headers)
+            .build()
+            .expect("Lab reqwest client builds");
+    }
+
     reqwest::Client::builder()
         .timeout(Duration::from_secs(30))
         .default_headers(headers)
@@ -1651,16 +1710,7 @@ pub(crate) fn normalize_base_url(url: &str) -> String {
 }
 
 fn campus_client(token: &str) -> reqwest::Client {
-    let mut headers = reqwest::header::HeaderMap::new();
-    let auth_value = format!("Bearer {}", token)
-        .parse()
-        .expect("valid bearer header");
-    headers.insert(reqwest::header::AUTHORIZATION, auth_value);
-    reqwest::Client::builder()
-        .timeout(Duration::from_secs(30))
-        .default_headers(headers)
-        .build()
-        .expect("reqwest client builds")
+    campus_request_client(Some(token))
 }
 
 #[derive(Deserialize, Debug)]

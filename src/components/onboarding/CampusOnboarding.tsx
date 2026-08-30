@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { hostname } from "@tauri-apps/plugin-os";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import { invoke } from "@tauri-apps/api/core";
 import { Check } from "lucide-react";
 import HandyTextLogo from "../icons/HandyTextLogo";
 import OnboardingStepShell from "./OnboardingStepShell";
@@ -48,7 +49,12 @@ import { useCampusStatus } from "@/hooks/useCampusStatus";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
-type CampusStep = "welcome" | "email" | "code" | "ready";
+type CampusStep = "welcome" | "lab" | "email" | "code" | "ready";
+
+// Le code Lab est explicitement absent du paquet Desktop habituel. Cette
+// surface ne s'affiche donc que dans l'artefact de test bâti avec la feature
+// Rust `lab` et cette variable Vite.
+const IS_LAB_BUILD = import.meta.env.VITE_NOVA_LAB === "1";
 
 interface CampusOnboardingProps {
   /**
@@ -163,6 +169,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     oidc_display_name: null,
   });
   const [code, setCode] = useState("");
+  const [labCode, setLabCode] = useState("");
   const [machineName, setMachineName] = useState("unknown");
   const [profile, setProfile] = useState<CampusProfile | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -330,6 +337,32 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       setStep("code");
     } catch (caught) {
       setError(formatError(caught));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /**
+   * Un Lab se rejoint par une invitation à usage unique, jamais par une IP
+   * saisie. Le backend vérifie d'abord le certificat épinglé par ce code ; le
+   * navigateur ne reçoit ni le jeton du périphérique ni le certificat.
+   */
+  const handleLabEnrollment = async () => {
+    if (!labCode.trim()) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const enrolled = await invoke<{ service_endpoint: string }>(
+        "enroll_lab_device",
+        { code: labCode, deviceName: machineName },
+      );
+      const labConfig = await loadCampusServerConfig(enrolled.service_endpoint);
+      if (!labConfig) throw new Error("LAB_CONFIGURATION_UNAVAILABLE");
+      setServerUrl(enrolled.service_endpoint);
+      setConfig(labConfig);
+      setStep("email");
+    } catch {
+      setError(t("campus.onboarding.lab.error"));
     } finally {
       setIsLoading(false);
     }
@@ -532,12 +565,67 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         >
           {t("campus.onboarding.welcome.connect")}
         </Button>
+        {IS_LAB_BUILD && (
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            disabled={!configLoaded}
+            onClick={() => setStep("lab")}
+          >
+            {t("campus.onboarding.lab.open")}
+          </Button>
+        )}
         {configLoaded && !emailCodeAvailable && !entraAvailable && (
           <p className="text-sm text-danger" role="alert">
             {t("campus.onboarding.errors.authMethodUnavailable")}
           </p>
         )}
       </div>
+    );
+  }
+
+  if (step === "lab") {
+    return (
+      <OnboardingStepShell
+        title={t("campus.onboarding.lab.title")}
+        subtitle={t("campus.onboarding.lab.subtitle")}
+        stepIndex={0}
+        stepCount={3}
+        onContinue={() => void handleLabEnrollment()}
+        continueLabel={
+          isLoading ? t("common.loading") : t("campus.onboarding.lab.join")
+        }
+        continueDisabled={!labCode.trim() || isLoading}
+      >
+        <div className="space-y-3">
+          <label
+            htmlFor="lab-invitation"
+            className="text-sm font-medium text-text"
+          >
+            {t("campus.onboarding.lab.codeLabel")}
+          </label>
+          <Input
+            id="lab-invitation"
+            autoFocus
+            value={labCode}
+            disabled={isLoading}
+            onChange={(event) => {
+              setLabCode(event.target.value);
+              setError(null);
+            }}
+            placeholder="NOVA-LAB1-…"
+          />
+          <p className="text-xs leading-relaxed text-text-secondary">
+            {t("campus.onboarding.lab.securityNote")}
+          </p>
+          {error && (
+            <p className="text-center text-sm text-danger" role="alert">
+              {error}
+            </p>
+          )}
+        </div>
+      </OnboardingStepShell>
     );
   }
 

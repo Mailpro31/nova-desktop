@@ -965,6 +965,15 @@
         "subtitle": "La dictée vocale fournie par votre établissement, avec votre adresse académique.",
         "connect": "Continuer"
       },
+      "lab": {
+        "open": "Rejoindre un serveur de test",
+        "title": "Rejoindre le serveur de test",
+        "subtitle": "Collez le code d’invitation fourni par l’administrateur du Lab.",
+        "join": "Rejoindre",
+        "codeLabel": "Code d’invitation",
+        "securityNote": "Nova vérifie l’identité du serveur avant de lui transmettre le code.",
+        "error": "Impossible de rejoindre ce serveur de test. Vérifiez que le code est récent et que les deux PC sont sur le même réseau."
+      },
       "email": {
         "title": "Email école",
         "subtitle": "Utilisez l'adresse fournie par votre établissement.",

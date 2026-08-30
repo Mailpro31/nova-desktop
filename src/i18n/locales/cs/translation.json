@@ -965,6 +965,15 @@
         "subtitle": "Hlasové diktování poskytované vaší institucí, s vaší školní adresou.",
         "connect": "Sign in"
       },
+      "lab": {
+        "open": "Join a test server",
+        "title": "Join the test server",
+        "subtitle": "Paste the invitation code provided by the Lab administrator.",
+        "join": "Join",
+        "codeLabel": "Invitation code",
+        "securityNote": "Nova verifies the server identity before sending it the code.",
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+      },
       "email": {
         "title": "Connect to Nova Campus",
         "subtitle": "Enter your institution's Nova server and academic email.",
