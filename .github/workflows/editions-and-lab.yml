@@ -1,0 +1,87 @@
+# Compiler les deux éditions, et la feature Lab, à chaque changement.
+#
+# Le travail Organization se fait sur une machine qui n'a ni Rust ni Bun. Ce
+# workflow n'est donc pas un confort : c'est le seul endroit où le code écrit
+# pour le sélecteur d'édition et pour le mode Lab est réellement compilé.
+#
+# Il vérifie aussi une propriété qui ne se voit pas à la lecture : que le Lab
+# est absent d'un binaire de production. Une feature qu'on croit désactivée
+# alors qu'elle est compilée est exactement le genre de chose qui ne se
+# découvre qu'en production.
+
+name: "editions and lab"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src-tauri/**"
+      - "src/**"
+      - "package.json"
+      - ".github/workflows/editions-and-lab.yml"
+  pull_request:
+    paths:
+      - "src-tauri/**"
+      - "src/**"
+      - "package.json"
+      - ".github/workflows/editions-and-lab.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Le frontend décide l'édition à la compilation. Les deux doivent typer et
+  # construire : une régression n'apparaît que dans celle qu'on n'a pas bâtie.
+  frontend-editions:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [personal, campus]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Type-check and build (${{ matrix.edition }})
+        env:
+          VITE_NOVA_MODE: ${{ matrix.edition }}
+        run: bun run build
+
+  rust-lab-feature:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev \
+            libasound2-dev libssl-dev libgtk-layer-shell-dev libvulkan-dev glslc spirv-headers
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      # La feature Lab doit compiler et passer ses tests. Sans ce job elle
+      # pourrirait en silence : rien d'autre ne la construit.
+      - name: Build with the lab feature
+        working-directory: src-tauri
+        run: cargo test --features lab
+
+      # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
+      # que la construction par défaut active réellement, ce qui est plus solide
+      # que relire le Cargo.toml.
+      - name: The lab feature must not be enabled by default
+        working-directory: src-tauri
+        run: |
+          set -euo pipefail
+          if cargo tree -e features --prefix none 2>/dev/null | grep -q 'feature "lab"'; then
+            echo "La feature 'lab' est active dans la construction par defaut."
+            echo "Un binaire de production ne doit pas contenir le code Lab."
+            exit 1
+          fi
+          echo "ok: 'lab' absente de la construction par defaut"
