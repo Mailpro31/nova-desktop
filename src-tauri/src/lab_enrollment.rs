@@ -46,19 +46,33 @@ pub struct LabEnrollment {
 }
 
 fn decode_invitation(code: &str) -> Result<Invitation, String> {
+    // Reconnaître d'abord le préfixe littéral. Les substitutions Crockford ne
+    // s'appliquent qu'au corps : les appliquer à tout le texte transformerait
+    // le O de NOVA en zéro et rendrait chaque invitation invalide.
     let cleaned: String = code
         .chars()
-        .filter(|c| !c.is_whitespace() && *c != '-' && *c != '_' && *c != '\u{feff}')
-        .map(|c| match c.to_ascii_uppercase() {
+        .filter(|c| {
+            !c.is_whitespace()
+                && *c != '-'
+                && *c != '_'
+                && !matches!(
+                    *c,
+                    '\u{feff}' | '\u{200b}' | '\u{200c}' | '\u{200d}' | '\u{2060}'
+                )
+        })
+        .map(|c| c.to_ascii_uppercase())
+        .collect();
+    if !cleaned.starts_with(PREFIX) {
+        return Err("LAB_CODE_INVALID".to_string());
+    }
+    let body: String = cleaned[PREFIX.len()..]
+        .chars()
+        .map(|c| match c {
             'I' | 'L' => '1',
             'O' => '0',
             other => other,
         })
         .collect();
-    if !cleaned.starts_with(PREFIX) {
-        return Err("LAB_CODE_INVALID".to_string());
-    }
-    let body = &cleaned[PREFIX.len()..];
     if body.len() != CODE_CHARS {
         return Err("LAB_CODE_INVALID".to_string());
     }
