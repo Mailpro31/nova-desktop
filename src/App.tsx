@@ -509,9 +509,21 @@ function App() {
     />
   );
 
-  // Avant tout le reste : quelle édition ? La question précède le parcours,
-  // elle n'en fait pas partie. Choisir « Personnel » ici n'émet aucune requête.
-  if (!editionSettled) {
+  // Rien tant qu'on ignore s'il s'agit d'une première ouverture : la question
+  // suivante n'a de sens que pour quelqu'un qui n'a encore rien choisi.
+  if (isFirstRun === null) {
+    return null;
+  }
+
+  // Première ouverture d'un paquet qui ne déclare pas son édition : personnel
+  // ou d'organisation ? La question précède le parcours, elle n'en fait pas
+  // partie, et choisir « Personnel » n'émet aucune requête.
+  //
+  // Elle n'est jamais posée à quelqu'un qui utilisait déjà Nova. Sans cette
+  // condition, une mise à jour ferait apparaître un écran de choix devant un
+  // utilisateur installé, pour une question dont la réponse est déjà connue :
+  // il utilisait un poste personnel, et c'est le repli.
+  if (isFirstRun && !editionSettled) {
     return (
       <>
         <EditionChoice onChosen={() => setEditionSettled(true)} />
@@ -522,7 +534,7 @@ function App() {
 
   // L'état système n'est pas encore connu : ne rien afficher plutôt que de
   // faire clignoter un écran de parcours qui sera peut-être sauté.
-  if (isFirstRun === null || !readiness.loaded || !flow.initialized) {
+  if (!readiness.loaded || !flow.initialized) {
     return null;
   }
 
