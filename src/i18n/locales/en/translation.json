@@ -965,6 +965,15 @@
         "subtitle": "Voice dictation provided by your institution, using your academic email.",
         "connect": "Continue"
       },
+      "lab": {
+        "open": "Join a test server",
+        "title": "Join the test server",
+        "subtitle": "Paste the invitation code provided by the Lab administrator.",
+        "join": "Join",
+        "codeLabel": "Invitation code",
+        "securityNote": "Nova verifies the server identity before sending it the code.",
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+      },
       "email": {
         "title": "School email",
         "subtitle": "Use the email address provided by your institution.",

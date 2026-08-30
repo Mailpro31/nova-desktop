@@ -15,6 +15,7 @@ on:
         options:
           - campus
           - personal
+          - lab
 
 jobs:
   windows:
@@ -26,9 +27,10 @@ jobs:
       target: "x86_64-pc-windows-msvc"
       # Campus s'installe pour toute la machine (déploiement DSI / Intune / GPO) ;
       # Personal garde l'installation par utilisateur de tauri.conf.json.
-      build-args: ${{ inputs.nova_mode == 'campus' && '--config src-tauri/tauri.campus.conf.json' || '' }}
+      build-args: ${{ inputs.nova_mode == 'lab' && '--config src-tauri/tauri.campus.conf.json --features lab' || inputs.nova_mode == 'campus' && '--config src-tauri/tauri.campus.conf.json' || '' }}
       sign-binaries: false
-      asset-prefix: "Nova"
+      asset-prefix: ${{ inputs.nova_mode == 'lab' && 'Nova-Lab' || 'Nova' }}
       upload-artifacts: true
-      nova_mode: ${{ inputs.nova_mode }}
+      nova_mode: ${{ inputs.nova_mode == 'personal' && 'personal' || 'campus' }}
+      nova_lab: ${{ inputs.nova_mode == 'lab' }}
     secrets: inherit

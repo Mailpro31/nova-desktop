@@ -439,10 +439,7 @@ struct AvailabilityResponse {
 }
 
 fn sso_client() -> reqwest::Client {
-    reqwest::Client::builder()
-        .timeout(Duration::from_secs(30))
-        .build()
-        .expect("reqwest client builds")
+    crate::commands::campus::campus_request_client(None)
 }
 
 /// Traduit une réponse d'erreur du serveur en code, sans jamais recopier un
