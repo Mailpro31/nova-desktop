@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { TierBadge } from "../settings/license/TierBadge";
 import { Input } from "../ui/Input";
 import OnboardingStepShell from "./OnboardingStepShell";
+import { isOrganizationMode } from "@/lib/mode";
 
 type PresetVariable = { key: string; value: string; placeholder: string };
 
@@ -100,16 +101,23 @@ const QuickVariablesOnboarding: React.FC<QuickVariablesOnboardingProps> = ({
     >
       <div className="space-y-3">
         <div className="flex justify-center">
-          <TierBadge feature="custom_variables" />
+          {!isOrganizationMode() && <TierBadge feature="custom_variables" />}
         </div>
 
-        <div className="rounded-xl border border-mid-gray/20 divide-y divide-mid-gray/20 overflow-hidden">
+        <div className="divide-y divide-hairline overflow-hidden border border-hairline bg-surface [border-radius:var(--nova-radius-card)]">
           {presets.map((preset, i) => (
-            <div key={preset.key} className="flex items-center gap-3 px-4 py-3">
-              <span className="text-sm font-medium text-text/80 w-32 shrink-0">
+            <div
+              key={preset.key}
+              className="grid gap-2 px-4 py-3 sm:grid-cols-[8rem_1fr] sm:items-center sm:gap-3"
+            >
+              <label
+                htmlFor={`onboarding-variable-${i}`}
+                className="text-sm font-medium text-text"
+              >
                 {preset.key}
-              </span>
+              </label>
               <Input
+                id={`onboarding-variable-${i}`}
                 type="text"
                 value={preset.value}
                 onChange={(e) => updatePreset(i, e.target.value)}
@@ -122,7 +130,7 @@ const QuickVariablesOnboarding: React.FC<QuickVariablesOnboardingProps> = ({
           ))}
         </div>
 
-        <p className="text-xs text-text/50 text-center px-2">
+        <p className="px-2 text-center text-xs leading-relaxed text-text-secondary">
           {t("onboarding.variables.hint")}
         </p>
       </div>

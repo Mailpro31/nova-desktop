@@ -29,6 +29,7 @@ ManifestDPIAwareness PerMonitorV2
 !include "Win\COM.nsh"
 !include "Win\Propkey.nsh"
 !include "StrFunc.nsh"
+!include WinVer.nsh
 ${StrCase}
 ${StrLoc}
 
@@ -77,6 +78,32 @@ Var OldMainBinaryName
 
 ; --- PORTABLE MODE ---
 Var PortableMode
+
+; --- NOVA ORGANIZATION DEPLOYMENT ---
+; Configuration de parc, fournie par la DSI sur la ligne de commande.
+;
+; Aucun de ces parametres n'est un secret, et l'installeur n'en accepte pas
+; d'autres : ni URL de serveur arbitraire, ni commande, ni script, ni jeton. Un
+; installeur qui accepterait une adresse libre ferait de chaque strategie MDM
+; une autorite sur la destination des echanges du poste ; l'origine du Control
+; Plane est donc epinglee dans le binaire, pas fournie ici.
+Var DeploymentId
+Var OrganizationId
+Var DeploymentChannel
+Var ManagedConfigSource
+Var PurgeConfigMode
+Var DeviceId
+
+; Codes de sortie. Documentes dans docs/deployment/windows-enterprise.md et
+; repris tels quels dans le contrat Intune.
+!define NOVA_EXIT_INVALID_CONFIG 2
+!define NOVA_EXIT_UNSUPPORTED_OS 3
+!define NOVA_EXIT_UPGRADE_BLOCKED 6
+
+; Cle de detection, lue par Intune/SCCM. Distincte de la cle Uninstall :
+; celle-ci decrit le *deploiement*, celle-la le produit.
+!define NOVA_DEPLOYMENT_KEY "SOFTWARE\Nova\Deployment"
+; --- END NOVA ORGANIZATION DEPLOYMENT ---
 
 Name "${PRODUCTNAME}"
 BrandingText "${COPYRIGHT}"
@@ -218,15 +245,31 @@ Function PageLeaveInstallType
   ${If} $0 = ${BST_CHECKED}
     StrCpy $PortableMode 1
     ; --- PORTABLE MODE --- Switch default directory to Desktop\Nova for portable
+    ; Only move a directory the user has not chosen themselves. The default
+    ; depends on the install mode, so every default this installer can have been
+    ; built with is listed here.
     ${If} $INSTDIR == "${PLACEHOLDER_INSTALL_DIR}"
     ${OrIf} $INSTDIR == "$LOCALAPPDATA\${PRODUCTNAME}"
+    ${OrIf} $INSTDIR == "$PROGRAMFILES64\${PRODUCTNAME}"
+    ${OrIf} $INSTDIR == "$PROGRAMFILES\${PRODUCTNAME}"
       StrCpy $INSTDIR "$DESKTOP\${PRODUCTNAME}"
     ${EndIf}
   ${Else}
     StrCpy $PortableMode 0
-    ; Restore normal default if user switched back from portable
+    ; Restore the normal default if the user switched back from portable. It
+    ; must follow the install mode: PLACEHOLDER_INSTALL_DIR is a marker, not a
+    ; path, and a hardcoded LOCALAPPDATA would drop a perMachine install back
+    ; into the user profile after asking for administrator rights.
     ${If} $INSTDIR == "$DESKTOP\${PRODUCTNAME}"
-      StrCpy $INSTDIR "$LOCALAPPDATA\${PRODUCTNAME}"
+      !if "${INSTALLMODE}" == "perMachine"
+        ${If} ${RunningX64}
+          StrCpy $INSTDIR "$PROGRAMFILES64\${PRODUCTNAME}"
+        ${Else}
+          StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCTNAME}"
+        ${EndIf}
+      !else
+        StrCpy $INSTDIR "$LOCALAPPDATA\${PRODUCTNAME}"
+      !endif
     ${EndIf}
   ${EndIf}
 FunctionEnd
@@ -553,6 +596,77 @@ Function .onInit
     StrCpy $PortableMode 1
   ${EndIf}
 
+  ; --- NOVA ORGANIZATION DEPLOYMENT ---
+  ; Seuls ces quatre parametres existent. Il n'y a deliberement ni SERVER_URL,
+  ; ni COMMAND, ni ARGS, ni SCRIPT, ni TOKEN : un installeur qui les accepterait
+  ; deviendrait un moyen d'execution arbitraire declenchable par n'importe quel
+  ; outil de deploiement.
+  ${GetOptions} $CMDLINE "/DEPLOYMENT_ID=" $DeploymentId
+  ${GetOptions} $CMDLINE "/ORGANIZATION_ID=" $OrganizationId
+  ${GetOptions} $CMDLINE "/CHANNEL=" $DeploymentChannel
+  ${GetOptions} $CMDLINE "/MANAGED_CONFIG=" $ManagedConfigSource
+
+  ; Windows reellement supporte. Mieux vaut refuser franchement que laisser un
+  ; poste hors perimetre echouer plus tard sur WebView2.
+  ${IfNot} ${AtLeastWin10}
+    SetErrorLevel ${NOVA_EXIT_UNSUPPORTED_OS}
+    ${IfNot} ${Silent}
+      MessageBox MB_ICONSTOP "Nova requires Windows 10 or later."
+    ${EndIf}
+    Abort
+  ${EndIf}
+
+  ${If} $DeploymentId != ""
+  ${OrIf} $OrganizationId != ""
+    ; Les deux vont ensemble : un identifiant de parc sans organisation ne
+    ; designe rien, et l'inverse non plus.
+    ${If} $DeploymentId == ""
+    ${OrIf} $OrganizationId == ""
+      SetErrorLevel ${NOVA_EXIT_INVALID_CONFIG}
+      ${IfNot} ${Silent}
+        MessageBox MB_ICONSTOP "/DEPLOYMENT_ID and /ORGANIZATION_ID must be provided together."
+      ${EndIf}
+      Abort
+    ${EndIf}
+    Push $DeploymentId
+    Call ValidateNovaIdentifier
+    Pop $R8
+    Push $OrganizationId
+    Call ValidateNovaIdentifier
+    Pop $R9
+    ${If} $R8 != "1"
+    ${OrIf} $R9 != "1"
+      SetErrorLevel ${NOVA_EXIT_INVALID_CONFIG}
+      ${IfNot} ${Silent}
+        MessageBox MB_ICONSTOP "The deployment identifiers are not valid."
+      ${EndIf}
+      Abort
+    ${EndIf}
+    ; Un canal absent vaut `stable`. Un canal invente est refuse : la DSI
+    ; choisit un canal, jamais une URL d'artefact.
+    ${If} $DeploymentChannel == ""
+      StrCpy $DeploymentChannel "stable"
+    ${EndIf}
+    ${If} $DeploymentChannel != "stable"
+    ${AndIf} $DeploymentChannel != "preview"
+      SetErrorLevel ${NOVA_EXIT_INVALID_CONFIG}
+      ${IfNot} ${Silent}
+        MessageBox MB_ICONSTOP "/CHANNEL must be stable or preview."
+      ${EndIf}
+      Abort
+    ${EndIf}
+  ${EndIf}
+
+  ${If} $ManagedConfigSource != ""
+  ${AndIfNot} ${FileExists} "$ManagedConfigSource"
+    SetErrorLevel ${NOVA_EXIT_INVALID_CONFIG}
+    ${IfNot} ${Silent}
+      MessageBox MB_ICONSTOP "The file given to /MANAGED_CONFIG does not exist."
+    ${EndIf}
+    Abort
+  ${EndIf}
+  ; --- END NOVA ORGANIZATION DEPLOYMENT ---
+
   !if "${DISPLAYLANGUAGESELECTOR}" == "true"
     !insertmacro MUI_LANGDLL_DISPLAY
   !endif
@@ -623,6 +737,9 @@ Section EarlyChecks
         System::call 'kernel32::SetConsoleTextAttribute(i r0, i 0x0004)' ; set red color
         FileWrite $0 "$(silentDowngrades)"
       ${EndIf}
+      ; Un refus de downgrade doit se distinguer d'un echec quelconque : c'est
+      ; une decision, et l'outil de deploiement doit pouvoir la reconnaitre.
+      SetErrorLevel ${NOVA_EXIT_UPGRADE_BLOCKED}
       Abort
     ${EndIf}
   ${EndIf}
@@ -782,6 +899,76 @@ Section Install
     ; Save $INSTDIR in registry for future installations
     WriteRegStr SHCTX "${MANUPRODUCTKEY}" "" $INSTDIR
 
+    ; --- NOVA ORGANIZATION DEPLOYMENT ---
+    ; La configuration machine vit hors du repertoire d'installation, donc une
+    ; mise a jour la preserve sans avoir a la recopier. Elle n'est reecrite que
+    ; si cette execution apporte une configuration : une mise a jour sans
+    ; parametre ne doit jamais rompre le rattachement a l'organisation.
+    !if "${INSTALLMODE}" == "perMachine"
+    ${If} $DeploymentId != ""
+    ${OrIf} $ManagedConfigSource != ""
+      CreateDirectory "$COMMONPROGRAMDATA\Nova"
+      CreateDirectory "$COMMONPROGRAMDATA\Nova\logs"
+
+      ; ACL explicites. L'ACL heritee de ProgramData laisse un utilisateur
+      ; standard creer des fichiers ; une configuration que l'utilisateur peut
+      ; reecrire n'est pas une configuration geree. Les SID sont utilises en
+      ; clair (`*S-1-...`) parce que les noms de groupes sont traduits.
+      ;   S-1-5-18      SYSTEM
+      ;   S-1-5-32-544  Administrateurs
+      ;   S-1-5-32-545  Utilisateurs (lecture seule)
+      nsExec::ExecToLog '"$SYSDIR\icacls.exe" "$COMMONPROGRAMDATA\Nova" /inheritance:r /grant "*S-1-5-18:(OI)(CI)F" /grant "*S-1-5-32-544:(OI)(CI)F" /grant "*S-1-5-32-545:(OI)(CI)RX"'
+      Pop $0
+      ${If} $0 != 0
+        DetailPrint "Nova: could not harden the machine configuration ACL (icacls returned $0)."
+      ${EndIf}
+
+      ${If} $ManagedConfigSource != ""
+        ; Fichier prepare par la DSI. L'installeur ne l'interprete pas : le
+        ; Desktop le valide strictement et refuse de demarrer en mode gere si
+        ; le document est invalide. Un installeur qui devinerait a moitie serait
+        ; une seconde autorite sur le meme contrat.
+        CopyFiles /SILENT "$ManagedConfigSource" "$COMMONPROGRAMDATA\Nova\organization.json"
+      ${Else}
+        ; Ecrit depuis les parametres. Aucun secret n'y figure : le schema du
+        ; Desktop refuse tout champ qu'il ne connait pas, jeton compris.
+        FileOpen $0 "$COMMONPROGRAMDATA\Nova\organization.json" w
+        FileWrite $0 '{$\r$\n'
+        FileWrite $0 '  "schema_version": 1,$\r$\n'
+        FileWrite $0 '  "deployment_id": "$DeploymentId",$\r$\n'
+        FileWrite $0 '  "organization_id": "$OrganizationId",$\r$\n'
+        FileWrite $0 '  "control_plane_origin": "https://api.novaspeak.app",$\r$\n'
+        FileWrite $0 '  "release_channel": "$DeploymentChannel",$\r$\n'
+        FileWrite $0 '  "managed": true,$\r$\n'
+        FileWrite $0 '  "config_revision": 1$\r$\n'
+        FileWrite $0 '}$\r$\n'
+        FileClose $0
+      ${EndIf}
+
+      ; Identifiant de poste, ecrit une seule fois. Une mise a jour le conserve :
+      ; le regenerer ferait apparaitre un poste neuf a chaque version.
+      ${IfNot} ${FileExists} "$COMMONPROGRAMDATA\Nova\device.json"
+        Call GenerateNovaDeviceId
+        Pop $DeviceId
+        FileOpen $0 "$COMMONPROGRAMDATA\Nova\device.json" w
+        FileWrite $0 '{ "device_id": "$DeviceId" }$\r$\n'
+        FileClose $0
+      ${EndIf}
+    ${EndIf}
+
+    ; Cle de detection, pour Intune, SCCM et tout autre outil. Deterministe et
+    ; independante de la presence d'un processus en cours d'execution.
+    WriteRegStr HKLM "${NOVA_DEPLOYMENT_KEY}" "Version" "${VERSION}"
+    WriteRegStr HKLM "${NOVA_DEPLOYMENT_KEY}" "Edition" "organization"
+    WriteRegStr HKLM "${NOVA_DEPLOYMENT_KEY}" "InstallScope" "machine"
+    WriteRegStr HKLM "${NOVA_DEPLOYMENT_KEY}" "InstallLocation" "$INSTDIR"
+    ${If} $DeploymentId != ""
+      WriteRegStr HKLM "${NOVA_DEPLOYMENT_KEY}" "DeploymentId" "$DeploymentId"
+      WriteRegStr HKLM "${NOVA_DEPLOYMENT_KEY}" "Channel" "$DeploymentChannel"
+    ${EndIf}
+    !endif
+    ; --- END NOVA ORGANIZATION DEPLOYMENT ---
+
     !if "${INSTALLMODE}" == "both"
       ; Save install mode to be selected by default for the next installation such as updating
       ; or when uninstalling
@@ -873,6 +1060,17 @@ Function un.onInit
   ${IfNot} ${Errors}
     StrCpy $UpdateMode 1
   ${EndIf}
+
+  ; --- NOVA ORGANIZATION DEPLOYMENT ---
+  ; La configuration machine survit a une desinstallation ordinaire : une
+  ; reparation ou une reinstallation ne doit pas rompre le rattachement a
+  ; l'organisation. La purger est une action administrative distincte, demandee
+  ; explicitement.
+  ${GetOptions} $CMDLINE "/PURGE_CONFIG" $PurgeConfigMode
+  ${IfNot} ${Errors}
+    StrCpy $PurgeConfigMode 1
+  ${EndIf}
+  ; --- END NOVA ORGANIZATION DEPLOYMENT ---
 FunctionEnd
 
 Section Uninstall
@@ -985,6 +1183,23 @@ Section Uninstall
     RmDir /r "$LOCALAPPDATA\${BUNDLEID}"
   ${EndIf}
 
+
+  ; --- NOVA ORGANIZATION DEPLOYMENT ---
+  !if "${INSTALLMODE}" == "perMachine"
+  ${If} $UpdateMode <> 1
+    DeleteRegKey HKLM "${NOVA_DEPLOYMENT_KEY}"
+    ; Les donnees d'un compte Personal ne sont jamais touchees ici : cette
+    ; branche ne connait que la configuration machine.
+    ${If} $PurgeConfigMode = 1
+      Delete "$COMMONPROGRAMDATA\Nova\organization.json"
+      Delete "$COMMONPROGRAMDATA\Nova\device.json"
+      RMDir /r "$COMMONPROGRAMDATA\Nova\logs"
+      RMDir "$COMMONPROGRAMDATA\Nova"
+    ${EndIf}
+  ${EndIf}
+  !endif
+  ; --- END NOVA ORGANIZATION DEPLOYMENT ---
+
   !ifmacrodef NSIS_HOOK_POSTUNINSTALL
     !insertmacro NSIS_HOOK_POSTUNINSTALL
   !endif
@@ -995,6 +1210,99 @@ Section Uninstall
     SetAutoClose true
   ${EndIf}
 SectionEnd
+
+; --- NOVA ORGANIZATION DEPLOYMENT ---
+
+; Un identifiant opaque : lettres, chiffres, tiret, souligne, 128 au plus.
+;
+; Tout le reste est refuse. Un identifiant qui peut contenir un guillemet, une
+; barre oblique ou un saut de ligne finit par traverser un chemin ou une ligne
+; de commande, et ce n'est pas au poste de rattraper cela plus tard. Le meme
+; contrat est verifie une seconde fois par le Desktop : l'installeur n'est pas
+; la seule barriere.
+;
+; Pile : identifiant -> "1" (valide) ou "0".
+Function ValidateNovaIdentifier
+  Exch $0
+  Push $1
+  Push $2
+  Push $3
+  Push $4
+
+  StrCpy $3 "1"
+  StrLen $1 $0
+  ${If} $1 = 0
+    StrCpy $3 "0"
+  ${ElseIf} $1 > 128
+    StrCpy $3 "0"
+  ${Else}
+    StrCpy $1 0
+    ${Do}
+      StrCpy $2 $0 1 $1
+      ${If} $2 == ""
+        ${ExitDo}
+      ${EndIf}
+      ; Chaque bloc ne melange que des ${AndIf} ou que des ${OrIf} : LogicLib
+      ; evalue de gauche a droite sans priorite, et un bloc mixte serait faux.
+      StrCpy $4 0
+      ${If} $2 S>= "0"
+      ${AndIf} $2 S<= "9"
+        StrCpy $4 1
+      ${EndIf}
+      ${If} $2 S>= "a"
+      ${AndIf} $2 S<= "z"
+        StrCpy $4 1
+      ${EndIf}
+      ${If} $2 S== "-"
+      ${OrIf} $2 S== "_"
+        StrCpy $4 1
+      ${EndIf}
+      ${If} $4 = 0
+        StrCpy $3 "0"
+        ${ExitDo}
+      ${EndIf}
+      IntOp $1 $1 + 1
+    ${Loop}
+  ${EndIf}
+
+  StrCpy $0 $3
+  Pop $4
+  Pop $3
+  Pop $2
+  Pop $1
+  Exch $0
+FunctionEnd
+
+; 128 bits d'alea reel (RtlGenRandom), en hexadecimal.
+;
+; Sert d'identifiant de poste : stable, non secret, et surtout **jamais derive
+; du materiel** — ni numero de serie, ni TPM, ni adresse MAC. Nova n'a pas
+; besoin de reconnaitre une machine, seulement de distinguer deux rapports
+; d'etat. Une reinstallation en produit un nouveau, et c'est voulu.
+;
+; Pile : -> identifiant hexadecimal (32 caracteres)
+Function GenerateNovaDeviceId
+  Push $0
+  Push $1
+  Push $2
+
+  StrCpy $2 ""
+  StrCpy $1 0
+  ${Do}
+    System::Call 'advapi32::SystemFunction036(*i .r0, i 4)'
+    IntFmt $0 "%08x" $0
+    StrCpy $2 "$2$0"
+    IntOp $1 $1 + 1
+  ${LoopWhile} $1 < 4
+
+  ; Remonte le resultat au-dessus des registres sauvegardes, puis les restaure.
+  Exch $2
+  Exch 1
+  Pop $1
+  Exch 1
+  Pop $0
+FunctionEnd
+; --- END NOVA ORGANIZATION DEPLOYMENT ---
 
 Function RestorePreviousInstallLocation
   ReadRegStr $4 SHCTX "${MANUPRODUCTKEY}" ""

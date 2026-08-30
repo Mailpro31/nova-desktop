@@ -3,6 +3,7 @@ import { getVersion } from "@tauri-apps/api/app";
 
 import ModelSelector from "../model-selector";
 import UpdateChecker from "../update-checker";
+import { isOrganizationMode } from "@/lib/mode";
 
 const Footer: React.FC = () => {
   const [version, setVersion] = useState("");
@@ -22,10 +23,12 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full border-t border-mid-gray/20 pt-3">
-      <div className="flex justify-between items-center text-xs px-4 pb-3 text-text/60">
+    <div className="w-full border-t border-hairline pt-3">
+      <div className="flex justify-between items-center text-xs px-4 pb-3 text-text-secondary">
+        {/* Le statut campus ne vit plus ici : la barre latérale en porte
+            désormais l'unique représentation (bloc Organisation). */}
         <div className="flex items-center gap-4">
-          <ModelSelector />
+          {!isOrganizationMode() && <ModelSelector />}
         </div>
 
         {/* Update Status */}

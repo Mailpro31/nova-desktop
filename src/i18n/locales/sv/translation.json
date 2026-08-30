@@ -20,7 +20,13 @@
     "personalization": "Personalization",
     "home": "Hem",
     "configuration": "Konfiguration",
-    "account": "Konto"
+    "account": "Konto",
+    "styles": "Efterbearbetning",
+    "aiSkills": "AI Skills",
+    "settings": "Inställningar",
+    "organization": "Organisation",
+    "learn": "Lär dig",
+    "novaCommands": "Nova Commands"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -179,6 +185,38 @@
         "checkFailed": "Misslyckades med att kontrollera behörigheter. Försök igen.",
         "requestFailed": "Misslyckades med att begära behörighet. Försök igen."
       }
+    },
+    "back": "Tillbaka",
+    "welcome": {
+      "title": "Skriv i tankens hastighet",
+      "subtitle": "Nova gör din röst till tydlig text var som helst på datorn.",
+      "providedBy": "Tillhandahålls av {{organization}}"
+    },
+    "smartSetup": {
+      "title": "Rekommenderad konfiguration",
+      "subtitle": "Nova har förberett inställningarna utifrån din dator. Du kan ändra allt senare.",
+      "use": "Använd rekommenderad konfiguration",
+      "customize": "Anpassa",
+      "row": {
+        "microphone": "Mikrofon",
+        "engine": "Bearbetning",
+        "shortcut": "Kortkommando",
+        "language": "Språk"
+      },
+      "value": {
+        "notSet": "Inte angivet",
+        "autoDetected": "Identifierat automatiskt",
+        "localEngine": "På den här enheten"
+      }
+    },
+    "customize": {
+      "title": "Några val",
+      "subtitle": "Allt annat behåller sitt rekommenderade värde och ändras i Inställningar."
+    },
+    "writingStyles": {
+      "introTitle": "Nova gör mer än att transkribera",
+      "introSubtitle": "Tala, så skriver Nova i den stil som passar det du gör.",
+      "unavailable": "Ingen skrivstil är tillgänglig ännu."
     }
   },
   "modelSelector": {
@@ -538,11 +576,13 @@
       "subtitle": "Vad AI:n skriver, utifrån sammanhanget."
     },
     "history": {
+      "copied": "Copied",
       "title": "Historik",
       "openFolder": "Öppna mapp för inspelningar",
       "loading": "Laddar historik...",
       "empty": "Inga transkriptioner ännu. Börja spela in för att bygga upp din historik!",
       "copyToClipboard": "Kopiera transkription till urklipp",
+      "copyError": "Failed to copy to clipboard.",
       "save": "Spara transkription",
       "unsave": "Ta bort från sparade",
       "delete": "Ta bort post",
@@ -729,7 +769,10 @@
     "open": "Öppna",
     "copy": "Kopiera",
     "clear": "Rensa",
-    "noOptionsFound": "Inga alternativ hittades"
+    "noOptionsFound": "Inga alternativ hittades",
+    "cancel": "Avbryt",
+    "remove": "Ta bort",
+    "selectOption": "Välj ett alternativ…"
   },
   "accessibility": {
     "permissionsDescription": "Nova behöver behörighet för hjälpmedel för att kunna skriva transkriberad text.",
@@ -913,5 +956,793 @@
     "oneApp": "Ready to capture {{app}}.",
     "refresh": "Refresh",
     "newMeeting": "New meeting"
+  },
+  "campus": {
+    "onboarding": {
+      "welcome": {
+        "title": "Welcome to Nova Campus",
+        "subtitle": "Röstdiktering från ditt lärosäte, med din studentadress.",
+        "connect": "Sign in"
+      },
+      "email": {
+        "title": "Connect to Nova Campus",
+        "subtitle": "Enter your institution's Nova server and academic email.",
+        "serverLabel": "Nova Server",
+        "serverPlaceholder": "https://nova.ipsa.fr",
+        "emailLabel": "Academic email",
+        "emailPlaceholder": "first.last@ipsa.fr",
+        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+      },
+      "code": {
+        "title": "Verification code",
+        "subtitle": "A 6-digit code has been sent to {{email}}.",
+        "resend": "Resend",
+        "resent": "Code resent",
+        "resendCooldown": "Resend in {{seconds}}s",
+        "invalid": "Incorrect or expired code.",
+        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "digitLabel": "Code digit {{position}}"
+      },
+      "ready": {
+        "title": "Ready to dictate",
+        "subtitle": "Connected to {{server}}.",
+        "shortcut": "Press {{shortcut}} to dictate.",
+        "shortcutFallback": "Your dictation shortcut is configured in settings.",
+        "start": "Get started",
+        "organization": "Organization",
+        "account": "Account",
+        "processing": "Processing",
+        "campusInfrastructure": "Campus infrastructure",
+        "managed": "Your institution manages this Campus access."
+      },
+      "label": "Nova Campus",
+      "errors": {
+        "network": "Servern går inte att nå. Kontrollera anslutningen och försök igen.",
+        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+      }
+    },
+    "account": {
+      "title": "Account",
+      "server": "Server",
+      "email": "Signed in as",
+      "role": "Role",
+      "cohort": "Cohort",
+      "logout": "Sign out",
+      "logoutConfirmTitle": "Sign out of Nova Campus?",
+      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
+      "logoutConfirmButton": "Sign out",
+      "refresh": "Refresh",
+      "checking": "Checking connection…",
+      "connected": "Connected to {{server}}",
+      "offline": "{{server}} — offline"
+    },
+    "footer": {
+      "connected": "{{server}} — connected",
+      "offline": "Offline — fallback mode"
+    },
+    "bubble": {
+      "checking": "checking…",
+      "connected": "connected",
+      "offline": "offline",
+      "resetPosition": "Reset position",
+      "hide": "Hide bubble"
+    },
+    "errors": {
+      "network": "Could not reach the server. Check the address and your connection."
+    },
+    "home": {
+      "title": "Dictate, don't type",
+      "subtitle": "Your institution's voice dictation, one shortcut away.",
+      "action": {
+        "dictate": "Dictate",
+        "cancel": "Cancel",
+        "postProcess": "Dictate with Style"
+      },
+      "stylesTitle": "Styles",
+      "seeAll": "See all",
+      "statusTitle": "Connection",
+      "connected": "Connected to {{server}}",
+      "offline": "{{server}} — offline fallback",
+      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
+      "recentTitle": "Recent transcriptions",
+      "recentEmpty": "No recent transcription yet",
+      "primary": {
+        "title": "Hold {{shortcut}} to dictate",
+        "description": "Works in your email, notes, browser and documents.",
+        "start": "Start dictation"
+      },
+      "secondary": {
+        "title": "More ways to write",
+        "rewrite": "Rewrite",
+        "chooseStyle": "Choose a Style"
+      },
+      "viewHistory": "View history"
+    },
+    "settings": {
+      "generalSubtitle": "Configure your dictation preferences.",
+      "aboutSubtitle": "Information and troubleshooting tools for Nova Campus.",
+      "shortcuts": {
+        "title": "Keyboard shortcuts",
+        "description": "Configure how you trigger dictation"
+      },
+      "sound": {
+        "title": "Sound",
+        "description": "Microphone, feedback and volume"
+      },
+      "account": {
+        "title": "Account",
+        "description": "Your Nova Campus session"
+      },
+      "bubble": {
+        "title": "Connection bubble",
+        "description": "Floating indicator showing your Nova Campus connection",
+        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
+        "show": "Show bubble",
+        "hide": "Hide bubble",
+        "resetPosition": "Reset position"
+      },
+      "drawerTitle": "Settings",
+      "title": "Settings",
+      "tabs": {
+        "general": "General",
+        "writing": "Writing",
+        "campus": "Campus",
+        "advanced": "Advanced"
+      },
+      "advanced": {
+        "title": "Troubleshooting",
+        "description": "Version, data, logs and diagnostic controls"
+      }
+    },
+    "styles": {
+      "subtitle": "Choose or customize the writing style applied to your dictations.",
+      "listTitle": "Writing styles",
+      "descriptions": {
+        "auto": "Let Nova automatically choose the best formatting for your dictation.",
+        "default_improve_transcriptions": "Clean up your dictated text: punctuation, typos and fluid phrasing.",
+        "nova_style_email": "Format your dictation as a clear, polite email.",
+        "nova_style_messages": "Turn your voice into concise, ready-to-send messages.",
+        "nova_style_prompt": "Transform your dictation into a structured prompt for AI tools.",
+        "nova_style_todo": "Extract actionable tasks and checklists from your dictation.",
+        "nova_style_notes": "Restructure your dictation as clean, organized notes.",
+        "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
+        "nova_style_voice_to_text": "Raw transcription without any post-processing."
+      },
+      "title": "Skrivstilar"
+    },
+    "dictionary": {
+      "title": "Dictionary",
+      "description": "Organization-shared vocabulary and personal lexicon.",
+      "sharedTitle": "Organization vocabulary",
+      "sharedDescription": "Terms and spellings recommended by your organization (read-only).",
+      "sharedEmpty": "No vocabulary shared by the organization.",
+      "sharedBadge": "Organization",
+      "personalTitle": "Personal vocabulary",
+      "personalDescription": "Your acronyms, proper names, or domain jargon.",
+      "personalEmpty": "No personal terms yet. Add your custom expressions below.",
+      "learnedBadge": "Learned",
+      "manualBadge": "Personal",
+      "termLabel": "Term",
+      "termPlaceholder": "E.g. NASA",
+      "replacementLabel": "Correction / Replacement (optional)",
+      "replacementPlaceholder": "E.g. National Aeronautics and Space Administration",
+      "addTerm": "Add term",
+      "exportCsv": "Export CSV",
+      "importCsv": "Import CSV",
+      "importSuccess": "{{count}} term(s) imported successfully.",
+      "analyzeDoc": "Analyze document",
+      "analyzeDocTitle": "Analyze an existing document",
+      "analyzeDocDescription": "Skicka ett textdokument till lärosätets server för att plocka ut ordlista och egennamn. Endast de funna termerna sparas — inte dokumentet.",
+      "analyzeDocPlaceholder": "Paste document text or drop a text file...",
+      "analyzeDocButton": "Start analysis",
+      "analyzeSuccess": "{{count}} new term(s) extracted and added!",
+      "analyzeEmpty": "No new terms found in the document.",
+      "analyzing": "Analyzing vocabulary with AI…",
+      "learnedToast": "Nova will remember this for future dictations"
+    },
+    "snippets": {
+      "title": "Voice snippets",
+      "description": "Associate a short voice phrase with longer or recurring text.",
+      "empty": "No voice snippets configured.",
+      "triggerLabel": "Spoken phrase",
+      "triggerPlaceholder": "E.g. my meeting link",
+      "contentLabel": "Inserted text",
+      "contentPlaceholder": "E.g. https://meet.google.com/abc-def-ghi",
+      "add": "Add snippet",
+      "tip": "Tip: Say \"{{trigger}}\" during dictation to instantly insert your information!"
+    },
+    "formatting": {
+      "title": "Formatting rules",
+      "description": "Rules automatically applied when reformulating your dictations.",
+      "sharedTitle": "Organization rules",
+      "sharedDescription": "Style and formatting guidelines enforced by your organization (read-only).",
+      "sharedEmpty": "No organization rules configured.",
+      "personalTitle": "Personal rules",
+      "personalDescription": "Your personal formatting guidelines.",
+      "personalEmpty": "No personal formatting rules configured.",
+      "rulePlaceholder": "E.g. Format all percentages with digits followed by the % symbol",
+      "addRule": "Add rule"
+    },
+    "command": {
+      "title": "Command mode",
+      "description": "Select text, dictate a voice instruction to transform it with AI.",
+      "shortcutTitle": "Command mode shortcut",
+      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
+      "modalTitle": "Command Mode",
+      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
+      "executing": "Processing command on server…",
+      "success": "Text rewritten successfully.",
+      "error": "Failed to apply command to selected text."
+    },
+    "files": {
+      "title": "Transcribe a file",
+      "description": "Drop an audio file to transcribe it with the Nova Campus server.",
+      "actionButton": "Transcribe a file",
+      "dropzone": "Drop an audio recording here or click to browse",
+      "supportedFormats": "Supported formats: WAV, MP3, M4A, OGG",
+      "transcribing": "Transcribing audio file on server…",
+      "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
+      "error": "Failed to transcribe audio file."
+    },
+    "sessionExpiredTitle": "Session expired",
+    "sessionExpired": "Please sign in again to continue using Nova Campus.",
+    "serverUnreachableTitle": "Server unreachable",
+    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "managedBy": "Managed by {{organization}}",
+    "roles": {
+      "student": "Student",
+      "teacher": "Teacher",
+      "staff": "Staff",
+      "partner": "Partner"
+    },
+    "navigation": {
+      "label": "Campus navigation",
+      "campus": "Campus"
+    },
+    "status": {
+      "checking": "Checking",
+      "connected": "Campus anslutet",
+      "local": "Nova Local active",
+      "unavailable": "Unavailable",
+      "localActive": "Nova Local aktivt"
+    },
+    "privacy": {
+      "institutionPolicyTitle": "Privacy managed by your institution",
+      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
+      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
+      "privateByDesign": "Private by design",
+      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
+    },
+    "page": {
+      "eyebrow": "Organization",
+      "processing": {
+        "label": "Processing",
+        "campusTitle": "Campus infrastructure",
+        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
+        "localTitle": "Nova Local",
+        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
+      },
+      "features": "Features",
+      "privacy": "Privacy",
+      "systemStatus": "System status",
+      "authMethod": "Authentication",
+      "educationMode": "Education mode"
+    },
+    "features": {
+      "dictation": "Dictation",
+      "rewrite": "Rewrite",
+      "styles": "Styles",
+      "fileTranscription": "File transcription",
+      "engineeringNotes": "Engineering Notes",
+      "aiSkills": "AI Skills",
+      "personalization": "Personalization"
+    },
+    "microsoft": {
+      "connect": "Continue with Microsoft",
+      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
+      "expired": "The Microsoft sign-in request expired. Start again.",
+      "failed": "Inloggningen slutfördes inte. Försök igen.",
+      "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
+      "accessRevoked": "Din åtkomst är inte längre tillgänglig. Kontakta administratören."
+    },
+    "google": {
+      "connect": "Fortsätt med Google"
+    },
+    "sso": {
+      "connect": "Fortsätt med {{provider}}"
+    },
+    "aiSkills": {
+      "title": "AI Skills",
+      "description": "Five short modules for using AI critically, effectively and safely in your studies.",
+      "progress": "{{completed}} of {{total}} modules completed",
+      "minutes": "About {{count}} min",
+      "practice": "Try it",
+      "markComplete": "Mark as completed",
+      "completed": "Completed",
+      "unavailable": "The course is temporarily unavailable."
+    },
+    "engineeringNotes": {
+      "title": "Engineering Notes",
+      "description": "Turn raw observations into a concise, traceable engineering note.",
+      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
+      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
+      "action": "Structure notes",
+      "working": "Structuring...",
+      "result": "Structured note",
+      "copied": "Note copied",
+      "error": "The notes could not be structured."
+    },
+    "personalization": {
+      "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
+      "appearance": "Appearance",
+      "orb": "Nova orb",
+      "orbColor": "Orb color",
+      "orbDescription": "Choose the accent used by Nova's dock and recording indicator.",
+      "bubble": "Connection bubble",
+      "alwaysVisible": "Always show the bubble",
+      "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
+    },
+    "firstRun": {
+      "skipForNow": "Skip for now",
+      "continueLater": "Continue later",
+      "useNovaNow": "Use Nova now",
+      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
+      "homeAiSkillsStart": "Learn to work with AI effectively.",
+      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
+      "welcome": {
+        "title": "Welcome to {{organization}}, {{name}}.",
+        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
+        "aiEssentials": "Start with AI Essentials",
+        "recommended": "Recommended · about 6 minutes",
+        "setupNow": "Set up Nova now"
+      },
+      "setup": {
+        "title": "Set up Nova",
+        "description": "We've prepared the recommended setup for you.",
+        "microphone": "Microphone",
+        "language": "Language",
+        "shortcut": "Dictation shortcut",
+        "style": "Writing style",
+        "processing": "Processing",
+        "ready": "Ready",
+        "checkRequired": "Check required",
+        "noMicrophone": "No microphone detected",
+        "autoDetect": "Auto detect",
+        "useRecommended": "Use recommended setup",
+        "customize": "Customize",
+        "useRecommendations": "Use recommendations",
+        "purposeQuestion": "What do you use Nova for most?",
+        "writingQuestion": "How should Nova usually write?",
+        "languageQuestion": "Preferred dictation language",
+        "purposes": {
+          "classes": "Classes & notes",
+          "engineering": "Engineering projects",
+          "emails": "Emails & communication",
+          "coding": "Coding",
+          "everything": "A bit of everything",
+          "courseNotes": "Course notes",
+          "feedback": "Feedback",
+          "documents": "Documents"
+        },
+        "writing": {
+          "keep": "Keep my words",
+          "clean": "Clean them up",
+          "professional": "Professional",
+          "auto": "Auto"
+        }
+      },
+      "try": {
+        "title": "Try Nova",
+        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
+        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
+        "start": "Start dictation",
+        "listening": "Listening...",
+        "successTitle": "That's it.",
+        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
+        "openNova": "Open Nova"
+      }
+    },
+    "aiCurriculum": {
+      "title": "AI Essentials",
+      "modulePosition": "Module {{current}} of {{total}}",
+      "correct": "Correct",
+      "considerThis": "Consider this",
+      "nextModule": "Next",
+      "continue": "Continue learning",
+      "start": "Start",
+      "next": "Next",
+      "modulesTitle": "Foundation skills",
+      "mastery": "Mastery levels",
+      "foundationCompleted": "Foundation completed · {{date}}",
+      "foundationDescription": "Core habits for effective, responsible AI use.",
+      "futureLevel": "Available in a future Campus track.",
+      "levels": {
+        "foundation": "Foundation",
+        "practitioner": "Practitioner",
+        "advanced": "Advanced"
+      },
+      "modules": {
+        "working-with-ai": {
+          "title": "Working with AI",
+          "summary": "Understand what AI can and cannot do.",
+          "skill": "AI fundamentals",
+          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
+          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
+          "question": "What is the most useful role for the AI here?",
+          "options": {
+            "a": "Replace the engineering decision.",
+            "b": "Provide a candidate solution for an engineer to evaluate.",
+            "c": "Approve the choice because the explanation sounds technical."
+          },
+          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+        },
+        "ask-better": {
+          "title": "Ask better",
+          "summary": "Give enough context and define a useful outcome.",
+          "skill": "Prompting",
+          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
+          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
+          "question": "Which request gives the safest, most useful starting point?",
+          "options": {
+            "a": "Fix my code.",
+            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
+            "c": "Write a longer answer."
+          },
+          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+        },
+        "verify-output": {
+          "title": "Verify the output",
+          "summary": "Check calculations, sources, claims and assumptions.",
+          "skill": "Verification",
+          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
+          "scenario": "An AI gives you a load calculation for a structural analysis.",
+          "question": "What should you do before using it?",
+          "options": {
+            "a": "Use it directly because the units are shown.",
+            "b": "Verify assumptions, units and calculations independently.",
+            "c": "Ask the AI whether it is sure."
+          },
+          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+        },
+        "confidential-information": {
+          "title": "Confidential information",
+          "summary": "Know what must not be sent to an unauthorized system.",
+          "skill": "Privacy",
+          "idea": "Only share data that the tool and your institution are authorized to process.",
+          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
+          "question": "What is the responsible next step?",
+          "options": {
+            "a": "Paste everything because the task is academic.",
+            "b": "Remove only the student names.",
+            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+          },
+          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+        },
+        "ai-in-engineering": {
+          "title": "AI in engineering",
+          "summary": "Use AI as a tool, not a replacement for reasoning.",
+          "skill": "Engineering AI",
+          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
+          "scenario": "You are comparing two concepts for a small satellite subsystem.",
+          "question": "Which workflow best uses AI?",
+          "options": {
+            "a": "Let the AI select the concept and copy its justification.",
+            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
+            "c": "Avoid documenting assumptions to keep the report short."
+          },
+          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+        },
+        "responsible-use": {
+          "title": "Responsible use",
+          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
+          "skill": "Responsible practice",
+          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
+          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
+          "question": "What should you do?",
+          "options": {
+            "a": "Use AI silently because everyone probably does.",
+            "b": "Let AI produce the final submission, then change a few words.",
+            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+          },
+          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+        }
+      }
+    },
+    "organization": {
+      "title": "Organisation",
+      "subtitle": "Ditt lärosäte, vad det tillhandahåller och vart dina data går.",
+      "connection": "Anslutning",
+      "managedBy": "Hanteras av {{organization}}",
+      "identityTitle": "Identitet"
+    },
+    "provides": {
+      "title": "Vad ditt lärosäte tillhandahåller",
+      "transcription": {
+        "title": "Taligenkänning",
+        "description": "Din inspelning skickas till lärosätets server, som gör text av den."
+      },
+      "rewriting": {
+        "title": "Skrivstilar",
+        "description": "Din text och vald stil skickas till lärosätets server, som skriver om den."
+      },
+      "vocabulary": {
+        "title": "Gemensam ordlista",
+        "description": "Termer från lärosätet och dina egna hjälper både igenkänning och omskrivning att stava rätt."
+      },
+      "formatting": {
+        "title": "Formateringsregler",
+        "description": "Lärosätets regler och dina egna tillämpas vid varje omskrivning."
+      },
+      "paused": "Pausat just nu — lärosätets server går inte att nå."
+    },
+    "offline": {
+      "title": "När servern inte går att nå",
+      "body": "Diktering fungerar fortfarande på den här enheten. Taligenkänningen körs lokalt; skrivstilar, gemensam ordlista, formateringsregler och AI Skills återkommer med anslutningen."
+    },
+    "data": {
+      "title": "Vart dina data går",
+      "audio": "Dikteringens ljud",
+      "text": "Text som skickas för omskrivning",
+      "vocabulary": "Ordlista, genvägar och regler",
+      "history": "Historik",
+      "recordings": "Inspelningar",
+      "appName": "Namnet på programmet i förgrunden",
+      "onDevice": "Den här enheten",
+      "onCampus": "Lärosätets server",
+      "note": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte."
+    }
+  },
+  "aiSkills": {
+    "title": "AI Skills",
+    "subtitle": "Arbeta med texten du markerar.",
+    "preview": "Förhandsvisning",
+    "previewHint": "AI Skills testas för närvarande.",
+    "essentials": "Det väsentliga",
+    "howItWorks": "Så fungerar det",
+    "how": {
+      "select": "Markera text i valfritt program",
+      "open": "Öppna Nova med ditt kortkommando",
+      "choose": "Välj en AI Skill",
+      "review": "Läs resultatet innan något ändras"
+    },
+    "privacy": "Behandlas via din Campus-anslutning.",
+    "privacyOffline": "AI Skills körs på din lärosätesserver, som just nu inte går att nå."
+  },
+  "novaCommands": {
+    "title": "Nova Commands",
+    "skill": {
+      "explain": {
+        "name": "Förklara",
+        "description": "Förstå svår text klart."
+      },
+      "summarize": {
+        "name": "Sammanfatta",
+        "description": "Reducera markeringen till dess kärna."
+      },
+      "improve": {
+        "name": "Förbättra",
+        "description": "Vinna i klarhet och formulering."
+      },
+      "translate": {
+        "name": "Översätt",
+        "description": "Översätt markerad text."
+      },
+      "ask": {
+        "name": "Fråga Nova",
+        "description": "Ge Nova en bestämd instruktion."
+      }
+    },
+    "askPlaceholder": "Fråga Nova…",
+    "ask": "Fråga",
+    "running": "Nova arbetar…",
+    "result": "Resultat",
+    "replace": "Ersätt",
+    "copy": "Kopiera",
+    "close": "Stäng",
+    "copied": "Kopierat",
+    "experimentTitle": "Experimentellt",
+    "settingLabel": "Nova Commands",
+    "settingDescription": "Markera text i valfritt program och kör en AI-åtgärd på den. Ännu inte prövat i alla program.",
+    "shortcutMissing": "Inget kortkommando är tilldelat ännu. Ange ett för Nova Commands under Inställningar — infångningen fungerar bara medan ditt eget program ligger överst.",
+    "runDiagnostics": "Kör diagnostik",
+    "error": {
+      "busy": "Ett kommando pågår redan.",
+      "nonTextClipboard": "Urklipp innehåller något annat än text, och Nova skulle inte kunna lägga tillbaka det. Kopiera det någon annanstans först.",
+      "noSelection": "Markera text innan du öppnar Nova.",
+      "unsupported": "Nova Commands finns tills vidare bara på Windows.",
+      "targetChanged": "Ursprungsprogrammet är inte längre aktivt. Kopiera resultatet i stället.",
+      "offline": "AI Skills kräver en Campus-anslutning.",
+      "failed": "Nova kunde inte behandla begäran.",
+      "emptyResult": "Nova returnerade ett tomt resultat.",
+      "busyTitle": "Pågår redan",
+      "nonTextClipboardTitle": "Urklipp kan inte återställas",
+      "noSelectionTitle": "Ingen text markerad",
+      "unsupportedTitle": "Inte tillgängligt här",
+      "targetChangedTitle": "Fönstret har bytts",
+      "offlineTitle": "Campus onåbart",
+      "failedTitle": "Kommandot misslyckades",
+      "emptyResultTitle": "Inget att visa"
+    },
+    "original": "Original"
+  },
+  "home": {
+    "hero": {
+      "checking": {
+        "title": "Kontrollerar…"
+      },
+      "ready": {
+        "title": "Nova är redo."
+      },
+      "campusLocal": {
+        "title": "Nova Local är aktivt",
+        "detail": "Diktering fungerar fortfarande. AI-funktionerna återkommer med Campus."
+      },
+      "permissionsNeeded": {
+        "title": "Mikrofonåtkomst krävs",
+        "detail": "Nova behöver tillstånd att använda mikrofonen innan diktering går."
+      },
+      "microphoneMissing": {
+        "title": "Ingen mikrofon hittades",
+        "detail": "Anslut en mikrofon och välj den i inställningarna."
+      },
+      "modelMissing": {
+        "title": "Slutför installationen av Nova",
+        "detail": "En talmodell behöver fortfarande hämtas."
+      },
+      "shortcutMissing": {
+        "title": "Nova är redo",
+        "detail": "Tilldela ett kortkommando så räcker en tangenttryckning."
+      },
+      "dictateHint": "för att diktera",
+      "openSettings": "Öppna inställningar",
+      "listening": {
+        "title": "Nova lyssnar…"
+      },
+      "processing": {
+        "title": "Nova arbetar…"
+      },
+      "insertionFailed": {
+        "title": "Kunde inte klistra in",
+        "detail": "Din diktering finns i urklipp."
+      }
+    },
+    "active": {
+      "title": "Aktivt",
+      "style": "Skrivstil",
+      "styleAutomatic": "Automatisk",
+      "engine": "Motor",
+      "microphone": "Mikrofon",
+      "lastDictation": "Senaste diktering"
+    },
+    "engine": {
+      "campus": "Ditt lärosätes server",
+      "local-fallback": "Nova Local",
+      "local": "Nova Local"
+    },
+    "checklist": {
+      "title": "Kom igång",
+      "campus": "Campus-konto kopplat",
+      "voice": "Rösten redo",
+      "firstDictation": "Första dikteringen",
+      "style": "Prova en skrivstil",
+      "aiSkill": "Använd din första AI Skill",
+      "done": "Klart",
+      "todo": "Kvar"
+    }
+  },
+  "styles": {
+    "section": {
+      "automatic": "Automatiskt",
+      "builtin": "Stilar",
+      "personal": "Dina stilar",
+      "organization": "Från din organisation"
+    },
+    "automaticHow": "Nova läser namnet på programmet i förgrunden och tillämpar motsvarande stil. Program du blockerar granskas aldrig.",
+    "active": "Aktiv",
+    "emptyPersonal": "Du har inte skapat någon stil ännu.",
+    "rowActions": "Stilåtgärder",
+    "error": {
+      "save": "Stilen kunde inte sparas.",
+      "delete": "Stilen kunde inte tas bort."
+    },
+    "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här."
+  },
+  "history": {
+    "subtitle": "Allt du har dikterat med Nova.",
+    "group": {
+      "today": "I dag",
+      "yesterday": "I går",
+      "week": "Denna vecka",
+      "older": "Tidigare"
+    },
+    "searchPlaceholder": "Sök bland dina dikteringar",
+    "noMatch": "Inget matchar ”{{query}}”.",
+    "empty": "Här visas dina dikteringar.",
+    "copy": "Kopiera",
+    "copied": "Kopierat"
+  },
+  "settingsNav": {
+    "voice": "Röst"
+  },
+  "personalization": {
+    "appearance": "Utseende",
+    "orb": "Orb",
+    "overlay": "Överlägg"
+  },
+  "aiSkillTools": {
+    "title": "AI Skills",
+    "subtitle": "Färdiga AI-åtgärder för valfri text.",
+    "builtin": "Inbyggda",
+    "noBuiltin": "Inga inbyggda AI Skills ännu.",
+    "organization": "Från din organisation",
+    "noOrganization": "Din organisation har inte publicerat några AI Skills.",
+    "fromOrganization": "Från din organisation",
+    "howToUse": "Så använder du den",
+    "inputPlaceholder": "Klistra in eller skriv texten som ska bearbetas",
+    "run": "Kör",
+    "running": "Kör...",
+    "error": "Kunde inte köra denna AI Skill.",
+    "signedOut": "Logga in för att använda AI Skills."
+  },
+  "campusConnection": {
+    "title": "Organisation",
+    "description": "Anslut Nova till din organisation för att använda innehållet och inställningarna den tillhandahåller.",
+    "connect": "Anslut organisation",
+    "connected": "Ansluten",
+    "local": "Offline med de senast kända inställningarna",
+    "signedOut": "Utloggad"
+  },
+  "learn": {
+    "title": "Lär dig",
+    "subtitle": "Bli bättre med AI, några minuter i taget.",
+    "loading": "Läser in…",
+    "empty": "Inga lektioner är tillgängliga än.",
+    "continue": "Fortsätt",
+    "recommended": "Rekommenderat för dig",
+    "start": "Börja",
+    "resume": "Återuppta",
+    "back": "Tillbaka till Lär dig",
+    "status": {
+      "inProgress": "Pågår",
+      "completed": "Klar"
+    },
+    "progress": {
+      "summary": "{{completed}} av {{total}} lektioner klara",
+      "notSynced": "Sparat på den här enheten. Det synkroniseras när servern går att nå igen."
+    },
+    "lesson": {
+      "minutes": "{{count}} min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "continue": "Fortsätt",
+      "finish": "Avsluta lektionen",
+      "answerFirst": "Svara för att fortsätta."
+    },
+    "quiz": {
+      "correct": "Rätt",
+      "incorrect": "Inte riktigt"
+    },
+    "compare": {
+      "worse": "Svagare",
+      "better": "Starkare"
+    },
+    "exercise": {
+      "compare": "Jämför med ett exempel",
+      "sample": "Ett sätt att skriva det",
+      "askNova": "Fråga Nova",
+      "running": "Tänker…",
+      "feedback": "Återkoppling",
+      "unavailable": "Nova kunde inte svara just nu. Resten av lektionen fungerar ändå."
+    },
+    "block": {
+      "tip": "Tips",
+      "warning": "Se upp",
+      "takeaway": "Att ta med sig",
+      "unsupported": "Den här delen kräver en nyare version av Nova."
+    },
+    "error": {
+      "catalog": "Lär dig är inte tillgängligt just nu. Försök igen om en stund."
+    }
   }
 }

@@ -395,6 +395,11 @@ pub fn create_recording_overlay(app_handle: &AppHandle) {
 }
 
 fn show_overlay_state(app_handle: &AppHandle, state: &str) {
+    // L'état de dictée est diffusé AVANT le test d'affichage : il doit
+    // parvenir à la fenêtre principale même lorsque l'overlay est désactivé,
+    // sans quoi l'accueil resterait muet pour ces utilisateurs.
+    crate::dictation_state::set_from_overlay(app_handle, state);
+
     // Whether the overlay shows at all is governed by overlay_style; position
     // only chooses Top vs Bottom placement.
     let settings = settings::get_settings(app_handle);
@@ -604,6 +609,14 @@ pub fn hide_recording_overlay(app_handle: &AppHandle) {
         show_overlay_state(app_handle, "idle");
         return;
     }
+
+    // Masquer l'overlay, c'est revenir au repos — y compris quand la fenêtre
+    // n'existe pas ou que l'overlay est désactivé.
+    crate::dictation_state::set(
+        app_handle,
+        crate::dictation_state::DictationState::Idle,
+        None,
+    );
 
     // Always hide the overlay regardless of settings - if setting was changed while recording,
     // we still want to hide it properly

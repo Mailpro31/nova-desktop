@@ -11,7 +11,6 @@ import type {
 } from "@/bindings";
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
-import { styleColor } from "@/lib/styleColors";
 import { styleLockFeature } from "@/lib/builtinStyles";
 
 type OverlayState =
@@ -621,10 +620,7 @@ const RecordingOverlay: React.FC = () => {
                     disabled={locked}
                     aria-disabled={locked}
                   >
-                    <span
-                      className="smenu-dot"
-                      style={{ background: styleColor(s.id) }}
-                    />
+                    <span className="smenu-dot" aria-hidden="true" />
                     <span className="smenu-name">{s.name}</span>
                     {locked ? (
                       <span

@@ -9,9 +9,18 @@ on:
         type: string
 
 jobs:
+  # Construction d'une PR : du code que personne n'a encore revu.
+  #
+  # Ce job compile délibérément du code non fiable. Il ne doit donc porter ni
+  # secret de signature, ni jeton de publication, ni droit d'écriture sur le
+  # dépôt : `bun install` et les scripts de build de la PR s'exécutent ici, et
+  # tout ce qui est présent à ce moment-là est à la portée de leur auteur.
+  #
+  # `contents: read` suffit à cloner. L'écriture servait à publier des assets de
+  # release, ce qu'un build de PR ne fait jamais.
   build-test:
     permissions:
-      contents: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -43,12 +52,24 @@ jobs:
       platform: ${{ matrix.platform }}
       target: ${{ matrix.target }}
       build-args: ${{ matrix.args }}
-      sign-binaries: true
+      # Jamais de signature sur une PR. Signer suppose de tenir la clé privée
+      # dans le même job que le code de la PR, ce qui la remet à son auteur.
+      # Un build de test prouve que ça compile ; il n'a pas à être signé.
+      sign-binaries: false
       asset-prefix: "handy-pr-${{ inputs.pr_number }}"
       upload-artifacts: true
       is-debug-build: ${{ contains(matrix.args, '--debug') }}
       ref: ${{ format('refs/pull/{0}/merge', inputs.pr_number) }}
-    secrets: inherit
+    # Volontairement pas de `secrets: inherit`.
+    #
+    # Il transmettait l'intégralité des secrets du dépôt — clé updater,
+    # certificats Apple, credentials Azure, jeton de publication — à un job qui
+    # exécute le code de la PR. Aucun secret n'est nécessaire pour vérifier
+    # qu'une PR compile ; `secrets.GITHUB_TOKEN` reste disponible d'office et
+    # est plafonné par les `permissions` ci-dessus.
+    #
+    # Si un secret devenait un jour indispensable ici, le passer nommément —
+    # jamais en rétablissant l'héritage global.
 
   comment-on-pr:
     needs: build-test

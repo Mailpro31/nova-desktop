@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { CircleHelp } from "lucide-react";
 import { Tooltip } from "./Tooltip";
 
 interface SettingContainerProps {
@@ -25,170 +26,86 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  // Handle click outside to close tooltip
   useEffect(() => {
+    if (!showTooltip) return;
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(event.target as Node)
-      ) {
+      if (!tooltipRef.current?.contains(event.target as Node)) {
         setShowTooltip(false);
       }
     };
-
-    if (showTooltip) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowTooltip(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [showTooltip]);
 
-  const toggleTooltip = () => {
-    setShowTooltip(!showTooltip);
-  };
-
   const containerClasses = grouped
-    ? "px-4 p-2"
-    : "px-4 p-2 rounded-[13px] border border-mid-gray/20";
-
-  if (layout === "stacked") {
-    if (descriptionMode === "tooltip") {
-      return (
-        <div className={containerClasses}>
-          <div className="flex items-center gap-2 mb-2">
-            <h3
-              className={`text-sm font-medium ${disabled ? "opacity-50" : ""}`}
-            >
-              {title}
-            </h3>
-            <div
-              ref={tooltipRef}
-              className="relative"
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              onClick={toggleTooltip}
-            >
-              <svg
-                className="w-4 h-4 text-mid-gray cursor-help hover:text-logo-primary transition-colors duration-200 select-none"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-label="More information"
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    toggleTooltip();
-                  }
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {showTooltip && (
-                <Tooltip targetRef={tooltipRef} position="top">
-                  <p className="text-sm text-center leading-relaxed">
-                    {description}
-                  </p>
-                </Tooltip>
-              )}
-            </div>
-          </div>
-          <div className="w-full">{children}</div>
-        </div>
-      );
-    }
-
-    return (
-      <div className={containerClasses}>
-        <div className="mb-2">
-          <h3 className={`text-sm font-medium ${disabled ? "opacity-50" : ""}`}>
-            {title}
-          </h3>
-          <p className={`text-sm ${disabled ? "opacity-50" : ""}`}>
-            {description}
-          </p>
-        </div>
-        <div className="w-full">{children}</div>
-      </div>
-    );
-  }
-
-  // Horizontal layout (default)
-  const horizontalContainerClasses = grouped
-    ? "flex items-center justify-between min-h-12 px-4 p-2"
-    : "flex items-center justify-between min-h-12 px-4 p-2 rounded-[13px] border border-mid-gray/20";
-
-  if (descriptionMode === "tooltip") {
-    return (
-      <div className={horizontalContainerClasses}>
-        <div className="max-w-2/3">
-          <div className="flex items-center gap-2">
-            <h3
-              className={`text-sm font-medium ${disabled ? "opacity-50" : ""}`}
-            >
-              {title}
-            </h3>
-            <div
-              ref={tooltipRef}
-              className="relative"
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              onClick={toggleTooltip}
-            >
-              <svg
-                className="w-4 h-4 text-mid-gray cursor-help hover:text-logo-primary transition-colors duration-200 select-none"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-label="More information"
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    toggleTooltip();
-                  }
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {showTooltip && (
-                <Tooltip targetRef={tooltipRef} position={tooltipPosition}>
-                  <p className="text-sm text-center leading-relaxed">
-                    {description}
-                  </p>
-                </Tooltip>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="relative">{children}</div>
-      </div>
-    );
-  }
+    ? "px-4 py-3"
+    : "border border-hairline bg-surface px-4 py-3 [border-radius:var(--nova-radius-card)]";
+  const directionClasses =
+    layout === "stacked"
+      ? "flex flex-col gap-3"
+      : "flex min-h-14 items-center justify-between gap-5";
 
   return (
-    <div className={horizontalContainerClasses}>
-      <div className="max-w-2/3">
-        <h3 className={`text-sm font-medium ${disabled ? "opacity-50" : ""}`}>
-          {title}
-        </h3>
-        <p className={`text-sm ${disabled ? "opacity-50" : ""}`}>
-          {description}
-        </p>
+    <div className={`${containerClasses} ${directionClasses}`}>
+      <div
+        className={layout === "horizontal" ? "min-w-0 max-w-[65%]" : "min-w-0"}
+      >
+        <div className="flex items-center gap-1.5">
+          <h3
+            className={`text-sm font-medium text-text ${disabled ? "opacity-60" : ""}`}
+          >
+            {title}
+          </h3>
+          {descriptionMode === "tooltip" && (
+            <div
+              ref={tooltipRef}
+              className="relative flex"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              onFocus={() => setShowTooltip(true)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setShowTooltip(false);
+                }
+              }}
+            >
+              <button
+                type="button"
+                aria-label="More information"
+                aria-expanded={showTooltip}
+                onClick={() => setShowTooltip((visible) => !visible)}
+                className="flex h-8 w-8 items-center justify-center rounded-md text-text-secondary transition-colors duration-150 hover:bg-inset hover:text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                <CircleHelp size={15} strokeWidth={1.75} aria-hidden="true" />
+              </button>
+              {showTooltip && (
+                <Tooltip targetRef={tooltipRef} position={tooltipPosition}>
+                  {description}
+                </Tooltip>
+              )}
+            </div>
+          )}
+        </div>
+        {descriptionMode === "inline" && (
+          <p
+            className={`mt-1 text-xs leading-relaxed text-text-secondary ${disabled ? "opacity-60" : ""}`}
+          >
+            {description}
+          </p>
+        )}
       </div>
-      <div className="relative">{children}</div>
+      <div
+        className={`relative ${layout === "stacked" ? "w-full" : "shrink-0"}`}
+      >
+        {children}
+      </div>
     </div>
   );
 };

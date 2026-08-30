@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
@@ -7,6 +9,7 @@ import { TierBadge } from "../license/TierBadge";
 import { ThemeSelector } from "../ThemeSelector";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ShowOverlay } from "../ShowOverlay";
+import { isOrganizationMode } from "@/lib/mode";
 import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import { useSettings } from "../../../hooks/useSettings";
 import {
@@ -17,14 +20,12 @@ import {
   type OrbTheme,
 } from "../../../lib/orbTheme";
 
-// Aperçu d'un thème d'orbe : reproduit exactement le rendu « bille de verre »
-// (dégradé radial + reflet) avec les 5 arrêts du thème.
 const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
   theme,
   size = 40,
 }) => (
   <span
-    className="relative inline-block rounded-full shrink-0"
+    className="relative inline-block shrink-0 rounded-full"
     style={{
       width: size,
       height: size,
@@ -47,30 +48,31 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
   </span>
 );
 
-/**
- * Réglages « Personnalisation » : choix de la teinte de l'orbe (l'identité
- * visuelle de Nova). 100 % frontend (localStorage, variables CSS) — le dock et
- * l'overlay se mettent à jour ensemble. Réservé à Nova Ultra : hors Ultra, seul
- * le thème par défaut est sélectionnable et un badge l'indique.
- */
 export const PersonalizationSettings: React.FC = () => {
+  const { t } = useTranslation();
+  const campusMode = isOrganizationMode();
   const [selected, setSelected] = useState<string>(getOrbThemeId());
   const [canCustomize, setCanCustomize] = useState(true);
   const { settings, refreshSettings } = useSettings();
-  // La bulle « toujours affichée » (champ absent des bindings tant que le build
-  // Rust n'a pas régénéré les types → lecture souple + écriture via invoke brut).
   const [persistentOverlay, setPersistentOverlay] = useState(true);
 
   useEffect(() => {
-    invoke<{ features: Record<string, boolean> }>("get_license_status")
-      .then((s) => setCanCustomize(s.features?.orb_customization ?? true))
+    if (campusMode) {
+      setCanCustomize(true);
+      return;
+    }
+    void invoke<{ features: Record<string, boolean> }>("get_license_status")
+      .then((status) =>
+        setCanCustomize(status.features?.orb_customization ?? true),
+      )
       .catch(() => setCanCustomize(true));
-  }, []);
+  }, [campusMode]);
 
   useEffect(() => {
-    const v = (settings as unknown as { persistent_overlay?: boolean } | null)
-      ?.persistent_overlay;
-    if (typeof v === "boolean") setPersistentOverlay(v);
+    const value = (
+      settings as unknown as { persistent_overlay?: boolean } | null
+    )?.persistent_overlay;
+    if (typeof value === "boolean") setPersistentOverlay(value);
   }, [settings]);
 
   const togglePersistentOverlay = async (enabled: boolean) => {
@@ -79,7 +81,7 @@ export const PersonalizationSettings: React.FC = () => {
       await invoke("change_persistent_overlay_setting", { enabled });
       await refreshSettings();
     } catch {
-      // La bulle garde son état si l'écriture échoue.
+      setPersistentOverlay(!enabled);
     }
   };
 
@@ -90,26 +92,31 @@ export const PersonalizationSettings: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
-      {/* eslint-disable-next-line i18next/no-literal-string */}
-      <p className="px-1 -mb-2 text-sm text-text-secondary">
-        L'apparence de Nova.
-      </p>
+    // Largeur héritée de l'app shell.
+    <div className="space-y-6">
+      <PageHeader
+        title={t("sidebar.personalization")}
+        description={t("campus.personalization.description")}
+      />
 
-      <SettingsGroup title="Apparence">
-        <ThemeSelector descriptionMode="tooltip" grouped={true} />
-        <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
-      </SettingsGroup>
+      {/* En campus, langue et thème vivent dans « Général » : les répéter ici
+          donnerait deux emplacements pour un même réglage. */}
+      {!campusMode && (
+        <SettingsGroup title={t("personalization.appearance")}>
+          <ThemeSelector descriptionMode="tooltip" grouped={true} />
+          <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
+        </SettingsGroup>
+      )}
 
-      <SettingsGroup title="Orbe">
+      <SettingsGroup title={t("personalization.orb")}>
         <SettingContainer
-          title="Teinte de l'orbe"
-          description="L'orbe « bille de verre » est l'identité de Nova. Choisissez sa teinte — le dock et la bulle d'enregistrement suivent."
+          title={t("campus.personalization.orbColor")}
+          description={t("campus.personalization.orbDescription")}
           layout="stacked"
           grouped={true}
         >
           <div className="space-y-3">
-            <TierBadge feature="orb_customization" />
+            {!campusMode && <TierBadge feature="orb_customization" />}
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {ORB_THEMES.map((theme) => {
                 const active = selected === theme.id;
@@ -122,14 +129,14 @@ export const PersonalizationSettings: React.FC = () => {
                     disabled={locked}
                     aria-pressed={active}
                     title={theme.label}
-                    className={`flex flex-col items-center gap-1.5 rounded-lg border p-2.5 transition-colors ${
+                    className={`flex flex-col items-center gap-1.5 rounded-lg border p-2.5 transition-colors duration-150 motion-reduce:transition-none ${
                       active
                         ? "border-accent bg-accent/10"
-                        : "border-hairline hover:bg-mid-gray/10"
-                    } ${locked ? "opacity-40 cursor-not-allowed" : ""}`}
+                        : "border-hairline hover:bg-inset"
+                    } ${locked ? "cursor-not-allowed opacity-40" : ""}`}
                   >
                     <OrbSwatch theme={theme} />
-                    <span className="text-[11px] text-text-secondary text-center leading-tight">
+                    <span className="text-center text-[11px] leading-tight text-text-secondary">
                       {theme.label}
                     </span>
                   </button>
@@ -140,19 +147,19 @@ export const PersonalizationSettings: React.FC = () => {
         </SettingContainer>
       </SettingsGroup>
 
-      <SettingsGroup title="Bulle">
+      <SettingsGroup title={t("personalization.overlay")}>
         <ToggleSwitch
           checked={persistentOverlay}
           onChange={togglePersistentOverlay}
-          label="Bulle toujours affichée"
-          description="Garde la petite bulle Nova à l'écran en permanence, avec un engrenage pour choisir le Style. Elle laisse passer vos clics : elle ne devient cliquable que lorsque la souris la survole."
+          label={t("campus.personalization.alwaysVisible")}
+          description={t("campus.personalization.alwaysVisibleDescription")}
           descriptionMode="inline"
           grouped={true}
         />
         <ShowOverlay descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
 
-      <CustomVariablesSettings />
+      {!campusMode && <CustomVariablesSettings />}
     </div>
   );
 };

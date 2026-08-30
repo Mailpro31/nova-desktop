@@ -50,3 +50,13 @@ vite.config.d.ts
 
 # Fichier d'etat de mission (outil de travail agent, non commitable)
 NOVA_MAJ_ETAT.md
+
+# Serveur interne autonome
+nova-server/
+
+# /design-sync — scripts stages, build regenere et etat machine
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules

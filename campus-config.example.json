@@ -1,0 +1,43 @@
+{
+  "server_url": "https://nova.example.edu",
+  "organization": {
+    "id": "example-engineering-school",
+    "name": "Example Engineering School",
+    "shortName": "EES",
+    "campusName": "Paris",
+    "role": "student",
+    "managed": true,
+    "support": {
+      "email": "support@example.edu",
+      "website": "https://example.edu/nova"
+    }
+  },
+  "auth_methods": ["email_code"],
+  "education_mode": "normal",
+  "ai_skills": {
+    "enabled": true,
+    "required": false,
+    "trackProgress": true
+  },
+  "capabilities": {
+    "dictation": true,
+    "rewrite": true,
+    "styles": true,
+    "fileTranscription": true,
+    "commands": false,
+    "dictionary": false,
+    "snippets": false,
+    "formattingRules": false,
+    "screenContext": false,
+    "cloudInference": true,
+    "engineeringNotes": false,
+    "aiSkills": true,
+    "personalization": true
+  },
+  "privacy": {
+    "verified": true,
+    "contentRetention": "not_stored",
+    "usageCounters": "counts_only",
+    "infrastructure": "campus"
+  }
+}

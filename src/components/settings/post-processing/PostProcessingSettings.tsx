@@ -30,8 +30,12 @@ import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileS
 import { TierBadge } from "../license/TierBadge";
 import { AutoStyleSettings } from "./AutoStyleSettings";
 import { ContextReadingSettings } from "./ContextReadingSettings";
+import { CampusStylesSettings } from "./CampusStylesSettings";
+import StylesList from "./StylesList";
+import { PageHeader } from "../../shell/PageHeader";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
 import { useSettings } from "../../../hooks/useSettings";
+import { isOrganizationMode } from "@/lib/mode";
 
 const PostProcessingSettingsApiComponent: React.FC = () => {
   const { t } = useTranslation();
@@ -185,365 +189,44 @@ const PostProcessingSettingsApiComponent: React.FC = () => {
   );
 };
 
-const PostProcessingSettingsPromptsComponent: React.FC = () => {
-  const { t } = useTranslation();
-  const { getSetting, updateSetting, refreshSettings } = useSettings();
-  // null = pas d'édition ; "new" = création ; sinon id du Style en édition
-  const [editing, setEditing] = useState<string | null>(null);
-  const [draftName, setDraftName] = useState("");
-  const [draftText, setDraftText] = useState("");
-  // Créer / modifier / supprimer des Styles est réservé à Nova Ultra.
-  const [canEditStyles, setCanEditStyles] = useState(true);
-  // Fonctionnalités du palier courant : décide quels Styles sont verrouillés.
-  // Défensif : en licence dormante, `has()` renvoie vrai partout → aucune
-  // fonctionnalité absente → rien n'est grisé (comportement actuel préservé).
-  const [features, setFeatures] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    invoke<{ features: Record<string, boolean> }>("get_license_status")
-      .then((s) => {
-        setFeatures(s.features ?? {});
-        setCanEditStyles(s.features?.custom_styles ?? true);
-      })
-      .catch(() => {
-        setFeatures({});
-        setCanEditStyles(true);
-      });
-  }, []);
-
-  // Un Style est verrouillé si sa fonctionnalité de palier n'est pas accessible.
-  // `?? true` = si la fonctionnalité est inconnue (licence dormante ou statut
-  // indisponible), on n'interdit rien : jamais de blocage par défaut.
-  const styleLocked = (id: string): { locked: boolean; feature: string } => {
-    const feature = styleLockFeature(id);
-    if (!feature) return { locked: false, feature: "" };
-    return { locked: !(features[feature] ?? true), feature };
-  };
-
-  const prompts = getSetting("post_process_prompts") || [];
-  const selectedPromptId = getSetting("post_process_selected_prompt_id") || "";
-  const isBuiltin = (id: string) => BUILTIN_STYLE_IDS.includes(id);
-
-  const startEdit = (id: string) => {
-    const p = prompts.find((prompt) => prompt.id === id);
-    if (!p) return;
-    setEditing(id);
-    setDraftName(p.name);
-    setDraftText(p.prompt);
-  };
-
-  const startCreate = () => {
-    setEditing("new");
-    setDraftName("");
-    setDraftText("");
-  };
-
-  const startDuplicate = (id: string) => {
-    const p = prompts.find((prompt) => prompt.id === id);
-    if (!p) return;
-    setEditing("new");
-    setDraftName(
-      `${p.name} (${t("settings.postProcessing.prompts.copySuffix")})`,
-    );
-    setDraftText(p.prompt);
-  };
-
-  const cancelEdit = () => setEditing(null);
-
-  const handleSelect = (id: string) => {
-    updateSetting("post_process_selected_prompt_id", id);
-  };
-
-  const handleSave = async () => {
-    if (!draftName.trim() || !draftText.trim()) return;
-    try {
-      if (editing === "new") {
-        const result = await commands.addPostProcessPrompt(
-          draftName.trim(),
-          draftText.trim(),
-        );
-        if (result.status === "ok") {
-          await refreshSettings();
-          updateSetting("post_process_selected_prompt_id", result.data.id);
-        }
-      } else if (editing) {
-        await commands.updatePostProcessPrompt(
-          editing,
-          draftName.trim(),
-          draftText.trim(),
-        );
-        await refreshSettings();
-      }
-      setEditing(null);
-    } catch (error) {
-      console.error("Failed to save prompt:", error);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      await commands.deletePostProcessPrompt(id);
-      await refreshSettings();
-      if (editing === id) setEditing(null);
-    } catch (error) {
-      console.error("Failed to delete prompt:", error);
-    }
-  };
-
-  // Carte d'un Style : pastille couleur + nom + badge + coche sur l'actif.
-  // Un Style verrouillé (au-delà du palier) est grisé, non sélectionnable, et
-  // porte le badge « NÉCESSITE NOVA PRO / ULTRA ».
-  const StyleCard: React.FC<{
-    id: string;
-    name: string;
-    kind: "auto" | "builtin" | "custom";
-  }> = ({ id, name, kind }) => {
-    const active = selectedPromptId === id;
-    const { locked, feature: lockFeature } = styleLocked(id);
-    const badge =
-      kind === "auto"
-        ? t("settings.postProcessing.prompts.badgeAuto")
-        : kind === "builtin"
-          ? t("settings.postProcessing.prompts.badgeBuiltin")
-          : t("settings.postProcessing.prompts.badgeCustom");
-    const choose = () => {
-      if (locked) return;
-      handleSelect(id);
-    };
-    return (
-      <div
-        role="button"
-        tabIndex={locked ? -1 : 0}
-        aria-pressed={active}
-        aria-disabled={locked}
-        onClick={choose}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") choose();
-        }}
-        className={`flex items-center gap-3 rounded-[9px] border px-3 py-2.5 transition-colors ${
-          locked
-            ? "border-mid-gray/20 opacity-60 cursor-not-allowed"
-            : active
-              ? "border-accent bg-accent/10 cursor-pointer"
-              : "border-mid-gray/20 hover:bg-mid-gray/10 cursor-pointer"
-        }`}
-      >
-        <span
-          className="w-3 h-3 rounded-full shrink-0"
-          style={{ background: styleColor(id) }}
-          aria-hidden="true"
-        />
-        <span className="flex-1 min-w-0 text-sm font-medium truncate">
-          {name}
-        </span>
-        {locked ? (
-          <TierBadge feature={lockFeature} />
-        ) : (
-          <span className="text-[9px] font-bold tracking-wider uppercase rounded-full px-1.5 py-px border text-text-secondary border-mid-gray/40 whitespace-nowrap">
-            {badge}
-          </span>
-        )}
-        {!locked && canEditStyles && kind !== "auto" && (
-          <span className="flex items-center gap-1">
-            {kind === "builtin" ? (
-              <button
-                type="button"
-                className="text-xs text-accent hover:underline px-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  startDuplicate(id);
-                }}
-              >
-                {t("settings.postProcessing.prompts.duplicate")}
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className="text-xs text-accent hover:underline px-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    startEdit(id);
-                  }}
-                >
-                  {t("settings.postProcessing.prompts.edit")}
-                </button>
-                <button
-                  type="button"
-                  className="text-xs text-danger hover:underline px-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    void handleDelete(id);
-                  }}
-                >
-                  {t("settings.postProcessing.prompts.deletePrompt")}
-                </button>
-              </>
-            )}
-          </span>
-        )}
-        {active && (
-          <svg
-            viewBox="0 0 24 24"
-            width="15"
-            height="15"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-accent shrink-0"
-            aria-hidden="true"
-          >
-            <path d="M20 6 9 17l-5-5" />
-          </svg>
-        )}
-      </div>
-    );
-  };
-
-  return (
-    <SettingContainer
-      title={t("settings.postProcessing.prompts.selectedPrompt.title")}
-      description={t(
-        "settings.postProcessing.prompts.selectedPrompt.description",
-      )}
-      descriptionMode="tooltip"
-      layout="stacked"
-      grouped={true}
-    >
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <TierBadge feature="all_styles" />
-          <TierBadge feature="custom_styles" />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <StyleCard
-            id="auto"
-            name={t("settings.postProcessing.autoStyle.option")}
-            kind="auto"
-          />
-          {prompts.map((p) => (
-            <StyleCard
-              key={p.id}
-              id={p.id}
-              name={p.name}
-              kind={isBuiltin(p.id) ? "builtin" : "custom"}
-            />
-          ))}
-        </div>
-
-        {canEditStyles ? (
-          editing === null && (
-            <div>
-              <Button onClick={startCreate} variant="primary" size="md">
-                {t("settings.postProcessing.prompts.createNew")}
-              </Button>
-            </div>
-          )
-        ) : (
-          <p className="text-xs text-text-secondary pt-1">
-            {t("settings.postProcessing.prompts.ultraOnly")}
-          </p>
-        )}
-
-        {editing !== null && (
-          <div className="space-y-3 rounded-[9px] border border-mid-gray/20 p-3">
-            <div className="space-y-2 flex flex-col">
-              <label className="text-sm font-semibold">
-                {t("settings.postProcessing.prompts.promptLabel")}
-              </label>
-              <Input
-                type="text"
-                value={draftName}
-                onChange={(e) => setDraftName(e.target.value)}
-                placeholder={t(
-                  "settings.postProcessing.prompts.promptLabelPlaceholder",
-                )}
-                variant="compact"
-              />
-            </div>
-
-            <div className="space-y-2 flex flex-col">
-              <label className="text-sm font-semibold">
-                {t("settings.postProcessing.prompts.promptInstructions")}
-              </label>
-              <Textarea
-                value={draftText}
-                onChange={(e) => setDraftText(e.target.value)}
-                placeholder={t(
-                  "settings.postProcessing.prompts.promptInstructionsPlaceholder",
-                )}
-              />
-              <p className="text-xs text-mid-gray/70">
-                <Trans
-                  i18nKey="settings.postProcessing.prompts.promptTip"
-                  components={{ code: <code /> }}
-                />
-              </p>
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <Button
-                onClick={handleSave}
-                variant="primary"
-                size="md"
-                disabled={!draftName.trim() || !draftText.trim()}
-              >
-                {editing === "new"
-                  ? t("settings.postProcessing.prompts.createPrompt")
-                  : t("settings.postProcessing.prompts.updatePrompt")}
-              </Button>
-              <Button onClick={cancelEdit} variant="secondary" size="md">
-                {t("settings.postProcessing.prompts.cancel")}
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {selectedPromptId === "auto" && editing === null && (
-          <AutoStyleSettings
-            prompts={prompts.map((p) => ({ id: p.id, name: p.name }))}
-          />
-        )}
-      </div>
-    </SettingContainer>
-  );
-};
-
 export const PostProcessingSettingsApi = React.memo(
   PostProcessingSettingsApiComponent,
 );
 PostProcessingSettingsApi.displayName = "PostProcessingSettingsApi";
 
-export const PostProcessingSettingsPrompts = React.memo(
-  PostProcessingSettingsPromptsComponent,
-);
-PostProcessingSettingsPrompts.displayName = "PostProcessingSettingsPrompts";
-
 export const PostProcessingSettings: React.FC = () => {
   const { t } = useTranslation();
+  const campusMode = isOrganizationMode();
+
+  if (campusMode) {
+    return <CampusStylesSettings />;
+  }
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
-      <p className="px-1 -mb-1 text-sm text-text-secondary">
-        {t("settings.postProcessing.subtitle")}
-      </p>
+    // La largeur et les marges viennent de l'app shell — les répéter ici
+    // contraignait la colonne deux fois.
+    <>
+      <PageHeader
+        title={t("campus.styles.title")}
+        description={t("campus.styles.subtitle")}
+      />
 
-      <SettingsGroup title={t("settings.postProcessing.enable.title")}>
-        <PostProcessingToggle descriptionMode="tooltip" grouped={true} />
-      </SettingsGroup>
+      {/* Le choix du Style vient en premier : c'est la question que l'écran
+          doit résoudre. La configuration du moteur reste en dessous, inchangée,
+          parce qu'elle est nécessaire mais secondaire. */}
+      <StylesList />
 
-      <SettingsGroup title={t("settings.postProcessing.api.title")}>
-        <PostProcessingSettingsApi />
-      </SettingsGroup>
+      <div className="mt-[32px] flex flex-col gap-5 border-t border-hairline pt-[24px]">
+        <SettingsGroup title={t("settings.postProcessing.enable.title")}>
+          <PostProcessingToggle descriptionMode="tooltip" grouped={true} />
+        </SettingsGroup>
 
-      <SettingsGroup title={t("settings.postProcessing.prompts.title")}>
-        <PostProcessingSettingsPrompts />
-      </SettingsGroup>
+        <SettingsGroup title={t("settings.postProcessing.api.title")}>
+          <PostProcessingSettingsApi />
+        </SettingsGroup>
 
-      <ContextReadingSettings />
-    </div>
+        <ContextReadingSettings />
+      </div>
+    </>
   );
 };

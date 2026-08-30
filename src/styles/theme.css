@@ -1,14 +1,17 @@
 /* ==========================================================================
-   Nova — palette (langage visuel Apple / macOS « bleu nuit », premium)
+   Nova — tokens de design (palette, géométrie, élévation, mouvement)
    --------------------------------------------------------------------------
-   Source de vérité des couleurs. L'app est SOMBRE par défaut (identité
-   « bleu nuit » de Nova). Chaque token nommé ci-dessous est référencé par les
-   utilitaires Tailwind (voir App.css `@theme inline`) et par les composants,
-   donc une valeur hex ne vit qu'à un seul endroit.
+   Source de vérité du système visuel, aligné sur la planche de fondation
+   « Quiet Engineering ». L'app est CLAIRE par défaut, avec une contrepartie
+   sombre complète (identité « bleu nuit » de Nova). Chaque token nommé
+   ci-dessous est référencé par les utilitaires Tailwind (voir App.css
+   `@theme inline`) et par les composants, donc une valeur hex ne vit qu'à un
+   seul endroit.
 
    Accent d'ACTION unique : bleu Apple #0A84FF (boutons primaires,
    interrupteurs actifs, sélections, focus). Jamais un autre accent pour une
-   action. Verrou « Ultra » : lilas #C9B6F0.
+   action ; les couleurs de statut restent réservées au sens « statut ».
+   Verrou « Ultra » : lilas #C9B6F0.
    ========================================================================== */
 
 :root {
@@ -19,32 +22,36 @@
   --nova-inset: #1a1a1d; /* champs / insets           */
   --nova-text: #f2f2f4; /* texte principal           */
   --nova-text-secondary: #98989f; /* texte secondaire / gris   */
-  --nova-hairline: rgba(255, 255, 255, 0.07);
+  --nova-hairline: rgba(255, 255, 255, 0.07); /* séparateur       */
+  --nova-hairline-strong: rgba(255, 255, 255, 0.16); /* contour de contrôle */
   --nova-accent: #0a84ff; /* bleu Apple — ACTION unique */
   --nova-accent-hover: #3b9bff;
   --nova-success: #30d158;
+  --nova-warning: #ff9f0a; /* dégradé / repli local      */
   --nova-danger: #ff453a;
   --nova-ultra: #c9b6f0; /* verrou Nova Ultra          */
 
-  /* ---- Palette claire Nova (Apple « light ») -------------------------------
-     Vraie palette claire : fenêtre gris perle, cartes blanches, texte encre.
-     L'accent d'action reste le bleu Apple #0A84FF ; les couleurs de statut
+  /* ---- Palette claire Nova -------------------------------------------------
+     Fenêtre gris perle, cartes blanches, texte encre. L'accent d'action reste
+     le bleu Nova ; les couleurs de statut
      sont assombries pour garder le contraste sur fond clair. */
   --nova-light-window: #f5f5f7;
   --nova-light-sidebar: #ececee;
   --nova-light-surface: #ffffff;
-  --nova-light-inset: #ececee;
+  --nova-light-inset: #f0f0f2;
   --nova-light-text: #1d1d1f;
   --nova-light-text-secondary: #6e6e73;
   --nova-light-hairline: rgba(0, 0, 0, 0.08);
+  --nova-light-hairline-strong: rgba(0, 0, 0, 0.14);
   --nova-light-accent-hover: #0066cc;
   --nova-light-success: #248a3d;
+  --nova-light-warning: #b25000; /* ambre assombri : lisible sur blanc */
   --nova-light-danger: #d70015;
   --nova-light-ultra: #7a5cba; /* lilas Ultra assombri : lisible sur blanc */
 
   /* ---- Paire claire/sombre (consommée par App.css data-theme) --------------
      Le sélecteur de thème bascule réellement : sombre = identité « bleu
-     nuit », clair = palette Apple ci-dessus. */
+     nuit », clair = palette claire Nova ci-dessus. */
   --light-color-text: var(--nova-light-text);
   --light-color-background: var(--nova-light-window);
   --light-color-logo-primary: var(--nova-accent);
@@ -59,26 +66,48 @@
   /* #da5893 (rose Handy) -> bleu d'action Nova. C'est LA couleur des boutons
      primaires et des interrupteurs actifs. */
   --color-background-ui: var(--nova-accent);
-  --color-text-stroke: var(--nova-text);
+  --color-text-stroke: var(--nova-light-text);
   --color-mid-gray: var(--nova-text-secondary);
 
-  /* ---- Tokens actifs (par défaut = sombre Nova) -------------------------- */
-  --color-text: var(--nova-text);
-  --color-background: var(--nova-window);
+  /* ---- Active tokens (default = light Nova) ------------------------------ */
+  --color-text: var(--nova-light-text);
+  --color-background: var(--nova-light-window);
   --color-logo-primary: var(--nova-accent);
-  --color-logo-stroke: var(--nova-text);
+  --color-logo-stroke: var(--nova-light-text);
 
   /* ---- Surfaces Nova exposées à Tailwind (voir App.css) ------------------ */
-  --color-surface: var(--nova-surface);
-  --color-sidebar: var(--nova-sidebar);
-  --color-inset: var(--nova-inset);
-  --color-text-secondary: var(--nova-text-secondary);
-  --color-hairline: var(--nova-hairline);
+  --color-surface: var(--nova-light-surface);
+  --color-sidebar: var(--nova-light-sidebar);
+  --color-inset: var(--nova-light-inset);
+  --color-text-secondary: var(--nova-light-text-secondary);
+  --color-hairline: var(--nova-light-hairline);
+  --color-hairline-strong: var(--nova-light-hairline-strong);
   --color-accent: var(--nova-accent);
-  --color-accent-hover: var(--nova-accent-hover);
-  --color-success: var(--nova-success);
-  --color-danger: var(--nova-danger);
-  --color-ultra: var(--nova-ultra);
+  --color-accent-hover: var(--nova-light-accent-hover);
+  --color-success: var(--nova-light-success);
+  --color-warning: var(--nova-light-warning);
+  --color-danger: var(--nova-light-danger);
+  --color-ultra: var(--nova-light-ultra);
+
+  /* ---- Quiet Engineering system -----------------------------------------
+     A deliberately small semantic layer. Values follow a 4px rhythm and are
+     shared by primitives, Campus surfaces and the recording overlay. */
+  --nova-space-xs: 0.25rem;
+  --nova-space-sm: 0.5rem;
+  --nova-space-md: 1rem;
+  --nova-space-lg: 1.5rem;
+  --nova-space-xl: 2rem;
+  --nova-radius-control: 9px;
+  --nova-radius-card: 13px;
+  --nova-radius-modal: 16px;
+  --nova-control-height: 2.5rem;
+  --nova-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --nova-shadow-floating: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --nova-shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.18);
+  --nova-motion-micro: 120ms;
+  --nova-motion-standard: 180ms;
+  --nova-motion-panel: 220ms;
+  --nova-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
   /* ---- Orbe « bille de verre » (personnalisable Nova Ultra) --------------
      5 arrêts du dégradé (centre → bord) + halo. Ces défauts (bleu Nova) sont
@@ -89,4 +118,32 @@
   --orb-s3: #93a6e0;
   --orb-s4: #7e92d6;
   --orb-glow: 126, 146, 214;
+
+  /* ---- Géométrie (planche de fondation « Quiet Engineering ») -------------
+     Quatre rayons seulement, du plus serré au plus large. La pilule (999px)
+     reste réservée au statut. Exposés à Tailwind dans App.css : rounded-chip,
+     rounded-control, rounded-card, rounded-panel. */
+  --radius-chip: 8px; /* badge, pastille          */
+  --radius-control: 10px; /* bouton, champ            */
+  --radius-card: 12px; /* carte, groupe            */
+  --radius-panel: 16px; /* panneau, dialogue        */
+
+  /* Hauteurs de contrôle. Exprimées en px et non en rem : la base typographique
+     est à 15px, un `h-9` Tailwind vaudrait 33,75px et non 36px. */
+  --control-h-sm: 32px;
+  --control-h: 36px;
+  --control-h-lg: 40px;
+
+  /* ---- Élévation : trois niveaux, jamais plus ----------------------------
+     1 surface posée · 2 panneau flottant, menu · 3 overlay modal.
+     Partout ailleurs, un filet `--color-hairline` suffit. */
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-floating: 0 8px 24px -8px rgba(0, 0, 0, 0.65);
+  --shadow-overlay: 0 24px 60px -16px rgba(0, 0, 0, 0.8);
+
+  /* ---- Mouvement : court, sobre, interruptible --------------------------- */
+  --motion-micro: 120ms; /* survol, appui, bascule   */
+  --motion-standard: 180ms; /* apparition, sélection    */
+  --motion-panel: 220ms; /* dialogue, overlay        */
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }

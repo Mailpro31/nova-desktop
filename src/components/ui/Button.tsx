@@ -18,28 +18,35 @@ export const Button: React.FC<ButtonProps> = ({
   size = "md",
   ...props
 }) => {
+  // Planche de fondation : rayon 10 px, hauteur de contrôle fixe, filet de
+  // contour, focus visible au clavier uniquement, transition micro (120 ms).
   const baseClasses =
-    "font-medium rounded-lg border focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
+    "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap font-medium rounded-control border cursor-pointer " +
+    "transition-colors duration-[120ms] motion-reduce:transition-none " +
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
+    "disabled:pointer-events-none disabled:opacity-40 disabled:cursor-not-allowed";
 
+  // Un seul accent d'action : le bleu Nova. Les autres variantes s'appuient sur
+  // les surfaces et les filets, jamais sur une couleur propre.
   const variantClasses = {
     primary:
-      "text-white bg-background-ui border-background-ui hover:bg-background-ui/80 hover:border-background-ui/80 focus:ring-1 focus:ring-background-ui",
+      "text-white bg-accent border-accent hover:bg-accent-hover hover:border-accent-hover",
     "primary-soft":
-      "text-text bg-logo-primary/20 border-transparent hover:bg-logo-primary/30 focus:ring-1 focus:ring-logo-primary",
+      "text-accent bg-accent/10 border-transparent hover:bg-accent/15",
     secondary:
-      "bg-mid-gray/10 border-mid-gray/20 hover:bg-background-ui/30 hover:border-logo-primary focus:outline-none",
+      "text-text bg-surface border-hairline-strong hover:bg-accent/10 hover:border-accent",
     danger:
-      "text-white bg-red-600 border-mid-gray/20 hover:bg-red-700 hover:border-red-700 focus:ring-1 focus:ring-red-500",
+      "text-white bg-danger border-danger hover:bg-danger/85 focus-visible:outline-danger",
     "danger-ghost":
-      "text-red-400 border-transparent hover:text-red-300 hover:bg-red-500/10 focus:bg-red-500/20",
+      "text-danger border-transparent hover:bg-danger/10 active:bg-danger/15 focus-visible:outline-danger",
     ghost:
-      "text-current border-transparent hover:bg-mid-gray/10 hover:border-logo-primary focus:bg-mid-gray/20",
+      "text-current border-transparent hover:bg-mid-gray/10 active:bg-mid-gray/15",
   };
 
   const sizeClasses = {
-    sm: "px-2 py-1 text-xs",
-    md: "px-4 py-[5px] text-sm",
-    lg: "px-4 py-2 text-base",
+    sm: "h-[var(--control-h-sm)] px-3 text-[13px]",
+    md: "h-[var(--control-h)] px-3.5 text-sm",
+    lg: "h-[var(--control-h-lg)] px-[18px] text-sm font-semibold",
   };
 
   return (

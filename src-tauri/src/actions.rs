@@ -2,6 +2,7 @@
 use crate::apple_intelligence;
 use crate::audio_feedback::{play_feedback_sound, play_feedback_sound_blocking, SoundType};
 use crate::audio_toolkit::{is_microphone_access_denied, is_no_input_device_error, VadPolicy};
+use crate::commands::campus::{self, CampusError};
 use crate::managers::audio::AudioRecordingManager;
 use crate::managers::history::HistoryManager;
 use crate::managers::model::ModelManager;
@@ -1073,6 +1074,112 @@ pub(crate) async fn post_process_transcription(
     result
 }
 
+/// Le Style réellement appliqué : son identifiant **et** sa consigne.
+///
+/// Les deux voyagent ensemble parce qu'ils doivent rester d'accord. Le serveur
+/// se sert de l'identifiant pour reconnaître un Style d'organisation et en
+/// résoudre lui-même la consigne ; s'il recevait un identifiant qui ne
+/// correspond pas au prompt appliqué ici, il exécuterait autre chose que ce
+/// que l'utilisateur a choisi.
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct ResolvedStyle {
+    pub id: String,
+    pub prompt: String,
+}
+
+/// Résout le Style effectif à envoyer au serveur Nova Campus pour la
+/// reformulation. Tient compte du Style automatique, du Style sélectionné et
+/// du repli sur le style gratuit si le palier n'est pas disponible.
+///
+/// Le repli déplace **l'identifiant en même temps que la consigne**. Ne
+/// déplacer que la consigne laisserait partir l'identifiant d'un Style que le
+/// poste a justement refusé d'appliquer, et le serveur — qui fait autorité sur
+/// les Styles d'organisation — résoudrait celui-là.
+pub(crate) fn resolve_effective_style(
+    app: &AppHandle,
+    auto_style_override: Option<&str>,
+) -> Option<ResolvedStyle> {
+    let settings = get_settings(app);
+    let license_key = settings.license_key.as_deref().unwrap_or("");
+
+    let selected_prompt_id = match auto_style_override {
+        Some(id) => id.to_string(),
+        None => settings.post_process_selected_prompt_id.clone()?,
+    };
+
+    effective_style(&settings, &selected_prompt_id, license_key)
+}
+
+/// La décision seule, sans `AppHandle` : c'est elle qui doit rester vraie.
+fn effective_style(
+    settings: &AppSettings,
+    selected_prompt_id: &str,
+    license_key: &str,
+) -> Option<ResolvedStyle> {
+    let prompt = resolve_style_prompt(settings, selected_prompt_id)?;
+
+    if style_is_locked(selected_prompt_id, license_key) {
+        debug!("Style '{selected_prompt_id}' réservé — repli sur le Style gratuit");
+        settings
+            .post_process_prompts
+            .iter()
+            .find(|p| p.id == "default_improve_transcriptions")
+            .map(|p| ResolvedStyle {
+                id: p.id.clone(),
+                prompt: p.prompt.clone(),
+            })
+    } else {
+        Some(ResolvedStyle {
+            id: selected_prompt_id.to_string(),
+            prompt,
+        })
+    }
+}
+
+/// La consigne d'un Style, quelle que soit sa provenance.
+///
+/// Trois origines, un seul point de résolution :
+///
+/// - **intégré** et **personnel** vivent dans `post_process_prompts`, les
+///   réglages de l'utilisateur ;
+/// - **organisation** vit dans le catalogue publié, séparément — ces réglages
+///   appartiennent à l'utilisateur, et y écrire du contenu que l'organisation
+///   contrôle mélangerait deux durées de vie et deux autorités.
+///
+/// Chercher dans le catalogue **d'abord** : un Style d'organisation porte un
+/// préfixe réservé, donc aucune collision n'est possible, et l'ordre rend la
+/// lecture évidente.
+fn resolve_style_prompt(settings: &crate::settings::AppSettings, style_id: &str) -> Option<String> {
+    if let Some(instruction) =
+        crate::organization_packages::style_instruction(active_organization().as_deref(), style_id)
+    {
+        return Some(instruction);
+    }
+    settings
+        .post_process_prompts
+        .iter()
+        .find(|prompt| prompt.id == style_id)
+        .map(|prompt| prompt.prompt.clone())
+}
+
+/// L'organisation dont le poste consomme le contenu, s'il y en a une.
+fn active_organization() -> Option<String> {
+    crate::organization_packages::current_catalog().and_then(|catalog| catalog.organization_id)
+}
+
+/// Le palier requis manque-t-il pour ce Style ?
+///
+/// Un Style d'organisation n'en exige aucun : l'établissement paie déjà son
+/// déploiement, et lui facturer une seconde fois le contenu qu'il distribue à
+/// ses propres membres se défendrait mal. Son autorisation vient d'ailleurs —
+/// appartenance, package actif, policies.
+fn style_is_locked(style_id: &str, license_key: &str) -> bool {
+    match crate::licensing::style_required_feature(style_id) {
+        None => false,
+        Some(feature) => !crate::licensing::has(feature, license_key, 0),
+    }
+}
+
 async fn post_process_with_provider(
     app: &AppHandle,
     settings: &AppSettings,
@@ -1109,12 +1216,8 @@ async fn post_process_with_provider(
         },
     };
 
-    let prompt = match settings
-        .post_process_prompts
-        .iter()
-        .find(|prompt| prompt.id == selected_prompt_id)
-    {
-        Some(prompt) => prompt.prompt.clone(),
+    let prompt = match resolve_style_prompt(&settings, &selected_prompt_id) {
+        Some(prompt) => prompt,
         None => {
             debug!(
                 "Post-processing skipped because prompt '{}' was not found",
@@ -1129,19 +1232,13 @@ async fn post_process_with_provider(
     // Nova Ultra (`custom_styles`). Sans le palier requis, on retombe sur le
     // Style « Transcription améliorée » (gratuit) — la dictée est quand même
     // nettoyée, jamais bloquée.
-    let style_is_free = crate::licensing::FREE_STYLE_IDS.contains(&selected_prompt_id.as_str());
-    let required_feature = if crate::licensing::is_builtin_style(&selected_prompt_id) {
-        "all_styles"
-    } else {
-        "custom_styles"
-    };
     // Style effectivement appliqué (après repli éventuel sur le gratuit) : sert à
     // choisir la température (fidèle vs libre) cohérente avec le prompt réel.
     let mut effective_style_id = selected_prompt_id.clone();
-    let prompt = if !style_is_free && !crate::licensing::has(required_feature, license_key, 0) {
+    let prompt = if style_is_locked(&selected_prompt_id, license_key) {
         debug!(
-            "Style '{}' réservé ({}) — repli sur le Style gratuit",
-            selected_prompt_id, required_feature
+            "Style '{}' réservé — repli sur le Style gratuit",
+            selected_prompt_id
         );
         effective_style_id = "default_improve_transcriptions".to_string();
         settings
@@ -1980,7 +2077,11 @@ impl ShortcutAction for TranscribeAction {
                                                  // la reformulation ne dépend plus d'un second raccourci dédié. Le
                                                  // raccourci de post-traitement (`self.post_process`) force l'application
                                                  // même si le toggle était coupé.
-        let post_process = self.post_process || get_settings(app).post_process_enabled;
+                                                 // En mode campus, la reformulation est TOUJOURS active (spec §C :
+                                                 // « Reformulation toujours active »), indépendamment du toggle.
+        let post_process = self.post_process
+            || get_settings(app).post_process_enabled
+            || crate::licensing::is_campus_enabled();
         let cancel_generation = rm.cancel_generation();
 
         // Style « Automatique » : on lit la fenêtre au premier plan MAINTENANT
@@ -2069,21 +2170,9 @@ impl ShortcutAction for TranscribeAction {
                         crate::audio_toolkit::save_wav_file(&wav_path, &samples_for_wav)
                     });
 
-                    // Transcribe concurrently with WAV save. If a live stream was
-                    // running, finalize it and use its text (all audio was already
-                    // fed to the stream); otherwise batch-transcribe the samples.
-                    let transcription_time = Instant::now();
-                    let transcription_result = match tm.finalize_stream() {
-                        // A finalized stream with usable text wins. An empty result
-                        // (no active stream, produced nothing, or a finalize error
-                        // after the engine was returned) falls back to a full batch
-                        // transcription of the same audio. A finalize timeout is
-                        // surfaced instead — the worker may still hold the engine,
-                        // so a batch fallback would contend with it.
-                        Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
-                        Ok(_) => tm.transcribe(samples),
-                        Err(err) => Err(err),
-                    };
+                    // Finalize stream first to clean up worker state and capture
+                    // any local result as a fallback.
+                    let stream_result = tm.finalize_stream();
 
                     // Await WAV save and verify
                     let wav_saved = match wav_handle.await {
@@ -2116,6 +2205,99 @@ impl ShortcutAction for TranscribeAction {
                         return;
                     }
 
+                    // En mode campus, on envoie le WAV au serveur. Le stream local
+                    // a déjà été finalisé ; son texte sert de secours si le serveur
+                    // est injoignable ou renvoie une erreur non-fatale.
+                    let transcription_time = Instant::now();
+                    let mut campus_used = false;
+                    let mut campus_error: Option<CampusError> = None;
+
+                    let transcription_result: Result<String, anyhow::Error> = if wav_saved {
+                        if let Some(session) = campus::should_use_campus(&ah).await {
+                            match campus::transcribe_campus(&ah, &wav_path_for_verify, &session)
+                                .await
+                            {
+                                Ok(text) => {
+                                    campus_used = true;
+                                    campus::invalidate_server_reachability_cache(
+                                        &session.server_url,
+                                    );
+                                    if post_process {
+                                        if let Some(style) = resolve_effective_style(
+                                            &ah,
+                                            auto_style_override.as_deref(),
+                                        ) {
+                                            match campus::reformulate_campus(
+                                                &text,
+                                                &style.id,
+                                                &style.prompt,
+                                                &session,
+                                            )
+                                            .await
+                                            {
+                                                Ok(reformulated) => Ok(reformulated),
+                                                Err(e) => {
+                                                    campus_error = Some(e);
+                                                    Ok(text)
+                                                }
+                                            }
+                                        } else {
+                                            Ok(text)
+                                        }
+                                    } else {
+                                        Ok(text)
+                                    }
+                                }
+                                Err(e) => {
+                                    campus_error = Some(e);
+                                    match stream_result {
+                                        Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                                        Ok(_) => tm.transcribe(samples),
+                                        Err(err) => Err(err),
+                                    }
+                                }
+                            }
+                        } else {
+                            // Session campus présente mais serveur injoignable
+                            // (cache ou vérification fraîche) : repli local +
+                            // notification discrète, jamais de perte.
+                            if campus::is_campus_enabled(&ah) && campus::has_campus_session(&ah) {
+                                let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                            }
+                            match stream_result {
+                                Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                                Ok(_) => tm.transcribe(samples),
+                                Err(err) => Err(err),
+                            }
+                        }
+                    } else {
+                        match stream_result {
+                            Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                            Ok(_) => tm.transcribe(samples),
+                            Err(err) => Err(err),
+                        }
+                    };
+
+                    // Gestion des erreurs campus : 401 -> déconnexion ;
+                    // autre erreur + pas de secours local -> notification.
+                    if let Some(err) = campus_error {
+                        match err {
+                            CampusError::Unauthorized => {
+                                campus::clear_campus_session_and_notify(&ah);
+                            }
+                            CampusError::Network(_) => {
+                                warn!("Campus server request failed: {}", err);
+                                let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                            }
+                            _ => {
+                                warn!("Campus server request failed: {}", err);
+                                if transcription_result.is_err() {
+                                    let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                                }
+                            }
+                        }
+                    }
+
                     match transcription_result {
                         Ok(transcription) => {
                             debug!(
@@ -2145,11 +2327,15 @@ impl ShortcutAction for TranscribeAction {
                                 tm.emit_stream_working(StreamWorkKind::Polishing);
                             }
                             let output_processing_time = Instant::now();
+                            // Si le serveur campus a déjà reformulé, on désactive la
+                            // reformulation locale pour éviter un double traitement.
+                            let effective_post_process =
+                                if campus_used { false } else { post_process };
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
                                     &ah,
                                     &transcription,
-                                    post_process,
+                                    effective_post_process,
                                     auto_style_override.clone(),
                                 ),
                                 || rm.was_cancelled_since(cancel_generation),
@@ -2162,7 +2348,7 @@ impl ShortcutAction for TranscribeAction {
                                 return;
                             };
                             crate::performance::record_latency(
-                                if post_process {
+                                if effective_post_process {
                                     "transcript_to_rewrite"
                                 } else {
                                     "transcript_to_output"
@@ -2340,6 +2526,22 @@ impl ShortcutAction for TestAction {
     }
 }
 
+/// Raccourci Nova Commands — capture la sélection courante puis ouvre Nova.
+///
+/// Expérimental : sans raccourci par défaut, et sans effet tant que le réglage
+/// `nova_commands_enabled` est désactivé (vérifié dans `trigger_command`).
+struct CommandAction;
+
+impl ShortcutAction for CommandAction {
+    fn start(&self, app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        crate::nova_commands::trigger_command(app);
+    }
+
+    fn stop(&self, _app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        // Action ponctuelle : rien à faire au relâchement.
+    }
+}
+
 // Static Action Map
 pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::new(|| {
     let mut map = HashMap::new();
@@ -2358,6 +2560,10 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
         Arc::new(CancelAction) as Arc<dyn ShortcutAction>,
     );
     map.insert(
+        "command".to_string(),
+        Arc::new(CommandAction) as Arc<dyn ShortcutAction>,
+    );
+    map.insert(
         "test".to_string(),
         Arc::new(TestAction) as Arc<dyn ShortcutAction>,
     );
@@ -2369,17 +2575,77 @@ mod tests {
     use super::{
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
         clean_llm_output, complete_unless_cancelled, context_looks_like_current_draft,
-        custom_variables_block, is_blank_transcription, local_primary_timeout,
+        custom_variables_block, effective_style, is_blank_transcription, local_primary_timeout,
         protect_custom_variables, protect_lexicon, replace_keyword_ci, resolve_variable_tokens,
         restore_lexicon, should_use_streaming_overlay, temperature_for_style, validate_rewrite,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
+    use crate::settings::{AppSettings, LLMPrompt};
     use std::future;
     use std::sync::atomic::{AtomicBool, Ordering};
     use std::sync::Arc;
     use std::thread;
     use std::time::Duration;
+
+    // --- Le Style effectif envoyé au serveur : identifiant ET consigne ---
+
+    /// Des réglages nus, puis les Styles dont le test a besoin.
+    ///
+    /// `AppSettings` porte `#[serde(default)]` : partir d'un objet vide donne
+    /// les défauts sans avoir à énumérer trente champs sans rapport.
+    fn settings_with(prompts: &[(&str, &str)]) -> AppSettings {
+        let mut settings: AppSettings = serde_json::from_str("{}").expect("défauts");
+        settings.post_process_prompts = prompts
+            .iter()
+            .map(|(id, prompt)| LLMPrompt {
+                id: (*id).to_string(),
+                name: (*id).to_string(),
+                prompt: (*prompt).to_string(),
+            })
+            .collect();
+        settings
+    }
+
+    #[test]
+    fn effective_style_keeps_the_identifier_of_the_style_it_applies() {
+        let settings = settings_with(&[(
+            "default_improve_transcriptions",
+            "Améliore la transcription.",
+        )]);
+        let resolved = effective_style(&settings, "default_improve_transcriptions", "")
+            .expect("Style gratuit résolu");
+        assert_eq!(resolved.id, "default_improve_transcriptions");
+        assert_eq!(resolved.prompt, "Améliore la transcription.");
+    }
+
+    #[test]
+    fn a_locked_style_moves_its_identifier_with_its_prompt() {
+        // L'invariant du chemin campus : le serveur fait autorité sur les
+        // Styles d'organisation et résout la consigne à partir de
+        // l'identifiant. Replier la consigne sans replier l'identifiant lui
+        // ferait exécuter le Style que le poste vient justement de refuser.
+        let settings = settings_with(&[
+            (
+                "default_improve_transcriptions",
+                "Améliore la transcription.",
+            ),
+            ("style-personnel-1742", "Écris en vers."),
+        ]);
+        let resolved = effective_style(&settings, "style-personnel-1742", "")
+            .expect("repli sur le Style gratuit");
+        assert_eq!(resolved.id, "default_improve_transcriptions");
+        assert_eq!(resolved.prompt, "Améliore la transcription.");
+    }
+
+    #[test]
+    fn an_unknown_style_resolves_to_nothing_rather_than_to_a_guess() {
+        let settings = settings_with(&[(
+            "default_improve_transcriptions",
+            "Améliore la transcription.",
+        )]);
+        assert!(effective_style(&settings, "style-absent", "").is_none());
+    }
 
     // --- Protection du lexique personnel autour de la reformulation ---
 

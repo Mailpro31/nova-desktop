@@ -20,20 +20,31 @@
   --color-inset: var(--color-inset);
   --color-text-secondary: var(--color-text-secondary);
   --color-hairline: var(--color-hairline);
+  --color-hairline-strong: var(--color-hairline-strong);
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
   --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
   --color-danger: var(--color-danger);
   --color-ultra: var(--color-ultra);
+
+  /* Géométrie et élévation (src/styles/theme.css) exposées comme utilitaires :
+     rounded-chip / rounded-control / rounded-card / rounded-panel,
+     shadow-raised / shadow-floating / shadow-overlay. */
+  --radius-chip: var(--radius-chip);
+  --radius-control: var(--radius-control);
+  --radius-card: var(--radius-card);
+  --radius-panel: var(--radius-panel);
+
+  --shadow-raised: var(--shadow-raised);
+  --shadow-floating: var(--shadow-floating);
+  --shadow-overlay: var(--shadow-overlay);
 }
 
 :root {
-  /* Typographie — stack système Apple (SF Pro), identité Nova. La taille de
-     base reste 15px : c'est elle qui règle le rythme d'espacement rem de
-     Tailwind, on ne la touche pas pour ne pas déformer la mise en page. */
-  font-family:
-    -apple-system, "SF Pro Display", "SF Pro Text", "Segoe UI", Inter,
-    system-ui, sans-serif;
+  /* Native Windows typography first. The 15px base preserves the established
+     rem rhythm while Segoe UI provides the platform's expected metrics. */
+  font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   font-size: 15px;
   line-height: 24px;
   font-weight: 400;
@@ -61,6 +72,35 @@
   /* Apply colors */
   color: var(--color-text);
   background-color: var(--color-background);
+  color-scheme: light dark;
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .container {
@@ -73,8 +113,22 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    /* Just a bit darker than the (already dark) background, keeping its warm tint */
+  :root:not([data-theme="light"]) {
+    --color-text: var(--nova-text);
+    --color-background: var(--nova-window);
+    --color-logo-primary: var(--nova-accent);
+    --color-logo-stroke: var(--nova-text);
+    --color-surface: var(--nova-surface);
+    --color-sidebar: var(--nova-sidebar);
+    --color-inset: var(--nova-inset);
+    --color-text-secondary: var(--nova-text-secondary);
+    --color-hairline: var(--nova-hairline);
+    --color-hairline-strong: var(--nova-hairline-strong);
+    --color-accent-hover: var(--nova-accent-hover);
+    --color-success: var(--nova-success);
+    --color-warning: var(--nova-warning);
+    --color-danger: var(--nova-danger);
+    --color-ultra: var(--nova-ultra);
     --color-log-surface: color-mix(in srgb, var(--color-background), black 15%);
   }
 }
@@ -93,11 +147,19 @@
     --color-inset: var(--nova-light-inset);
     --color-text-secondary: var(--nova-light-text-secondary);
     --color-hairline: var(--nova-light-hairline);
+    --color-hairline-strong: var(--nova-light-hairline-strong);
     --color-accent-hover: var(--nova-light-accent-hover);
     --color-success: var(--nova-light-success);
+    --color-warning: var(--nova-light-warning);
     --color-danger: var(--nova-light-danger);
     --color-ultra: var(--nova-light-ultra);
     --color-log-surface: color-mix(in srgb, var(--color-background), black 4%);
+
+    /* Ombres retendues pour le clair : sur fond pâle, les valeurs sombres
+       écrasent la surface au lieu de la détacher. */
+    --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-floating: 0 8px 24px -8px rgba(0, 0, 0, 0.18);
+    --shadow-overlay: 0 24px 60px -16px rgba(0, 0, 0, 0.26);
   }
 }
 
@@ -109,6 +171,7 @@
  * `system` (or no attribute) leaves the OS in charge.
  */
 :root[data-theme="light"] {
+  color-scheme: light;
   --color-text: var(--nova-light-text);
   --color-background: var(--nova-light-window);
   --color-logo-primary: var(--nova-accent);
@@ -118,18 +181,37 @@
   --color-inset: var(--nova-light-inset);
   --color-text-secondary: var(--nova-light-text-secondary);
   --color-hairline: var(--nova-light-hairline);
+  --color-hairline-strong: var(--nova-light-hairline-strong);
   --color-accent-hover: var(--nova-light-accent-hover);
   --color-success: var(--nova-light-success);
+  --color-warning: var(--nova-light-warning);
   --color-danger: var(--nova-light-danger);
   --color-ultra: var(--nova-light-ultra);
   --color-log-surface: color-mix(in srgb, var(--color-background), black 4%);
+
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-floating: 0 8px 24px -8px rgba(0, 0, 0, 0.18);
+  --shadow-overlay: 0 24px 60px -16px rgba(0, 0, 0, 0.26);
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --color-text: var(--dark-color-text);
   --color-background: var(--dark-color-background);
   --color-logo-primary: var(--dark-color-logo-primary);
   --color-logo-stroke: var(--dark-color-logo-stroke);
+  --color-surface: var(--nova-surface);
+  --color-sidebar: var(--nova-sidebar);
+  --color-inset: var(--nova-inset);
+  --color-text-secondary: var(--nova-text-secondary);
+  --color-hairline: var(--nova-hairline);
+  --color-hairline-strong: var(--nova-hairline-strong);
+  --color-accent-hover: var(--nova-accent-hover);
+  --color-success: var(--nova-success);
+  --color-warning: var(--nova-warning);
+  --color-danger: var(--nova-danger);
+  --color-ultra: var(--nova-ultra);
+  --color-log-surface: color-mix(in srgb, var(--color-background), black 15%);
 }
 
 /* macOS - tint native overlay scrollbar thumb */
@@ -167,6 +249,31 @@
   }
 }
 
+/* Mouvement réduit — exigence de la planche de fondation et critère
+   d'accessibilité pour l'enseignement supérieur. « Réduit » ne veut pas dire
+   « aucun retour » : les transitions de couleur et d'opacité restent utiles à
+   la compréhension, seuls les déplacements, rotations et animations en boucle
+   sont neutralisés. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Les transformations sont la principale source d'inconfort vestibulaire. */
+  *,
+  *::before,
+  *::after {
+    transition-property:
+      color, background-color, border-color, outline-color, fill, stroke,
+      opacity, box-shadow !important;
+  }
+}
+
 .logo-primary {
   fill: var(--color-logo-primary);
 }
@@ -175,4 +282,86 @@
   fill: var(--color-logo-stroke);
   stroke: var(--color-logo-stroke);
   stroke-width: 1;
+}
+
+@keyframes nova-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes nova-dialog-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+.nova-dialog-backdrop {
+  animation: nova-dialog-backdrop-in var(--nova-motion-standard) ease-out;
+}
+
+.nova-dialog-panel {
+  animation: nova-dialog-panel-in var(--nova-motion-panel) var(--nova-ease);
+}
+
+/* Le bloc `prefers-reduced-motion` plus haut neutralise déjà durées et
+   transformations globalement ; ici on annule seulement le décalage d'entrée
+   du panneau de dialogue, qui est une transformation persistante. */
+@media (prefers-reduced-motion: reduce) {
+  .nova-dialog-panel {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nova-translucent {
+    background: var(--color-sidebar) !important;
+    backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-hairline: color-mix(in srgb, var(--color-text) 42%, transparent);
+  }
+}
+
+/* Respiration de l'orbe Nova sur l'accueil.
+   `motion-safe:` la désactive déjà quand le mouvement est réduit ; le bloc
+   `prefers-reduced-motion` ci-dessus la neutraliserait de toute façon. */
+@keyframes nova-orb-breath {
+  0%,
+  100% {
+    transform: scale(0.96);
+    filter: brightness(0.98);
+  }
+  50% {
+    transform: scale(1);
+    filter: brightness(1.04);
+  }
+}
+
+/* Écoute : respiration plus ample et plus rapide que le repos. */
+@keyframes nova-orb-listen {
+  0%,
+  100% {
+    transform: scale(0.92);
+    filter: brightness(0.96);
+  }
+  50% {
+    transform: scale(1.04);
+    filter: brightness(1.1);
+  }
+}
+
+/* Traitement : pulsation d'intensité, sans rotation ni progression feinte. */
+@keyframes nova-orb-work {
+  0%,
+  100% {
+    filter: brightness(0.9);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
 }

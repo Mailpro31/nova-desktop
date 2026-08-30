@@ -9,6 +9,8 @@ import { AppDataDirectory } from "../AppDataDirectory";
 import { ShowWhatsNewOnUpdate } from "../ShowWhatsNewOnUpdate";
 import { LogDirectory } from "../debug";
 import { DebugModeToggle } from "../DebugModeToggle";
+import { CampusAboutSettings } from "./CampusAboutSettings";
+import { isOrganizationMode } from "@/lib/mode";
 
 export const AboutSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -28,8 +30,12 @@ export const AboutSettings: React.FC = () => {
     fetchVersion();
   }, []);
 
+  if (isOrganizationMode()) {
+    return <CampusAboutSettings />;
+  }
+
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
+    <div className="space-y-6">
       <SettingsGroup title={t("settings.about.title")}>
         <SettingContainer
           title={t("settings.about.version.title")}

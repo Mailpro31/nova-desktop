@@ -8,6 +8,8 @@ mod catalog;
 pub mod cli;
 mod clipboard;
 mod commands;
+mod deployment;
+mod dictation_state;
 mod helpers;
 mod input;
 mod lexicon_learning;
@@ -21,6 +23,18 @@ mod meeting_live;
 mod meeting_segmenter;
 mod meeting_session;
 mod meeting_transcript;
+mod nova_commands;
+/// Modèle d'organisation partagé (éditions, membres, groupes). Voir
+/// `docs/architecture/organization-foundation.md`.
+pub mod organization;
+/// Découverte d'organisation : trouver son service sans taper une adresse.
+/// Voir `docs/architecture/organization-discovery.md`.
+mod organization_discovery;
+mod organization_packages;
+/// Connexion Organization par SSO (Authorization Code + PKCE), Microsoft Entra
+/// et Google Workspace. Voir `docs/architecture/microsoft-entra-sso.md` et
+/// `docs/architecture/google-workspace-sso.md`.
+mod organization_sso;
 mod overlay;
 mod performance;
 pub mod portable;
@@ -111,7 +125,7 @@ fn build_console_filter() -> env_filter::Filter {
     builder.build()
 }
 
-fn show_main_window(app: &AppHandle) {
+pub(crate) fn show_main_window(app: &AppHandle) {
     if let Some(main_window) = app.get_webview_window("main") {
         if let Err(e) = main_window.unminimize() {
             log::error!("Failed to unminimize webview window: {}", e);
@@ -216,6 +230,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(tray::CurrentTrayIconState::new());
     app_handle.manage(local_llm::LocalLlmProcess::default());
     app_handle.manage(commands::meeting::MeetingSessionState::default());
+    app_handle.manage(commands::campus::CampusState::default());
 
     // Note: Shortcuts are NOT initialized here.
     // The frontend is responsible for calling the `initialize_shortcuts` command
@@ -637,6 +652,7 @@ pub fn run(cli_args: CliArgs) {
             trigger_update_check,
             show_main_window_command,
             commands::cancel_operation,
+            commands::trigger_transcription,
             commands::finish_recording,
             commands::copy_transcription,
             commands::dismiss_recording_overlay,
@@ -644,6 +660,49 @@ pub fn run(cli_args: CliArgs) {
             commands::get_app_dir_path,
             commands::get_app_settings,
             commands::get_default_settings,
+            nova_commands::nova_command_capture_selection,
+            nova_commands::nova_command_replace,
+            nova_commands::nova_command_diagnostics,
+            commands::campus::get_campus_config,
+            commands::campus::fetch_campus_server_config,
+            commands::campus::set_campus_mode,
+            organization_sso::sign_in_with_organization,
+            organization_sso::organization_auth_providers,
+            organization_discovery::discover_organization,
+            deployment::get_deployment_state,
+            commands::campus::load_campus_session,
+            commands::campus::clear_campus_session,
+            commands::campus::logout_campus_session,
+            commands::campus::complete_campus_onboarding,
+            commands::campus::check_campus_server_reachability,
+            commands::campus::request_campus_auth,
+            commands::campus::verify_campus_auth,
+            commands::campus::start_campus_entra_auth,
+            commands::campus::poll_campus_entra_auth,
+            commands::campus::get_campus_me,
+            commands::campus::get_campus_vocabulary,
+            commands::campus::add_campus_dictionary_entry,
+            commands::campus::delete_campus_dictionary_entry,
+            commands::campus::learn_campus_dictionary,
+            commands::campus::export_campus_dictionary,
+            commands::campus::import_campus_dictionary,
+            commands::campus::analyze_campus_document,
+            commands::campus::add_campus_snippet,
+            commands::campus::delete_campus_snippet,
+            commands::campus::get_campus_formatting_rules,
+            commands::campus::add_campus_formatting_rule,
+            commands::campus::delete_campus_formatting_rule,
+            commands::campus::execute_campus_command,
+            commands::campus::get_campus_ai_skills,
+            commands::campus::refresh_organization_packages,
+            commands::campus::fetch_learning_catalog,
+            commands::campus::fetch_learning_progress,
+            commands::campus::update_learning_progress,
+            commands::campus::request_learning_feedback,
+            commands::campus::clear_organization_packages,
+            commands::campus::run_organization_skill,
+            commands::campus::format_campus_engineering_notes,
+            commands::campus::transcribe_campus_audio_file,
             commands::get_lexicon_suggestions,
             commands::accept_lexicon_suggestion,
             commands::dismiss_lexicon_suggestion,
@@ -719,6 +778,8 @@ pub fn run(cli_args: CliArgs) {
             managers::history::HistoryUpdatePayload,
             managers::transcription::StreamTextEvent,
             managers::transcription::StreamPhaseEvent,
+            nova_commands::NovaCommandCaptureEvent,
+            dictation_state::DictationStateEvent,
         ]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
@@ -820,6 +881,7 @@ pub fn run(cli_args: CliArgs) {
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_macos_permissions::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .plugin(tauri_plugin_autostart::init(

@@ -6,6 +6,15 @@ name: "Nova — build Windows (.exe)"
 # tauri.conf.json a désactivé signCommand + createUpdaterArtifacts.
 on:
   workflow_dispatch:
+    inputs:
+      nova_mode:
+        description: "Edition Nova à compiler"
+        required: true
+        default: "campus"
+        type: choice
+        options:
+          - campus
+          - personal
 
 jobs:
   windows:
@@ -15,8 +24,11 @@ jobs:
     with:
       platform: "windows-latest"
       target: "x86_64-pc-windows-msvc"
-      build-args: ""
+      # Campus s'installe pour toute la machine (déploiement DSI / Intune / GPO) ;
+      # Personal garde l'installation par utilisateur de tauri.conf.json.
+      build-args: ${{ inputs.nova_mode == 'campus' && '--config src-tauri/tauri.campus.conf.json' || '' }}
       sign-binaries: false
       asset-prefix: "Nova"
       upload-artifacts: true
+      nova_mode: ${{ inputs.nova_mode }}
     secrets: inherit

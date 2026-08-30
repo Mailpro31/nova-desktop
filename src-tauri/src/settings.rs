@@ -519,6 +519,11 @@ pub struct AppSettings {
     pub theme: Theme,
     #[serde(default)]
     pub experimental_enabled: bool,
+    /// Nova Commands (sélection → commande IA → aperçu). **Expérimental,
+    /// désactivé par défaut** : la couche native clavier + presse-papiers doit
+    /// être validée sur applications Windows réelles avant toute activation.
+    #[serde(default)]
+    pub nova_commands_enabled: bool,
     #[serde(default)]
     pub lazy_stream_close: bool,
     #[serde(default)]
@@ -1476,6 +1481,20 @@ pub fn get_default_settings() -> AppSettings {
             current_binding: "escape".to_string(),
         },
     );
+    // Nova Commands — quatrième binding, volontairement SANS raccourci par
+    // défaut. Le système doit être prêt à en recevoir un, mais choisir
+    // arbitrairement une combinaison globale risquerait d'entrer en conflit
+    // avec une application existante avant toute validation.
+    bindings.insert(
+        "command".to_string(),
+        ShortcutBinding {
+            id: "command".to_string(),
+            name: "Nova Commands".to_string(),
+            description: "Runs an AI command on the currently selected text.".to_string(),
+            default_binding: String::new(),
+            current_binding: String::new(),
+        },
+    );
 
     AppSettings {
         settings_schema_version: default_settings_schema_version(),
@@ -1537,6 +1556,7 @@ pub fn get_default_settings() -> AppSettings {
         app_language: default_app_language(),
         theme: default_theme(),
         experimental_enabled: false,
+        nova_commands_enabled: false,
         lazy_stream_close: false,
         keyboard_implementation: KeyboardImplementation::default(),
         show_tray_icon: default_show_tray_icon(),
@@ -1944,6 +1964,7 @@ mod tests {
             "append_trailing_space": false,
             "app_language": "en",
             "experimental_enabled": false,
+            "nova_commands_enabled": false,
             "lazy_stream_close": false,
             "keyboard_implementation": "handy_keys",
             "show_tray_icon": true,

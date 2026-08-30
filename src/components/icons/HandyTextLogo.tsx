@@ -1,5 +1,5 @@
 // Verrou de marque Nova : l'orbe « bille de verre » suivi du mot-symbole
-// « Nova » dans la typo système Apple. (Nom de fichier conservé pour ne pas
+// « Nova » dans la typographie système Windows. (Nom de fichier conservé pour ne pas
 // casser les imports existants.)
 const HandyTextLogo = ({
   width,
@@ -48,7 +48,7 @@ const HandyTextLogo = ({
         x="98"
         y="64"
         fill="currentColor"
-        fontFamily='-apple-system, "SF Pro Display", "Segoe UI", Inter, system-ui, sans-serif'
+        fontFamily='"Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif'
         fontSize="58"
         fontWeight="600"
         letterSpacing="-2"

@@ -10,16 +10,19 @@ export const Input: React.FC<InputProps> = ({
   disabled,
   ...props
 }) => {
+  // Planche de fondation : creux + filet de contour, rayon 10 px, hauteur de
+  // contrôle fixe. Le texte d'un champ est du corps, pas du gras.
   const baseClasses =
-    "px-2 py-1 text-sm font-semibold bg-mid-gray/10 border border-mid-gray/80 rounded-lg text-start transition-all duration-150";
+    "text-sm text-text bg-inset border border-hairline-strong rounded-control text-start " +
+    "placeholder:text-text-secondary/75 transition-colors duration-[120ms]";
 
   const interactiveClasses = disabled
-    ? "opacity-60 cursor-not-allowed bg-mid-gray/10 border-mid-gray/40"
-    : "hover:bg-logo-primary/10 hover:border-logo-primary focus:outline-none focus:bg-logo-primary/20 focus:border-logo-primary";
+    ? "opacity-40 cursor-not-allowed"
+    : "hover:border-accent/60 focus:outline-2 focus:outline-offset-2 focus:outline-accent focus:border-accent";
 
   const variantClasses = {
-    default: "px-3 py-2",
-    compact: "px-2 py-1",
+    default: "h-[var(--control-h)] px-3",
+    compact: "h-[var(--control-h-sm)] px-2.5",
   } as const;
 
   return (

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nova Design"
+  short_description: "Windows-native design system for Nova"
+  default_prompt: "Use $nova-design to review and refine this Nova Desktop interface."

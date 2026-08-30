@@ -1,4 +1,5 @@
 pub mod audio;
+pub mod campus;
 pub mod history;
 pub mod license;
 pub mod local_llm;
@@ -24,6 +25,14 @@ pub fn finish_recording(app: AppHandle) {
     if let Some(coordinator) = app.try_state::<crate::TranscriptionCoordinator>() {
         coordinator.finish_current();
     }
+}
+
+/// Déclenche une dictée comme si le raccourci correspondant avait été pressé
+/// (par exemple depuis un bouton de l'écran d'accueil campus).
+#[tauri::command]
+#[specta::specta]
+pub fn trigger_transcription(app: AppHandle, binding_id: String) {
+    crate::signal_handle::send_transcription_input(&app, &binding_id, "HOME_BUTTON");
 }
 
 #[tauri::command]

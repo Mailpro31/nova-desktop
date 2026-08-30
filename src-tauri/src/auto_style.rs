@@ -739,6 +739,20 @@ fn current_foreground(user_blocklist: &[String]) -> (String, String) {
     (title, process)
 }
 
+/// Identité de la fenêtre au premier plan, **sans son titre**.
+///
+/// Nova Commands n'a besoin que du PID — l'identité forte de la cible — et du
+/// nom de processus, à visée de diagnostic. Ne pas relever le titre évite
+/// d'exposer le nom d'un document ou d'une conversation : la question de la
+/// liste noire de confidentialité ne se pose donc pas ici.
+///
+/// Disponible sur toutes les plateformes : la variante non-Windows de
+/// [`current_foreground_full`] renvoie simplement une identité vide.
+pub fn foreground_window_identity() -> (String, u32) {
+    let (_title, process, pid) = current_foreground_full(&[]);
+    (process, pid)
+}
+
 /// (titre, nom d'exécutable en minuscules, PID). Mêmes garanties que
 /// [`current_foreground`] : liste noire respectée (aucun titre lu), champs vides
 /// et PID 0 si indisponible.

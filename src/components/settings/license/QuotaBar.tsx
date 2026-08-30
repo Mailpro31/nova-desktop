@@ -70,7 +70,7 @@ export const QuotaBar: React.FC = () => {
         aria-valuemax={status.limit}
       >
         <div
-          className="h-full rounded-full transition-[width] duration-500"
+          className="h-full rounded-full transition-[width] duration-200 motion-reduce:transition-none"
           style={{
             width: `${pct}%`,
             background: status.blocked

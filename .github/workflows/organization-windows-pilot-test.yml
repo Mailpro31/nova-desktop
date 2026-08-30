@@ -1,0 +1,464 @@
+name: "Nova — validation pilote Windows (Organization)"
+
+# Installe REELLEMENT le paquet Organization sur un runner Windows jetable,
+# puis le desinstalle, le reinstalle, et le purge.
+#
+# ## Pourquoi ce workflow existe
+#
+# Le contrat d'installation etait valide statiquement : parametres, chemins,
+# ACL, cles de registre, tous lus dans le template NSIS et couverts par des
+# tests. Ce qu'aucune lecture ne prouve, c'est qu'un installeur s'installe.
+# La machine de developpement ne peut pas servir de banc d'essai : elle porte
+# de vraies installations Nova, et Windows 11 Famille n'offre ni Sandbox ni
+# Hyper-V. Un runner GitHub est jetable, vierge, et detruit apres usage.
+#
+# ## Ce qu'il ne fait pas
+#
+# Aucune publication, aucun secret de production, aucune ressource cloud. Il ne
+# demande que `contents: read`, et les identifiants qu'il emploie sont
+# synthetiques.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      # Ce qui change le paquet ou son contrat d'installation.
+      - "src-tauri/nsis/**"
+      - "src-tauri/tauri.conf.json"
+      - "src-tauri/tauri.campus.conf.json"
+      - "src-tauri/tauri.windows.conf.json"
+      - "src-tauri/src/deployment.rs"
+      - ".github/workflows/organization-windows-pilot-test.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: organization-windows-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Construire le paquet Organization
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      # Les etapes qui suivent reprennent celles du build Windows x64 de
+      # `build.yml`. Elles ne le reutilisent pas : ce workflow ne s'accorde que
+      # `contents: read` et n'herite d'aucun secret, alors que le job de
+      # `build.yml` demande `contents: write` pour publier des releases. Un
+      # workflow appele ne peut pas obtenir plus de droits que son appelant, et
+      # elargir les droits d'un banc d'essai pour lui epargner quelques lignes
+      # serait un mauvais echange.
+      #
+      # Contrepartie assumee : ces etapes doivent suivre celles de `build.yml`.
+      # C'est pourquoi ce workflow se declenche aussi sur les pull requests qui
+      # touchent au paquet — une divergence se voit alors par un echec, pas au
+      # moment du premier deploiement.
+      - name: Autoriser les chemins longs
+        shell: pwsh
+        run: |
+          New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+            -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+          git config --system core.longpaths true
+
+      - name: Recuperer les sources
+        uses: actions/checkout@v5
+
+      - name: Installer Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Installer Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+          key: organization-pilot-windows-x86_64
+
+      - name: Installer le SDK Vulkan
+        uses: humbletim/install-vulkan-sdk@v1.2
+        with:
+          version: 1.4.309.0
+          cache: true
+
+      - name: Installer les dependances frontend
+        run: bun install
+
+      - name: Localiser le runtime VC++ a embarquer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsRoot = & $vswhere -latest -products * -property installationPath
+          if (-not $vsRoot) { throw "vswhere n'a trouve aucune installation Visual Studio" }
+          $versionFile = Join-Path $vsRoot "VC\Auxiliary\Build\Microsoft.VCRedistVersion.default.txt"
+          $redistVersion = (Get-Content $versionFile).Trim()
+          $archDir = Join-Path $vsRoot "VC\Redist\MSVC\$redistVersion\x64"
+          if (-not (Test-Path $archDir)) { throw "Repertoire redist introuvable : $archDir" }
+          $crt = Get-ChildItem $archDir -Directory -Filter "Microsoft.VC*.CRT" |
+            Sort-Object Name | Select-Object -Last 1
+          if (-not $crt -or -not (Test-Path (Join-Path $crt.FullName "msvcp140.dll"))) {
+            throw "CRT redist absent ou incomplet sous : $archDir"
+          }
+          $omp = Get-ChildItem $archDir -Directory -Filter "Microsoft.VC*.OpenMP" |
+            Sort-Object Name | Select-Object -Last 1
+          if (-not $omp -or -not (Test-Path (Join-Path $omp.FullName "vcomp140.dll"))) {
+            throw "OpenMP redist absent ou incomplet sous : $archDir"
+          }
+          Add-Content -Path $env:GITHUB_ENV -Value "HANDY_VC_REDIST_DIRS=$($crt.FullName);$($omp.FullName)"
+
+      - name: Installer ONNX Runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ORT_VERSION = "1.24.2"
+          $url = "https://github.com/microsoft/onnxruntime/releases/download/v$ORT_VERSION/onnxruntime-win-x64-$ORT_VERSION.zip"
+          Invoke-WebRequest -Uri $url -OutFile ort.zip
+          Expand-Archive -Path ort.zip -DestinationPath ort-dist -Force
+          $ortLib = (Resolve-Path "ort-dist/onnxruntime-win-x64-$ORT_VERSION/lib").Path
+          Add-Content -Path $env:GITHUB_ENV -Value "ORT_LIB_LOCATION=$ortLib"
+          Add-Content -Path $env:GITHUB_ENV -Value "ORT_PREFER_DYNAMIC_LINK=1"
+
+      - name: Installer SPIRV-Headers
+        shell: pwsh
+        run: |
+          vcpkg install spirv-headers:x64-windows
+          if ($LASTEXITCODE -ne 0) { throw "vcpkg install spirv-headers a echoue" }
+          $prefix = "$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows" -replace '\\','/'
+          $combined = if ($env:CMAKE_PREFIX_PATH) { "$prefix;$env:CMAKE_PREFIX_PATH" } else { $prefix }
+          Add-Content $env:GITHUB_ENV "CMAKE_PREFIX_PATH=$combined"
+
+      - name: Construire le paquet NSIS Organization
+        uses: tauri-apps/tauri-action@v0
+        env:
+          # Edition Organization. Aucun secret : ce build ne signe rien et ne
+          # publie rien. `createUpdaterArtifacts` vaut false, donc aucune cle de
+          # signature updater n'est requise.
+          VITE_NOVA_MODE: campus
+        with:
+          args: --config src-tauri/tauri.campus.conf.json --bundles nsis
+
+      - name: Publier le paquet pour le job d'installation
+        uses: actions/upload-artifact@v7
+        with:
+          name: organization-pilot-x86_64-pc-windows-msvc
+          path: src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+          retention-days: 1
+
+  install:
+    name: Installer, desinstaller, reinstaller
+    needs: build
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    env:
+      # Identifiants synthetiques. Ils ne designent aucune organisation reelle
+      # et n'authentifient rien : un identifiant de parc est opaque et sans
+      # pouvoir.
+      DEPLOYMENT_ID: dpl-ci000000000000000000000000test
+      ORGANIZATION_ID: org-ci-pilot-test
+      CHANNEL: stable
+
+    steps:
+      - name: Recuperer le paquet
+        uses: actions/download-artifact@v7
+        with:
+          name: organization-pilot-x86_64-pc-windows-msvc
+          path: package
+
+      - name: Identifier l'installeur
+        id: artifact
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $setup = Get-ChildItem -Path package -Recurse -Filter '*-setup.exe' |
+            Select-Object -First 1
+          if (-not $setup) { throw "aucun installeur NSIS dans l'artefact" }
+          if ($setup.Length -lt 1MB) { throw "installeur anormalement petit : $($setup.Length) octets" }
+          Write-Host "installeur : $($setup.Name) ($([math]::Round($setup.Length/1MB,1)) Mo)"
+          "path=$($setup.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Inspecter le paquet avant de l'executer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $setup = '${{ steps.artifact.outputs.path }}'
+
+          $info = (Get-Item $setup).VersionInfo
+          Write-Host "ProductName : $($info.ProductName)"
+          Write-Host "FileVersion : $($info.FileVersion)"
+          if (-not $info.FileVersion) { throw "aucune version dans le PE" }
+
+          # `requireAdministrator` : c'est ce qui distingue une installation
+          # pour toute la machine d'une installation dans un profil.
+          $bytes = [System.IO.File]::ReadAllBytes($setup)
+          $text = [System.Text.Encoding]::ASCII.GetString($bytes)
+          if ($text -notmatch 'requireAdministrator') {
+            throw "le manifeste ne demande pas l'elevation"
+          }
+          Write-Host "manifeste : requireAdministrator"
+
+          # Aucun secret embarque. Le script NSIS est compresse, donc l'absence
+          # de ces motifs ne prouve pas tout — mais leur presence, elle,
+          # prouverait un probleme.
+          foreach ($pattern in @(
+            '-----BEGIN [A-Z ]*PRIVATE KEY',
+            'AKIA[0-9A-Z]{16}',
+            'gh[pous]_[A-Za-z0-9]{30,}',
+            'nscim_[A-Za-z0-9_-]{20,}'
+          )) {
+            if ($text -match $pattern) { throw "motif sensible dans le paquet : $pattern" }
+          }
+          Write-Host "aucun motif sensible detecte"
+
+      - name: Installation silencieuse
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $arguments = @(
+            '/S',
+            "/DEPLOYMENT_ID=$env:DEPLOYMENT_ID",
+            "/ORGANIZATION_ID=$env:ORGANIZATION_ID",
+            "/CHANNEL=$env:CHANNEL"
+          )
+          $process = Start-Process -FilePath '${{ steps.artifact.outputs.path }}' `
+            -ArgumentList $arguments -Wait -PassThru
+          Write-Host "code de sortie : $($process.ExitCode)"
+          if ($process.ExitCode -ne 0) { throw "installation echouee ($($process.ExitCode))" }
+
+      - name: Verifier Program Files
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = 'C:\Program Files\Nova'
+          if (-not (Test-Path $root)) { throw "$root absent" }
+          $binary = Get-ChildItem $root -Filter '*.exe' |
+            Where-Object { $_.Name -ne 'uninstall.exe' } | Select-Object -First 1
+          if (-not $binary) { throw "aucun executable principal" }
+          if (-not (Test-Path (Join-Path $root 'uninstall.exe'))) {
+            throw "desinstalleur absent"
+          }
+          Write-Host "binaire : $($binary.Name)"
+
+          # Une installation pour toute la machine ne depose rien dans le profil.
+          $local = Join-Path $env:LOCALAPPDATA 'Nova'
+          if (Test-Path $local) {
+            throw "une installation perMachine a ecrit dans le profil utilisateur : $local"
+          }
+
+      - name: Verifier la configuration machine
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $path = 'C:\ProgramData\Nova\organization.json'
+          if (-not (Test-Path $path)) { throw "$path absent" }
+          $raw = Get-Content $path -Raw
+          Write-Host $raw
+          $config = $raw | ConvertFrom-Json
+
+          if ($config.schema_version -ne 1) { throw "schema_version inattendu" }
+          if ($config.managed -ne $true) { throw "managed doit valoir true" }
+          if ($config.deployment_id -ne $env:DEPLOYMENT_ID) { throw "deployment_id inattendu" }
+          if ($config.organization_id -ne $env:ORGANIZATION_ID) { throw "organization_id inattendu" }
+          if ($config.release_channel -ne $env:CHANNEL) { throw "canal inattendu" }
+          if ($config.control_plane_origin -notmatch '^https://') {
+            throw "l'origine doit etre en HTTPS"
+          }
+
+          # Aucun secret, et aucun champ hors contrat : le poste refuse tout
+          # champ qu'il ne connait pas, secret compris.
+          $allowed = @(
+            'schema_version','deployment_id','organization_id',
+            'control_plane_origin','release_channel','managed',
+            'config_revision','update_policy','deployment_ring','autostart'
+          )
+          foreach ($name in $config.PSObject.Properties.Name) {
+            if ($allowed -notcontains $name) { throw "champ hors contrat : $name" }
+          }
+          foreach ($forbidden in @('token','secret','password','credential','server_url')) {
+            if ($raw.ToLower().Contains($forbidden)) {
+              throw "motif interdit dans la configuration : $forbidden"
+            }
+          }
+          Write-Host "configuration conforme au contrat"
+
+      - name: Verifier les ACL de ProgramData
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = 'C:\ProgramData\Nova'
+          $acl = Get-Acl $root
+          $acl.Access | Format-Table IdentityReference, FileSystemRights, AccessControlType |
+            Out-String | Write-Host
+
+          # Les SID plutot que les noms : ceux-ci sont traduits selon la langue
+          # du systeme, et un runner anglophone ne dit pas « Utilisateurs ».
+          $users = New-Object System.Security.Principal.SecurityIdentifier('S-1-5-32-545')
+          $writable = @('Write','Modify','FullControl','WriteData','CreateFiles','TakeOwnership')
+
+          $userRules = $acl.Access | Where-Object {
+            $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) -eq $users -and
+            $_.AccessControlType -eq 'Allow'
+          }
+          if (-not $userRules) { throw "aucune regle pour le groupe Utilisateurs" }
+          foreach ($rule in $userRules) {
+            foreach ($right in $writable) {
+              if ($rule.FileSystemRights.ToString() -match $right) {
+                throw "les Utilisateurs peuvent ecrire ($($rule.FileSystemRights)) : la configuration geree serait modifiable par un membre standard"
+              }
+            }
+          }
+          Write-Host "les Utilisateurs ont lecture/execution seulement"
+
+          if ($acl.AreAccessRulesProtected -ne $true) {
+            throw "l'heritage n'a pas ete coupe : l'ACL de ProgramData laisse un utilisateur creer des fichiers"
+          }
+          Write-Host "heritage coupe"
+
+      - name: Verifier la cle de detection
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $key = 'HKLM:\SOFTWARE\Nova\Deployment'
+          if (-not (Test-Path $key)) { throw "$key absente" }
+          $values = Get-ItemProperty $key
+          $values | Format-List | Out-String | Write-Host
+          if (-not $values.Version) { throw "Version absente : la detection Intune la lit" }
+          if ($values.InstallScope -ne 'machine') { throw "InstallScope inattendu" }
+          if ($values.DeploymentId -ne $env:DEPLOYMENT_ID) { throw "DeploymentId inattendu" }
+
+          # Et la cle de desinstallation, celle qu'Ajout/Suppression affiche.
+          $uninstall = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Nova'
+          if (-not (Test-Path $uninstall)) { throw "cle de desinstallation absente" }
+
+      - name: Le poste gere reste gere, backend absent
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # Aucun Control Plane n'est joignable depuis ce runner. Ce qui est
+          # verifie ici est que l'installation reste declaree geree : la
+          # configuration machine est la seule source de cet etat, et rien
+          # dans une panne reseau ne doit la retirer.
+          $config = Get-Content 'C:\ProgramData\Nova\organization.json' -Raw | ConvertFrom-Json
+          if ($config.managed -ne $true) { throw "l'etat gere a ete perdu" }
+
+          # Aucune trace d'une installation personnelle n'a ete creee.
+          if (Test-Path (Join-Path $env:LOCALAPPDATA 'Nova')) {
+            throw "un repli personnel a ete cree"
+          }
+          if (Test-Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Nova') {
+            throw "une installation par utilisateur est apparue"
+          }
+          Write-Host "aucun repli personnel"
+
+      - name: Desinstallation silencieuse
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $process = Start-Process -FilePath 'C:\Program Files\Nova\uninstall.exe' `
+            -ArgumentList '/S' -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "desinstallation echouee ($($process.ExitCode))" }
+          # NSIS rend la main avant d'avoir fini de se supprimer lui-meme.
+          Start-Sleep -Seconds 20
+
+      - name: La configuration geree survit a une desinstallation ordinaire
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if (Test-Path 'C:\Program Files\Nova\uninstall.exe') {
+            throw "le desinstalleur est toujours la"
+          }
+          # C'est le contrat : une reparation ou une mise a jour ne doit jamais
+          # rompre le rattachement a l'organisation. La purge est un geste
+          # separe, teste plus bas.
+          if (-not (Test-Path 'C:\ProgramData\Nova\organization.json')) {
+            throw "la configuration geree a ete supprimee sans purge explicite"
+          }
+          if (Test-Path 'HKLM:\SOFTWARE\Nova\Deployment') {
+            throw "la cle de detection subsiste apres desinstallation"
+          }
+          Write-Host "binaires retires, configuration conservee"
+
+      - name: Reinstallation avec le meme parc
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $arguments = @(
+            '/S',
+            "/DEPLOYMENT_ID=$env:DEPLOYMENT_ID",
+            "/ORGANIZATION_ID=$env:ORGANIZATION_ID",
+            "/CHANNEL=$env:CHANNEL"
+          )
+          $process = Start-Process -FilePath '${{ steps.artifact.outputs.path }}' `
+            -ArgumentList $arguments -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "reinstallation echouee ($($process.ExitCode))" }
+
+          if (-not (Test-Path 'C:\Program Files\Nova\uninstall.exe')) {
+            throw "reinstallation incomplete"
+          }
+          $config = Get-Content 'C:\ProgramData\Nova\organization.json' -Raw | ConvertFrom-Json
+          if ($config.deployment_id -ne $env:DEPLOYMENT_ID) {
+            throw "le parc a change lors de la reinstallation"
+          }
+          if (-not (Test-Path 'HKLM:\SOFTWARE\Nova\Deployment')) {
+            throw "cle de detection non retablie"
+          }
+          Write-Host "reinstallation propre, meme parc"
+
+      - name: Un parametre interdit est refuse
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # Un identifiant de parc qui ne respecte pas le contrat doit produire
+          # le code 2, pas une installation approximative.
+          $process = Start-Process -FilePath '${{ steps.artifact.outputs.path }}' `
+            -ArgumentList @('/S', '/DEPLOYMENT_ID=invalide;espace', "/ORGANIZATION_ID=$env:ORGANIZATION_ID") `
+            -Wait -PassThru
+          Write-Host "code de sortie : $($process.ExitCode)"
+          if ($process.ExitCode -ne 2) {
+            throw "un identifiant invalide devrait produire le code 2, obtenu $($process.ExitCode)"
+          }
+
+      - name: Purge explicite
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $process = Start-Process -FilePath 'C:\Program Files\Nova\uninstall.exe' `
+            -ArgumentList @('/S', '/PURGE_CONFIG') -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "purge echouee ($($process.ExitCode))" }
+          Start-Sleep -Seconds 20
+
+          if (Test-Path 'C:\ProgramData\Nova\organization.json') {
+            throw "la purge explicite n'a pas retire la configuration"
+          }
+          Write-Host "configuration geree retiree, comme demande"
+
+      - name: Rapport
+        if: always()
+        shell: pwsh
+        run: |
+          $report = [ordered]@{
+            deployment_id = $env:DEPLOYMENT_ID
+            organization_id = $env:ORGANIZATION_ID
+            channel = $env:CHANNEL
+            program_files = (Test-Path 'C:\Program Files\Nova')
+            programdata = (Test-Path 'C:\ProgramData\Nova')
+            detection_key = (Test-Path 'HKLM:\SOFTWARE\Nova\Deployment')
+            user_profile_install = (Test-Path (Join-Path $env:LOCALAPPDATA 'Nova'))
+          }
+          $report | ConvertTo-Json | Out-File -FilePath pilot-install-report.json -Encoding utf8
+          Get-Content pilot-install-report.json | Write-Host
+
+      - name: Publier le rapport
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: organization-pilot-install-report
+          # Metadonnees seulement : identifiants synthetiques du runner, aucun
+          # secret, aucun journal applicatif.
+          path: pilot-install-report.json
+          retention-days: 7

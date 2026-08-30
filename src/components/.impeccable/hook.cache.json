@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "sessions": {
+    "6fb40145-d5db-4fca-9413-63a08d8052ca": {
+      "updatedAt": 1786874777481,
+      "files": {
+        "C:\\Users\\sash\\nova-desktop\\.design-sync\\previews\\Dialog.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\sash\\nova-desktop\\.design-sync\\previews\\ProgressBar.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\sash\\nova-desktop\\src\\components\\ui\\AudioPlayer.tsx": {
+          "editCount": 2,
+          "findings": []
+        },
+        "C:\\Users\\sash\\nova-desktop\\src\\components\\shared\\ProgressBar.tsx": {
+          "editCount": 1,
+          "findings": []
+        },
+        "C:\\Users\\sash\\nova-desktop\\src\\App.css": {
+          "editCount": 1,
+          "findings": ["side-tab:182", "side-tab:183"]
+        }
+      }
+    }
+  }
+}

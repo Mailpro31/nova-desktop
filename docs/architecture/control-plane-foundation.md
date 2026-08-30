@@ -1,0 +1,195 @@
+# Nova Control Plane — fondation
+
+Ce document définit la frontière entre ce qui **administre** Nova et ce qui
+**traite la parole des utilisateurs**. Il ne décrit aucun service construit :
+c'est un contrat d'architecture, écrit maintenant pour éviter qu'il se décide
+tout seul, plus tard, par accumulation.
+
+Écrit quand rien n'existait. Depuis, les phases 19 à 26 en ont construit une
+bonne part : chaque section dit ce qui est fait et ce qui reste.
+
+---
+
+## 1. Deux plans, et pourquoi ils doivent rester séparés
+
+```
+┌─────────────────────────── CONTROL PLANE ────────────────────────────┐
+│  métadonnées de tenant       configurations SSO       policies       │
+│  déploiement                 packages                 administration │
+│  audit                       facturation                            │
+└──────────────────────────────────────────────────────────────────────┘
+                                   │ configure
+                                   ▼
+┌──────────────────────────── DATA / AI PLANE ─────────────────────────┐
+│  transcription    reformulation    commandes    services IA de l'org  │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Le Control Plane décide ; le Data Plane exécute.**
+
+Le Control Plane manipule des métadonnées : qui est l'organisation, quels
+fournisseurs d'identité elle utilise, quelles règles s'appliquent, quelle
+version est déployée. Le Data Plane manipule ce que les gens disent — leur
+audio, leur texte, leurs prompts.
+
+### La faute à ne pas commettre
+
+Un plan de contrôle centralisé est commode. Il est donc tentant d'y faire
+transiter « juste » la transcription, « juste » la reformulation — et de se
+retrouver, sans l'avoir décidé, avec un service central par lequel passe la
+parole de tous les établissements clients.
+
+**Le Control Plane ne doit jamais devenir le lieu où passe le contenu
+utilisateur.** Cette règle est le point de ce document. Elle a une conséquence
+pratique immédiate : un établissement qui héberge son propre serveur garde son
+audio chez lui, même le jour où Nova gère ses configurations depuis un plan de
+contrôle mutualisé.
+
+|                            | Control Plane | Data / AI Plane |
+| -------------------------- | ------------- | --------------- |
+| Audio dicté                | **jamais**    | oui             |
+| Texte à reformuler         | **jamais**    | oui             |
+| Prompts, contexte d'écran  | **jamais**    | oui             |
+| Identifiant d'organisation | oui           | oui             |
+| Configuration SSO          | oui           | lue             |
+| Compteurs d'usage          | agrégés       | produits        |
+| Secrets de fournisseur     | oui           | non             |
+
+---
+
+## 2. Objets du Control Plane
+
+| Objet                          | Rôle                                                      | État                                                               |
+| ------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Organization**               | tenant Nova, identifiant immuable                         | ✅ existe                                                          |
+| **OrganizationProviderConfig** | fournisseurs d'identité de l'organisation                 | ✅ existe                                                          |
+| **OrganizationMembership**     | appartenance, métier, rôle de sécurité                    | ✅ existe                                                          |
+| **Deployment**                 | où tourne le Data Plane de l'organisation, quelle version | ❌ à venir                                                         |
+| **Policy**                     | ce que l'organisation autorise à ses membres              | ✅ existe — organisation entière ; pas de hiérarchie de précédence |
+| **Package**                    | Styles, vocabulaire, AI Skills distribués                 | ❌ à venir                                                         |
+| **Admin / audit**              | qui a changé quoi, et quand                               | ✅ existe                                                          |
+
+Les trois premiers ont été construits par les phases 12 à 19 sans jamais
+s'appeler Control Plane ; l'audit et l'administration sont arrivés avec les
+phases 22 et 26, les policies avec la phase 29. Restent le déploiement, les
+packages, et la hiérarchie de précédence des policies — voir
+[`organization-policies.md`](./organization-policies.md).
+
+---
+
+## 3. Deux modes de déploiement — à ne pas mélanger
+
+### A. Serveur d'organisation dédié — **le mode actuel**
+
+Une instance sert **une** organisation. Son identifiant est persisté dans
+`server_state.organization_id` (voir
+[`organization-identity.md`](./organization-identity.md)), et toutes les
+configurations chargées lui appartiennent. Une configuration d'une autre
+organisation est inaccessible — l'organisation fait partie de chaque requête,
+pas d'un contrôle qui suivrait.
+
+Le poste connaît son serveur par `campus-config.json`, déposé par la DSI.
+
+### B. Control Plane mutualisé — **à venir**
+
+Une instance sert plusieurs organisations. L'organisation n'est plus implicite :
+elle doit être déterminée **avant** de savoir quels fournisseurs proposer.
+
+```
+identifiant d'organisation, invitation, ou domaine
+        ↓  découverte
+organization_id
+        ↓
+configurations de fournisseur
+        ↓
+boutons de connexion
+```
+
+La découverte existe depuis la Phase 21 — voir
+[`organization-discovery.md`](./organization-discovery.md). Reste non construite,
+et volontairement : la résolution par **domaine d'adresse**, contraire à tout ce
+que le modèle d'identité impose depuis la Phase 13.
+
+**Ne pas mélanger les deux modes.** Un serveur dédié qui commencerait à
+répondre pour des organisations qu'il ne sert pas serait un multi-tenant
+accidentel, sans les contrôles qui vont avec.
+
+---
+
+## 4. Adresse du service
+
+Direction visée :
+
+```
+Desktop → point d'entrée logique Nova → service privé de l'organisation
+```
+
+plutôt que :
+
+```
+Desktop → adresse IP saisie par l'utilisateur
+```
+
+Dit sans illusion : une adresse à laquelle le poste doit se connecter n'est pas
+un secret, et rien ne la rendra telle. L'objectif est de supprimer une friction
+d'usage et de réduire la surface — pas d'IP interne dans l'interface, pas de
+serveur arbitraire saisissable — non de fabriquer une confidentialité.
+
+`campus-config.json` reste pris en charge et ne sera pas retiré avant que la
+découverte existe.
+
+---
+
+## 5. Ce qui manque avant un Control Plane réel
+
+1. ~~**État de flux partagé.**~~ ✅ **Fait en Phase 20** — l'état des tentatives
+   vit en base, et `start` peut atterrir sur un worker différent d'`exchange`.
+   Voir [`shared-sso-flow-state.md`](./shared-sso-flow-state.md). Reste une
+   exception documentée : le Device Code hérité, toujours lié à son processus ;
+2. ~~**Découverte d'organisation.**~~ ✅ **Fait en Phase 21** — endpoint public,
+   réponse identique dans tous les cas négatifs, adresse de service validée des
+   deux côtés. Voir [`organization-discovery.md`](./organization-discovery.md).
+   Reste à faire au niveau de la passerelle : la limitation d'appels ;
+3. **Références de secret** plutôt que des secrets en base (voir
+   [`organization-provider-configs.md`](./organization-provider-configs.md)) ;
+4. ~~**Identité multi-tenant.**~~ ✅ **Fait en Phase 23** — `user_id` est
+   l'identité stable, et l'unicité de l'adresse devient locale au tenant. Deux
+   organisations peuvent compter chacune la même adresse : ce sont deux
+   personnes. Voir
+   [`multi-tenant-user-identity.md`](./multi-tenant-user-identity.md) ;
+5. ~~**Journal d'audit.**~~ ✅ **Fait en Phase 22**, **lisible depuis la Phase 26**
+   — `admin_audit_log` en ajout seul par l'application, sans jamais y écrire un
+   secret, désormais consultable et paginé dans Nova Admin. L'immuabilité de
+   stockage reste hors de portée de SQLite, et c'est dit ;
+6. ~~**Authentification d'administration.**~~ ✅ **Fait en Phase 22** — identité
+   issue du SSO de l'organisation, rôles de sécurité décidés par Nova, sessions
+   d'administration courtes et révocables, autorisation par capacité, isolation
+   par organisation. Le jeton statique partagé, d'abord cadré puis déprécié, a
+   été **retiré en Phase 28** : plus aucun secret d'administration partagé. Voir
+   [`control-plane-admin-auth.md`](./control-plane-admin-auth.md).
+
+---
+
+## 6. Nova Admin
+
+La console web d'administration d'une organisation existe depuis la **Phase 25** :
+découverte, SSO, réauthentification, puis six pages de configuration. Elle
+consomme le Control Plane et ne franchit jamais la frontière du § 1 — aucun
+contenu dicté n'y transite. Voir
+[`nova-admin-foundation.md`](./nova-admin-foundation.md).
+
+Nova Admin est **client-facing et cadrée à une organisation**. L'outil interne de
+l'équipe Nova — celui qui verrait plusieurs tenants — reste non construit, et
+séparé par principe (§ 14 de
+[`control-plane-admin-auth.md`](./control-plane-admin-auth.md)).
+
+---
+
+## 7. Ce que cette fondation n'autorise pas
+
+Ce document fixe une frontière, il ne construit rien. Nova Admin et
+l'authentification d'administration sont arrivés depuis ; les policies, les
+packages, SCIM et le Control Plane mutualisé restent à faire.
+
+Ce qui ne change pas : le jour où ces briques arriveront, la question « et si on
+faisait passer la transcription par le plan de contrôle ? » a déjà sa réponse.

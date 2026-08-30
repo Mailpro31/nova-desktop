@@ -1,445 +1,408 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
+import {
+  Check,
+  Copy,
+  FolderOpen,
+  RotateCcw,
+  Search,
+  Star,
+  Trash2,
+} from "lucide-react";
+import { toast } from "sonner";
+
+import { PageHeader } from "../../shell/PageHeader";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
+import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
+import { AudioPlayer } from "../../ui/AudioPlayer";
+import {
+  filterEntries,
+  groupByRecency,
+  type HistoryBucket,
+} from "./useHistoryGroups";
+import { useSettings } from "../../../hooks/useSettings";
+import { commands, events, type HistoryEntry } from "@/bindings";
+import { formatDateTime } from "@/utils/dateFormat";
+import { useOsType } from "@/hooks/useOsType";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { readFile } from "@tauri-apps/plugin-fs";
-import { Check, Copy, FolderOpen, RotateCcw, Star, Trash2 } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import {
-  commands,
-  events,
-  type HistoryEntry,
-  type HistoryUpdatePayload,
-} from "@/bindings";
-import { useOsType } from "@/hooks/useOsType";
-import { formatDateTime } from "@/utils/dateFormat";
-import { AudioPlayer } from "../../ui/AudioPlayer";
-import { Button } from "../../ui/Button";
 
-const IconButton: React.FC<{
-  onClick: () => void;
-  title: string;
-  disabled?: boolean;
-  active?: boolean;
-  children: React.ReactNode;
-}> = ({ onClick, title, disabled, active, children }) => (
-  <button
-    onClick={onClick}
-    disabled={disabled}
-    className={`p-1.5 rounded-md flex items-center justify-center transition-colors cursor-pointer disabled:cursor-not-allowed disabled:text-text/20 ${
-      active
-        ? "text-logo-primary hover:text-logo-primary/80"
-        : "text-text/50 hover:text-logo-primary"
-    }`}
-    title={title}
-  >
-    {children}
-  </button>
-);
+const BUCKET_LABEL: Record<HistoryBucket, string> = {
+  today: "history.group.today",
+  yesterday: "history.group.yesterday",
+  week: "history.group.week",
+  older: "history.group.older",
+};
 
-const PAGE_SIZE = 30;
-
-interface OpenRecordingsButtonProps {
-  onClick: () => void;
-  label: string;
-}
-
-const OpenRecordingsButton: React.FC<OpenRecordingsButtonProps> = ({
-  onClick,
-  label,
-}) => (
-  <Button
-    onClick={onClick}
-    variant="secondary"
-    size="sm"
-    className="flex items-center gap-2"
-    title={label}
-  >
-    <FolderOpen className="w-4 h-4" />
-    <span>{label}</span>
-  </Button>
-);
-
+/**
+ * Historique — ce que Nova a réellement transcrit.
+ *
+ * Pas un journal technique : la question est « qu'ai-je dicté récemment ? ».
+ * Une liste dense, groupée par proximité temporelle, où l'on parcourt vite.
+ *
+ * **C'est la seule surface du produit qui montre du contenu dicté**, et
+ * uniquement parce que l'utilisateur l'a ouverte volontairement. L'accueil, la
+ * barre latérale et la palette n'en montrent nulle part.
+ *
+ * L'historique est borné par `history_limit` (1000 au maximum) et vit dans une
+ * base SQLite locale : tout charger d'un coup est correct, et la recherche se
+ * fait donc en mémoire, sans requête serveur ni pagination à trous.
+ */
 export const HistorySettings: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { getSetting } = useSettings();
   const osType = useOsType();
+
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const entriesRef = useRef<HistoryEntry[]>([]);
-  const loadingRef = useRef(false);
+  const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState<number | null>(null);
 
-  // Keep ref in sync for use in IntersectionObserver callback
-  useEffect(() => {
-    entriesRef.current = entries;
-  }, [entries]);
+  const shortcut =
+    (
+      getSetting("bindings") as
+        | Record<string, { current_binding?: string }>
+        | undefined
+    )?.transcribe?.current_binding ?? null;
 
-  const loadPage = useCallback(async (cursor?: number) => {
-    const isFirstPage = cursor === undefined;
-    if (!isFirstPage && loadingRef.current) return;
-    loadingRef.current = true;
-
-    if (isFirstPage) setLoading(true);
-
+  const load = useCallback(async () => {
     try {
-      const result = await commands.getHistoryEntries(
-        cursor ?? null,
-        PAGE_SIZE,
-      );
-      if (result.status === "ok") {
-        const { entries: newEntries, has_more } = result.data;
-        setEntries((prev) =>
-          isFirstPage ? newEntries : [...prev, ...newEntries],
-        );
-        setHasMore(has_more);
-      }
+      // `limit: null` renvoie tout l'historique — voir l'invariant plus haut.
+      const result = await commands.getHistoryEntries(null, null);
+      if (result.status === "ok") setEntries(result.data.entries);
     } catch (error) {
-      console.error("Failed to load history entries:", error);
+      console.error("Failed to load history:", error);
     } finally {
       setLoading(false);
-      loadingRef.current = false;
     }
   }, []);
 
-  // Initial load
   useEffect(() => {
-    loadPage();
-  }, [loadPage]);
+    void load();
+  }, [load]);
 
-  // Infinite scroll via IntersectionObserver
-  useEffect(() => {
-    if (loading) return;
-
-    const sentinel = sentinelRef.current;
-    if (!sentinel || !hasMore) return;
-
-    const observer = new IntersectionObserver(
-      (observerEntries) => {
-        const first = observerEntries[0];
-        if (first.isIntersecting) {
-          const lastEntry = entriesRef.current[entriesRef.current.length - 1];
-          if (lastEntry) {
-            loadPage(lastEntry.id);
-          }
-        }
-      },
-      { threshold: 0 },
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [loading, hasMore, loadPage]);
-
-  // Listen for new entries added from the transcription pipeline
+  // Mise à jour en direct après une dictée : l'événement existe déjà, aucun
+  // sondage n'est ajouté.
   useEffect(() => {
     const unlisten = events.historyUpdatePayload.listen((event) => {
-      const payload: HistoryUpdatePayload = event.payload;
-      if (payload.action === "added") {
-        setEntries((prev) => [payload.entry, ...prev]);
-      } else if (payload.action === "updated") {
-        setEntries((prev) =>
-          prev.map((e) => (e.id === payload.entry.id ? payload.entry : e)),
-        );
-      }
-      // "deleted" and "toggled" are handled by optimistic updates only,
-      // so we intentionally ignore them here to avoid double-mutation.
+      const payload = event.payload;
+      setEntries((prev) => {
+        switch (payload.action) {
+          case "added":
+            return [payload.entry, ...prev];
+          case "updated":
+            return prev.map((e) =>
+              e.id === payload.entry.id ? payload.entry : e,
+            );
+          case "deleted":
+            return prev.filter((e) => e.id !== payload.id);
+          case "toggled":
+            return prev.map((e) =>
+              e.id === payload.id ? { ...e, saved: !e.saved } : e,
+            );
+        }
+      });
     });
-
     return () => {
-      unlisten.then((fn) => fn());
+      void unlisten.then((fn) => fn());
     };
   }, []);
 
-  const toggleSaved = async (id: number) => {
-    // Optimistic update
-    setEntries((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, saved: !e.saved } : e)),
-    );
-    try {
-      const result = await commands.toggleHistoryEntrySaved(id);
-      if (result.status !== "ok") {
-        // Revert on failure
-        setEntries((prev) =>
-          prev.map((e) => (e.id === id ? { ...e, saved: !e.saved } : e)),
-        );
-      }
-    } catch (error) {
-      console.error("Failed to toggle saved status:", error);
-      // Revert on failure
-      setEntries((prev) =>
-        prev.map((e) => (e.id === id ? { ...e, saved: !e.saved } : e)),
-      );
-    }
-  };
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (error) {
-      console.error("Failed to copy to clipboard:", error);
-    }
-  };
-
-  const getAudioUrl = useCallback(
-    async (fileName: string) => {
-      try {
-        const result = await commands.getAudioFilePath(fileName);
-        if (result.status === "ok") {
-          if (osType === "linux") {
-            const fileData = await readFile(result.data);
-            const blob = new Blob([fileData], { type: "audio/wav" });
-            return URL.createObjectURL(blob);
-          }
-          return convertFileSrc(result.data, "asset");
-        }
-        return null;
-      } catch (error) {
-        console.error("Failed to get audio file path:", error);
-        return null;
-      }
-    },
-    [osType],
+  const groups = useMemo(
+    () => groupByRecency(filterEntries(entries, query)),
+    [entries, query],
   );
+  const matchCount = groups.reduce((n, g) => n + g.entries.length, 0);
 
-  const deleteAudioEntry = async (id: number) => {
-    // Optimistically remove
+  const remove = async (id: number) => {
+    const previous = entries;
     setEntries((prev) => prev.filter((e) => e.id !== id));
     try {
       const result = await commands.deleteHistoryEntry(id);
-      if (result.status !== "ok") {
-        // Reload on failure
-        loadPage();
-      }
-    } catch (error) {
-      console.error("Failed to delete entry:", error);
-      loadPage();
-    }
-  };
-
-  const retryHistoryEntry = async (id: number) => {
-    const result = await commands.retryHistoryEntryTranscription(id);
-    if (result.status !== "ok") {
-      throw new Error(String(result.error));
-    }
-  };
-
-  const openRecordingsFolder = async () => {
-    try {
-      const result = await commands.openRecordingsFolder();
-      if (result.status !== "ok") {
-        throw new Error(String(result.error));
-      }
-    } catch (error) {
-      console.error("Failed to open recordings folder:", error);
-    }
-  };
-
-  let content: React.ReactNode;
-
-  if (loading) {
-    content = (
-      <div className="px-4 py-3 text-center text-text/60">
-        {t("settings.history.loading")}
-      </div>
-    );
-  } else if (entries.length === 0) {
-    content = (
-      <div className="px-4 py-3 text-center text-text/60">
-        {t("settings.history.empty")}
-      </div>
-    );
-  } else {
-    content = (
-      <>
-        <div className="divide-y divide-mid-gray/20">
-          {entries.map((entry) => (
-            <HistoryEntryComponent
-              key={entry.id}
-              entry={entry}
-              onToggleSaved={() => toggleSaved(entry.id)}
-              onCopyText={() => copyToClipboard(entry.transcription_text)}
-              getAudioUrl={getAudioUrl}
-              deleteAudio={deleteAudioEntry}
-              retryTranscription={retryHistoryEntry}
-            />
-          ))}
-        </div>
-        {/* Sentinel for infinite scroll */}
-        <div ref={sentinelRef} className="h-1" />
-      </>
-    );
-  }
-
-  return (
-    <div className="max-w-3xl w-full mx-auto space-y-6">
-      <div className="space-y-2">
-        <div className="px-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-xs font-medium text-mid-gray uppercase tracking-wide">
-              {t("settings.history.title")}
-            </h2>
-          </div>
-          <OpenRecordingsButton
-            onClick={openRecordingsFolder}
-            label={t("settings.history.openFolder")}
-          />
-        </div>
-        <div className="bg-background border border-mid-gray/20 rounded-lg overflow-visible">
-          {content}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface HistoryEntryProps {
-  entry: HistoryEntry;
-  onToggleSaved: () => void;
-  onCopyText: () => void;
-  getAudioUrl: (fileName: string) => Promise<string | null>;
-  deleteAudio: (id: number) => Promise<void>;
-  retryTranscription: (id: number) => Promise<void>;
-}
-
-const HistoryEntryComponent: React.FC<HistoryEntryProps> = ({
-  entry,
-  onToggleSaved,
-  onCopyText,
-  getAudioUrl,
-  deleteAudio,
-  retryTranscription,
-}) => {
-  const { t, i18n } = useTranslation();
-  const [showCopied, setShowCopied] = useState(false);
-  const [retrying, setRetrying] = useState(false);
-
-  const hasTranscription = entry.transcription_text.trim().length > 0;
-
-  const handleLoadAudio = useCallback(
-    () => getAudioUrl(entry.file_name),
-    [getAudioUrl, entry.file_name],
-  );
-
-  const handleCopyText = () => {
-    if (!hasTranscription) {
-      return;
-    }
-
-    onCopyText();
-    setShowCopied(true);
-    setTimeout(() => setShowCopied(false), 2000);
-  };
-
-  const handleDeleteEntry = async () => {
-    try {
-      await deleteAudio(entry.id);
-    } catch (error) {
-      console.error("Failed to delete entry:", error);
+      if (result.status !== "ok") throw new Error(String(result.error));
+    } catch {
+      // Restauration immédiate : la suppression optimiste ne doit pas faire
+      // disparaître une entrée qui existe toujours.
+      setEntries(previous);
       toast.error(t("settings.history.deleteError"));
     }
   };
 
-  const handleRetranscribe = async () => {
+  return (
+    <>
+      <PageHeader
+        title={t("settings.history.title")}
+        description={t("history.subtitle")}
+        actions={
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => void commands.openRecordingsFolder()}
+          >
+            <FolderOpen size={15} strokeWidth={1.75} aria-hidden="true" />
+            {t("settings.history.openFolder")}
+          </Button>
+        }
+      />
+
+      {/* La recherche n'apparaît que lorsqu'il y a matière à chercher : un
+          champ au-dessus de trois entrées est du décor. */}
+      {entries.length > 8 && (
+        <div className="relative mb-[20px]">
+          <Search
+            size={15}
+            strokeWidth={1.75}
+            aria-hidden="true"
+            className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-text-secondary"
+          />
+          <Input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("history.searchPlaceholder")}
+            aria-label={t("history.searchPlaceholder")}
+            className="w-full ps-9"
+          />
+        </div>
+      )}
+
+      {loading ? (
+        <p className="py-6 text-sm text-text-secondary">
+          {t("settings.history.loading")}
+        </p>
+      ) : entries.length === 0 ? (
+        <div className="py-[48px] text-center">
+          <p className="text-sm text-text">{t("history.empty")}</p>
+          {shortcut && (
+            <p className="mt-3 flex flex-wrap items-center justify-center gap-2 text-sm text-text-secondary">
+              <KeyboardShortcut binding={shortcut} size="sm" />
+              <span>{t("home.hero.dictateHint")}</span>
+            </p>
+          )}
+        </div>
+      ) : matchCount === 0 ? (
+        <p className="py-6 text-sm text-text-secondary">
+          {t("history.noMatch", { query })}
+        </p>
+      ) : (
+        <div className="flex flex-col gap-[24px]">
+          {groups.map((group) => (
+            <section key={group.bucket}>
+              <h2 className="mb-1 text-xs font-semibold uppercase tracking-wide text-text-secondary">
+                {t(BUCKET_LABEL[group.bucket])}
+              </h2>
+              <ul>
+                {group.entries.map((entry) => (
+                  <HistoryRow
+                    key={entry.id}
+                    entry={entry}
+                    bucket={group.bucket}
+                    expanded={expanded === entry.id}
+                    onToggle={() =>
+                      setExpanded((id) => (id === entry.id ? null : entry.id))
+                    }
+                    onDelete={() => void remove(entry.id)}
+                    osType={osType}
+                    locale={i18n.language}
+                  />
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      )}
+    </>
+  );
+};
+
+interface HistoryRowProps {
+  entry: HistoryEntry;
+  bucket: HistoryBucket;
+  expanded: boolean;
+  onToggle: () => void;
+  onDelete: () => void;
+  osType: string | null;
+  locale: string;
+}
+
+/**
+ * Une dictée : heure, texte, actions. Repliée elle tient en trois lignes, ce
+ * qui permet d'en parcourir beaucoup ; dépliée elle montre le texte entier, la
+ * date, le Style employé et l'audio.
+ */
+const HistoryRow: React.FC<HistoryRowProps> = ({
+  entry,
+  bucket,
+  expanded,
+  onToggle,
+  onDelete,
+  osType,
+  locale,
+}) => {
+  const { t } = useTranslation();
+  const [copied, setCopied] = useState(false);
+  const [retrying, setRetrying] = useState(false);
+
+  const text = entry.transcription_text.trim();
+  const hasText = text.length > 0;
+
+  // Le Style employé est enregistré avec la transcription mais n'était affiché
+  // nulle part. C'est la seule métadonnée réellement stockée qui explique
+  // pourquoi un texte est rédigé ainsi.
+  const styleName = entry.post_process_prompt?.trim() || null;
+
+  const copy = async () => {
+    if (!hasText) return;
+    await writeText(text);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  };
+
+  const retranscribe = async () => {
+    setRetrying(true);
     try {
-      setRetrying(true);
-      await retryTranscription(entry.id);
-    } catch (error) {
-      console.error("Failed to re-transcribe:", error);
+      const result = await commands.retryHistoryEntryTranscription(entry.id);
+      if (result.status !== "ok") throw new Error(String(result.error));
+    } catch {
       toast.error(t("settings.history.retranscribeError"));
     } finally {
       setRetrying(false);
     }
   };
 
-  const formattedDate = formatDateTime(String(entry.timestamp), i18n.language);
+  const loadAudio = useCallback(async () => {
+    try {
+      const result = await commands.getAudioFilePath(entry.file_name);
+      if (result.status !== "ok") return null;
+      // Sous Linux, le protocole `asset` n'est pas disponible : on relit le
+      // fichier et on sert un blob. Comportement d'origine, conservé tel quel.
+      if (osType === "linux") {
+        const data = await readFile(result.data);
+        return URL.createObjectURL(new Blob([data], { type: "audio/wav" }));
+      }
+      return convertFileSrc(result.data, "asset");
+    } catch {
+      return null;
+    }
+  }, [entry.file_name, osType]);
+
+  // Dans les tranches récentes, le jour est déjà donné par l'en-tête de
+  // section : répéter la date complète à chaque ligne ne dit rien de plus.
+  const time =
+    bucket === "today" || bucket === "yesterday"
+      ? new Intl.DateTimeFormat(locale, { timeStyle: "short" }).format(
+          new Date(entry.timestamp * 1000),
+        )
+      : formatDateTime(String(entry.timestamp), locale);
 
   return (
-    <div className="px-4 py-2 pb-5 flex flex-col gap-3">
-      <div className="flex justify-between items-center">
-        <p className="text-sm font-medium">{formattedDate}</p>
-        <div className="flex items-center">
-          <IconButton
-            onClick={handleCopyText}
-            disabled={!hasTranscription || retrying}
-            title={t("settings.history.copyToClipboard")}
-          >
-            {showCopied ? (
-              <Check width={16} height={16} />
-            ) : (
-              <Copy width={16} height={16} />
+    <li className="border-b border-hairline last:border-b-0">
+      <div className="flex items-start gap-3 py-2.5">
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={expanded}
+          className="min-w-0 flex-1 cursor-pointer px-2 text-start focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+        >
+          <span className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-xs tabular-nums text-text-secondary">
+              {time}
+            </span>
+            {styleName && (
+              <span className="text-xs text-text-secondary">{styleName}</span>
             )}
-          </IconButton>
-          <IconButton
-            onClick={onToggleSaved}
-            disabled={retrying}
-            active={entry.saved}
-            title={
+          </span>
+          <span
+            // `line-clamp` impose son propre `display` : lui adjoindre `block`
+            // annulerait la troncature, l'ordre des classes n'y changeant rien.
+            className={`mt-0.5 whitespace-pre-wrap break-words text-sm ${
+              expanded ? "block" : "line-clamp-3"
+            } ${hasText ? "text-text" : "italic text-text-secondary"}`}
+          >
+            {retrying
+              ? t("settings.history.transcribing")
+              : hasText
+                ? text
+                : t("settings.history.transcriptionFailed")}
+          </span>
+        </button>
+
+        <div className="flex shrink-0 items-center gap-0.5 pe-1">
+          <RowAction
+            onClick={() => void copy()}
+            label={t("settings.history.copyToClipboard")}
+            disabled={!hasText || retrying}
+          >
+            {copied ? <Check size={15} /> : <Copy size={15} />}
+          </RowAction>
+          <RowAction
+            onClick={() => void commands.toggleHistoryEntrySaved(entry.id)}
+            label={
               entry.saved
                 ? t("settings.history.unsave")
                 : t("settings.history.save")
             }
+            active={entry.saved}
           >
-            <Star
-              width={16}
-              height={16}
-              fill={entry.saved ? "currentColor" : "none"}
-            />
-          </IconButton>
-          <IconButton
-            onClick={handleRetranscribe}
+            <Star size={15} fill={entry.saved ? "currentColor" : "none"} />
+          </RowAction>
+          <RowAction
+            onClick={onDelete}
+            label={t("settings.history.delete")}
             disabled={retrying}
-            title={t("settings.history.retranscribe")}
+            danger
           >
-            <RotateCcw
-              width={16}
-              height={16}
-              style={
-                retrying
-                  ? { animation: "spin 1s linear infinite reverse" }
-                  : undefined
-              }
-            />
-          </IconButton>
-          <IconButton
-            onClick={handleDeleteEntry}
-            disabled={retrying}
-            title={t("settings.history.delete")}
-          >
-            <Trash2 width={16} height={16} />
-          </IconButton>
+            <Trash2 size={15} />
+          </RowAction>
         </div>
       </div>
 
-      <p
-        className={`italic text-sm pb-2 ${
-          retrying
-            ? ""
-            : hasTranscription
-              ? "text-text/90 select-text cursor-text whitespace-pre-wrap break-words"
-              : "text-text/40"
-        }`}
-        style={
-          retrying
-            ? { animation: "transcribe-pulse 3s ease-in-out infinite" }
-            : undefined
-        }
-      >
-        {retrying && (
-          <style>{`
-            @keyframes transcribe-pulse {
-              0%, 100% { color: color-mix(in srgb, var(--color-text) 40%, transparent); }
-              50% { color: color-mix(in srgb, var(--color-text) 90%, transparent); }
-            }
-          `}</style>
-        )}
-        {retrying
-          ? t("settings.history.transcribing")
-          : hasTranscription
-            ? entry.transcription_text
-            : t("settings.history.transcriptionFailed")}
-      </p>
-
-      <AudioPlayer onLoadRequest={handleLoadAudio} className="w-full" />
-    </div>
+      {expanded && (
+        <div className="flex flex-col gap-3 px-2 pb-3">
+          <AudioPlayer onLoadRequest={loadAudio} className="w-full" />
+          <div>
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={retrying}
+              onClick={() => void retranscribe()}
+            >
+              <RotateCcw size={14} strokeWidth={2} aria-hidden="true" />
+              {t("settings.history.retranscribe")}
+            </Button>
+          </div>
+        </div>
+      )}
+    </li>
   );
 };
+
+const RowAction: React.FC<{
+  onClick: () => void;
+  label: string;
+  disabled?: boolean;
+  active?: boolean;
+  danger?: boolean;
+  children: React.ReactNode;
+}> = ({ onClick, label, disabled, active, danger, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    aria-label={label}
+    title={label}
+    className={`cursor-pointer rounded-chip p-1.5 transition-colors duration-[140ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-35 ${
+      active
+        ? "text-accent"
+        : danger
+          ? "text-text-secondary hover:bg-danger/10 hover:text-danger"
+          : "text-text-secondary hover:bg-mid-gray/10 hover:text-text"
+    }`}
+  >
+    {children}
+  </button>
+);
+
+export default HistorySettings;
