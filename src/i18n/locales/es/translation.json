@@ -164,7 +164,10 @@
       "originalWas": "Dictado originalmente: {{text}}",
       "hint": "Puedes volver a intentarlo tantas veces como quieras.",
       "skip": "Omitir este paso",
-      "finishAnyway": "Finalizar configuración"
+      "finishAnyway": "Finalizar configuración",
+      "styleUnavailable": "No se ha podido aplicar el Estilo; este es el dictado en bruto.",
+      "failedTitle": "El dictado no se ha completado",
+      "failedBody": "Nova no ha podido transcribir. Comprueba que el servidor esté accesible y vuelve a intentarlo; también puedes terminar la configuración y volver a esto más tarde."
     },
     "permissions": {
       "title": "Permisos Requeridos",

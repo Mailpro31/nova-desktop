@@ -164,7 +164,10 @@
       "originalWas": "Pierwotnie podyktowano: {{text}}",
       "hint": "Możesz spróbować ponownie tyle razy, ile chcesz.",
       "skip": "Pomiń ten krok",
-      "finishAnyway": "Zakończ konfigurację"
+      "finishAnyway": "Zakończ konfigurację",
+      "styleUnavailable": "Nie udało się zastosować Stylu; oto surowe dyktowanie.",
+      "failedTitle": "Dyktowanie nie powiodło się",
+      "failedBody": "Nova nie zdołała przepisać nagrania. Sprawdź, czy serwer jest osiągalny, i spróbuj ponownie — możesz też dokończyć konfigurację i wrócić do tego później."
     },
     "permissions": {
       "title": "Wymagane uprawnienia",

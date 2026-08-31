@@ -164,7 +164,10 @@
       "originalWas": "원래 말한 내용: {{text}}",
       "hint": "원하는 만큼 다시 시도할 수 있습니다.",
       "skip": "이 단계 건너뛰기",
-      "finishAnyway": "설정 완료"
+      "finishAnyway": "설정 완료",
+      "styleUnavailable": "스타일을 적용하지 못했습니다. 아래는 원본 받아쓰기입니다.",
+      "failedTitle": "받아쓰기가 완료되지 않았습니다",
+      "failedBody": "Nova가 변환하지 못했습니다. 서버에 연결할 수 있는지 확인한 뒤 다시 시도하세요. 설정을 마치고 나중에 다시 시도해도 됩니다."
     },
     "permissions": {
       "title": "권한 필요",

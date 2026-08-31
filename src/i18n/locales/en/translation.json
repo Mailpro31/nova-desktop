@@ -164,7 +164,10 @@
       "originalWas": "Originally dictated: {{text}}",
       "hint": "You can try again as many times as you like.",
       "skip": "Skip this step",
-      "finishAnyway": "Finish setup"
+      "finishAnyway": "Finish setup",
+      "styleUnavailable": "The Style could not be applied; here is the raw dictation.",
+      "failedTitle": "The dictation did not go through",
+      "failedBody": "Nova could not transcribe. Check that the server is reachable, then try again — you can also finish setup and come back to this later."
     },
     "permissions": {
       "title": "Permissions Required",

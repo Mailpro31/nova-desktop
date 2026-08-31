@@ -164,7 +164,10 @@
       "originalWas": "原始口述内容：{{text}}",
       "hint": "您可以随意重试，次数不限。",
       "skip": "跳过此步骤",
-      "finishAnyway": "完成设置"
+      "finishAnyway": "完成设置",
+      "styleUnavailable": "未能应用样式，以下是原始听写内容。",
+      "failedTitle": "本次听写未完成",
+      "failedBody": "Nova 无法转写。请确认服务器可以连接后重试——你也可以先完成设置，稍后再回来。"
     },
     "permissions": {
       "title": "需要权限",

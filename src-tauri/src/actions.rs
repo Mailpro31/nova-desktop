@@ -2289,11 +2289,15 @@ impl ShortcutAction for TranscribeAction {
                                 warn!("Campus server request failed: {}", err);
                                 let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
                             }
+                            // Le serveur a repondu, mais mal (400, 500...).
+                            // Annoncer « serveur injoignable » envoie alors
+                            // chercher un probleme reseau qui n'existe pas :
+                            // c'est le service qui refuse la requete, pas la
+                            // machine qui manque. L'echec reste signale par
+                            // `transcription-error` quand aucun repli local ne
+                            // sauve la dictee.
                             _ => {
                                 warn!("Campus server request failed: {}", err);
-                                if transcription_result.is_err() {
-                                    let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
-                                }
                             }
                         }
                     }

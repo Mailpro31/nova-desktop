@@ -164,7 +164,10 @@
       "originalWas": "元の音声入力: {{text}}",
       "hint": "何度でも試すことができます。",
       "skip": "この手順をスキップ",
-      "finishAnyway": "設定を完了"
+      "finishAnyway": "設定を完了",
+      "styleUnavailable": "スタイルを適用できませんでした。以下は変換前の音声入力です。",
+      "failedTitle": "音声入力が完了しませんでした",
+      "failedBody": "Nova は文字起こしできませんでした。サーバーに接続できるか確認してから、もう一度お試しください。設定を終えて後で戻ることもできます。"
     },
     "permissions": {
       "title": "権限が必要です",

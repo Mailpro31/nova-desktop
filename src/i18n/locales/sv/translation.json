@@ -164,7 +164,10 @@
       "originalWas": "Ursprungligen dikterat: {{text}}",
       "hint": "Du kan försöka igen så många gånger du vill.",
       "skip": "Hoppa över det här steget",
-      "finishAnyway": "Slutför installationen"
+      "finishAnyway": "Slutför installationen",
+      "styleUnavailable": "Stilen kunde inte tillämpas; här är den råa dikteringen.",
+      "failedTitle": "Dikteringen gick inte igenom",
+      "failedBody": "Nova kunde inte transkribera. Kontrollera att servern är nåbar och försök igen — du kan också slutföra konfigurationen och återkomma till detta senare."
     },
     "permissions": {
       "title": "Behörigheter krävs",

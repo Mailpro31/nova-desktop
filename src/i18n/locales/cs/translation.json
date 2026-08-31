@@ -164,7 +164,10 @@
       "originalWas": "Původně nadiktováno: {{text}}",
       "hint": "Můžete to zkusit znovu, kolikrát budete chtít.",
       "skip": "Přeskočit tento krok",
-      "finishAnyway": "Dokončit nastavení"
+      "finishAnyway": "Dokončit nastavení",
+      "styleUnavailable": "Styl nebylo možné použít; zde je nezpracovaný diktát.",
+      "failedTitle": "Diktát neproběhl",
+      "failedBody": "Nova nedokázala přepsat záznam. Zkontrolujte, zda je server dostupný, a zkuste to znovu — můžete také dokončit nastavení a vrátit se k tomu později."
     },
     "permissions": {
       "title": "Vyžadována oprávnění",

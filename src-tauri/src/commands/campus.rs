@@ -1861,14 +1861,24 @@ async fn update_reachability_cache(base_url: &str) -> bool {
     reachable
 }
 
+/// Le serveur repond-il ?
+///
+/// **Repondre n'est pas autoriser.** Cette sonde exigeait un statut 2xx, si
+/// bien qu'un serveur repondant 401 — parce que la sonde n'envoie deliberement
+/// aucun jeton — etait declare injoignable. C'est exactement ce qui se produit
+/// sur un serveur Lab : `/api/health` y repond `401`, et le poste annoncait
+/// « Serveur injoignable » a propos d'une machine qui lui parlait.
+///
+/// Seul un echec de transport — connexion refusee, TLS invalide, delai
+/// depasse — signifie que le serveur est hors d'atteinte. Toute reponse HTTP,
+/// quel que soit son code, prouve le contraire.
 async fn check_server_reachability(base_url: &str) -> bool {
     let client = campus_request_client_with_timeout(None, Duration::from_secs(2));
     client
         .get(format!("{}/api/health", base_url))
         .send()
         .await
-        .map(|r| r.status().is_success())
-        .unwrap_or(false)
+        .is_ok()
 }
 
 /// Retourne vrai si une session campus est présente — utile pour distinguer

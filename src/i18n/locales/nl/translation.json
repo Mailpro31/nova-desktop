@@ -164,7 +164,10 @@
       "originalWas": "Oorspronkelijk gedicteerd: {{text}}",
       "hint": "Je kunt zo vaak opnieuw proberen als je wilt.",
       "skip": "Deze stap overslaan",
-      "finishAnyway": "Instellen voltooien"
+      "finishAnyway": "Instellen voltooien",
+      "styleUnavailable": "De Stijl kon niet worden toegepast; dit is het ruwe dictaat.",
+      "failedTitle": "Het dictaat is niet gelukt",
+      "failedBody": "Nova kon niet transcriberen. Controleer of de server bereikbaar is en probeer het opnieuw — u kunt de installatie ook afronden en hier later op terugkomen."
     },
     "permissions": {
       "title": "Machtigingen vereist",

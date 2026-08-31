@@ -164,7 +164,10 @@
       "originalWas": "Ursprünglich diktiert: {{text}}",
       "hint": "Du kannst es so oft wiederholen, wie du möchtest.",
       "skip": "Diesen Schritt überspringen",
-      "finishAnyway": "Einrichtung abschließen"
+      "finishAnyway": "Einrichtung abschließen",
+      "styleUnavailable": "Der Stil konnte nicht angewendet werden; hier ist das Rohdiktat.",
+      "failedTitle": "Das Diktat ist nicht durchgelaufen",
+      "failedBody": "Nova konnte nicht transkribieren. Prüfen Sie, ob der Server erreichbar ist, und versuchen Sie es erneut — Sie können die Einrichtung auch abschließen und später darauf zurückkommen."
     },
     "permissions": {
       "title": "Berechtigungen erforderlich",

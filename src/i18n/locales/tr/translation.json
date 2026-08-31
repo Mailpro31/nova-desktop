@@ -164,7 +164,10 @@
       "originalWas": "Aslında söylenen: {{text}}",
       "hint": "İstediğiniz kadar tekrar deneyebilirsiniz.",
       "skip": "Bu adımı atla",
-      "finishAnyway": "Kurulumu bitir"
+      "finishAnyway": "Kurulumu bitir",
+      "styleUnavailable": "Stil uygulanamadı; ham dikte aşağıdadır.",
+      "failedTitle": "Dikte tamamlanamadı",
+      "failedBody": "Nova yazıya dökemedi. Sunucuya erişilebildiğini doğrulayıp yeniden deneyin — kurulumu bitirip buna sonra da dönebilirsiniz."
     },
     "permissions": {
       "title": "İzinler Gerekli",

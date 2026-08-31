@@ -164,7 +164,10 @@
       "originalWas": "Dicté à l'origine : {{text}}",
       "hint": "Vous pouvez réessayer autant de fois que vous voulez.",
       "skip": "Passer cette étape",
-      "finishAnyway": "Terminer la configuration"
+      "finishAnyway": "Terminer la configuration",
+      "styleUnavailable": "Le Style n’a pas pu être appliqué ; voici la dictée brute.",
+      "failedTitle": "La dictée n’a pas abouti",
+      "failedBody": "Nova n’a pas pu transcrire. Vérifiez que le serveur est joignable, puis réessayez — vous pouvez aussi terminer la configuration et y revenir plus tard."
     },
     "permissions": {
       "title": "Autorisations requises",

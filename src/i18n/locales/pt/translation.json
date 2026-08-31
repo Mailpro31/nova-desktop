@@ -164,7 +164,10 @@
       "originalWas": "Ditado originalmente: {{text}}",
       "hint": "Você pode tentar novamente quantas vezes quiser.",
       "skip": "Pular esta etapa",
-      "finishAnyway": "Concluir configuração"
+      "finishAnyway": "Concluir configuração",
+      "styleUnavailable": "Não foi possível aplicar o Estilo; eis o ditado em bruto.",
+      "failedTitle": "O ditado não foi concluído",
+      "failedBody": "O Nova não conseguiu transcrever. Verifique se o servidor está acessível e tente novamente — também pode terminar a configuração e voltar a isto mais tarde."
     },
     "permissions": {
       "title": "Permissões Necessárias",

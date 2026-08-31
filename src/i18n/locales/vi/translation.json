@@ -164,7 +164,10 @@
       "originalWas": "Nội dung đã nói ban đầu: {{text}}",
       "hint": "Bạn có thể thử lại bao nhiêu lần tùy thích.",
       "skip": "Bỏ qua bước này",
-      "finishAnyway": "Hoàn tất thiết lập"
+      "finishAnyway": "Hoàn tất thiết lập",
+      "styleUnavailable": "Không thể áp dụng Phong cách; đây là bản đọc thô.",
+      "failedTitle": "Việc đọc chính tả chưa hoàn tất",
+      "failedBody": "Nova không thể chuyển thành văn bản. Hãy kiểm tra xem máy chủ có kết nối được không rồi thử lại — bạn cũng có thể hoàn tất thiết lập và quay lại sau."
     },
     "permissions": {
       "title": "Cần cấp quyền",

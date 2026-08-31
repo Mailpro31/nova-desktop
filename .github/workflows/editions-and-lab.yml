@@ -89,6 +89,14 @@ jobs:
       - name: Startup and Lab isolation tests
         run: bun test src/lib/startupGate.test.ts src/lib/labIsolation.test.ts
 
+      # L'ecran « Essayez Nova » restait bloque sur « Application du Style... »
+      # quand la dictee echouait : le backend enregistre une entree a texte vide
+      # pour permettre une nouvelle tentative, et cet ecran la prenait pour une
+      # reformulation en cours. L'invariant teste ici : rien ne peut laisser
+      # l'interface en chargement.
+      - name: The tutorial card must never stay loading
+        run: bun test src/lib/tutorialPhase.test.ts
+
   rust-lab-feature:
     runs-on: ubuntu-24.04
     steps:

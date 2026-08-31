@@ -164,7 +164,10 @@
       "originalWas": "Dettato originariamente: {{text}}",
       "hint": "Puoi riprovare tutte le volte che vuoi.",
       "skip": "Salta questo passaggio",
-      "finishAnyway": "Termina la configurazione"
+      "finishAnyway": "Termina la configurazione",
+      "styleUnavailable": "Non è stato possibile applicare lo Stile; ecco la dettatura grezza.",
+      "failedTitle": "La dettatura non è andata a buon fine",
+      "failedBody": "Nova non è riuscita a trascrivere. Verifica che il server sia raggiungibile e riprova — puoi anche completare la configurazione e tornarci più tardi."
     },
     "permissions": {
       "title": "Permessi Richiesti",
