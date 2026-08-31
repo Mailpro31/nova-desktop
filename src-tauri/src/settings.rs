@@ -616,7 +616,10 @@ fn default_autostart_enabled() -> bool {
 }
 
 fn default_update_checks_enabled() -> bool {
-    true
+    // Le binaire Lab est une démo isolée, sans canal de mise à jour. Lui faire
+    // consulter le manifeste de production pourrait proposer de remplacer
+    // Nova Lab par Nova alors que leurs données et identifiants sont séparés.
+    !cfg!(feature = "lab")
 }
 
 fn default_show_whats_new_on_update() -> bool {

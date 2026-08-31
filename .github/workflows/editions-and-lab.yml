@@ -100,3 +100,19 @@ jobs:
             exit 1
           fi
           echo "ok: 'lab' absente de la construction par defaut"
+
+      - name: The Lab package must install beside production Nova
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          production = json.loads(Path("src-tauri/tauri.conf.json").read_text())
+          lab = json.loads(Path("src-tauri/tauri.lab.conf.json").read_text())
+          assert lab["productName"] != production["productName"]
+          assert lab["identifier"] != production["identifier"]
+          assert lab["bundle"]["windows"]["nsis"]["installMode"] == "perUser"
+          allow = lab["app"]["security"]["assetProtocol"]["scope"]["allow"]
+          assert lab["identifier"] in allow[0]
+          print("ok: Nova Lab is isolated from production Nova")
+          PY

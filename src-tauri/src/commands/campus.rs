@@ -18,7 +18,10 @@ use crate::settings::{get_settings, write_settings};
 const CAMPUS_CONFIG_FILENAME: &str = "campus-config.json";
 const CAMPUS_SESSION_STORE: &str = "campus_session.json";
 const CAMPUS_SESSION_KEY: &str = "campus_session";
+#[cfg(not(feature = "lab"))]
 const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.campus";
+#[cfg(feature = "lab")]
+const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.campus";
 
 pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
 pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";

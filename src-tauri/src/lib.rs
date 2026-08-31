@@ -884,10 +884,19 @@ pub fn run(cli_args: CliArgs) {
         }));
     }
 
-    builder
+    builder = builder
         .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init());
+
+    // Un artefact Lab est volontairement éphémère et installé côte à côte. Il
+    // ne doit jamais consulter le canal de mise à jour de Nova puis se changer
+    // silencieusement en binaire de production sous son identité de test.
+    #[cfg(not(feature = "lab"))]
+    {
+        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+    }
+
+    builder
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_macos_permissions::init())

@@ -63,6 +63,10 @@ on:
         required: false
         type: boolean
         default: false
+      windows-executable:
+        required: false
+        type: string
+        default: "Nova.exe"
 
 env:
   TSC_VERSION: "0.9.0"
@@ -871,9 +875,9 @@ jobs:
           function Assert-PackageContents {
             param([string]$Root, [string]$Label)
 
-            $appExe = Get-ChildItem $Root -Filter "Nova.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+            $appExe = Get-ChildItem $Root -Filter "${{ inputs.windows-executable }}" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
             if (-not $appExe) {
-              throw "$Label package is missing Nova.exe"
+              throw "$Label package is missing ${{ inputs.windows-executable }}"
             }
             foreach ($dll in $stagedDlls) {
               if (-not (Get-ChildItem $Root -Filter $dll.Name -Recurse -ErrorAction SilentlyContinue)) {
