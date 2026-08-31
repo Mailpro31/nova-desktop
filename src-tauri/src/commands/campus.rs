@@ -1895,14 +1895,20 @@ fn campus_client(token: &str) -> reqwest::Client {
     campus_request_client(Some(token))
 }
 
+/// Ce que `/api/transcribe` repond : `{ "text": "..." }`.
+///
+/// Ces deux structures existaient deja — et n'etaient utilisees que par la
+/// transcription de fichier. Les deux chemins de dictee demandaient a la place
+/// un `String`, c'est-a-dire une **chaine JSON nue**. `serde` refusait donc un
+/// objet parfaitement valide, et l'echec ressortait en « invalid response »
+/// sans que rien ne designe la cause.
 #[derive(Deserialize, Debug)]
-#[allow(dead_code)]
 struct TranscribeResponse {
     text: String,
 }
 
+/// Ce que `/api/reformulate` repond : `{ "text": "..." }`.
 #[derive(Deserialize, Debug)]
-#[allow(dead_code)]
 struct ReformulateResponse {
     text: String,
 }
@@ -1926,20 +1932,16 @@ pub async fn transcribe_campus(
 
     let form = reqwest::multipart::Form::new().part("file", part);
 
-    let response = client
+    let request = client
         .post(format!("{}/api/transcribe", base_url))
         .multipart(form)
-        .send()
-        .await
-        .map_err(|e| {
-            if e.is_connect() || e.is_timeout() || e.is_request() {
-                CampusError::Network(e.to_string())
-            } else {
-                CampusError::Other(e.to_string())
-            }
-        })?;
+        .build()
+        .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
+    let response = send_traced(&client, request).await?;
 
-    handle_campus_response(response).await
+    // La reponse est un objet `{ "text": ... }`, pas une chaine.
+    let parsed: TranscribeResponse = handle_campus_response(response).await?;
+    Ok(parsed.text)
 }
 
 /// Reformule côté serveur, en désignant le Style appliqué.
@@ -1965,20 +1967,51 @@ pub async fn reformulate_campus(
         "style_prompt": style_prompt,
     });
 
-    let response = client
+    let request = client
         .post(format!("{}/api/reformulate", base_url))
         .json(&body)
-        .send()
-        .await
-        .map_err(|e| {
-            if e.is_connect() || e.is_timeout() || e.is_request() {
-                CampusError::Network(e.to_string())
-            } else {
-                CampusError::Other(e.to_string())
-            }
-        })?;
+        .build()
+        .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
+    let response = send_traced(&client, request).await?;
 
-    handle_campus_response(response).await
+    let parsed: ReformulateResponse = handle_campus_response(response).await?;
+    Ok(parsed.text)
+}
+
+/// Envoie une requete en laissant derriere elle une trace exploitable.
+///
+/// La trace decrit la **forme** de la requete — methode, chemin, version, la
+/// presence de `Content-Length` / `Transfer-Encoding` / `Expect`, le type MIME
+/// et la taille du corps — puis son issue. Rien d'autre : voir
+/// `crate::campus_trace`, ou aucune valeur d'en-tete sensible n'est meme lue.
+///
+/// C'est ce qui manquait devant `HTTP 400 Bad Request: Invalid HTTP request
+/// received.` : le message ne disait pas comment le corps etait annonce, et
+/// c'est precisement ce qu'une passerelle refuse.
+async fn send_traced(
+    client: &reqwest::Client,
+    request: reqwest::Request,
+) -> Result<reqwest::Response, CampusError> {
+    crate::campus_trace::log_request(&crate::campus_trace::RequestShape::observe(&request));
+
+    match client.execute(request).await {
+        Ok(response) => {
+            crate::campus_trace::log_outcome(&crate::campus_trace::RequestOutcome::Status(
+                response.status().as_u16(),
+            ));
+            Ok(response)
+        }
+        Err(error) => {
+            crate::campus_trace::log_outcome(&crate::campus_trace::RequestOutcome::from_error(
+                &error,
+            ));
+            if error.is_connect() || error.is_timeout() || error.is_request() {
+                Err(CampusError::Network(error.to_string()))
+            } else {
+                Err(CampusError::Other(error.to_string()))
+            }
+        }
+    }
 }
 
 async fn handle_campus_response<T: serde::de::DeserializeOwned>(
@@ -2544,5 +2577,63 @@ mod lab_persistence_tests {
     fn le_trousseau_du_lab_est_distinct_de_celui_du_campus() {
         // Se deconnecter de son organisation ne doit pas desenroler la machine.
         assert_ne!(LAB_DEVICE_CREDENTIAL_SERVICE, CAMPUS_CREDENTIAL_SERVICE);
+    }
+}
+
+/// Ce que le serveur repond, et ce que le poste accepte de lire.
+///
+/// Le defaut corrige ici etait invisible a la compilation :
+/// `handle_campus_response` est generique, et `Result<String, _>` faisait
+/// choisir `T = String` par inference. `serde` demandait alors une **chaine
+/// JSON nue** la ou le serveur envoie un objet, et l'echec ressortait en
+/// « invalid response » — un message qui ne designe pas sa cause. Les
+/// structures existaient pourtant deja, utilisees par le seul chemin de
+/// transcription de fichier.
+#[cfg(test)]
+mod campus_response_tests {
+    use super::*;
+
+    const SERVER_PAYLOAD: &str = r#"{"text":"Bonjour, ceci est un essai de dictee."}"#;
+
+    #[test]
+    fn la_transcription_lit_lobjet_renvoye_par_le_serveur() {
+        let parsed: TranscribeResponse =
+            serde_json::from_str(SERVER_PAYLOAD).expect("objet deserialisable");
+        assert_eq!(parsed.text, "Bonjour, ceci est un essai de dictee.");
+    }
+
+    #[test]
+    fn la_reformulation_lit_lobjet_renvoye_par_le_serveur() {
+        let parsed: ReformulateResponse =
+            serde_json::from_str(SERVER_PAYLOAD).expect("objet deserialisable");
+        assert_eq!(parsed.text, "Bonjour, ceci est un essai de dictee.");
+    }
+
+    #[test]
+    fn lancienne_forme_naurait_jamais_pu_marcher() {
+        // La regression exacte : demander un `String` pour un objet JSON.
+        // Ce test echouerait si quelqu'un revenait a `Result<String, _>` sans
+        // structure de reponse.
+        let as_bare_string = serde_json::from_str::<String>(SERVER_PAYLOAD);
+        assert!(
+            as_bare_string.is_err(),
+            "un objet JSON ne se lit pas comme une chaine ;              c'est ce que faisaient transcribe_campus et reformulate_campus"
+        );
+    }
+
+    #[test]
+    fn un_champ_texte_absent_est_refuse() {
+        // Mieux vaut une erreur nette qu'une transcription vide silencieuse.
+        assert!(serde_json::from_str::<TranscribeResponse>(r#"{"result":"x"}"#).is_err());
+        assert!(serde_json::from_str::<ReformulateResponse>("{}").is_err());
+    }
+
+    #[test]
+    fn les_champs_supplementaires_du_serveur_sont_tolerees() {
+        // Le serveur doit pouvoir enrichir sa reponse sans casser les postes
+        // deja deployes.
+        let payload = r#"{"text":"ok","duration_ms":1234,"model":"whisper"}"#;
+        let parsed: TranscribeResponse = serde_json::from_str(payload).expect("tolerant");
+        assert_eq!(parsed.text, "ok");
     }
 }

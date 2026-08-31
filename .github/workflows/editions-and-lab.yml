@@ -142,6 +142,21 @@ jobs:
         working-directory: src-tauri
         run: cargo test --features lab lab_persistence -- --nocapture
 
+      # Le serveur repond `{ "text": ... }`. Les deux chemins de dictee
+      # demandaient une chaine JSON nue, et `serde` refusait donc un objet
+      # parfaitement valide. Invisible a la compilation : l'inference choisit
+      # `T = String` sans rien signaler.
+      - name: Campus responses must be read as objects
+        working-directory: src-tauri
+        run: cargo test campus_response -- --nocapture
+
+      # La trace de diagnostic ne doit jamais pouvoir ecrire un secret. Le test
+      # pose de vrais en-tetes sensibles sur la requete et verifie qu'aucun
+      # fragment n'atteint la ligne de journal.
+      - name: The diagnostic trace must never leak a secret
+        working-directory: src-tauri
+        run: cargo test campus_trace -- --nocapture
+
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
       # que relire le Cargo.toml.

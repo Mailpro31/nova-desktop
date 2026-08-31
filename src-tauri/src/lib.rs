@@ -4,6 +4,8 @@ mod apple_intelligence;
 mod audio_feedback;
 pub mod audio_toolkit;
 mod auto_style;
+/// Trace de diagnostic des requetes Campus/Lab, expurgee par construction.
+mod campus_trace;
 mod catalog;
 pub mod cli;
 mod clipboard;
