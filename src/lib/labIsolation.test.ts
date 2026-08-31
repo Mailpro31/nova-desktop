@@ -90,6 +90,20 @@ describe("Nova Lab ne fait rien de ce qu'il n'a pas à faire", () => {
     );
   });
 
+  it("n'enregistre ses commandes qu'une seule fois", () => {
+    // `Builder::commands()` remplace la liste enregistrée, il ne l'étend pas.
+    // Un second appel — c'est exactement ce que faisait le build Lab — efface
+    // toutes les commandes ordinaires, et l'application répond « Command
+    // get_app_settings not found » au premier écran. La preuve réelle est le
+    // test Rust `specta_registration` ; cette garde-ci rend la faute visible
+    // en quelques millisecondes plutôt qu'après une compilation complète.
+    const callSites = libRs
+      .split("\n")
+      .filter((line) => !line.trimStart().startsWith("//"))
+      .filter((line) => line.includes(".commands("));
+    expect(callSites).toHaveLength(1);
+  });
+
   it("intitule sa fenêtre « Nova Lab »", () => {
     // Insensible au formatage de `cargo fmt`, qui casse l'expression sur
     // plusieurs lignes selon sa longueur.

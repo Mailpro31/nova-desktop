@@ -110,6 +110,20 @@ jobs:
         working-directory: src-tauri
         run: cargo test --features lab
 
+      # L'invariant qui a manque : `Builder::commands()` REMPLACE la liste
+      # enregistree. Un second appel sous `#[cfg(feature = "lab")]` effacait
+      # toutes les commandes ordinaires, et l'artefact Lab repondait
+      # « Command get_app_settings not found » des le premier ecran. Ces tests
+      # inspectent la table reellement enregistree, pas le source.
+      - name: The lab build must keep every ordinary command
+        working-directory: src-tauri
+        run: cargo test --features lab specta_registration -- --nocapture
+
+      # Et la meme table, sans la surface Lab, dans le paquet ordinaire.
+      - name: The ordinary build must expose no lab command
+        working-directory: src-tauri
+        run: cargo test specta_registration -- --nocapture
+
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
       # que relire le Cargo.toml.

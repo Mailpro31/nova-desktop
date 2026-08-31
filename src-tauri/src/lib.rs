@@ -576,6 +576,301 @@ fn run_headless_transcription(app: &AppHandle, args: &CliArgs) -> i32 {
     0
 }
 
+/// Toutes les commandes et les evenements exposes a l'interface.
+///
+/// ## Un seul `.commands(...)`, et c'est un invariant
+///
+/// `Builder::commands()` ne cumule pas : il **remplace** la liste deja
+/// enregistree (tauri-specta v2 reaffecte `commands` et `command_types`). Le
+/// build Lab ajoutait sa commande par un second appel ; il ne restait donc que
+/// `enroll_lab_device`, et le premier appel de l'interface repondait
+/// « Command get_app_settings not found » — une fenetre inutilisable, sur
+/// laquelle « Relancer Nova » ne pouvait que reproduire la meme erreur.
+///
+/// La liste vit donc dans une macro locale, invoquee **une fois**, avec la
+/// commande Lab en supplement quand la feature est active. Les commandes sont
+/// passees en `tt` et non en `path` : un fragment `path` deviendrait opaque et
+/// ne se laisserait plus analyser par `collect_commands!`.
+fn build_specta_builder() -> Builder<tauri::Wry> {
+    macro_rules! nova_command_registry {
+        ($($lab_commands:tt)*) => {
+            collect_commands![
+                shortcut::change_binding,
+                shortcut::reset_binding,
+                shortcut::change_ptt_setting,
+                shortcut::change_audio_feedback_setting,
+                shortcut::change_audio_feedback_volume_setting,
+                shortcut::change_sound_theme_setting,
+                shortcut::change_theme_setting,
+                shortcut::change_start_hidden_setting,
+                shortcut::change_autostart_setting,
+                shortcut::change_translate_to_english_setting,
+                shortcut::change_selected_language_setting,
+                shortcut::change_overlay_position_setting,
+                shortcut::change_overlay_style_setting,
+                shortcut::change_persistent_overlay_setting,
+                shortcut::change_debug_mode_setting,
+                shortcut::change_word_correction_threshold_setting,
+                shortcut::change_extra_recording_buffer_setting,
+                shortcut::change_paste_delay_ms_setting,
+                shortcut::change_paste_delay_after_ms_setting,
+                shortcut::change_paste_method_setting,
+                shortcut::get_available_typing_tools,
+                shortcut::change_typing_tool_setting,
+                shortcut::change_external_script_path_setting,
+                shortcut::change_clipboard_handling_setting,
+                shortcut::change_auto_submit_setting,
+                shortcut::change_auto_submit_key_setting,
+                shortcut::change_post_process_enabled_setting,
+                shortcut::change_experimental_enabled_setting,
+                shortcut::change_post_process_base_url_setting,
+                shortcut::change_post_process_api_key_setting,
+                shortcut::change_post_process_model_setting,
+                shortcut::set_post_process_provider,
+                shortcut::fetch_post_process_models,
+                shortcut::add_post_process_prompt,
+                shortcut::update_post_process_prompt,
+                shortcut::delete_post_process_prompt,
+                shortcut::set_post_process_selected_prompt,
+                shortcut::update_custom_words,
+                shortcut::update_custom_variables,
+                shortcut::update_auto_style_config,
+                shortcut::update_context_reading_config,
+                shortcut::suspend_binding,
+                shortcut::resume_binding,
+                shortcut::change_mute_while_recording_setting,
+                shortcut::change_append_trailing_space_setting,
+                shortcut::change_lazy_stream_close_setting,
+                shortcut::change_vad_enabled_setting,
+                shortcut::change_lexicon_learning_setting,
+                shortcut::change_app_language_setting,
+                shortcut::change_update_checks_setting,
+                shortcut::change_show_whats_new_on_update_setting,
+                shortcut::change_whats_new_last_seen_version_setting,
+                shortcut::change_keyboard_implementation_setting,
+                shortcut::get_keyboard_implementation,
+                shortcut::change_show_tray_icon_setting,
+                shortcut::change_transcribe_accelerator_setting,
+                shortcut::change_ort_accelerator_setting,
+                shortcut::change_transcribe_gpu_device,
+                shortcut::get_available_accelerators,
+                shortcut::handy_keys::start_handy_keys_recording,
+                shortcut::handy_keys::stop_handy_keys_recording,
+                trigger_update_check,
+                show_main_window_command,
+                commands::cancel_operation,
+                commands::trigger_transcription,
+                commands::finish_recording,
+                commands::copy_transcription,
+                commands::dismiss_recording_overlay,
+                commands::is_portable,
+                commands::get_app_dir_path,
+                commands::get_app_settings,
+                commands::get_default_settings,
+                nova_commands::nova_command_capture_selection,
+                nova_commands::nova_command_replace,
+                nova_commands::nova_command_diagnostics,
+                commands::campus::get_campus_config,
+                commands::campus::fetch_campus_server_config,
+                commands::campus::set_campus_mode,
+                organization_sso::sign_in_with_organization,
+                organization_sso::organization_auth_providers,
+                organization_discovery::discover_organization,
+                deployment::get_deployment_state,
+                commands::campus::load_campus_session,
+                commands::campus::clear_campus_session,
+                commands::campus::logout_campus_session,
+                commands::campus::complete_campus_onboarding,
+                commands::campus::check_campus_server_reachability,
+                commands::campus::request_campus_auth,
+                commands::campus::verify_campus_auth,
+                commands::campus::start_campus_entra_auth,
+                commands::campus::poll_campus_entra_auth,
+                commands::campus::get_campus_me,
+                commands::campus::get_campus_vocabulary,
+                commands::campus::add_campus_dictionary_entry,
+                commands::campus::delete_campus_dictionary_entry,
+                commands::campus::learn_campus_dictionary,
+                commands::campus::export_campus_dictionary,
+                commands::campus::import_campus_dictionary,
+                commands::campus::analyze_campus_document,
+                commands::campus::add_campus_snippet,
+                commands::campus::delete_campus_snippet,
+                commands::campus::get_campus_formatting_rules,
+                commands::campus::add_campus_formatting_rule,
+                commands::campus::delete_campus_formatting_rule,
+                commands::campus::execute_campus_command,
+                commands::campus::get_campus_ai_skills,
+                commands::campus::refresh_organization_packages,
+                commands::campus::fetch_learning_catalog,
+                commands::campus::fetch_learning_progress,
+                commands::campus::update_learning_progress,
+                commands::campus::request_learning_feedback,
+                commands::campus::clear_organization_packages,
+                commands::campus::run_organization_skill,
+                commands::campus::format_campus_engineering_notes,
+                commands::campus::transcribe_campus_audio_file,
+                commands::get_lexicon_suggestions,
+                commands::accept_lexicon_suggestion,
+                commands::dismiss_lexicon_suggestion,
+                commands::get_log_dir_path,
+                commands::get_recent_log_lines,
+                commands::set_log_level,
+                commands::open_recordings_folder,
+                commands::open_log_dir,
+                commands::open_app_data_dir,
+                commands::check_apple_intelligence_available,
+                commands::initialize_enigo,
+                commands::initialize_shortcuts,
+                commands::models::get_available_models,
+                commands::models::get_model_info,
+                commands::models::download_model,
+                commands::models::delete_model,
+                commands::models::cancel_download,
+                commands::local_llm::get_local_llm_profiles,
+                commands::local_llm::activate_local_llm_profile,
+                commands::license::get_license_status,
+                commands::license::acknowledge_trial_expired,
+                commands::license::activate_license,
+                commands::license::activate_license_code,
+                commands::license::clear_license,
+                commands::license::open_billing_portal,
+                quota::get_quota_status,
+                week_stats::get_week_stat,
+                overlay::set_overlay_menu_height,
+                commands::models::set_active_model,
+                commands::models::get_current_model,
+                commands::models::get_transcription_model_status,
+                commands::models::is_model_loading,
+                commands::models::rescan_local_models,
+                commands::audio::update_microphone_mode,
+                commands::audio::get_microphone_mode,
+                commands::audio::get_windows_microphone_permission_status,
+                commands::audio::open_microphone_privacy_settings,
+                commands::audio::get_available_microphones,
+                commands::audio::set_selected_microphone,
+                commands::audio::get_selected_microphone,
+                commands::audio::get_available_output_devices,
+                commands::audio::set_selected_output_device,
+                commands::audio::get_selected_output_device,
+                commands::audio::play_test_sound,
+                commands::audio::check_custom_sounds,
+                commands::audio::set_clamshell_microphone,
+                commands::audio::get_clamshell_microphone,
+                commands::audio::is_recording,
+                commands::transcription::set_model_unload_timeout,
+                commands::transcription::get_model_load_status,
+                commands::transcription::unload_model_manually,
+                commands::transcription::is_transcribe_cpu_only_mode,
+                commands::transcription::clear_transcribe_gpu_blacklist,
+                meeting_capture::probe_meeting_capture,
+                commands::meeting::list_meeting_apps,
+                commands::meeting::start_meeting,
+                commands::meeting::stop_meeting,
+                performance::run_performance_diagnostics,
+                performance::apply_adaptive_performance,
+                performance::change_adaptive_performance_setting,
+                performance::clear_performance_history,
+                performance::acknowledge_thinking_frame,
+                commands::history::get_history_entries,
+                commands::history::toggle_history_entry_saved,
+                commands::history::get_audio_file_path,
+                commands::history::delete_history_entry,
+                commands::history::retry_history_entry_transcription,
+                commands::history::update_history_limit,
+                commands::history::update_recording_retention_period,
+                helpers::clamshell::is_laptop,
+                $($lab_commands)*
+            ]
+        };
+    }
+
+    // Le paquet Desktop ordinaire n'expose aucune surface Lab.
+    #[cfg(not(feature = "lab"))]
+    let commands = nova_command_registry!();
+
+    // L'artefact de demonstration ajoute l'enrolement — a la meme liste, jamais
+    // par un second enregistrement.
+    #[cfg(feature = "lab")]
+    let commands = nova_command_registry!(lab_enrollment::enroll_lab_device);
+
+    Builder::<tauri::Wry>::new()
+        .commands(commands)
+        .events(collect_events![
+            managers::history::HistoryUpdatePayload,
+            managers::transcription::StreamTextEvent,
+            managers::transcription::StreamPhaseEvent,
+            nova_commands::NovaCommandCaptureEvent,
+            dictation_state::DictationStateEvent,
+        ])
+}
+
+/// Ce que le paquet expose reellement, verifie sur les liaisons rendues.
+///
+/// Le bug corrige ici ne se voyait ni a la lecture du `Cargo.toml`, ni a la
+/// compilation : le build Lab compilait parfaitement et ne perdait ses commandes
+/// qu'a l'execution, au premier `invoke`. Seule l'inspection de la table
+/// reellement enregistree peut donc l'attraper — c'est ce que fait
+/// `export_str`, qui rend exactement ce que `Builder` a retenu.
+#[cfg(test)]
+mod specta_registration {
+    use super::build_specta_builder;
+    use specta_typescript::{BigIntExportBehavior, Typescript};
+
+    fn registered_commands() -> String {
+        build_specta_builder()
+            .export_str(Typescript::default().bigint(BigIntExportBehavior::Number))
+            .expect("les liaisons TypeScript doivent se rendre")
+    }
+
+    /// Un echantillon des commandes dont depend le premier ecran. Sans elles,
+    /// l'interface ne peut meme pas se decider a afficher quoi que ce soit.
+    const ESSENTIAL: [&str; 4] = [
+        "get_app_settings",
+        "get_available_models",
+        "load_campus_session",
+        "get_history_entries",
+    ];
+
+    #[test]
+    fn the_ordinary_commands_are_registered() {
+        let bindings = registered_commands();
+        for command in ESSENTIAL {
+            assert!(
+                bindings.contains(command),
+                "commande absente des liaisons : {command}"
+            );
+        }
+    }
+
+    /// La regression exacte : un second `.commands(...)` effacait tout le reste.
+    #[cfg(feature = "lab")]
+    #[test]
+    fn the_lab_build_adds_enrollment_without_losing_anything() {
+        let bindings = registered_commands();
+        assert!(
+            bindings.contains("enroll_lab_device"),
+            "l'artefact Lab doit exposer l'enrolement"
+        );
+        for command in ESSENTIAL {
+            assert!(
+                bindings.contains(command),
+                "l'artefact Lab a perdu une commande ordinaire : {command}"
+            );
+        }
+    }
+
+    /// Et le paquet Desktop ordinaire n'en sait toujours rien.
+    #[cfg(not(feature = "lab"))]
+    #[test]
+    fn the_ordinary_build_exposes_no_lab_command() {
+        assert!(
+            !registered_commands().contains("enroll_lab_device"),
+            "le paquet Nova ordinaire ne doit pas exposer la surface Lab"
+        );
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run(cli_args: CliArgs) {
     // Rapport de plantage (dormant tant que NOVA_SENTRY_DSN est vide) — au plus
@@ -590,208 +885,7 @@ pub fn run(cli_args: CliArgs) {
     // when the variable is unset
     let console_filter = build_console_filter();
 
-    let specta_builder = Builder::<tauri::Wry>::new()
-        .commands(collect_commands![
-            shortcut::change_binding,
-            shortcut::reset_binding,
-            shortcut::change_ptt_setting,
-            shortcut::change_audio_feedback_setting,
-            shortcut::change_audio_feedback_volume_setting,
-            shortcut::change_sound_theme_setting,
-            shortcut::change_theme_setting,
-            shortcut::change_start_hidden_setting,
-            shortcut::change_autostart_setting,
-            shortcut::change_translate_to_english_setting,
-            shortcut::change_selected_language_setting,
-            shortcut::change_overlay_position_setting,
-            shortcut::change_overlay_style_setting,
-            shortcut::change_persistent_overlay_setting,
-            shortcut::change_debug_mode_setting,
-            shortcut::change_word_correction_threshold_setting,
-            shortcut::change_extra_recording_buffer_setting,
-            shortcut::change_paste_delay_ms_setting,
-            shortcut::change_paste_delay_after_ms_setting,
-            shortcut::change_paste_method_setting,
-            shortcut::get_available_typing_tools,
-            shortcut::change_typing_tool_setting,
-            shortcut::change_external_script_path_setting,
-            shortcut::change_clipboard_handling_setting,
-            shortcut::change_auto_submit_setting,
-            shortcut::change_auto_submit_key_setting,
-            shortcut::change_post_process_enabled_setting,
-            shortcut::change_experimental_enabled_setting,
-            shortcut::change_post_process_base_url_setting,
-            shortcut::change_post_process_api_key_setting,
-            shortcut::change_post_process_model_setting,
-            shortcut::set_post_process_provider,
-            shortcut::fetch_post_process_models,
-            shortcut::add_post_process_prompt,
-            shortcut::update_post_process_prompt,
-            shortcut::delete_post_process_prompt,
-            shortcut::set_post_process_selected_prompt,
-            shortcut::update_custom_words,
-            shortcut::update_custom_variables,
-            shortcut::update_auto_style_config,
-            shortcut::update_context_reading_config,
-            shortcut::suspend_binding,
-            shortcut::resume_binding,
-            shortcut::change_mute_while_recording_setting,
-            shortcut::change_append_trailing_space_setting,
-            shortcut::change_lazy_stream_close_setting,
-            shortcut::change_vad_enabled_setting,
-            shortcut::change_lexicon_learning_setting,
-            shortcut::change_app_language_setting,
-            shortcut::change_update_checks_setting,
-            shortcut::change_show_whats_new_on_update_setting,
-            shortcut::change_whats_new_last_seen_version_setting,
-            shortcut::change_keyboard_implementation_setting,
-            shortcut::get_keyboard_implementation,
-            shortcut::change_show_tray_icon_setting,
-            shortcut::change_transcribe_accelerator_setting,
-            shortcut::change_ort_accelerator_setting,
-            shortcut::change_transcribe_gpu_device,
-            shortcut::get_available_accelerators,
-            shortcut::handy_keys::start_handy_keys_recording,
-            shortcut::handy_keys::stop_handy_keys_recording,
-            trigger_update_check,
-            show_main_window_command,
-            commands::cancel_operation,
-            commands::trigger_transcription,
-            commands::finish_recording,
-            commands::copy_transcription,
-            commands::dismiss_recording_overlay,
-            commands::is_portable,
-            commands::get_app_dir_path,
-            commands::get_app_settings,
-            commands::get_default_settings,
-            nova_commands::nova_command_capture_selection,
-            nova_commands::nova_command_replace,
-            nova_commands::nova_command_diagnostics,
-            commands::campus::get_campus_config,
-            commands::campus::fetch_campus_server_config,
-            commands::campus::set_campus_mode,
-            organization_sso::sign_in_with_organization,
-            organization_sso::organization_auth_providers,
-            organization_discovery::discover_organization,
-            deployment::get_deployment_state,
-            commands::campus::load_campus_session,
-            commands::campus::clear_campus_session,
-            commands::campus::logout_campus_session,
-            commands::campus::complete_campus_onboarding,
-            commands::campus::check_campus_server_reachability,
-            commands::campus::request_campus_auth,
-            commands::campus::verify_campus_auth,
-            commands::campus::start_campus_entra_auth,
-            commands::campus::poll_campus_entra_auth,
-            commands::campus::get_campus_me,
-            commands::campus::get_campus_vocabulary,
-            commands::campus::add_campus_dictionary_entry,
-            commands::campus::delete_campus_dictionary_entry,
-            commands::campus::learn_campus_dictionary,
-            commands::campus::export_campus_dictionary,
-            commands::campus::import_campus_dictionary,
-            commands::campus::analyze_campus_document,
-            commands::campus::add_campus_snippet,
-            commands::campus::delete_campus_snippet,
-            commands::campus::get_campus_formatting_rules,
-            commands::campus::add_campus_formatting_rule,
-            commands::campus::delete_campus_formatting_rule,
-            commands::campus::execute_campus_command,
-            commands::campus::get_campus_ai_skills,
-            commands::campus::refresh_organization_packages,
-            commands::campus::fetch_learning_catalog,
-            commands::campus::fetch_learning_progress,
-            commands::campus::update_learning_progress,
-            commands::campus::request_learning_feedback,
-            commands::campus::clear_organization_packages,
-            commands::campus::run_organization_skill,
-            commands::campus::format_campus_engineering_notes,
-            commands::campus::transcribe_campus_audio_file,
-            commands::get_lexicon_suggestions,
-            commands::accept_lexicon_suggestion,
-            commands::dismiss_lexicon_suggestion,
-            commands::get_log_dir_path,
-            commands::get_recent_log_lines,
-            commands::set_log_level,
-            commands::open_recordings_folder,
-            commands::open_log_dir,
-            commands::open_app_data_dir,
-            commands::check_apple_intelligence_available,
-            commands::initialize_enigo,
-            commands::initialize_shortcuts,
-            commands::models::get_available_models,
-            commands::models::get_model_info,
-            commands::models::download_model,
-            commands::models::delete_model,
-            commands::models::cancel_download,
-            commands::local_llm::get_local_llm_profiles,
-            commands::local_llm::activate_local_llm_profile,
-            commands::license::get_license_status,
-            commands::license::acknowledge_trial_expired,
-            commands::license::activate_license,
-            commands::license::activate_license_code,
-            commands::license::clear_license,
-            commands::license::open_billing_portal,
-            quota::get_quota_status,
-            week_stats::get_week_stat,
-            overlay::set_overlay_menu_height,
-            commands::models::set_active_model,
-            commands::models::get_current_model,
-            commands::models::get_transcription_model_status,
-            commands::models::is_model_loading,
-            commands::models::rescan_local_models,
-            commands::audio::update_microphone_mode,
-            commands::audio::get_microphone_mode,
-            commands::audio::get_windows_microphone_permission_status,
-            commands::audio::open_microphone_privacy_settings,
-            commands::audio::get_available_microphones,
-            commands::audio::set_selected_microphone,
-            commands::audio::get_selected_microphone,
-            commands::audio::get_available_output_devices,
-            commands::audio::set_selected_output_device,
-            commands::audio::get_selected_output_device,
-            commands::audio::play_test_sound,
-            commands::audio::check_custom_sounds,
-            commands::audio::set_clamshell_microphone,
-            commands::audio::get_clamshell_microphone,
-            commands::audio::is_recording,
-            commands::transcription::set_model_unload_timeout,
-            commands::transcription::get_model_load_status,
-            commands::transcription::unload_model_manually,
-            commands::transcription::is_transcribe_cpu_only_mode,
-            commands::transcription::clear_transcribe_gpu_blacklist,
-            meeting_capture::probe_meeting_capture,
-            commands::meeting::list_meeting_apps,
-            commands::meeting::start_meeting,
-            commands::meeting::stop_meeting,
-            performance::run_performance_diagnostics,
-            performance::apply_adaptive_performance,
-            performance::change_adaptive_performance_setting,
-            performance::clear_performance_history,
-            performance::acknowledge_thinking_frame,
-            commands::history::get_history_entries,
-            commands::history::toggle_history_entry_saved,
-            commands::history::get_audio_file_path,
-            commands::history::delete_history_entry,
-            commands::history::retry_history_entry_transcription,
-            commands::history::update_history_limit,
-            commands::history::update_recording_retention_period,
-            helpers::clamshell::is_laptop,
-        ])
-        .events(collect_events![
-            managers::history::HistoryUpdatePayload,
-            managers::transcription::StreamTextEvent,
-            managers::transcription::StreamPhaseEvent,
-            nova_commands::NovaCommandCaptureEvent,
-            dictation_state::DictationStateEvent,
-        ]);
-
-    // Le protocole Lab ne doit pas se retrouver par accident dans le paquet
-    // Desktop normal. Cette commande n'existe donc que dans l'artefact bâti
-    // explicitement avec `--features lab`.
-    #[cfg(feature = "lab")]
-    let specta_builder =
-        specta_builder.commands(collect_commands![lab_enrollment::enroll_lab_device,]);
+    let specta_builder = build_specta_builder();
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
     specta_builder
