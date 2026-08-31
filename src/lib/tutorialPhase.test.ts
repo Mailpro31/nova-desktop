@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { readFileSync } from "node:fs";
 
 import {
   isTutorialLoading,
@@ -110,5 +111,33 @@ describe("carte du tutoriel", () => {
 
     // Et l'état de chargement reste atteignable : ce n'est pas du code mort.
     expect(loadingSeen).toBeGreaterThan(0);
+  });
+});
+
+/**
+ * Garde structurelle : « joignable » ne doit avoir qu'une seule definition.
+ *
+ * Le correctif a d'abord ete applique a une des deux copies. L'interface
+ * appelait l'autre, et continuait donc d'annoncer un serveur hors d'atteinte
+ * alors qu'il repondait. La duplication etait la vraie faute ; c'est elle
+ * qu'on empeche de revenir.
+ */
+describe("joignabilite du serveur", () => {
+  const campusRs = readFileSync("src-tauri/src/commands/campus.rs", "utf-8");
+
+  it("ne sonde /api/health que depuis un seul endroit", () => {
+    const probes = campusRs.match(/"\{\}\/api\/health"/g) ?? [];
+    expect(probes).toHaveLength(1);
+  });
+
+  it("ne confond pas « repond » avec « autorise »", () => {
+    // Un serveur qui repond 401 est joignable. Seul un echec de transport ne
+    // l'est pas — d'ou `.is_ok()`, jamais `.status().is_success()`, sur la
+    // sonde de joignabilite.
+    const at = campusRs.indexOf('"{}/api/health"');
+    expect(at).toBeGreaterThan(-1);
+    const probe = campusRs.slice(at, at + 300);
+    expect(probe).toContain(".is_ok()");
+    expect(probe).not.toContain("is_success()");
   });
 });

@@ -606,20 +606,17 @@ async fn handle_authed_response(
     Ok(response)
 }
 
+/// Joignabilite du serveur, telle que l'interface la demande.
+///
+/// Cette commande portait sa **propre copie** de la regle, et gardait donc
+/// l'ancienne apres correction de l'autre : elle exigeait un statut 2xx, si
+/// bien qu'un serveur Lab repondant `401` sur `/api/health` faisait afficher
+/// « Nova Local est actif » a un poste correctement connecte. Deux definitions
+/// de « joignable » valaient une de trop ; il n'en reste qu'une.
 #[tauri::command]
 #[specta::specta]
 pub async fn check_campus_server_reachability(server_url: String) -> Result<bool, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_no_auth();
-    let result = client
-        .get(format!("{}/api/health", base_url))
-        .timeout(Duration::from_secs(2))
-        .send()
-        .await;
-    match result {
-        Ok(response) => Ok(response.status().is_success()),
-        Err(_) => Ok(false),
-    }
+    Ok(check_server_reachability(&normalize_base_url(&server_url)).await)
 }
 
 #[tauri::command]
