@@ -132,6 +132,16 @@ jobs:
         working-directory: src-tauri
         run: cargo test specta_registration -- --nocapture
 
+      # L'enrolement Lab ne vivait qu'en memoire : apres un redemarrage le
+      # certificat epingle et le jeton du peripherique disparaissaient, la
+      # liaison TLS echouait, et le poste retombait en local en paraissant
+      # l'avoir choisi. Ces tests rejouent le scenario complet — enrolement,
+      # fermeture, restauration, appel authentifie — et verifient surtout que
+      # le jeton n'atteint jamais le disque.
+      - name: The lab enrollment must survive a restart, secret excluded
+        working-directory: src-tauri
+        run: cargo test --features lab lab_persistence -- --nocapture
+
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
       # que relire le Cargo.toml.

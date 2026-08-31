@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local är aktivt",
-        "detail": "Diktering fungerar fortfarande. AI-funktionerna återkommer med Campus."
+        "detail": "{{server}} svarar inte — diktering fortsätter lokalt, AI-funktioner är pausade.",
+        "unknownServer": "organisationens server"
       },
       "permissionsNeeded": {
         "title": "Mikrofonåtkomst krävs",

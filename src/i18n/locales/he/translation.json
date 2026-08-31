@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "‏Nova Local פעיל",
-        "detail": "ההכתבה עדיין עובדת. יכולות הבינה המלאכותית ישובו עם Campus."
+        "detail": "‏{{server}} לא מגיב — ההכתבה ממשיכה מקומית, ותכונות ה-AI מושהות.",
+        "unknownServer": "שרת הארגון"
       },
       "permissionsNeeded": {
         "title": "נדרשת גישה למיקרופון",

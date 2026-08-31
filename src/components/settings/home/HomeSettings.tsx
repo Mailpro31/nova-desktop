@@ -65,6 +65,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
 
         <HeroAction
           situation={home.situation}
+          serverName={home.serverName}
           shortcut={home.shortcut}
           onNavigate={onNavigate}
         />
@@ -180,9 +181,10 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
  */
 const HeroAction: React.FC<{
   situation: HeroSituation;
+  serverName: string | null;
   shortcut: string | null;
   onNavigate?: (section: SidebarSection) => void;
-}> = ({ situation, shortcut, onNavigate }) => {
+}> = ({ situation, serverName, shortcut, onNavigate }) => {
   const { t } = useTranslation();
 
   if (situation === "checking") return null;
@@ -211,8 +213,17 @@ const HeroAction: React.FC<{
         {shortcut && <KeyboardShortcut binding={shortcut} />}
         <span>{t("home.hero.dictateHint")}</span>
         {situation === "campusLocal" && (
-          <span className="w-full text-xs">
-            {t("home.hero.campusLocal.detail")}
+          // Un repli muet se lit comme un choix. Le poste est enrôlé : il doit
+          // dire quel serveur ne répond pas, sinon personne ne sait qu'il y a
+          // quelque chose à réparer.
+          <span
+            className="w-full text-xs text-warning"
+            role="status"
+            aria-live="polite"
+          >
+            {t("home.hero.campusLocal.detail", {
+              server: serverName ?? t("home.hero.campusLocal.unknownServer"),
+            })}
           </span>
         )}
       </p>

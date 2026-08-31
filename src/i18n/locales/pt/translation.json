@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "O Nova Local está ativo",
-        "detail": "O ditado continua a funcionar. As funções de IA voltam com o Campus."
+        "detail": "{{server}} não está a responder — o ditado continua localmente e as funções de IA estão em pausa.",
+        "unknownServer": "o servidor da organização"
       },
       "permissionsNeeded": {
         "title": "É preciso acesso ao microfone",

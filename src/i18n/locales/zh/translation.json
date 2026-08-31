@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local 正在运行",
-        "detail": "语音输入照常可用。AI 功能将随 Campus 一同恢复。"
+        "detail": "{{server}} 没有响应——听写继续在本地进行，AI 功能已暂停。",
+        "unknownServer": "组织服务器"
       },
       "permissionsNeeded": {
         "title": "需要麦克风权限",

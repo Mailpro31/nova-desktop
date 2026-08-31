@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local이 켜져 있습니다",
-        "detail": "받아쓰기는 그대로 됩니다. AI 기능은 Campus와 함께 돌아옵니다."
+        "detail": "{{server}}이(가) 응답하지 않습니다. 받아쓰기는 로컬에서 계속되며 AI 기능은 일시 중지됩니다.",
+        "unknownServer": "조직 서버"
       },
       "permissionsNeeded": {
         "title": "마이크 접근 권한이 필요합니다",

@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local je aktivní",
-        "detail": "Diktování stále funguje. Funkce IA se vrátí s Campusem."
+        "detail": "{{server}} neodpovídá — diktování pokračuje lokálně, funkce AI jsou pozastaveny.",
+        "unknownServer": "server organizace"
       },
       "permissionsNeeded": {
         "title": "Je potřeba přístup k mikrofonu",

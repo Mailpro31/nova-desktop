@@ -1181,6 +1181,18 @@ pub fn run(cli_args: CliArgs) {
                 });
             }
 
+            // Un poste deja enrole dans un Lab doit repartir enrole. Sans cette
+            // restauration, le certificat epingle et le jeton du peripherique
+            // disparaissaient a la fermeture, la liaison TLS echouait au
+            // lancement suivant, et Nova Lab retombait en mode local en
+            // paraissant l'avoir choisi.
+            #[cfg(feature = "lab")]
+            match crate::commands::campus::restore_lab_connection(&app_handle) {
+                Ok(true) => log::info!("Enrolement Lab restaure depuis le trousseau du systeme"),
+                Ok(false) => log::debug!("Aucun enrolement Lab a restaurer"),
+                Err(error) => log::warn!("Enrolement Lab non restaure : {error}"),
+            }
+
             // Hide tray icon if --no-tray was passed
             if cli_args.no_tray {
                 tray::set_tray_visibility(&app_handle, false);

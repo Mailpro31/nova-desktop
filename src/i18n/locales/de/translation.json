@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local ist aktiv",
-        "detail": "Diktieren geht weiterhin. KI-Funktionen kehren mit Campus zurück."
+        "detail": "{{server}} antwortet nicht — das Diktieren läuft lokal weiter, KI-Funktionen pausieren.",
+        "unknownServer": "der Organisationsserver"
       },
       "permissionsNeeded": {
         "title": "Mikrofonzugriff erforderlich",

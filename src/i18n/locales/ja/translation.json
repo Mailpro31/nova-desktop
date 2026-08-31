@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local が動作中です",
-        "detail": "音声入力は使えます。AI 機能は Campus の復帰とともに戻ります。"
+        "detail": "{{server}} が応答していません。音声入力はローカルで続行し、AI 機能は一時停止しています。",
+        "unknownServer": "組織のサーバー"
       },
       "permissionsNeeded": {
         "title": "マイクへのアクセスが必要です",

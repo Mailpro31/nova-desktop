@@ -59,6 +59,8 @@ export interface HomeState {
   /** Libellé du moteur actif, ou `null` s'il n'est pas déterminé. */
   engineKey: "campus" | "local-fallback" | "local" | null;
   microphoneName: string | null;
+  /** Hôte du serveur d'organisation, `null` hors mode Organization. */
+  serverName: string | null;
   lastDictationAt: number | null;
   checklist: ChecklistItem[];
   /** `true` tant que la liste apporte encore quelque chose. */
@@ -74,7 +76,7 @@ export function useHomeState(): HomeState {
   const readiness = useSystemReadiness();
   const dictation = useDictationState();
   const { getSetting } = useSettings();
-  const { session, connection } = useCampusStatus();
+  const { session, connection, serverName } = useCampusStatus();
   const campusMode = isOrganizationMode();
 
   // L'horodatage est réactualisé par les événements d'historique plutôt que
@@ -177,6 +179,9 @@ export function useHomeState(): HomeState {
         ? null
         : (readiness.engineLabel as HomeState["engineKey"]),
     microphoneName: readiness.microphoneName,
+    // Nommé pour que le repli local cesse d'être muet : « Nova Local est actif »
+    // ne dit pas quel serveur ne répond pas, et laisse croire à un choix.
+    serverName,
     lastDictationAt,
     checklist,
     showChecklist,

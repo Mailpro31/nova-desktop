@@ -23,6 +23,21 @@ const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.campus";
 #[cfg(feature = "lab")]
 const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.campus";
 
+/// Metadonnees de l'enrolement Lab. **Aucun secret ici** — voir
+/// `LAB_DEVICE_CREDENTIAL_SERVICE`.
+#[cfg(feature = "lab")]
+const LAB_CONNECTION_STORE: &str = "lab_connection.json";
+#[cfg(feature = "lab")]
+const LAB_CONNECTION_KEY: &str = "lab_connection";
+
+/// Le jeton du peripherique, dans le trousseau du systeme.
+///
+/// Service distinct de celui de la session Campus : ce sont deux secrets de
+/// natures differentes, et se deconnecter de son organisation ne doit pas
+/// effacer l'enrolement de la machine dans le Lab — ni l'inverse.
+#[cfg(feature = "lab")]
+const LAB_DEVICE_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.device";
+
 pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
 pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
 
@@ -201,16 +216,43 @@ pub struct CampusState {
     pub enabled: AtomicBool,
 }
 
-/// Connexion éphémère à un Lab. Le jeton est uniquement en mémoire : il ne
-/// survit ni à une fermeture de Nova ni à un redémarrage. Une version Lab
-/// ultérieure pourra proposer une reconnexion explicite, mais il ne faut pas
-/// écrire un jeton d'accès LAN en clair juste pour gagner cette commodité.
+/// Connexion a un Lab : l'adresse, le certificat epingle, le jeton du
+/// peripherique.
+///
+/// ## Ce qui est secret, et ce qui ne l'est pas
+///
+/// Le jeton d'acces est un secret : il authentifie la machine aupres du
+/// serveur. Il ne quitte jamais le trousseau du systeme — jamais de JSON,
+/// jamais de fichier de configuration, jamais de journal.
+///
+/// Le certificat, lui, **n'est pas un secret** : le serveur le presente a tout
+/// client lors de chaque poignee de main TLS. L'epingler protege l'integrite de
+/// la liaison, pas la confidentialite du certificat. Il est donc conserve en
+/// clair aux cotes de l'adresse — quiconque peut lire ce fichier peut deja
+/// observer le certificat sur le reseau, et ne peut toujours pas s'authentifier
+/// sans le jeton.
+///
+/// ## Pourquoi cela a change
+///
+/// Cette connexion ne vivait qu'en memoire. Apres un redemarrage, Nova Lab
+/// perdait donc le certificat, la liaison TLS echouait, et le poste retombait
+/// en mode local alors qu'il etait correctement enrole. La commodite n'etait
+/// pas le probleme ; l'enrolement devenait simplement inutilisable.
 #[cfg(feature = "lab")]
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub(crate) struct LabConnection {
     pub endpoint: String,
     pub certificate_der: Vec<u8>,
     pub device_token: String,
+}
+
+/// La part publique, telle qu'elle est ecrite sur le disque.
+#[cfg(feature = "lab")]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub(crate) struct LabConnectionRecord {
+    pub endpoint: String,
+    /// Certificat du serveur (DER), en base64. Public par nature.
+    pub certificate_b64: String,
 }
 
 #[cfg(feature = "lab")]
@@ -228,6 +270,162 @@ pub(crate) fn set_lab_connection(connection: LabConnection) -> Result<(), String
 #[cfg(feature = "lab")]
 fn current_lab_connection() -> Option<LabConnection> {
     LAB_CONNECTION.lock().ok()?.clone()
+}
+
+/// Separe le secret du reste. C'est la frontiere que le reste du module ne doit
+/// jamais franchir : tout ce qui part vers un fichier passe par `LabConnectionRecord`.
+#[cfg(feature = "lab")]
+pub(crate) fn split_lab_connection(connection: &LabConnection) -> (LabConnectionRecord, String) {
+    use base64::Engine as _;
+    (
+        LabConnectionRecord {
+            endpoint: connection.endpoint.clone(),
+            certificate_b64: base64::engine::general_purpose::STANDARD
+                .encode(&connection.certificate_der),
+        },
+        connection.device_token.clone(),
+    )
+}
+
+/// Recompose la connexion a partir de ses deux moities.
+#[cfg(feature = "lab")]
+pub(crate) fn join_lab_connection(
+    record: &LabConnectionRecord,
+    device_token: &str,
+) -> Result<LabConnection, String> {
+    use base64::Engine as _;
+    if device_token.trim().is_empty() {
+        return Err("LAB_DEVICE_TOKEN_MISSING".to_string());
+    }
+    let certificate_der = base64::engine::general_purpose::STANDARD
+        .decode(&record.certificate_b64)
+        .map_err(|_| "LAB_CERTIFICATE_INVALID".to_string())?;
+    // Un certificat qui ne se relit pas ne protegerait plus rien : mieux vaut
+    // refuser la restauration et redemander une invitation.
+    reqwest::Certificate::from_der(&certificate_der)
+        .map_err(|_| "LAB_CERTIFICATE_INVALID".to_string())?;
+    Ok(LabConnection {
+        endpoint: record.endpoint.clone(),
+        certificate_der,
+        device_token: device_token.to_string(),
+    })
+}
+
+/// En-tetes portant l'identite du peripherique.
+#[cfg(feature = "lab")]
+fn lab_device_headers(connection: &LabConnection) -> Result<reqwest::header::HeaderMap, String> {
+    let mut headers = reqwest::header::HeaderMap::new();
+    let value = connection
+        .device_token
+        .parse()
+        .map_err(|_| "LAB_DEVICE_TOKEN_INVALID".to_string())?;
+    headers.insert("X-Nova-Lab-Device", value);
+    Ok(headers)
+}
+
+#[cfg(feature = "lab")]
+fn lab_credential_entry(endpoint: &str) -> Result<keyring::Entry, String> {
+    let username = format!(
+        "{:x}",
+        Sha256::digest(normalize_base_url(endpoint).as_bytes())
+    );
+    keyring::Entry::new(LAB_DEVICE_CREDENTIAL_SERVICE, &username)
+        .map_err(|e| format!("secure credential store unavailable: {e}"))
+}
+
+#[cfg(feature = "lab")]
+fn lab_connection_store(
+    app: &AppHandle,
+) -> Result<std::sync::Arc<tauri_plugin_store::Store<tauri::Wry>>, String> {
+    app.store(portable::store_path(LAB_CONNECTION_STORE))
+        .map_err(|e| e.to_string())
+}
+
+/// Retient l'enrolement : le jeton au trousseau, le reste sur le disque.
+///
+/// Si l'ecriture des metadonnees echoue, le jeton est retire : mieux vaut un
+/// enrolement absent qu'un secret orphelin que plus rien ne reference.
+#[cfg(feature = "lab")]
+pub(crate) fn save_lab_connection(
+    app: &AppHandle,
+    connection: LabConnection,
+) -> Result<(), String> {
+    let (record, device_token) = split_lab_connection(&connection);
+    let entry = lab_credential_entry(&record.endpoint)?;
+    entry
+        .set_password(&device_token)
+        .map_err(|e| format!("failed to protect lab credential: {e}"))?;
+
+    let store = lab_connection_store(app)?;
+    let persisted = (|| -> Result<(), String> {
+        store.set(
+            LAB_CONNECTION_KEY,
+            serde_json::to_value(&record).map_err(|e| e.to_string())?,
+        );
+        store.save().map_err(|e| e.to_string())
+    })();
+    if let Err(error) = persisted {
+        let _ = entry.delete_credential();
+        return Err(error);
+    }
+
+    set_lab_connection(connection)
+}
+
+/// Recharge l'enrolement au demarrage. `Ok(false)` quand il n'y en a pas.
+#[cfg(feature = "lab")]
+pub(crate) fn restore_lab_connection(app: &AppHandle) -> Result<bool, String> {
+    let store = lab_connection_store(app)?;
+    let Some(value) = store.get(LAB_CONNECTION_KEY) else {
+        return Ok(false);
+    };
+    if value.is_null() {
+        return Ok(false);
+    }
+    let record: LabConnectionRecord = serde_json::from_value(value).map_err(|e| e.to_string())?;
+    let entry = lab_credential_entry(&record.endpoint)?;
+    let device_token = match entry.get_password() {
+        Ok(token) => token,
+        // Metadonnees sans secret : l'enrolement n'est plus utilisable. On
+        // nettoie plutot que de laisser une adresse pointer vers rien.
+        Err(keyring::Error::NoEntry) => {
+            let _ = forget_lab_connection(app);
+            return Ok(false);
+        }
+        Err(other) => return Err(format!("failed to read lab credential: {other}")),
+    };
+    let connection = match join_lab_connection(&record, &device_token) {
+        Ok(connection) => connection,
+        Err(error) => {
+            let _ = forget_lab_connection(app);
+            return Err(error);
+        }
+    };
+    set_lab_connection(connection)?;
+    Ok(true)
+}
+
+/// Efface l'enrolement : secret d'abord, metadonnees ensuite, memoire enfin.
+#[cfg(feature = "lab")]
+pub(crate) fn forget_lab_connection(app: &AppHandle) -> Result<(), String> {
+    let store = lab_connection_store(app)?;
+    if let Some(value) = store.get(LAB_CONNECTION_KEY) {
+        if let Ok(record) = serde_json::from_value::<LabConnectionRecord>(value) {
+            if let Ok(entry) = lab_credential_entry(&record.endpoint) {
+                if let Err(error) = entry.delete_credential() {
+                    if !matches!(error, keyring::Error::NoEntry) {
+                        return Err(format!("failed to delete lab credential: {error}"));
+                    }
+                }
+            }
+        }
+    }
+    store.delete(LAB_CONNECTION_KEY);
+    store.save().map_err(|e| e.to_string())?;
+    if let Ok(mut stored) = LAB_CONNECTION.lock() {
+        *stored = None;
+    }
+    Ok(())
 }
 
 /// Active ou désactive la logique campus côté backend.
@@ -463,6 +661,10 @@ pub fn complete_campus_onboarding(app: AppHandle) -> Result<(), String> {
 /// Efface la session et notifie le frontend qu'il faut retourner à l'onboarding.
 pub fn clear_campus_session_and_notify(app: &AppHandle) {
     let _ = clear_campus_session(app.clone());
+    // Le serveur a rejete cette identite : garder le jeton du peripherique
+    // laisserait un secret que plus rien ne peut utiliser.
+    #[cfg(feature = "lab")]
+    let _ = forget_lab_connection(app);
     let _ = app.emit(CAMPUS_SESSION_INVALID_EVENT, ());
 }
 
@@ -796,11 +998,7 @@ fn campus_request_client_with_timeout(token: Option<&str>, timeout: Duration) ->
 
     #[cfg(feature = "lab")]
     if let Some(connection) = current_lab_connection() {
-        let device_value = connection
-            .device_token
-            .parse()
-            .expect("valid Lab device header");
-        headers.insert("X-Nova-Lab-Device", device_value);
+        headers.extend(lab_device_headers(&connection).expect("valid Lab device header"));
         let certificate = reqwest::Certificate::from_der(&connection.certificate_der)
             .expect("Lab certificate was verified before being retained");
         return reqwest::Client::builder()
@@ -2219,5 +2417,132 @@ mod tests {
             config.pointer("/bundle/windows/nsis/installMode"),
             Some(&serde_json::Value::String("perMachine".to_string()))
         );
+    }
+}
+
+/// L'enrolement doit survivre a une fermeture de Nova Lab, et le jeton ne doit
+/// jamais toucher le disque.
+///
+/// Le scenario est joue en entier — enrolement, redemarrage, restauration,
+/// appel authentifie — sans trousseau ni AppHandle : la memoire du systeme est
+/// remplacee par une `HashMap`, ce que la separation `split`/`join` rend
+/// possible. C'est cette separation qui est la propriete de securite ; le
+/// trousseau n'en est que l'implementation.
+#[cfg(all(test, feature = "lab"))]
+mod lab_persistence_tests {
+    use super::*;
+    use std::collections::HashMap;
+
+    /// Certificat DER auto-signe, fige comme vecteur de test.
+    ///
+    /// Litteral plutot que genere a l'execution : un test qui fabrique son
+    /// propre certificat depend d'une bibliotheque de cryptographie que ce
+    /// binaire n'embarque pas, et cesserait de verifier ce qu'il pretend
+    /// verifier le jour ou cette generation changerait. Il n'a rien de secret —
+    /// c'est une paire jetable, sans usage hors de ce fichier.
+    const TEST_CERTIFICATE_B64: &str = concat!(
+        "MIIBQTCB6KADAgECAgEBMAoGCCqGSM49BAMCMCAxHjAcBgNVBAMMFW5vdmEtbGFiLXRlc3QtZml4",
+        "dHVyZTAeFw0yNjAxMDEwMDAwMDBaFw00NjAxMDEwMDAwMDBaMCAxHjAcBgNVBAMMFW5vdmEtbGFi",
+        "LXRlc3QtZml4dHVyZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABHRD7L5o9qRe6FAwE3hDIlJF",
+        "jp1BUlU31+14QVeakkeNBUAI8JiNDQkXHAzeEr5Y61mVuRYbO0D+cHFEnBIKQt+jEzARMA8GA1Ud",
+        "EwEB/wQFMAMBAf8wCgYIKoZIzj0EAwIDSAAwRQIhAOEXKTIh51Dmi4YrcFO/csclxaBBe/6nvdWR",
+        "OfSjBCmYAiAGGLcysIxpYsYbnBvqJRwQH5HTH5jZSfAhsy5xLSyLpQ==",
+    );
+
+    fn sample_certificate() -> Vec<u8> {
+        use base64::Engine as _;
+        base64::engine::general_purpose::STANDARD
+            .decode(TEST_CERTIFICATE_B64)
+            .expect("vecteur de test decodable")
+    }
+
+    fn sample_connection() -> LabConnection {
+        LabConnection {
+            endpoint: "https://192.168.0.26:8443".to_string(),
+            certificate_der: sample_certificate(),
+            device_token: "device-token-tres-secret".to_string(),
+        }
+    }
+
+    #[test]
+    fn le_jeton_ne_part_jamais_sur_le_disque() {
+        let connection = sample_connection();
+        let (record, token) = split_lab_connection(&connection);
+        let written = serde_json::to_string(&record).expect("serialisable");
+
+        assert!(
+            !written.contains(&token),
+            "le jeton du peripherique s'est retrouve dans les metadonnees : {written}"
+        );
+        assert!(!written.contains("device_token"));
+        assert!(written.contains("192.168.0.26"));
+    }
+
+    #[test]
+    fn enrolement_puis_redemarrage_restaure_la_meme_connexion() {
+        let connection = sample_connection();
+
+        // Enrolement : le secret d'un cote, les metadonnees de l'autre.
+        let (record, token) = split_lab_connection(&connection);
+        let mut vault: HashMap<String, String> = HashMap::new();
+        vault.insert(record.endpoint.clone(), token);
+        let on_disk = serde_json::to_string(&record).expect("serialisable");
+
+        // Fermeture : tout ce qui vivait en memoire disparait.
+        drop(record);
+        drop(connection);
+
+        // Redemarrage : on ne dispose que du disque et du trousseau.
+        let reread: LabConnectionRecord =
+            serde_json::from_str(&on_disk).expect("metadonnees relisibles");
+        let recovered_token = vault
+            .get(&reread.endpoint)
+            .expect("le trousseau porte le jeton");
+        let restored = join_lab_connection(&reread, recovered_token).expect("restauration");
+
+        assert_eq!(restored, sample_connection());
+    }
+
+    #[test]
+    fn la_connexion_restauree_authentifie_ses_appels() {
+        let (record, token) = split_lab_connection(&sample_connection());
+        let restored = join_lab_connection(&record, &token).expect("restauration");
+        let headers = lab_device_headers(&restored).expect("en-tetes");
+
+        // C'est cet en-tete qui manquait apres un redemarrage, et sans lui le
+        // serveur repond 401 sur tout `/api/*`.
+        assert_eq!(
+            headers
+                .get("X-Nova-Lab-Device")
+                .and_then(|v| v.to_str().ok()),
+            Some("device-token-tres-secret")
+        );
+    }
+
+    #[test]
+    fn un_enrolement_sans_jeton_est_refuse() {
+        let (record, _) = split_lab_connection(&sample_connection());
+        // Metadonnees presentes, secret disparu : on refuse plutot que de
+        // fabriquer une connexion qui echouera a chaque appel.
+        assert!(join_lab_connection(&record, "").is_err());
+        assert!(join_lab_connection(&record, "   ").is_err());
+    }
+
+    #[test]
+    fn un_certificat_illisible_est_refuse() {
+        let mut record = split_lab_connection(&sample_connection()).0;
+        record.certificate_b64 = "pas-du-base64-valide!!".to_string();
+        assert!(join_lab_connection(&record, "jeton").is_err());
+
+        let mut record = split_lab_connection(&sample_connection()).0;
+        use base64::Engine as _;
+        record.certificate_b64 = base64::engine::general_purpose::STANDARD.encode([0u8, 1, 2, 3]);
+        assert!(join_lab_connection(&record, "jeton").is_err());
+    }
+
+    #[test]
+    fn le_trousseau_du_lab_est_distinct_de_celui_du_campus() {
+        // Se deconnecter de son organisation ne doit pas desenroler la machine.
+        assert_ne!(LAB_DEVICE_CREDENTIAL_SERVICE, CAMPUS_CREDENTIAL_SERVICE);
     }
 }

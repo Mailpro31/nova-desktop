@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local est actif",
-        "detail": "La dictée fonctionne toujours. Les fonctions IA reviendront avec Campus."
+        "detail": "{{server}} ne répond pas — la dictée continue en local, les fonctions IA sont en pause.",
+        "unknownServer": "le serveur de l’organisation"
       },
       "permissionsNeeded": {
         "title": "Accès au microphone requis",

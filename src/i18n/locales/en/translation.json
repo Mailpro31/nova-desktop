@@ -1590,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local is active",
-        "detail": "Dictation still works. AI features return when Campus reconnects."
+        "detail": "{{server}} is not responding — dictation continues locally, AI features are paused.",
+        "unknownServer": "the organization server"
       },
       "permissionsNeeded": {
         "title": "Microphone access required",
