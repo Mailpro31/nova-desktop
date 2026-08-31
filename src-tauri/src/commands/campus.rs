@@ -272,6 +272,21 @@ fn current_lab_connection() -> Option<LabConnection> {
     LAB_CONNECTION.lock().ok()?.clone()
 }
 
+/// Ce poste est-il reellement enrole dans un Lab ?
+///
+/// L'interface retenait la reponse dans un indicateur local, ecrit a
+/// l'enrolement. Un indicateur ne peut pas savoir que le secret qu'il resume a
+/// disparu : apres une desinstallation, un nettoyage du trousseau ou une
+/// version qui ne persistait rien, il continuait d'affirmer « enrole » et
+/// masquait l'ecran qui aurait permis de se reenroler. La seule autorite est
+/// donc ici, pas dans le navigateur.
+#[cfg(feature = "lab")]
+#[tauri::command]
+#[specta::specta]
+pub fn lab_connection_active() -> bool {
+    current_lab_connection().is_some()
+}
+
 /// Separe le secret du reste. C'est la frontiere que le reste du module ne doit
 /// jamais franchir : tout ce qui part vers un fichier passe par `LabConnectionRecord`.
 #[cfg(feature = "lab")]

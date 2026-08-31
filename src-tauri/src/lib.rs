@@ -794,7 +794,10 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
     // L'artefact de demonstration ajoute l'enrolement — a la meme liste, jamais
     // par un second enregistrement.
     #[cfg(feature = "lab")]
-    let commands = nova_command_registry!(lab_enrollment::enroll_lab_device);
+    let commands = nova_command_registry!(
+        lab_enrollment::enroll_lab_device,
+        commands::campus::lab_connection_active
+    );
 
     Builder::<tauri::Wry>::new()
         .commands(commands)

@@ -48,7 +48,12 @@ import {
   showAttentionToast,
 } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
-import { IS_LAB_BUILD, labEnrollmentDone } from "@/lib/lab";
+import {
+  forgetLabEnrollment,
+  IS_LAB_BUILD,
+  labEnrollmentDone,
+} from "@/lib/lab";
+import { invoke } from "@tauri-apps/api/core";
 import { STARTUP_STALL_MS, startupScreen } from "@/lib/startupGate";
 import LabJoin from "./components/onboarding/LabJoin";
 import {
@@ -136,6 +141,31 @@ function App() {
   useEffect(() => {
     checkOnboardingStatus();
   }, []);
+
+  // L'indicateur local dit ce qu'il a retenu, pas ce qui est vrai. Un poste
+  // dont le secret a disparu — désinstallation, trousseau nettoyé, version qui
+  // ne persistait rien — continuait de se croire enrôlé, et l'écran
+  // d'invitation restait hors d'atteinte. Le backend tranche.
+  //
+  // Ce contrôle ne peut que **révéler** l'écran Lab, jamais le masquer : il
+  // n'ajoute donc aucune attente devant le premier rendu.
+  useEffect(() => {
+    if (!IS_LAB_BUILD || !labEnrolled) return;
+    let active = true;
+    void invoke<boolean>("lab_connection_active")
+      .then((connected) => {
+        if (!active || connected) return;
+        forgetLabEnrollment();
+        setLabEnrolled(false);
+      })
+      .catch(() => {
+        // Commande absente ou en échec : on ne dégrade pas un poste enrôlé
+        // sur une incertitude.
+      });
+    return () => {
+      active = false;
+    };
+  }, [labEnrolled]);
 
   // Borne l'attente de démarrage. On ne diagnostique rien ici : on constate
   // simplement qu'au-delà de ce délai, continuer à ne rien afficher n'apporte
