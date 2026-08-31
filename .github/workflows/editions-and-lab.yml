@@ -157,6 +157,15 @@ jobs:
         working-directory: src-tauri
         run: cargo test campus_trace -- --nocapture
 
+      # Un vrai serveur local compte les octets. Le serveur du Lab a montre que
+      # le poste annoncait la taille du seul fichier audio et envoyait
+      # l'enveloppe multipart en plus : l'API recevait un multipart tronque, et
+      # les octets restants faisaient repondre 400 a la passerelle. Ce test
+      # refait ce comptage avant la mise en production, pas apres.
+      - name: The announced Content-Length must match the bytes sent
+        working-directory: src-tauri
+        run: cargo test --features lab multipart_wire -- --nocapture
+
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
       # que relire le Cargo.toml.

@@ -46,8 +46,15 @@ pub struct RequestShape {
     pub headers_present: Vec<&'static str>,
     /// Type MIME sans paramètres, `None` si l'en-tête est absent.
     pub mime: Option<String>,
-    /// Taille du corps en octets, `None` si elle n'est pas connue d'avance.
+    /// Taille du corps HTTP **complet**, enveloppe multipart comprise.
     pub body_bytes: Option<u64>,
+    /// Taille de la charge utile seule — l'audio, sans l'enveloppe.
+    ///
+    /// Les deux sont journalisees separement parce que leur ecart est
+    /// exactement ce qui a mis six heures a se voir : le poste annoncait la
+    /// taille de l'audio et envoyait l'enveloppe en plus. Un ecart nul, ou
+    /// aberrant, se lit desormais d'un coup d'oeil.
+    pub audio_bytes: Option<u64>,
 }
 
 impl RequestShape {
@@ -90,7 +97,14 @@ impl RequestShape {
             headers_present,
             mime,
             body_bytes,
+            audio_bytes: None,
         }
+    }
+
+    /// Renseigne la taille de la charge utile, quand l'appelant la connait.
+    pub fn with_audio_bytes(mut self, audio_bytes: Option<u64>) -> Self {
+        self.audio_bytes = audio_bytes;
+        self
     }
 
     /// Une ligne de journal, sans rien à masquer après coup.
@@ -100,17 +114,26 @@ impl RequestShape {
         } else {
             self.headers_present.join(",")
         };
+        // L'enveloppe est affichee explicitement : c'est la grandeur qui
+        // manquait, et une valeur nulle signale immediatement le defaut ou le
+        // `Content-Length` etait celui du seul fichier.
+        let payload = match (self.audio_bytes, self.body_bytes) {
+            (Some(audio), Some(body)) => format!(
+                "audio={audio}B body={body}B envelope={}B",
+                body.saturating_sub(audio)
+            ),
+            (Some(audio), None) => format!("audio={audio}B body=unknown"),
+            (None, Some(body)) => format!("body={body}B"),
+            (None, None) => "body=unknown".to_string(),
+        };
         format!(
-            "campus request {method} {path} {version} headers[{present}] mime={mime} body={body} auth={redacted}",
+            "campus request {method} {path} {version} headers[{present}] mime={mime} {payload} auth={redacted}",
             method = self.method,
             path = self.path,
             version = self.version,
             present = present,
             mime = self.mime.as_deref().unwrap_or("none"),
-            body = self
-                .body_bytes
-                .map(|n| format!("{n}B"))
-                .unwrap_or_else(|| "unknown".to_string()),
+            payload = payload,
             redacted = REDACTED,
         )
     }

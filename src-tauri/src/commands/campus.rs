@@ -1856,16 +1856,14 @@ pub async fn transcribe_campus_audio_file(
         "audio/wav"
     };
 
-    let part = reqwest::multipart::Part::bytes(file_bytes)
-        .file_name(filename)
-        .mime_str(mime)
-        .map_err(|e| format!("invalid mime: {}", e))?;
-
-    let form = reqwest::multipart::Form::new().part("file", part);
+    // Meme assemblage que la dictee : un seul endroit ou l'enveloppe est ecrite,
+    // donc un seul endroit ou elle peut etre mal comptee.
+    let multipart = build_audio_multipart("file", &filename, mime, &file_bytes);
 
     let response = client
         .post(format!("{}/api/transcribe", base_url))
-        .multipart(form)
+        .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
+        .body(multipart.body)
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
@@ -1928,6 +1926,76 @@ struct ReformulateResponse {
     text: String,
 }
 
+/// Corps multipart d'un envoi audio, **entierement en memoire**.
+///
+/// ## Pourquoi ne plus laisser la bibliotheque diffuser le corps
+///
+/// Le serveur a compte les octets : le poste annoncait un `Content-Length` egal
+/// a la taille du seul fichier audio, puis envoyait ~138 a 194 octets de plus —
+/// l'enveloppe multipart. L'API recevait donc un multipart tronque (422), et les
+/// octets excedentaires, lus comme le debut d'une nouvelle requete, faisaient
+/// repondre `400 Invalid HTTP request received` a la passerelle.
+///
+/// Un corps diffuse doit faire calculer sa longueur d'avance par la
+/// bibliotheque, et ce calcul est une reconstitution du format d'encodage —
+/// deux endroits qui doivent rester d'accord. Ici l'audio tient deja
+/// integralement en memoire : le diffuser n'apporte rien, et assembler le corps
+/// nous-memes rend la question sans objet. `Content-Length` n'est plus calcule,
+/// il **est** la longueur du vecteur envoye.
+#[derive(Debug, Clone)]
+pub(crate) struct AudioMultipart {
+    /// `multipart/form-data; boundary=...`, a poser tel quel.
+    pub content_type: String,
+    /// Le corps complet : enveloppe et audio.
+    pub body: Vec<u8>,
+    /// Taille de l'audio seul, pour la trace de diagnostic.
+    pub audio_bytes: usize,
+}
+
+/// Frontiere unique a cette requete.
+///
+/// Sans `rand` dans l'arbre de dependances, l'unicite vient d'une empreinte de
+/// l'instant et de la taille du corps. Une frontiere n'est pas un secret : elle
+/// doit seulement ne pas apparaitre dans le contenu, et 128 bits d'empreinte
+/// rendent la collision hors de portee.
+fn multipart_boundary(audio_len: usize) -> String {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_nanos())
+        .unwrap_or(0);
+    let seed = format!("{nanos}:{audio_len}:{:p}", &audio_len as *const usize);
+    format!("nova{:x}", Sha256::digest(seed.as_bytes()))[..36].to_string()
+}
+
+/// Assemble le corps. La longueur exacte est celle du vecteur rendu.
+pub(crate) fn build_audio_multipart(
+    field_name: &str,
+    file_name: &str,
+    mime: &str,
+    audio: &[u8],
+) -> AudioMultipart {
+    let boundary = multipart_boundary(audio.len());
+    let header = format!(
+        "--{boundary}\r\n\
+         Content-Disposition: form-data; name=\"{field_name}\"; filename=\"{file_name}\"\r\n\
+         Content-Type: {mime}\r\n\
+         \r\n"
+    );
+    let trailer = format!("\r\n--{boundary}--\r\n");
+
+    let mut body = Vec::with_capacity(header.len() + audio.len() + trailer.len());
+    body.extend_from_slice(header.as_bytes());
+    body.extend_from_slice(audio);
+    body.extend_from_slice(trailer.as_bytes());
+
+    AudioMultipart {
+        content_type: format!("multipart/form-data; boundary={boundary}"),
+        body,
+        audio_bytes: audio.len(),
+    }
+}
+
 pub async fn transcribe_campus(
     _app: &AppHandle,
     wav_path: &Path,
@@ -1940,19 +2008,16 @@ pub async fn transcribe_campus(
         .await
         .map_err(|e| CampusError::Other(format!("failed to read wav: {}", e)))?;
 
-    let part = reqwest::multipart::Part::bytes(file_bytes)
-        .file_name("recording.wav")
-        .mime_str("audio/wav")
-        .map_err(|e| CampusError::Other(format!("invalid mime: {}", e)))?;
-
-    let form = reqwest::multipart::Form::new().part("file", part);
+    let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes);
+    let audio_bytes = multipart.audio_bytes as u64;
 
     let request = client
         .post(format!("{}/api/transcribe", base_url))
-        .multipart(form)
+        .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
+        .body(multipart.body)
         .build()
         .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
-    let response = send_traced(&client, request).await?;
+    let response = send_traced(&client, request, Some(audio_bytes)).await?;
 
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
     let parsed: TranscribeResponse = handle_campus_response(response).await?;
@@ -1987,7 +2052,7 @@ pub async fn reformulate_campus(
         .json(&body)
         .build()
         .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
-    let response = send_traced(&client, request).await?;
+    let response = send_traced(&client, request, None).await?;
 
     let parsed: ReformulateResponse = handle_campus_response(response).await?;
     Ok(parsed.text)
@@ -2006,8 +2071,11 @@ pub async fn reformulate_campus(
 async fn send_traced(
     client: &reqwest::Client,
     request: reqwest::Request,
+    audio_bytes: Option<u64>,
 ) -> Result<reqwest::Response, CampusError> {
-    crate::campus_trace::log_request(&crate::campus_trace::RequestShape::observe(&request));
+    crate::campus_trace::log_request(
+        &crate::campus_trace::RequestShape::observe(&request).with_audio_bytes(audio_bytes),
+    );
 
     match client.execute(request).await {
         Ok(response) => {
@@ -2650,5 +2718,180 @@ mod campus_response_tests {
         let payload = r#"{"text":"ok","duration_ms":1234,"model":"whisper"}"#;
         let parsed: TranscribeResponse = serde_json::from_str(payload).expect("tolerant");
         assert_eq!(parsed.text, "ok");
+    }
+}
+
+/// Ce que le poste envoie reellement sur le fil.
+///
+/// ## Pourquoi un vrai serveur, et pas une assertion sur une structure
+///
+/// Le defaut corrige ici etait invisible a toute inspection locale : le
+/// `Content-Length` annonce etait coherent avec ce que le code croyait envoyer,
+/// et faux par rapport a ce qui partait. Seul un tiers qui compte les octets
+/// pouvait le voir — c'est le serveur du Lab qui l'a fait, apres coup et en
+/// production. Ce test refait ce comptage, en local, avant.
+///
+/// Le serveur est un `TcpListener` de la bibliotheque standard : il lit les
+/// en-tetes, releve le `Content-Length` annonce, puis compte les octets du
+/// corps effectivement recus. Aucune dependance de plus, et aucune confiance
+/// accordee a la couche qui est precisement mise en doute.
+#[cfg(test)]
+mod multipart_wire_tests {
+    use super::*;
+    use std::io::{Read, Write};
+    use std::net::TcpListener;
+
+    /// 1,7 Mo : au-dessus de la taille reelle d'une dictee d'une minute, et
+    /// au-dela du seuil ou l'ecart d'enveloppe s'etait manifeste.
+    const AUDIO_BYTES: usize = 1_800_000;
+
+    struct Observed {
+        announced: u64,
+        received: usize,
+        content_type: String,
+    }
+
+    /// Lit une requete complete et rend ce qui a ete annonce et ce qui est arrive.
+    fn observe_one_request(listener: TcpListener) -> Observed {
+        let (mut stream, _) = listener.accept().expect("connexion acceptee");
+        let mut buffer = Vec::new();
+        let mut chunk = [0u8; 65536];
+
+        // On lit jusqu'a disposer de l'en-tete complet.
+        let header_end = loop {
+            if let Some(at) = buffer.windows(4).position(|window| window == b"\r\n\r\n") {
+                break at + 4;
+            }
+            let read = stream.read(&mut chunk).expect("lecture des en-tetes");
+            assert!(read > 0, "connexion fermee avant la fin des en-tetes");
+            buffer.extend_from_slice(&chunk[..read]);
+        };
+
+        let headers = String::from_utf8_lossy(&buffer[..header_end]).to_string();
+        let value = |name: &str| -> Option<String> {
+            headers.lines().find_map(|line| {
+                let (key, value) = line.split_once(':')?;
+                (key.trim().eq_ignore_ascii_case(name)).then(|| value.trim().to_string())
+            })
+        };
+        let announced: u64 = value("content-length")
+            .expect("le client doit annoncer une longueur")
+            .parse()
+            .expect("longueur numerique");
+
+        // Puis on lit exactement ce que le client a annonce, comme le ferait un
+        // serveur HTTP : c'est la frontiere de la requete.
+        let mut received = buffer.len() - header_end;
+        while (received as u64) < announced {
+            let read = stream.read(&mut chunk).expect("lecture du corps");
+            if read == 0 {
+                break;
+            }
+            received += read;
+        }
+
+        // Reste-t-il des octets que le client a envoyes en trop ? C'est
+        // exactement ce que la passerelle a lu comme une nouvelle requete.
+        stream
+            .set_read_timeout(Some(std::time::Duration::from_millis(400)))
+            .expect("delai de lecture");
+        loop {
+            match stream.read(&mut chunk) {
+                Ok(0) => break,
+                Ok(read) => received += read,
+                Err(_) => break,
+            }
+        }
+
+        let _ = stream.write_all(
+            b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 15\r\n\r\n{\"text\":\"ok\"}",
+        );
+
+        Observed {
+            announced,
+            received,
+            content_type: value("content-type").unwrap_or_default(),
+        }
+    }
+
+    #[test]
+    fn le_content_length_annonce_correspond_aux_octets_envoyes() {
+        let listener = TcpListener::bind("127.0.0.1:0").expect("port local");
+        let port = listener.local_addr().expect("adresse").port();
+        let server = std::thread::spawn(move || observe_one_request(listener));
+
+        let audio = vec![0x5Au8; AUDIO_BYTES];
+        let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &audio);
+        let body_len = multipart.body.len();
+
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("runtime");
+        runtime.block_on(async {
+            let client = reqwest::Client::new();
+            let _ = client
+                .post(format!("http://127.0.0.1:{port}/api/transcribe"))
+                .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
+                .body(multipart.body)
+                .send()
+                .await;
+        });
+
+        let observed = server.join().expect("le serveur de test a rendu la main");
+
+        // Le coeur du test : ce qui est annonce est ce qui arrive.
+        assert_eq!(
+            observed.announced,
+            observed.received as u64,
+            "le client a annonce {} octets et en a envoye {} — ecart de {}",
+            observed.announced,
+            observed.received,
+            observed.received as i64 - observed.announced as i64
+        );
+
+        // Et cette longueur est bien celle du multipart complet, pas celle de
+        // l'audio seul : c'etait exactement la confusion d'origine.
+        assert_eq!(observed.announced, body_len as u64);
+        assert!(
+            observed.announced > AUDIO_BYTES as u64,
+            "l'enveloppe multipart doit etre comptee : annonce {} pour {} octets d'audio",
+            observed.announced,
+            AUDIO_BYTES
+        );
+        assert!(observed
+            .content_type
+            .starts_with("multipart/form-data; boundary="));
+    }
+
+    #[test]
+    fn le_corps_encadre_exactement_laudio() {
+        let audio = b"des octets d'audio".to_vec();
+        let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &audio);
+
+        let rendered = String::from_utf8_lossy(&multipart.body);
+        assert!(rendered
+            .contains("Content-Disposition: form-data; name=\"file\"; filename=\"recording.wav\""));
+        assert!(rendered.contains("Content-Type: audio/wav"));
+        assert!(rendered.contains("des octets d'audio"));
+
+        // Frontiere presente a l'ouverture et a la fermeture, et jamais dans
+        // l'audio lui-meme.
+        let boundary = multipart
+            .content_type
+            .split("boundary=")
+            .nth(1)
+            .expect("frontiere annoncee");
+        assert!(rendered.starts_with(&format!("--{boundary}\r\n")));
+        assert!(rendered.ends_with(&format!("\r\n--{boundary}--\r\n")));
+        assert_eq!(multipart.audio_bytes, audio.len());
+    }
+
+    #[test]
+    fn deux_envois_ne_partagent_pas_leur_frontiere() {
+        let audio = vec![0u8; 32];
+        let first = build_audio_multipart("file", "a.wav", "audio/wav", &audio);
+        let second = build_audio_multipart("file", "a.wav", "audio/wav", &audio);
+        assert_ne!(first.content_type, second.content_type);
     }
 }
