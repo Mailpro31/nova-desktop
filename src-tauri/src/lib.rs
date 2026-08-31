@@ -958,7 +958,14 @@ pub fn run(cli_args: CliArgs) {
             // for portable mode (redirects WebView2 cache to portable Data dir)
             let mut win_builder =
                 tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("/".into()))
-                    .title("Nova")
+                    // Le binaire Lab s'installe a cote de Nova. Deux fenetres
+                    // intitulees « Nova » dans la barre des taches, c'est une
+                    // ambiguite que l'utilisateur paie : il ferme la mauvaise.
+                    .title(if cfg!(feature = "lab") {
+                        "Nova Lab"
+                    } else {
+                        "Nova"
+                    })
                     // Fenêtre spacieuse par défaut : l'ancienne 680×570 tassait
                     // tout et rendait les réglages illisibles. On garde un
                     // minimum utilisable et on autorise l'agrandissement/plein
@@ -1034,6 +1041,12 @@ pub fn run(cli_args: CliArgs) {
             // téléchargé : `llama-server` charge alors le modèle pendant que
             // l'utilisateur s'installe, plutôt qu'au moment de la première
             // dictée. Best-effort, non bloquant, jamais de téléchargement ici.
+            //
+            // Rien de tout cela dans l'artefact Lab : il ne sert qu'a rejoindre
+            // un serveur de test, dont le GPU porte l'IA. Precharger un modele
+            // local y ferait telecharger 600 Mo sur un poste de demonstration
+            // pour un moteur que ce build n'utilisera jamais.
+            #[cfg(not(feature = "lab"))]
             {
                 let prewarm_handle = app_handle.clone();
                 let prewarm_settings = settings.clone();
@@ -1048,6 +1061,7 @@ pub fn run(cli_args: CliArgs) {
             // à l'identique sur tous les paliers. Non bloquant et défensif — un
             // échec (réseau absent…) laisse le premier lancement se poursuivre et
             // sera réessayé au lancement suivant.
+            #[cfg(not(feature = "lab"))]
             {
                 let provision_handle = app_handle.clone();
                 tauri::async_runtime::spawn(async move {
@@ -1060,6 +1074,12 @@ pub fn run(cli_args: CliArgs) {
             // sans licence, c'est lui qui authentifie les reformulations Turbo
             // du palier Gratuit. Défensif — un échec retente au prochain
             // lancement, la dictée locale n'est jamais impactée.
+            //
+            // Le Lab n'a pas de palier a authentifier : ses reformulations
+            // passent par le serveur de test. Reclamer un jeton d'essai depuis
+            // un artefact de demonstration melangerait son identite a celle de
+            // Nova, dont il est justement separe.
+            #[cfg(not(feature = "lab"))]
             {
                 let token_handle = app_handle.clone();
                 tauri::async_runtime::spawn(async move {

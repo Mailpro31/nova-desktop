@@ -972,7 +972,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1780,5 +1781,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Đang khởi động Nova…",
+    "stalledTitle": "Nova khởi động lâu hơn dự kiến",
+    "stalledBody": "Một số kiểm tra khi khởi động vẫn chưa phản hồi — thiết bị âm thanh, cài đặt đã lưu hoặc danh sách mô hình cục bộ. Nova đã ngừng chờ để cửa sổ này không bị trống.",
+    "logHint": "Chi tiết được ghi vào handy.log, trong thư mục dữ liệu của Nova.",
+    "retry": "Khởi động lại Nova",
+    "errorTitle": "Nova không thể hiển thị cửa sổ",
+    "errorBody": "Đã xảy ra lỗi khi khởi động. Hãy khởi động lại Nova; nếu màn hình này quay lại, hãy gửi thông báo bên dưới."
   }
 }

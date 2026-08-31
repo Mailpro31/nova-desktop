@@ -45,16 +45,21 @@ import {
   type AnnouncedProviders,
 } from "@/lib/organization/ssoProviders";
 import { refreshCampusContext } from "@/stores/campusStore";
+import {
+  IS_LAB_BUILD,
+  labServer,
+  markLabEnrolled,
+  rememberLabServer,
+} from "@/lib/lab";
 import { useCampusStatus } from "@/hooks/useCampusStatus";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 type CampusStep = "welcome" | "lab" | "email" | "code" | "ready";
 
-// Le code Lab est explicitement absent du paquet Desktop habituel. Cette
-// surface ne s'affiche donc que dans l'artefact de test bâti avec la feature
-// Rust `lab` et cette variable Vite.
-const IS_LAB_BUILD = import.meta.env.VITE_NOVA_LAB === "1";
+// Le code Lab est explicitement absent du paquet Desktop habituel : cette
+// surface ne s'affiche que dans l'artefact de test bâti avec la feature Rust
+// `lab` et la variable Vite correspondante — voir `@/lib/lab`.
 
 interface CampusOnboardingProps {
   /**
@@ -181,15 +186,24 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
 
   useEffect(() => {
     let mounted = true;
-    void Promise.all([hostname().catch(() => null), loadCampusConfig()]).then(
-      ([name, loadedConfig]) => {
-        if (!mounted) return;
-        setMachineName(name ?? "unknown");
-        setConfig(loadedConfig);
-        setServerUrl(loadedConfig?.server_url ?? "");
-        setConfigLoaded(true);
-      },
-    );
+    // `loadCampusConfig()` n'était pas protégée : un rejet emportait le
+    // `Promise.all`, le `.then` ne s'exécutait jamais et `configLoaded`
+    // restait faux — c'est-à-dire tous les boutons de cet écran désactivés,
+    // définitivement, sans message. Chaque sonde répond désormais pour
+    // elle-même, et l'écran s'affiche même si les deux échouent.
+    void Promise.all([
+      hostname().catch(() => null),
+      loadCampusConfig().catch(() => null),
+    ]).then(([name, loadedConfig]) => {
+      if (!mounted) return;
+      setMachineName(name ?? "unknown");
+      setConfig(loadedConfig);
+      // Sur un poste Lab, l'adresse vient de l'invitation déjà acceptée : il
+      // n'y a pas de configuration Campus locale à lire sur un PC de
+      // démonstration, et il ne doit pas y en avoir besoin.
+      setServerUrl(loadedConfig?.server_url ?? labServer() ?? "");
+      setConfigLoaded(true);
+    });
     return () => {
       mounted = false;
     };
@@ -356,6 +370,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         "enroll_lab_device",
         { code: labCode, deviceName: machineName },
       );
+      rememberLabServer(enrolled.service_endpoint);
+      markLabEnrolled();
       const labConfig = await loadCampusServerConfig(enrolled.service_endpoint);
       if (!labConfig) throw new Error("LAB_CONFIGURATION_UNAVAILABLE");
       setServerUrl(enrolled.service_endpoint);
@@ -570,7 +586,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             type="button"
             variant="secondary"
             size="lg"
-            disabled={!configLoaded}
+            // Jamais conditionné à `configLoaded` : rejoindre un serveur de
+            // test ne demande aucune configuration Campus préalable, le code
+            // d'invitation porte l'adresse et l'empreinte du serveur.
             onClick={() => setStep("lab")}
           >
             {t("campus.onboarding.lab.open")}

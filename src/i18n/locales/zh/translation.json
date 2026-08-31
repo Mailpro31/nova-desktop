@@ -972,7 +972,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1780,5 +1781,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "正在启动 Nova…",
+    "stalledTitle": "Nova 启动时间比预期更长",
+    "stalledBody": "部分启动检查尚未返回结果——音频设备、已保存的设置或本地模型清单。为了不让此窗口保持空白，Nova 已停止等待。",
+    "logHint": "详细信息记录在 Nova 数据文件夹中的 handy.log 内。",
+    "retry": "重新启动 Nova",
+    "errorTitle": "Nova 无法显示窗口",
+    "errorBody": "启动时发生错误。请重新启动 Nova；如果此画面再次出现，请发送下面的信息。"
   }
 }

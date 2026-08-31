@@ -972,7 +972,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1780,5 +1781,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Nova सुरु हुँदै…",
+    "stalledTitle": "Nova सुरु हुन अपेक्षा गरेभन्दा बढी समय लागिरहेको छ",
+    "stalledBody": "सुरुवातका केही जाँचहरूले अझै जवाफ दिएका छैनन् — अडियो उपकरण, सुरक्षित सेटिङ वा स्थानीय मोडेलको सूची। यो सञ्झ्याल खाली नरहोस् भनेर Nova ले पर्खनु छाड्यो।",
+    "logHint": "विवरण Nova को डेटा फोल्डरभित्रको handy.log मा लेखिन्छ।",
+    "retry": "Nova पुनः सुरु गर्नुहोस्",
+    "errorTitle": "Nova ले आफ्नो सञ्झ्याल देखाउन सकेन",
+    "errorBody": "सुरु हुँदा त्रुटि भयो। Nova पुनः सुरु गर्नुहोस्; यो पर्दा फेरि देखिए तलको सन्देश पठाउनुहोस्।"
   }
 }

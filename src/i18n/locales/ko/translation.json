@@ -972,7 +972,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1780,5 +1781,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Nova를 시작하는 중…",
+    "stalledTitle": "Nova 시작이 예상보다 오래 걸리고 있습니다",
+    "stalledBody": "시작 점검 중 일부가 아직 응답하지 않았습니다 — 오디오 장치, 저장된 설정 또는 로컬 모델 목록. 이 창이 비어 있지 않도록 Nova가 대기를 중단했습니다.",
+    "logHint": "자세한 내용은 Nova 데이터 폴더의 handy.log에 기록됩니다.",
+    "retry": "Nova 다시 시작",
+    "errorTitle": "Nova가 창을 표시하지 못했습니다",
+    "errorBody": "시작 중 오류가 발생했습니다. Nova를 다시 시작하세요. 이 화면이 다시 나타나면 아래 메시지를 보내주세요."
   }
 }

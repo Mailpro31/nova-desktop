@@ -51,6 +51,22 @@ jobs:
           VITE_NOVA_MODE: ${{ matrix.edition }}
         run: bun run build
 
+  # L'artefact Lab est bati avec une variable de plus. Rien d'autre ne compile
+  # cette combinaison, et c'est elle qui part sur le PC de demonstration.
+  frontend-lab:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Type-check and build (lab)
+        env:
+          VITE_NOVA_MODE: campus
+          VITE_NOVA_LAB: "1"
+        run: bun run build
+
   # Les tests unitaires TypeScript existent depuis longtemps mais rien ne les
   # exécutait : `bun run test` ne lance qu'un seul fichier, et la CI Rust ne
   # touche pas au frontend. Le périmètre est celui de la fondation Organization,
@@ -65,6 +81,13 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Organization unit tests
         run: bun test src/lib/organization tests/campusPolicy.test.ts
+
+      # Le premier lancement de Nova Lab affichait une fenetre blanche. Ces
+      # deux fichiers tiennent les invariants qui l'empechent de revenir : la
+      # racine React ne rend jamais « rien », et l'artefact Lab reste separe de
+      # Nova (nom, identifiant, donnees, telechargements, mises a jour).
+      - name: Startup and Lab isolation tests
+        run: bun test src/lib/startupGate.test.ts src/lib/labIsolation.test.ts
 
   rust-lab-feature:
     runs-on: ubuntu-24.04

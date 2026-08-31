@@ -972,7 +972,8 @@
         "join": "Rejoindre",
         "codeLabel": "Code d’invitation",
         "securityNote": "Nova vérifie l’identité du serveur avant de lui transmettre le code.",
-        "error": "Impossible de rejoindre ce serveur de test. Vérifiez que le code est récent et que les deux PC sont sur le même réseau."
+        "error": "Impossible de rejoindre ce serveur de test. Vérifiez que le code est récent et que les deux PC sont sur le même réseau.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Email école",
@@ -1780,5 +1781,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Démarrage de Nova…",
+    "stalledTitle": "Nova met plus de temps que prévu à démarrer",
+    "stalledBody": "Des vérifications de démarrage n’ont pas encore répondu — périphériques audio, réglages enregistrés ou inventaire des modèles locaux. Nova a cessé d’attendre pour ne pas laisser cette fenêtre vide.",
+    "logHint": "Le détail est consigné dans handy.log, dans le dossier de données de Nova.",
+    "retry": "Relancer Nova",
+    "errorTitle": "Nova n’a pas réussi à afficher sa fenêtre",
+    "errorBody": "Une erreur est survenue au démarrage. Relancez Nova ; si l’écran revient, transmettez le message ci-dessous."
   }
 }

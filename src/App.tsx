@@ -48,6 +48,13 @@ import {
   showAttentionToast,
 } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
+import { IS_LAB_BUILD, labEnrollmentDone } from "@/lib/lab";
+import { STARTUP_STALL_MS, startupScreen } from "@/lib/startupGate";
+import LabJoin from "./components/onboarding/LabJoin";
+import {
+  StartupLoading,
+  StartupStalled,
+} from "./components/startup/StartupScreen";
 import { chosenEdition, declaresEdition } from "@/lib/organization";
 import {
   loadCampusSession,
@@ -97,6 +104,13 @@ function App() {
   const [editionSettled, setEditionSettled] = useState(
     () => declaresEdition() || chosenEdition() !== null,
   );
+  // Le paquet Lab n'a qu'une porte d'entrée, et elle ne dépend d'aucune sonde.
+  // L'état est lu de façon synchrone : l'écran doit exister à la première
+  // frame, pas après un aller-retour asynchrone.
+  const [labEnrolled, setLabEnrolled] = useState(labEnrollmentDone);
+  // Une attente qui dure devient un message. Sans cette borne, une sonde
+  // silencieuse laissait la fenêtre blanche indéfiniment.
+  const [startupStalled, setStartupStalled] = useState(false);
 
   const flow = useOnboardingFlow({
     readiness,
@@ -116,10 +130,22 @@ function App() {
   const refreshOutputDevices = useSettingsStore(
     (state) => state.refreshOutputDevices,
   );
+  const settingsError = useSettingsStore((state) => state.settingsError);
   const hasCompletedPostOnboardingInit = useRef(false);
 
   useEffect(() => {
     checkOnboardingStatus();
+  }, []);
+
+  // Borne l'attente de démarrage. On ne diagnostique rien ici : on constate
+  // simplement qu'au-delà de ce délai, continuer à ne rien afficher n'apporte
+  // plus rien à personne.
+  useEffect(() => {
+    const timer = window.setTimeout(
+      () => setStartupStalled(true),
+      STARTUP_STALL_MS,
+    );
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Une session Organization peut déjà exister au lancement. Dans ce cas le
@@ -509,10 +535,63 @@ function App() {
     />
   );
 
-  // Rien tant qu'on ignore s'il s'agit d'une première ouverture : la question
-  // suivante n'a de sens que pour quelqu'un qui n'a encore rien choisi.
-  if (isFirstRun === null) {
-    return null;
+  // ── Écran de démarrage
+  //
+  // Une seule décision, prise par une fonction pure et testée
+  // (`@/lib/startupGate`). Elle a remplacé trois `return null` successifs :
+  // tant qu'une sonde n'avait pas répondu, la racine ne rendait rien, et « ne
+  // rien rendre » dans une WebView, c'est une fenêtre blanche que rien ne
+  // distingue d'un plantage. Aucune branche ci-dessous ne renvoie plus `null`.
+  const screen = startupScreen({
+    isLabBuild: IS_LAB_BUILD,
+    labEnrolled,
+    isFirstRun,
+    editionSettled,
+    readinessLoaded: readiness.loaded,
+    flowInitialized: flow.initialized,
+    elapsedMs: startupStalled ? STARTUP_STALL_MS : 0,
+  });
+
+  // Le Lab passe devant tout : son écran ne dépend ni d'un modèle local, ni
+  // d'un périphérique audio, ni d'une configuration Campus. Le code
+  // d'invitation porte lui-même l'adresse et l'empreinte du serveur.
+  if (screen === "lab") {
+    return (
+      <>
+        {toaster}
+        <LabJoin
+          onEnrolled={() => {
+            setLabEnrolled(true);
+            refreshCampusStatus();
+          }}
+        />
+      </>
+    );
+  }
+
+  if (screen === "loading") {
+    return (
+      <>
+        {toaster}
+        <StartupLoading />
+      </>
+    );
+  }
+
+  if (screen === "stalled") {
+    return (
+      <>
+        {toaster}
+        <StartupStalled
+          detail={
+            settingsError ??
+            (isFirstRun === null
+              ? "getAppSettings / loadCampusSession"
+              : "useSystemReadiness")
+          }
+        />
+      </>
+    );
   }
 
   // Première ouverture d'un paquet qui ne déclare pas son édition : personnel
@@ -523,19 +602,13 @@ function App() {
   // condition, une mise à jour ferait apparaître un écran de choix devant un
   // utilisateur installé, pour une question dont la réponse est déjà connue :
   // il utilisait un poste personnel, et c'est le repli.
-  if (isFirstRun && !editionSettled) {
+  if (screen === "edition") {
     return (
       <>
         <EditionChoice onChosen={() => setEditionSettled(true)} />
         {toaster}
       </>
     );
-  }
-
-  // L'état système n'est pas encore connu : ne rien afficher plutôt que de
-  // faire clignoter un écran de parcours qui sera peut-être sauté.
-  if (!readiness.loaded || !flow.initialized) {
-    return null;
   }
 
   // Select the content for the current step. The Toaster is rendered once, in a

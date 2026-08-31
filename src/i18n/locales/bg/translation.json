@@ -972,7 +972,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1780,5 +1781,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Nova стартира…",
+    "stalledTitle": "Nova се стартира по-дълго от очакваното",
+    "stalledBody": "Някои проверки при стартиране още не са отговорили — аудиоустройства, запазени настройки или списъкът с локални модели. Nova спря да чака, за да не остане този прозорец празен.",
+    "logHint": "Подробностите се записват в handy.log, в папката с данни на Nova.",
+    "retry": "Рестартиране на Nova",
+    "errorTitle": "Nova не успя да покаже прозореца си",
+    "errorBody": "Възникна грешка при стартирането. Рестартирайте Nova; ако екранът се появи отново, изпратете съобщението по-долу."
   }
 }

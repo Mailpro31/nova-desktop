@@ -14,6 +14,14 @@ interface SettingsStore {
   defaultSettings: Settings | null;
   isLoading: boolean;
   initialized: boolean;
+  /**
+   * Pourquoi les réglages n'ont pas pu être lus, `null` s'ils l'ont été.
+   *
+   * Sans ce champ, un échec de `get_app_settings` laissait `settings` à `null`
+   * pour toujours : plus aucune sonde ne se déclarait prête, la racine ne
+   * rendait rien, et la fenêtre restait blanche sans le moindre message.
+   */
+  settingsError: string | null;
   isUpdating: Record<string, boolean>;
   audioDevices: AudioDevice[];
   outputDevices: AudioDevice[];
@@ -173,6 +181,7 @@ export const useSettingsStore = create<SettingsStore>()(
     defaultSettings: null,
     isLoading: true,
     initialized: false,
+    settingsError: null,
     isUpdating: {},
     audioDevices: [],
     outputDevices: [],
@@ -209,14 +218,22 @@ export const useSettingsStore = create<SettingsStore>()(
             selected_output_device:
               settings.selected_output_device ?? "Default",
           };
-          set({ settings: normalizedSettings, isLoading: false });
+          set({
+            settings: normalizedSettings,
+            isLoading: false,
+            settingsError: null,
+          });
         } else {
           console.error("Failed to load settings:", result.error);
-          set({ isLoading: false });
+          set({ isLoading: false, settingsError: String(result.error) });
         }
       } catch (error) {
+        // Laisser `settings` a `null` sans le dire etait suffisant pour figer
+        // l'application : `useSystemReadiness` attend `settings !== null` pour
+        // se declarer chargee, et rien ne reessayait. L'echec est desormais un
+        // etat lisible, que l'ecran de demarrage peut afficher.
         console.error("Failed to load settings:", error);
-        set({ isLoading: false });
+        set({ isLoading: false, settingsError: String(error) });
       }
     },
 
