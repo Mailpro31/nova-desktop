@@ -111,7 +111,7 @@ jobs:
           lab = json.loads(Path("src-tauri/tauri.lab.conf.json").read_text())
           assert lab["productName"] != production["productName"]
           assert lab["identifier"] != production["identifier"]
-          assert lab["bundle"]["windows"]["nsis"]["installMode"] == "perUser"
+          assert lab["bundle"]["windows"]["nsis"]["installMode"] == "currentUser"
           allow = lab["app"]["security"]["assetProtocol"]["scope"]["allow"]
           assert lab["identifier"] in allow[0]
           print("ok: Nova Lab is isolated from production Nova")
