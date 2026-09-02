@@ -1011,16 +1011,24 @@ fn campus_request_client_with_timeout(token: Option<&str>, timeout: Duration) ->
         headers.insert(reqwest::header::AUTHORIZATION, auth_value);
     }
 
+    // Le Lab parle rustls, avec un verificateur d'identite epinglee — voir
+    // `crate::lab_tls`. Ce n'est pas une preference de bibliotheque : les
+    // mesures simultanees ont montre que Nova remet a hyper exactement
+    // `Content-Length` octets tandis que la passerelle en recoit davantage.
+    // L'excedent nait sous hyper, et c'est la seule couche qu'on puisse
+    // substituer sans toucher au serveur.
+    //
+    // Aucune racine systeme n'est chargee : la seule confiance est le
+    // certificat retenu a l'enrolement.
     #[cfg(feature = "lab")]
     if let Some(connection) = current_lab_connection() {
         headers.extend(lab_device_headers(&connection).expect("valid Lab device header"));
-        let certificate = reqwest::Certificate::from_der(&connection.certificate_der)
-            .expect("Lab certificate was verified before being retained");
+        let tls = crate::lab_tls::pinned_client_config(connection.certificate_der)
+            .expect("Lab TLS configuration builds");
         return reqwest::Client::builder()
             .timeout(timeout)
             .https_only(true)
-            .tls_built_in_root_certs(false)
-            .add_root_certificate(certificate)
+            .use_preconfigured_tls(tls)
             .default_headers(headers)
             .build()
             .expect("Lab reqwest client builds");

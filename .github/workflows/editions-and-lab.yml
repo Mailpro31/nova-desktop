@@ -197,6 +197,15 @@ jobs:
         timeout-minutes: 5
         run: cargo test --features lab multipart_tls_wire -- --nocapture
 
+      # Le transport Lab n'accepte qu'une identite : le certificat retenu a
+      # l'enrolement. Ces tests exigent le refus dans tous les autres cas —
+      # autre certificat, autre nom, hors periode de validite, chaine presentee.
+      # Un epinglage qui n'echoue jamais n'epingle rien.
+      - name: The pinned TLS identity must reject everything else
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test --features lab lab_tls -- --nocapture
+
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
       # que relire le Cargo.toml.

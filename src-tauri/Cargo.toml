@@ -36,7 +36,16 @@ serde = { version = "1", features = ["derive"] }
 default = []
 # `bytes` et `http-body` ne servent qu'a la mesure du corps transmis, et ne
 # sont donc tires que par l'artefact Lab.
-lab = ["dep:bytes", "dep:http-body"]
+lab = [
+  "dep:bytes",
+  "dep:http-body",
+  # Transport rustls pour le Lab uniquement. `manual-roots` : aucune autorite
+  # systeme n'est chargee — la seule confiance est le certificat epingle.
+  "reqwest/rustls-tls-manual-roots",
+  "dep:rustls",
+  "dep:rustls-pki-types",
+  "dep:x509-parser",
+]
 
 [dependencies]
 once_cell = "1"
@@ -89,6 +98,13 @@ base64 = "0.22"
 # Mesure du corps reellement consomme par le transport (artefact Lab seulement).
 bytes = { version = "1", optional = true }
 http-body = { version = "1", optional = true }
+# Transport Lab : verificateur d'identite epinglee. Meme version que celle que
+# reqwest embarque, pour n'avoir qu'un seul rustls dans l'arbre.
+rustls = { version = "0.23", optional = true }
+rustls-pki-types = { version = "1", optional = true }
+# Lecture de la periode de validite du certificat epingle. rustls ne l'expose
+# pas pour un certificat isole, et cette verification est obligatoire.
+x509-parser = { version = "0.16", optional = true }
 # Whisper-family models run through transcribe-cpp (GGUF/ggml, native backends);
 # transcribe-rs is now ONNX-only (Parakeet, Moonshine, SenseVoice, GigaAM,
 # Canary, Cohere). Per-platform backend features are added in the target tables.

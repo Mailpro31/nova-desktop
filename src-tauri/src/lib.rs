@@ -18,6 +18,9 @@ mod input;
 /// Nova ordinaires ; voir `Cargo.toml` feature `lab`.
 #[cfg(feature = "lab")]
 mod lab_enrollment;
+/// Transport TLS du Lab : identite epinglee, verifiee strictement.
+#[cfg(feature = "lab")]
+mod lab_tls;
 mod lexicon_learning;
 mod licensing;
 mod llm_client;
