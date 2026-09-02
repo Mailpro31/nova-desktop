@@ -119,17 +119,28 @@ describe("Nova Lab ne fait rien de ce qu'il n'a pas à faire", () => {
     // L'invariant est que `lab` n'entre pas dans la construction par défaut.
     expect(cargo).toContain("default = []");
 
-    // `lab` peut activer des dépendances optionnelles — la mesure du corps
-    // transmis en tire deux — mais jamais une autre feature : cela ferait
-    // entrer du code dans un paquet de production par un chemin détourné.
+    // Ce que `lab` a le droit d'activer, et ce qu'elle n'a pas le droit
+    // d'activer. Deux formes sont légitimes :
+    //
+    //   `dep:x`          une dépendance optionnelle, absente sans la feature ;
+    //   `crate/feature`  une feature d'une dépendance déjà présente.
+    //
+    // La forme interdite est le nom nu — une **autre feature de ce crate**.
+    // Elle ferait entrer du code dans un paquet de production par un chemin
+    // détourné, et c'est la seule chose que ce garde-fou doit empêcher.
+    //
+    // Ce test a échoué deux fois sur des ajouts parfaitement légitimes parce
+    // qu'il vérifiait la lettre. Il vérifie désormais l'intention.
     const declaration = cargo.match(/^lab = \[(.*?)\]$/ms);
     expect(declaration).not.toBeNull();
     const activated = (declaration?.[1] ?? "")
       .split(",")
       .map((entry) => entry.trim().replace(/^["']|["']$/g, ""))
-      .filter((entry) => entry.length > 0);
+      .filter((entry) => entry.length > 0 && !entry.startsWith("#"));
     for (const entry of activated) {
-      expect(entry.startsWith("dep:")).toBe(true);
+      const isOptionalDependency = entry.startsWith("dep:");
+      const isDependencyFeature = entry.includes("/");
+      expect(isOptionalDependency || isDependencyFeature).toBe(true);
     }
   });
 });
