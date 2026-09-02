@@ -210,6 +210,14 @@ tauri-utils = { git = "https://github.com/cjpais/tauri.git", branch = "handy-2.1
 
 [dev-dependencies]
 tempfile = "3"
+# Serveur TLS local pour `multipart_tls_wire` : le test doit emprunter le meme
+# transport que la production — HTTPS avec certificat epingle — sinon il ne
+# reproduit pas ce que la passerelle a mesure. Deja dans l'arbre via reqwest.
+tokio-rustls = { version = "0.26", default-features = false, features = [
+  "ring",
+  "tls12",
+  "logging",
+] }
 
 [profile.release]
 lto = true

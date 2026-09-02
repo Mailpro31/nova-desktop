@@ -166,6 +166,14 @@ jobs:
         working-directory: src-tauri
         run: cargo test --features lab multipart_wire -- --nocapture
 
+      # Le test en HTTP simple passait pendant que la production echouait : la
+      # difference etait le transport. Celui-ci monte un vrai serveur TLS, fait
+      # epingler son certificat au poste comme le fait un Lab, et compte les
+      # octets **dechiffres** arrivant apres le corps declare.
+      - name: Nothing may be written after the declared body over pinned TLS
+        working-directory: src-tauri
+        run: cargo test --features lab multipart_tls_wire -- --nocapture
+
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
       # que relire le Cargo.toml.

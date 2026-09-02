@@ -2644,6 +2644,7 @@ dependencies = [
  "tauri-specta",
  "tempfile",
  "tokio",
+ "tokio-rustls",
  "transcribe-cpp",
  "transcribe-rs",
  "uiautomation",

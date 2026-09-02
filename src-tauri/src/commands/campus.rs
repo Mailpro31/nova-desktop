@@ -2944,3 +2944,229 @@ mod multipart_wire_tests {
         assert_ne!(first.content_type, second.content_type);
     }
 }
+
+/// Ce que le poste ecrit **sur le transport reel** : HTTPS, certificat epingle.
+///
+/// ## Pourquoi ce test devait exister
+///
+/// Le test en HTTP simple passait — zero octet apres le corps declare — pendant
+/// que la production echouait. Le serveur a mesure, sur la dictee de 12:16:26 :
+/// 308 octets d'en-tetes, `Content-Length: 373666`, 373 666 octets lus par
+/// l'API, puis **2 858 octets de multipart en plus**. Un test qui ne reproduit
+/// pas le transport ne peut pas voir cela : la difference etait le transport.
+///
+/// Ce test monte donc un vrai serveur TLS local, epingle son certificat comme
+/// le fait un Lab, et appelle `transcribe_campus` — donc `campus_client`, donc
+/// le client construit avec `https_only`, `tls_built_in_root_certs(false)` et
+/// `add_root_certificate`. Puis il compte les octets **dechiffres**.
+#[cfg(all(test, feature = "lab"))]
+mod multipart_tls_wire_tests {
+    use super::*;
+    use std::io::Write as _;
+    use std::sync::Arc;
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+    /// Paire jetable, sans usage hors de ce fichier.
+    const TEST_CERT_DER_B64: &str = concat!(
+        "MIIBVzCB/aADAgECAgIQkjAKBggqhkjOPQQDAjAcMRowGAYDVQQDDBFub3ZhLWxhYi10bHMtdGVz",
+        "dDAeFw0yNjAxMDEwMDAwMDBaFw00NjAxMDEwMDAwMDBaMBwxGjAYBgNVBAMMEW5vdmEtbGFiLXRs",
+        "cy10ZXN0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEm2Ih3DvqRLTbrTNVZeBpYTOTITxip/bI",
+        "x9QtHiAnDgRa5vLHsSNab12qRCSZtQ2J3Dk0zyqLwEm9vQJOJKSDR6MvMC0wDwYDVR0TAQH/BAUw",
+        "AwEB/zAaBgNVHREEEzARhwR/AAABgglsb2NhbGhvc3QwCgYIKoZIzj0EAwIDSQAwRgIhAPyq7POD",
+        "oCNxtowibd/Ja5Ay7cS89BL94vkszuexy3wJAiEA/fgmsr6y4DsTB0X/c+IIUx1gMCoG0+PuZey5",
+        "OB5QtAM=",
+    );
+    const TEST_KEY_PKCS8_B64: &str = concat!(
+        "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgYgMrFb47pivsnZ/lwwBNaKVyBJJZ",
+        "RNQbC3YtaQuyUs6hRANCAASbYiHcO+pEtNutM1Vl4GlhM5MhPGKn9sjH1C0eICcOBFrm8sexI1pv",
+        "XapEJJm1DYncOTTPKovASb29Ak4kpINH",
+    );
+
+    const AUDIO_BYTES: usize = 373_484;
+
+    fn decode(value: &str) -> Vec<u8> {
+        use base64::Engine as _;
+        base64::engine::general_purpose::STANDARD
+            .decode(value)
+            .expect("vecteur de test decodable")
+    }
+
+    struct TlsObservation {
+        announced: u64,
+        body_read: usize,
+        /// Octets dechiffres arrives **apres** le corps declare. Doit etre nul.
+        trailing: usize,
+        alpn: Option<String>,
+        has_content_length: bool,
+    }
+
+    /// Accepte une connexion TLS et compte ce qui arrive en clair derriere.
+    async fn observe_tls(listener: tokio::net::TcpListener) -> TlsObservation {
+        let certificate =
+            tokio_rustls::rustls::pki_types::CertificateDer::from(decode(TEST_CERT_DER_B64));
+        let key =
+            tokio_rustls::rustls::pki_types::PrivateKeyDer::try_from(decode(TEST_KEY_PKCS8_B64))
+                .expect("cle privee lisible");
+        let mut config = tokio_rustls::rustls::ServerConfig::builder()
+            .with_no_client_auth()
+            .with_single_cert(vec![certificate], key)
+            .expect("configuration TLS");
+        // On annonce les deux protocoles, exactement comme un serveur reel :
+        // c'est le client qui choisit, et son choix fait partie de ce qu'on
+        // cherche a observer.
+        config.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
+        let acceptor = tokio_rustls::TlsAcceptor::from(Arc::new(config));
+
+        let (socket, _) = listener.accept().await.expect("connexion TCP");
+        let mut stream = acceptor.accept(socket).await.expect("poignee de main TLS");
+        let alpn = stream
+            .get_ref()
+            .1
+            .alpn_protocol()
+            .map(|p| String::from_utf8_lossy(p).to_string());
+
+        let mut buffer = Vec::new();
+        let mut chunk = vec![0u8; 65536];
+
+        let header_end = loop {
+            if let Some(at) = buffer.windows(4).position(|w| w == b"\r\n\r\n") {
+                break at + 4;
+            }
+            let read = stream.read(&mut chunk).await.expect("lecture des en-tetes");
+            assert!(read > 0, "connexion fermee avant la fin des en-tetes");
+            buffer.extend_from_slice(&chunk[..read]);
+        };
+
+        let headers = String::from_utf8_lossy(&buffer[..header_end]).to_string();
+        let value = |name: &str| -> Option<String> {
+            headers.lines().find_map(|line| {
+                let (key, value) = line.split_once(':')?;
+                (key.trim().eq_ignore_ascii_case(name)).then(|| value.trim().to_string())
+            })
+        };
+        let has_content_length = value("content-length").is_some();
+        let announced: u64 = value("content-length")
+            .unwrap_or_else(|| "0".to_string())
+            .parse()
+            .unwrap_or(0);
+
+        let mut body_read = buffer.len() - header_end;
+        while (body_read as u64) < announced {
+            match stream.read(&mut chunk).await {
+                Ok(0) => break,
+                Ok(read) => body_read += read,
+                Err(_) => break,
+            }
+        }
+
+        // Le coeur de la mesure : ce qui arrive apres la frontiere annoncee.
+        let mut trailing = 0usize;
+        loop {
+            let next = tokio::time::timeout(
+                std::time::Duration::from_millis(700),
+                stream.read(&mut chunk),
+            )
+            .await;
+            match next {
+                Ok(Ok(0)) | Err(_) => break,
+                Ok(Ok(read)) => trailing += read,
+                Ok(Err(_)) => break,
+            }
+        }
+
+        let payload = b"{\"text\":\"transcription du serveur de test\"}";
+        let response = format!(
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n",
+            payload.len()
+        );
+        let _ = stream.write_all(response.as_bytes()).await;
+        let _ = stream.write_all(payload).await;
+        let _ = stream.flush().await;
+
+        TlsObservation {
+            announced,
+            body_read,
+            trailing,
+            alpn,
+            has_content_length,
+        }
+    }
+
+    fn write_sample_wav(bytes: usize) -> tempfile::NamedTempFile {
+        let mut file = tempfile::NamedTempFile::new().expect("fichier temporaire");
+        let mut wav = Vec::with_capacity(bytes);
+        wav.extend_from_slice(b"RIFF");
+        wav.extend_from_slice(&((bytes - 8) as u32).to_le_bytes());
+        wav.extend_from_slice(b"WAVEfmt ");
+        wav.resize(bytes, 0x5A);
+        file.write_all(&wav).expect("ecriture du wav");
+        file.flush().expect("vidage");
+        file
+    }
+
+    #[test]
+    fn en_tls_epingle_rien_ne_part_apres_le_corps_declare() {
+        let _ = tokio_rustls::rustls::crypto::ring::default_provider().install_default();
+
+        let runtime = tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(2)
+            .enable_all()
+            .build()
+            .expect("runtime");
+
+        let (observation, transcription) = runtime.block_on(async {
+            let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
+                .await
+                .expect("port local");
+            let port = listener.local_addr().expect("adresse").port();
+            let server = tokio::spawn(observe_tls(listener));
+
+            // Le poste epingle ce certificat : `campus_client` construira donc
+            // le meme client TLS qu'en production.
+            set_lab_connection(LabConnection {
+                endpoint: format!("https://127.0.0.1:{port}"),
+                certificate_der: decode(TEST_CERT_DER_B64),
+                device_token: "jeton-de-peripherique-factice".to_string(),
+            })
+            .expect("connexion Lab installee");
+
+            let wav = write_sample_wav(AUDIO_BYTES);
+            let session = CampusCredentials {
+                session: CampusSession {
+                    server_url: format!("https://127.0.0.1:{port}"),
+                    email: "essai@example.test".to_string(),
+                    organization: None,
+                },
+                token: "jeton-de-session-factice".to_string(),
+            };
+
+            let transcription = transcribe_campus(wav.path(), &session).await;
+            let observation = server.await.expect("le serveur de test a rendu la main");
+            (observation, transcription)
+        });
+
+        // Ce que le client a reellement choisi comme protocole : c'est la
+        // difference candidate entre le test HTTP qui passe et la production.
+        println!(
+            "ALPN negocie = {:?} | Content-Length declare = {} | corps lu = {} | apres le corps = {}",
+            observation.alpn, observation.announced, observation.body_read, observation.trailing
+        );
+
+        assert!(
+            observation.has_content_length,
+            "aucun Content-Length declare sur le transport reel"
+        );
+        assert_eq!(
+            observation.trailing, 0,
+            "{} octets ecrits apres la fin du corps declare ({} annonces, {} lus) — \
+             c'est exactement ce que la passerelle a mesure",
+            observation.trailing, observation.announced, observation.body_read
+        );
+        assert_eq!(observation.body_read as u64, observation.announced);
+        assert!(observation.announced > AUDIO_BYTES as u64);
+        assert_eq!(
+            transcription.expect("le serveur de test a repondu 200"),
+            "transcription du serveur de test"
+        );
+    }
+}
