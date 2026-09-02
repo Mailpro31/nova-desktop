@@ -99,6 +99,13 @@ jobs:
 
   rust-lab-feature:
     runs-on: ubuntu-24.04
+    # Sans cela, un test qui attend indefiniment occupe un runner jusqu'a la
+    # limite de six heures de GitHub. `cargo test` n'impose aucun delai : c'est
+    # au workflow de le faire.
+    timeout-minutes: 45
+    env:
+      CARGO_TERM_COLOR: always
+      RUST_BACKTRACE: 1
     steps:
       - uses: actions/checkout@v5
 
@@ -112,11 +119,20 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
-      # La feature Lab doit compiler et passer ses tests. Sans ce job elle
-      # pourrirait en silence : rien d'autre ne la construit.
-      - name: Build with the lab feature
+      # Compiler d'abord, executer ensuite. Reunies, les deux etapes ne
+      # montraient qu'une seule ligne pendant des heures sans dire laquelle
+      # avancait — c'est ce qui a rendu le blocage illisible.
+      - name: Compile the lab feature and its tests
         working-directory: src-tauri
-        run: cargo test --features lab
+        timeout-minutes: 30
+        run: cargo test --features lab --no-run --verbose
+
+      # La feature Lab doit passer ses tests. Sans ce job elle pourrirait en
+      # silence : rien d'autre ne la construit.
+      - name: Run the lab test suite
+        working-directory: src-tauri
+        timeout-minutes: 10
+        run: cargo test --features lab -- --nocapture
 
       # L'invariant qui a manque : `Builder::commands()` REMPLACE la liste
       # enregistree. Un second appel sous `#[cfg(feature = "lab")]` effacait
@@ -125,11 +141,13 @@ jobs:
       # inspectent la table reellement enregistree, pas le source.
       - name: The lab build must keep every ordinary command
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test --features lab specta_registration -- --nocapture
 
       # Et la meme table, sans la surface Lab, dans le paquet ordinaire.
       - name: The ordinary build must expose no lab command
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test specta_registration -- --nocapture
 
       # L'enrolement Lab ne vivait qu'en memoire : apres un redemarrage le
@@ -140,6 +158,7 @@ jobs:
       # le jeton n'atteint jamais le disque.
       - name: The lab enrollment must survive a restart, secret excluded
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test --features lab lab_persistence -- --nocapture
 
       # Le serveur repond `{ "text": ... }`. Les deux chemins de dictee
@@ -148,6 +167,7 @@ jobs:
       # `T = String` sans rien signaler.
       - name: Campus responses must be read as objects
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test campus_response -- --nocapture
 
       # La trace de diagnostic ne doit jamais pouvoir ecrire un secret. Le test
@@ -155,6 +175,7 @@ jobs:
       # fragment n'atteint la ligne de journal.
       - name: The diagnostic trace must never leak a secret
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test campus_trace -- --nocapture
 
       # Un vrai serveur local compte les octets. Le serveur du Lab a montre que
@@ -164,6 +185,7 @@ jobs:
       # refait ce comptage avant la mise en production, pas apres.
       - name: The announced Content-Length must match the bytes sent
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test --features lab multipart_wire -- --nocapture
 
       # Le test en HTTP simple passait pendant que la production echouait : la
@@ -172,6 +194,7 @@ jobs:
       # octets **dechiffres** arrivant apres le corps declare.
       - name: Nothing may be written after the declared body over pinned TLS
         working-directory: src-tauri
+        timeout-minutes: 5
         run: cargo test --features lab multipart_tls_wire -- --nocapture
 
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce

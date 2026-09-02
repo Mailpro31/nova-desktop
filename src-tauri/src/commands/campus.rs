@@ -2750,6 +2750,10 @@ mod multipart_wire_tests {
     /// Taille voisine d'une dictee reelle de seize secondes.
     const AUDIO_BYTES: usize = 513_644;
 
+    /// Au-dela, le test echoue au lieu d'attendre. Le client, lui, abandonne
+    /// apres 30 s : ce delai laisse la place a un echec propre.
+    const TEST_DEADLINE: std::time::Duration = std::time::Duration::from_secs(60);
+
     /// Ce qu'un tiers a reellement vu passer sur la connexion.
     struct OnTheWire {
         /// Ce que le client a declare.
@@ -2857,7 +2861,14 @@ mod multipart_wire_tests {
     fn transcribe_campus_nenvoie_rien_apres_le_corps_declare() {
         let listener = TcpListener::bind("127.0.0.1:0").expect("port local");
         let port = listener.local_addr().expect("adresse").port();
-        let server = std::thread::spawn(move || observe_on_the_wire(listener));
+        // Le resultat passe par un canal, pas par `join()` : si le client ne se
+        // connecte jamais, `accept()` attend indefiniment et `cargo test`, qui
+        // n'impose aucun delai, laisserait la CI bloquee des heures. Un test
+        // doit echouer, pas se taire.
+        let (done, observed) = std::sync::mpsc::channel();
+        std::thread::spawn(move || {
+            let _ = done.send(observe_on_the_wire(listener));
+        });
 
         let wav = write_sample_wav(AUDIO_BYTES);
         let session = CampusCredentials {
@@ -2875,7 +2886,9 @@ mod multipart_wire_tests {
             .expect("runtime");
         let transcription = runtime.block_on(transcribe_campus(wav.path(), &session));
 
-        let wire = server.join().expect("le serveur de test a rendu la main");
+        let wire = observed
+            .recv_timeout(TEST_DEADLINE)
+            .expect("le serveur de test n'a rien recu dans le delai imparti");
 
         // 1. Le client doit declarer une longueur, et une seule facon de cadrer.
         assert!(
@@ -2984,6 +2997,12 @@ mod multipart_tls_wire_tests {
 
     const AUDIO_BYTES: usize = 373_484;
 
+    /// Aucune attente de ce test n'est illimitee. C'est ce qui manquait : une
+    /// poignee de main qui n'aboutit pas transformait un echec en blocage de
+    /// plusieurs heures.
+    const STEP_DEADLINE: std::time::Duration = std::time::Duration::from_secs(20);
+    const TEST_DEADLINE: std::time::Duration = std::time::Duration::from_secs(60);
+
     fn decode(value: &str) -> Vec<u8> {
         use base64::Engine as _;
         base64::engine::general_purpose::STANDARD
@@ -3017,8 +3036,14 @@ mod multipart_tls_wire_tests {
         config.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
         let acceptor = tokio_rustls::TlsAcceptor::from(Arc::new(config));
 
-        let (socket, _) = listener.accept().await.expect("connexion TCP");
-        let mut stream = acceptor.accept(socket).await.expect("poignee de main TLS");
+        let (socket, _) = tokio::time::timeout(STEP_DEADLINE, listener.accept())
+            .await
+            .expect("aucune connexion TCP dans le delai imparti")
+            .expect("connexion TCP");
+        let mut stream = tokio::time::timeout(STEP_DEADLINE, acceptor.accept(socket))
+            .await
+            .expect("poignee de main TLS non aboutie dans le delai imparti")
+            .expect("poignee de main TLS");
         let alpn = stream
             .get_ref()
             .1
@@ -3032,7 +3057,10 @@ mod multipart_tls_wire_tests {
             if let Some(at) = buffer.windows(4).position(|w| w == b"\r\n\r\n") {
                 break at + 4;
             }
-            let read = stream.read(&mut chunk).await.expect("lecture des en-tetes");
+            let read = tokio::time::timeout(STEP_DEADLINE, stream.read(&mut chunk))
+                .await
+                .expect("aucun en-tete recu dans le delai imparti")
+                .expect("lecture des en-tetes");
             assert!(read > 0, "connexion fermee avant la fin des en-tetes");
             buffer.extend_from_slice(&chunk[..read]);
         };
@@ -3052,10 +3080,10 @@ mod multipart_tls_wire_tests {
 
         let mut body_read = buffer.len() - header_end;
         while (body_read as u64) < announced {
-            match stream.read(&mut chunk).await {
-                Ok(0) => break,
-                Ok(read) => body_read += read,
-                Err(_) => break,
+            match tokio::time::timeout(STEP_DEADLINE, stream.read(&mut chunk)).await {
+                Ok(Ok(0)) | Err(_) => break,
+                Ok(Ok(read)) => body_read += read,
+                Ok(Err(_)) => break,
             }
         }
 
@@ -3141,7 +3169,10 @@ mod multipart_tls_wire_tests {
             };
 
             let transcription = transcribe_campus(wav.path(), &session).await;
-            let observation = server.await.expect("le serveur de test a rendu la main");
+            let observation = tokio::time::timeout(TEST_DEADLINE, server)
+                .await
+                .expect("le serveur de test n'a pas rendu la main dans le delai imparti")
+                .expect("le serveur de test a rendu la main");
             (observation, transcription)
         });
 
