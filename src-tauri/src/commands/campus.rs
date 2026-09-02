@@ -2741,6 +2741,42 @@ mod campus_response_tests {
 /// en-tetes, releve le `Content-Length` annonce, puis compte les octets du
 /// corps effectivement recus. Aucune dependance de plus, et aucune confiance
 /// accordee a la couche qui est precisement mise en doute.
+/// Etat partage entre les tests reseau, et le verrou qui les serialise.
+///
+/// `LAB_CONNECTION` est un `static` : deux tests qui tournent en parallele se
+/// le disputent. Le test TLS y installe une connexion, et le test HTTP
+/// construit alors un client `https_only` qui refuse son URL `http://` — aucune
+/// connexion, delai depasse. Le defaut etait dans mes tests, pas dans le
+/// client, mais il rendait la CI rouge pour une mauvaise raison.
+#[cfg(test)]
+pub(crate) mod wire_test_support {
+    use std::sync::{Mutex, MutexGuard, OnceLock};
+
+    static LOCK: OnceLock<Mutex<()>> = OnceLock::new();
+
+    /// Serialise les tests qui touchent a l'etat Lab global, et remet cet etat
+    /// a zero avant de rendre la main. Le verrou est volontairement resistant a
+    /// l'empoisonnement : un test qui echoue ne doit pas en bloquer un autre.
+    pub(crate) fn exclusive() -> MutexGuard<'static, ()> {
+        let guard = LOCK
+            .get_or_init(|| Mutex::new(()))
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        reset_lab_connection();
+        guard
+    }
+
+    #[cfg(feature = "lab")]
+    pub(crate) fn reset_lab_connection() {
+        if let Ok(mut stored) = super::LAB_CONNECTION.lock() {
+            *stored = None;
+        }
+    }
+
+    #[cfg(not(feature = "lab"))]
+    pub(crate) fn reset_lab_connection() {}
+}
+
 #[cfg(test)]
 mod multipart_wire_tests {
     use super::*;
@@ -2859,6 +2895,9 @@ mod multipart_wire_tests {
     /// Le test central : **le vrai `transcribe_campus`**, pas une reconstitution.
     #[test]
     fn transcribe_campus_nenvoie_rien_apres_le_corps_declare() {
+        // Etat Lab remis a zero : ce test veut le client HTTP ordinaire.
+        let _exclusive = super::wire_test_support::exclusive();
+
         let listener = TcpListener::bind("127.0.0.1:0").expect("port local");
         let port = listener.local_addr().expect("adresse").port();
         // Le resultat passe par un canal, pas par `join()` : si le client ne se
@@ -3134,6 +3173,10 @@ mod multipart_tls_wire_tests {
 
     #[test]
     fn en_tls_epingle_rien_ne_part_apres_le_corps_declare() {
+        // Ce test installe une connexion Lab dans un `static` : il ne doit pas
+        // cohabiter avec un test qui attend le client ordinaire.
+        let _exclusive = super::wire_test_support::exclusive();
+
         let _ = tokio_rustls::rustls::crypto::ring::default_provider().install_default();
 
         let runtime = tokio::runtime::Builder::new_multi_thread()
@@ -3175,6 +3218,10 @@ mod multipart_tls_wire_tests {
                 .expect("le serveur de test a rendu la main");
             (observation, transcription)
         });
+
+        // Ne pas laisser une connexion Lab derriere soi : le prochain test
+        // construirait un client epingle sans l'avoir demande.
+        super::wire_test_support::reset_lab_connection();
 
         // Ce que le client a reellement choisi comme protocole : c'est la
         // difference candidate entre le test HTTP qui passe et la production.
