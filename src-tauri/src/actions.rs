@@ -2214,9 +2214,7 @@ impl ShortcutAction for TranscribeAction {
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
                         if let Some(session) = campus::should_use_campus(&ah).await {
-                            match campus::transcribe_campus(&ah, &wav_path_for_verify, &session)
-                                .await
-                            {
+                            match campus::transcribe_campus(&wav_path_for_verify, &session).await {
                                 Ok(text) => {
                                     campus_used = true;
                                     campus::invalidate_server_reachability_cache(

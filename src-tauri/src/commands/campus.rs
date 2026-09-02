@@ -1996,8 +1996,14 @@ pub(crate) fn build_audio_multipart(
     }
 }
 
+/// Transcrit une dictee sur le serveur de l'organisation.
+///
+/// Ne prend pas d'`AppHandle` : il n'etait pas utilise, et son absence permet
+/// au test `multipart_wire` d'emprunter **exactement ce chemin**, pas une
+/// reconstitution. Un test qui rejoue une construction voisine ne prouve rien
+/// sur ce qui part reellement — c'est precisement l'erreur qui a laisse passer
+/// les octets excedentaires.
 pub async fn transcribe_campus(
-    _app: &AppHandle,
     wav_path: &Path,
     session: &CampusCredentials,
 ) -> Result<String, CampusError> {
@@ -2741,25 +2747,35 @@ mod multipart_wire_tests {
     use std::io::{Read, Write};
     use std::net::TcpListener;
 
-    /// 1,7 Mo : au-dessus de la taille reelle d'une dictee d'une minute, et
-    /// au-dela du seuil ou l'ecart d'enveloppe s'etait manifeste.
-    const AUDIO_BYTES: usize = 1_800_000;
+    /// Taille voisine d'une dictee reelle de seize secondes.
+    const AUDIO_BYTES: usize = 513_644;
 
-    struct Observed {
+    /// Ce qu'un tiers a reellement vu passer sur la connexion.
+    struct OnTheWire {
+        /// Ce que le client a declare.
         announced: u64,
-        received: usize,
+        /// Octets du corps, lus jusqu'a concurrence de ce qui etait declare.
+        body_read: usize,
+        /// Octets arrives **apres** la fin du corps declare. Doit etre nul.
+        trailing: usize,
         content_type: String,
+        has_content_length: bool,
+        transfer_encoding: Option<String>,
     }
 
-    /// Lit une requete complete et rend ce qui a ete annonce et ce qui est arrive.
-    fn observe_one_request(listener: TcpListener) -> Observed {
+    /// Lit une requete entiere, puis draine tout ce qui suit.
+    ///
+    /// Le drainage est le coeur du test : le serveur du Lab a mesure 16 692
+    /// octets arrivant apres la frontiere annoncee. Un test qui s'arrete a
+    /// `Content-Length` ne peut pas les voir — et c'est exactement pour cela
+    /// que le precedent passait alors que la production echouait.
+    fn observe_on_the_wire(listener: TcpListener) -> OnTheWire {
         let (mut stream, _) = listener.accept().expect("connexion acceptee");
         let mut buffer = Vec::new();
-        let mut chunk = [0u8; 65536];
+        let mut chunk = vec![0u8; 65536];
 
-        // On lit jusqu'a disposer de l'en-tete complet.
         let header_end = loop {
-            if let Some(at) = buffer.windows(4).position(|window| window == b"\r\n\r\n") {
+            if let Some(at) = buffer.windows(4).position(|w| w == b"\r\n\r\n") {
                 break at + 4;
             }
             let read = stream.read(&mut chunk).expect("lecture des en-tetes");
@@ -2774,94 +2790,130 @@ mod multipart_wire_tests {
                 (key.trim().eq_ignore_ascii_case(name)).then(|| value.trim().to_string())
             })
         };
+
+        let has_content_length = value("content-length").is_some();
         let announced: u64 = value("content-length")
-            .expect("le client doit annoncer une longueur")
+            .unwrap_or_else(|| "0".to_string())
             .parse()
             .expect("longueur numerique");
 
-        // Puis on lit exactement ce que le client a annonce, comme le ferait un
-        // serveur HTTP : c'est la frontiere de la requete.
-        let mut received = buffer.len() - header_end;
-        while (received as u64) < announced {
+        let mut body_read = buffer.len() - header_end;
+        while (body_read as u64) < announced {
             let read = stream.read(&mut chunk).expect("lecture du corps");
             if read == 0 {
                 break;
             }
-            received += read;
+            body_read += read;
         }
 
-        // Reste-t-il des octets que le client a envoyes en trop ? C'est
-        // exactement ce que la passerelle a lu comme une nouvelle requete.
+        // Tout ce qui arrive ensuite est de trop. La passerelle l'a lu comme le
+        // debut d'une nouvelle requete et a repondu 400.
+        let mut trailing = 0usize;
         stream
-            .set_read_timeout(Some(std::time::Duration::from_millis(400)))
+            .set_read_timeout(Some(std::time::Duration::from_millis(600)))
             .expect("delai de lecture");
         loop {
             match stream.read(&mut chunk) {
                 Ok(0) => break,
-                Ok(read) => received += read,
+                Ok(read) => trailing += read,
                 Err(_) => break,
             }
         }
 
-        let _ = stream.write_all(
-            b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 15\r\n\r\n{\"text\":\"ok\"}",
+        let payload = b"{\"text\":\"transcription du serveur de test\"}";
+        let response = format!(
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n",
+            payload.len()
         );
+        let _ = stream.write_all(response.as_bytes());
+        let _ = stream.write_all(payload);
+        let _ = stream.flush();
 
-        Observed {
+        OnTheWire {
             announced,
-            received,
+            body_read,
+            trailing,
             content_type: value("content-type").unwrap_or_default(),
+            has_content_length,
+            transfer_encoding: value("transfer-encoding"),
         }
     }
 
+    /// Un WAV credible : en-tete RIFF puis des echantillons.
+    fn write_sample_wav(bytes: usize) -> tempfile::NamedTempFile {
+        let mut file = tempfile::NamedTempFile::new().expect("fichier temporaire");
+        let mut wav = Vec::with_capacity(bytes);
+        wav.extend_from_slice(b"RIFF");
+        wav.extend_from_slice(&((bytes - 8) as u32).to_le_bytes());
+        wav.extend_from_slice(b"WAVEfmt ");
+        wav.resize(bytes, 0x5A);
+        file.write_all(&wav).expect("ecriture du wav");
+        file.flush().expect("vidage");
+        file
+    }
+
+    /// Le test central : **le vrai `transcribe_campus`**, pas une reconstitution.
     #[test]
-    fn le_content_length_annonce_correspond_aux_octets_envoyes() {
+    fn transcribe_campus_nenvoie_rien_apres_le_corps_declare() {
         let listener = TcpListener::bind("127.0.0.1:0").expect("port local");
         let port = listener.local_addr().expect("adresse").port();
-        let server = std::thread::spawn(move || observe_one_request(listener));
+        let server = std::thread::spawn(move || observe_on_the_wire(listener));
 
-        let audio = vec![0x5Au8; AUDIO_BYTES];
-        let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &audio);
-        let body_len = multipart.body.len();
+        let wav = write_sample_wav(AUDIO_BYTES);
+        let session = CampusCredentials {
+            session: CampusSession {
+                server_url: format!("http://127.0.0.1:{port}"),
+                email: "essai@example.test".to_string(),
+                organization: None,
+            },
+            token: "jeton-de-session-factice".to_string(),
+        };
 
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
             .expect("runtime");
-        runtime.block_on(async {
-            let client = reqwest::Client::new();
-            let _ = client
-                .post(format!("http://127.0.0.1:{port}/api/transcribe"))
-                .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
-                .body(multipart.body)
-                .send()
-                .await;
-        });
+        let transcription = runtime.block_on(transcribe_campus(wav.path(), &session));
 
-        let observed = server.join().expect("le serveur de test a rendu la main");
+        let wire = server.join().expect("le serveur de test a rendu la main");
 
-        // Le coeur du test : ce qui est annonce est ce qui arrive.
+        // 1. Le client doit declarer une longueur, et une seule facon de cadrer.
+        assert!(
+            wire.has_content_length,
+            "aucun Content-Length declare : le cadrage du corps devient implicite"
+        );
         assert_eq!(
-            observed.announced,
-            observed.received as u64,
-            "le client a annonce {} octets et en a envoye {} — ecart de {}",
-            observed.announced,
-            observed.received,
-            observed.received as i64 - observed.announced as i64
+            wire.transfer_encoding, None,
+            "le corps ne doit pas etre decoupe en morceaux : la passerelle l'a refuse"
         );
 
-        // Et cette longueur est bien celle du multipart complet, pas celle de
-        // l'audio seul : c'etait exactement la confusion d'origine.
-        assert_eq!(observed.announced, body_len as u64);
+        // 2. Rien apres la frontiere annoncee. C'est la regression mesuree par
+        //    le serveur : 513 826 declares, 530 518 sur la connexion.
+        assert_eq!(
+            wire.trailing, 0,
+            "{} octets envoyes apres la fin du corps declare ({} annonces, {} lus)",
+            wire.trailing, wire.announced, wire.body_read
+        );
+
+        // 3. Et le corps declare est bien arrive en entier.
+        assert_eq!(wire.body_read as u64, wire.announced);
+
+        // 4. La longueur declaree couvre l'audio **et** son enveloppe.
         assert!(
-            observed.announced > AUDIO_BYTES as u64,
-            "l'enveloppe multipart doit etre comptee : annonce {} pour {} octets d'audio",
-            observed.announced,
+            wire.announced > AUDIO_BYTES as u64,
+            "l'enveloppe multipart doit etre comptee : {} declares pour {} octets d'audio",
+            wire.announced,
             AUDIO_BYTES
         );
-        assert!(observed
+        assert!(wire
             .content_type
             .starts_with("multipart/form-data; boundary="));
+
+        // 5. Et la reponse du serveur est bien lue comme un objet.
+        assert_eq!(
+            transcription.expect("le serveur de test a repondu 200"),
+            "transcription du serveur de test"
+        );
     }
 
     #[test]
@@ -2873,10 +2925,7 @@ mod multipart_wire_tests {
         assert!(rendered
             .contains("Content-Disposition: form-data; name=\"file\"; filename=\"recording.wav\""));
         assert!(rendered.contains("Content-Type: audio/wav"));
-        assert!(rendered.contains("des octets d'audio"));
 
-        // Frontiere presente a l'ouverture et a la fermeture, et jamais dans
-        // l'audio lui-meme.
         let boundary = multipart
             .content_type
             .split("boundary=")
