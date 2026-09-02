@@ -115,8 +115,22 @@ describe("Nova Lab ne fait rien de ce qu'il n'a pas à faire", () => {
 
   it("laisse la feature `lab` désactivée par défaut", () => {
     const cargo = read("src-tauri/Cargo.toml");
+
+    // L'invariant est que `lab` n'entre pas dans la construction par défaut.
     expect(cargo).toContain("default = []");
-    expect(cargo).toMatch(/^lab = \[\]$/m);
+
+    // `lab` peut activer des dépendances optionnelles — la mesure du corps
+    // transmis en tire deux — mais jamais une autre feature : cela ferait
+    // entrer du code dans un paquet de production par un chemin détourné.
+    const declaration = cargo.match(/^lab = \[(.*?)\]$/ms);
+    expect(declaration).not.toBeNull();
+    const activated = (declaration?.[1] ?? "")
+      .split(",")
+      .map((entry) => entry.trim().replace(/^["']|["']$/g, ""))
+      .filter((entry) => entry.length > 0);
+    for (const entry of activated) {
+      expect(entry.startsWith("dep:")).toBe(true);
+    }
   });
 });
 
