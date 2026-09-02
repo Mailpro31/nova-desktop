@@ -1926,6 +1926,108 @@ struct ReformulateResponse {
     text: String,
 }
 
+/// Mesure du corps **reellement consomme par le transport**.
+///
+/// ## Pourquoi cette mesure existe
+///
+/// La passerelle compte 2 858 octets de contenu multipart arrivant apres le
+/// `Content-Length` annonce. Reproduit a l'identique sur Windows — meme
+/// Schannel, meme configuration de client, meme fichier audio — le chemin
+/// client ecrit exactement ce qu'il declare. Les deux mesures ne peuvent pas
+/// avoir raison en meme temps : il manque un point d'observation **entre** ce
+/// que Nova assemble et ce qui sort sur le reseau.
+///
+/// Ce corps est ce point. Il compte les octets que hyper lui prend, et le
+/// nombre de fois qu'il les lui prend. Rien d'autre.
+///
+/// ## Ce qu'il ne fait pas
+///
+/// Il ne lit pas le contenu, ne le copie pas, ne le resume pas. Aucun octet
+/// d'audio, aucun en-tete, aucune adresse, aucune empreinte ne traverse ce
+/// code. Le journal ne recoit que des nombres.
+///
+/// ## Ce qu'il change
+///
+/// `Body::from(Vec<u8>)` produit un corps *reutilisable* ; un corps enveloppe
+/// est *diffuse*. Le cadrage reste identique — `size_hint` est exact, donc
+/// `Content-Length` aussi — mais un corps diffuse ne peut pas etre rejoue sur
+/// une redirection. C'est pourquoi cette mesure n'existe que dans l'artefact
+/// Lab, et pas dans Nova.
+#[cfg(feature = "lab")]
+pub(crate) mod body_meter {
+    use std::pin::Pin;
+    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::Arc;
+    use std::task::{Context, Poll};
+
+    /// Ce que le transport a reellement pris.
+    #[derive(Default, Debug)]
+    pub(crate) struct Counters {
+        bytes: AtomicU64,
+        frames: AtomicU64,
+    }
+
+    impl Counters {
+        pub(crate) fn bytes(&self) -> u64 {
+            self.bytes.load(Ordering::SeqCst)
+        }
+
+        pub(crate) fn frames(&self) -> u64 {
+            self.frames.load(Ordering::SeqCst)
+        }
+    }
+
+    /// Corps a longueur exacte, qui se laisse compter.
+    pub(crate) struct CountedBody {
+        data: Option<bytes::Bytes>,
+        declared: u64,
+        counters: Arc<Counters>,
+    }
+
+    impl CountedBody {
+        pub(crate) fn new(body: Vec<u8>, counters: Arc<Counters>) -> Self {
+            let declared = body.len() as u64;
+            Self {
+                data: Some(bytes::Bytes::from(body)),
+                declared,
+                counters,
+            }
+        }
+    }
+
+    impl http_body::Body for CountedBody {
+        type Data = bytes::Bytes;
+        type Error = std::convert::Infallible;
+
+        fn poll_frame(
+            mut self: Pin<&mut Self>,
+            _: &mut Context<'_>,
+        ) -> Poll<Option<Result<http_body::Frame<Self::Data>, Self::Error>>> {
+            match self.data.take() {
+                Some(chunk) => {
+                    // On compte la taille, jamais le contenu.
+                    self.counters
+                        .bytes
+                        .fetch_add(chunk.len() as u64, Ordering::SeqCst);
+                    self.counters.frames.fetch_add(1, Ordering::SeqCst);
+                    Poll::Ready(Some(Ok(http_body::Frame::data(chunk))))
+                }
+                None => Poll::Ready(None),
+            }
+        }
+
+        /// Exact : c'est ce qui garantit que le cadrage reste un
+        /// `Content-Length` et non un decoupage en morceaux.
+        fn size_hint(&self) -> http_body::SizeHint {
+            http_body::SizeHint::with_exact(self.declared)
+        }
+
+        fn is_end_stream(&self) -> bool {
+            self.data.is_none()
+        }
+    }
+}
+
 /// Corps multipart d'un envoi audio, **entierement en memoire**.
 ///
 /// ## Pourquoi ne plus laisser la bibliotheque diffuser le corps
@@ -2016,14 +2118,45 @@ pub async fn transcribe_campus(
 
     let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes);
     let audio_bytes = multipart.audio_bytes as u64;
+    let declared = multipart.body.len() as u64;
+
+    #[cfg(feature = "lab")]
+    let counters = std::sync::Arc::new(body_meter::Counters::default());
+
+    #[cfg(feature = "lab")]
+    let body = reqwest::Body::wrap(body_meter::CountedBody::new(
+        multipart.body,
+        counters.clone(),
+    ));
+    #[cfg(not(feature = "lab"))]
+    let body = reqwest::Body::from(multipart.body);
 
     let request = client
         .post(format!("{}/api/transcribe", base_url))
         .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
-        .body(multipart.body)
+        .body(body)
         .build()
         .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
-    let response = send_traced(&client, request, Some(audio_bytes)).await?;
+    let response = send_traced(&client, request, Some(audio_bytes)).await;
+
+    // La mesure vaut aussi — et surtout — quand la requete echoue.
+    #[cfg(feature = "lab")]
+    {
+        let status = match &response {
+            Ok(response) => response.status().as_u16().to_string(),
+            Err(_) => "transport-error".to_string(),
+        };
+        log::info!(
+            "campus transcribe measurement content_length_declared={declared} \
+             body_bytes_consumed_by_transport={} frames={} http_status={status}",
+            counters.bytes(),
+            counters.frames(),
+        );
+    }
+    #[cfg(not(feature = "lab"))]
+    let _ = declared;
+
+    let response = response?;
 
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
     let parsed: TranscribeResponse = handle_campus_response(response).await?;

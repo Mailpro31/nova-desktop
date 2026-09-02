@@ -2584,6 +2584,7 @@ version = "1.0.36"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
+ "bytes",
  "chrono",
  "clap",
  "cpal",
@@ -2599,6 +2600,7 @@ dependencies = [
  "handy-keys",
  "hf-hub",
  "hound",
+ "http-body",
  "keyring",
  "log",
  "natural",
