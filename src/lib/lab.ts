@@ -29,8 +29,12 @@ const SERVER_KEY = "nova.lab.serverUrl";
  *
  * Un simple marqueur d'affichage : il dit s'il faut reproposer l'écran
  * d'invitation au démarrage. Il ne contient aucun secret et n'accorde aucun
- * accès — le jeton du périphérique et le certificat épinglé restent côté Rust,
- * en mémoire, et ne survivent pas à la fermeture (voir `lab_enrollment.rs`).
+ * accès. Le jeton du périphérique reste côté Rust, dans le trousseau du
+ * système, et le certificat épinglé dans le magasin natif ; ni l'un ni l'autre
+ * n'est lisible ici (voir `commands/campus.rs`, `save_lab_connection`).
+ *
+ * Ce marqueur n'a pas autorité : `lab_connection_active` (Rust) tranche, et
+ * peut l'effacer si le secret a disparu — voir `App.tsx`.
  */
 export function labEnrollmentDone(): boolean {
   try {

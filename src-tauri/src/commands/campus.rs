@@ -239,11 +239,26 @@ pub struct CampusState {
 /// en mode local alors qu'il etait correctement enrole. La commodite n'etait
 /// pas le probleme ; l'enrolement devenait simplement inutilisable.
 #[cfg(feature = "lab")]
-#[derive(Clone, PartialEq, Eq, Debug)]
+#[derive(Clone, PartialEq, Eq)]
 pub(crate) struct LabConnection {
     pub endpoint: String,
     pub certificate_der: Vec<u8>,
     pub device_token: String,
+}
+
+/// `Debug` ecrit a la main, et volontairement opaque.
+///
+/// `assert_eq!` en a besoin, et un `derive` l'aurait donne — en imprimant le
+/// jeton du peripherique en clair au premier `{:?}`. Le jeton ne doit jamais
+/// atteindre un journal ; la seule facon de s'en assurer est qu'il ne soit
+/// **pas imprimable**, plutot que de compter sur personne pour ne jamais
+/// formater cette structure. Meme raison, meme forme que
+/// `crate::lab_tls::PinnedIdentityVerifier`.
+#[cfg(feature = "lab")]
+impl std::fmt::Debug for LabConnection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("LabConnection { endpoint: [REDACTED], certificate_der: [REDACTED], device_token: [REDACTED] }")
+    }
 }
 
 /// La part publique, telle qu'elle est ecrite sur le disque.
@@ -2801,6 +2816,19 @@ mod lab_persistence_tests {
         use base64::Engine as _;
         record.certificate_b64 = base64::engine::general_purpose::STANDARD.encode([0u8, 1, 2, 3]);
         assert!(join_lab_connection(&record, "jeton").is_err());
+    }
+
+    #[test]
+    fn la_trace_de_debogage_ne_divulgue_pas_le_jeton() {
+        // `assert_eq!` exige `Debug` ; un `derive` aurait imprime le jeton en
+        // clair au premier `{:?}`. Ce test tient l'invariant a la place du
+        // reviewer.
+        let rendered = format!("{:?}", sample_connection());
+        assert!(
+            !rendered.contains("device-token-tres-secret"),
+            "le jeton du peripherique s'est retrouve dans une trace : {rendered}"
+        );
+        assert!(!rendered.contains("192.168.0.26"));
     }
 
     #[test]
