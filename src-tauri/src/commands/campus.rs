@@ -275,6 +275,9 @@ static LAB_CONNECTION: Lazy<Mutex<Option<LabConnection>>> = Lazy::new(|| Mutex::
 
 #[cfg(feature = "lab")]
 pub(crate) fn set_lab_connection(connection: LabConnection) -> Result<(), String> {
+    // Derniere porte avant l'etat du poste : ce qui passe ici est ce que
+    // `campus_request_client_with_timeout` utilisera sans plus rien verifier.
+    validate_device_token(&connection.device_token)?;
     let mut stored = LAB_CONNECTION
         .lock()
         .map_err(|_| "LAB_CONNECTION_STATE_UNAVAILABLE".to_string())?;
@@ -317,6 +320,45 @@ pub(crate) fn split_lab_connection(connection: &LabConnection) -> (LabConnection
     )
 }
 
+/// Ce qu'un jeton de peripherique doit etre pour pouvoir servir.
+///
+/// Deux conditions, et il en faut bien deux.
+///
+/// `HeaderValue::from_str` ecarte ce qui casserait le cadrage des en-tetes :
+/// retour chariot, saut de ligne, caracteres de controle. Il ne suffit pas.
+/// Sa regle est `b >= 32 && b != 127`, donc **tout octet non-ASCII lui
+/// convient** — l'`obs-text` que la RFC 9110 tolere par heritage. Un jeton de
+/// peripherique n'a aucune raison d'en contenir, et un octet non-ASCII y est
+/// bien plus probablement le signe d'un stockage corrompu ou d'un mauvais
+/// encodage que d'un jeton legitime. L'appartenance a l'ASCII est donc exigee
+/// separement.
+///
+/// ## Pourquoi valider a l'entree, et non a l'usage
+///
+/// Le jeton ne venait que du serveur, en memoire, et disparaissait a la
+/// fermeture. Depuis que l'enrolement est memorise, il revient du trousseau du
+/// systeme au demarrage : son contenu n'est plus sous notre controle. Or le
+/// seul endroit qui le controlait etait `lab_device_headers`, au moment de
+/// batir la requete — trop tard pour faire autre chose que paniquer, c'est-a-
+/// dire tuer l'application pour une valeur qui ne concerne qu'un poste.
+///
+/// Valider ici rend l'echec local et reparable : le jeton n'est jamais ecrit,
+/// jamais installe, et le poste se retrouve simplement non enrole.
+#[cfg(feature = "lab")]
+pub(crate) fn validate_device_token(device_token: &str) -> Result<(), String> {
+    if device_token.trim().is_empty() {
+        return Err("LAB_DEVICE_TOKEN_MISSING".to_string());
+    }
+    if !device_token.is_ascii() {
+        return Err("LAB_DEVICE_TOKEN_INVALID".to_string());
+    }
+    // La valeur construite est jetee : seule sa reussite nous interesse. Un
+    // jeton qui echoue ici ne pourrait jamais partir sur le fil.
+    reqwest::header::HeaderValue::from_str(device_token)
+        .map_err(|_| "LAB_DEVICE_TOKEN_INVALID".to_string())?;
+    Ok(())
+}
+
 /// Recompose la connexion a partir de ses deux moities.
 #[cfg(feature = "lab")]
 pub(crate) fn join_lab_connection(
@@ -324,9 +366,8 @@ pub(crate) fn join_lab_connection(
     device_token: &str,
 ) -> Result<LabConnection, String> {
     use base64::Engine as _;
-    if device_token.trim().is_empty() {
-        return Err("LAB_DEVICE_TOKEN_MISSING".to_string());
-    }
+    // Porte d'entree du jeton relu depuis le trousseau.
+    validate_device_token(device_token)?;
     let certificate_der = base64::engine::general_purpose::STANDARD
         .decode(&record.certificate_b64)
         .map_err(|_| "LAB_CERTIFICATE_INVALID".to_string())?;
@@ -351,6 +392,18 @@ fn lab_device_headers(connection: &LabConnection) -> Result<reqwest::header::Hea
         .map_err(|_| "LAB_DEVICE_TOKEN_INVALID".to_string())?;
     headers.insert("X-Nova-Lab-Device", value);
     Ok(headers)
+}
+
+/// Ce qu'il faut pour parler a un Lab : l'identite du peripherique et le
+/// transport epingle. Les deux peuvent echouer ; les reunir ici evite d'avoir
+/// a traiter cet echec deux fois sur le chemin de la requete.
+#[cfg(feature = "lab")]
+fn lab_transport(
+    connection: &LabConnection,
+) -> Result<(reqwest::header::HeaderMap, rustls::ClientConfig), String> {
+    let device_headers = lab_device_headers(connection)?;
+    let tls = crate::lab_tls::pinned_client_config(connection.certificate_der.clone())?;
+    Ok((device_headers, tls))
 }
 
 #[cfg(feature = "lab")]
@@ -380,6 +433,10 @@ pub(crate) fn save_lab_connection(
     app: &AppHandle,
     connection: LabConnection,
 ) -> Result<(), String> {
+    // Avant toute ecriture : un jeton non conforme ne doit pas atteindre le
+    // trousseau, sans quoi chaque demarrage suivant aurait a le rejeter.
+    validate_device_token(&connection.device_token)?;
+
     let (record, device_token) = split_lab_connection(&connection);
     let entry = lab_credential_entry(&record.endpoint)?;
     entry
@@ -435,6 +492,19 @@ pub(crate) fn restore_lab_connection(app: &AppHandle) -> Result<bool, String> {
     Ok(true)
 }
 
+/// Abandonne l'enrolement en memoire, sans toucher au disque.
+///
+/// Le nettoyage du disque et du trousseau reclame un `AppHandle` que tous les
+/// appelants n'ont pas. Il n'est pas perdu pour autant : au prochain
+/// demarrage, `restore_lab_connection` rejettera la meme connexion et
+/// appellera `forget_lab_connection`, qui, lui, efface tout.
+#[cfg(feature = "lab")]
+fn drop_lab_connection() {
+    if let Ok(mut stored) = LAB_CONNECTION.lock() {
+        *stored = None;
+    }
+}
+
 /// Efface l'enrolement : secret d'abord, metadonnees ensuite, memoire enfin.
 #[cfg(feature = "lab")]
 pub(crate) fn forget_lab_connection(app: &AppHandle) -> Result<(), String> {
@@ -452,9 +522,7 @@ pub(crate) fn forget_lab_connection(app: &AppHandle) -> Result<(), String> {
     }
     store.delete(LAB_CONNECTION_KEY);
     store.save().map_err(|e| e.to_string())?;
-    if let Ok(mut stored) = LAB_CONNECTION.lock() {
-        *stored = None;
-    }
+    drop_lab_connection();
     Ok(())
 }
 
@@ -1037,16 +1105,30 @@ fn campus_request_client_with_timeout(token: Option<&str>, timeout: Duration) ->
     // certificat retenu a l'enrolement.
     #[cfg(feature = "lab")]
     if let Some(connection) = current_lab_connection() {
-        headers.extend(lab_device_headers(&connection).expect("valid Lab device header"));
-        let tls = crate::lab_tls::pinned_client_config(connection.certificate_der)
-            .expect("Lab TLS configuration builds");
-        return reqwest::Client::builder()
-            .timeout(timeout)
-            .https_only(true)
-            .use_preconfigured_tls(tls)
-            .default_headers(headers)
-            .build()
-            .expect("Lab reqwest client builds");
+        match lab_transport(&connection) {
+            Ok((device_headers, tls)) => {
+                headers.extend(device_headers);
+                return reqwest::Client::builder()
+                    .timeout(timeout)
+                    .https_only(true)
+                    .use_preconfigured_tls(tls)
+                    .default_headers(headers)
+                    .build()
+                    .expect("Lab reqwest client builds");
+            }
+            // Hors d'atteinte : le jeton est valide a l'entree
+            // (`validate_device_token`) et le certificat l'a ete a
+            // l'enrolement. « Hors d'atteinte » n'est pas « impossible », et un
+            // `expect` ici tuerait l'application entiere pour une valeur qui,
+            // au pire, rend un seul poste non enrole. On abandonne donc la
+            // connexion, pas le processus : aucun en-tete de peripherique n'est
+            // pose, aucune requete authentifiee ne part, le poste se declare
+            // non enrole et l'ecran d'enrolement revient.
+            Err(error) => {
+                log::error!("Transport Lab inutilisable ({error}) — enrolement abandonne");
+                drop_lab_connection();
+            }
+        }
     }
 
     reqwest::Client::builder()
@@ -2829,6 +2911,99 @@ mod lab_persistence_tests {
             "le jeton du peripherique s'est retrouve dans une trace : {rendered}"
         );
         assert!(!rendered.contains("192.168.0.26"));
+    }
+
+    /// Tout ce qu'un jeton ne peut pas etre, et pourquoi.
+    ///
+    /// Ces valeurs ne sont pas theoriques : le jeton revient du trousseau du
+    /// systeme au demarrage, et rien ne garantit qu'il en revient intact. Le
+    /// retour chariot et le saut de ligne sont les plus graves — ils
+    /// terminent une ligne d'en-tete, donc un jeton qui en contient decrit
+    /// des en-tetes que Nova n'a pas voulus.
+    ///
+    /// Les deux dernieres entrees sont celles qui ont fait echouer ce test a
+    /// sa premiere execution : `HeaderValue::from_str` les accepte, parce que
+    /// sa regle est `b >= 32` et laisse donc passer tout l'`obs-text`. C'est
+    /// ce qui a rendu necessaire le controle d'ASCII separe.
+    const JETONS_REFUSES: [(&str, &str); 9] = [
+        ("", "vide"),
+        ("   ", "espaces seulement"),
+        ("jeton\r\nX-Injecte: oui", "injection par CRLF"),
+        ("jeton\rsuite", "retour chariot seul"),
+        ("jeton\nsuite", "saut de ligne seul"),
+        ("jeton\u{0}suite", "octet nul"),
+        ("jeton\u{1b}[31m", "caractere de controle"),
+        ("jeton-\u{e9}chantillon", "non ASCII (accent)"),
+        ("jeton-\u{1f512}", "non ASCII (hors BMP)"),
+    ];
+
+    #[test]
+    fn aucun_jeton_malforme_nest_accepte() {
+        for (jeton, pourquoi) in JETONS_REFUSES {
+            assert!(
+                validate_device_token(jeton).is_err(),
+                "jeton accepte alors qu'il ne devait pas l'etre ({pourquoi})"
+            );
+        }
+    }
+
+    #[test]
+    fn un_jeton_malforme_ne_se_restaure_pas_depuis_le_stockage() {
+        // La porte du chemin 2 : ce qui revient du trousseau au demarrage.
+        let (record, _) = split_lab_connection(&sample_connection());
+        for (jeton, pourquoi) in JETONS_REFUSES {
+            assert!(
+                join_lab_connection(&record, jeton).is_err(),
+                "une connexion a ete recomposee sur un jeton invalide ({pourquoi})"
+            );
+        }
+    }
+
+    #[test]
+    fn un_jeton_malforme_natteint_jamais_letat_du_poste() {
+        let _exclusive = super::wire_test_support::exclusive();
+
+        for (jeton, pourquoi) in JETONS_REFUSES {
+            let refus = set_lab_connection(LabConnection {
+                device_token: jeton.to_string(),
+                ..sample_connection()
+            });
+            assert!(refus.is_err(), "jeton installe malgre tout ({pourquoi})");
+            // Et c'est la propriete qui compte : le poste se declare non
+            // enrole, donc `campus_request_client_with_timeout` ne prendra pas
+            // la branche Lab et aucune requete authentifiee ne partira.
+            assert!(
+                !lab_connection_active(),
+                "le poste se croit enrole apres un jeton invalide ({pourquoi})"
+            );
+        }
+
+        super::wire_test_support::reset_lab_connection();
+    }
+
+    #[test]
+    fn un_jeton_conforme_reste_accepte() {
+        // Le garde-fou doit refuser, pas tout refuser.
+        for jeton in [
+            "device-token-tres-secret",
+            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.c2ln",
+            "Bearer~!@#$%^&*()_+-=[]{}|;:'\",.<>/?",
+        ] {
+            assert!(
+                validate_device_token(jeton).is_ok(),
+                "jeton legitime refuse : {jeton}"
+            );
+        }
+    }
+
+    #[test]
+    fn le_jeton_accepte_construit_un_en_tete_sans_paniquer() {
+        // `lab_device_headers` ne peut plus etre atteint avec une valeur qu'il
+        // refuserait : c'est ce qui permet de retirer le `expect` du chemin de
+        // production.
+        let connection = sample_connection();
+        assert!(validate_device_token(&connection.device_token).is_ok());
+        assert!(lab_device_headers(&connection).is_ok());
     }
 
     #[test]
