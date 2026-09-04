@@ -101,8 +101,10 @@ jobs:
     runs-on: ubuntu-24.04
     # Sans cela, un test qui attend indefiniment occupe un runner jusqu'a la
     # limite de six heures de GitHub. `cargo test` n'impose aucun delai : c'est
-    # au workflow de le faire.
-    timeout-minutes: 45
+    # au workflow de le faire. Le plafond couvre les deux compilations
+    # completes du job — celle avec la feature Lab, celle sans — pour que ce
+    # soit toujours l'etape fautive qui annonce le delai, jamais le job.
+    timeout-minutes: 60
     env:
       CARGO_TERM_COLOR: always
       RUST_BACKTRACE: 1
@@ -134,6 +136,19 @@ jobs:
         timeout-minutes: 10
         run: cargo test --features lab -- --nocapture
 
+      # ── Tout ce qui suit est bati AVEC la feature Lab. ────────────────
+      #
+      # L'ordre n'est pas cosmetique. Passer de `--features lab` a la
+      # construction ordinaire change la resolution des features de TOUT
+      # l'arbre : cargo reconstruit alors chaque crate, `transcribe-cpp-sys`
+      # (whisper.cpp, cmake + C++) compris. Ce job alternait cinq fois entre
+      # les deux jeux, et chacune de ces bascules payait une reconstruction
+      # complete sous un budget de cinq minutes prevu pour *executer* des
+      # tests deja batis. Le premier basculement a donc ete tue par le delai,
+      # cmake encore en vol, sans qu'aucun test n'ait echoue.
+      #
+      # Il n'y a plus qu'un seul basculement, et il est budgete.
+
       # L'invariant qui a manque : `Builder::commands()` REMPLACE la liste
       # enregistree. Un second appel sous `#[cfg(feature = "lab")]` effacait
       # toutes les commandes ordinaires, et l'artefact Lab repondait
@@ -144,39 +159,16 @@ jobs:
         timeout-minutes: 5
         run: cargo test --features lab specta_registration -- --nocapture
 
-      # Et la meme table, sans la surface Lab, dans le paquet ordinaire.
-      - name: The ordinary build must expose no lab command
-        working-directory: src-tauri
-        timeout-minutes: 5
-        run: cargo test specta_registration -- --nocapture
-
       # L'enrolement Lab ne vivait qu'en memoire : apres un redemarrage le
       # certificat epingle et le jeton du peripherique disparaissaient, la
       # liaison TLS echouait, et le poste retombait en local en paraissant
       # l'avoir choisi. Ces tests rejouent le scenario complet — enrolement,
       # fermeture, restauration, appel authentifie — et verifient surtout que
-      # le jeton n'atteint jamais le disque.
+      # le jeton n'atteint jamais le disque, ni une trace de debogage.
       - name: The lab enrollment must survive a restart, secret excluded
         working-directory: src-tauri
         timeout-minutes: 5
         run: cargo test --features lab lab_persistence -- --nocapture
-
-      # Le serveur repond `{ "text": ... }`. Les deux chemins de dictee
-      # demandaient une chaine JSON nue, et `serde` refusait donc un objet
-      # parfaitement valide. Invisible a la compilation : l'inference choisit
-      # `T = String` sans rien signaler.
-      - name: Campus responses must be read as objects
-        working-directory: src-tauri
-        timeout-minutes: 5
-        run: cargo test campus_response -- --nocapture
-
-      # La trace de diagnostic ne doit jamais pouvoir ecrire un secret. Le test
-      # pose de vrais en-tetes sensibles sur la requete et verifie qu'aucun
-      # fragment n'atteint la ligne de journal.
-      - name: The diagnostic trace must never leak a secret
-        working-directory: src-tauri
-        timeout-minutes: 5
-        run: cargo test campus_trace -- --nocapture
 
       # Un vrai serveur local compte les octets. Le serveur du Lab a montre que
       # le poste annoncait la taille du seul fichier audio et envoyait
@@ -205,6 +197,41 @@ jobs:
         working-directory: src-tauri
         timeout-minutes: 5
         run: cargo test --features lab lab_tls -- --nocapture
+
+      # ── Et ici, une seule fois, on repasse a la construction ordinaire. ──
+      #
+      # Cette etape ne verifie rien : elle paie, explicitement et une seule
+      # fois, la reconstruction que le changement de features impose. La
+      # separer des etapes qui suivent est ce qui rend leur budget de cinq
+      # minutes honnete — il ne couvre plus que l'execution.
+      - name: Compile the ordinary tests
+        working-directory: src-tauri
+        timeout-minutes: 25
+        run: cargo test --no-run --verbose
+
+      # La meme table que plus haut, sans la surface Lab, dans le paquet
+      # ordinaire.
+      - name: The ordinary build must expose no lab command
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test specta_registration -- --nocapture
+
+      # Le serveur repond `{ "text": ... }`. Les deux chemins de dictee
+      # demandaient une chaine JSON nue, et `serde` refusait donc un objet
+      # parfaitement valide. Invisible a la compilation : l'inference choisit
+      # `T = String` sans rien signaler.
+      - name: Campus responses must be read as objects
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test campus_response -- --nocapture
+
+      # La trace de diagnostic ne doit jamais pouvoir ecrire un secret. Le test
+      # pose de vrais en-tetes sensibles sur la requete et verifie qu'aucun
+      # fragment n'atteint la ligne de journal.
+      - name: The diagnostic trace must never leak a secret
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test campus_trace -- --nocapture
 
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
