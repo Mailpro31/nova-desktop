@@ -164,7 +164,10 @@
       "originalWas": "النص المُملى أصلاً: {{text}}",
       "hint": "يمكنك إعادة المحاولة بقدر ما تشاء.",
       "skip": "تخطي هذه الخطوة",
-      "finishAnyway": "إنهاء الإعداد"
+      "finishAnyway": "إنهاء الإعداد",
+      "styleUnavailable": "تعذّر تطبيق النمط؛ هذا هو النص المُملى الخام.",
+      "failedTitle": "لم تكتمل عملية الإملاء",
+      "failedBody": "تعذّر على Nova إجراء النسخ. تأكّد من إمكانية الوصول إلى الخادم ثم أعد المحاولة — يمكنك أيضًا إنهاء الإعداد والعودة إلى هذا لاحقًا."
     },
     "permissions": {
       "title": "الأذونات المطلوبة",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "‏Nova Local نشط",
-        "detail": "الإملاء ما زال يعمل. ستعود وظائف الذكاء الاصطناعي مع Campus."
+        "detail": "{{server}} لا يستجيب — يستمر الإملاء محليًا، وميزات الذكاء الاصطناعي متوقفة مؤقتًا.",
+        "unknownServer": "خادم المؤسسة"
       },
       "permissionsNeeded": {
         "title": "مطلوب الوصول إلى الميكروفون",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "جارٍ تشغيل Nova…",
+    "stalledTitle": "يستغرق تشغيل Nova وقتًا أطول من المتوقع",
+    "stalledBody": "لم تُجب بعض فحوص بدء التشغيل بعد — أجهزة الصوت أو الإعدادات المحفوظة أو جرد النماذج المحلية. توقّف Nova عن الانتظار حتى لا تبقى هذه النافذة فارغة.",
+    "logHint": "التفاصيل مسجَّلة في handy.log داخل مجلد بيانات Nova.",
+    "retry": "إعادة تشغيل Nova",
+    "errorTitle": "تعذّر على Nova عرض نافذته",
+    "errorBody": "حدث خطأ أثناء بدء التشغيل. أعد تشغيل Nova؛ وإذا عادت هذه الشاشة فأرسل الرسالة أدناه."
   }
 }

@@ -164,7 +164,10 @@
       "originalWas": "Originally dictated: {{text}}",
       "hint": "You can try again as many times as you like.",
       "skip": "Skip this step",
-      "finishAnyway": "Finish setup"
+      "finishAnyway": "Finish setup",
+      "styleUnavailable": "The Style could not be applied; here is the raw dictation.",
+      "failedTitle": "The dictation did not go through",
+      "failedBody": "Nova could not transcribe. Check that the server is reachable, then try again — you can also finish setup and come back to this later."
     },
     "permissions": {
       "title": "Permissions Required",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "School email",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local is active",
-        "detail": "Dictation still works. AI features return when Campus reconnects."
+        "detail": "{{server}} is not responding — dictation continues locally, AI features are paused.",
+        "unknownServer": "the organization server"
       },
       "permissionsNeeded": {
         "title": "Microphone access required",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Starting Nova…",
+    "stalledTitle": "Nova is taking longer than expected to start",
+    "stalledBody": "Some startup checks have not answered yet — audio devices, saved settings or the local model inventory. Nova has stopped waiting so this window does not stay empty.",
+    "logHint": "Details are recorded in handy.log, inside the Nova data folder.",
+    "retry": "Restart Nova",
+    "errorTitle": "Nova could not display its window",
+    "errorBody": "An error occurred while starting. Restart Nova; if this screen comes back, send the message below."
   }
 }

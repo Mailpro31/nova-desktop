@@ -164,7 +164,10 @@
       "originalWas": "Dicté à l'origine : {{text}}",
       "hint": "Vous pouvez réessayer autant de fois que vous voulez.",
       "skip": "Passer cette étape",
-      "finishAnyway": "Terminer la configuration"
+      "finishAnyway": "Terminer la configuration",
+      "styleUnavailable": "Le Style n’a pas pu être appliqué ; voici la dictée brute.",
+      "failedTitle": "La dictée n’a pas abouti",
+      "failedBody": "Nova n’a pas pu transcrire. Vérifiez que le serveur est joignable, puis réessayez — vous pouvez aussi terminer la configuration et y revenir plus tard."
     },
     "permissions": {
       "title": "Autorisations requises",
@@ -972,7 +975,8 @@
         "join": "Rejoindre",
         "codeLabel": "Code d’invitation",
         "securityNote": "Nova vérifie l’identité du serveur avant de lui transmettre le code.",
-        "error": "Impossible de rejoindre ce serveur de test. Vérifiez que le code est récent et que les deux PC sont sur le même réseau."
+        "error": "Impossible de rejoindre ce serveur de test. Vérifiez que le code est récent et que les deux PC sont sur le même réseau.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Email école",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local est actif",
-        "detail": "La dictée fonctionne toujours. Les fonctions IA reviendront avec Campus."
+        "detail": "{{server}} ne répond pas — la dictée continue en local, les fonctions IA sont en pause.",
+        "unknownServer": "le serveur de l’organisation"
       },
       "permissionsNeeded": {
         "title": "Accès au microphone requis",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Démarrage de Nova…",
+    "stalledTitle": "Nova met plus de temps que prévu à démarrer",
+    "stalledBody": "Des vérifications de démarrage n’ont pas encore répondu — périphériques audio, réglages enregistrés ou inventaire des modèles locaux. Nova a cessé d’attendre pour ne pas laisser cette fenêtre vide.",
+    "logHint": "Le détail est consigné dans handy.log, dans le dossier de données de Nova.",
+    "retry": "Relancer Nova",
+    "errorTitle": "Nova n’a pas réussi à afficher sa fenêtre",
+    "errorBody": "Une erreur est survenue au démarrage. Relancez Nova ; si l’écran revient, transmettez le message ci-dessous."
   }
 }

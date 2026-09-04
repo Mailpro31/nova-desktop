@@ -164,7 +164,10 @@
       "originalWas": "सुरुमा बोलिएको: {{text}}",
       "hint": "तपाईं जति पटक चाहनुहुन्छ त्यति पटक फेरि प्रयास गर्न सक्नुहुन्छ।",
       "skip": "यो चरण छोड्नुहोस्",
-      "finishAnyway": "सेटअप समाप्त गर्नुहोस्"
+      "finishAnyway": "सेटअप समाप्त गर्नुहोस्",
+      "styleUnavailable": "शैली लागू गर्न सकिएन; तलको कच्चा श्रुतिलेखन हो।",
+      "failedTitle": "श्रुतिलेखन पूरा भएन",
+      "failedBody": "Nova ले प्रतिलेखन गर्न सकेन। सर्भरमा पुग्न सकिन्छ कि भनी जाँच गरी फेरि प्रयास गर्नुहोस् — तपाईं सेटअप सिध्याएर पछि फर्कन पनि सक्नुहुन्छ।"
     },
     "permissions": {
       "title": "अनुमतिहरू आवश्यक छन्",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local सक्रिय छ",
-        "detail": "श्रुतिलेखन अझै चल्छ। एआई सुविधा Campus सँगै फर्कनेछ।"
+        "detail": "{{server}} ले जवाफ दिइरहेको छैन — श्रुतिलेखन स्थानीय रूपमा जारी छ, AI सुविधाहरू रोकिएका छन्।",
+        "unknownServer": "संस्थाको सर्भर"
       },
       "permissionsNeeded": {
         "title": "माइक्रोफोन अनुमति चाहियो",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Nova सुरु हुँदै…",
+    "stalledTitle": "Nova सुरु हुन अपेक्षा गरेभन्दा बढी समय लागिरहेको छ",
+    "stalledBody": "सुरुवातका केही जाँचहरूले अझै जवाफ दिएका छैनन् — अडियो उपकरण, सुरक्षित सेटिङ वा स्थानीय मोडेलको सूची। यो सञ्झ्याल खाली नरहोस् भनेर Nova ले पर्खनु छाड्यो।",
+    "logHint": "विवरण Nova को डेटा फोल्डरभित्रको handy.log मा लेखिन्छ।",
+    "retry": "Nova पुनः सुरु गर्नुहोस्",
+    "errorTitle": "Nova ले आफ्नो सञ्झ्याल देखाउन सकेन",
+    "errorBody": "सुरु हुँदा त्रुटि भयो। Nova पुनः सुरु गर्नुहोस्; यो पर्दा फेरि देखिए तलको सन्देश पठाउनुहोस्।"
   }
 }

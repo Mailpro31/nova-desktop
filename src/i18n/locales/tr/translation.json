@@ -164,7 +164,10 @@
       "originalWas": "Aslında söylenen: {{text}}",
       "hint": "İstediğiniz kadar tekrar deneyebilirsiniz.",
       "skip": "Bu adımı atla",
-      "finishAnyway": "Kurulumu bitir"
+      "finishAnyway": "Kurulumu bitir",
+      "styleUnavailable": "Stil uygulanamadı; ham dikte aşağıdadır.",
+      "failedTitle": "Dikte tamamlanamadı",
+      "failedBody": "Nova yazıya dökemedi. Sunucuya erişilebildiğini doğrulayıp yeniden deneyin — kurulumu bitirip buna sonra da dönebilirsiniz."
     },
     "permissions": {
       "title": "İzinler Gerekli",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local etkin",
-        "detail": "Dikte çalışmaya devam ediyor. YZ işlevleri Campus ile geri gelecek."
+        "detail": "{{server}} yanıt vermiyor — dikte yerel olarak sürüyor, yapay zekâ özellikleri duraklatıldı.",
+        "unknownServer": "kuruluş sunucusu"
       },
       "permissionsNeeded": {
         "title": "Mikrofon erişimi gerekli",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Nova başlatılıyor…",
+    "stalledTitle": "Nova beklenenden uzun sürede başlıyor",
+    "stalledBody": "Bazı başlangıç denetimleri henüz yanıt vermedi — ses aygıtları, kayıtlı ayarlar ya da yerel model listesi. Bu pencere boş kalmasın diye Nova beklemeyi bıraktı.",
+    "logHint": "Ayrıntılar Nova veri klasöründeki handy.log dosyasına yazılır.",
+    "retry": "Nova uygulamasını yeniden başlat",
+    "errorTitle": "Nova penceresini gösteremedi",
+    "errorBody": "Başlatma sırasında bir hata oluştu. Nova uygulamasını yeniden başlatın; bu ekran yine gelirse aşağıdaki iletiyi gönderin."
   }
 }

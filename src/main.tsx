@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { platform } from "@tauri-apps/plugin-os";
 import App from "./App";
+import { AppErrorBoundary } from "./components/startup/AppErrorBoundary";
 import {
   applyTheme,
   getStoredTheme,
@@ -30,6 +31,10 @@ useModelStore.getState().initialize();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    {/* Une exception de rendu démonterait l'arbre et laisserait la WebView
+        vide. Le filet la rend visible et rapportable. */}
+    <AppErrorBoundary>
+      <App />
+    </AppErrorBoundary>
   </React.StrictMode>,
 );

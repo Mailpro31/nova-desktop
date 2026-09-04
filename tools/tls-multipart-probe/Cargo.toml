@@ -1,0 +1,33 @@
+[package]
+name = "tls-multipart-probe"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Crate volontairement independante de `handy` : elle ne doit dependre ni du
+# moteur audio, ni d'ONNX, ni de Tauri. C'est ce qui la rend executable sur le
+# poste Windows, ou le binaire de test de `handy` ne se charge pas
+# (STATUS_ENTRYPOINT_NOT_FOUND). Ne pas l'ajouter a un workspace.
+
+[dependencies]
+# Meme version et memes features que `src-tauri/Cargo.toml`, plus `rustls-tls`
+# pour pouvoir comparer les deux moteurs dans le meme binaire. Le moteur
+# effectivement utilise est choisi a l'execution, pas a la compilation.
+reqwest = { version = "0.12", features = [
+  "json",
+  "stream",
+  "blocking",
+  "multipart",
+  # `default-tls` seul ne suffit pas : c'est `native-tls` qui expose
+  # `use_native_tls()` et permet de choisir le moteur a l'execution.
+  "native-tls",
+  "rustls-tls",
+] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "io-util", "time"] }
+tokio-rustls = { version = "0.26", default-features = false, features = [
+  "ring",
+  "tls12",
+  "logging",
+] }
+sha2 = "0.10"
+base64 = "0.22"

@@ -164,7 +164,10 @@
       "originalWas": "Изначально продиктовано: {{text}}",
       "hint": "Вы можете повторить попытку сколько угодно раз.",
       "skip": "Пропустить этот шаг",
-      "finishAnyway": "Завершить настройку"
+      "finishAnyway": "Завершить настройку",
+      "styleUnavailable": "Не удалось применить Стиль; ниже — исходная диктовка.",
+      "failedTitle": "Диктовка не завершилась",
+      "failedBody": "Nova не смогла распознать речь. Проверьте, доступен ли сервер, и повторите попытку — можно также завершить настройку и вернуться к этому позже."
     },
     "permissions": {
       "title": "Требуются разрешения",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local активна",
-        "detail": "Диктовка по-прежнему работает. Функции ИИ вернутся вместе с Campus."
+        "detail": "{{server}} не отвечает — диктовка продолжается локально, функции ИИ приостановлены.",
+        "unknownServer": "сервер организации"
       },
       "permissionsNeeded": {
         "title": "Нужен доступ к микрофону",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Запуск Nova…",
+    "stalledTitle": "Запуск Nova занимает больше времени, чем обычно",
+    "stalledBody": "Некоторые проверки при запуске ещё не ответили — аудиоустройства, сохранённые настройки или список локальных моделей. Nova перестала ждать, чтобы это окно не осталось пустым.",
+    "logHint": "Подробности записываются в handy.log, в папке данных Nova.",
+    "retry": "Перезапустить Nova",
+    "errorTitle": "Nova не смогла показать своё окно",
+    "errorBody": "При запуске произошла ошибка. Перезапустите Nova; если этот экран появится снова, отправьте сообщение ниже."
   }
 }

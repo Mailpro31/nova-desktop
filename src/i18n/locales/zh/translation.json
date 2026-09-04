@@ -164,7 +164,10 @@
       "originalWas": "原始口述内容：{{text}}",
       "hint": "您可以随意重试，次数不限。",
       "skip": "跳过此步骤",
-      "finishAnyway": "完成设置"
+      "finishAnyway": "完成设置",
+      "styleUnavailable": "未能应用样式，以下是原始听写内容。",
+      "failedTitle": "本次听写未完成",
+      "failedBody": "Nova 无法转写。请确认服务器可以连接后重试——你也可以先完成设置，稍后再回来。"
     },
     "permissions": {
       "title": "需要权限",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local 正在运行",
-        "detail": "语音输入照常可用。AI 功能将随 Campus 一同恢复。"
+        "detail": "{{server}} 没有响应——听写继续在本地进行，AI 功能已暂停。",
+        "unknownServer": "组织服务器"
       },
       "permissionsNeeded": {
         "title": "需要麦克风权限",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "正在启动 Nova…",
+    "stalledTitle": "Nova 启动时间比预期更长",
+    "stalledBody": "部分启动检查尚未返回结果——音频设备、已保存的设置或本地模型清单。为了不让此窗口保持空白，Nova 已停止等待。",
+    "logHint": "详细信息记录在 Nova 数据文件夹中的 handy.log 内。",
+    "retry": "重新启动 Nova",
+    "errorTitle": "Nova 无法显示窗口",
+    "errorBody": "启动时发生错误。请重新启动 Nova；如果此画面再次出现，请发送下面的信息。"
   }
 }

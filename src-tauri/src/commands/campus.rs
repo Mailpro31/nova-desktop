@@ -23,6 +23,21 @@ const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.campus";
 #[cfg(feature = "lab")]
 const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.campus";
 
+/// Metadonnees de l'enrolement Lab. **Aucun secret ici** — voir
+/// `LAB_DEVICE_CREDENTIAL_SERVICE`.
+#[cfg(feature = "lab")]
+const LAB_CONNECTION_STORE: &str = "lab_connection.json";
+#[cfg(feature = "lab")]
+const LAB_CONNECTION_KEY: &str = "lab_connection";
+
+/// Le jeton du peripherique, dans le trousseau du systeme.
+///
+/// Service distinct de celui de la session Campus : ce sont deux secrets de
+/// natures differentes, et se deconnecter de son organisation ne doit pas
+/// effacer l'enrolement de la machine dans le Lab — ni l'inverse.
+#[cfg(feature = "lab")]
+const LAB_DEVICE_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.device";
+
 pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
 pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
 
@@ -201,16 +216,58 @@ pub struct CampusState {
     pub enabled: AtomicBool,
 }
 
-/// Connexion éphémère à un Lab. Le jeton est uniquement en mémoire : il ne
-/// survit ni à une fermeture de Nova ni à un redémarrage. Une version Lab
-/// ultérieure pourra proposer une reconnexion explicite, mais il ne faut pas
-/// écrire un jeton d'accès LAN en clair juste pour gagner cette commodité.
+/// Connexion a un Lab : l'adresse, le certificat epingle, le jeton du
+/// peripherique.
+///
+/// ## Ce qui est secret, et ce qui ne l'est pas
+///
+/// Le jeton d'acces est un secret : il authentifie la machine aupres du
+/// serveur. Il ne quitte jamais le trousseau du systeme — jamais de JSON,
+/// jamais de fichier de configuration, jamais de journal.
+///
+/// Le certificat, lui, **n'est pas un secret** : le serveur le presente a tout
+/// client lors de chaque poignee de main TLS. L'epingler protege l'integrite de
+/// la liaison, pas la confidentialite du certificat. Il est donc conserve en
+/// clair aux cotes de l'adresse — quiconque peut lire ce fichier peut deja
+/// observer le certificat sur le reseau, et ne peut toujours pas s'authentifier
+/// sans le jeton.
+///
+/// ## Pourquoi cela a change
+///
+/// Cette connexion ne vivait qu'en memoire. Apres un redemarrage, Nova Lab
+/// perdait donc le certificat, la liaison TLS echouait, et le poste retombait
+/// en mode local alors qu'il etait correctement enrole. La commodite n'etait
+/// pas le probleme ; l'enrolement devenait simplement inutilisable.
 #[cfg(feature = "lab")]
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq)]
 pub(crate) struct LabConnection {
     pub endpoint: String,
     pub certificate_der: Vec<u8>,
     pub device_token: String,
+}
+
+/// `Debug` ecrit a la main, et volontairement opaque.
+///
+/// `assert_eq!` en a besoin, et un `derive` l'aurait donne — en imprimant le
+/// jeton du peripherique en clair au premier `{:?}`. Le jeton ne doit jamais
+/// atteindre un journal ; la seule facon de s'en assurer est qu'il ne soit
+/// **pas imprimable**, plutot que de compter sur personne pour ne jamais
+/// formater cette structure. Meme raison, meme forme que
+/// `crate::lab_tls::PinnedIdentityVerifier`.
+#[cfg(feature = "lab")]
+impl std::fmt::Debug for LabConnection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("LabConnection { endpoint: [REDACTED], certificate_der: [REDACTED], device_token: [REDACTED] }")
+    }
+}
+
+/// La part publique, telle qu'elle est ecrite sur le disque.
+#[cfg(feature = "lab")]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub(crate) struct LabConnectionRecord {
+    pub endpoint: String,
+    /// Certificat du serveur (DER), en base64. Public par nature.
+    pub certificate_b64: String,
 }
 
 #[cfg(feature = "lab")]
@@ -218,6 +275,9 @@ static LAB_CONNECTION: Lazy<Mutex<Option<LabConnection>>> = Lazy::new(|| Mutex::
 
 #[cfg(feature = "lab")]
 pub(crate) fn set_lab_connection(connection: LabConnection) -> Result<(), String> {
+    // Derniere porte avant l'etat du poste : ce qui passe ici est ce que
+    // `campus_request_client_with_timeout` utilisera sans plus rien verifier.
+    validate_device_token(&connection.device_token)?;
     let mut stored = LAB_CONNECTION
         .lock()
         .map_err(|_| "LAB_CONNECTION_STATE_UNAVAILABLE".to_string())?;
@@ -228,6 +288,242 @@ pub(crate) fn set_lab_connection(connection: LabConnection) -> Result<(), String
 #[cfg(feature = "lab")]
 fn current_lab_connection() -> Option<LabConnection> {
     LAB_CONNECTION.lock().ok()?.clone()
+}
+
+/// Ce poste est-il reellement enrole dans un Lab ?
+///
+/// L'interface retenait la reponse dans un indicateur local, ecrit a
+/// l'enrolement. Un indicateur ne peut pas savoir que le secret qu'il resume a
+/// disparu : apres une desinstallation, un nettoyage du trousseau ou une
+/// version qui ne persistait rien, il continuait d'affirmer « enrole » et
+/// masquait l'ecran qui aurait permis de se reenroler. La seule autorite est
+/// donc ici, pas dans le navigateur.
+#[cfg(feature = "lab")]
+#[tauri::command]
+#[specta::specta]
+pub fn lab_connection_active() -> bool {
+    current_lab_connection().is_some()
+}
+
+/// Separe le secret du reste. C'est la frontiere que le reste du module ne doit
+/// jamais franchir : tout ce qui part vers un fichier passe par `LabConnectionRecord`.
+#[cfg(feature = "lab")]
+pub(crate) fn split_lab_connection(connection: &LabConnection) -> (LabConnectionRecord, String) {
+    use base64::Engine as _;
+    (
+        LabConnectionRecord {
+            endpoint: connection.endpoint.clone(),
+            certificate_b64: base64::engine::general_purpose::STANDARD
+                .encode(&connection.certificate_der),
+        },
+        connection.device_token.clone(),
+    )
+}
+
+/// Ce qu'un jeton de peripherique doit etre pour pouvoir servir.
+///
+/// Deux conditions, et il en faut bien deux.
+///
+/// `HeaderValue::from_str` ecarte ce qui casserait le cadrage des en-tetes :
+/// retour chariot, saut de ligne, caracteres de controle. Il ne suffit pas.
+/// Sa regle est `b >= 32 && b != 127`, donc **tout octet non-ASCII lui
+/// convient** — l'`obs-text` que la RFC 9110 tolere par heritage. Un jeton de
+/// peripherique n'a aucune raison d'en contenir, et un octet non-ASCII y est
+/// bien plus probablement le signe d'un stockage corrompu ou d'un mauvais
+/// encodage que d'un jeton legitime. L'appartenance a l'ASCII est donc exigee
+/// separement.
+///
+/// ## Pourquoi valider a l'entree, et non a l'usage
+///
+/// Le jeton ne venait que du serveur, en memoire, et disparaissait a la
+/// fermeture. Depuis que l'enrolement est memorise, il revient du trousseau du
+/// systeme au demarrage : son contenu n'est plus sous notre controle. Or le
+/// seul endroit qui le controlait etait `lab_device_headers`, au moment de
+/// batir la requete — trop tard pour faire autre chose que paniquer, c'est-a-
+/// dire tuer l'application pour une valeur qui ne concerne qu'un poste.
+///
+/// Valider ici rend l'echec local et reparable : le jeton n'est jamais ecrit,
+/// jamais installe, et le poste se retrouve simplement non enrole.
+#[cfg(feature = "lab")]
+pub(crate) fn validate_device_token(device_token: &str) -> Result<(), String> {
+    if device_token.trim().is_empty() {
+        return Err("LAB_DEVICE_TOKEN_MISSING".to_string());
+    }
+    if !device_token.is_ascii() {
+        return Err("LAB_DEVICE_TOKEN_INVALID".to_string());
+    }
+    // La valeur construite est jetee : seule sa reussite nous interesse. Un
+    // jeton qui echoue ici ne pourrait jamais partir sur le fil.
+    reqwest::header::HeaderValue::from_str(device_token)
+        .map_err(|_| "LAB_DEVICE_TOKEN_INVALID".to_string())?;
+    Ok(())
+}
+
+/// Recompose la connexion a partir de ses deux moities.
+#[cfg(feature = "lab")]
+pub(crate) fn join_lab_connection(
+    record: &LabConnectionRecord,
+    device_token: &str,
+) -> Result<LabConnection, String> {
+    use base64::Engine as _;
+    // Porte d'entree du jeton relu depuis le trousseau.
+    validate_device_token(device_token)?;
+    let certificate_der = base64::engine::general_purpose::STANDARD
+        .decode(&record.certificate_b64)
+        .map_err(|_| "LAB_CERTIFICATE_INVALID".to_string())?;
+    // Un certificat qui ne se relit pas ne protegerait plus rien : mieux vaut
+    // refuser la restauration et redemander une invitation.
+    reqwest::Certificate::from_der(&certificate_der)
+        .map_err(|_| "LAB_CERTIFICATE_INVALID".to_string())?;
+    Ok(LabConnection {
+        endpoint: record.endpoint.clone(),
+        certificate_der,
+        device_token: device_token.to_string(),
+    })
+}
+
+/// En-tetes portant l'identite du peripherique.
+#[cfg(feature = "lab")]
+fn lab_device_headers(connection: &LabConnection) -> Result<reqwest::header::HeaderMap, String> {
+    let mut headers = reqwest::header::HeaderMap::new();
+    let value = connection
+        .device_token
+        .parse()
+        .map_err(|_| "LAB_DEVICE_TOKEN_INVALID".to_string())?;
+    headers.insert("X-Nova-Lab-Device", value);
+    Ok(headers)
+}
+
+/// Ce qu'il faut pour parler a un Lab : l'identite du peripherique et le
+/// transport epingle. Les deux peuvent echouer ; les reunir ici evite d'avoir
+/// a traiter cet echec deux fois sur le chemin de la requete.
+#[cfg(feature = "lab")]
+fn lab_transport(
+    connection: &LabConnection,
+) -> Result<(reqwest::header::HeaderMap, rustls::ClientConfig), String> {
+    let device_headers = lab_device_headers(connection)?;
+    let tls = crate::lab_tls::pinned_client_config(connection.certificate_der.clone())?;
+    Ok((device_headers, tls))
+}
+
+#[cfg(feature = "lab")]
+fn lab_credential_entry(endpoint: &str) -> Result<keyring::Entry, String> {
+    let username = format!(
+        "{:x}",
+        Sha256::digest(normalize_base_url(endpoint).as_bytes())
+    );
+    keyring::Entry::new(LAB_DEVICE_CREDENTIAL_SERVICE, &username)
+        .map_err(|e| format!("secure credential store unavailable: {e}"))
+}
+
+#[cfg(feature = "lab")]
+fn lab_connection_store(
+    app: &AppHandle,
+) -> Result<std::sync::Arc<tauri_plugin_store::Store<tauri::Wry>>, String> {
+    app.store(portable::store_path(LAB_CONNECTION_STORE))
+        .map_err(|e| e.to_string())
+}
+
+/// Retient l'enrolement : le jeton au trousseau, le reste sur le disque.
+///
+/// Si l'ecriture des metadonnees echoue, le jeton est retire : mieux vaut un
+/// enrolement absent qu'un secret orphelin que plus rien ne reference.
+#[cfg(feature = "lab")]
+pub(crate) fn save_lab_connection(
+    app: &AppHandle,
+    connection: LabConnection,
+) -> Result<(), String> {
+    // Avant toute ecriture : un jeton non conforme ne doit pas atteindre le
+    // trousseau, sans quoi chaque demarrage suivant aurait a le rejeter.
+    validate_device_token(&connection.device_token)?;
+
+    let (record, device_token) = split_lab_connection(&connection);
+    let entry = lab_credential_entry(&record.endpoint)?;
+    entry
+        .set_password(&device_token)
+        .map_err(|e| format!("failed to protect lab credential: {e}"))?;
+
+    let store = lab_connection_store(app)?;
+    let persisted = (|| -> Result<(), String> {
+        store.set(
+            LAB_CONNECTION_KEY,
+            serde_json::to_value(&record).map_err(|e| e.to_string())?,
+        );
+        store.save().map_err(|e| e.to_string())
+    })();
+    if let Err(error) = persisted {
+        let _ = entry.delete_credential();
+        return Err(error);
+    }
+
+    set_lab_connection(connection)
+}
+
+/// Recharge l'enrolement au demarrage. `Ok(false)` quand il n'y en a pas.
+#[cfg(feature = "lab")]
+pub(crate) fn restore_lab_connection(app: &AppHandle) -> Result<bool, String> {
+    let store = lab_connection_store(app)?;
+    let Some(value) = store.get(LAB_CONNECTION_KEY) else {
+        return Ok(false);
+    };
+    if value.is_null() {
+        return Ok(false);
+    }
+    let record: LabConnectionRecord = serde_json::from_value(value).map_err(|e| e.to_string())?;
+    let entry = lab_credential_entry(&record.endpoint)?;
+    let device_token = match entry.get_password() {
+        Ok(token) => token,
+        // Metadonnees sans secret : l'enrolement n'est plus utilisable. On
+        // nettoie plutot que de laisser une adresse pointer vers rien.
+        Err(keyring::Error::NoEntry) => {
+            let _ = forget_lab_connection(app);
+            return Ok(false);
+        }
+        Err(other) => return Err(format!("failed to read lab credential: {other}")),
+    };
+    let connection = match join_lab_connection(&record, &device_token) {
+        Ok(connection) => connection,
+        Err(error) => {
+            let _ = forget_lab_connection(app);
+            return Err(error);
+        }
+    };
+    set_lab_connection(connection)?;
+    Ok(true)
+}
+
+/// Abandonne l'enrolement en memoire, sans toucher au disque.
+///
+/// Le nettoyage du disque et du trousseau reclame un `AppHandle` que tous les
+/// appelants n'ont pas. Il n'est pas perdu pour autant : au prochain
+/// demarrage, `restore_lab_connection` rejettera la meme connexion et
+/// appellera `forget_lab_connection`, qui, lui, efface tout.
+#[cfg(feature = "lab")]
+fn drop_lab_connection() {
+    if let Ok(mut stored) = LAB_CONNECTION.lock() {
+        *stored = None;
+    }
+}
+
+/// Efface l'enrolement : secret d'abord, metadonnees ensuite, memoire enfin.
+#[cfg(feature = "lab")]
+pub(crate) fn forget_lab_connection(app: &AppHandle) -> Result<(), String> {
+    let store = lab_connection_store(app)?;
+    if let Some(value) = store.get(LAB_CONNECTION_KEY) {
+        if let Ok(record) = serde_json::from_value::<LabConnectionRecord>(value) {
+            if let Ok(entry) = lab_credential_entry(&record.endpoint) {
+                if let Err(error) = entry.delete_credential() {
+                    if !matches!(error, keyring::Error::NoEntry) {
+                        return Err(format!("failed to delete lab credential: {error}"));
+                    }
+                }
+            }
+        }
+    }
+    store.delete(LAB_CONNECTION_KEY);
+    store.save().map_err(|e| e.to_string())?;
+    drop_lab_connection();
+    Ok(())
 }
 
 /// Active ou désactive la logique campus côté backend.
@@ -463,6 +759,10 @@ pub fn complete_campus_onboarding(app: AppHandle) -> Result<(), String> {
 /// Efface la session et notifie le frontend qu'il faut retourner à l'onboarding.
 pub fn clear_campus_session_and_notify(app: &AppHandle) {
     let _ = clear_campus_session(app.clone());
+    // Le serveur a rejete cette identite : garder le jeton du peripherique
+    // laisserait un secret que plus rien ne peut utiliser.
+    #[cfg(feature = "lab")]
+    let _ = forget_lab_connection(app);
     let _ = app.emit(CAMPUS_SESSION_INVALID_EVENT, ());
 }
 
@@ -606,20 +906,17 @@ async fn handle_authed_response(
     Ok(response)
 }
 
+/// Joignabilite du serveur, telle que l'interface la demande.
+///
+/// Cette commande portait sa **propre copie** de la regle, et gardait donc
+/// l'ancienne apres correction de l'autre : elle exigeait un statut 2xx, si
+/// bien qu'un serveur Lab repondant `401` sur `/api/health` faisait afficher
+/// « Nova Local est actif » a un poste correctement connecte. Deux definitions
+/// de « joignable » valaient une de trop ; il n'en reste qu'une.
 #[tauri::command]
 #[specta::specta]
 pub async fn check_campus_server_reachability(server_url: String) -> Result<bool, String> {
-    let base_url = normalize_base_url(&server_url);
-    let client = campus_client_no_auth();
-    let result = client
-        .get(format!("{}/api/health", base_url))
-        .timeout(Duration::from_secs(2))
-        .send()
-        .await;
-    match result {
-        Ok(response) => Ok(response.status().is_success()),
-        Err(_) => Ok(false),
-    }
+    Ok(check_server_reachability(&normalize_base_url(&server_url)).await)
 }
 
 #[tauri::command]
@@ -797,23 +1094,41 @@ fn campus_request_client_with_timeout(token: Option<&str>, timeout: Duration) ->
         headers.insert(reqwest::header::AUTHORIZATION, auth_value);
     }
 
+    // Le Lab parle rustls, avec un verificateur d'identite epinglee — voir
+    // `crate::lab_tls`. Ce n'est pas une preference de bibliotheque : les
+    // mesures simultanees ont montre que Nova remet a hyper exactement
+    // `Content-Length` octets tandis que la passerelle en recoit davantage.
+    // L'excedent nait sous hyper, et c'est la seule couche qu'on puisse
+    // substituer sans toucher au serveur.
+    //
+    // Aucune racine systeme n'est chargee : la seule confiance est le
+    // certificat retenu a l'enrolement.
     #[cfg(feature = "lab")]
     if let Some(connection) = current_lab_connection() {
-        let device_value = connection
-            .device_token
-            .parse()
-            .expect("valid Lab device header");
-        headers.insert("X-Nova-Lab-Device", device_value);
-        let certificate = reqwest::Certificate::from_der(&connection.certificate_der)
-            .expect("Lab certificate was verified before being retained");
-        return reqwest::Client::builder()
-            .timeout(timeout)
-            .https_only(true)
-            .tls_built_in_root_certs(false)
-            .add_root_certificate(certificate)
-            .default_headers(headers)
-            .build()
-            .expect("Lab reqwest client builds");
+        match lab_transport(&connection) {
+            Ok((device_headers, tls)) => {
+                headers.extend(device_headers);
+                return reqwest::Client::builder()
+                    .timeout(timeout)
+                    .https_only(true)
+                    .use_preconfigured_tls(tls)
+                    .default_headers(headers)
+                    .build()
+                    .expect("Lab reqwest client builds");
+            }
+            // Hors d'atteinte : le jeton est valide a l'entree
+            // (`validate_device_token`) et le certificat l'a ete a
+            // l'enrolement. « Hors d'atteinte » n'est pas « impossible », et un
+            // `expect` ici tuerait l'application entiere pour une valeur qui,
+            // au pire, rend un seul poste non enrole. On abandonne donc la
+            // connexion, pas le processus : aucun en-tete de peripherique n'est
+            // pose, aucune requete authentifiee ne part, le poste se declare
+            // non enrole et l'ecran d'enrolement revient.
+            Err(error) => {
+                log::error!("Transport Lab inutilisable ({error}) — enrolement abandonne");
+                drop_lab_connection();
+            }
+        }
     }
 
     reqwest::Client::builder()
@@ -1646,16 +1961,14 @@ pub async fn transcribe_campus_audio_file(
         "audio/wav"
     };
 
-    let part = reqwest::multipart::Part::bytes(file_bytes)
-        .file_name(filename)
-        .mime_str(mime)
-        .map_err(|e| format!("invalid mime: {}", e))?;
-
-    let form = reqwest::multipart::Form::new().part("file", part);
+    // Meme assemblage que la dictee : un seul endroit ou l'enveloppe est ecrite,
+    // donc un seul endroit ou elle peut etre mal comptee.
+    let multipart = build_audio_multipart("file", &filename, mime, &file_bytes);
 
     let response = client
         .post(format!("{}/api/transcribe", base_url))
-        .multipart(form)
+        .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
+        .body(multipart.body)
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
@@ -1700,20 +2013,204 @@ fn campus_client(token: &str) -> reqwest::Client {
     campus_request_client(Some(token))
 }
 
+/// Ce que `/api/transcribe` repond : `{ "text": "..." }`.
+///
+/// Ces deux structures existaient deja — et n'etaient utilisees que par la
+/// transcription de fichier. Les deux chemins de dictee demandaient a la place
+/// un `String`, c'est-a-dire une **chaine JSON nue**. `serde` refusait donc un
+/// objet parfaitement valide, et l'echec ressortait en « invalid response »
+/// sans que rien ne designe la cause.
 #[derive(Deserialize, Debug)]
-#[allow(dead_code)]
 struct TranscribeResponse {
     text: String,
 }
 
+/// Ce que `/api/reformulate` repond : `{ "text": "..." }`.
 #[derive(Deserialize, Debug)]
-#[allow(dead_code)]
 struct ReformulateResponse {
     text: String,
 }
 
+/// Mesure du corps **reellement consomme par le transport**.
+///
+/// ## Pourquoi cette mesure existe
+///
+/// La passerelle compte 2 858 octets de contenu multipart arrivant apres le
+/// `Content-Length` annonce. Reproduit a l'identique sur Windows — meme
+/// Schannel, meme configuration de client, meme fichier audio — le chemin
+/// client ecrit exactement ce qu'il declare. Les deux mesures ne peuvent pas
+/// avoir raison en meme temps : il manque un point d'observation **entre** ce
+/// que Nova assemble et ce qui sort sur le reseau.
+///
+/// Ce corps est ce point. Il compte les octets que hyper lui prend, et le
+/// nombre de fois qu'il les lui prend. Rien d'autre.
+///
+/// ## Ce qu'il ne fait pas
+///
+/// Il ne lit pas le contenu, ne le copie pas, ne le resume pas. Aucun octet
+/// d'audio, aucun en-tete, aucune adresse, aucune empreinte ne traverse ce
+/// code. Le journal ne recoit que des nombres.
+///
+/// ## Ce qu'il change
+///
+/// `Body::from(Vec<u8>)` produit un corps *reutilisable* ; un corps enveloppe
+/// est *diffuse*. Le cadrage reste identique — `size_hint` est exact, donc
+/// `Content-Length` aussi — mais un corps diffuse ne peut pas etre rejoue sur
+/// une redirection. C'est pourquoi cette mesure n'existe que dans l'artefact
+/// Lab, et pas dans Nova.
+#[cfg(feature = "lab")]
+pub(crate) mod body_meter {
+    use std::pin::Pin;
+    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::Arc;
+    use std::task::{Context, Poll};
+
+    /// Ce que le transport a reellement pris.
+    #[derive(Default, Debug)]
+    pub(crate) struct Counters {
+        bytes: AtomicU64,
+        frames: AtomicU64,
+    }
+
+    impl Counters {
+        pub(crate) fn bytes(&self) -> u64 {
+            self.bytes.load(Ordering::SeqCst)
+        }
+
+        pub(crate) fn frames(&self) -> u64 {
+            self.frames.load(Ordering::SeqCst)
+        }
+    }
+
+    /// Corps a longueur exacte, qui se laisse compter.
+    pub(crate) struct CountedBody {
+        data: Option<bytes::Bytes>,
+        declared: u64,
+        counters: Arc<Counters>,
+    }
+
+    impl CountedBody {
+        pub(crate) fn new(body: Vec<u8>, counters: Arc<Counters>) -> Self {
+            let declared = body.len() as u64;
+            Self {
+                data: Some(bytes::Bytes::from(body)),
+                declared,
+                counters,
+            }
+        }
+    }
+
+    impl http_body::Body for CountedBody {
+        type Data = bytes::Bytes;
+        type Error = std::convert::Infallible;
+
+        fn poll_frame(
+            mut self: Pin<&mut Self>,
+            _: &mut Context<'_>,
+        ) -> Poll<Option<Result<http_body::Frame<Self::Data>, Self::Error>>> {
+            match self.data.take() {
+                Some(chunk) => {
+                    // On compte la taille, jamais le contenu.
+                    self.counters
+                        .bytes
+                        .fetch_add(chunk.len() as u64, Ordering::SeqCst);
+                    self.counters.frames.fetch_add(1, Ordering::SeqCst);
+                    Poll::Ready(Some(Ok(http_body::Frame::data(chunk))))
+                }
+                None => Poll::Ready(None),
+            }
+        }
+
+        /// Exact : c'est ce qui garantit que le cadrage reste un
+        /// `Content-Length` et non un decoupage en morceaux.
+        fn size_hint(&self) -> http_body::SizeHint {
+            http_body::SizeHint::with_exact(self.declared)
+        }
+
+        fn is_end_stream(&self) -> bool {
+            self.data.is_none()
+        }
+    }
+}
+
+/// Corps multipart d'un envoi audio, **entierement en memoire**.
+///
+/// ## Pourquoi ne plus laisser la bibliotheque diffuser le corps
+///
+/// Le serveur a compte les octets : le poste annoncait un `Content-Length` egal
+/// a la taille du seul fichier audio, puis envoyait ~138 a 194 octets de plus —
+/// l'enveloppe multipart. L'API recevait donc un multipart tronque (422), et les
+/// octets excedentaires, lus comme le debut d'une nouvelle requete, faisaient
+/// repondre `400 Invalid HTTP request received` a la passerelle.
+///
+/// Un corps diffuse doit faire calculer sa longueur d'avance par la
+/// bibliotheque, et ce calcul est une reconstitution du format d'encodage —
+/// deux endroits qui doivent rester d'accord. Ici l'audio tient deja
+/// integralement en memoire : le diffuser n'apporte rien, et assembler le corps
+/// nous-memes rend la question sans objet. `Content-Length` n'est plus calcule,
+/// il **est** la longueur du vecteur envoye.
+#[derive(Debug, Clone)]
+pub(crate) struct AudioMultipart {
+    /// `multipart/form-data; boundary=...`, a poser tel quel.
+    pub content_type: String,
+    /// Le corps complet : enveloppe et audio.
+    pub body: Vec<u8>,
+    /// Taille de l'audio seul, pour la trace de diagnostic.
+    pub audio_bytes: usize,
+}
+
+/// Frontiere unique a cette requete.
+///
+/// Sans `rand` dans l'arbre de dependances, l'unicite vient d'une empreinte de
+/// l'instant et de la taille du corps. Une frontiere n'est pas un secret : elle
+/// doit seulement ne pas apparaitre dans le contenu, et 128 bits d'empreinte
+/// rendent la collision hors de portee.
+fn multipart_boundary(audio_len: usize) -> String {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_nanos())
+        .unwrap_or(0);
+    let seed = format!("{nanos}:{audio_len}:{:p}", &audio_len as *const usize);
+    format!("nova{:x}", Sha256::digest(seed.as_bytes()))[..36].to_string()
+}
+
+/// Assemble le corps. La longueur exacte est celle du vecteur rendu.
+pub(crate) fn build_audio_multipart(
+    field_name: &str,
+    file_name: &str,
+    mime: &str,
+    audio: &[u8],
+) -> AudioMultipart {
+    let boundary = multipart_boundary(audio.len());
+    let header = format!(
+        "--{boundary}\r\n\
+         Content-Disposition: form-data; name=\"{field_name}\"; filename=\"{file_name}\"\r\n\
+         Content-Type: {mime}\r\n\
+         \r\n"
+    );
+    let trailer = format!("\r\n--{boundary}--\r\n");
+
+    let mut body = Vec::with_capacity(header.len() + audio.len() + trailer.len());
+    body.extend_from_slice(header.as_bytes());
+    body.extend_from_slice(audio);
+    body.extend_from_slice(trailer.as_bytes());
+
+    AudioMultipart {
+        content_type: format!("multipart/form-data; boundary={boundary}"),
+        body,
+        audio_bytes: audio.len(),
+    }
+}
+
+/// Transcrit une dictee sur le serveur de l'organisation.
+///
+/// Ne prend pas d'`AppHandle` : il n'etait pas utilise, et son absence permet
+/// au test `multipart_wire` d'emprunter **exactement ce chemin**, pas une
+/// reconstitution. Un test qui rejoue une construction voisine ne prouve rien
+/// sur ce qui part reellement — c'est precisement l'erreur qui a laisse passer
+/// les octets excedentaires.
 pub async fn transcribe_campus(
-    _app: &AppHandle,
     wav_path: &Path,
     session: &CampusCredentials,
 ) -> Result<String, CampusError> {
@@ -1724,27 +2221,51 @@ pub async fn transcribe_campus(
         .await
         .map_err(|e| CampusError::Other(format!("failed to read wav: {}", e)))?;
 
-    let part = reqwest::multipart::Part::bytes(file_bytes)
-        .file_name("recording.wav")
-        .mime_str("audio/wav")
-        .map_err(|e| CampusError::Other(format!("invalid mime: {}", e)))?;
+    let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes);
+    let audio_bytes = multipart.audio_bytes as u64;
+    let declared = multipart.body.len() as u64;
 
-    let form = reqwest::multipart::Form::new().part("file", part);
+    #[cfg(feature = "lab")]
+    let counters = std::sync::Arc::new(body_meter::Counters::default());
 
-    let response = client
+    #[cfg(feature = "lab")]
+    let body = reqwest::Body::wrap(body_meter::CountedBody::new(
+        multipart.body,
+        counters.clone(),
+    ));
+    #[cfg(not(feature = "lab"))]
+    let body = reqwest::Body::from(multipart.body);
+
+    let request = client
         .post(format!("{}/api/transcribe", base_url))
-        .multipart(form)
-        .send()
-        .await
-        .map_err(|e| {
-            if e.is_connect() || e.is_timeout() || e.is_request() {
-                CampusError::Network(e.to_string())
-            } else {
-                CampusError::Other(e.to_string())
-            }
-        })?;
+        .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
+        .body(body)
+        .build()
+        .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
+    let response = send_traced(&client, request, Some(audio_bytes)).await;
 
-    handle_campus_response(response).await
+    // La mesure vaut aussi — et surtout — quand la requete echoue.
+    #[cfg(feature = "lab")]
+    {
+        let status = match &response {
+            Ok(response) => response.status().as_u16().to_string(),
+            Err(_) => "transport-error".to_string(),
+        };
+        log::info!(
+            "campus transcribe measurement content_length_declared={declared} \
+             body_bytes_consumed_by_transport={} frames={} http_status={status}",
+            counters.bytes(),
+            counters.frames(),
+        );
+    }
+    #[cfg(not(feature = "lab"))]
+    let _ = declared;
+
+    let response = response?;
+
+    // La reponse est un objet `{ "text": ... }`, pas une chaine.
+    let parsed: TranscribeResponse = handle_campus_response(response).await?;
+    Ok(parsed.text)
 }
 
 /// Reformule côté serveur, en désignant le Style appliqué.
@@ -1770,20 +2291,54 @@ pub async fn reformulate_campus(
         "style_prompt": style_prompt,
     });
 
-    let response = client
+    let request = client
         .post(format!("{}/api/reformulate", base_url))
         .json(&body)
-        .send()
-        .await
-        .map_err(|e| {
-            if e.is_connect() || e.is_timeout() || e.is_request() {
-                CampusError::Network(e.to_string())
-            } else {
-                CampusError::Other(e.to_string())
-            }
-        })?;
+        .build()
+        .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
+    let response = send_traced(&client, request, None).await?;
 
-    handle_campus_response(response).await
+    let parsed: ReformulateResponse = handle_campus_response(response).await?;
+    Ok(parsed.text)
+}
+
+/// Envoie une requete en laissant derriere elle une trace exploitable.
+///
+/// La trace decrit la **forme** de la requete — methode, chemin, version, la
+/// presence de `Content-Length` / `Transfer-Encoding` / `Expect`, le type MIME
+/// et la taille du corps — puis son issue. Rien d'autre : voir
+/// `crate::campus_trace`, ou aucune valeur d'en-tete sensible n'est meme lue.
+///
+/// C'est ce qui manquait devant `HTTP 400 Bad Request: Invalid HTTP request
+/// received.` : le message ne disait pas comment le corps etait annonce, et
+/// c'est precisement ce qu'une passerelle refuse.
+async fn send_traced(
+    client: &reqwest::Client,
+    request: reqwest::Request,
+    audio_bytes: Option<u64>,
+) -> Result<reqwest::Response, CampusError> {
+    crate::campus_trace::log_request(
+        &crate::campus_trace::RequestShape::observe(&request).with_audio_bytes(audio_bytes),
+    );
+
+    match client.execute(request).await {
+        Ok(response) => {
+            crate::campus_trace::log_outcome(&crate::campus_trace::RequestOutcome::Status(
+                response.status().as_u16(),
+            ));
+            Ok(response)
+        }
+        Err(error) => {
+            crate::campus_trace::log_outcome(&crate::campus_trace::RequestOutcome::from_error(
+                &error,
+            ));
+            if error.is_connect() || error.is_timeout() || error.is_request() {
+                Err(CampusError::Network(error.to_string()))
+            } else {
+                Err(CampusError::Other(error.to_string()))
+            }
+        }
+    }
 }
 
 async fn handle_campus_response<T: serde::de::DeserializeOwned>(
@@ -1861,14 +2416,24 @@ async fn update_reachability_cache(base_url: &str) -> bool {
     reachable
 }
 
+/// Le serveur repond-il ?
+///
+/// **Repondre n'est pas autoriser.** Cette sonde exigeait un statut 2xx, si
+/// bien qu'un serveur repondant 401 — parce que la sonde n'envoie deliberement
+/// aucun jeton — etait declare injoignable. C'est exactement ce qui se produit
+/// sur un serveur Lab : `/api/health` y repond `401`, et le poste annoncait
+/// « Serveur injoignable » a propos d'une machine qui lui parlait.
+///
+/// Seul un echec de transport — connexion refusee, TLS invalide, delai
+/// depasse — signifie que le serveur est hors d'atteinte. Toute reponse HTTP,
+/// quel que soit son code, prouve le contraire.
 async fn check_server_reachability(base_url: &str) -> bool {
     let client = campus_request_client_with_timeout(None, Duration::from_secs(2));
     client
         .get(format!("{}/api/health", base_url))
         .send()
         .await
-        .map(|r| r.status().is_success())
-        .unwrap_or(false)
+        .is_ok()
 }
 
 /// Retourne vrai si une session campus est présente — utile pour distinguer
@@ -2211,6 +2776,819 @@ mod tests {
         assert_eq!(
             config.pointer("/bundle/windows/nsis/installMode"),
             Some(&serde_json::Value::String("perMachine".to_string()))
+        );
+    }
+}
+
+/// L'enrolement doit survivre a une fermeture de Nova Lab, et le jeton ne doit
+/// jamais toucher le disque.
+///
+/// Le scenario est joue en entier — enrolement, redemarrage, restauration,
+/// appel authentifie — sans trousseau ni AppHandle : la memoire du systeme est
+/// remplacee par une `HashMap`, ce que la separation `split`/`join` rend
+/// possible. C'est cette separation qui est la propriete de securite ; le
+/// trousseau n'en est que l'implementation.
+#[cfg(all(test, feature = "lab"))]
+mod lab_persistence_tests {
+    use super::*;
+    use std::collections::HashMap;
+
+    /// Certificat DER auto-signe, fige comme vecteur de test.
+    ///
+    /// Litteral plutot que genere a l'execution : un test qui fabrique son
+    /// propre certificat depend d'une bibliotheque de cryptographie que ce
+    /// binaire n'embarque pas, et cesserait de verifier ce qu'il pretend
+    /// verifier le jour ou cette generation changerait. Il n'a rien de secret —
+    /// c'est une paire jetable, sans usage hors de ce fichier.
+    const TEST_CERTIFICATE_B64: &str = concat!(
+        "MIIBQTCB6KADAgECAgEBMAoGCCqGSM49BAMCMCAxHjAcBgNVBAMMFW5vdmEtbGFiLXRlc3QtZml4",
+        "dHVyZTAeFw0yNjAxMDEwMDAwMDBaFw00NjAxMDEwMDAwMDBaMCAxHjAcBgNVBAMMFW5vdmEtbGFi",
+        "LXRlc3QtZml4dHVyZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABHRD7L5o9qRe6FAwE3hDIlJF",
+        "jp1BUlU31+14QVeakkeNBUAI8JiNDQkXHAzeEr5Y61mVuRYbO0D+cHFEnBIKQt+jEzARMA8GA1Ud",
+        "EwEB/wQFMAMBAf8wCgYIKoZIzj0EAwIDSAAwRQIhAOEXKTIh51Dmi4YrcFO/csclxaBBe/6nvdWR",
+        "OfSjBCmYAiAGGLcysIxpYsYbnBvqJRwQH5HTH5jZSfAhsy5xLSyLpQ==",
+    );
+
+    fn sample_certificate() -> Vec<u8> {
+        use base64::Engine as _;
+        base64::engine::general_purpose::STANDARD
+            .decode(TEST_CERTIFICATE_B64)
+            .expect("vecteur de test decodable")
+    }
+
+    fn sample_connection() -> LabConnection {
+        LabConnection {
+            endpoint: "https://192.168.0.26:8443".to_string(),
+            certificate_der: sample_certificate(),
+            device_token: "device-token-tres-secret".to_string(),
+        }
+    }
+
+    #[test]
+    fn le_jeton_ne_part_jamais_sur_le_disque() {
+        let connection = sample_connection();
+        let (record, token) = split_lab_connection(&connection);
+        let written = serde_json::to_string(&record).expect("serialisable");
+
+        assert!(
+            !written.contains(&token),
+            "le jeton du peripherique s'est retrouve dans les metadonnees : {written}"
+        );
+        assert!(!written.contains("device_token"));
+        assert!(written.contains("192.168.0.26"));
+    }
+
+    #[test]
+    fn enrolement_puis_redemarrage_restaure_la_meme_connexion() {
+        let connection = sample_connection();
+
+        // Enrolement : le secret d'un cote, les metadonnees de l'autre.
+        let (record, token) = split_lab_connection(&connection);
+        let mut vault: HashMap<String, String> = HashMap::new();
+        vault.insert(record.endpoint.clone(), token);
+        let on_disk = serde_json::to_string(&record).expect("serialisable");
+
+        // Fermeture : tout ce qui vivait en memoire disparait.
+        drop(record);
+        drop(connection);
+
+        // Redemarrage : on ne dispose que du disque et du trousseau.
+        let reread: LabConnectionRecord =
+            serde_json::from_str(&on_disk).expect("metadonnees relisibles");
+        let recovered_token = vault
+            .get(&reread.endpoint)
+            .expect("le trousseau porte le jeton");
+        let restored = join_lab_connection(&reread, recovered_token).expect("restauration");
+
+        assert_eq!(restored, sample_connection());
+    }
+
+    #[test]
+    fn la_connexion_restauree_authentifie_ses_appels() {
+        let (record, token) = split_lab_connection(&sample_connection());
+        let restored = join_lab_connection(&record, &token).expect("restauration");
+        let headers = lab_device_headers(&restored).expect("en-tetes");
+
+        // C'est cet en-tete qui manquait apres un redemarrage, et sans lui le
+        // serveur repond 401 sur tout `/api/*`.
+        assert_eq!(
+            headers
+                .get("X-Nova-Lab-Device")
+                .and_then(|v| v.to_str().ok()),
+            Some("device-token-tres-secret")
+        );
+    }
+
+    #[test]
+    fn un_enrolement_sans_jeton_est_refuse() {
+        let (record, _) = split_lab_connection(&sample_connection());
+        // Metadonnees presentes, secret disparu : on refuse plutot que de
+        // fabriquer une connexion qui echouera a chaque appel.
+        assert!(join_lab_connection(&record, "").is_err());
+        assert!(join_lab_connection(&record, "   ").is_err());
+    }
+
+    #[test]
+    fn un_certificat_illisible_est_refuse() {
+        let mut record = split_lab_connection(&sample_connection()).0;
+        record.certificate_b64 = "pas-du-base64-valide!!".to_string();
+        assert!(join_lab_connection(&record, "jeton").is_err());
+
+        let mut record = split_lab_connection(&sample_connection()).0;
+        use base64::Engine as _;
+        record.certificate_b64 = base64::engine::general_purpose::STANDARD.encode([0u8, 1, 2, 3]);
+        assert!(join_lab_connection(&record, "jeton").is_err());
+    }
+
+    #[test]
+    fn la_trace_de_debogage_ne_divulgue_pas_le_jeton() {
+        // `assert_eq!` exige `Debug` ; un `derive` aurait imprime le jeton en
+        // clair au premier `{:?}`. Ce test tient l'invariant a la place du
+        // reviewer.
+        let rendered = format!("{:?}", sample_connection());
+        assert!(
+            !rendered.contains("device-token-tres-secret"),
+            "le jeton du peripherique s'est retrouve dans une trace : {rendered}"
+        );
+        assert!(!rendered.contains("192.168.0.26"));
+    }
+
+    /// Tout ce qu'un jeton ne peut pas etre, et pourquoi.
+    ///
+    /// Ces valeurs ne sont pas theoriques : le jeton revient du trousseau du
+    /// systeme au demarrage, et rien ne garantit qu'il en revient intact. Le
+    /// retour chariot et le saut de ligne sont les plus graves — ils
+    /// terminent une ligne d'en-tete, donc un jeton qui en contient decrit
+    /// des en-tetes que Nova n'a pas voulus.
+    ///
+    /// Les deux dernieres entrees sont celles qui ont fait echouer ce test a
+    /// sa premiere execution : `HeaderValue::from_str` les accepte, parce que
+    /// sa regle est `b >= 32` et laisse donc passer tout l'`obs-text`. C'est
+    /// ce qui a rendu necessaire le controle d'ASCII separe.
+    const JETONS_REFUSES: [(&str, &str); 9] = [
+        ("", "vide"),
+        ("   ", "espaces seulement"),
+        ("jeton\r\nX-Injecte: oui", "injection par CRLF"),
+        ("jeton\rsuite", "retour chariot seul"),
+        ("jeton\nsuite", "saut de ligne seul"),
+        ("jeton\u{0}suite", "octet nul"),
+        ("jeton\u{1b}[31m", "caractere de controle"),
+        ("jeton-\u{e9}chantillon", "non ASCII (accent)"),
+        ("jeton-\u{1f512}", "non ASCII (hors BMP)"),
+    ];
+
+    #[test]
+    fn aucun_jeton_malforme_nest_accepte() {
+        for (jeton, pourquoi) in JETONS_REFUSES {
+            assert!(
+                validate_device_token(jeton).is_err(),
+                "jeton accepte alors qu'il ne devait pas l'etre ({pourquoi})"
+            );
+        }
+    }
+
+    #[test]
+    fn un_jeton_malforme_ne_se_restaure_pas_depuis_le_stockage() {
+        // La porte du chemin 2 : ce qui revient du trousseau au demarrage.
+        let (record, _) = split_lab_connection(&sample_connection());
+        for (jeton, pourquoi) in JETONS_REFUSES {
+            assert!(
+                join_lab_connection(&record, jeton).is_err(),
+                "une connexion a ete recomposee sur un jeton invalide ({pourquoi})"
+            );
+        }
+    }
+
+    #[test]
+    fn un_jeton_malforme_natteint_jamais_letat_du_poste() {
+        let _exclusive = super::wire_test_support::exclusive();
+
+        for (jeton, pourquoi) in JETONS_REFUSES {
+            let refus = set_lab_connection(LabConnection {
+                device_token: jeton.to_string(),
+                ..sample_connection()
+            });
+            assert!(refus.is_err(), "jeton installe malgre tout ({pourquoi})");
+            // Et c'est la propriete qui compte : le poste se declare non
+            // enrole, donc `campus_request_client_with_timeout` ne prendra pas
+            // la branche Lab et aucune requete authentifiee ne partira.
+            assert!(
+                !lab_connection_active(),
+                "le poste se croit enrole apres un jeton invalide ({pourquoi})"
+            );
+        }
+
+        super::wire_test_support::reset_lab_connection();
+    }
+
+    #[test]
+    fn un_jeton_conforme_reste_accepte() {
+        // Le garde-fou doit refuser, pas tout refuser.
+        for jeton in [
+            "device-token-tres-secret",
+            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.c2ln",
+            "Bearer~!@#$%^&*()_+-=[]{}|;:'\",.<>/?",
+        ] {
+            assert!(
+                validate_device_token(jeton).is_ok(),
+                "jeton legitime refuse : {jeton}"
+            );
+        }
+    }
+
+    #[test]
+    fn le_jeton_accepte_construit_un_en_tete_sans_paniquer() {
+        // `lab_device_headers` ne peut plus etre atteint avec une valeur qu'il
+        // refuserait : c'est ce qui permet de retirer le `expect` du chemin de
+        // production.
+        let connection = sample_connection();
+        assert!(validate_device_token(&connection.device_token).is_ok());
+        assert!(lab_device_headers(&connection).is_ok());
+    }
+
+    #[test]
+    fn le_trousseau_du_lab_est_distinct_de_celui_du_campus() {
+        // Se deconnecter de son organisation ne doit pas desenroler la machine.
+        assert_ne!(LAB_DEVICE_CREDENTIAL_SERVICE, CAMPUS_CREDENTIAL_SERVICE);
+    }
+}
+
+/// Ce que le serveur repond, et ce que le poste accepte de lire.
+///
+/// Le defaut corrige ici etait invisible a la compilation :
+/// `handle_campus_response` est generique, et `Result<String, _>` faisait
+/// choisir `T = String` par inference. `serde` demandait alors une **chaine
+/// JSON nue** la ou le serveur envoie un objet, et l'echec ressortait en
+/// « invalid response » — un message qui ne designe pas sa cause. Les
+/// structures existaient pourtant deja, utilisees par le seul chemin de
+/// transcription de fichier.
+#[cfg(test)]
+mod campus_response_tests {
+    use super::*;
+
+    const SERVER_PAYLOAD: &str = r#"{"text":"Bonjour, ceci est un essai de dictee."}"#;
+
+    #[test]
+    fn la_transcription_lit_lobjet_renvoye_par_le_serveur() {
+        let parsed: TranscribeResponse =
+            serde_json::from_str(SERVER_PAYLOAD).expect("objet deserialisable");
+        assert_eq!(parsed.text, "Bonjour, ceci est un essai de dictee.");
+    }
+
+    #[test]
+    fn la_reformulation_lit_lobjet_renvoye_par_le_serveur() {
+        let parsed: ReformulateResponse =
+            serde_json::from_str(SERVER_PAYLOAD).expect("objet deserialisable");
+        assert_eq!(parsed.text, "Bonjour, ceci est un essai de dictee.");
+    }
+
+    #[test]
+    fn lancienne_forme_naurait_jamais_pu_marcher() {
+        // La regression exacte : demander un `String` pour un objet JSON.
+        // Ce test echouerait si quelqu'un revenait a `Result<String, _>` sans
+        // structure de reponse.
+        let as_bare_string = serde_json::from_str::<String>(SERVER_PAYLOAD);
+        assert!(
+            as_bare_string.is_err(),
+            "un objet JSON ne se lit pas comme une chaine ;              c'est ce que faisaient transcribe_campus et reformulate_campus"
+        );
+    }
+
+    #[test]
+    fn un_champ_texte_absent_est_refuse() {
+        // Mieux vaut une erreur nette qu'une transcription vide silencieuse.
+        assert!(serde_json::from_str::<TranscribeResponse>(r#"{"result":"x"}"#).is_err());
+        assert!(serde_json::from_str::<ReformulateResponse>("{}").is_err());
+    }
+
+    #[test]
+    fn les_champs_supplementaires_du_serveur_sont_tolerees() {
+        // Le serveur doit pouvoir enrichir sa reponse sans casser les postes
+        // deja deployes.
+        let payload = r#"{"text":"ok","duration_ms":1234,"model":"whisper"}"#;
+        let parsed: TranscribeResponse = serde_json::from_str(payload).expect("tolerant");
+        assert_eq!(parsed.text, "ok");
+    }
+}
+
+/// Ce que le poste envoie reellement sur le fil.
+///
+/// ## Pourquoi un vrai serveur, et pas une assertion sur une structure
+///
+/// Le defaut corrige ici etait invisible a toute inspection locale : le
+/// `Content-Length` annonce etait coherent avec ce que le code croyait envoyer,
+/// et faux par rapport a ce qui partait. Seul un tiers qui compte les octets
+/// pouvait le voir — c'est le serveur du Lab qui l'a fait, apres coup et en
+/// production. Ce test refait ce comptage, en local, avant.
+///
+/// Le serveur est un `TcpListener` de la bibliotheque standard : il lit les
+/// en-tetes, releve le `Content-Length` annonce, puis compte les octets du
+/// corps effectivement recus. Aucune dependance de plus, et aucune confiance
+/// accordee a la couche qui est precisement mise en doute.
+/// Etat partage entre les tests reseau, et le verrou qui les serialise.
+///
+/// `LAB_CONNECTION` est un `static` : deux tests qui tournent en parallele se
+/// le disputent. Le test TLS y installe une connexion, et le test HTTP
+/// construit alors un client `https_only` qui refuse son URL `http://` — aucune
+/// connexion, delai depasse. Le defaut etait dans mes tests, pas dans le
+/// client, mais il rendait la CI rouge pour une mauvaise raison.
+#[cfg(test)]
+pub(crate) mod wire_test_support {
+    use std::sync::{Mutex, MutexGuard, OnceLock};
+
+    static LOCK: OnceLock<Mutex<()>> = OnceLock::new();
+
+    /// Serialise les tests qui touchent a l'etat Lab global, et remet cet etat
+    /// a zero avant de rendre la main. Le verrou est volontairement resistant a
+    /// l'empoisonnement : un test qui echoue ne doit pas en bloquer un autre.
+    pub(crate) fn exclusive() -> MutexGuard<'static, ()> {
+        let guard = LOCK
+            .get_or_init(|| Mutex::new(()))
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        reset_lab_connection();
+        guard
+    }
+
+    #[cfg(feature = "lab")]
+    pub(crate) fn reset_lab_connection() {
+        if let Ok(mut stored) = super::LAB_CONNECTION.lock() {
+            *stored = None;
+        }
+    }
+
+    #[cfg(not(feature = "lab"))]
+    pub(crate) fn reset_lab_connection() {}
+}
+
+#[cfg(test)]
+mod multipart_wire_tests {
+    use super::*;
+    use std::io::{Read, Write};
+    use std::net::TcpListener;
+
+    /// Taille voisine d'une dictee reelle de seize secondes.
+    const AUDIO_BYTES: usize = 513_644;
+
+    /// Au-dela, le test echoue au lieu d'attendre. Le client, lui, abandonne
+    /// apres 30 s : ce delai laisse la place a un echec propre.
+    const TEST_DEADLINE: std::time::Duration = std::time::Duration::from_secs(60);
+
+    /// Ce qu'un tiers a reellement vu passer sur la connexion.
+    struct OnTheWire {
+        /// Ce que le client a declare.
+        announced: u64,
+        /// Octets du corps, lus jusqu'a concurrence de ce qui etait declare.
+        body_read: usize,
+        /// Octets arrives **apres** la fin du corps declare. Doit etre nul.
+        trailing: usize,
+        content_type: String,
+        has_content_length: bool,
+        transfer_encoding: Option<String>,
+    }
+
+    /// Lit une requete entiere, puis draine tout ce qui suit.
+    ///
+    /// Le drainage est le coeur du test : le serveur du Lab a mesure 16 692
+    /// octets arrivant apres la frontiere annoncee. Un test qui s'arrete a
+    /// `Content-Length` ne peut pas les voir — et c'est exactement pour cela
+    /// que le precedent passait alors que la production echouait.
+    fn observe_on_the_wire(listener: TcpListener) -> OnTheWire {
+        let (mut stream, _) = listener.accept().expect("connexion acceptee");
+        let mut buffer = Vec::new();
+        let mut chunk = vec![0u8; 65536];
+
+        let header_end = loop {
+            if let Some(at) = buffer.windows(4).position(|w| w == b"\r\n\r\n") {
+                break at + 4;
+            }
+            let read = stream.read(&mut chunk).expect("lecture des en-tetes");
+            assert!(read > 0, "connexion fermee avant la fin des en-tetes");
+            buffer.extend_from_slice(&chunk[..read]);
+        };
+
+        let headers = String::from_utf8_lossy(&buffer[..header_end]).to_string();
+        let value = |name: &str| -> Option<String> {
+            headers.lines().find_map(|line| {
+                let (key, value) = line.split_once(':')?;
+                (key.trim().eq_ignore_ascii_case(name)).then(|| value.trim().to_string())
+            })
+        };
+
+        let has_content_length = value("content-length").is_some();
+        let announced: u64 = value("content-length")
+            .unwrap_or_else(|| "0".to_string())
+            .parse()
+            .expect("longueur numerique");
+
+        let mut body_read = buffer.len() - header_end;
+        while (body_read as u64) < announced {
+            let read = stream.read(&mut chunk).expect("lecture du corps");
+            if read == 0 {
+                break;
+            }
+            body_read += read;
+        }
+
+        // Tout ce qui arrive ensuite est de trop. La passerelle l'a lu comme le
+        // debut d'une nouvelle requete et a repondu 400.
+        let mut trailing = 0usize;
+        stream
+            .set_read_timeout(Some(std::time::Duration::from_millis(600)))
+            .expect("delai de lecture");
+        loop {
+            match stream.read(&mut chunk) {
+                Ok(0) => break,
+                Ok(read) => trailing += read,
+                Err(_) => break,
+            }
+        }
+
+        let payload = b"{\"text\":\"transcription du serveur de test\"}";
+        let response = format!(
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n",
+            payload.len()
+        );
+        let _ = stream.write_all(response.as_bytes());
+        let _ = stream.write_all(payload);
+        let _ = stream.flush();
+
+        OnTheWire {
+            announced,
+            body_read,
+            trailing,
+            content_type: value("content-type").unwrap_or_default(),
+            has_content_length,
+            transfer_encoding: value("transfer-encoding"),
+        }
+    }
+
+    /// Un WAV credible : en-tete RIFF puis des echantillons.
+    fn write_sample_wav(bytes: usize) -> tempfile::NamedTempFile {
+        let mut file = tempfile::NamedTempFile::new().expect("fichier temporaire");
+        let mut wav = Vec::with_capacity(bytes);
+        wav.extend_from_slice(b"RIFF");
+        wav.extend_from_slice(&((bytes - 8) as u32).to_le_bytes());
+        wav.extend_from_slice(b"WAVEfmt ");
+        wav.resize(bytes, 0x5A);
+        file.write_all(&wav).expect("ecriture du wav");
+        file.flush().expect("vidage");
+        file
+    }
+
+    /// Le test central : **le vrai `transcribe_campus`**, pas une reconstitution.
+    #[test]
+    fn transcribe_campus_nenvoie_rien_apres_le_corps_declare() {
+        // Etat Lab remis a zero : ce test veut le client HTTP ordinaire.
+        let _exclusive = super::wire_test_support::exclusive();
+
+        let listener = TcpListener::bind("127.0.0.1:0").expect("port local");
+        let port = listener.local_addr().expect("adresse").port();
+        // Le resultat passe par un canal, pas par `join()` : si le client ne se
+        // connecte jamais, `accept()` attend indefiniment et `cargo test`, qui
+        // n'impose aucun delai, laisserait la CI bloquee des heures. Un test
+        // doit echouer, pas se taire.
+        let (done, observed) = std::sync::mpsc::channel();
+        std::thread::spawn(move || {
+            let _ = done.send(observe_on_the_wire(listener));
+        });
+
+        let wav = write_sample_wav(AUDIO_BYTES);
+        let session = CampusCredentials {
+            session: CampusSession {
+                server_url: format!("http://127.0.0.1:{port}"),
+                email: "essai@example.test".to_string(),
+                organization: None,
+            },
+            token: "jeton-de-session-factice".to_string(),
+        };
+
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("runtime");
+        let transcription = runtime.block_on(transcribe_campus(wav.path(), &session));
+
+        let wire = observed
+            .recv_timeout(TEST_DEADLINE)
+            .expect("le serveur de test n'a rien recu dans le delai imparti");
+
+        // 1. Le client doit declarer une longueur, et une seule facon de cadrer.
+        assert!(
+            wire.has_content_length,
+            "aucun Content-Length declare : le cadrage du corps devient implicite"
+        );
+        assert_eq!(
+            wire.transfer_encoding, None,
+            "le corps ne doit pas etre decoupe en morceaux : la passerelle l'a refuse"
+        );
+
+        // 2. Rien apres la frontiere annoncee. C'est la regression mesuree par
+        //    le serveur : 513 826 declares, 530 518 sur la connexion.
+        assert_eq!(
+            wire.trailing, 0,
+            "{} octets envoyes apres la fin du corps declare ({} annonces, {} lus)",
+            wire.trailing, wire.announced, wire.body_read
+        );
+
+        // 3. Et le corps declare est bien arrive en entier.
+        assert_eq!(wire.body_read as u64, wire.announced);
+
+        // 4. La longueur declaree couvre l'audio **et** son enveloppe.
+        assert!(
+            wire.announced > AUDIO_BYTES as u64,
+            "l'enveloppe multipart doit etre comptee : {} declares pour {} octets d'audio",
+            wire.announced,
+            AUDIO_BYTES
+        );
+        assert!(wire
+            .content_type
+            .starts_with("multipart/form-data; boundary="));
+
+        // 5. Et la reponse du serveur est bien lue comme un objet.
+        assert_eq!(
+            transcription.expect("le serveur de test a repondu 200"),
+            "transcription du serveur de test"
+        );
+    }
+
+    #[test]
+    fn le_corps_encadre_exactement_laudio() {
+        let audio = b"des octets d'audio".to_vec();
+        let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &audio);
+
+        let rendered = String::from_utf8_lossy(&multipart.body);
+        assert!(rendered
+            .contains("Content-Disposition: form-data; name=\"file\"; filename=\"recording.wav\""));
+        assert!(rendered.contains("Content-Type: audio/wav"));
+
+        let boundary = multipart
+            .content_type
+            .split("boundary=")
+            .nth(1)
+            .expect("frontiere annoncee");
+        assert!(rendered.starts_with(&format!("--{boundary}\r\n")));
+        assert!(rendered.ends_with(&format!("\r\n--{boundary}--\r\n")));
+        assert_eq!(multipart.audio_bytes, audio.len());
+    }
+
+    #[test]
+    fn deux_envois_ne_partagent_pas_leur_frontiere() {
+        let audio = vec![0u8; 32];
+        let first = build_audio_multipart("file", "a.wav", "audio/wav", &audio);
+        let second = build_audio_multipart("file", "a.wav", "audio/wav", &audio);
+        assert_ne!(first.content_type, second.content_type);
+    }
+}
+
+/// Ce que le poste ecrit **sur le transport reel** : HTTPS, certificat epingle.
+///
+/// ## Pourquoi ce test devait exister
+///
+/// Le test en HTTP simple passait — zero octet apres le corps declare — pendant
+/// que la production echouait. Le serveur a mesure, sur la dictee de 12:16:26 :
+/// 308 octets d'en-tetes, `Content-Length: 373666`, 373 666 octets lus par
+/// l'API, puis **2 858 octets de multipart en plus**. Un test qui ne reproduit
+/// pas le transport ne peut pas voir cela : la difference etait le transport.
+///
+/// Ce test monte donc un vrai serveur TLS local, epingle son certificat comme
+/// le fait un Lab, et appelle `transcribe_campus` — donc `campus_client`, donc
+/// le client construit avec `https_only`, `tls_built_in_root_certs(false)` et
+/// `add_root_certificate`. Puis il compte les octets **dechiffres**.
+#[cfg(all(test, feature = "lab"))]
+mod multipart_tls_wire_tests {
+    use super::*;
+    use std::io::Write as _;
+    use std::sync::Arc;
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+    /// Paire jetable, sans usage hors de ce fichier.
+    const TEST_CERT_DER_B64: &str = concat!(
+        "MIIBVzCB/aADAgECAgIQkjAKBggqhkjOPQQDAjAcMRowGAYDVQQDDBFub3ZhLWxhYi10bHMtdGVz",
+        "dDAeFw0yNjAxMDEwMDAwMDBaFw00NjAxMDEwMDAwMDBaMBwxGjAYBgNVBAMMEW5vdmEtbGFiLXRs",
+        "cy10ZXN0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEm2Ih3DvqRLTbrTNVZeBpYTOTITxip/bI",
+        "x9QtHiAnDgRa5vLHsSNab12qRCSZtQ2J3Dk0zyqLwEm9vQJOJKSDR6MvMC0wDwYDVR0TAQH/BAUw",
+        "AwEB/zAaBgNVHREEEzARhwR/AAABgglsb2NhbGhvc3QwCgYIKoZIzj0EAwIDSQAwRgIhAPyq7POD",
+        "oCNxtowibd/Ja5Ay7cS89BL94vkszuexy3wJAiEA/fgmsr6y4DsTB0X/c+IIUx1gMCoG0+PuZey5",
+        "OB5QtAM=",
+    );
+    const TEST_KEY_PKCS8_B64: &str = concat!(
+        "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgYgMrFb47pivsnZ/lwwBNaKVyBJJZ",
+        "RNQbC3YtaQuyUs6hRANCAASbYiHcO+pEtNutM1Vl4GlhM5MhPGKn9sjH1C0eICcOBFrm8sexI1pv",
+        "XapEJJm1DYncOTTPKovASb29Ak4kpINH",
+    );
+
+    const AUDIO_BYTES: usize = 373_484;
+
+    /// Aucune attente de ce test n'est illimitee. C'est ce qui manquait : une
+    /// poignee de main qui n'aboutit pas transformait un echec en blocage de
+    /// plusieurs heures.
+    const STEP_DEADLINE: std::time::Duration = std::time::Duration::from_secs(20);
+    const TEST_DEADLINE: std::time::Duration = std::time::Duration::from_secs(60);
+
+    fn decode(value: &str) -> Vec<u8> {
+        use base64::Engine as _;
+        base64::engine::general_purpose::STANDARD
+            .decode(value)
+            .expect("vecteur de test decodable")
+    }
+
+    struct TlsObservation {
+        announced: u64,
+        body_read: usize,
+        /// Octets dechiffres arrives **apres** le corps declare. Doit etre nul.
+        trailing: usize,
+        alpn: Option<String>,
+        has_content_length: bool,
+    }
+
+    /// Accepte une connexion TLS et compte ce qui arrive en clair derriere.
+    async fn observe_tls(listener: tokio::net::TcpListener) -> TlsObservation {
+        let certificate =
+            tokio_rustls::rustls::pki_types::CertificateDer::from(decode(TEST_CERT_DER_B64));
+        let key =
+            tokio_rustls::rustls::pki_types::PrivateKeyDer::try_from(decode(TEST_KEY_PKCS8_B64))
+                .expect("cle privee lisible");
+        let mut config = tokio_rustls::rustls::ServerConfig::builder()
+            .with_no_client_auth()
+            .with_single_cert(vec![certificate], key)
+            .expect("configuration TLS");
+        // On annonce les deux protocoles, exactement comme un serveur reel :
+        // c'est le client qui choisit, et son choix fait partie de ce qu'on
+        // cherche a observer.
+        config.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
+        let acceptor = tokio_rustls::TlsAcceptor::from(Arc::new(config));
+
+        let (socket, _) = tokio::time::timeout(STEP_DEADLINE, listener.accept())
+            .await
+            .expect("aucune connexion TCP dans le delai imparti")
+            .expect("connexion TCP");
+        let mut stream = tokio::time::timeout(STEP_DEADLINE, acceptor.accept(socket))
+            .await
+            .expect("poignee de main TLS non aboutie dans le delai imparti")
+            .expect("poignee de main TLS");
+        let alpn = stream
+            .get_ref()
+            .1
+            .alpn_protocol()
+            .map(|p| String::from_utf8_lossy(p).to_string());
+
+        let mut buffer = Vec::new();
+        let mut chunk = vec![0u8; 65536];
+
+        let header_end = loop {
+            if let Some(at) = buffer.windows(4).position(|w| w == b"\r\n\r\n") {
+                break at + 4;
+            }
+            let read = tokio::time::timeout(STEP_DEADLINE, stream.read(&mut chunk))
+                .await
+                .expect("aucun en-tete recu dans le delai imparti")
+                .expect("lecture des en-tetes");
+            assert!(read > 0, "connexion fermee avant la fin des en-tetes");
+            buffer.extend_from_slice(&chunk[..read]);
+        };
+
+        let headers = String::from_utf8_lossy(&buffer[..header_end]).to_string();
+        let value = |name: &str| -> Option<String> {
+            headers.lines().find_map(|line| {
+                let (key, value) = line.split_once(':')?;
+                (key.trim().eq_ignore_ascii_case(name)).then(|| value.trim().to_string())
+            })
+        };
+        let has_content_length = value("content-length").is_some();
+        let announced: u64 = value("content-length")
+            .unwrap_or_else(|| "0".to_string())
+            .parse()
+            .unwrap_or(0);
+
+        let mut body_read = buffer.len() - header_end;
+        while (body_read as u64) < announced {
+            match tokio::time::timeout(STEP_DEADLINE, stream.read(&mut chunk)).await {
+                Ok(Ok(0)) | Err(_) => break,
+                Ok(Ok(read)) => body_read += read,
+                Ok(Err(_)) => break,
+            }
+        }
+
+        // Le coeur de la mesure : ce qui arrive apres la frontiere annoncee.
+        let mut trailing = 0usize;
+        loop {
+            let next = tokio::time::timeout(
+                std::time::Duration::from_millis(700),
+                stream.read(&mut chunk),
+            )
+            .await;
+            match next {
+                Ok(Ok(0)) | Err(_) => break,
+                Ok(Ok(read)) => trailing += read,
+                Ok(Err(_)) => break,
+            }
+        }
+
+        let payload = b"{\"text\":\"transcription du serveur de test\"}";
+        let response = format!(
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n",
+            payload.len()
+        );
+        let _ = stream.write_all(response.as_bytes()).await;
+        let _ = stream.write_all(payload).await;
+        let _ = stream.flush().await;
+
+        TlsObservation {
+            announced,
+            body_read,
+            trailing,
+            alpn,
+            has_content_length,
+        }
+    }
+
+    fn write_sample_wav(bytes: usize) -> tempfile::NamedTempFile {
+        let mut file = tempfile::NamedTempFile::new().expect("fichier temporaire");
+        let mut wav = Vec::with_capacity(bytes);
+        wav.extend_from_slice(b"RIFF");
+        wav.extend_from_slice(&((bytes - 8) as u32).to_le_bytes());
+        wav.extend_from_slice(b"WAVEfmt ");
+        wav.resize(bytes, 0x5A);
+        file.write_all(&wav).expect("ecriture du wav");
+        file.flush().expect("vidage");
+        file
+    }
+
+    #[test]
+    fn en_tls_epingle_rien_ne_part_apres_le_corps_declare() {
+        // Ce test installe une connexion Lab dans un `static` : il ne doit pas
+        // cohabiter avec un test qui attend le client ordinaire.
+        let _exclusive = super::wire_test_support::exclusive();
+
+        let _ = tokio_rustls::rustls::crypto::ring::default_provider().install_default();
+
+        let runtime = tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(2)
+            .enable_all()
+            .build()
+            .expect("runtime");
+
+        let (observation, transcription) = runtime.block_on(async {
+            let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
+                .await
+                .expect("port local");
+            let port = listener.local_addr().expect("adresse").port();
+            let server = tokio::spawn(observe_tls(listener));
+
+            // Le poste epingle ce certificat : `campus_client` construira donc
+            // le meme client TLS qu'en production.
+            set_lab_connection(LabConnection {
+                endpoint: format!("https://127.0.0.1:{port}"),
+                certificate_der: decode(TEST_CERT_DER_B64),
+                device_token: "jeton-de-peripherique-factice".to_string(),
+            })
+            .expect("connexion Lab installee");
+
+            let wav = write_sample_wav(AUDIO_BYTES);
+            let session = CampusCredentials {
+                session: CampusSession {
+                    server_url: format!("https://127.0.0.1:{port}"),
+                    email: "essai@example.test".to_string(),
+                    organization: None,
+                },
+                token: "jeton-de-session-factice".to_string(),
+            };
+
+            let transcription = transcribe_campus(wav.path(), &session).await;
+            let observation = tokio::time::timeout(TEST_DEADLINE, server)
+                .await
+                .expect("le serveur de test n'a pas rendu la main dans le delai imparti")
+                .expect("le serveur de test a rendu la main");
+            (observation, transcription)
+        });
+
+        // Ne pas laisser une connexion Lab derriere soi : le prochain test
+        // construirait un client epingle sans l'avoir demande.
+        super::wire_test_support::reset_lab_connection();
+
+        // Ce que le client a reellement choisi comme protocole : c'est la
+        // difference candidate entre le test HTTP qui passe et la production.
+        println!(
+            "ALPN negocie = {:?} | Content-Length declare = {} | corps lu = {} | apres le corps = {}",
+            observation.alpn, observation.announced, observation.body_read, observation.trailing
+        );
+
+        assert!(
+            observation.has_content_length,
+            "aucun Content-Length declare sur le transport reel"
+        );
+        assert_eq!(
+            observation.trailing, 0,
+            "{} octets ecrits apres la fin du corps declare ({} annonces, {} lus) — \
+             c'est exactement ce que la passerelle a mesure",
+            observation.trailing, observation.announced, observation.body_read
+        );
+        assert_eq!(observation.body_read as u64, observation.announced);
+        assert!(observation.announced > AUDIO_BYTES as u64);
+        assert_eq!(
+            transcription.expect("le serveur de test a repondu 200"),
+            "transcription du serveur de test"
         );
     }
 }

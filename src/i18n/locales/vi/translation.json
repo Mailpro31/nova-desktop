@@ -164,7 +164,10 @@
       "originalWas": "Nội dung đã nói ban đầu: {{text}}",
       "hint": "Bạn có thể thử lại bao nhiêu lần tùy thích.",
       "skip": "Bỏ qua bước này",
-      "finishAnyway": "Hoàn tất thiết lập"
+      "finishAnyway": "Hoàn tất thiết lập",
+      "styleUnavailable": "Không thể áp dụng Phong cách; đây là bản đọc thô.",
+      "failedTitle": "Việc đọc chính tả chưa hoàn tất",
+      "failedBody": "Nova không thể chuyển thành văn bản. Hãy kiểm tra xem máy chủ có kết nối được không rồi thử lại — bạn cũng có thể hoàn tất thiết lập và quay lại sau."
     },
     "permissions": {
       "title": "Cần cấp quyền",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local đang hoạt động",
-        "detail": "Đọc chính tả vẫn dùng được. Tính năng AI sẽ trở lại cùng Campus."
+        "detail": "{{server}} không phản hồi — việc đọc chính tả tiếp tục cục bộ, các tính năng AI tạm dừng.",
+        "unknownServer": "máy chủ của tổ chức"
       },
       "permissionsNeeded": {
         "title": "Cần quyền dùng micrô",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Đang khởi động Nova…",
+    "stalledTitle": "Nova khởi động lâu hơn dự kiến",
+    "stalledBody": "Một số kiểm tra khi khởi động vẫn chưa phản hồi — thiết bị âm thanh, cài đặt đã lưu hoặc danh sách mô hình cục bộ. Nova đã ngừng chờ để cửa sổ này không bị trống.",
+    "logHint": "Chi tiết được ghi vào handy.log, trong thư mục dữ liệu của Nova.",
+    "retry": "Khởi động lại Nova",
+    "errorTitle": "Nova không thể hiển thị cửa sổ",
+    "errorBody": "Đã xảy ra lỗi khi khởi động. Hãy khởi động lại Nova; nếu màn hình này quay lại, hãy gửi thông báo bên dưới."
   }
 }

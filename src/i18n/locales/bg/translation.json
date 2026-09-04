@@ -164,7 +164,10 @@
       "originalWas": "Първоначално продиктувано: {{text}}",
       "hint": "Можете да опитате отново толкова пъти, колкото желаете.",
       "skip": "Пропуснете тази стъпка",
-      "finishAnyway": "Завършете настройката"
+      "finishAnyway": "Завършете настройката",
+      "styleUnavailable": "Стилът не можа да бъде приложен; ето необработената диктовка.",
+      "failedTitle": "Диктовката не беше завършена",
+      "failedBody": "Nova не успя да транскрибира. Проверете дали сървърът е достъпен и опитайте отново — можете и да завършите настройката и да се върнете към това по-късно."
     },
     "permissions": {
       "title": "Необходими разрешения",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local е активна",
-        "detail": "Диктовката още работи. Функциите с ИИ ще се върнат с Campus."
+        "detail": "{{server}} не отговаря — диктовката продължава локално, функциите с ИИ са на пауза.",
+        "unknownServer": "сървърът на организацията"
       },
       "permissionsNeeded": {
         "title": "Нужен е достъп до микрофона",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Nova стартира…",
+    "stalledTitle": "Nova се стартира по-дълго от очакваното",
+    "stalledBody": "Някои проверки при стартиране още не са отговорили — аудиоустройства, запазени настройки или списъкът с локални модели. Nova спря да чака, за да не остане този прозорец празен.",
+    "logHint": "Подробностите се записват в handy.log, в папката с данни на Nova.",
+    "retry": "Рестартиране на Nova",
+    "errorTitle": "Nova не успя да покаже прозореца си",
+    "errorBody": "Възникна грешка при стартирането. Рестартирайте Nova; ако екранът се появи отново, изпратете съобщението по-долу."
   }
 }

@@ -164,7 +164,10 @@
       "originalWas": "原始口述內容：{{text}}",
       "hint": "您可以隨意重試，次數不限。",
       "skip": "略過此步驟",
-      "finishAnyway": "完成設定"
+      "finishAnyway": "完成設定",
+      "styleUnavailable": "未能套用樣式，以下是原始聽寫內容。",
+      "failedTitle": "本次聽寫未完成",
+      "failedBody": "Nova 無法轉寫。請確認伺服器可以連線後重試——你也可以先完成設定，稍後再回來。"
     },
     "permissions": {
       "title": "需要權限",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local 正在執行",
-        "detail": "語音輸入照常可用。AI 功能將隨 Campus 一同恢復。"
+        "detail": "{{server}} 沒有回應——聽寫繼續在本機進行，AI 功能已暫停。",
+        "unknownServer": "組織伺服器"
       },
       "permissionsNeeded": {
         "title": "需要麥克風權限",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "正在啟動 Nova…",
+    "stalledTitle": "Nova 啟動時間比預期更長",
+    "stalledBody": "部分啟動檢查尚未回應——音訊裝置、已儲存的設定或本機模型清單。為了不讓此視窗保持空白，Nova 已停止等待。",
+    "logHint": "詳細資訊記錄在 Nova 資料夾中的 handy.log 內。",
+    "retry": "重新啟動 Nova",
+    "errorTitle": "Nova 無法顯示視窗",
+    "errorBody": "啟動時發生錯誤。請重新啟動 Nova；如果此畫面再次出現，請傳送下方訊息。"
   }
 }

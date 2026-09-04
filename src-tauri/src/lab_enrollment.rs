@@ -6,10 +6,11 @@
 //! part à ce stade. Les octets reçus sont comparés à l'empreinte du code avant
 //! d'être installés comme unique racine de confiance pour l'appel d'enrôlement.
 
-use crate::commands::campus::{set_lab_connection, LabConnection};
+use crate::commands::campus::{save_lab_connection, LabConnection};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use specta::Type;
+use tauri::AppHandle;
 
 const PREFIX: &str = "NOVALAB1";
 const PAYLOAD_BYTES: usize = 39;
@@ -127,7 +128,11 @@ fn decode_invitation(code: &str) -> Result<Invitation, String> {
 /// répond le serveur reste dans la mémoire native et n'est pas renvoyé au JS.
 #[tauri::command]
 #[specta::specta]
-pub async fn enroll_lab_device(code: String, device_name: String) -> Result<LabEnrollment, String> {
+pub async fn enroll_lab_device(
+    app: AppHandle,
+    code: String,
+    device_name: String,
+) -> Result<LabEnrollment, String> {
     let invitation = decode_invitation(&code)?;
     let untrusted = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(15))
@@ -179,11 +184,16 @@ pub async fn enroll_lab_device(code: String, device_name: String) -> Result<LabE
     {
         return Err("LAB_ENROLLMENT_RESPONSE_INVALID".to_string());
     }
-    set_lab_connection(LabConnection {
-        endpoint: invitation.endpoint.clone(),
-        certificate_der,
-        device_token: response.device_token,
-    })?;
+    // Le jeton part au trousseau du systeme, l'adresse et le certificat sur le
+    // disque : l'enrolement doit survivre a la fermeture de Nova Lab.
+    save_lab_connection(
+        &app,
+        LabConnection {
+            endpoint: invitation.endpoint.clone(),
+            certificate_der,
+            device_token: response.device_token,
+        },
+    )?;
     Ok(LabEnrollment {
         service_endpoint: invitation.endpoint,
         organization: response.organization.slug,

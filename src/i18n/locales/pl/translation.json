@@ -164,7 +164,10 @@
       "originalWas": "Pierwotnie podyktowano: {{text}}",
       "hint": "Możesz spróbować ponownie tyle razy, ile chcesz.",
       "skip": "Pomiń ten krok",
-      "finishAnyway": "Zakończ konfigurację"
+      "finishAnyway": "Zakończ konfigurację",
+      "styleUnavailable": "Nie udało się zastosować Stylu; oto surowe dyktowanie.",
+      "failedTitle": "Dyktowanie nie powiodło się",
+      "failedBody": "Nova nie zdołała przepisać nagrania. Sprawdź, czy serwer jest osiągalny, i spróbuj ponownie — możesz też dokończyć konfigurację i wrócić do tego później."
     },
     "permissions": {
       "title": "Wymagane uprawnienia",
@@ -972,7 +975,8 @@
         "join": "Join",
         "codeLabel": "Invitation code",
         "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network."
+        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "productName": "Nova Lab"
       },
       "email": {
         "title": "Connect to Nova Campus",
@@ -1586,7 +1590,8 @@
       },
       "campusLocal": {
         "title": "Nova Local działa",
-        "detail": "Dyktowanie nadal działa. Funkcje SI wrócą razem z Campusem."
+        "detail": "{{server}} nie odpowiada — dyktowanie działa lokalnie, funkcje AI są wstrzymane.",
+        "unknownServer": "serwer organizacji"
       },
       "permissionsNeeded": {
         "title": "Wymagany dostęp do mikrofonu",
@@ -1780,5 +1785,14 @@
         }
       }
     }
+  },
+  "startup": {
+    "loading": "Uruchamianie Nova…",
+    "stalledTitle": "Uruchamianie Nova trwa dłużej niż zwykle",
+    "stalledBody": "Część kontroli startowych jeszcze nie odpowiedziała — urządzenia audio, zapisane ustawienia lub spis modeli lokalnych. Nova przestała czekać, aby to okno nie pozostało puste.",
+    "logHint": "Szczegóły są zapisywane w handy.log, w folderze danych Nova.",
+    "retry": "Uruchom Nova ponownie",
+    "errorTitle": "Nova nie zdołała wyświetlić swojego okna",
+    "errorBody": "Podczas uruchamiania wystąpił błąd. Uruchom Nova ponownie; jeśli ten ekran wróci, prześlij poniższy komunikat."
   }
 }

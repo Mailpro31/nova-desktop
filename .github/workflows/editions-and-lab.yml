@@ -51,6 +51,22 @@ jobs:
           VITE_NOVA_MODE: ${{ matrix.edition }}
         run: bun run build
 
+  # L'artefact Lab est bati avec une variable de plus. Rien d'autre ne compile
+  # cette combinaison, et c'est elle qui part sur le PC de demonstration.
+  frontend-lab:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Type-check and build (lab)
+        env:
+          VITE_NOVA_MODE: campus
+          VITE_NOVA_LAB: "1"
+        run: bun run build
+
   # Les tests unitaires TypeScript existent depuis longtemps mais rien ne les
   # exécutait : `bun run test` ne lance qu'un seul fichier, et la CI Rust ne
   # touche pas au frontend. Le périmètre est celui de la fondation Organization,
@@ -66,8 +82,32 @@ jobs:
       - name: Organization unit tests
         run: bun test src/lib/organization tests/campusPolicy.test.ts
 
+      # Le premier lancement de Nova Lab affichait une fenetre blanche. Ces
+      # deux fichiers tiennent les invariants qui l'empechent de revenir : la
+      # racine React ne rend jamais « rien », et l'artefact Lab reste separe de
+      # Nova (nom, identifiant, donnees, telechargements, mises a jour).
+      - name: Startup and Lab isolation tests
+        run: bun test src/lib/startupGate.test.ts src/lib/labIsolation.test.ts
+
+      # L'ecran « Essayez Nova » restait bloque sur « Application du Style... »
+      # quand la dictee echouait : le backend enregistre une entree a texte vide
+      # pour permettre une nouvelle tentative, et cet ecran la prenait pour une
+      # reformulation en cours. L'invariant teste ici : rien ne peut laisser
+      # l'interface en chargement.
+      - name: The tutorial card must never stay loading
+        run: bun test src/lib/tutorialPhase.test.ts
+
   rust-lab-feature:
     runs-on: ubuntu-24.04
+    # Sans cela, un test qui attend indefiniment occupe un runner jusqu'a la
+    # limite de six heures de GitHub. `cargo test` n'impose aucun delai : c'est
+    # au workflow de le faire. Le plafond couvre les deux compilations
+    # completes du job — celle avec la feature Lab, celle sans — pour que ce
+    # soit toujours l'etape fautive qui annonce le delai, jamais le job.
+    timeout-minutes: 60
+    env:
+      CARGO_TERM_COLOR: always
+      RUST_BACKTRACE: 1
     steps:
       - uses: actions/checkout@v5
 
@@ -81,11 +121,117 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
-      # La feature Lab doit compiler et passer ses tests. Sans ce job elle
-      # pourrirait en silence : rien d'autre ne la construit.
-      - name: Build with the lab feature
+      # Compiler d'abord, executer ensuite. Reunies, les deux etapes ne
+      # montraient qu'une seule ligne pendant des heures sans dire laquelle
+      # avancait — c'est ce qui a rendu le blocage illisible.
+      - name: Compile the lab feature and its tests
         working-directory: src-tauri
-        run: cargo test --features lab
+        timeout-minutes: 30
+        run: cargo test --features lab --no-run --verbose
+
+      # La feature Lab doit passer ses tests. Sans ce job elle pourrirait en
+      # silence : rien d'autre ne la construit.
+      - name: Run the lab test suite
+        working-directory: src-tauri
+        timeout-minutes: 10
+        run: cargo test --features lab -- --nocapture
+
+      # ── Tout ce qui suit est bati AVEC la feature Lab. ────────────────
+      #
+      # L'ordre n'est pas cosmetique. Passer de `--features lab` a la
+      # construction ordinaire change la resolution des features de TOUT
+      # l'arbre : cargo reconstruit alors chaque crate, `transcribe-cpp-sys`
+      # (whisper.cpp, cmake + C++) compris. Ce job alternait cinq fois entre
+      # les deux jeux, et chacune de ces bascules payait une reconstruction
+      # complete sous un budget de cinq minutes prevu pour *executer* des
+      # tests deja batis. Le premier basculement a donc ete tue par le delai,
+      # cmake encore en vol, sans qu'aucun test n'ait echoue.
+      #
+      # Il n'y a plus qu'un seul basculement, et il est budgete.
+
+      # L'invariant qui a manque : `Builder::commands()` REMPLACE la liste
+      # enregistree. Un second appel sous `#[cfg(feature = "lab")]` effacait
+      # toutes les commandes ordinaires, et l'artefact Lab repondait
+      # « Command get_app_settings not found » des le premier ecran. Ces tests
+      # inspectent la table reellement enregistree, pas le source.
+      - name: The lab build must keep every ordinary command
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test --features lab specta_registration -- --nocapture
+
+      # L'enrolement Lab ne vivait qu'en memoire : apres un redemarrage le
+      # certificat epingle et le jeton du peripherique disparaissaient, la
+      # liaison TLS echouait, et le poste retombait en local en paraissant
+      # l'avoir choisi. Ces tests rejouent le scenario complet — enrolement,
+      # fermeture, restauration, appel authentifie — et verifient surtout que
+      # le jeton n'atteint jamais le disque, ni une trace de debogage.
+      - name: The lab enrollment must survive a restart, secret excluded
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test --features lab lab_persistence -- --nocapture
+
+      # Un vrai serveur local compte les octets. Le serveur du Lab a montre que
+      # le poste annoncait la taille du seul fichier audio et envoyait
+      # l'enveloppe multipart en plus : l'API recevait un multipart tronque, et
+      # les octets restants faisaient repondre 400 a la passerelle. Ce test
+      # refait ce comptage avant la mise en production, pas apres.
+      - name: The announced Content-Length must match the bytes sent
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test --features lab multipart_wire -- --nocapture
+
+      # Le test en HTTP simple passait pendant que la production echouait : la
+      # difference etait le transport. Celui-ci monte un vrai serveur TLS, fait
+      # epingler son certificat au poste comme le fait un Lab, et compte les
+      # octets **dechiffres** arrivant apres le corps declare.
+      - name: Nothing may be written after the declared body over pinned TLS
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test --features lab multipart_tls_wire -- --nocapture
+
+      # Le transport Lab n'accepte qu'une identite : le certificat retenu a
+      # l'enrolement. Ces tests exigent le refus dans tous les autres cas —
+      # autre certificat, autre nom, hors periode de validite, chaine presentee.
+      # Un epinglage qui n'echoue jamais n'epingle rien.
+      - name: The pinned TLS identity must reject everything else
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test --features lab lab_tls -- --nocapture
+
+      # ── Et ici, une seule fois, on repasse a la construction ordinaire. ──
+      #
+      # Cette etape ne verifie rien : elle paie, explicitement et une seule
+      # fois, la reconstruction que le changement de features impose. La
+      # separer des etapes qui suivent est ce qui rend leur budget de cinq
+      # minutes honnete — il ne couvre plus que l'execution.
+      - name: Compile the ordinary tests
+        working-directory: src-tauri
+        timeout-minutes: 25
+        run: cargo test --no-run --verbose
+
+      # La meme table que plus haut, sans la surface Lab, dans le paquet
+      # ordinaire.
+      - name: The ordinary build must expose no lab command
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test specta_registration -- --nocapture
+
+      # Le serveur repond `{ "text": ... }`. Les deux chemins de dictee
+      # demandaient une chaine JSON nue, et `serde` refusait donc un objet
+      # parfaitement valide. Invisible a la compilation : l'inference choisit
+      # `T = String` sans rien signaler.
+      - name: Campus responses must be read as objects
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test campus_response -- --nocapture
+
+      # La trace de diagnostic ne doit jamais pouvoir ecrire un secret. Le test
+      # pose de vrais en-tetes sensibles sur la requete et verifie qu'aucun
+      # fragment n'atteint la ligne de journal.
+      - name: The diagnostic trace must never leak a secret
+        working-directory: src-tauri
+        timeout-minutes: 5
+        run: cargo test campus_trace -- --nocapture
 
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide
