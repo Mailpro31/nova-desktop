@@ -100,7 +100,24 @@ bytes = { version = "1", optional = true }
 http-body = { version = "1", optional = true }
 # Transport Lab : verificateur d'identite epinglee. Meme version que celle que
 # reqwest embarque, pour n'avoir qu'un seul rustls dans l'arbre.
-rustls = { version = "0.23", optional = true }
+#
+# `default-features = false` n'est pas une precaution de style. Les features
+# par defaut de rustls sont `aws_lc_rs`, `logging`, `prefer-post-quantum`,
+# `std` et `tls12` ; les deux premieres de cette liste font entrer `aws-lc-rs`
+# et `aws-lc-sys`, qui compile AWS-LC depuis les sources. Or tout le code
+# selectionne explicitement `ring` (`lab_tls.rs`, `campus.rs`), et ce second
+# fournisseur cryptographique n'etait donc jamais choisi a l'execution :
+# uniquement bati.
+#
+# `prefer-post-quantum` est retire pour la meme raison — il reactive
+# `aws_lc_rs`. Rien n'est perdu : il n'a d'effet que sur le fournisseur AWS-LC,
+# jamais sur `ring`, que cette configuration installe explicitement.
+rustls = { version = "0.23", optional = true, default-features = false, features = [
+  "ring",
+  "std",
+  "tls12",
+  "logging",
+] }
 rustls-pki-types = { version = "1", optional = true }
 # Lecture de la periode de validite du certificat epingle. rustls ne l'expose
 # pas pour un certificat isole, et cette verification est obligatoire.
