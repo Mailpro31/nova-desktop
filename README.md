@@ -27,6 +27,7 @@ ordinateur, sans envoyer votre voix sur Internet.
 - [Les Styles](#les-styles)
 - [Paliers & licence](#paliers--licence)
 - [Installation](#installation)
+- [Plateformes supportées](#plateformes-supportées)
 - [Mises à jour automatiques](#mises-à-jour-automatiques)
 - [Confidentialité](#confidentialité)
 - [Développement](#développement)
@@ -162,6 +163,42 @@ affiche aussi une **statistique de valeur** : mots dictés et minutes de frappe
 2. Lancez l'installateur `Nova-Setup.exe`.
 3. Accordez à Nova l'accès au micro au premier lancement.
 4. Choisissez votre touche de dictée dans les réglages, et commencez.
+
+---
+
+## Plateformes supportées
+
+| Plateforme     | État                                                        |
+| -------------- | ----------------------------------------------------------- |
+| Windows x86_64 | **Supportée** — plateforme de publication                   |
+| Windows arm64  | Compilée en intégration continue                            |
+| Linux x86_64   | Compilée en intégration continue (`deb`, `AppImage`, `rpm`) |
+| Linux arm64    | Compilée en intégration continue (`deb`, `AppImage`, `rpm`) |
+| **macOS**      | **Hors périmètre pour l'instant**                           |
+
+### macOS
+
+Nova ne publie pas de version macOS, et n'en a jamais publié. Distribuer une
+application macOS suppose de la **signer et de la faire notariser** par Apple,
+donc de disposer d'un compte Apple Developer et d'un certificat Developer ID —
+ce que le projet n'a pas mis en place.
+
+Les cibles macOS ont donc été retirées de la matrice de
+`.github/workflows/main-build.yml` : elles y échouaient à chaque exécution, à
+l'étape d'import du certificat, et rendaient ce workflow rouge en permanence —
+au point de masquer les régressions qu'il est censé attraper.
+
+Le support macOS reste **entier dans `build.yml`** : rien n'y a été supprimé.
+Rétablir la plateforme demande deux gestes, dans cet ordre :
+
+1. renseigner `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD` et
+   `KEYCHAIN_PASSWORD` dans les secrets du dépôt ;
+2. réajouter les deux entrées `macos-26` et `macos-latest` à la matrice de
+   `main-build.yml`.
+
+L'historique de la décision, les mesures qui l'ont motivée et le détail
+technique sont dans
+[l'issue #109](https://github.com/Mailpro31/nova-desktop/issues/109).
 
 ---
 

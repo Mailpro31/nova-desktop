@@ -1,8 +1,26 @@
 name: "Main Branch Build"
 
-# Runs the full cross-platform build on every push to main so breakage is
-# caught before a manual release is triggered. Artifacts are kept for 30 days
-# so any commit on main has a downloadable, testable build.
+# Runs the full build on every push to main so breakage is caught before a
+# manual release is triggered. Artifacts are kept for 30 days so any commit on
+# main has a downloadable, testable build.
+#
+# ## Pourquoi macOS n'est pas dans la matrice
+#
+# Les cibles `macos-26` et `macos-latest` y figuraient et echouaient a chaque
+# run, a l'etape `import Apple Developer Certificate` de `build.yml` — avant
+# toute compilation, faute de secrets Apple. Ce n'etait pas une regression :
+# le tout premier run reel de ce workflow, le 14/07/2026, echouait deja ainsi,
+# et aucun des 130 runs suivants n'a jamais ete vert.
+#
+# Un workflow rouge en permanence ne signale plus rien : il rend invisibles les
+# regressions qu'il est cense attraper. macOS etant hors perimetre (voir le
+# README et l'issue #109), les deux cibles sont retirees plutot que laissees a
+# echouer indefiniment.
+#
+# Pour les remettre : reajouter les deux entrees de matrice et renseigner
+# APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD et KEYCHAIN_PASSWORD dans les
+# secrets du depot. Rien d'autre dans `build.yml` n'a ete touche : le support
+# macOS y reste entier.
 
 on:
   push:
@@ -20,12 +38,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: "macos-26"
-            args: "--target aarch64-apple-darwin"
-            target: "aarch64-apple-darwin"
-          - platform: "macos-latest"
-            args: "--target x86_64-apple-darwin"
-            target: "x86_64-apple-darwin"
           - platform: "ubuntu-22.04"
             args: "--bundles deb"
             target: "x86_64-unknown-linux-gnu"
