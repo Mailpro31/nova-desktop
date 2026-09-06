@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { isOrganizationMode } from "@/lib/mode";
+import { advanceFrom } from "@/lib/onboarding/advance";
 import {
   isSkipped,
   markSkipped,
@@ -117,17 +118,29 @@ export function useOnboardingFlow({
     onFinished();
   }, [onFinished]);
 
+  // La mise a jour de l'index ne fait que calculer. Les deux effets qu'elle
+  // portait -- enregistrer l'avancement, prevenir l'application -- sont
+  // desormais des effets : React peut rejouer une fonction de mise a jour, et
+  // ni l'ecriture d'un reglage ni la fin du parcours ne doivent avoir lieu
+  // deux fois, ni au milieu d'un rendu.
   const advance = useCallback(() => {
-    setIndex((i) => {
-      const nextIndex = i + 1;
-      if (nextIndex >= steps.length) {
-        finish();
-        return i;
-      }
+    setIndex((i) => advanceFrom(i, steps.length).index);
+  }, [steps.length]);
+
+  const finished = useRef(false);
+
+  useEffect(() => {
+    // A l'ouverture, rien n'a encore ete parcouru : ni avancement a noter, ni
+    // parcours a clore pour quelqu'un qui n'a rien vu.
+    if (steps.length === 0 || index === 0) return;
+    if (index < steps.length) {
       setStatus("in_progress");
-      return nextIndex;
-    });
-  }, [steps.length, finish]);
+      return;
+    }
+    if (finished.current) return;
+    finished.current = true;
+    finish();
+  }, [index, steps.length, finish]);
 
   const back = useCallback(() => {
     setIndex((i) => Math.max(0, i - 1));
