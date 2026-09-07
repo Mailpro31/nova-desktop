@@ -673,9 +673,6 @@ pub(crate) fn save_campus_credentials(
         return Err(error);
     }
 
-    let mut settings = get_settings(app);
-    settings.onboarding_completed = true;
-    write_settings(app, settings);
     Ok(())
 }
 

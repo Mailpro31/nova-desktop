@@ -40,10 +40,10 @@ import { ManagedBy } from "@/components/campus/ManagedBy";
 import { commands, type SsoProvider } from "@/bindings";
 import { formatSsoError } from "@/lib/organization/ssoErrors";
 import {
-  oidcLabel,
-  organizationSignInOptions,
+  organizationSignInButtons,
   type AnnouncedProviders,
 } from "@/lib/organization/ssoProviders";
+import { organizationKindIntent } from "@/lib/organization/editionChoice";
 import { refreshCampusContext } from "@/stores/campusStore";
 import {
   IS_LAB_BUILD,
@@ -56,6 +56,15 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 type CampusStep = "welcome" | "lab" | "email" | "code" | "ready";
+
+const DEFAULT_DISCOVERY_ORIGIN = "https://api.novaspeak.app";
+
+interface ManagedDeploymentState {
+  managed: boolean;
+  organization_id: string | null;
+  control_plane_origin: string | null;
+  error: string | null;
+}
 
 // Le code Lab est explicitement absent du paquet Desktop habituel : cette
 // surface ne s'affiche que dans l'artefact de test bâti avec la feature Rust
@@ -165,6 +174,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const [serverUrl, setServerUrl] = useState("");
   const [config, setConfig] = useState<CampusConfig | null>(null);
   const [configLoaded, setConfigLoaded] = useState(false);
+  const [managedBootstrap, setManagedBootstrap] = useState(false);
+  const [bootstrapAttempt, setBootstrapAttempt] = useState(0);
+  const [providersLoaded, setProvidersLoaded] = useState(false);
   // Ce que l'établissement propose réellement. Le poste ne le devine pas, il le
   // demande au serveur — un serveur plus ancien répond simplement « rien ».
   const [ssoProviders, setSsoProviders] = useState<AnnouncedProviders>({
@@ -191,12 +203,89 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     // restait faux — c'est-à-dire tous les boutons de cet écran désactivés,
     // définitivement, sans message. Chaque sonde répond désormais pour
     // elle-même, et l'écran s'affiche même si les deux échouent.
+    setConfigLoaded(false);
+    setError(null);
     void Promise.all([
       hostname().catch(() => null),
       loadCampusConfig().catch(() => null),
-    ]).then(([name, loadedConfig]) => {
+      invoke<ManagedDeploymentState>("get_deployment_state").catch(() => null),
+    ]).then(async ([name, loadedConfig, deployment]) => {
       if (!mounted) return;
       setMachineName(name ?? "unknown");
+
+      if (deployment?.error) {
+        setManagedBootstrap(true);
+        setConfig(loadedConfig);
+        setError(t("organizationOnboarding.errors.managedConfiguration"));
+        setConfigLoaded(true);
+        return;
+      }
+
+      const deployedOrganization =
+        deployment?.managed &&
+        deployment.organization_id &&
+        deployment.control_plane_origin
+          ? {
+              organization: deployment.organization_id,
+              origin: deployment.control_plane_origin,
+            }
+          : null;
+      const configuredOrganization =
+        loadedConfig?.bootstrap_mode === "discovery" &&
+        loadedConfig.organization_code
+          ? {
+              organization: loadedConfig.organization_code,
+              origin: DEFAULT_DISCOVERY_ORIGIN,
+            }
+          : null;
+      const discovery = deployedOrganization ?? configuredOrganization;
+
+      if (discovery) {
+        setManagedBootstrap(true);
+        const result = await commands.discoverOrganization(
+          discovery.origin,
+          discovery.organization,
+          false,
+        );
+        if (!mounted) return;
+        if (result.status === "error") {
+          setConfig({
+            ...loadedConfig,
+            organization_code: discovery.organization,
+            bootstrap_mode: "discovery",
+            organization: loadedConfig?.organization ?? {
+              id: discovery.organization,
+              name: discovery.organization,
+              managed: true,
+            },
+          });
+          setError(
+            result.error.code === "OrganizationNotAvailable"
+              ? t("organizationOnboarding.errors.organizationUnavailable")
+              : t("organizationOnboarding.errors.discovery"),
+          );
+          setConfigLoaded(true);
+          return;
+        }
+
+        const discoveredConfig: CampusConfig = {
+          ...loadedConfig,
+          server_url: result.data.service_endpoint,
+          organization_code: result.data.organization,
+          bootstrap_mode: "discovery",
+          organization: loadedConfig?.organization ?? {
+            id: result.data.organization,
+            name: result.data.display_name,
+            managed: true,
+          },
+        };
+        setConfig(discoveredConfig);
+        setServerUrl(result.data.service_endpoint);
+        setConfigLoaded(true);
+        return;
+      }
+
+      setManagedBootstrap(false);
       setConfig(loadedConfig);
       // Sur un poste Lab, l'adresse vient de l'invitation déjà acceptée : il
       // n'y a pas de configuration Campus locale à lire sur un PC de
@@ -207,7 +296,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [bootstrapAttempt, t]);
 
   useEffect(() => {
     if (!isValidCampusServerUrl(serverUrl)) return;
@@ -215,7 +304,15 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     const timer = window.setTimeout(() => {
       void loadCampusServerConfig(normalizeCampusServerUrl(serverUrl)).then(
         (remoteConfig) => {
-          if (active && remoteConfig) setConfig(remoteConfig);
+          if (active && remoteConfig) {
+            setConfig((current) => ({
+              ...remoteConfig,
+              organization_code:
+                current?.organization_code ?? remoteConfig.organization_code,
+              bootstrap_mode:
+                current?.bootstrap_mode ?? remoteConfig.bootstrap_mode,
+            }));
+          }
         },
       );
     }, 250);
@@ -232,6 +329,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
    * établissement Microsoft obtient le flux moderne sans configuration locale.
    */
   useEffect(() => {
+    setProvidersLoaded(false);
     if (!isValidCampusServerUrl(serverUrl)) {
       setSsoProviders({
         microsoft_entra: false,
@@ -253,6 +351,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 google_workspace: result.data.google_workspace,
                 oidc: result.data.oidc,
                 oidc_display_name: result.data.oidc_display_name,
+                configs: result.data.configs,
               }
             : {
                 microsoft_entra: false,
@@ -270,6 +369,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             oidc: false,
             oidc_display_name: null,
           });
+      })
+      .finally(() => {
+        if (active) setProvidersLoaded(true);
       });
     return () => {
       active = false;
@@ -292,6 +394,17 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const context = useMemo(
     () => resolveCampusContext(config, profile),
     [config, profile],
+  );
+  const business = config?.organization_type
+    ? config.organization_type === "business"
+    : organizationKindIntent() === "business";
+  const emailCodeAvailable = context.authMethods.includes("email_code");
+  const signInButtons = organizationSignInButtons({
+    edition: "organization",
+    providers: ssoProviders,
+    authMethods: context.authMethods,
+  }).filter((provider) =>
+    ["microsoft_entra", "google_workspace", "oidc"].includes(provider.type),
   );
 
   /**
@@ -341,7 +454,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   );
 
   const handleRequestCode = async () => {
-    if (!isValidCampusEmail(email) || !isValidCampusServerUrl(serverUrl))
+    if (
+      !emailCodeAvailable ||
+      !isValidCampusEmail(email) ||
+      !isValidCampusServerUrl(serverUrl)
+    )
       return;
     setIsLoading(true);
     setError(null);
@@ -542,45 +659,106 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     }
   }, [code, handleVerifyCode, step]);
 
+  const ssoActions = (
+    <div className="w-full max-w-[480px] space-y-3">
+      {signInButtons.map((provider, index) => (
+        <Button
+          key={provider.id}
+          type="button"
+          variant={index === 0 ? "primary" : "secondary"}
+          size="lg"
+          className="w-full"
+          disabled={
+            !providersLoaded ||
+            !isValidCampusServerUrl(serverUrl) ||
+            isLoading ||
+            Boolean(microsoftFlow)
+          }
+          onClick={() =>
+            void handleStartSso(
+              provider.type as SsoProvider,
+              ssoProviders.configs?.some((config) => config.id === provider.id)
+                ? provider.id
+                : null,
+            )
+          }
+        >
+          {isLoading
+            ? t("common.loading")
+            : t("campus.sso.connect", { provider: provider.display_name })}
+        </Button>
+      ))}
+      {microsoftFlow && (
+        <div
+          className="space-y-2 border border-hairline bg-inset px-4 py-3 text-center [border-radius:var(--nova-radius-card)]"
+          role="status"
+        >
+          <p className="text-sm text-text-secondary">
+            {t("campus.microsoft.browserHelp")}
+          </p>
+          <p className="font-mono text-lg font-semibold tracking-[0.12em] text-text">
+            {microsoftFlow.user_code}
+          </p>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setMicrosoftFlow(null)}
+          >
+            {t("common.cancel")}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
   if (step === "welcome") {
-    const emailCodeAvailable = context.authMethods.includes("email_code");
-    // Le SSO moderne suffit à proposer Microsoft, même si la configuration
-    // publique de l'établissement ne liste pas encore « entra ».
-    const signInOptions = organizationSignInOptions({
-      edition: "organization",
-      providers: ssoProviders,
-      authMethods: context.authMethods,
-    });
-    const entraAvailable = signInOptions.includes("microsoft_entra");
-    const googleAvailable = signInOptions.includes("google_workspace");
-    const oidcAvailable = signInOptions.includes("oidc");
-    // Le poste relaie l'identifiant tel que le serveur l'a annoncé ; il ne le
-    // fabrique jamais, et le serveur le revérifie dans son organisation.
-    const configIdFor = (type: string) =>
-      ssoProviders.configs?.find((config) => config.type === type)?.id ?? null;
+    const hasServer = isValidCampusServerUrl(serverUrl);
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
         <div className="max-w-[480px] space-y-3 text-center">
           <p className="text-xs font-medium tracking-wide text-text-secondary">
-            {t("campus.onboarding.label")}
+            {business
+              ? t("organizationOnboarding.label")
+              : t("campus.onboarding.label")}
           </p>
           <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.025em] text-text">
-            {t("campus.onboarding.welcome.title")}
+            {business
+              ? t("organizationOnboarding.title")
+              : t("campus.onboarding.welcome.title")}
           </h1>
           <p className="text-sm leading-relaxed text-text-secondary">
-            {t("campus.onboarding.welcome.subtitle")}
+            {business
+              ? t("organizationOnboarding.subtitle")
+              : t("campus.onboarding.welcome.subtitle")}
           </p>
+          {context.organization.name && (
+            <p className="text-sm font-medium text-text">
+              {campusOrganizationLabel(context.organization)}
+            </p>
+          )}
         </div>
-        <Button
-          type="button"
-          variant="primary"
-          size="lg"
-          disabled={!configLoaded || (!emailCodeAvailable && !entraAvailable)}
-          onClick={() => setStep("email")}
-        >
-          {t("campus.onboarding.welcome.connect")}
-        </Button>
+        {hasServer && ssoActions}
+        {((!hasServer && !managedBootstrap) ||
+          (hasServer && emailCodeAvailable)) && (
+          <Button
+            type="button"
+            variant={signInButtons.length > 0 ? "secondary" : "primary"}
+            size="lg"
+            disabled={
+              !configLoaded ||
+              (hasServer && !providersLoaded) ||
+              isLoading ||
+              Boolean(microsoftFlow)
+            }
+            onClick={() => setStep("email")}
+          >
+            {signInButtons.length > 0
+              ? t("organizationOnboarding.emailAlternative")
+              : t("campus.onboarding.welcome.connect")}
+          </Button>
+        )}
         {IS_LAB_BUILD && (
           <Button
             type="button"
@@ -594,10 +772,31 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             {t("campus.onboarding.lab.open")}
           </Button>
         )}
-        {configLoaded && !emailCodeAvailable && !entraAvailable && (
+        {configLoaded &&
+          hasServer &&
+          providersLoaded &&
+          !emailCodeAvailable &&
+          signInButtons.length === 0 && (
+            <p className="text-sm text-danger" role="alert">
+              {business
+                ? t("organizationOnboarding.errors.authMethodUnavailable")
+                : t("campus.onboarding.errors.authMethodUnavailable")}
+            </p>
+          )}
+        {error && (
           <p className="text-sm text-danger" role="alert">
-            {t("campus.onboarding.errors.authMethodUnavailable")}
+            {error}
           </p>
+        )}
+        {configLoaded && managedBootstrap && !hasServer && (
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            onClick={() => setBootstrapAttempt((attempt) => attempt + 1)}
+          >
+            {t("organizationOnboarding.retry")}
+          </Button>
         )}
       </div>
     );
@@ -650,27 +849,23 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   if (step === "email") {
     const showServerInput = shouldShowCampusServerInput(config);
     const canContinue =
+      emailCodeAvailable &&
       isValidCampusEmail(email) &&
       isValidCampusServerUrl(serverUrl) &&
       !isLoading;
-    // Le SSO moderne suffit à proposer Microsoft, même si la configuration
-    // publique de l'établissement ne liste pas encore « entra ».
-    const signInOptions = organizationSignInOptions({
-      edition: "organization",
-      providers: ssoProviders,
-      authMethods: context.authMethods,
-    });
-    const entraAvailable = signInOptions.includes("microsoft_entra");
-    const googleAvailable = signInOptions.includes("google_workspace");
-    const oidcAvailable = signInOptions.includes("oidc");
-    // Le poste relaie l'identifiant tel que le serveur l'a annoncé ; il ne le
-    // fabrique jamais, et le serveur le revérifie dans son organisation.
-    const configIdFor = (type: string) =>
-      ssoProviders.configs?.find((config) => config.type === type)?.id ?? null;
     return (
       <OnboardingStepShell
-        title={t("campus.onboarding.email.title")}
-        subtitle={t("campus.onboarding.email.subtitle")}
+        title={
+          business
+            ? t("organizationOnboarding.title")
+            : t("campus.onboarding.email.title")
+        }
+        subtitle={
+          business
+            ? t("organizationOnboarding.subtitle")
+            : t("campus.onboarding.email.subtitle")
+        }
+        onBack={() => setStep("welcome")}
         stepIndex={0}
         stepCount={3}
         onContinue={handleRequestCode}
@@ -686,7 +881,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 htmlFor="campus-server"
                 className="text-sm font-medium text-text"
               >
-                {t("campus.onboarding.email.serverLabel")}
+                {business
+                  ? t("organizationOnboarding.server")
+                  : t("campus.onboarding.email.serverLabel")}
               </label>
               <Input
                 id="campus-server"
@@ -702,97 +899,34 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             </div>
           )}
 
-          <div className="space-y-1.5">
-            <label
-              htmlFor="campus-email"
-              className="text-sm font-medium text-text"
-            >
-              {t("campus.onboarding.email.emailLabel")}
-            </label>
-            <Input
-              id="campus-email"
-              type="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              disabled={isLoading}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder={t("campus.onboarding.email.emailPlaceholder")}
-            />
-          </div>
-
-          {entraAvailable && (
-            <div className="space-y-3 border-t border-hairline pt-4">
-              <Button
-                type="button"
-                variant="secondary"
-                size="lg"
-                className="w-full"
-                disabled={isLoading || Boolean(microsoftFlow)}
-                onClick={() => void handleStartSso("microsoft_entra")}
+          {emailCodeAvailable && (
+            <div className="space-y-1.5">
+              <label
+                htmlFor="campus-email"
+                className="text-sm font-medium text-text"
               >
-                {isLoading
-                  ? t("common.loading")
-                  : t("campus.microsoft.connect")}
-              </Button>
-              {googleAvailable && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="lg"
-                  className="w-full"
-                  disabled={isLoading || Boolean(microsoftFlow)}
-                  onClick={() =>
-                    void handleStartSso(
-                      "google_workspace",
-                      configIdFor("google_workspace"),
-                    )
-                  }
-                >
-                  {isLoading ? t("common.loading") : t("campus.google.connect")}
-                </Button>
-              )}
-              {oidcAvailable && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="lg"
-                  className="w-full"
-                  disabled={isLoading || Boolean(microsoftFlow)}
-                  onClick={() =>
-                    void handleStartSso("oidc", configIdFor("oidc"))
-                  }
-                >
-                  {isLoading
-                    ? t("common.loading")
-                    : t("campus.sso.connect", {
-                        provider: oidcLabel(ssoProviders),
-                      })}
-                </Button>
-              )}
-              {microsoftFlow && (
-                <div
-                  className="space-y-2 border border-hairline bg-inset px-4 py-3 text-center [border-radius:var(--nova-radius-card)]"
-                  role="status"
-                >
-                  <p className="text-sm text-text-secondary">
-                    {t("campus.microsoft.browserHelp")}
-                  </p>
-                  <p className="font-mono text-lg font-semibold tracking-[0.12em] text-text">
-                    {microsoftFlow.user_code}
-                  </p>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setMicrosoftFlow(null)}
-                  >
-                    {t("settings.postProcessing.prompts.cancel")}
-                  </Button>
-                </div>
-              )}
+                {business
+                  ? t("organizationOnboarding.email")
+                  : t("campus.onboarding.email.emailLabel")}
+              </label>
+              <Input
+                id="campus-email"
+                type="email"
+                autoComplete="email"
+                autoFocus
+                value={email}
+                disabled={isLoading}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder={
+                  business
+                    ? t("organizationOnboarding.emailPlaceholder")
+                    : t("campus.onboarding.email.emailPlaceholder")
+                }
+              />
             </div>
           )}
+
+          {ssoActions}
 
           {error && (
             <p className="text-center text-sm text-danger" role="alert">
@@ -856,7 +990,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       title={t("campus.onboarding.ready.title", {
         organization: organizationName,
       })}
-      subtitle={t("campus.onboarding.ready.subtitle")}
+      subtitle={
+        business
+          ? t("organizationOnboarding.readySubtitle")
+          : t("campus.onboarding.ready.subtitle")
+      }
       stepIndex={2}
       stepCount={3}
       onContinue={onComplete}
@@ -888,7 +1026,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
               {t("campus.onboarding.ready.processing")}
             </dt>
             <dd className="font-medium text-text">
-              {t("campus.onboarding.ready.campusInfrastructure")}
+              {business
+                ? t("organizationOnboarding.processing")
+                : t("campus.onboarding.ready.campusInfrastructure")}
             </dd>
           </div>
         </dl>

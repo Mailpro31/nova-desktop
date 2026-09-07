@@ -29,6 +29,7 @@ const ONBOARDING = readFileSync(
   "utf8",
 );
 const CAMPUS_STATUS = readFileSync("src/hooks/useCampusStatus.ts", "utf8");
+const CAMPUS_BACKEND = readFileSync("src-tauri/src/commands/campus.rs", "utf8");
 
 /** Le code, commentaires retirés : un mot dans un commentaire ne prouve rien. */
 function code(source: string): string {
@@ -64,6 +65,21 @@ describe("Reachable without replaying onboarding", () => {
 });
 
 describe("One flow, not two", () => {
+  test("authentication does not mark the whole first-run journey complete", () => {
+    const source = code(CAMPUS_BACKEND);
+    const saveCredentials = source.slice(
+      source.indexOf("fn save_campus_credentials"),
+      source.indexOf("fn load_campus_credentials"),
+    );
+    const completeOnboarding = source.slice(
+      source.indexOf("pub fn complete_campus_onboarding"),
+      source.indexOf("pub fn clear_campus_session_and_notify"),
+    );
+
+    expect(saveCredentials).not.toContain("onboarding_completed");
+    expect(completeOnboarding).toContain("onboarding_completed = true");
+  });
+
   test("connecting mounts the existing onboarding component", () => {
     // Un second chemin d'authentification aurait été la faute la plus coûteuse
     // à réparer plus tard, et la plus facile à commettre ici.

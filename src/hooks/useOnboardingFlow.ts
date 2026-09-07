@@ -90,15 +90,23 @@ export function useOnboardingFlow({
     // Le reste n'appartient qu'à la première ouverture.
     if (!isFirstRun) return pending;
 
-    // L'accueil vient après l'authentification : c'est elle qui donne le nom
-    // de l'établissement affiché sur cet écran. Il précède en revanche toute
-    // configuration — on explique ce qu'est Nova avant de proposer un réglage.
-    pending.push("welcome");
+    // La connexion Organization vient déjà de présenter l'organisation puis
+    // de confirmer le compte. Le second accueil ne reste utile qu'en Personal.
+    if (!campusMode) pending.push("welcome");
     pending.push("smartSetup");
 
-    if (!isSkipped("writingStyles")) pending.push("writingStyles");
-    if (!readiness.hasDictated && !isSkipped("firstDictation")) {
-      pending.push("firstDictation");
+    if (campusMode) {
+      // Montrer un premier résultat avant les options de style garde le chemin
+      // principal court. Les réglages fins viennent une fois la dictée prouvée.
+      if (!readiness.hasDictated && !isSkipped("firstDictation")) {
+        pending.push("firstDictation");
+      }
+      if (!isSkipped("writingStyles")) pending.push("writingStyles");
+    } else {
+      if (!isSkipped("writingStyles")) pending.push("writingStyles");
+      if (!readiness.hasDictated && !isSkipped("firstDictation")) {
+        pending.push("firstDictation");
+      }
     }
 
     return pending;

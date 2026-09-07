@@ -36,7 +36,7 @@ test.describe("Nova Campus", () => {
     await mockTauri(page, {
       session: null,
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
     });
     await page.goto("/");
     await expect(
@@ -85,7 +85,11 @@ test.describe("Nova Campus", () => {
     });
     await page.goto("/");
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Continue with Microsoft" }).click();
+    const microsoft = page.getByRole("button", {
+      name: "Continue with Microsoft",
+    });
+    await expect(microsoft).toBeEnabled();
+    await microsoft.click();
     await expect(page.getByText("ABCD-EFGH")).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "You're connected to EES" }),
@@ -96,7 +100,7 @@ test.describe("Nova Campus", () => {
     await mockTauri(page, {
       session: null,
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
     });
     await page.goto("/");
     await page.getByRole("button", { name: "Continue" }).click();
@@ -114,11 +118,11 @@ test.describe("Nova Campus", () => {
     await expect(page.getByText("https://campus.example.edu")).toHaveCount(0);
     await page.getByRole("button", { name: "Start using Nova" }).click();
     await expect(
-      page.getByRole("heading", { name: /Welcome to EES, Student/ }),
+      page.getByRole("heading", { name: "Recommended setup" }),
     ).toBeVisible();
   });
 
-  test("first connection can complete one AI Essentials module", async ({
+  test("a connected account resumes at setup without another login", async ({
     page,
   }) => {
     await mockTauri(page, {
@@ -127,33 +131,19 @@ test.describe("Nova Campus", () => {
         email: "student@example.edu",
       },
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
       firstRunCompleted: false,
       prompts: [{ id: "nova_style_notes", name: "Notes", prompt: "Notes" }],
     });
     await page.goto("/");
-    await page
-      .getByRole("button", { name: "Start with AI Essentials" })
-      .click();
     await expect(
-      page.getByRole("heading", { name: "Working with AI" }),
+      page.getByRole("heading", { name: "Recommended setup" }),
     ).toBeVisible();
-    await page.getByRole("radio", { name: /candidate solution/ }).click();
-    await expect(page.getByText("Correct", { exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "Next" }).click();
-    await expect(
-      page.getByRole("heading", { name: "Ask better" }),
-    ).toBeVisible();
-    const completed = await page.evaluate(() => {
-      const value = localStorage.getItem(
-        "nova-campus-ai-skills-v1:example-school:student-example.edu",
-      );
-      return value ? JSON.parse(value).completedModuleIds : [];
-    });
-    expect(completed).toContain("working-with-ai");
+    await expect(page.locator("body")).not.toContainText("School email");
+    await expect(page.locator("body")).not.toContainText("AI Essentials");
   });
 
-  test("skip AI then recommended setup reaches Nova without friction", async ({
+  test("recommended setup reaches a real first dictation before styles", async ({
     page,
   }) => {
     await mockTauri(page, {
@@ -162,84 +152,77 @@ test.describe("Nova Campus", () => {
         email: "student@example.edu",
       },
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
       firstRunCompleted: false,
     });
     await page.goto("/");
-    await page.getByRole("button", { name: "Set up Nova now" }).click();
     await expect(
-      page.getByRole("heading", { name: "Set up Nova" }),
+      page.getByRole("heading", { name: "Recommended setup" }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Use recommended setup" }).click();
     await expect(page.getByRole("heading", { name: "Try Nova" })).toBeVisible();
-    await page.getByRole("button", { name: "Start dictation" }).click();
-    await expect(
-      page.getByRole("heading", { name: "That's it." }),
-    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(
+      "Nova does more than transcribe",
+    );
+    await page.evaluate(async () => {
+      await window.__TAURI_INTERNALS__.invoke("trigger_transcription", {
+        bindingId: "transcribe",
+      });
+    });
     await expect(
       page.getByText("Send Lucas the project update tomorrow morning."),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Open Nova" }).click();
+    await page.getByRole("button", { name: "Finish setup" }).click();
     await expect(
-      page.getByRole("heading", { name: "Speak. Nova writes." }),
+      page.getByRole("heading", { name: "Nova does more than transcribe" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Skip" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Nova is ready." }),
     ).toBeVisible();
   });
 
-  test("skip everything reaches Home immediately", async ({ page }) => {
+  test("the optional first dictation can be skipped without blocking setup", async ({
+    page,
+  }) => {
     await mockTauri(page, {
       session: {
         server_url: "https://campus.example.edu",
         email: "student@example.edu",
       },
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
       firstRunCompleted: false,
     });
     await page.goto("/");
-    await page.getByRole("button", { name: "Skip for now" }).click();
+    await page.getByRole("button", { name: "Use recommended setup" }).click();
+    await page.getByRole("button", { name: "Skip this step" }).click();
     await expect(
-      page.getByRole("heading", { name: "Speak. Nova writes." }),
+      page.getByRole("heading", { name: "Nova does more than transcribe" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Skip" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Nova is ready." }),
     ).toBeVisible();
   });
 
-  test("unfinished AI module resumes after restart", async ({ page }) => {
+  test("restart after authentication never returns to the login screen", async ({
+    page,
+  }) => {
     await mockTauri(page, {
       session: {
         server_url: "https://campus.example.edu",
         email: "student@example.edu",
       },
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
       firstRunCompleted: false,
-    });
-    await page.addInitScript(() => {
-      localStorage.setItem(
-        "nova-campus-first-run-v1:example-school:student-example.edu",
-        JSON.stringify({
-          version: 1,
-          stage: "ai-skills",
-          completed: false,
-          startedAt: new Date().toISOString(),
-          completedAt: null,
-        }),
-      );
-      localStorage.setItem(
-        "nova-campus-ai-skills-v1:example-school:student-example.edu",
-        JSON.stringify({
-          version: 1,
-          trackId: "ai-essentials",
-          activeModuleId: "verify-output",
-          activeLessonIndex: 0,
-          completedModuleIds: ["working-with-ai", "ask-better"],
-          startedAt: new Date().toISOString(),
-          completedAt: null,
-        }),
-      );
     });
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: "Verify the output" }),
+      page.getByRole("heading", { name: "Recommended setup" }),
     ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("Join your campus");
   });
 
   test("Campus offline does not block Smart Setup", async ({ page }) => {
@@ -249,13 +232,17 @@ test.describe("Nova Campus", () => {
         email: "student@example.edu",
       },
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
       firstRunCompleted: false,
       reachable: false,
     });
     await page.goto("/");
-    await page.getByRole("button", { name: "Set up Nova now" }).click();
-    await expect(page.getByText("Nova Local", { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Recommended setup" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Nova Local active", { exact: true }),
+    ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Use recommended setup" }),
     ).toBeEnabled();
@@ -275,17 +262,23 @@ test.describe("Nova Campus", () => {
     await page.setViewportSize({ width: 820, height: 600 });
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: "Speak. Nova writes." }),
+      page.getByRole("heading", { name: "Nova is ready." }),
     ).toBeVisible();
-    await expect(page.getByText("Campus connected")).toBeVisible();
+    await expect(page.getByText("Your institution's server")).toBeVisible();
 
-    await page.getByRole("button", { name: "Campus" }).click();
+    await page
+      .getByRole("button", {
+        name: /Example Engineering School.*Managed by Example Engineering School/,
+      })
+      .click();
     await expect(
-      page.getByRole("heading", { name: "EES · Paris" }),
+      page.getByRole("heading", { name: "Example Engineering School" }),
     ).toBeVisible();
 
     await page.getByRole("button", { name: "Styles" }).click();
-    await expect(page.getByRole("heading", { name: "Styles" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Writing Styles" }),
+    ).toBeVisible();
 
     await page.getByRole("button", { name: "History" }).click();
     await expect(page.getByRole("heading", { name: "History" })).toBeVisible();
@@ -308,13 +301,17 @@ test.describe("Nova Campus", () => {
       reachable: false,
     });
     await page.goto("/");
-    await expect(page.getByText("Nova Local active")).toBeVisible();
-    await expect(page.getByText("https://campus.example.edu")).toHaveCount(0);
-    await page.getByRole("button", { name: "Campus" }).click();
     await expect(
-      page.getByText(
-        "Campus is temporarily unavailable. Dictation continues locally.",
-      ),
+      page.getByRole("heading", { name: "Nova Local is active" }),
+    ).toBeVisible();
+    await expect(page.getByText("https://campus.example.edu")).toHaveCount(0);
+    await page
+      .getByRole("button", {
+        name: /Example Engineering School.*Nova Local active/,
+      })
+      .click();
+    await expect(
+      page.getByText("Currently paused", { exact: false }),
     ).toBeVisible();
   });
 
@@ -331,11 +328,13 @@ test.describe("Nova Campus", () => {
     });
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: "Speak. Nova writes." }),
+      page.getByRole("heading", { name: "Nova is ready." }),
     ).toBeVisible();
 
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "Home" })).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Learn" })).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "AI Skills" })).toBeFocused();
     await page.keyboard.press("Enter");

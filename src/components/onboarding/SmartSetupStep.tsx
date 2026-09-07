@@ -5,7 +5,7 @@ import { AlertTriangle, Check } from "lucide-react";
 import OnboardingStepShell from "./OnboardingStepShell";
 import { formatKeyCombination } from "../../lib/utils/keyboard";
 import { useOsType } from "../../hooks/useOsType";
-import { isOrganizationMode } from "@/lib/mode";
+import { isBusinessMode, isOrganizationMode } from "@/lib/mode";
 import type { SystemReadiness } from "../../hooks/useSystemReadiness";
 
 interface SmartSetupStepProps {
@@ -47,6 +47,7 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
   const { t } = useTranslation();
   const osType = useOsType();
   const campusMode = isOrganizationMode();
+  const businessMode = isBusinessMode();
 
   const rows: Row[] = [
     {
@@ -57,7 +58,7 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
     },
     {
       label: t("onboarding.smartSetup.row.engine"),
-      value: engineLabel(readiness, campusMode, t),
+      value: engineLabel(readiness, campusMode, businessMode, t),
       // « En cours de vérification » n'est pas un avertissement : tant que la
       // sonde n'a pas répondu, on n'annonce ni succès ni repli.
       tone: readiness.engine === "degraded" ? "warn" : "ok",
@@ -130,12 +131,19 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
 function engineLabel(
   readiness: SystemReadiness,
   campusMode: boolean,
+  businessMode: boolean,
   t: (key: string) => string,
 ): string {
   if (campusMode) {
-    if (readiness.engineLabel === "campus") return t("campus.status.connected");
+    if (readiness.engineLabel === "campus") {
+      return businessMode
+        ? t("campusConnection.connected")
+        : t("campus.status.connected");
+    }
     if (readiness.engineLabel === "local-fallback") {
-      return t("campus.status.localActive");
+      return businessMode
+        ? t("campusConnection.local")
+        : t("campus.status.localActive");
     }
     // Sonde encore en cours, ou session absente : on le dit plutôt que de
     // laisser croire à un repli local qui n'a pas eu lieu.
