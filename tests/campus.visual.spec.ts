@@ -61,17 +61,23 @@ test.describe("Nova Campus visual reference", () => {
     await page.goto("/");
 
     await expect(
-      page.getByRole("heading", { name: "Speak. Nova writes." }),
+      page.getByRole("heading", { name: "Nova is ready." }),
     ).toBeVisible();
     await capture(page, testInfo, "campus-home-light");
 
     await page.getByRole("button", { name: "Styles" }).click();
-    await expect(page.getByRole("heading", { name: "Styles" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Writing Styles" }),
+    ).toBeVisible();
     await capture(page, testInfo, "campus-styles-light");
 
-    await page.getByRole("button", { name: "Campus" }).click();
+    await page
+      .getByRole("button", {
+        name: /Example Engineering School.*Managed by Example Engineering School/,
+      })
+      .click();
     await expect(
-      page.getByRole("heading", { name: "EES · Paris" }),
+      page.getByRole("heading", { name: "Example Engineering School" }),
     ).toBeVisible();
     await capture(page, testInfo, "campus-organization-light");
 
@@ -86,13 +92,13 @@ test.describe("Nova Campus visual reference", () => {
     await capture(page, testInfo, "campus-home-dark");
   });
 
-  test("captures Welcome, AI Essentials and Smart Setup", async ({
+  test("captures setup, first dictation and optional styles", async ({
     page,
   }, testInfo) => {
     await mockTauri(page, {
       session: connectedSession,
       config: campusConfig,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
       firstRunCompleted: false,
       theme: "light",
       prompts: [
@@ -113,31 +119,27 @@ test.describe("Nova Campus visual reference", () => {
     await page.goto("/");
 
     await expect(
-      page.getByRole("heading", { name: /Welcome to EES, Student/ }),
-    ).toBeVisible();
-    await capture(page, testInfo, "campus-welcome-light");
-
-    await page
-      .getByRole("button", { name: "Start with AI Essentials" })
-      .click();
-    await expect(
-      page.getByRole("heading", { name: "Working with AI" }),
-    ).toBeVisible();
-    await capture(page, testInfo, "campus-ai-module-light");
-
-    await page.getByRole("button", { name: "Continue later" }).click();
-    await expect(
-      page.getByRole("heading", { name: "Set up Nova" }),
+      page.getByRole("heading", { name: "Recommended setup" }),
     ).toBeVisible();
     await capture(page, testInfo, "campus-smart-setup-light");
 
     await page.getByRole("button", { name: "Use recommended setup" }).click();
     await expect(page.getByRole("heading", { name: "Try Nova" })).toBeVisible();
     await capture(page, testInfo, "campus-first-dictation-light");
-    await page.getByRole("button", { name: "Start dictation" }).click();
+    await page.evaluate(async () => {
+      await window.__TAURI_INTERNALS__.invoke("trigger_transcription", {
+        bindingId: "transcribe",
+      });
+    });
     await expect(
-      page.getByRole("heading", { name: "That's it." }),
+      page.getByText("Send Lucas the project update tomorrow morning."),
     ).toBeVisible();
     await capture(page, testInfo, "campus-first-success-light");
+
+    await page.getByRole("button", { name: "Finish setup" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Nova does more than transcribe" }),
+    ).toBeVisible();
+    await capture(page, testInfo, "campus-writing-styles-light");
   });
 });

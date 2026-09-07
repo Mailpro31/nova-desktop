@@ -1794,5 +1794,23 @@
     "retry": "Рестартиране на Nova",
     "errorTitle": "Nova не успя да покаже прозореца си",
     "errorBody": "Възникна грешка при стартирането. Рестартирайте Nova; ако екранът се появи отново, изпратете съобщението по-долу."
+  },
+  "organizationOnboarding": {
+    "label": "Nova Organization",
+    "title": "Connect to your organization",
+    "subtitle": "Use the account provided by your organization.",
+    "emailAlternative": "Use an email code instead",
+    "server": "Organization server",
+    "email": "Work email",
+    "emailPlaceholder": "name@example.com",
+    "readySubtitle": "Nova is ready on this computer.",
+    "processing": "Organization service",
+    "retry": "Try again",
+    "errors": {
+      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
+      "organizationUnavailable": "This organization is not available. Contact your IT team.",
+      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
+      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+    }
   }
 }

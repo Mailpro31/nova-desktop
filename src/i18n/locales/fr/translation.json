@@ -1794,5 +1794,23 @@
     "retry": "Relancer Nova",
     "errorTitle": "Nova n’a pas réussi à afficher sa fenêtre",
     "errorBody": "Une erreur est survenue au démarrage. Relancez Nova ; si l’écran revient, transmettez le message ci-dessous."
+  },
+  "organizationOnboarding": {
+    "label": "Nova Organization",
+    "title": "Connectez-vous à votre organisation",
+    "subtitle": "Utilisez le compte fourni par votre organisation.",
+    "emailAlternative": "Utiliser un code par e-mail à la place",
+    "server": "Serveur de votre organisation",
+    "email": "Adresse professionnelle",
+    "emailPlaceholder": "prenom.nom@exemple.fr",
+    "readySubtitle": "Nova est prêt sur cet ordinateur.",
+    "processing": "Service de votre organisation",
+    "retry": "Réessayer",
+    "errors": {
+      "managedConfiguration": "Nova ne peut pas lire la configuration gérée de cet ordinateur. Contactez votre équipe informatique.",
+      "organizationUnavailable": "Cette organisation n'est pas disponible. Contactez votre équipe informatique.",
+      "discovery": "Nova ne trouve pas le serveur de votre organisation. Vérifiez votre connexion et réessayez.",
+      "authMethodUnavailable": "Votre organisation exige une méthode de connexion non prise en charge par cette version."
+    }
   }
 }

@@ -61,11 +61,7 @@ import {
   StartupStalled,
 } from "./components/startup/StartupScreen";
 import { chosenEdition, declaresEdition } from "@/lib/organization";
-import {
-  loadCampusSession,
-  completeCampusOnboarding,
-  clearCampusSession,
-} from "@/lib/campusSession";
+import { clearCampusSession } from "@/lib/campusSession";
 
 // Le parcours de première ouverture n'est plus une suite figée : il est
 // calculé depuis l'état réel du système (voir `useOnboardingFlow`). App.tsx
@@ -494,16 +490,10 @@ function App() {
         settingsResult.status === "ok" &&
         settingsResult.data.onboarding_completed === true;
 
-      let campusSession = null;
-      if (isOrganizationMode()) {
-        campusSession = await loadCampusSession();
-        if (campusSession && !hasCompletedOnboarding) {
-          await completeCampusOnboarding().catch(() => {});
-        }
-      }
-
-      const alreadyConfigured =
-        hasCompletedOnboarding || campusSession !== null;
+      // Une session prouve que l'authentification est terminée, pas que le
+      // parcours de première utilisation l'est. En cas de fermeture juste
+      // après le SSO, Nova reprend donc à la préparation de la première dictée.
+      const alreadyConfigured = hasCompletedOnboarding;
       reconcileWithLegacySetting(alreadyConfigured);
       setIsFirstRun(!alreadyConfigured);
 
@@ -615,9 +605,7 @@ function App() {
         <StartupStalled
           detail={
             settingsError ??
-            (isFirstRun === null
-              ? "getAppSettings / loadCampusSession"
-              : "useSystemReadiness")
+            (isFirstRun === null ? "getAppSettings" : "useSystemReadiness")
           }
         />
       </>

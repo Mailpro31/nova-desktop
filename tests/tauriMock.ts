@@ -9,6 +9,11 @@ interface MockOptions {
   theme?: "light" | "dark" | "system";
   prompts?: Array<{ id: string; name: string; prompt: string }>;
   firstRunCompleted?: boolean;
+  authProviders?: Record<string, unknown>;
+  ssoError?: unknown;
+  deployment?: Record<string, unknown> | null;
+  discovery?: Record<string, unknown>;
+  discoveryError?: unknown;
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -58,6 +63,43 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
       args: Record<string, unknown> = {},
     ) => {
       switch (command) {
+        case "organization_auth_providers":
+          return (
+            settings.authProviders ?? {
+              microsoft_entra: false,
+              google_workspace: false,
+              oidc: false,
+            }
+          );
+        case "get_deployment_state":
+          return (
+            settings.deployment ?? {
+              managed: false,
+              organization_id: null,
+              control_plane_origin: null,
+              error: null,
+            }
+          );
+        case "discover_organization":
+          localStorage.setItem("nova.test.discovery", JSON.stringify(args));
+          if (settings.discoveryError) throw settings.discoveryError;
+          return (
+            settings.discovery ?? {
+              organization: String(args.organization),
+              display_name: "Example Organization",
+              service_endpoint: "https://nova.example.test",
+              deployment_mode: "dedicated",
+              contract_version: 1,
+            }
+          );
+        case "sign_in_with_organization":
+          localStorage.setItem("nova.test.sso", JSON.stringify(args));
+          if (settings.ssoError) throw settings.ssoError;
+          currentSession = {
+            server_url: String(args.serverUrl),
+            email: "member@example.test",
+          };
+          return currentSession;
         case "get_app_settings":
         case "get_default_settings":
           return appSettings;
@@ -73,6 +115,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         case "check_campus_server_reachability":
           return settings.reachable ?? true;
         case "request_campus_auth":
+          localStorage.setItem("nova.test.emailRequested", "true");
           return { sent: true };
         case "verify_campus_auth":
           if (args.code === "000000") throw "HTTP 400: Code incorrect";
@@ -107,6 +150,9 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             email: currentSession?.email ?? "student@example.edu",
             role: "student",
             cohort: "AERO 2",
+            organization:
+              (settings.config?.organization as { name?: string } | undefined)
+                ?.name ?? null,
           };
         case "get_history_entries":
           return { entries: [], total: 0 };
