@@ -468,6 +468,40 @@ test.describe("single organization sign-in surface", () => {
     );
   });
 
+  /**
+   * Constaté sur un serveur Nova réel, pas sur une fixture : il répond
+   * `campusName: ""` pour une organisation sans site nommé, et le poste
+   * affichait alors « Nova Campus » à la place du nom réel.
+   */
+  test("an organization with empty optional fields keeps its real name", async ({
+    page,
+  }) => {
+    await campusIntent(page);
+    await mockTauri(page, {
+      config: null,
+      serverConfig: {
+        server_url: "https://nova.example.test",
+        organization_type: "business",
+        organization: {
+          id: "ipsa",
+          name: "IPSA",
+          shortName: "IPSA",
+          campusName: "",
+          managed: true,
+        },
+        auth_methods: ["email_code"],
+      },
+      onboardingCompleted: false,
+    });
+    await page.goto("/");
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.example.test");
+
+    await expect(page.getByText("IPSA", { exact: true })).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("Nova Campus");
+  });
+
   test("a wrong server address stays correctable on the same surface", async ({
     page,
   }) => {

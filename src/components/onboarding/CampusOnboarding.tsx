@@ -34,6 +34,7 @@ import {
 } from "@/lib/campusOnboarding";
 import {
   campusOrganizationLabel,
+  DEFAULT_CAMPUS_ORGANIZATION,
   resolveCampusContext,
 } from "@/lib/campusPolicy";
 import { ManagedBy } from "@/components/campus/ManagedBy";
@@ -780,10 +781,14 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   if (step === "connection") {
     // Un seul écran, qui se complète : le nom de l'organisation n'apparaît que
     // si le serveur l'a donné — jamais le `Nova Campus` de repli, qui laissait
-    // croire à une organisation découverte alors que rien ne l'était.
-    const organizationName = config?.organization
-      ? campusOrganizationLabel(context.organization)
-      : null;
+    // croire à une organisation découverte alors que rien ne l'était. La
+    // comparaison au repli est le filet : une organisation que le schéma
+    // rejette retombe dessus, et ce nom ne doit pas s'afficher pour autant.
+    const organizationName =
+      config?.organization &&
+      context.organization.id !== DEFAULT_CAMPUS_ORGANIZATION.id
+        ? campusOrganizationLabel(context.organization)
+        : null;
     const canRequestCode =
       emailCodeAvailable &&
       serverProbeSettled &&

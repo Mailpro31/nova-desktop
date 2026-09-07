@@ -112,6 +112,34 @@ describe("Campus onboarding inputs", () => {
     expect(shouldShowCampusServerInput(null)).toBe(true);
   });
 
+  /**
+   * Un champ facultatif vide n'efface pas l'organisation.
+   *
+   * Constaté sur un serveur Nova réel : il répond `campusName: ""` pour une
+   * organisation qui n'a pas de site nommé. Le schéma exigeait `min(1)`, la
+   * validation de l'objet entier échouait, et le repli `Nova Campus` prenait la
+   * place du nom réel — c'est-à-dire qu'un poste d'entreprise affichait
+   * « Nova Campus » sous le nom de son organisation.
+   */
+  test("keeps a server organization whose optional fields are empty", () => {
+    const context = resolveCampusContext({
+      organization: {
+        id: "ipsa",
+        name: "IPSA",
+        shortName: "IPSA",
+        campusName: "",
+        managed: true,
+      },
+      organization_type: "business",
+      auth_methods: ["email_code"],
+    });
+
+    expect(context.organization.id).toBe("ipsa");
+    expect(context.organization.name).toBe("IPSA");
+    expect(context.organization.campusName).toBeUndefined();
+    expect(campusOrganizationLabel(context.organization)).toBe("IPSA");
+  });
+
   test("validates school email and secure server addresses", () => {
     expect(isValidCampusEmail("student@example.edu")).toBe(true);
     expect(isValidCampusEmail("not-an-email")).toBe(false);
