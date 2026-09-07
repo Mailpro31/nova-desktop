@@ -43,7 +43,6 @@ import {
   organizationSignInButtons,
   type AnnouncedProviders,
 } from "@/lib/organization/ssoProviders";
-import { organizationKindIntent } from "@/lib/organization/editionChoice";
 import { refreshCampusContext } from "@/stores/campusStore";
 import {
   IS_LAB_BUILD,
@@ -55,7 +54,17 @@ import { useCampusStatus } from "@/hooks/useCampusStatus";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
-type CampusStep = "welcome" | "lab" | "email" | "code" | "ready";
+/**
+ * Une seule surface de connexion, et non deux.
+ *
+ * Le parcours passait par un écran d'accueil qui n'apportait qu'un bouton
+ * « Continuer », suivi d'un écran de saisie. Ce clic n'existait que parce que
+ * les deux moitiés d'une même question — quel serveur, quel compte — avaient
+ * été écrites séparément. `connection` les réunit : la surface s'affiche neutre
+ * dès le premier rendu, puis se complète sur place avec ce que le serveur
+ * annonce, sans jamais naviguer.
+ */
+type CampusStep = "connection" | "lab" | "code" | "ready";
 
 const DEFAULT_DISCOVERY_ORIGIN = "https://api.novaspeak.app";
 
@@ -169,14 +178,25 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
 }) => {
   const { t } = useTranslation();
   const { refresh: refreshCampusStatus } = useCampusStatus();
-  const [step, setStep] = useState<CampusStep>("welcome");
+  const [step, setStep] = useState<CampusStep>("connection");
   const [email, setEmail] = useState("");
   const [serverUrl, setServerUrl] = useState("");
   const [config, setConfig] = useState<CampusConfig | null>(null);
   const [configLoaded, setConfigLoaded] = useState(false);
   const [managedBootstrap, setManagedBootstrap] = useState(false);
+  /**
+   * Le poste connaît-il déjà son serveur ?
+   *
+   * Décidé une fois, à l'amorçage, et jamais réévalué : une installation gérée
+   * ne doit pas voir apparaître un champ serveur, et une installation libre ne
+   * doit pas voir le sien disparaître sous ses doigts quand `/api/config`
+   * répond enfin avec sa propre adresse.
+   */
+  const [serverProvisioned, setServerProvisioned] = useState(false);
   const [bootstrapAttempt, setBootstrapAttempt] = useState(0);
   const [providersLoaded, setProvidersLoaded] = useState(false);
+  /** Une lecture de `/api/config` est en cours ou programmée pour ce serveur. */
+  const [serverConfigPending, setServerConfigPending] = useState(false);
   // Ce que l'établissement propose réellement. Le poste ne le devine pas, il le
   // demande au serveur — un serveur plus ancien répond simplement « rien ».
   const [ssoProviders, setSsoProviders] = useState<AnnouncedProviders>({
@@ -215,6 +235,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
 
       if (deployment?.error) {
         setManagedBootstrap(true);
+        setServerProvisioned(true);
         setConfig(loadedConfig);
         setError(t("organizationOnboarding.errors.managedConfiguration"));
         setConfigLoaded(true);
@@ -242,6 +263,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
 
       if (discovery) {
         setManagedBootstrap(true);
+        setServerProvisioned(true);
         const result = await commands.discoverOrganization(
           discovery.origin,
           discovery.organization,
@@ -290,7 +312,13 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       // Sur un poste Lab, l'adresse vient de l'invitation déjà acceptée : il
       // n'y a pas de configuration Campus locale à lire sur un PC de
       // démonstration, et il ne doit pas y en avoir besoin.
-      setServerUrl(loadedConfig?.server_url ?? labServer() ?? "");
+      const knownServer = loadedConfig?.server_url ?? labServer() ?? "";
+      setServerUrl(knownServer);
+      // Une installation Organization posée sans configuration gérée n'a
+      // aucune adresse à lire : elle la demande, sur cette même surface.
+      setServerProvisioned(
+        !shouldShowCampusServerInput(loadedConfig) || Boolean(labServer()),
+      );
       setConfigLoaded(true);
     });
     return () => {
@@ -299,11 +327,17 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   }, [bootstrapAttempt, t]);
 
   useEffect(() => {
-    if (!isValidCampusServerUrl(serverUrl)) return;
+    if (!isValidCampusServerUrl(serverUrl)) {
+      setServerConfigPending(false);
+      return;
+    }
     let active = true;
+    // Marqué en attente dès la frappe : sans cela, un clic rapide pouvait
+    // demander un code avant même que le serveur ait dit s'il en envoyait.
+    setServerConfigPending(true);
     const timer = window.setTimeout(() => {
-      void loadCampusServerConfig(normalizeCampusServerUrl(serverUrl)).then(
-        (remoteConfig) => {
+      void loadCampusServerConfig(normalizeCampusServerUrl(serverUrl))
+        .then((remoteConfig) => {
           if (active && remoteConfig) {
             setConfig((current) => ({
               ...remoteConfig,
@@ -313,8 +347,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 current?.bootstrap_mode ?? remoteConfig.bootstrap_mode,
             }));
           }
-        },
-      );
+        })
+        .finally(() => {
+          if (active) setServerConfigPending(false);
+        });
     }, 250);
     return () => {
       active = false;
@@ -395,10 +431,22 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     () => resolveCampusContext(config, profile),
     [config, profile],
   );
-  const business = config?.organization_type
-    ? config.organization_type === "business"
-    : organizationKindIntent() === "business";
-  const emailCodeAvailable = context.authMethods.includes("email_code");
+  /**
+   * Nature de l'organisation, telle que le serveur l'annonce — et rien d'autre.
+   *
+   * Ni `localStorage`, ni l'intention exprimée au choix d'édition, ni un repli
+   * historique : tant que `/api/config` n'a rien dit, l'écran reste neutre.
+   * Dire « Campus » à une entreprise, ou l'inverse, avant d'avoir demandé,
+   * c'est se tromper avec assurance devant quelqu'un qui découvre le produit.
+   */
+  const announcedOrganizationType =
+    config?.organization_type === "education" ||
+    config?.organization_type === "business"
+      ? config.organization_type
+      : null;
+  const education = announcedOrganizationType === "education";
+  const business = announcedOrganizationType === "business";
+  const hasServer = isValidCampusServerUrl(serverUrl);
   const signInButtons = organizationSignInButtons({
     edition: "organization",
     providers: ssoProviders,
@@ -406,6 +454,21 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   }).filter((provider) =>
     ["microsoft_entra", "google_workspace", "oidc"].includes(provider.type),
   );
+  /** Le serveur a répondu — configuration et fournisseurs — pour cette adresse. */
+  const serverProbeSettled =
+    hasServer && !serverConfigPending && providersLoaded;
+  /**
+   * Le code par e-mail n'est proposé qu'une fois le serveur interrogé.
+   *
+   * Deux cas seulement : il l'annonce, ou il n'annonce rien du tout — un
+   * serveur muet garde le chemin historique, sans quoi une organisation servie
+   * par une version antérieure n'aurait plus aucun moyen de se connecter.
+   */
+  const emailCodeAvailable =
+    hasServer &&
+    (config !== null
+      ? context.authMethods.includes("email_code")
+      : serverProbeSettled && signInButtons.length === 0);
 
   /**
    * Termine le flow sans dupliquer discovery ni authentification.
@@ -456,6 +519,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const handleRequestCode = async () => {
     if (
       !emailCodeAvailable ||
+      !serverProbeSettled ||
       !isValidCampusEmail(email) ||
       !isValidCampusServerUrl(serverUrl)
     )
@@ -493,7 +557,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       if (!labConfig) throw new Error("LAB_CONFIGURATION_UNAVAILABLE");
       setServerUrl(enrolled.service_endpoint);
       setConfig(labConfig);
-      setStep("email");
+      setServerProvisioned(true);
+      setStep("connection");
     } catch {
       setError(t("campus.onboarding.lab.error"));
     } finally {
@@ -712,53 +777,133 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     </div>
   );
 
-  if (step === "welcome") {
-    const hasServer = isValidCampusServerUrl(serverUrl);
+  if (step === "connection") {
+    // Un seul écran, qui se complète : le nom de l'organisation n'apparaît que
+    // si le serveur l'a donné — jamais le `Nova Campus` de repli, qui laissait
+    // croire à une organisation découverte alors que rien ne l'était.
+    const organizationName = config?.organization
+      ? campusOrganizationLabel(context.organization)
+      : null;
+    const canRequestCode =
+      emailCodeAvailable &&
+      serverProbeSettled &&
+      configLoaded &&
+      isValidCampusEmail(email) &&
+      !isLoading &&
+      !microsoftFlow;
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-8">
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
         <div className="max-w-[480px] space-y-3 text-center">
           <p className="text-xs font-medium tracking-wide text-text-secondary">
-            {business
-              ? t("organizationOnboarding.label")
-              : t("campus.onboarding.label")}
+            {education
+              ? t("campus.onboarding.label")
+              : t("organizationOnboarding.label")}
           </p>
           <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.025em] text-text">
-            {business
-              ? t("organizationOnboarding.title")
-              : t("campus.onboarding.welcome.title")}
+            {education
+              ? t("campus.onboarding.welcome.title")
+              : t("organizationOnboarding.title")}
           </h1>
           <p className="text-sm leading-relaxed text-text-secondary">
-            {business
-              ? t("organizationOnboarding.subtitle")
-              : t("campus.onboarding.welcome.subtitle")}
+            {education
+              ? t("campus.onboarding.welcome.subtitle")
+              : t("organizationOnboarding.subtitle")}
           </p>
-          {context.organization.name && (
-            <p className="text-sm font-medium text-text">
-              {campusOrganizationLabel(context.organization)}
-            </p>
+          {organizationName && (
+            <p className="text-sm font-medium text-text">{organizationName}</p>
           )}
         </div>
-        {hasServer && ssoActions}
-        {((!hasServer && !managedBootstrap) ||
-          (hasServer && emailCodeAvailable)) && (
-          <Button
-            type="button"
-            variant={signInButtons.length > 0 ? "secondary" : "primary"}
-            size="lg"
-            disabled={
-              !configLoaded ||
-              (hasServer && !providersLoaded) ||
-              isLoading ||
-              Boolean(microsoftFlow)
-            }
-            onClick={() => setStep("email")}
-          >
-            {signInButtons.length > 0
-              ? t("organizationOnboarding.emailAlternative")
-              : t("campus.onboarding.welcome.connect")}
-          </Button>
-        )}
+
+        <div className="w-full max-w-[480px] space-y-5">
+          {!serverProvisioned && (
+            <div className="space-y-1.5">
+              <label
+                htmlFor="campus-server"
+                className="block text-sm font-medium text-text"
+              >
+                {education
+                  ? t("campus.onboarding.email.serverLabel")
+                  : t("organizationOnboarding.server")}
+              </label>
+              <Input
+                id="campus-server"
+                type="url"
+                className="w-full"
+                autoFocus
+                value={serverUrl}
+                disabled={isLoading}
+                onChange={(event) => {
+                  setServerUrl(event.target.value);
+                  setError(null);
+                }}
+                placeholder={
+                  education
+                    ? t("campus.onboarding.email.serverPlaceholder")
+                    : t("organizationOnboarding.serverPlaceholder")
+                }
+              />
+              <p className="text-xs text-text-secondary">
+                {t("campus.onboarding.email.serverHelp")}
+              </p>
+            </div>
+          )}
+
+          {signInButtons.length > 0 && ssoActions}
+
+          {emailCodeAvailable && (
+            <form
+              className="space-y-3"
+              onSubmit={(event) => {
+                event.preventDefault();
+                void handleRequestCode();
+              }}
+            >
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="campus-email"
+                  className="block text-sm font-medium text-text"
+                >
+                  {education
+                    ? t("campus.onboarding.email.emailLabel")
+                    : business
+                      ? t("organizationOnboarding.email")
+                      : t("organizationOnboarding.organizationEmail")}
+                </label>
+                <Input
+                  id="campus-email"
+                  type="email"
+                  className="w-full"
+                  autoComplete="email"
+                  autoFocus={serverProvisioned}
+                  value={email}
+                  disabled={isLoading}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    setError(null);
+                  }}
+                  placeholder={
+                    education
+                      ? t("campus.onboarding.email.emailPlaceholder")
+                      : t("organizationOnboarding.emailPlaceholder")
+                  }
+                />
+              </div>
+              <Button
+                type="submit"
+                variant={signInButtons.length > 0 ? "secondary" : "primary"}
+                size="lg"
+                className="w-full"
+                disabled={!canRequestCode}
+              >
+                {isLoading
+                  ? t("common.loading")
+                  : t("organizationOnboarding.sendCode")}
+              </Button>
+            </form>
+          )}
+        </div>
+
         {IS_LAB_BUILD && (
           <Button
             type="button"
@@ -772,15 +917,15 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             {t("campus.onboarding.lab.open")}
           </Button>
         )}
+
         {configLoaded &&
-          hasServer &&
-          providersLoaded &&
+          serverProbeSettled &&
           !emailCodeAvailable &&
           signInButtons.length === 0 && (
             <p className="text-sm text-danger" role="alert">
-              {business
-                ? t("organizationOnboarding.errors.authMethodUnavailable")
-                : t("campus.onboarding.errors.authMethodUnavailable")}
+              {education
+                ? t("campus.onboarding.errors.authMethodUnavailable")
+                : t("organizationOnboarding.errors.authMethodUnavailable")}
             </p>
           )}
         {error && (
@@ -846,98 +991,6 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     );
   }
 
-  if (step === "email") {
-    const showServerInput = shouldShowCampusServerInput(config);
-    const canContinue =
-      emailCodeAvailable &&
-      isValidCampusEmail(email) &&
-      isValidCampusServerUrl(serverUrl) &&
-      !isLoading;
-    return (
-      <OnboardingStepShell
-        title={
-          business
-            ? t("organizationOnboarding.title")
-            : t("campus.onboarding.email.title")
-        }
-        subtitle={
-          business
-            ? t("organizationOnboarding.subtitle")
-            : t("campus.onboarding.email.subtitle")
-        }
-        onBack={() => setStep("welcome")}
-        stepIndex={0}
-        stepCount={3}
-        onContinue={handleRequestCode}
-        continueLabel={
-          isLoading ? t("common.loading") : t("onboarding.step.continue")
-        }
-        continueDisabled={!canContinue}
-      >
-        <div className="space-y-4">
-          {showServerInput && (
-            <div className="space-y-1.5">
-              <label
-                htmlFor="campus-server"
-                className="text-sm font-medium text-text"
-              >
-                {business
-                  ? t("organizationOnboarding.server")
-                  : t("campus.onboarding.email.serverLabel")}
-              </label>
-              <Input
-                id="campus-server"
-                type="url"
-                value={serverUrl}
-                disabled={isLoading}
-                onChange={(event) => setServerUrl(event.target.value)}
-                placeholder={t("campus.onboarding.email.serverPlaceholder")}
-              />
-              <p className="text-xs text-text-secondary">
-                {t("campus.onboarding.email.serverHelp")}
-              </p>
-            </div>
-          )}
-
-          {emailCodeAvailable && (
-            <div className="space-y-1.5">
-              <label
-                htmlFor="campus-email"
-                className="text-sm font-medium text-text"
-              >
-                {business
-                  ? t("organizationOnboarding.email")
-                  : t("campus.onboarding.email.emailLabel")}
-              </label>
-              <Input
-                id="campus-email"
-                type="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                disabled={isLoading}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder={
-                  business
-                    ? t("organizationOnboarding.emailPlaceholder")
-                    : t("campus.onboarding.email.emailPlaceholder")
-                }
-              />
-            </div>
-          )}
-
-          {ssoActions}
-
-          {error && (
-            <p className="text-center text-sm text-danger" role="alert">
-              {error}
-            </p>
-          )}
-        </div>
-      </OnboardingStepShell>
-    );
-  }
-
   if (step === "code") {
     return (
       <OnboardingStepShell
@@ -991,9 +1044,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         organization: organizationName,
       })}
       subtitle={
-        business
-          ? t("organizationOnboarding.readySubtitle")
-          : t("campus.onboarding.ready.subtitle")
+        education
+          ? t("campus.onboarding.ready.subtitle")
+          : t("organizationOnboarding.readySubtitle")
       }
       stepIndex={2}
       stepCount={3}
@@ -1026,9 +1079,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
               {t("campus.onboarding.ready.processing")}
             </dt>
             <dd className="font-medium text-text">
-              {business
-                ? t("organizationOnboarding.processing")
-                : t("campus.onboarding.ready.campusInfrastructure")}
+              {education
+                ? t("campus.onboarding.ready.campusInfrastructure")
+                : t("organizationOnboarding.processing")}
             </dd>
           </div>
         </dl>
