@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Pokaż nowości",
         "description": "Pokazuj informacje o wydaniu po aktualizacjach Nova"
+      },
+      "restart": {
+        "title": "Uruchom ponownie Nova",
+        "description": "Zamyka i ponownie otwiera aplikację. Przydatne po opublikowaniu nowych treści przez Twoją organizację.",
+        "button": "Uruchom ponownie"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "To urządzenie",
       "onCampus": "Serwer uczelni",
       "note": "Serwer uczelni liczy, ile transkrypcji i przepisań wykonujesz każdego dnia. Nie przechowuje ich treści."
+    },
+    "updates": {
+      "title": "Nowości od Twojej organizacji",
+      "description": "{{what}} zostało właśnie opublikowane. Jest już dostępne.",
+      "packages": "Treści",
+      "lessons": "Lekcje",
+      "separator": " i "
     }
   },
   "aiSkills": {

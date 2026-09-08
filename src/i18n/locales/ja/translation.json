@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "新機能を表示",
         "description": "Nova のアップデート後にリリースノートを表示"
+      },
+      "restart": {
+        "title": "Nova を再起動",
+        "description": "アプリケーションを終了して開き直します。組織が新しいコンテンツを公開したあとに便利です。",
+        "button": "再起動"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "この端末",
       "onCampus": "所属機関のサーバー",
       "note": "所属機関のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。"
+    },
+    "updates": {
+      "title": "組織からの新着",
+      "description": "{{what}}が公開されました。すでに利用できます。",
+      "packages": "コンテンツ",
+      "lessons": "レッスン",
+      "separator": "と"
     }
   },
   "aiSkills": {

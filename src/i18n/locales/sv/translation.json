@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Visa nyheter",
         "description": "Visa versionsinformation efter Nova-uppdateringar"
+      },
+      "restart": {
+        "title": "Starta om Nova",
+        "description": "Stänger och öppnar programmet igen. Användbart efter att din organisation har publicerat nytt innehåll.",
+        "button": "Starta om"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Den här enheten",
       "onCampus": "Lärosätets server",
       "note": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte."
+    },
+    "updates": {
+      "title": "Nytt från din organisation",
+      "description": "{{what}} har just publicerats. Det är redan tillgängligt.",
+      "packages": "Innehåll",
+      "lessons": "Lektioner",
+      "separator": " och "
     }
   },
   "aiSkills": {

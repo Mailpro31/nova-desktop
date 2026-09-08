@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "显示新功能",
         "description": "Nova 更新后显示发行说明"
+      },
+      "restart": {
+        "title": "重启 Nova",
+        "description": "关闭并重新打开应用。在你的组织发布新内容后很有用。",
+        "button": "重启"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "本机",
       "onCampus": "机构服务器",
       "note": "机构服务器会统计你每天进行了多少次转写和改写，但不保存内容。"
+    },
+    "updates": {
+      "title": "来自你的组织的新内容",
+      "description": "{{what}}刚刚发布，现已可用。",
+      "packages": "内容",
+      "lessons": "课程",
+      "separator": "和"
     }
   },
   "aiSkills": {

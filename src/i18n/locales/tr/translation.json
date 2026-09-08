@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Yenilikleri Göster",
         "description": "Nova güncellemelerinden sonra sürüm notlarını göster"
+      },
+      "restart": {
+        "title": "Nova'yı yeniden başlat",
+        "description": "Uygulamayı kapatıp yeniden açar. Kurumunuz yeni içerik yayımladıktan sonra kullanışlıdır.",
+        "button": "Yeniden başlat"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Bu aygıt",
       "onCampus": "Kurum sunucusu",
       "note": "Kurumunuzun sunucusu her gün kaç dikte ve yeniden yazım yaptığınızı sayar. İçeriklerini saklamaz."
+    },
+    "updates": {
+      "title": "Kurumunuzdan yenilikler",
+      "description": "{{what}} az önce yayımlandı. Şimdiden kullanılabilir.",
+      "packages": "İçerik",
+      "lessons": "Dersler",
+      "separator": " ve "
     }
   },
   "aiSkills": {

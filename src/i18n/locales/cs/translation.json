@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Zobrazovat novinky",
         "description": "Zobrazovat poznámky k vydání po aktualizacích Nova"
+      },
+      "restart": {
+        "title": "Restartovat Nova",
+        "description": "Zavře a znovu otevře aplikaci. Užitečné poté, co vaše organizace zveřejní nový obsah.",
+        "button": "Restartovat"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Toto zařízení",
       "onCampus": "Server instituce",
       "note": "Server vaší instituce počítá, kolik přepisů a úprav denně provedete. Jejich obsah neuchovává."
+    },
+    "updates": {
+      "title": "Novinky od vaší organizace",
+      "description": "{{what}} bylo právě zveřejněno. Už je to k dispozici.",
+      "packages": "Obsah",
+      "lessons": "Lekce",
+      "separator": " a "
     }
   },
   "aiSkills": {
