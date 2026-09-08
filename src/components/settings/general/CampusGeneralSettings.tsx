@@ -25,6 +25,7 @@ import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
 import { DebugModeToggle } from "../DebugModeToggle";
+import { RestartApp } from "../RestartApp";
 import { type } from "@tauri-apps/plugin-os";
 
 interface SectionCardProps {
@@ -178,6 +179,7 @@ const AboutSectionCard: React.FC = () => {
         <AppDataDirectory descriptionMode="tooltip" grouped={true} />
         <LogDirectory grouped={true} />
         <DebugModeToggle descriptionMode="tooltip" grouped={true} />
+        <RestartApp grouped={true} />
       </div>
     </SectionCard>
   );

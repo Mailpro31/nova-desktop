@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Neuerungen anzeigen",
         "description": "Versionshinweise nach Nova-Updates anzeigen"
+      },
+      "restart": {
+        "title": "Nova neu starten",
+        "description": "Schließt die Anwendung und öffnet sie erneut. Nützlich, nachdem Ihre Organisation neue Inhalte veröffentlicht hat.",
+        "button": "Neu starten"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Dieses Gerät",
       "onCampus": "Server der Einrichtung",
       "note": "Der Server Ihrer Einrichtung zählt, wie viele Transkriptionen und Umschreibungen Sie täglich ausführen. Deren Inhalt wird nicht gespeichert."
+    },
+    "updates": {
+      "title": "Neues von Ihrer Organisation",
+      "description": "{{what}} wurde soeben veröffentlicht. Es ist bereits verfügbar.",
+      "packages": "Inhalte",
+      "lessons": "Lektionen",
+      "separator": " und "
     }
   },
   "aiSkills": {

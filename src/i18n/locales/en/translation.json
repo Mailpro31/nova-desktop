@@ -745,6 +745,11 @@
           "description": "High-performance tensor library for on-device machine learning inference",
           "details": "Nova's local speech-to-text is built on transcribe.cpp and ggml. Thanks to the amazing work by Georgi Gerganov and contributors."
         }
+      },
+      "restart": {
+        "title": "Restart Nova",
+        "description": "Closes and reopens the application. Useful after your organisation publishes new content.",
+        "button": "Restart"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "This device",
       "onCampus": "Institution server",
       "note": "Your institution's server counts how many transcriptions and rewrites you run each day. It does not store their content."
+    },
+    "updates": {
+      "title": "New content from your organisation",
+      "description": "{{what}} has just been published. It is already available.",
+      "packages": "Content",
+      "lessons": "Lessons",
+      "separator": " and "
     }
   },
   "aiSkills": {

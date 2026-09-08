@@ -38,6 +38,7 @@ import { useSettings } from "./hooks/useSettings";
 import { useCampusStatus } from "./hooks/useCampusStatus";
 import { useSystemReadiness } from "./hooks/useSystemReadiness";
 import { useOnboardingFlow } from "./hooks/useOnboardingFlow";
+import { useOrganizationUpdates } from "./hooks/useOrganizationUpdates";
 import { reconcileWithLegacySetting } from "./lib/onboarding/progress";
 import { useSettingsStore } from "./stores/settingsStore";
 import { refreshCampusContext } from "./stores/campusStore";
@@ -181,6 +182,11 @@ function App() {
     if (!isOrganizationMode()) return;
     void refreshCampusContext();
   }, []);
+
+  // Ce premier appel ne se rejouait jamais : ce que l'organisation publiait
+  // pendant que Nova tournait n'arrivait qu'au redemarrage suivant, sans que
+  // rien ne l'annonce. Le guichet ci-dessous reprend la main ensuite.
+  useOrganizationUpdates();
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {

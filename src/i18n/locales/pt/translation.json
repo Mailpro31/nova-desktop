@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Mostrar novidades",
         "description": "Mostrar notas de versão após atualizações do Nova"
+      },
+      "restart": {
+        "title": "Reiniciar o Nova",
+        "description": "Fecha e reabre a aplicação. Útil depois de a sua organização publicar novos conteúdos.",
+        "button": "Reiniciar"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Este dispositivo",
       "onCampus": "Servidor da instituição",
       "note": "O servidor da sua instituição conta quantas transcrições e reescritas faz por dia. Não guarda o seu conteúdo."
+    },
+    "updates": {
+      "title": "Novidades da sua organização",
+      "description": "{{what}} acabou de ser publicado. Já está disponível.",
+      "packages": "Conteúdo",
+      "lessons": "Lições",
+      "separator": " e "
     }
   },
   "aiSkills": {

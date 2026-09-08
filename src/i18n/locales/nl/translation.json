@@ -745,6 +745,11 @@
           "description": "Krachtige tensorbibliotheek voor lokale AI-verwerking",
           "details": "Nova's lokale spraak-naar-tekst is gebouwd op transcribe.cpp en ggml. Met dank aan het geweldige werk van Georgi Gerganov en alle bijdragers."
         }
+      },
+      "restart": {
+        "title": "Nova opnieuw starten",
+        "description": "Sluit de applicatie en opent deze opnieuw. Handig nadat uw organisatie nieuwe inhoud publiceert.",
+        "button": "Opnieuw starten"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Dit apparaat",
       "onCampus": "Server van de instelling",
       "note": "De server van uw instelling telt hoeveel transcripties en herschrijvingen u per dag uitvoert. De inhoud wordt niet bewaard."
+    },
+    "updates": {
+      "title": "Nieuw van uw organisatie",
+      "description": "{{what}} is zojuist gepubliceerd. Het is al beschikbaar.",
+      "packages": "Inhoud",
+      "lessons": "Lessen",
+      "separator": " en "
     }
   },
   "aiSkills": {

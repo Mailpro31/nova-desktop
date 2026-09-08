@@ -173,6 +173,23 @@ const settingUpdaters: {
     commands.changeTranscribeGpuDevice(value as number),
   extra_recording_buffer_ms: (value) =>
     commands.changeExtraRecordingBufferSetting(value as number),
+  // Sans cette entree, `updateSetting` mettait la valeur a jour en memoire,
+  // ecrivait « No handler for setting » dans la console, et n'ecrivait rien
+  // sur le disque. Au lancement suivant, `getAppSettings` renvoyait toujours
+  // `false` : le parcours de premiere ouverture se rejouait en entier au lieu
+  // d'ouvrir l'accueil. La commande Rust s'appelle `complete_campus_onboarding`
+  // pour des raisons historiques ; elle ne touche que ce reglage, dans les deux
+  // editions.
+  onboarding_completed: (value) => {
+    if (value !== true) {
+      // Rien cote Rust ne sait remettre le drapeau a `false` : le pretendre
+      // laisserait croire a une remise a zero qui n'a pas lieu.
+      return Promise.reject(
+        new Error("onboarding_completed ne peut etre que remis a true"),
+      );
+    }
+    return commands.completeCampusOnboarding();
+  },
 };
 
 export const useSettingsStore = create<SettingsStore>()(

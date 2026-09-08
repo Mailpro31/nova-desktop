@@ -9,6 +9,7 @@ import { AppDataDirectory } from "../AppDataDirectory";
 import { ShowWhatsNewOnUpdate } from "../ShowWhatsNewOnUpdate";
 import { LogDirectory } from "../debug";
 import { DebugModeToggle } from "../DebugModeToggle";
+import { RestartApp } from "../RestartApp";
 import { CampusAboutSettings } from "./CampusAboutSettings";
 import { isOrganizationMode } from "@/lib/mode";
 
@@ -65,6 +66,7 @@ export const AboutSettings: React.FC = () => {
         <AppDataDirectory descriptionMode="tooltip" grouped={true} />
         <LogDirectory grouped={true} />
         <DebugModeToggle descriptionMode="tooltip" grouped={true} />
+        <RestartApp grouped={true} />
       </SettingsGroup>
     </div>
   );

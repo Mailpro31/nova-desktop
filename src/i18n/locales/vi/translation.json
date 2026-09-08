@@ -745,6 +745,11 @@
       "whatsNewUpdates": {
         "label": "Hiển thị điểm mới",
         "description": "Hiển thị ghi chú phát hành sau khi Nova cập nhật"
+      },
+      "restart": {
+        "title": "Khởi động lại Nova",
+        "description": "Đóng và mở lại ứng dụng. Hữu ích sau khi tổ chức của bạn xuất bản nội dung mới.",
+        "button": "Khởi động lại"
       }
     },
     "home": {
@@ -1505,6 +1510,13 @@
       "onDevice": "Máy này",
       "onCampus": "Máy chủ của trường",
       "note": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung."
+    },
+    "updates": {
+      "title": "Nội dung mới từ tổ chức của bạn",
+      "description": "{{what}} vừa được xuất bản. Nội dung đã sẵn sàng.",
+      "packages": "Nội dung",
+      "lessons": "Bài học",
+      "separator": " và "
     }
   },
   "aiSkills": {

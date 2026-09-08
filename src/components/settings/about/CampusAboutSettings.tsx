@@ -6,6 +6,7 @@ import { Info, Globe, FolderOpen, FileText, Bug } from "lucide-react";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
 import { DebugModeToggle } from "../DebugModeToggle";
+import { RestartApp } from "../RestartApp";
 import { Button } from "../../ui/Button";
 import { PageHeader } from "../../ui/PageHeader";
 
@@ -110,6 +111,7 @@ export const CampusAboutSettings: React.FC = () => {
         description={t("settings.about.debugMode.description")}
       >
         <DebugModeToggle descriptionMode="tooltip" grouped={true} />
+        <RestartApp grouped={true} />
       </SectionCard>
     </div>
   );
