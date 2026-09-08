@@ -6,5 +6,12 @@
         "installMode": "perMachine"
       }
     }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/Mailpro31/nova-organization-releases/releases/latest/download/latest.json"
+      ]
+    }
   }
 }
