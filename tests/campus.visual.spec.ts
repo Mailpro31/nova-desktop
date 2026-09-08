@@ -3,6 +3,9 @@ import { mockTauri } from "./tauriMock";
 
 const campusConfig = {
   server_url: "https://campus.example.edu",
+  // La nature de l'organisation vient du serveur, jamais du poste : sans elle,
+  // l'interface reste neutre et ne parle ni de campus ni d'établissement.
+  organization_type: "education",
   organization: {
     id: "example-school",
     name: "Example Engineering School",

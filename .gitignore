@@ -63,3 +63,6 @@ ds-bundle/
 
 # Sonde de diagnostic reseau : artefacts de compilation locaux.
 /tools/*/target/
+
+# Graphe local Graphify (outil de travail, non commitable)
+graphify-out/

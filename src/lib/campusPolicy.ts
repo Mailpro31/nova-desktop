@@ -185,12 +185,25 @@ export const DEFAULT_CAMPUS_PRIVACY: CampusPrivacyPolicy = {
   infrastructure: "unknown",
 };
 
+/**
+ * Retire d'une configuration serveur ce qui ne porte aucune information.
+ *
+ * `null` et `undefined`, mais aussi la **chaîne vide** : un serveur Nova réel
+ * répond `campusName: ""` pour une organisation sans site nommé. Le schéma
+ * exige `min(1)` sur ce champ facultatif, donc la validation de l'objet entier
+ * échouait et le repli `DEFAULT_CAMPUS_ORGANIZATION` prenait la place du nom
+ * réel — un poste d'entreprise affichait « Nova Campus » sous le nom de son
+ * organisation. Un champ vide veut dire « non renseigné », pas « invalide » ;
+ * l'absence est ce qu'un schéma sait déjà traiter.
+ */
 function compactConfigValue(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(compactConfigValue);
   if (!value || typeof value !== "object") return value;
   return Object.fromEntries(
     Object.entries(value)
-      .filter(([, entry]) => entry !== null && entry !== undefined)
+      .filter(
+        ([, entry]) => entry !== null && entry !== undefined && entry !== "",
+      )
       .map(([key, entry]) => [key, compactConfigValue(entry)]),
   );
 }

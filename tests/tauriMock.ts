@@ -3,6 +3,14 @@ import type { Page } from "@playwright/test";
 interface MockOptions {
   session?: { server_url: string; email: string } | null;
   config?: Record<string, unknown> | null;
+  /**
+   * Ce que `/api/config` répond quand une adresse de serveur est saisie.
+   *
+   * Distinct de `config`, qui est la configuration **locale** posée par la DSI.
+   * Une installation Organization non configurée n'a que la seconde : c'est
+   * précisément le cas que le parcours doit savoir traiter.
+   */
+  serverConfig?: Record<string, unknown> | null;
   onboardingCompleted?: boolean;
   reachable?: boolean;
   language?: string;
@@ -111,7 +119,9 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         case "get_campus_config":
           return settings.config ?? null;
         case "fetch_campus_server_config":
-          return settings.config ?? null;
+          return settings.serverConfig !== undefined
+            ? settings.serverConfig
+            : (settings.config ?? null);
         case "check_campus_server_reachability":
           return settings.reachable ?? true;
         case "request_campus_auth":

@@ -3,6 +3,9 @@ import { mockTauri } from "./tauriMock";
 
 const campusConfig = {
   server_url: "https://campus.example.edu",
+  // La nature de l'organisation vient du serveur, jamais du poste : sans elle,
+  // l'interface reste neutre et ne parle ni de campus ni d'établissement.
+  organization_type: "education",
   organization: {
     id: "example-school",
     name: "Example Engineering School",
@@ -39,12 +42,13 @@ test.describe("Nova Campus", () => {
       onboardingCompleted: false,
     });
     await page.goto("/");
+    // Une seule surface : le titre Campus, le champ e-mail et aucun champ
+    // serveur, sans clic intermédiaire pour y arriver.
     await expect(
       page.getByRole("heading", { name: "Join your campus" }),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Continue" }).click();
     await expect(
-      page.getByRole("heading", { name: "School email" }),
+      page.getByRole("textbox", { name: "School email" }),
     ).toBeVisible();
     await expect(page.getByLabel("Campus server")).toHaveCount(0);
   });
@@ -58,14 +62,20 @@ test.describe("Nova Campus", () => {
       onboardingCompleted: true,
     });
     await page.goto("/");
-    await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByLabel("Campus server").fill("https://campus.example.edu");
-    await page.getByRole("textbox", { name: "School email" }).fill("invalid");
-    await expect(page.getByRole("button", { name: "Continue" })).toBeDisabled();
+    // Aucune configuration locale : l'adresse est demandée sur cette surface,
+    // et le vocabulaire reste neutre tant que ce serveur n'annonce rien.
     await page
-      .getByRole("textbox", { name: "School email" })
-      .fill("student@example.edu");
-    await page.getByRole("button", { name: "Continue" }).click();
+      .getByLabel("Organization server")
+      .fill("https://campus.example.edu");
+    const emailField = page.getByRole("textbox", {
+      name: "Organization email",
+    });
+    await emailField.fill("invalid");
+    await expect(
+      page.getByRole("button", { name: "Send the code" }),
+    ).toBeDisabled();
+    await emailField.fill("student@example.edu");
+    await page.getByRole("button", { name: "Send the code" }).click();
     await expect(
       page.getByRole("heading", { name: "Check your inbox" }),
     ).toBeVisible();
@@ -84,7 +94,6 @@ test.describe("Nova Campus", () => {
       onboardingCompleted: true,
     });
     await page.goto("/");
-    await page.getByRole("button", { name: "Continue" }).click();
     const microsoft = page.getByRole("button", {
       name: "Continue with Microsoft",
     });
@@ -103,11 +112,10 @@ test.describe("Nova Campus", () => {
       onboardingCompleted: false,
     });
     await page.goto("/");
-    await page.getByRole("button", { name: "Continue" }).click();
     await page
       .getByRole("textbox", { name: "School email" })
       .fill("student@example.edu");
-    await page.getByRole("button", { name: "Continue" }).click();
+    await page.getByRole("button", { name: "Send the code" }).click();
     for (let position = 1; position <= 6; position += 1) {
       await page.getByLabel(`Code digit ${position}`).fill(String(position));
     }
