@@ -1,0 +1,92 @@
+name: "Nova Organization — Release Windows (mise à jour auto)"
+
+# Le canal de mise à jour de l'édition Organization, séparé de celui de
+# Personal.
+#
+# Pourquoi un second dépôt plutôt qu'un second fichier dans le premier : ce
+# sont deux applications, avec deux rythmes de livraison. Un poste
+# d'organisation ne doit pas recevoir une version publiée pour le grand public,
+# ni l'inverse. Tant que les deux éditions interrogeaient
+# `Mailpro31/nova-releases`, c'est pourtant ce qui serait arrivé — l'endpoint
+# updater vivait dans `tauri.conf.json`, que `tauri.campus.conf.json` ne
+# surchargeait pas.
+#
+#   Personal      → Mailpro31/nova-releases
+#   Organization  → Mailpro31/nova-organization-releases
+#
+# La clé de signature (minisign) reste la même : elle authentifie l'éditeur,
+# pas le canal. Deux clés obligeraient à en gérer deux sans rien protéger de
+# plus.
+#
+# Prérequis (secrets du dépôt nova-desktop) :
+#   - TAURI_SIGNING_PRIVATE_KEY          (clé privée minisign de Nova)
+#   - TAURI_SIGNING_PRIVATE_KEY_PASSWORD (vide si la clé n'en a pas)
+#   - RELEASES_TOKEN                     (Contents:write sur
+#                                         nova-organization-releases AUSSI —
+#                                         un jeton limité au seul dépôt
+#                                         Personal ferait échouer la
+#                                         publication, pas la compilation)
+#
+# Pour livrer : bump la "version" dans src-tauri/tauri.conf.json et
+# package.json, pousse, puis lance ce workflow.
+
+on: workflow_dispatch
+
+jobs:
+  # Le jeton avant la compilation.
+  #
+  # `RELEASES_TOKEN` est un secret : personne ne peut lire sa portee depuis un
+  # depot, pas meme pour savoir sur quels autres depots il ecrit. Un jeton
+  # limite au seul canal Personal compilerait donc vingt minutes avant
+  # d'echouer a la derniere etape, sur la publication.
+  #
+  # Cette sonde pose la question en vingt secondes. Elle ne cree rien : elle
+  # demande a l'API ce que le jeton a le droit de faire sur le depot cible, et
+  # s'arrete la si la reponse n'inclut pas l'ecriture.
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verifier que le jeton peut publier sur le depot des telechargements
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          RELEASES_REPO: "Mailpro31/nova-organization-releases"
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::Le secret RELEASES_TOKEN est vide ou absent de ce depot."
+            exit 1
+          fi
+          if ! PERMS="$(gh api "repos/$RELEASES_REPO" --jq '.permissions.push' 2>/dev/null)"; then
+            echo "::error::Le jeton ne voit pas $RELEASES_REPO. Ajoute ce depot a sa portee (Repository access), avec Contents: write."
+            exit 1
+          fi
+          if [ "$PERMS" != "true" ]; then
+            echo "::error::Le jeton voit $RELEASES_REPO mais ne peut pas y ecrire. Il lui faut Contents: write."
+            exit 1
+          fi
+          echo "Le jeton peut publier sur $RELEASES_REPO."
+
+  publish-windows-organization:
+    needs: preflight
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "windows-latest"
+      target: "x86_64-pc-windows-msvc"
+      # Deux surcharges, appliquées dans l'ordre : l'édition Organization
+      # (installation pour toute la machine, endpoint updater dédié), puis
+      # l'activation des artefacts updater signés pour CE build seulement — la
+      # configuration par défaut les laisse désactivés pour que les builds de
+      # test ne réclament pas la clé de signature.
+      build-args: '--config src-tauri/tauri.campus.conf.json --config {"bundle":{"createUpdaterArtifacts":true}}'
+      # Signature de CODE Windows (Azure) non requise : seule la signature
+      # updater (minisign) l'est.
+      sign-binaries: false
+      asset-prefix: "nova-organization"
+      upload-artifacts: false
+      releases-repo: "Mailpro31/nova-organization-releases"
+      # Une release part toujours d'une compilation propre.
+      no-cache: true
+      nova_mode: "campus"
+    secrets: inherit
