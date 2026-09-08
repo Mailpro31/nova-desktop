@@ -1510,6 +1510,13 @@
       "onDevice": "Cet appareil",
       "onCampus": "Serveur de l'établissement",
       "note": "Le serveur de votre établissement compte le nombre de transcriptions et de réécritures effectuées chaque jour. Il n'en conserve pas le contenu."
+    },
+    "updates": {
+      "title": "Nouveautés de votre organisation",
+      "description": "{{what}} vient d'être publié. C'est déjà disponible.",
+      "packages": "Du contenu",
+      "lessons": "Des leçons",
+      "separator": " et "
     }
   },
   "aiSkills": {

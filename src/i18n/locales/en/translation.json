@@ -1510,6 +1510,13 @@
       "onDevice": "This device",
       "onCampus": "Institution server",
       "note": "Your institution's server counts how many transcriptions and rewrites you run each day. It does not store their content."
+    },
+    "updates": {
+      "title": "New content from your organisation",
+      "description": "{{what}} has just been published. It is already available.",
+      "packages": "Content",
+      "lessons": "Lessons",
+      "separator": " and "
     }
   },
   "aiSkills": {
