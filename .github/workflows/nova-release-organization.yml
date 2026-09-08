@@ -33,7 +33,41 @@ name: "Nova Organization — Release Windows (mise à jour auto)"
 on: workflow_dispatch
 
 jobs:
+  # Le jeton avant la compilation.
+  #
+  # `RELEASES_TOKEN` est un secret : personne ne peut lire sa portee depuis un
+  # depot, pas meme pour savoir sur quels autres depots il ecrit. Un jeton
+  # limite au seul canal Personal compilerait donc vingt minutes avant
+  # d'echouer a la derniere etape, sur la publication.
+  #
+  # Cette sonde pose la question en vingt secondes. Elle ne cree rien : elle
+  # demande a l'API ce que le jeton a le droit de faire sur le depot cible, et
+  # s'arrete la si la reponse n'inclut pas l'ecriture.
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verifier que le jeton peut publier sur le depot des telechargements
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          RELEASES_REPO: "Mailpro31/nova-organization-releases"
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::Le secret RELEASES_TOKEN est vide ou absent de ce depot."
+            exit 1
+          fi
+          if ! PERMS="$(gh api "repos/$RELEASES_REPO" --jq '.permissions.push' 2>/dev/null)"; then
+            echo "::error::Le jeton ne voit pas $RELEASES_REPO. Ajoute ce depot a sa portee (Repository access), avec Contents: write."
+            exit 1
+          fi
+          if [ "$PERMS" != "true" ]; then
+            echo "::error::Le jeton voit $RELEASES_REPO mais ne peut pas y ecrire. Il lui faut Contents: write."
+            exit 1
+          fi
+          echo "Le jeton peut publier sur $RELEASES_REPO."
+
   publish-windows-organization:
+    needs: preflight
     permissions:
       contents: write
     uses: ./.github/workflows/build.yml
