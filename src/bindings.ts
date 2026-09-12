@@ -1273,6 +1273,20 @@ async setActiveModel(modelId: string) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Prépare le modèle qui permet à une organisation de dicter sans serveur.
+ *
+ * Télécharge le modèle s'il manque, puis ne le sélectionne que si aucun modèle
+ * présent sur le disque ne l'est déjà. Ne touche jamais `onboarding_completed`.
+ */
+async prepareLocalFallbackModel(modelId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("prepare_local_fallback_model", { modelId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async getCurrentModel() : Promise<Result<string, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_current_model") };

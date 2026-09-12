@@ -744,6 +744,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 week_stats::get_week_stat,
                 overlay::set_overlay_menu_height,
                 commands::models::set_active_model,
+                commands::models::prepare_local_fallback_model,
                 commands::models::get_current_model,
                 commands::models::get_transcription_model_status,
                 commands::models::is_model_loading,

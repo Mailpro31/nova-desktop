@@ -11,6 +11,8 @@ interface MockOptions {
    * précisément le cas que le parcours doit savoir traiter.
    */
   serverConfig?: Record<string, unknown> | null;
+  /** Ce que `get_available_models` renvoie : le catalogue et l'état disque. */
+  models?: Array<Record<string, unknown>>;
   onboardingCompleted?: boolean;
   reachable?: boolean;
   language?: string;
@@ -170,10 +172,14 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return [
             { index: "default", name: "System microphone", is_default: true },
           ];
+        case "get_available_models":
+          return settings.models ?? [];
+        case "prepare_local_fallback_model":
+          localStorage.setItem("nova.test.localFallback", JSON.stringify(args));
+          return null;
         case "get_audio_devices":
         case "get_output_devices":
         case "get_lexicon_suggestions":
-        case "get_available_models":
           return [];
         case "get_windows_microphone_permission_status":
           return { supported: false, overall_access: "allowed" };
