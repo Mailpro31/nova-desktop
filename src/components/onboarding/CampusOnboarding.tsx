@@ -198,6 +198,26 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const [providersLoaded, setProvidersLoaded] = useState(false);
   /** Une lecture de `/api/config` est en cours ou programmée pour ce serveur. */
   const [serverConfigPending, setServerConfigPending] = useState(false);
+  /**
+   * Ce que l'amorçage sait sans avoir interrogé de serveur : configuration
+   * locale, organisation découverte ou invitation Lab.
+   *
+   * Chaque changement d'adresse repart de là. Repartir de l'état courant
+   * laissait la nature, le nom et les méthodes d'un serveur quitté à l'écran
+   * pour le suivant — « Rejoignez votre Campus » devant un hôte qui n'avait
+   * encore rien dit.
+   */
+  const bootConfig = useRef<CampusConfig | null>(null);
+  /**
+   * Réponse de `/api/config`, attachée à l'adresse qui l'a donnée.
+   * `config: null` signifie que ce serveur n'a pas répondu.
+   */
+  const [serverAnswer, setServerAnswer] = useState<{
+    url: string;
+    config: CampusConfig | null;
+  } | null>(null);
+  /** Relance la lecture du serveur courant, sans refaire l'amorçage. */
+  const [probeAttempt, setProbeAttempt] = useState(0);
   // Ce que l'établissement propose réellement. Le poste ne le devine pas, il le
   // demande au serveur — un serveur plus ancien répond simplement « rien ».
   const [ssoProviders, setSsoProviders] = useState<AnnouncedProviders>({
@@ -237,6 +257,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       if (deployment?.error) {
         setManagedBootstrap(true);
         setServerProvisioned(true);
+        bootConfig.current = loadedConfig;
         setConfig(loadedConfig);
         setError(t("organizationOnboarding.errors.managedConfiguration"));
         setConfigLoaded(true);
@@ -272,7 +293,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         );
         if (!mounted) return;
         if (result.status === "error") {
-          setConfig({
+          bootConfig.current = {
             ...loadedConfig,
             organization_code: discovery.organization,
             bootstrap_mode: "discovery",
@@ -281,7 +302,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
               name: discovery.organization,
               managed: true,
             },
-          });
+          };
+          setConfig(bootConfig.current);
           setError(
             result.error.code === "OrganizationNotAvailable"
               ? t("organizationOnboarding.errors.organizationUnavailable")
@@ -302,6 +324,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             managed: true,
           },
         };
+        bootConfig.current = discoveredConfig;
         setConfig(discoveredConfig);
         setServerUrl(result.data.service_endpoint);
         setConfigLoaded(true);
@@ -309,6 +332,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       }
 
       setManagedBootstrap(false);
+      bootConfig.current = loadedConfig;
       setConfig(loadedConfig);
       // Sur un poste Lab, l'adresse vient de l'invitation déjà acceptée : il
       // n'y a pas de configuration Campus locale à lire sur un PC de
@@ -328,25 +352,32 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   }, [bootstrapAttempt, t]);
 
   useEffect(() => {
+    // Une nouvelle adresse n'hérite de rien de la précédente.
+    setConfig(bootConfig.current);
+    setServerAnswer(null);
     if (!isValidCampusServerUrl(serverUrl)) {
       setServerConfigPending(false);
       return;
     }
+    const requestedUrl = normalizeCampusServerUrl(serverUrl);
     let active = true;
     // Marqué en attente dès la frappe : sans cela, un clic rapide pouvait
     // demander un code avant même que le serveur ait dit s'il en envoyait.
     setServerConfigPending(true);
     const timer = window.setTimeout(() => {
-      void loadCampusServerConfig(normalizeCampusServerUrl(serverUrl))
+      void loadCampusServerConfig(requestedUrl)
         .then((remoteConfig) => {
-          if (active && remoteConfig) {
-            setConfig((current) => ({
+          if (!active) return;
+          setServerAnswer({ url: requestedUrl, config: remoteConfig });
+          if (remoteConfig) {
+            const boot = bootConfig.current;
+            setConfig({
               ...remoteConfig,
               organization_code:
-                current?.organization_code ?? remoteConfig.organization_code,
+                boot?.organization_code ?? remoteConfig.organization_code,
               bootstrap_mode:
-                current?.bootstrap_mode ?? remoteConfig.bootstrap_mode,
-            }));
+                boot?.bootstrap_mode ?? remoteConfig.bootstrap_mode,
+            });
           }
         })
         .finally(() => {
@@ -357,7 +388,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       active = false;
       window.clearTimeout(timer);
     };
-  }, [serverUrl]);
+  }, [serverUrl, probeAttempt]);
 
   /**
    * Le poste ne décide pas seul quel fournisseur proposer : il demande au
@@ -413,7 +444,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     return () => {
       active = false;
     };
-  }, [serverUrl]);
+  }, [serverUrl, probeAttempt]);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -440,14 +471,19 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
    * Dire « Campus » à une entreprise, ou l'inverse, avant d'avoir demandé,
    * c'est se tromper avec assurance devant quelqu'un qui découvre le produit.
    */
+  const hasServer = isValidCampusServerUrl(serverUrl);
+  /** La réponse de `/api/config`, si elle vient du serveur actuellement saisi. */
+  const currentAnswer =
+    hasServer && serverAnswer?.url === normalizeCampusServerUrl(serverUrl)
+      ? serverAnswer
+      : null;
+  const answeredType = currentAnswer?.config?.organization_type;
   const announcedOrganizationType =
-    config?.organization_type === "education" ||
-    config?.organization_type === "business"
-      ? config.organization_type
+    answeredType === "education" || answeredType === "business"
+      ? answeredType
       : null;
   const education = announcedOrganizationType === "education";
   const business = announcedOrganizationType === "business";
-  const hasServer = isValidCampusServerUrl(serverUrl);
   const signInButtons = organizationSignInButtons({
     edition: "organization",
     providers: ssoProviders,
@@ -459,17 +495,24 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const serverProbeSettled =
     hasServer && !serverConfigPending && providersLoaded;
   /**
-   * Le code par e-mail n'est proposé qu'une fois le serveur interrogé.
+   * Le code par e-mail n'est proposé qu'une fois le serveur **entendu**.
    *
-   * Deux cas seulement : il l'annonce, ou il n'annonce rien du tout — un
-   * serveur muet garde le chemin historique, sans quoi une organisation servie
-   * par une version antérieure n'aurait plus aucun moyen de se connecter.
+   * Deux cas seulement : il l'annonce, ou il répond sans annoncer de méthode —
+   * un serveur plus ancien garde le chemin historique, sans quoi ses membres
+   * n'auraient plus aucun moyen de se connecter. Un serveur qui ne répond pas
+   * n'annonce rien : lui demander une adresse e-mail, c'était promettre un code
+   * qui ne partirait jamais.
    */
   const emailCodeAvailable =
-    hasServer &&
-    (config !== null
-      ? context.authMethods.includes("email_code")
-      : serverProbeSettled && signInButtons.length === 0);
+    serverProbeSettled &&
+    Boolean(currentAnswer?.config) &&
+    context.authMethods.includes("email_code");
+  /** Le serveur saisi n'a pas répondu, et aucun autre chemin ne s'offre. */
+  const serverUnreachable =
+    serverProbeSettled &&
+    currentAnswer !== null &&
+    currentAnswer.config === null &&
+    signInButtons.length === 0;
 
   /**
    * Termine le flow sans dupliquer discovery ni authentification.
@@ -556,6 +599,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       markLabEnrolled();
       const labConfig = await loadCampusServerConfig(enrolled.service_endpoint);
       if (!labConfig) throw new Error("LAB_CONFIGURATION_UNAVAILABLE");
+      bootConfig.current = labConfig;
       setServerUrl(enrolled.service_endpoint);
       setConfig(labConfig);
       setServerProvisioned(true);
@@ -925,6 +969,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
 
         {configLoaded &&
           serverProbeSettled &&
+          Boolean(currentAnswer?.config) &&
           !emailCodeAvailable &&
           signInButtons.length === 0 && (
             <p className="text-sm text-danger" role="alert">
@@ -933,21 +978,32 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 : t("organizationOnboarding.errors.authMethodUnavailable")}
             </p>
           )}
-        {error && (
+        {error ? (
           <p className="text-sm text-danger" role="alert">
             {error}
           </p>
+        ) : (
+          serverUnreachable && (
+            <p className="text-sm text-danger" role="alert">
+              {t("campus.onboarding.errors.network")}
+            </p>
+          )
         )}
-        {configLoaded && managedBootstrap && !hasServer && (
-          <Button
-            type="button"
-            variant="secondary"
-            size="lg"
-            onClick={() => setBootstrapAttempt((attempt) => attempt + 1)}
-          >
-            {t("organizationOnboarding.retry")}
-          </Button>
-        )}
+        {configLoaded &&
+          ((managedBootstrap && !hasServer) || serverUnreachable) && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="lg"
+              onClick={() =>
+                hasServer
+                  ? setProbeAttempt((attempt) => attempt + 1)
+                  : setBootstrapAttempt((attempt) => attempt + 1)
+              }
+            >
+              {t("organizationOnboarding.retry")}
+            </Button>
+          )}
       </div>
     );
   }

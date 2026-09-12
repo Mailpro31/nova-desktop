@@ -59,6 +59,12 @@ test.describe("Nova Campus", () => {
     await mockTauri(page, {
       session: null,
       config: null,
+      // Le serveur répond, sans déclarer sa nature : un hôte muet ne ferait
+      // plus apparaître de champ e-mail, voir `organizationOnboarding.spec.ts`.
+      serverConfig: {
+        server_url: "https://campus.example.edu",
+        auth_methods: ["email_code"],
+      },
       onboardingCompleted: true,
     });
     await page.goto("/");
