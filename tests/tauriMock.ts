@@ -11,6 +11,14 @@ interface MockOptions {
    * précisément le cas que le parcours doit savoir traiter.
    */
   serverConfig?: Record<string, unknown> | null;
+  /**
+   * Réponse de `/api/config` adresse par adresse, prioritaire sur `serverConfig`.
+   *
+   * `null` simule un serveur qui ne répond pas : la commande échoue, comme la
+   * commande Rust quand l'hôte est injoignable. Sans cela, impossible de prouver
+   * que la surface suit le serveur **actuellement saisi** et non le précédent.
+   */
+  serverConfigs?: Record<string, Record<string, unknown> | null>;
   onboardingCompleted?: boolean;
   reachable?: boolean;
   language?: string;
@@ -118,10 +126,24 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return null;
         case "get_campus_config":
           return settings.config ?? null;
-        case "fetch_campus_server_config":
+        case "fetch_campus_server_config": {
+          const fetches = Number(
+            localStorage.getItem("nova.test.serverConfigFetches") ?? "0",
+          );
+          localStorage.setItem(
+            "nova.test.serverConfigFetches",
+            String(fetches + 1),
+          );
+          const requested = String(args.serverUrl);
+          if (settings.serverConfigs && requested in settings.serverConfigs) {
+            const answer = settings.serverConfigs[requested];
+            if (answer === null) throw `Serveur injoignable : ${requested}`;
+            return answer;
+          }
           return settings.serverConfig !== undefined
             ? settings.serverConfig
             : (settings.config ?? null);
+        }
         case "check_campus_server_reachability":
           return settings.reachable ?? true;
         case "request_campus_auth":

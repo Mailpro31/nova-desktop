@@ -546,3 +546,156 @@ test.describe("single organization sign-in surface", () => {
     await expect(server).toHaveValue("https://nova.example.test");
   });
 });
+
+/**
+ * La surface parle du serveur actuellement saisi, et de lui seul.
+ *
+ * Ce qu'un serveur a annoncé — sa nature, son nom, ses méthodes — ne vaut que
+ * pour son adresse. Changer d'adresse, l'effacer ou tomber sur un hôte muet ne
+ * doit laisser à l'écran aucun reste de la réponse précédente, et un serveur
+ * qui ne répond pas ne doit jamais faire demander une adresse e-mail.
+ */
+test.describe("the surface follows the server it is talking to", () => {
+  const school = {
+    server_url: "https://nova.school.test",
+    organization_type: "education",
+    organization: {
+      id: "example-school",
+      name: "Example Engineering School",
+      shortName: "EES",
+      managed: true,
+    },
+    auth_methods: ["email_code"],
+  };
+
+  const serverConfigFetches = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      Number(localStorage.getItem("nova.test.serverConfigFetches") ?? "0"),
+    );
+
+  test("leaving a campus server drops its wording and its name", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      serverConfigs: {
+        "https://nova.school.test": school,
+        "https://offline.example.test": null,
+      },
+    });
+    await page.goto("/");
+
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.school.test");
+    await expect(page.getByLabel("Campus server")).toBeVisible();
+
+    // Un hôte qui ne répond pas n'a rien annoncé : l'écran redevient neutre.
+    await page.getByLabel("Campus server").fill("https://offline.example.test");
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(page.getByLabel("Organization server")).toHaveValue(
+      "https://offline.example.test",
+    );
+    await expect(page.locator("body")).not.toContainText(
+      /Nova Campus|Join your campus|School email|Campus server|institution/i,
+    );
+    await expect(page.locator("body")).not.toContainText("EES");
+
+    // Effacer l'adresse ne laisse pas davantage de trace de l'établissement.
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.school.test");
+    await expect(page.getByLabel("Campus server")).toBeVisible();
+    await page.getByLabel("Campus server").fill("");
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("EES");
+  });
+
+  test("a server that does not answer is reported instead of asking for an email", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      serverConfigs: { "https://offline.example.test": null },
+    });
+    await page.goto("/");
+
+    const server = page.getByLabel("Organization server");
+    await server.fill("https://offline.example.test");
+
+    await expect(page.getByRole("alert")).toContainText(
+      "Could not reach the server",
+    );
+    await expect(page.locator('input[type="email"]')).toHaveCount(0);
+    // L'adresse reste corrigeable sur place.
+    await expect(server).toBeEditable();
+  });
+
+  test("a managed install whose server does not answer offers a retry, never an email field", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      deployment: {
+        managed: true,
+        organization_id: "acme",
+        control_plane_origin: "https://api.novaspeak.app",
+        error: null,
+      },
+      discovery: {
+        organization: "acme",
+        display_name: "Acme",
+        service_endpoint: "https://nova.acme.example",
+        deployment_mode: "dedicated",
+        contract_version: 1,
+      },
+      serverConfigs: { "https://nova.acme.example": null },
+    });
+    await page.goto("/");
+
+    await expect(page.getByRole("alert")).toContainText(
+      "Could not reach the server",
+    );
+    await expect(page.locator('input[type="email"]')).toHaveCount(0);
+    await expect(page.locator('input[type="url"]')).toHaveCount(0);
+
+    const retry = page.getByRole("button", { name: "Try again" });
+    await expect(retry).toBeEnabled();
+    const before = await serverConfigFetches(page);
+    await retry.click();
+    await expect.poll(() => serverConfigFetches(page)).toBeGreaterThan(before);
+  });
+
+  test("a server that answers without auth_methods keeps the email code path", async ({
+    page,
+  }) => {
+    // Garde-fou : un serveur plus ancien n'annonce aucune méthode, et ses
+    // membres doivent toujours pouvoir se connecter par code.
+    const { auth_methods: _omitted, ...legacy } = school;
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      serverConfigs: {
+        "https://nova.legacy.test": {
+          ...legacy,
+          server_url: "https://nova.legacy.test",
+        },
+      },
+    });
+    await page.goto("/");
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.legacy.test");
+
+    await expect(
+      page.getByRole("textbox", { name: "School email" }),
+    ).toBeVisible();
+  });
+});
