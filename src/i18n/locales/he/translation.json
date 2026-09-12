@@ -1517,6 +1517,11 @@
       "packages": "תוכן",
       "lessons": "שיעורים",
       "separator": " ו "
+    },
+    "suspended": {
+      "title": "הגישה לארגון הושעתה",
+      "description": "Nova ממשיך לפעול במחשב זה במצב Personal, עם ההיסטוריה שלך. פנה למנהל המערכת.",
+      "restored": "הגישה לארגון שוחזרה"
     }
   },
   "aiSkills": {

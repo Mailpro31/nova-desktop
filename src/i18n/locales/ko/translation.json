@@ -1517,6 +1517,11 @@
       "packages": "콘텐츠",
       "lessons": "레슨",
       "separator": " 및 "
+    },
+    "suspended": {
+      "title": "조직 액세스가 일시 중지됨",
+      "description": "이 컴퓨터에서는 기록을 유지한 채 Personal로 Nova를 계속 사용할 수 있습니다. 관리자에게 문의하세요.",
+      "restored": "조직 액세스가 복원됨"
     }
   },
   "aiSkills": {

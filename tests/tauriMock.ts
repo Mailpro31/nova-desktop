@@ -157,7 +157,15 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             email: currentSession.email,
             retry_after: null,
           };
+        case "set_campus_suspended":
+          localStorage.setItem("nova.test.suspended", JSON.stringify(args));
+          return null;
         case "get_campus_me":
+          // Lu à chaque appel : un test peut suspendre puis réactiver le
+          // membre sans recharger la page, comme le ferait l'administrateur.
+          if (localStorage.getItem("nova.test.meStatus") === "403") {
+            throw 'HTTP 403: {"detail":"Compte suspendu — contactez votre administrateur"}';
+          }
           return {
             email: currentSession?.email ?? "student@example.edu",
             role: "student",

@@ -1517,6 +1517,11 @@
       "packages": "Nội dung",
       "lessons": "Bài học",
       "separator": " và "
+    },
+    "suspended": {
+      "title": "Quyền truy cập tổ chức đã bị tạm ngưng",
+      "description": "Nova vẫn hoạt động ở chế độ Personal trên máy tính này, cùng lịch sử của bạn. Hãy liên hệ quản trị viên.",
+      "restored": "Quyền truy cập tổ chức đã được khôi phục"
     }
   },
   "aiSkills": {

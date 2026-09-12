@@ -31,6 +31,33 @@ pub fn is_campus_enabled() -> bool {
     CAMPUS_ENABLED.load(Ordering::Relaxed)
 }
 
+/// L'organisation a suspendu le membre connecté (`/api/me` répond 403).
+///
+/// Distinct de [`is_campus_enabled`], qui dit l'**édition** du poste — lue
+/// notamment par `get_deployment_state`. Une suspension ne change pas
+/// l'édition : elle retire seulement ce que l'organisation fournit.
+static ORGANIZATION_SUSPENDED: AtomicBool = AtomicBool::new(false);
+
+pub fn set_organization_suspended(suspended: bool) {
+    ORGANIZATION_SUSPENDED.store(suspended, Ordering::Relaxed);
+}
+
+pub fn is_organization_suspended() -> bool {
+    ORGANIZATION_SUSPENDED.load(Ordering::Relaxed)
+}
+
+/// L'organisation sert-elle ce poste — dictées envoyées, palier débloqué ?
+///
+/// Pas pour un membre suspendu : il retombe en Personal, avec la dictée locale
+/// et le palier de sa licence personnelle.
+pub fn organization_serves(campus_enabled: bool, suspended: bool) -> bool {
+    campus_enabled && !suspended
+}
+
+fn organization_unlocks() -> bool {
+    organization_serves(is_campus_enabled(), is_organization_suspended())
+}
+
 /// Clé publique Ed25519 de l'éditeur (base64 standard, 32 octets bruts).
 /// VIDE = licences dormantes (accès complet). Renseignée = paliers actifs.
 const PUBLIC_KEY_B64: &str = "Q+U/LqaeFgLSDkvqiAXRcHQ8DSwqU9NcrHiPt8A6EJE=";
@@ -236,7 +263,9 @@ pub fn verify_key(key: &str) -> Option<LicenseInfo> {
 /// valide → Free ; sinon le palier de la licence. En mode campus, l'établissement
 /// paie : on renvoie toujours Ultra pour court-circuiter tous les verrous.
 pub fn current_tier(license_key: &str) -> Tier {
-    if is_campus_enabled() || !enabled() {
+    // Un membre suspendu garde l'édition Organization mais perd ce qu'elle
+    // débloque : il retombe sur le palier de sa licence personnelle.
+    if organization_unlocks() || !enabled() {
         return Tier::Ultra; // campus ou dormant = tout débloqué
     }
     verify_key(license_key)
@@ -261,7 +290,7 @@ pub fn effective_tier(license_key: &str, _trial_started_at: i64) -> Tier {
 /// La fonctionnalité est-elle accessible avec la licence active ?
 /// En mode campus, l'établissement débloque toutes les fonctionnalités.
 pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
-    if is_campus_enabled() {
+    if organization_unlocks() {
         return true;
     }
     effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
@@ -429,5 +458,29 @@ mod style_gating_tests {
         let recent_trial = now_secs();
         assert_eq!(effective_tier("", recent_trial), Tier::Free);
         assert!(!has("cloud_styles", "", recent_trial));
+    }
+}
+
+/// Une organisation ne débloque Nova — et ne reçoit les dictées — que tant
+/// que son membre n'est pas suspendu. Suspendu, le poste retombe en Personal :
+/// la dictée locale continue, avec le palier que la licence personnelle donne.
+#[cfg(test)]
+mod organization_suspension_tests {
+    use super::organization_serves;
+
+    #[test]
+    fn une_organisation_active_sert_son_membre() {
+        assert!(organization_serves(true, false));
+    }
+
+    #[test]
+    fn un_membre_suspendu_retombe_en_personal() {
+        assert!(!organization_serves(true, true));
+    }
+
+    #[test]
+    fn hors_organisation_rien_n_est_debloque() {
+        assert!(!organization_serves(false, false));
+        assert!(!organization_serves(false, true));
     }
 }

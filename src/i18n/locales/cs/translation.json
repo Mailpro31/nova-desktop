@@ -1517,6 +1517,11 @@
       "packages": "Obsah",
       "lessons": "Lekce",
       "separator": " a "
+    },
+    "suspended": {
+      "title": "Přístup k organizaci pozastaven",
+      "description": "Nova na tomto počítači dál funguje v režimu Personal i s vaší historií. Obraťte se na správce.",
+      "restored": "Přístup k organizaci obnoven"
     }
   },
   "aiSkills": {
