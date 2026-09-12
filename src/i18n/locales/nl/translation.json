@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Plakken lukte niet",
         "detail": "Uw dictaat staat op het klembord."
+      },
+      "campusSignedOut": {
+        "title": "Afgemeld bij je organisatie",
+        "detail": "Nova blijft op deze computer werken in Personal. Verbind je organisatie opnieuw via de instellingen."
       }
     },
     "active": {

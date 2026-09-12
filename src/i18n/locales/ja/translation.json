@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "貼り付けできませんでした",
         "detail": "音声入力した文章はクリップボードにあります。"
+      },
+      "campusSignedOut": {
+        "title": "組織からサインアウトしました",
+        "detail": "このコンピューターでは Personal として Nova を引き続き使用できます。設定から組織に再接続してください。"
       }
     },
     "active": {

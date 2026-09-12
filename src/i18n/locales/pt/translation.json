@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Não foi possível colar",
         "detail": "O seu ditado está na área de transferência."
+      },
+      "campusSignedOut": {
+        "title": "Sessão terminada na sua organização",
+        "detail": "O Nova continua a funcionar em Personal neste computador. Volte a ligar a sua organização nas definições."
       }
     },
     "active": {

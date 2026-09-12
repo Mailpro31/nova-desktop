@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "붙여넣지 못했습니다",
         "detail": "받아쓴 내용은 클립보드에 있습니다."
+      },
+      "campusSignedOut": {
+        "title": "조직에서 로그아웃됨",
+        "detail": "이 컴퓨터에서는 Personal로 Nova를 계속 사용할 수 있습니다. 설정에서 조직을 다시 연결하세요."
       }
     },
     "active": {

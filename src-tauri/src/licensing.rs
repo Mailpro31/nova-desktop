@@ -54,8 +54,32 @@ pub fn organization_serves(campus_enabled: bool, suspended: bool) -> bool {
     campus_enabled && !suspended
 }
 
+/// Un membre est connecté à l'organisation sur ce poste.
+///
+/// Tenu par la session elle-même (`commands::campus`) : enregistrée, relue ou
+/// effacée. **Vrai par défaut** : au lancement, avant que la session soit
+/// relue, un membre connecté ne doit jamais voir une offre payante s'afficher
+/// un instant ; un poste déconnecté, lui, peut rester débloqué le temps de
+/// cette relecture.
+static ORGANIZATION_SIGNED_IN: AtomicBool = AtomicBool::new(true);
+
+pub fn set_organization_signed_in(signed_in: bool) {
+    ORGANIZATION_SIGNED_IN.store(signed_in, Ordering::Relaxed);
+}
+
+/// L'organisation débloque-t-elle le palier ? Seulement pour un membre servi
+/// **et** connecté : une session révoquée ou expirée retombe en Personal, comme
+/// une suspension.
+pub fn organization_unlocks_tier(campus_enabled: bool, suspended: bool, signed_in: bool) -> bool {
+    organization_serves(campus_enabled, suspended) && signed_in
+}
+
 fn organization_unlocks() -> bool {
-    organization_serves(is_campus_enabled(), is_organization_suspended())
+    organization_unlocks_tier(
+        is_campus_enabled(),
+        is_organization_suspended(),
+        ORGANIZATION_SIGNED_IN.load(Ordering::Relaxed),
+    )
 }
 
 /// Clé publique Ed25519 de l'éditeur (base64 standard, 32 octets bruts).
@@ -482,5 +506,32 @@ mod organization_suspension_tests {
     fn hors_organisation_rien_n_est_debloque() {
         assert!(!organization_serves(false, false));
         assert!(!organization_serves(false, true));
+    }
+}
+
+/// Sans session, l'organisation ne débloque rien : un membre déconnecté —
+/// session révoquée ou expirée — retombe en Personal, comme un membre suspendu.
+#[cfg(test)]
+mod organization_session_tests {
+    use super::organization_unlocks_tier;
+
+    #[test]
+    fn un_membre_connecte_et_servi_garde_le_palier_de_l_organisation() {
+        assert!(organization_unlocks_tier(true, false, true));
+    }
+
+    #[test]
+    fn un_membre_deconnecte_retombe_en_personal() {
+        assert!(!organization_unlocks_tier(true, false, false));
+    }
+
+    #[test]
+    fn la_suspension_l_emporte_meme_connecte() {
+        assert!(!organization_unlocks_tier(true, true, true));
+    }
+
+    #[test]
+    fn hors_organisation_la_session_ne_debloque_rien() {
+        assert!(!organization_unlocks_tier(false, false, true));
     }
 }

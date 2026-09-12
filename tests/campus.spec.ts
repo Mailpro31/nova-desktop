@@ -56,10 +56,13 @@ test.describe("Nova Campus", () => {
   test("manual setup validates email and handles an incorrect code", async ({
     page,
   }) => {
+    // Premier lancement : sans session, un poste déjà configuré démarre
+    // désormais en Personal. L'écran de connexion testé ici est celui du
+    // premier lancement — voir `organizationOnboarding.spec.ts`.
     await mockTauri(page, {
       session: null,
       config: null,
-      onboardingCompleted: true,
+      onboardingCompleted: false,
     });
     await page.goto("/");
     // Aucune configuration locale : l'adresse est demandée sur cette surface,
@@ -91,7 +94,8 @@ test.describe("Nova Campus", () => {
     await mockTauri(page, {
       session: null,
       config: { ...campusConfig, auth_methods: ["email_code", "entra"] },
-      onboardingCompleted: true,
+      // Premier lancement, pour la même raison que le test précédent.
+      onboardingCompleted: false,
     });
     await page.goto("/");
     const microsoft = page.getByRole("button", {

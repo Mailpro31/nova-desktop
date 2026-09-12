@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "No se pudo pegar",
         "detail": "Tu dictado está en el portapapeles."
+      },
+      "campusSignedOut": {
+        "title": "Sesión cerrada en tu organización",
+        "detail": "Nova sigue funcionando en Personal en este ordenador. Vuelve a conectar tu organización desde los ajustes."
       }
     },
     "active": {

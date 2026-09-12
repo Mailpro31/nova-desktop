@@ -695,3 +695,56 @@ test.describe("a suspended member keeps dictating in Personal", () => {
     );
   });
 });
+
+/**
+ * Une session révoquée ne ferme plus Nova.
+ *
+ * Un poste déjà configuré dont la session a expiré, ou a été révoquée,
+ * démarrait sur l'écran de connexion, étape obligatoire : plus aucune dictée
+ * avant de s'être reconnecté. Il démarre désormais en Personal, dit qu'il est
+ * déconnecté, et laisse se reconnecter depuis les réglages.
+ */
+test.describe("a member signed out of the organization keeps using Nova", () => {
+  test("a configured workstation without a session starts in Personal, not on a sign-in wall", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: true,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toHaveCount(0);
+
+    // La reconnexion reste à portée : réglages, puis le même parcours.
+    await page.getByRole("button", { name: "Open settings" }).click();
+    await page.getByRole("button", { name: "Connect organization" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+  });
+
+  test("a first launch still starts with the organization sign-in", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: false,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toHaveCount(0);
+  });
+});

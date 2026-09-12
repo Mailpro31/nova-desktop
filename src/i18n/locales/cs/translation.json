@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Vložení se nezdařilo",
         "detail": "Váš diktát je ve schránce."
+      },
+      "campusSignedOut": {
+        "title": "Odhlášeno z organizace",
+        "detail": "Nova na tomto počítači dál funguje v režimu Personal. Organizaci znovu připojte v nastavení."
       }
     },
     "active": {
