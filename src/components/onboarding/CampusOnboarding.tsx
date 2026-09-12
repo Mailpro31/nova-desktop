@@ -634,6 +634,27 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     }
   };
 
+  /**
+   * Rappels du sondage Microsoft, lus au moment où ils servent.
+   *
+   * Ils changent d'identité à chaque rendu du parent (`onComplete` y est
+   * recréé). Dans les dépendances de l'effet, ils l'annulaient — `active`
+   * repassait à faux — pendant qu'il attendait la relecture du contexte : la
+   * connexion Microsoft aboutissait, et l'écran « connecté » n'arrivait jamais.
+   */
+  const pollCallbacks = useRef({
+    finishFlow,
+    formatError,
+    refreshConnectedCampusState,
+  });
+  useEffect(() => {
+    pollCallbacks.current = {
+      finishFlow,
+      formatError,
+      refreshConnectedCampusState,
+    };
+  }, [finishFlow, formatError, refreshConnectedCampusState]);
+
   useEffect(() => {
     if (!microsoftFlow) return;
     let active = true;
@@ -648,9 +669,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           if (!active) return;
           setEmail(result.email ?? loadedProfile?.email ?? "");
           setProfile(loadedProfile);
+          await pollCallbacks.current.refreshConnectedCampusState();
+          if (!active) return;
+          // Le flux n'est clos qu'une fois la connexion aboutie : le clore
+          // avant annulait ce sondage au milieu de sa propre fin.
           setMicrosoftFlow(null);
-          await refreshConnectedCampusState();
-          if (active) finishFlow();
+          pollCallbacks.current.finishFlow();
           return;
         }
         if (result.status === "expired") {
@@ -663,7 +687,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       } catch (caught) {
         if (!active) return;
         setMicrosoftFlow(null);
-        setError(formatError(caught));
+        setError(pollCallbacks.current.formatError(caught));
       }
     };
 
@@ -672,14 +696,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       active = false;
       if (timer !== undefined) window.clearTimeout(timer);
     };
-  }, [
-    api,
-    finishFlow,
-    formatError,
-    microsoftFlow,
-    refreshConnectedCampusState,
-    t,
-  ]);
+  }, [api, microsoftFlow, t]);
 
   const handleVerifyCode = useCallback(async () => {
     if (code.length !== 6 || isLoading || lastSubmittedCode.current === code) {
