@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Collage impossible",
         "detail": "Votre dictée est dans le presse-papiers."
+      },
+      "campusSignedOut": {
+        "title": "Déconnecté de votre organisation",
+        "detail": "Nova continue de fonctionner en Personal sur cet ordinateur. Reconnectez votre organisation depuis les réglages."
       }
     },
     "active": {

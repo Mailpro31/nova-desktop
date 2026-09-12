@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "无法粘贴",
         "detail": "你的语音输入已放入剪贴板。"
+      },
+      "campusSignedOut": {
+        "title": "已从组织注销",
+        "detail": "Nova 将继续在此电脑上以 Personal 模式运行。请在设置中重新连接您的组织。"
       }
     },
     "active": {

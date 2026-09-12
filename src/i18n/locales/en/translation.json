@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Couldn't paste",
         "detail": "Your dictation is in the clipboard."
+      },
+      "campusSignedOut": {
+        "title": "Signed out of your organization",
+        "detail": "Nova keeps working in Personal on this computer. Connect your organization again from the settings."
       }
     },
     "active": {

@@ -687,6 +687,7 @@ pub(crate) fn save_campus_credentials(
         let _ = entry.delete_credential();
         return Err(error);
     }
+    crate::licensing::set_organization_signed_in(true);
 
     Ok(())
 }
@@ -728,7 +729,12 @@ fn load_campus_credentials(app: &AppHandle) -> Result<Option<CampusCredentials>,
 #[tauri::command]
 #[specta::specta]
 pub fn load_campus_session(app: AppHandle) -> Result<Option<CampusSession>, String> {
-    Ok(load_campus_credentials(&app)?.map(|credentials| credentials.session))
+    let session = load_campus_credentials(&app)?.map(|credentials| credentials.session);
+    // Relue au lancement : c'est ici que le poste apprend s'il est encore
+    // connecté. Une erreur de trousseau, elle, ne tranche rien — elle ne doit
+    // pas faire apparaître une offre payante à un membre connecté.
+    crate::licensing::set_organization_signed_in(session.is_some());
+    Ok(session)
 }
 
 #[tauri::command]
@@ -754,6 +760,8 @@ pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
         }
     }
     store.delete(CAMPUS_SESSION_KEY);
+    // Sans session, l'organisation ne débloque plus rien : Personal.
+    crate::licensing::set_organization_signed_in(false);
     store.save().map_err(|e| e.to_string())?;
     Ok(())
 }

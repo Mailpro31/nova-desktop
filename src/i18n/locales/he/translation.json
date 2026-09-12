@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "ההדבקה נכשלה",
         "detail": "ההכתבה שלכם בלוח הגזירים."
+      },
+      "campusSignedOut": {
+        "title": "התנתקת מהארגון שלך",
+        "detail": "Nova ממשיך לפעול במחשב זה במצב Personal. חבר מחדש את הארגון מההגדרות."
       }
     },
     "active": {

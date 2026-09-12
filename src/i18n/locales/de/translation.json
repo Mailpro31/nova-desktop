@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Einfügen nicht möglich",
         "detail": "Ihr Diktat liegt in der Zwischenablage."
+      },
+      "campusSignedOut": {
+        "title": "Von Ihrer Organisation abgemeldet",
+        "detail": "Nova funktioniert auf diesem Computer weiter in Personal. Verbinden Sie Ihre Organisation in den Einstellungen erneut."
       }
     },
     "active": {

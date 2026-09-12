@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "無法貼上",
         "detail": "你的語音輸入已放入剪貼簿。"
+      },
+      "campusSignedOut": {
+        "title": "已從組織登出",
+        "detail": "Nova 會繼續在此電腦上以 Personal 模式運作。請在設定中重新連線您的組織。"
       }
     },
     "active": {

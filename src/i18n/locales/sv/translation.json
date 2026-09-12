@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Kunde inte klistra in",
         "detail": "Din diktering finns i urklipp."
+      },
+      "campusSignedOut": {
+        "title": "Utloggad från din organisation",
+        "detail": "Nova fortsätter att fungera i Personal på den här datorn. Anslut din organisation igen i inställningarna."
       }
     },
     "active": {

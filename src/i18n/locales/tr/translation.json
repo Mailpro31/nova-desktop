@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Yapıştırılamadı",
         "detail": "Dikteniz panoda."
+      },
+      "campusSignedOut": {
+        "title": "Kuruluşunuzdan çıkış yapıldı",
+        "detail": "Nova bu bilgisayarda Personal modunda çalışmaya devam ediyor. Kuruluşunuzu ayarlardan yeniden bağlayın."
       }
     },
     "active": {

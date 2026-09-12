@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Không dán được",
         "detail": "Nội dung bạn đọc đang ở trong bảng nháp."
+      },
+      "campusSignedOut": {
+        "title": "Đã đăng xuất khỏi tổ chức",
+        "detail": "Nova vẫn hoạt động ở chế độ Personal trên máy tính này. Hãy kết nối lại tổ chức trong phần cài đặt."
       }
     },
     "active": {

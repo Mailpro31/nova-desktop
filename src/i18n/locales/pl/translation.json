@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Nie udało się wkleić",
         "detail": "Twoje dyktowanie jest w schowku."
+      },
+      "campusSignedOut": {
+        "title": "Wylogowano z organizacji",
+        "detail": "Nova nadal działa na tym komputerze w wersji Personal. Połącz ponownie organizację w ustawieniach."
       }
     },
     "active": {

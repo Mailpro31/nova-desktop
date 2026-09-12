@@ -1637,6 +1637,10 @@
       "insertionFailed": {
         "title": "Impossibile incollare",
         "detail": "La tua dettatura è negli appunti."
+      },
+      "campusSignedOut": {
+        "title": "Disconnesso dalla tua organizzazione",
+        "detail": "Nova continua a funzionare in Personal su questo computer. Ricollega la tua organizzazione dalle impostazioni."
       }
     },
     "active": {
