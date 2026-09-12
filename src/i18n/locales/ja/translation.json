@@ -1517,6 +1517,11 @@
       "packages": "コンテンツ",
       "lessons": "レッスン",
       "separator": "と"
+    },
+    "suspended": {
+      "title": "組織へのアクセスが停止されました",
+      "description": "このコンピューターでは履歴を保持したまま Personal として Nova を引き続き使用できます。管理者にお問い合わせください。",
+      "restored": "組織へのアクセスが復元されました"
     }
   },
   "aiSkills": {

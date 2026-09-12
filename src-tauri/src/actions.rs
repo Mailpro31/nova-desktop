@@ -2259,7 +2259,12 @@ impl ShortcutAction for TranscribeAction {
                             // Session campus présente mais serveur injoignable
                             // (cache ou vérification fraîche) : repli local +
                             // notification discrète, jamais de perte.
-                            if campus::is_campus_enabled(&ah) && campus::has_campus_session(&ah) {
+                            // Un membre suspendu n'est pas hors ligne : le lui
+                            // dire à chaque dictée l'enverrait chercher une panne.
+                            if campus::is_campus_enabled(&ah)
+                                && !crate::licensing::is_organization_suspended()
+                                && campus::has_campus_session(&ah)
+                            {
                                 let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
                             }
                             match stream_result {
@@ -2286,6 +2291,13 @@ impl ShortcutAction for TranscribeAction {
                             CampusError::Network(_) => {
                                 warn!("Campus server request failed: {}", err);
                                 let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                            }
+                            // Refusée par l'organisation : peut-être une
+                            // suspension. La dictée est déjà sauvée en local ;
+                            // l'interface vérifie `/api/me`, seule autorité.
+                            CampusError::Forbidden(_) => {
+                                warn!("Campus server refused the request: {}", err);
+                                let _ = ah.emit(campus::CAMPUS_ACCESS_FORBIDDEN_EVENT, ());
                             }
                             // Le serveur a repondu, mais mal (400, 500...).
                             // Annoncer « serveur injoignable » envoie alors

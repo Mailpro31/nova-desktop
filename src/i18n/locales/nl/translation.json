@@ -1517,6 +1517,11 @@
       "packages": "Inhoud",
       "lessons": "Lessen",
       "separator": " en "
+    },
+    "suspended": {
+      "title": "Toegang tot de organisatie opgeschort",
+      "description": "Nova blijft op deze computer werken in Personal, met je geschiedenis. Neem contact op met je beheerder.",
+      "restored": "Toegang tot de organisatie hersteld"
     }
   },
   "aiSkills": {

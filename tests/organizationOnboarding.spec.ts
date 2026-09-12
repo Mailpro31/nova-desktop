@@ -617,3 +617,81 @@ test.describe("local dictation stays available without the server", () => {
     expect(await preparedModel(page)).toBeNull();
   });
 });
+
+/**
+ * Un membre suspendu continue de dicter, en Personal.
+ *
+ * `/api/me` répond 403 quand l'administrateur suspend un compte. Le poste ne
+ * se bloque pas et ne supprime rien : il cesse d'envoyer les dictées à
+ * l'organisation, le dit, et revient de lui-même dès que le compte est
+ * réactivé.
+ */
+test.describe("a suspended member keeps dictating in Personal", () => {
+  const signedIn = {
+    session: {
+      server_url: "https://nova.example.test",
+      email: "member@example.test",
+    },
+    config: organization,
+    onboardingCompleted: true,
+  };
+
+  const suspendedFlag = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      JSON.parse(localStorage.getItem("nova.test.suspended") ?? "null"),
+    );
+
+  test("a 403 from the organization switches the workstation to Personal", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nova.test.meStatus", "403");
+    });
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
+    await expect(
+      page.getByText("Organization access suspended").first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Nova Local is active" }),
+    ).toBeVisible();
+  });
+
+  test("access comes back by itself once the member is reactivated", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem("nova.test.meStatusSeeded")) return;
+      sessionStorage.setItem("nova.test.meStatusSeeded", "1");
+      localStorage.setItem("nova.test.meStatus", "403");
+    });
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
+
+    // L'administrateur réactive le compte ; le membre revient sur Nova.
+    await page.evaluate(() => {
+      localStorage.setItem("nova.test.meStatus", "ok");
+      window.dispatchEvent(new Event("focus"));
+    });
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
+    await expect(
+      page.getByText("Organization access restored").first(),
+    ).toBeVisible();
+  });
+
+  test("a member the server still recognises is never marked suspended", async ({
+    page,
+  }) => {
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
+    await expect(page.getByText("Organization access suspended")).toHaveCount(
+      0,
+    );
+  });
+});

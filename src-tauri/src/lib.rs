@@ -678,6 +678,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::campus::get_campus_config,
                 commands::campus::fetch_campus_server_config,
                 commands::campus::set_campus_mode,
+                commands::campus::set_campus_suspended,
                 organization_sso::sign_in_with_organization,
                 organization_sso::organization_auth_providers,
                 organization_discovery::discover_organization,

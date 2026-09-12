@@ -1517,6 +1517,11 @@
       "packages": "Contenuti",
       "lessons": "Lezioni",
       "separator": " e "
+    },
+    "suspended": {
+      "title": "Accesso all’organizzazione sospeso",
+      "description": "Nova continua a funzionare in Personal su questo computer, con la tua cronologia. Contatta l’amministratore.",
+      "restored": "Accesso all’organizzazione ripristinato"
     }
   },
   "aiSkills": {

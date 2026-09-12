@@ -50,6 +50,7 @@ import {
 } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
 import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
+import { useOrganizationSuspension } from "@/hooks/useOrganizationSuspension";
 import {
   forgetLabEnrollment,
   IS_LAB_BUILD,
@@ -199,6 +200,9 @@ function App() {
   // pendant que Nova tournait n'arrivait qu'au redemarrage suivant, sans que
   // rien ne l'annonce. Le guichet ci-dessous reprend la main ensuite.
   useOrganizationUpdates();
+  // Un membre suspendu continue de dicter en Personal ; il le sait, et il le
+  // sait aussi quand l'organisation le rétablit.
+  useOrganizationSuspension();
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {

@@ -1517,6 +1517,11 @@
       "packages": "İçerik",
       "lessons": "Dersler",
       "separator": " ve "
+    },
+    "suspended": {
+      "title": "Kuruluş erişimi askıya alındı",
+      "description": "Nova bu bilgisayarda geçmişinizle birlikte Personal modunda çalışmaya devam ediyor. Yöneticinize başvurun.",
+      "restored": "Kuruluş erişimi geri yüklendi"
     }
   },
   "aiSkills": {

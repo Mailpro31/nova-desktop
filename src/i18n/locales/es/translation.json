@@ -1517,6 +1517,11 @@
       "packages": "Contenido",
       "lessons": "Lecciones",
       "separator": " y "
+    },
+    "suspended": {
+      "title": "Acceso a la organización suspendido",
+      "description": "Nova sigue funcionando en Personal en este ordenador, con tu historial. Contacta con tu administrador.",
+      "restored": "Acceso a la organización restablecido"
     }
   },
   "aiSkills": {

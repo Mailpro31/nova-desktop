@@ -1517,6 +1517,11 @@
       "packages": "Innehåll",
       "lessons": "Lektioner",
       "separator": " och "
+    },
+    "suspended": {
+      "title": "Åtkomsten till organisationen är avstängd",
+      "description": "Nova fortsätter att fungera i Personal på den här datorn, med din historik. Kontakta administratören.",
+      "restored": "Åtkomsten till organisationen är återställd"
     }
   },
   "aiSkills": {

@@ -66,6 +66,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
         <HeroAction
           situation={home.situation}
           serverName={home.serverName}
+          organizationSuspended={home.organizationSuspended}
           shortcut={home.shortcut}
           onNavigate={onNavigate}
         />
@@ -182,9 +183,16 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
 const HeroAction: React.FC<{
   situation: HeroSituation;
   serverName: string | null;
+  organizationSuspended: boolean;
   shortcut: string | null;
   onNavigate?: (section: SidebarSection) => void;
-}> = ({ situation, serverName, shortcut, onNavigate }) => {
+}> = ({
+  situation,
+  serverName,
+  organizationSuspended,
+  shortcut,
+  onNavigate,
+}) => {
   const { t } = useTranslation();
 
   if (situation === "checking") return null;
@@ -221,9 +229,14 @@ const HeroAction: React.FC<{
             role="status"
             aria-live="polite"
           >
-            {t("home.hero.campusLocal.detail", {
-              server: serverName ?? t("home.hero.campusLocal.unknownServer"),
-            })}
+            {organizationSuspended
+              ? // Suspendu, rien n'est en panne : nommer un serveur « hors
+                // ligne » enverrait chercher un problème réseau qui n'existe pas.
+                t("campus.suspended.title")
+              : t("home.hero.campusLocal.detail", {
+                  server:
+                    serverName ?? t("home.hero.campusLocal.unknownServer"),
+                })}
           </span>
         )}
       </p>

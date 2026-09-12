@@ -1517,6 +1517,11 @@
       "packages": "內容",
       "lessons": "課程",
       "separator": "和"
+    },
+    "suspended": {
+      "title": "組織存取已暫停",
+      "description": "Nova 會繼續在此電腦上以 Personal 模式運作，並保留您的歷史記錄。請聯絡管理員。",
+      "restored": "組織存取已恢復"
     }
   },
   "aiSkills": {

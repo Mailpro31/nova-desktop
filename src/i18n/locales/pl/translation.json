@@ -1517,6 +1517,11 @@
       "packages": "Treści",
       "lessons": "Lekcje",
       "separator": " i "
+    },
+    "suspended": {
+      "title": "Dostęp do organizacji zawieszony",
+      "description": "Nova nadal działa na tym komputerze w wersji Personal, z Twoją historią. Skontaktuj się z administratorem.",
+      "restored": "Dostęp do organizacji przywrócony"
     }
   },
   "aiSkills": {

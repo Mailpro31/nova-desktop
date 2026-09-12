@@ -40,6 +40,9 @@ const LAB_DEVICE_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.device";
 
 pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
 pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
+/// L'organisation a refusé une requête (403). L'interface vérifie sur
+/// `/api/me` s'il s'agit d'une suspension : le poste ne conclut pas seul.
+pub const CAMPUS_ACCESS_FORBIDDEN_EVENT: &str = "campus-access-forbidden";
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusConfig {
@@ -534,6 +537,18 @@ pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
         state.enabled.store(enabled, Ordering::Relaxed);
     }
     crate::licensing::set_campus_enabled(enabled);
+    Ok(())
+}
+
+/// L'organisation a suspendu ce membre, ou l'a rétabli.
+///
+/// Suspendu, le poste n'envoie plus ses dictées à l'organisation et perd le
+/// palier qu'elle débloque : il retombe en Personal. La session reste, et
+/// l'édition du poste ne change pas.
+#[tauri::command]
+#[specta::specta]
+pub fn set_campus_suspended(suspended: bool) -> Result<(), String> {
+    crate::licensing::set_organization_suspended(suspended);
     Ok(())
 }
 
@@ -2441,7 +2456,12 @@ pub fn has_campus_session(app: &AppHandle) -> bool {
 }
 
 pub async fn should_use_campus(app: &AppHandle) -> Option<CampusCredentials> {
-    if !is_campus_enabled(app) {
+    // Suspendu, le membre dicte en local : l'organisation ne reçoit plus rien
+    // jusqu'à ce que `/api/me` le rétablisse.
+    if !crate::licensing::organization_serves(
+        is_campus_enabled(app),
+        crate::licensing::is_organization_suspended(),
+    ) {
         return None;
     }
     let session = load_campus_credentials(app).ok().flatten()?;

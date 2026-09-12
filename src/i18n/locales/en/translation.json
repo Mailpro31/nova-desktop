@@ -1517,6 +1517,11 @@
       "packages": "Content",
       "lessons": "Lessons",
       "separator": " and "
+    },
+    "suspended": {
+      "title": "Organization access suspended",
+      "description": "Nova keeps working in Personal on this computer, with your history. Contact your administrator.",
+      "restored": "Organization access restored"
     }
   },
   "aiSkills": {
