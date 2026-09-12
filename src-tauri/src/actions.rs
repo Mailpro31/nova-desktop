@@ -1856,6 +1856,14 @@ impl ShortcutAction for TranscribeAction {
         // `process_transcription_output` : jamais de blocage avant l'enregistrement.
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
+        // La DSI interdit le repli Personal et ce poste n'a plus de session :
+        // aucune dictée avant la reconnexion. L'écran seul ne suffirait pas, les
+        // raccourcis globaux restant actifs derrière lui.
+        if crate::licensing::dictation_requires_organization_sign_in() {
+            warn!("Dictation refused: organization sign-in required by machine policy");
+            let _ = app.emit(campus::CAMPUS_SIGN_IN_REQUIRED_EVENT, ());
+            return;
+        }
         crate::input::remember_text_target();
 
         // Load model in the background
@@ -2041,6 +2049,15 @@ impl ShortcutAction for TranscribeAction {
     fn stop(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
         // Unregister the cancel shortcut when transcription stops
         shortcut::unregister_cancel_shortcut(app);
+
+        // `start` a refusé la dictée faute de connexion : rien n'a été
+        // enregistré, rien n'est à montrer ni à transcrire. Un enregistrement
+        // ouvert avant la perte de session, lui, se termine normalement.
+        if crate::licensing::dictation_requires_organization_sign_in()
+            && !app.state::<Arc<AudioRecordingManager>>().is_recording()
+        {
+            return;
+        }
 
         let stop_time = Instant::now();
         debug!("TranscribeAction::stop called for binding: {}", binding_id);

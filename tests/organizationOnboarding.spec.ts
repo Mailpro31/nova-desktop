@@ -748,3 +748,37 @@ test.describe("a member signed out of the organization keeps using Nova", () => 
     ).toHaveCount(0);
   });
 });
+
+/**
+ * La DSI peut interdire le repli Personal.
+ *
+ * Avec `PersonalFallback = 0` dans la stratégie machine, un poste dont la
+ * session a été révoquée ne continue pas en Personal : la connexion à
+ * l'organisation s'impose de nouveau, comme avant le repli.
+ */
+test.describe("IT can forbid the Personal fallback", () => {
+  test("with the fallback forbidden, a signed-out workstation must sign in again", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: true,
+      deployment: {
+        managed: false,
+        organization_id: null,
+        control_plane_origin: null,
+        error: null,
+        personal_fallback_allowed: false,
+      },
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toHaveCount(0);
+  });
+});

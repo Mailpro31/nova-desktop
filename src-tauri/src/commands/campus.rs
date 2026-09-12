@@ -537,8 +537,18 @@ pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
         state.enabled.store(enabled, Ordering::Relaxed);
     }
     crate::licensing::set_campus_enabled(enabled);
+    // La stratégie machine est lue ici, au passage en mode Organization : la
+    // DSI peut interdire le repli Personal d'un poste sans session.
+    crate::licensing::set_personal_fallback_allowed(crate::deployment::personal_fallback_allowed(
+        crate::deployment::read_personal_fallback_policy(),
+    ));
     Ok(())
 }
+
+/// Le poste refuse une dictée faute de connexion : la DSI interdit le repli
+/// Personal et aucune session n'est ouverte. L'interface ramène la fenêtre, où
+/// la connexion attend.
+pub const CAMPUS_SIGN_IN_REQUIRED_EVENT: &str = "campus-sign-in-required";
 
 /// L'organisation a suspendu ce membre, ou l'a rétabli.
 ///

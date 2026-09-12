@@ -82,6 +82,34 @@ fn organization_unlocks() -> bool {
     )
 }
 
+/// La DSI autorise-t-elle le repli Personal d'un poste sans session ?
+///
+/// Lu depuis la stratégie machine (`PersonalFallback`) au passage en mode
+/// Organization. **Vrai par défaut**, comme sans stratégie.
+static PERSONAL_FALLBACK_ALLOWED: AtomicBool = AtomicBool::new(true);
+
+pub fn set_personal_fallback_allowed(allowed: bool) {
+    PERSONAL_FALLBACK_ALLOWED.store(allowed, Ordering::Relaxed);
+}
+
+/// Faut-il se reconnecter avant de dicter ? Seulement sur un poste
+/// Organization, sans session, dont la DSI interdit le repli Personal.
+pub fn organization_requires_sign_in(
+    campus_enabled: bool,
+    signed_in: bool,
+    fallback_allowed: bool,
+) -> bool {
+    campus_enabled && !signed_in && !fallback_allowed
+}
+
+pub fn dictation_requires_organization_sign_in() -> bool {
+    organization_requires_sign_in(
+        is_campus_enabled(),
+        ORGANIZATION_SIGNED_IN.load(Ordering::Relaxed),
+        PERSONAL_FALLBACK_ALLOWED.load(Ordering::Relaxed),
+    )
+}
+
 /// Clé publique Ed25519 de l'éditeur (base64 standard, 32 octets bruts).
 /// VIDE = licences dormantes (accès complet). Renseignée = paliers actifs.
 const PUBLIC_KEY_B64: &str = "Q+U/LqaeFgLSDkvqiAXRcHQ8DSwqU9NcrHiPt8A6EJE=";
@@ -533,5 +561,33 @@ mod organization_session_tests {
     #[test]
     fn hors_organisation_la_session_ne_debloque_rien() {
         assert!(!organization_unlocks_tier(false, false, true));
+    }
+}
+
+/// Quand la DSI interdit le repli Personal, un poste Organization sans session
+/// ne dicte plus : il attend que le membre se reconnecte. Rien ne change pour un
+/// membre connecté, ni hors de l'édition Organization.
+#[cfg(test)]
+mod personal_fallback_sign_in_tests {
+    use super::organization_requires_sign_in;
+
+    #[test]
+    fn repli_interdit_et_sans_session_la_connexion_est_exigee() {
+        assert!(organization_requires_sign_in(true, false, false));
+    }
+
+    #[test]
+    fn repli_autorise_le_poste_continue_en_personal() {
+        assert!(!organization_requires_sign_in(true, false, true));
+    }
+
+    #[test]
+    fn un_membre_connecte_n_est_jamais_bloque() {
+        assert!(!organization_requires_sign_in(true, true, false));
+    }
+
+    #[test]
+    fn hors_organisation_la_strategie_ne_bloque_rien() {
+        assert!(!organization_requires_sign_in(false, false, false));
     }
 }
