@@ -49,6 +49,7 @@ import {
   showAttentionToast,
 } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
+import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
 import {
   forgetLabEnrollment,
   IS_LAB_BUILD,
@@ -96,6 +97,17 @@ function App() {
   const readiness = useSystemReadiness();
   const { session: campusSessionState, refresh: refreshCampusStatus } =
     useCampusStatus();
+  // Le repli local d'une organisation a besoin d'un modèle sur le disque. Il
+  // se prépare dès qu'un membre est connecté, dans sa langue de dictée.
+  useOrganizationLocalFallback({
+    signedIn: campusSessionState !== null,
+    language:
+      settings === null
+        ? null
+        : settings.selected_language && settings.selected_language !== "auto"
+          ? settings.selected_language
+          : i18n.language,
+  });
 
   // Un paquet unifié doit savoir s'il est personnel ou d'organisation avant
   // que quoi que ce soit d'autre ne soit calculé : le parcours d'accueil fige

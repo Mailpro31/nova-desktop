@@ -546,3 +546,74 @@ test.describe("single organization sign-in surface", () => {
     await expect(server).toHaveValue("https://nova.example.test");
   });
 });
+
+/**
+ * La dictée locale reste possible quand le serveur ne répond pas.
+ *
+ * L'édition Organization ne proposait aucun modèle local : son « repli local »
+ * n'avait rien pour transcrire. Une fois le membre connecté, Nova prépare donc
+ * un modèle en arrière-plan, sans écran et sans rien demander.
+ */
+test.describe("local dictation stays available without the server", () => {
+  const models = [
+    {
+      id: "english-first",
+      name: "English first",
+      source: { HuggingFace: {} },
+      is_downloaded: false,
+      is_recommended: true,
+      is_custom: false,
+      supported_languages: ["en"],
+    },
+    {
+      id: "multilingual",
+      name: "Multilingual",
+      source: { HuggingFace: {} },
+      is_downloaded: false,
+      is_recommended: true,
+      is_custom: false,
+      supported_languages: ["en", "fr", "de"],
+    },
+  ];
+
+  const preparedModel = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      JSON.parse(localStorage.getItem("nova.test.localFallback") ?? "null"),
+    );
+
+  test("a signed-in member gets a local model prepared in the background", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: {
+        server_url: "https://nova.example.test",
+        email: "member@example.test",
+      },
+      config: organization,
+      onboardingCompleted: true,
+      language: "fr",
+      models,
+    });
+    await page.goto("/");
+
+    await expect
+      .poll(() => preparedModel(page))
+      .toEqual({ modelId: "multilingual" });
+  });
+
+  test("nothing is downloaded before the member signs in", async ({ page }) => {
+    await mockTauri(page, {
+      config: null,
+      serverConfig: null,
+      onboardingCompleted: false,
+      models,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await page.waitForTimeout(1500);
+    expect(await preparedModel(page)).toBeNull();
+  });
+});
