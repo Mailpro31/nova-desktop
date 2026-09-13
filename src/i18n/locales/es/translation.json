@@ -1272,7 +1272,7 @@
     },
     "aiSkills": {
       "title": "AI Skills",
-      "description": "Five short modules for using AI critically, effectively and safely in your studies.",
+      "description": "Módulos breves para usar la IA de forma crítica, eficaz y segura en tus estudios.",
       "progress": "{{completed}} of {{total}} modules completed",
       "minutes": "About {{count}} min",
       "practice": "Try it",

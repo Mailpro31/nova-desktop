@@ -1272,7 +1272,7 @@
     },
     "aiSkills": {
       "title": "Compétences IA",
-      "description": "Cinq modules courts pour utiliser l'IA de façon critique, efficace et sûre dans vos études.",
+      "description": "Des modules courts pour utiliser l'IA de façon critique, efficace et sûre dans vos études.",
       "progress": "{{completed}} module(s) terminé(s) sur {{total}}",
       "minutes": "Environ {{count}} min",
       "practice": "À vous de jouer",

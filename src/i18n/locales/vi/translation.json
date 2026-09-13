@@ -1272,7 +1272,7 @@
     },
     "aiSkills": {
       "title": "AI Skills",
-      "description": "Five short modules for using AI critically, effectively and safely in your studies.",
+      "description": "Các học phần ngắn giúp bạn sử dụng AI một cách phản biện, hiệu quả và an toàn trong học tập.",
       "progress": "{{completed}} of {{total}} modules completed",
       "minutes": "About {{count}} min",
       "practice": "Try it",
