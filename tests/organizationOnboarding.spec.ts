@@ -546,3 +546,451 @@ test.describe("single organization sign-in surface", () => {
     await expect(server).toHaveValue("https://nova.example.test");
   });
 });
+
+/**
+ * La dictée locale reste possible quand le serveur ne répond pas.
+ *
+ * L'édition Organization ne proposait aucun modèle local : son « repli local »
+ * n'avait rien pour transcrire. Une fois le membre connecté, Nova prépare donc
+ * un modèle en arrière-plan, sans écran et sans rien demander.
+ */
+test.describe("local dictation stays available without the server", () => {
+  const models = [
+    {
+      id: "english-first",
+      name: "English first",
+      source: { HuggingFace: {} },
+      is_downloaded: false,
+      is_recommended: true,
+      is_custom: false,
+      supported_languages: ["en"],
+    },
+    {
+      id: "multilingual",
+      name: "Multilingual",
+      source: { HuggingFace: {} },
+      is_downloaded: false,
+      is_recommended: true,
+      is_custom: false,
+      supported_languages: ["en", "fr", "de"],
+    },
+  ];
+
+  const preparedModel = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      JSON.parse(localStorage.getItem("nova.test.localFallback") ?? "null"),
+    );
+
+  test("a signed-in member gets a local model prepared in the background", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: {
+        server_url: "https://nova.example.test",
+        email: "member@example.test",
+      },
+      config: organization,
+      onboardingCompleted: true,
+      language: "fr",
+      models,
+    });
+    await page.goto("/");
+
+    await expect
+      .poll(() => preparedModel(page))
+      .toEqual({ modelId: "multilingual" });
+  });
+
+  test("nothing is downloaded before the member signs in", async ({ page }) => {
+    await mockTauri(page, {
+      config: null,
+      serverConfig: null,
+      onboardingCompleted: false,
+      models,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await page.waitForTimeout(1500);
+    expect(await preparedModel(page)).toBeNull();
+  });
+});
+
+/**
+ * Un membre suspendu continue de dicter, en Personal.
+ *
+ * `/api/me` répond 403 quand l'administrateur suspend un compte. Le poste ne
+ * se bloque pas et ne supprime rien : il cesse d'envoyer les dictées à
+ * l'organisation, le dit, et revient de lui-même dès que le compte est
+ * réactivé.
+ */
+test.describe("a suspended member keeps dictating in Personal", () => {
+  const signedIn = {
+    session: {
+      server_url: "https://nova.example.test",
+      email: "member@example.test",
+    },
+    config: organization,
+    onboardingCompleted: true,
+  };
+
+  const suspendedFlag = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      JSON.parse(localStorage.getItem("nova.test.suspended") ?? "null"),
+    );
+
+  test("a 403 from the organization switches the workstation to Personal", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nova.test.meStatus", "403");
+    });
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
+    await expect(
+      page.getByText("Organization access suspended").first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Nova Local is active" }),
+    ).toBeVisible();
+  });
+
+  test("access comes back by itself once the member is reactivated", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem("nova.test.meStatusSeeded")) return;
+      sessionStorage.setItem("nova.test.meStatusSeeded", "1");
+      localStorage.setItem("nova.test.meStatus", "403");
+    });
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
+
+    // L'administrateur réactive le compte ; le membre revient sur Nova.
+    await page.evaluate(() => {
+      localStorage.setItem("nova.test.meStatus", "ok");
+      window.dispatchEvent(new Event("focus"));
+    });
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
+    await expect(
+      page.getByText("Organization access restored").first(),
+    ).toBeVisible();
+  });
+
+  test("a member the server still recognises is never marked suspended", async ({
+    page,
+  }) => {
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
+    await expect(page.getByText("Organization access suspended")).toHaveCount(
+      0,
+    );
+  });
+});
+
+/**
+ * Une session révoquée ne ferme plus Nova.
+ *
+ * Un poste déjà configuré dont la session a expiré, ou a été révoquée,
+ * démarrait sur l'écran de connexion, étape obligatoire : plus aucune dictée
+ * avant de s'être reconnecté. Il démarre désormais en Personal, dit qu'il est
+ * déconnecté, et laisse se reconnecter depuis les réglages.
+ */
+test.describe("a member signed out of the organization keeps using Nova", () => {
+  test("a configured workstation without a session starts in Personal, not on a sign-in wall", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: true,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toHaveCount(0);
+
+    // La reconnexion reste à portée : réglages, puis le même parcours.
+    await page.getByRole("button", { name: "Open settings" }).click();
+    await page.getByRole("button", { name: "Connect organization" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+  });
+
+  test("a first launch still starts with the organization sign-in", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: false,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toHaveCount(0);
+  });
+});
+
+/**
+ * La DSI peut interdire le repli Personal.
+ *
+ * Avec `PersonalFallback = 0` dans la stratégie machine, un poste dont la
+ * session a été révoquée ne continue pas en Personal : la connexion à
+ * l'organisation s'impose de nouveau, comme avant le repli.
+ */
+test.describe("IT can forbid the Personal fallback", () => {
+  test("with the fallback forbidden, a signed-out workstation must sign in again", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: true,
+      deployment: {
+        managed: false,
+        organization_id: null,
+        control_plane_origin: null,
+        error: null,
+        personal_fallback_allowed: false,
+      },
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toHaveCount(0);
+  });
+});
+
+/**
+ * La surface parle du serveur actuellement saisi, et de lui seul.
+ *
+ * Ce qu'un serveur a annoncé — sa nature, son nom, ses méthodes — ne vaut que
+ * pour son adresse. Changer d'adresse, l'effacer ou tomber sur un hôte muet ne
+ * doit laisser à l'écran aucun reste de la réponse précédente, et un serveur
+ * qui ne répond pas ne doit jamais faire demander une adresse e-mail.
+ */
+test.describe("the surface follows the server it is talking to", () => {
+  const school = {
+    server_url: "https://nova.school.test",
+    organization_type: "education",
+    organization: {
+      id: "example-school",
+      name: "Example Engineering School",
+      shortName: "EES",
+      managed: true,
+    },
+    auth_methods: ["email_code"],
+  };
+
+  const serverConfigFetches = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      Number(localStorage.getItem("nova.test.serverConfigFetches") ?? "0"),
+    );
+
+  test("leaving a campus server drops its wording and its name", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      serverConfigs: {
+        "https://nova.school.test": school,
+        "https://offline.example.test": null,
+      },
+    });
+    await page.goto("/");
+
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.school.test");
+    await expect(page.getByLabel("Campus server")).toBeVisible();
+
+    // Un hôte qui ne répond pas n'a rien annoncé : l'écran redevient neutre.
+    await page.getByLabel("Campus server").fill("https://offline.example.test");
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(page.getByLabel("Organization server")).toHaveValue(
+      "https://offline.example.test",
+    );
+    await expect(page.locator("body")).not.toContainText(
+      /Nova Campus|Join your campus|School email|Campus server|institution/i,
+    );
+    await expect(page.locator("body")).not.toContainText("EES");
+
+    // Effacer l'adresse ne laisse pas davantage de trace de l'établissement.
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.school.test");
+    await expect(page.getByLabel("Campus server")).toBeVisible();
+    await page.getByLabel("Campus server").fill("");
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("EES");
+  });
+
+  test("a server that does not answer is reported instead of asking for an email", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      serverConfigs: { "https://offline.example.test": null },
+    });
+    await page.goto("/");
+
+    const server = page.getByLabel("Organization server");
+    await server.fill("https://offline.example.test");
+
+    await expect(page.getByRole("alert")).toContainText(
+      "Could not reach the server",
+    );
+    await expect(page.locator('input[type="email"]')).toHaveCount(0);
+    // L'adresse reste corrigeable sur place.
+    await expect(server).toBeEditable();
+  });
+
+  test("a managed install whose server does not answer offers a retry, never an email field", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      deployment: {
+        managed: true,
+        organization_id: "acme",
+        control_plane_origin: "https://api.novaspeak.app",
+        error: null,
+      },
+      discovery: {
+        organization: "acme",
+        display_name: "Acme",
+        service_endpoint: "https://nova.acme.example",
+        deployment_mode: "dedicated",
+        contract_version: 1,
+      },
+      serverConfigs: { "https://nova.acme.example": null },
+    });
+    await page.goto("/");
+
+    await expect(page.getByRole("alert")).toContainText(
+      "Could not reach the server",
+    );
+    await expect(page.locator('input[type="email"]')).toHaveCount(0);
+    await expect(page.locator('input[type="url"]')).toHaveCount(0);
+
+    const retry = page.getByRole("button", { name: "Try again" });
+    await expect(retry).toBeEnabled();
+    const before = await serverConfigFetches(page);
+    await retry.click();
+    await expect.poll(() => serverConfigFetches(page)).toBeGreaterThan(before);
+  });
+
+  test("a server that answers without auth_methods keeps the email code path", async ({
+    page,
+  }) => {
+    // Garde-fou : un serveur plus ancien n'annonce aucune méthode, et ses
+    // membres doivent toujours pouvoir se connecter par code.
+    const { auth_methods: _omitted, ...legacy } = school;
+    await mockTauri(page, {
+      config: null,
+      onboardingCompleted: false,
+      serverConfigs: {
+        "https://nova.legacy.test": {
+          ...legacy,
+          server_url: "https://nova.legacy.test",
+        },
+      },
+    });
+    await page.goto("/");
+    await page
+      .getByLabel("Organization server")
+      .fill("https://nova.legacy.test");
+
+    await expect(
+      page.getByRole("textbox", { name: "School email" }),
+    ).toBeVisible();
+  });
+});
+
+/**
+ * Chaque organisation lit ses propres mots.
+ *
+ * La page Organisation, sa confirmation de déconnexion et ses capacités
+ * parlaient d'« établissement » et de « Nova Campus » à toutes les
+ * organisations. Une entreprise lit désormais un vocabulaire neutre ; une école,
+ * annoncée comme telle par son serveur, garde le sien.
+ */
+test.describe("each organization reads its own words", () => {
+  const signedIn = (config: Record<string, unknown>) => ({
+    session: {
+      server_url: "https://nova.example.test",
+      email: "member@example.test",
+    },
+    config,
+    onboardingCompleted: true,
+  });
+
+  test("a company never reads institution or Nova Campus on its organization page", async ({
+    page,
+  }) => {
+    await mockTauri(page, signedIn(organization));
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /Example Company/ }).click();
+    await expect(
+      page.getByText("What your organization provides"),
+    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(
+      /institution|Nova Campus|Campus connected|school/i,
+    );
+
+    await page.getByRole("button", { name: "Sign out", exact: true }).click();
+    await expect(
+      page.getByText("Sign out of your organization?"),
+    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("Nova Campus");
+  });
+
+  test("a school announced by its server keeps its campus wording", async ({
+    page,
+  }) => {
+    await mockTauri(
+      page,
+      signedIn({
+        ...organization,
+        organization_type: "education",
+        organization: { id: "school", name: "Example School", managed: true },
+      }),
+    );
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /Example School/ }).click();
+    await expect(
+      page.getByText("What your institution provides"),
+    ).toBeVisible();
+  });
+});

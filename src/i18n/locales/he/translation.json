@@ -1517,6 +1517,11 @@
       "packages": "תוכן",
       "lessons": "שיעורים",
       "separator": " ו "
+    },
+    "suspended": {
+      "title": "הגישה לארגון הושעתה",
+      "description": "Nova ממשיך לפעול במחשב זה במצב Personal, עם ההיסטוריה שלך. פנה למנהל המערכת.",
+      "restored": "הגישה לארגון שוחזרה"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "ההדבקה נכשלה",
         "detail": "ההכתבה שלכם בלוח הגזירים."
+      },
+      "campusSignedOut": {
+        "title": "התנתקת מהארגון שלך",
+        "detail": "Nova ממשיך לפעול במחשב זה במצב Personal. חבר מחדש את הארגון מההגדרות."
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש במה שהארגון שלך מספק.",
+    "logoutConfirmTitle": "להתנתק מהארגון שלך?",
+    "logoutConfirmDescription": "יהיה צורך להתחבר שוב כדי להשתמש במה שהארגון שלך מספק. להמשיך?",
+    "aboutSubtitle": "מידע וכלי אבחון עבור Nova.",
+    "personalizationDescription": "התאם את המראה והאינטראקציה של Nova בלי לשנות את מדיניות הארגון שלך.",
+    "organizationSubtitle": "הארגון שלך, מה הוא מספק ולאן הנתונים שלך הולכים.",
+    "statusConnected": "הארגון מחובר",
+    "providesTitle": "מה הארגון שלך מספק",
+    "providesPaused": "מושהה כעת — אין גישה לשרת של הארגון שלך.",
+    "transcriptionDescription": "ההקלטה נשלחת לשרת של הארגון שלך, שממיר אותה לטקסט.",
+    "rewritingDescription": "הטקסט והסגנון שנבחר נשלחים לשרת של הארגון שלך, שמנסח אותו מחדש.",
+    "vocabularyDescription": "מונחים שהארגון שלך הוסיף, יחד עם שלך, עוזרים לזיהוי ולניסוח מחדש לכתוב אותם נכון.",
+    "formattingDescription": "כללים שהארגון שלך קבע, יחד עם שלך, מוחלים על כל ניסוח מחדש.",
+    "dataOnServer": "שרת הארגון",
+    "dataNote": "השרת של הארגון שלך סופר כמה תמלולים וניסוחים מחדש אתה מבצע בכל יום. הוא לא שומר את התוכן שלהם.",
+    "aiSkillsPrivacyOffline": "AI Skills פועלים בשרת של הארגון שלך, שאינו זמין כרגע.",
+    "notInOrganization": "חשבון Microsoft זה אינו שייך לארגון שלך.",
+    "codeForbidden": "הגישה אינה זמינה. פנה למנהל המערכת."
   }
 }

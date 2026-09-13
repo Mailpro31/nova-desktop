@@ -1517,6 +1517,11 @@
       "packages": "內容",
       "lessons": "課程",
       "separator": "和"
+    },
+    "suspended": {
+      "title": "組織存取已暫停",
+      "description": "Nova 會繼續在此電腦上以 Personal 模式運作，並保留您的歷史記錄。請聯絡管理員。",
+      "restored": "組織存取已恢復"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "無法貼上",
         "detail": "你的語音輸入已放入剪貼簿。"
+      },
+      "campusSignedOut": {
+        "title": "已從組織登出",
+        "detail": "Nova 會繼續在此電腦上以 Personal 模式運作。請在設定中重新連線您的組織。"
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "請重新登入，以繼續使用組織提供的功能。",
+    "logoutConfirmTitle": "要從組織登出嗎？",
+    "logoutConfirmDescription": "你需要重新登入才能使用組織提供的功能。確定嗎？",
+    "aboutSubtitle": "Nova 的資訊與疑難排解工具。",
+    "personalizationDescription": "在不變更組織政策的情況下，調整 Nova 的外觀與互動。",
+    "organizationSubtitle": "你的組織、它提供的內容，以及你的資料去向。",
+    "statusConnected": "已連線組織",
+    "providesTitle": "你的組織提供的內容",
+    "providesPaused": "目前已暫停 — 無法連線到組織伺服器。",
+    "transcriptionDescription": "你的錄音會傳送到組織伺服器，由其轉換為文字。",
+    "rewritingDescription": "你的文字與所選風格會傳送到組織伺服器，由其改寫。",
+    "vocabularyDescription": "組織新增的術語與你自己的術語，有助於辨識與改寫時正確拼寫。",
+    "formattingDescription": "組織設定的規則與你自己的規則，會套用到每次改寫。",
+    "dataOnServer": "組織伺服器",
+    "dataNote": "組織伺服器會統計你每天進行的轉錄與改寫次數，但不保存其內容。",
+    "aiSkillsPrivacyOffline": "AI Skills 在組織伺服器上執行，但目前無法連線。",
+    "notInOrganization": "此 Microsoft 帳戶不屬於你的組織。",
+    "codeForbidden": "無法存取。請聯絡管理員。"
   }
 }

@@ -1517,6 +1517,11 @@
       "packages": "Contenido",
       "lessons": "Lecciones",
       "separator": " y "
+    },
+    "suspended": {
+      "title": "Acceso a la organización suspendido",
+      "description": "Nova sigue funcionando en Personal en este ordenador, con tu historial. Contacta con tu administrador.",
+      "restored": "Acceso a la organización restablecido"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "No se pudo pegar",
         "detail": "Tu dictado está en el portapapeles."
+      },
+      "campusSignedOut": {
+        "title": "Sesión cerrada en tu organización",
+        "detail": "Nova sigue funcionando en Personal en este ordenador. Vuelve a conectar tu organización desde los ajustes."
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Vuelve a iniciar sesión para seguir usando lo que ofrece tu organización.",
+    "logoutConfirmTitle": "¿Cerrar sesión en tu organización?",
+    "logoutConfirmDescription": "Tendrás que volver a iniciar sesión para usar lo que ofrece tu organización. ¿Seguro?",
+    "aboutSubtitle": "Información y herramientas de diagnóstico de Nova.",
+    "personalizationDescription": "Ajusta la apariencia y la interacción de Nova sin cambiar las políticas de tu organización.",
+    "organizationSubtitle": "Tu organización, lo que ofrece y adónde van tus datos.",
+    "statusConnected": "Organización conectada",
+    "providesTitle": "Lo que ofrece tu organización",
+    "providesPaused": "En pausa: el servidor de tu organización no está disponible.",
+    "transcriptionDescription": "Tu grabación se envía al servidor de tu organización, que la convierte en texto.",
+    "rewritingDescription": "Tu texto y el estilo elegido se envían al servidor de tu organización, que lo reformula.",
+    "vocabularyDescription": "Los términos añadidos por tu organización, junto con los tuyos, ayudan al reconocimiento y a la reformulación a escribirlos correctamente.",
+    "formattingDescription": "Las reglas definidas por tu organización, junto con las tuyas, se aplican a cada reformulación.",
+    "dataOnServer": "Servidor de la organización",
+    "dataNote": "El servidor de tu organización cuenta cuántas transcripciones y reformulaciones haces cada día. No guarda su contenido.",
+    "aiSkillsPrivacyOffline": "Las AI Skills funcionan en el servidor de tu organización, que ahora no está disponible.",
+    "notInOrganization": "Esta cuenta de Microsoft no pertenece a tu organización.",
+    "codeForbidden": "El acceso no está disponible. Contacta con tu administrador."
   }
 }

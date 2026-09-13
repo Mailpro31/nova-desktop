@@ -11,6 +11,16 @@ interface MockOptions {
    * précisément le cas que le parcours doit savoir traiter.
    */
   serverConfig?: Record<string, unknown> | null;
+  /** Ce que `get_available_models` renvoie : le catalogue et l'état disque. */
+  models?: Array<Record<string, unknown>>;
+  /**
+   * Réponse de `/api/config` adresse par adresse, prioritaire sur `serverConfig`.
+   *
+   * `null` simule un serveur qui ne répond pas : la commande échoue, comme la
+   * commande Rust quand l'hôte est injoignable. Sans cela, impossible de prouver
+   * que la surface suit le serveur **actuellement saisi** et non le précédent.
+   */
+  serverConfigs?: Record<string, Record<string, unknown> | null>;
   onboardingCompleted?: boolean;
   reachable?: boolean;
   language?: string;
@@ -118,10 +128,24 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return null;
         case "get_campus_config":
           return settings.config ?? null;
-        case "fetch_campus_server_config":
+        case "fetch_campus_server_config": {
+          const fetches = Number(
+            localStorage.getItem("nova.test.serverConfigFetches") ?? "0",
+          );
+          localStorage.setItem(
+            "nova.test.serverConfigFetches",
+            String(fetches + 1),
+          );
+          const requested = String(args.serverUrl);
+          if (settings.serverConfigs && requested in settings.serverConfigs) {
+            const answer = settings.serverConfigs[requested];
+            if (answer === null) throw `Serveur injoignable : ${requested}`;
+            return answer;
+          }
           return settings.serverConfig !== undefined
             ? settings.serverConfig
             : (settings.config ?? null);
+        }
         case "check_campus_server_reachability":
           return settings.reachable ?? true;
         case "request_campus_auth":
@@ -155,7 +179,15 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             email: currentSession.email,
             retry_after: null,
           };
+        case "set_campus_suspended":
+          localStorage.setItem("nova.test.suspended", JSON.stringify(args));
+          return null;
         case "get_campus_me":
+          // Lu à chaque appel : un test peut suspendre puis réactiver le
+          // membre sans recharger la page, comme le ferait l'administrateur.
+          if (localStorage.getItem("nova.test.meStatus") === "403") {
+            throw 'HTTP 403: {"detail":"Compte suspendu — contactez votre administrateur"}';
+          }
           return {
             email: currentSession?.email ?? "student@example.edu",
             role: "student",
@@ -170,10 +202,14 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return [
             { index: "default", name: "System microphone", is_default: true },
           ];
+        case "get_available_models":
+          return settings.models ?? [];
+        case "prepare_local_fallback_model":
+          localStorage.setItem("nova.test.localFallback", JSON.stringify(args));
+          return null;
         case "get_audio_devices":
         case "get_output_devices":
         case "get_lexicon_suggestions":
-        case "get_available_models":
           return [];
         case "get_windows_microphone_permission_status":
           return { supported: false, overall_access: "allowed" };

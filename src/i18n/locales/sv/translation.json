@@ -1517,6 +1517,11 @@
       "packages": "Innehåll",
       "lessons": "Lektioner",
       "separator": " och "
+    },
+    "suspended": {
+      "title": "Åtkomsten till organisationen är avstängd",
+      "description": "Nova fortsätter att fungera i Personal på den här datorn, med din historik. Kontakta administratören.",
+      "restored": "Åtkomsten till organisationen är återställd"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "Kunde inte klistra in",
         "detail": "Din diktering finns i urklipp."
+      },
+      "campusSignedOut": {
+        "title": "Utloggad från din organisation",
+        "detail": "Nova fortsätter att fungera i Personal på den här datorn. Anslut din organisation igen i inställningarna."
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Logga in igen för att fortsätta använda det din organisation tillhandahåller.",
+    "logoutConfirmTitle": "Logga ut från din organisation?",
+    "logoutConfirmDescription": "Du behöver logga in igen för att använda det din organisation tillhandahåller. Är du säker?",
+    "aboutSubtitle": "Information och felsökningsverktyg för Nova.",
+    "personalizationDescription": "Anpassa Novas utseende och interaktion utan att ändra din organisations regler.",
+    "organizationSubtitle": "Din organisation, vad den tillhandahåller och vart dina data tar vägen.",
+    "statusConnected": "Organisation ansluten",
+    "providesTitle": "Det här tillhandahåller din organisation",
+    "providesPaused": "Pausat just nu – din organisations server går inte att nå.",
+    "transcriptionDescription": "Din inspelning skickas till din organisations server, som omvandlar den till text.",
+    "rewritingDescription": "Din text och den valda stilen skickas till din organisations server, som omformulerar texten.",
+    "vocabularyDescription": "Termer som din organisation lagt till, tillsammans med dina egna, hjälper igenkänning och omformulering att stava dem rätt.",
+    "formattingDescription": "Regler som din organisation satt upp, tillsammans med dina egna, tillämpas vid varje omformulering.",
+    "dataOnServer": "Organisationens server",
+    "dataNote": "Din organisations server räknar hur många transkriberingar och omformuleringar du gör per dag. Innehållet sparas inte.",
+    "aiSkillsPrivacyOffline": "AI Skills körs på din organisations server, som inte går att nå just nu.",
+    "notInOrganization": "Det här Microsoft-kontot tillhör inte din organisation.",
+    "codeForbidden": "Åtkomst är inte tillgänglig. Kontakta administratören."
   }
 }

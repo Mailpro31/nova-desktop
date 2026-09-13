@@ -40,6 +40,9 @@ const LAB_DEVICE_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.device";
 
 pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
 pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
+/// L'organisation a refusé une requête (403). L'interface vérifie sur
+/// `/api/me` s'il s'agit d'une suspension : le poste ne conclut pas seul.
+pub const CAMPUS_ACCESS_FORBIDDEN_EVENT: &str = "campus-access-forbidden";
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct CampusConfig {
@@ -534,6 +537,28 @@ pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
         state.enabled.store(enabled, Ordering::Relaxed);
     }
     crate::licensing::set_campus_enabled(enabled);
+    // La stratégie machine est lue ici, au passage en mode Organization : la
+    // DSI peut interdire le repli Personal d'un poste sans session.
+    crate::licensing::set_personal_fallback_allowed(crate::deployment::personal_fallback_allowed(
+        crate::deployment::read_personal_fallback_policy(),
+    ));
+    Ok(())
+}
+
+/// Le poste refuse une dictée faute de connexion : la DSI interdit le repli
+/// Personal et aucune session n'est ouverte. L'interface ramène la fenêtre, où
+/// la connexion attend.
+pub const CAMPUS_SIGN_IN_REQUIRED_EVENT: &str = "campus-sign-in-required";
+
+/// L'organisation a suspendu ce membre, ou l'a rétabli.
+///
+/// Suspendu, le poste n'envoie plus ses dictées à l'organisation et perd le
+/// palier qu'elle débloque : il retombe en Personal. La session reste, et
+/// l'édition du poste ne change pas.
+#[tauri::command]
+#[specta::specta]
+pub fn set_campus_suspended(suspended: bool) -> Result<(), String> {
+    crate::licensing::set_organization_suspended(suspended);
     Ok(())
 }
 
@@ -672,6 +697,7 @@ pub(crate) fn save_campus_credentials(
         let _ = entry.delete_credential();
         return Err(error);
     }
+    crate::licensing::set_organization_signed_in(true);
 
     Ok(())
 }
@@ -713,7 +739,12 @@ fn load_campus_credentials(app: &AppHandle) -> Result<Option<CampusCredentials>,
 #[tauri::command]
 #[specta::specta]
 pub fn load_campus_session(app: AppHandle) -> Result<Option<CampusSession>, String> {
-    Ok(load_campus_credentials(&app)?.map(|credentials| credentials.session))
+    let session = load_campus_credentials(&app)?.map(|credentials| credentials.session);
+    // Relue au lancement : c'est ici que le poste apprend s'il est encore
+    // connecté. Une erreur de trousseau, elle, ne tranche rien — elle ne doit
+    // pas faire apparaître une offre payante à un membre connecté.
+    crate::licensing::set_organization_signed_in(session.is_some());
+    Ok(session)
 }
 
 #[tauri::command]
@@ -739,6 +770,8 @@ pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
         }
     }
     store.delete(CAMPUS_SESSION_KEY);
+    // Sans session, l'organisation ne débloque plus rien : Personal.
+    crate::licensing::set_organization_signed_in(false);
     store.save().map_err(|e| e.to_string())?;
     Ok(())
 }
@@ -2441,7 +2474,12 @@ pub fn has_campus_session(app: &AppHandle) -> bool {
 }
 
 pub async fn should_use_campus(app: &AppHandle) -> Option<CampusCredentials> {
-    if !is_campus_enabled(app) {
+    // Suspendu, le membre dicte en local : l'organisation ne reçoit plus rien
+    // jusqu'à ce que `/api/me` le rétablisse.
+    if !crate::licensing::organization_serves(
+        is_campus_enabled(app),
+        crate::licensing::is_organization_suspended(),
+    ) {
         return None;
     }
     let session = load_campus_credentials(app).ok().flatten()?;

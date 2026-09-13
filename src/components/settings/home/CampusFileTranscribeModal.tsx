@@ -6,6 +6,7 @@ import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
 import { loadCampusSession } from "@/lib/campusSession";
+import { useOrganizationWording } from "@/hooks/useOrganizationWording";
 import { CampusApi, campusErrorText } from "@/lib/campusApi";
 
 interface CampusFileTranscribeModalProps {
@@ -17,6 +18,7 @@ export const CampusFileTranscribeModal: React.FC<
   CampusFileTranscribeModalProps
 > = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
+  const word = useOrganizationWording();
   const [file, setFile] = useState<File | null>(null);
   const [transcribing, setTranscribing] = useState(false);
   const [resultText, setResultText] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export const CampusFileTranscribeModal: React.FC<
 
     const session = await loadCampusSession();
     if (!session) {
-      toast.error(t("campus.sessionExpired"));
+      toast.error(word("sessionExpired"));
       return;
     }
 

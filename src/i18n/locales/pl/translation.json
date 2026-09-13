@@ -1517,6 +1517,11 @@
       "packages": "Treści",
       "lessons": "Lekcje",
       "separator": " i "
+    },
+    "suspended": {
+      "title": "Dostęp do organizacji zawieszony",
+      "description": "Nova nadal działa na tym komputerze w wersji Personal, z Twoją historią. Skontaktuj się z administratorem.",
+      "restored": "Dostęp do organizacji przywrócony"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "Nie udało się wkleić",
         "detail": "Twoje dyktowanie jest w schowku."
+      },
+      "campusSignedOut": {
+        "title": "Wylogowano z organizacji",
+        "detail": "Nova nadal działa na tym komputerze w wersji Personal. Połącz ponownie organizację w ustawieniach."
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z tego, co zapewnia Twoja organizacja.",
+    "logoutConfirmTitle": "Wylogować się z organizacji?",
+    "logoutConfirmDescription": "Aby korzystać z tego, co zapewnia Twoja organizacja, trzeba będzie zalogować się ponownie. Czy na pewno?",
+    "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova.",
+    "personalizationDescription": "Dostosuj wygląd i obsługę Nova bez zmieniania zasad organizacji.",
+    "organizationSubtitle": "Twoja organizacja, co zapewnia i dokąd trafiają Twoje dane.",
+    "statusConnected": "Organizacja połączona",
+    "providesTitle": "Co zapewnia Twoja organizacja",
+    "providesPaused": "Wstrzymano — serwer organizacji jest niedostępny.",
+    "transcriptionDescription": "Nagranie jest wysyłane na serwer organizacji, który zamienia je na tekst.",
+    "rewritingDescription": "Tekst i wybrany styl są wysyłane na serwer organizacji, który go przeredagowuje.",
+    "vocabularyDescription": "Terminy dodane przez organizację, razem z Twoimi, pomagają poprawnie je rozpoznawać i zapisywać.",
+    "formattingDescription": "Reguły ustalone przez organizację, razem z Twoimi, są stosowane przy każdym przeredagowaniu.",
+    "dataOnServer": "Serwer organizacji",
+    "dataNote": "Serwer organizacji zlicza, ile transkrypcji i przeredagowań wykonujesz dziennie. Nie przechowuje ich treści.",
+    "aiSkillsPrivacyOffline": "AI Skills działają na serwerze organizacji, który jest teraz niedostępny.",
+    "notInOrganization": "To konto Microsoft nie należy do Twojej organizacji.",
+    "codeForbidden": "Dostęp jest niedostępny. Skontaktuj się z administratorem."
   }
 }

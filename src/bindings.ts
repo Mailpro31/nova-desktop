@@ -652,6 +652,21 @@ async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
 }
 },
 /**
+ * L'organisation a suspendu ce membre (`/api/me` répond 403), ou l'a rétabli.
+ *
+ * Suspendu, le poste n'envoie plus ses dictées à l'organisation et perd le
+ * palier qu'elle débloque : il retombe en Personal. L'édition du poste, elle,
+ * ne change pas.
+ */
+async setCampusSuspended(suspended: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_campus_suspended", { suspended }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
  * Connexion Organization, de bout en bout, quel que soit le fournisseur.
  * 
  * Le secret PKCE vit dans cette fonction et meurt avec elle : succès, échec ou
@@ -1268,6 +1283,20 @@ async setOverlayMenuHeight(height: number) : Promise<Result<null, string>> {
 async setActiveModel(modelId: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("set_active_model", { modelId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Prépare le modèle qui permet à une organisation de dicter sans serveur.
+ *
+ * Télécharge le modèle s'il manque, puis ne le sélectionne que si aucun modèle
+ * présent sur le disque ne l'est déjà. Ne touche jamais `onboarding_completed`.
+ */
+async prepareLocalFallbackModel(modelId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("prepare_local_fallback_model", { modelId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

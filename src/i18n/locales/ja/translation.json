@@ -1517,6 +1517,11 @@
       "packages": "コンテンツ",
       "lessons": "レッスン",
       "separator": "と"
+    },
+    "suspended": {
+      "title": "組織へのアクセスが停止されました",
+      "description": "このコンピューターでは履歴を保持したまま Personal として Nova を引き続き使用できます。管理者にお問い合わせください。",
+      "restored": "組織へのアクセスが復元されました"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "貼り付けできませんでした",
         "detail": "音声入力した文章はクリップボードにあります。"
+      },
+      "campusSignedOut": {
+        "title": "組織からサインアウトしました",
+        "detail": "このコンピューターでは Personal として Nova を引き続き使用できます。設定から組織に再接続してください。"
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "組織が提供する機能を引き続き使うには、もう一度サインインしてください。",
+    "logoutConfirmTitle": "組織からサインアウトしますか？",
+    "logoutConfirmDescription": "組織が提供する機能を使うには、もう一度サインインする必要があります。よろしいですか？",
+    "aboutSubtitle": "Nova の情報とトラブルシューティング ツール。",
+    "personalizationDescription": "組織のポリシーを変えずに、Nova の外観と操作を調整できます。",
+    "organizationSubtitle": "組織について、提供される機能、データの行き先。",
+    "statusConnected": "組織に接続済み",
+    "providesTitle": "組織が提供するもの",
+    "providesPaused": "一時停止中 — 組織のサーバーに接続できません。",
+    "transcriptionDescription": "録音は組織のサーバーに送信され、テキストに変換されます。",
+    "rewritingDescription": "テキストと選択したスタイルは組織のサーバーに送信され、書き直されます。",
+    "vocabularyDescription": "組織が追加した用語とあなた自身の用語は、認識と書き直しで正しく表記するのに役立ちます。",
+    "formattingDescription": "組織が設定したルールとあなた自身のルールが、すべての書き直しに適用されます。",
+    "dataOnServer": "組織のサーバー",
+    "dataNote": "組織のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。",
+    "aiSkillsPrivacyOffline": "AI Skills は組織のサーバーで動作しますが、現在は接続できません。",
+    "notInOrganization": "この Microsoft アカウントは組織に属していません。",
+    "codeForbidden": "アクセスできません。管理者にお問い合わせください。"
   }
 }

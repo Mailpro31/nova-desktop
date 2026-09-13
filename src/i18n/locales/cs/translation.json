@@ -1517,6 +1517,11 @@
       "packages": "Obsah",
       "lessons": "Lekce",
       "separator": " a "
+    },
+    "suspended": {
+      "title": "Přístup k organizaci pozastaven",
+      "description": "Nova na tomto počítači dál funguje v režimu Personal i s vaší historií. Obraťte se na správce.",
+      "restored": "Přístup k organizaci obnoven"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "Vložení se nezdařilo",
         "detail": "Váš diktát je ve schránce."
+      },
+      "campusSignedOut": {
+        "title": "Odhlášeno z organizace",
+        "detail": "Nova na tomto počítači dál funguje v režimu Personal. Organizaci znovu připojte v nastavení."
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Znovu se přihlaste, abyste mohli dál používat to, co vaše organizace poskytuje.",
+    "logoutConfirmTitle": "Odhlásit se z organizace?",
+    "logoutConfirmDescription": "Abyste mohli používat to, co vaše organizace poskytuje, budete se muset znovu přihlásit. Opravdu?",
+    "aboutSubtitle": "Informace a diagnostické nástroje pro Nova.",
+    "personalizationDescription": "Upravte vzhled a ovládání Nova, aniž byste měnili pravidla vaší organizace.",
+    "organizationSubtitle": "Vaše organizace, co poskytuje a kam putují vaše data.",
+    "statusConnected": "Organizace připojena",
+    "providesTitle": "Co vaše organizace poskytuje",
+    "providesPaused": "Pozastaveno — server vaší organizace je nedostupný.",
+    "transcriptionDescription": "Nahrávka se odešle na server vaší organizace, který ji převede na text.",
+    "rewritingDescription": "Text a vybraný styl se odešlou na server vaší organizace, který text přeformuluje.",
+    "vocabularyDescription": "Termíny přidané vaší organizací spolu s vašimi pomáhají rozpoznávání i přeformulování psát je správně.",
+    "formattingDescription": "Pravidla nastavená vaší organizací spolu s vašimi se použijí při každém přeformulování.",
+    "dataOnServer": "Server organizace",
+    "dataNote": "Server vaší organizace počítá, kolik přepisů a přeformulování denně provedete. Jejich obsah neukládá.",
+    "aiSkillsPrivacyOffline": "AI Skills běží na serveru vaší organizace, který je právě nedostupný.",
+    "notInOrganization": "Tento účet Microsoft nepatří do vaší organizace.",
+    "codeForbidden": "Přístup není dostupný. Obraťte se na správce."
   }
 }

@@ -12,6 +12,7 @@ const HEALTHY = {
   needsModelDownload: false,
   shortcut: "Ctrl+Space",
   campusLocal: false,
+  campusSignedOut: false,
 };
 
 const ALL_SITUATIONS: HeroSituation[] = [
@@ -23,6 +24,7 @@ const ALL_SITUATIONS: HeroSituation[] = [
   "microphoneMissing",
   "modelMissing",
   "shortcutMissing",
+  "campusSignedOut",
   "campusLocal",
   "ready",
 ];
@@ -150,5 +152,23 @@ describe("libellés du héros", () => {
     for (const situation of needsDetail) {
       expect(typeof lookup(`home.hero.${situation}.detail`)).toBe("string");
     }
+  });
+});
+
+describe("déconnecté de l'organisation", () => {
+  test("dégrade sans bloquer : la dictée continue en Personal", () => {
+    expect(deriveSituation({ ...HEALTHY, campusSignedOut: true })).toBe(
+      "campusSignedOut",
+    );
+  });
+
+  test("un empêchement réel passe toujours devant", () => {
+    expect(
+      deriveSituation({
+        ...HEALTHY,
+        campusSignedOut: true,
+        microphoneName: null,
+      }),
+    ).toBe("microphoneMissing");
   });
 });

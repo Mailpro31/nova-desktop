@@ -336,6 +336,9 @@ pub struct DeploymentState {
     /// Code d'erreur si une source prioritaire est invalide. Dans ce cas
     /// `managed` reste `false` et l'interface doit le dire, pas se rabattre.
     pub error: Option<String>,
+    /// `false` quand la stratégie machine porte `PersonalFallback = 0` : un
+    /// poste sans session exige alors une nouvelle connexion avant de dicter.
+    pub personal_fallback_allowed: bool,
 }
 
 /// Portée d'installation, déduite du chemin de l'exécutable.
@@ -400,6 +403,9 @@ pub fn resolve_with(
         device_id: machine_dir.and_then(read_device_id),
         install_scope: install_scope(exe_dir),
         error: None,
+        // Sans stratégie, le repli Personal reste autorisé ; `get_deployment_state`
+        // y applique la stratégie machine réelle.
+        personal_fallback_allowed: true,
     };
 
     // 1. stratégie machine. Une stratégie invalide arrête tout : se rabattre
@@ -462,7 +468,46 @@ pub fn get_deployment_state() -> Result<DeploymentState, String> {
     } else {
         "personal"
     };
-    Ok(resolve(machine_config_dir().as_deref(), exe_dir, edition))
+    let mut state = resolve(machine_config_dir().as_deref(), exe_dir, edition);
+    state.personal_fallback_allowed = personal_fallback_allowed(read_personal_fallback_policy());
+    Ok(state)
+}
+
+/// Valeur de stratégie machine qui autorise ou non le repli Personal.
+pub const PERSONAL_FALLBACK_POLICY_VALUE: &str = "PersonalFallback";
+
+/// Le repli Personal d'un poste sans session est-il autorisé ?
+///
+/// `0` l'interdit ; absente ou toute autre valeur l'autorise. L'absence de
+/// stratégie ne doit rien fermer : c'est le comportement qu'un poste avait
+/// avant que la DSI puisse le régler.
+pub fn personal_fallback_allowed(policy_value: Option<u32>) -> bool {
+    policy_value != Some(0)
+}
+
+/// `PersonalFallback`, lue dans `HKLM\SOFTWARE\Policies\Nova`.
+///
+/// **Indépendamment de `Managed`** : une DSI peut la poser seule, y compris sur
+/// un poste configuré par `organization.json`. Elle ne fait pas partie de
+/// [`ManagedDeployment`] : ce contrat est en `deny_unknown_fields`, et un champ
+/// nouveau y rendrait le fichier invalide pour tous les postes déjà déployés,
+/// alors qu'une valeur de registre inconnue est simplement ignorée.
+#[cfg(windows)]
+pub fn read_personal_fallback_policy() -> Option<u32> {
+    use winreg::enums::{HKEY_LOCAL_MACHINE, KEY_READ, KEY_WOW64_64KEY};
+    use winreg::RegKey;
+
+    RegKey::predef(HKEY_LOCAL_MACHINE)
+        .open_subkey_with_flags(POLICY_KEY, KEY_READ | KEY_WOW64_64KEY)
+        .ok()?
+        .get_value::<u32, _>(PERSONAL_FALLBACK_POLICY_VALUE)
+        .ok()
+}
+
+#[cfg(not(windows))]
+pub fn read_personal_fallback_policy() -> Option<u32> {
+    // Pas de stratégie machine hors Windows : le repli reste autorisé.
+    None
 }
 
 #[cfg(test)]
@@ -795,5 +840,41 @@ mod tests {
             assert!(origin.starts_with("https://"), "{origin} must be https");
             assert!(!origin.ends_with('/'), "{origin} must not end with a slash");
         }
+    }
+}
+
+/// La DSI peut interdire le repli Personal d'un poste dont la session a été
+/// révoquée ou a expiré. La valeur vit dans la stratégie machine
+/// (`HKLM\SOFTWARE\Policies\Nova`, `PersonalFallback`) et **pas** dans
+/// `organization.json` : un poste plus ancien ignore une valeur de registre
+/// inconnue, alors qu'il refuserait un fichier portant un champ inconnu.
+#[cfg(test)]
+mod personal_fallback_policy_tests {
+    use super::*;
+
+    #[test]
+    fn sans_strategie_le_repli_personal_reste_autorise() {
+        assert!(personal_fallback_allowed(None));
+    }
+
+    #[test]
+    fn zero_interdit_le_repli_personal() {
+        assert!(!personal_fallback_allowed(Some(0)));
+    }
+
+    #[test]
+    fn toute_autre_valeur_l_autorise() {
+        assert!(personal_fallback_allowed(Some(1)));
+        assert!(personal_fallback_allowed(Some(2)));
+    }
+
+    #[test]
+    fn l_etat_de_deploiement_autorise_le_repli_par_defaut() {
+        let dir = std::env::temp_dir().join("nova-deployment-personal-fallback");
+        std::fs::create_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_file(dir.join(MANAGED_CONFIG_FILENAME));
+        let state = resolve_with(Ok(None), Some(&dir), &dir, "organization");
+        assert!(state.personal_fallback_allowed);
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }

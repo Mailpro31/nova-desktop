@@ -1517,6 +1517,11 @@
       "packages": "Inhoud",
       "lessons": "Lessen",
       "separator": " en "
+    },
+    "suspended": {
+      "title": "Toegang tot de organisatie opgeschort",
+      "description": "Nova blijft op deze computer werken in Personal, met je geschiedenis. Neem contact op met je beheerder.",
+      "restored": "Toegang tot de organisatie hersteld"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "Plakken lukte niet",
         "detail": "Uw dictaat staat op het klembord."
+      },
+      "campusSignedOut": {
+        "title": "Afgemeld bij je organisatie",
+        "detail": "Nova blijft op deze computer werken in Personal. Verbind je organisatie opnieuw via de instellingen."
       }
     },
     "active": {
@@ -1827,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Meld je opnieuw aan om te blijven gebruiken wat je organisatie aanbiedt.",
+    "logoutConfirmTitle": "Afmelden bij je organisatie?",
+    "logoutConfirmDescription": "Je moet je opnieuw aanmelden om te gebruiken wat je organisatie aanbiedt. Weet je het zeker?",
+    "aboutSubtitle": "Informatie en diagnosehulpmiddelen voor Nova.",
+    "personalizationDescription": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je organisatie te wijzigen.",
+    "organizationSubtitle": "Je organisatie, wat ze aanbiedt en waar je gegevens heen gaan.",
+    "statusConnected": "Organisatie verbonden",
+    "providesTitle": "Wat je organisatie aanbiedt",
+    "providesPaused": "Momenteel gepauzeerd — de server van je organisatie is onbereikbaar.",
+    "transcriptionDescription": "Je opname wordt naar de server van je organisatie gestuurd, die er tekst van maakt.",
+    "rewritingDescription": "Je tekst en de gekozen stijl worden naar de server van je organisatie gestuurd, die de tekst herschrijft.",
+    "vocabularyDescription": "Termen die je organisatie toevoegt, samen met je eigen termen, helpen herkenning en herschrijven ze correct te spellen.",
+    "formattingDescription": "Regels van je organisatie, samen met je eigen regels, worden op elke herschrijving toegepast.",
+    "dataOnServer": "Server van de organisatie",
+    "dataNote": "De server van je organisatie telt hoeveel transcripties en herschrijvingen je per dag uitvoert. De inhoud wordt niet bewaard.",
+    "aiSkillsPrivacyOffline": "AI Skills draaien op de server van je organisatie, die nu onbereikbaar is.",
+    "notInOrganization": "Dit Microsoft-account hoort niet bij je organisatie.",
+    "codeForbidden": "Toegang is niet beschikbaar. Neem contact op met je beheerder."
   }
 }
