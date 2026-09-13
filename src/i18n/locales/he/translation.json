@@ -1271,14 +1271,14 @@
       "connect": "המשך עם {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "מיומנויות AI",
       "description": "יחידות קצרות לשימוש ביקורתי, יעיל ובטוח ב-AI במהלך הלימודים.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "הושלמו {{completed}} מתוך {{total}} יחידות",
+      "minutes": "כ-{{count}} דק׳",
+      "practice": "נסו בעצמכם",
+      "markComplete": "סימון כהושלם",
+      "completed": "הושלם",
+      "unavailable": "הקורס אינו זמין כרגע."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "יסודות ה-AI",
+      "modulePosition": "יחידה {{current}} מתוך {{total}}",
+      "correct": "נכון",
+      "considerThis": "שווה לחשוב על זה",
+      "nextModule": "הבא",
+      "continue": "להמשיך ללמוד",
+      "start": "להתחיל",
+      "next": "הבאה בתור",
+      "modulesTitle": "מיומנויות יסוד",
+      "mastery": "רמות שליטה",
+      "foundationCompleted": "רמת היסוד הושלמה · {{date}}",
+      "foundationDescription": "הרגלי יסוד לשימוש יעיל ואחראי ב-AI.",
+      "futureLevel": "יהיה זמין במסלול Campus עתידי.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "יסוד",
+        "practitioner": "מעשי",
+        "advanced": "מתקדם"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "עבודה עם AI",
+          "summary": "הבינו מה AI יכול ומה אינו יכול לעשות.",
+          "skill": "עקרונות AI",
+          "idea": "AI יכול להציע במהירות אפשרויות שימושיות, אבל ניסוח רהוט אינו הוכחה שהתשובה נכונה.",
+          "scenario": "עוזר AI מציע החלטת תכנון לפרויקט תעופה וחלל ומציג אותה בביטחון.",
+          "question": "מהו התפקיד המועיל ביותר של ה-AI כאן?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "להחליף את ההחלטה ההנדסית.",
+            "b": "להציע פתרון אפשרי שמהנדס יעריך.",
+            "c": "לאשר את הבחירה כי ההסבר נשמע טכני."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "השתמשו ב-AI כדי להרחיב את האפשרויות שתוכלו לבחון. השיקול ההנדסי נשאר אחראי להנחות, לראיות ולהחלטה הסופית."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "לשאול טוב יותר",
+          "summary": "תנו מספיק הקשר והגדירו תוצאה שימושית.",
+          "skill": "ניסוח בקשות",
+          "idea": "בקשה שימושית מציינת את המטרה, ההקשר הרלוונטי, המגבלות והתוצר המצופה.",
+          "scenario": "אתם צריכים עזרה באיתור שגיאה בחישוב ב-Python לפרויקט לוויין של סטודנטים.",
+          "question": "איזו בקשה נותנת את נקודת הפתיחה הבטוחה והשימושית ביותר?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "תתקן לי את הקוד.",
+            "b": "הסבר את השגיאה, שמור על יחידות SI, זהה את ההנחות והצע תיקון שנבדק.",
+            "c": "כתוב תשובה ארוכה יותר."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "הקשר ספציפי וקריטריונים להצלחה מקלים על בדיקת התוצר ומפחיתים את הסיכוי שהנחה שגויה תוסתר."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "לאמת את התוצר",
+          "summary": "בדקו חישובים, מקורות, טענות והנחות.",
+          "skill": "אימות",
+          "idea": "אימות הוא שלב הנדסי נפרד. לשאול את אותו מודל אם הוא בטוח אינו בדיקה עצמאית.",
+          "scenario": "AI נותן לכם חישוב עומסים לניתוח מבני.",
+          "question": "מה כדאי לעשות לפני שמשתמשים בו?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "להשתמש בו ישירות כי היחידות מוצגות.",
+            "b": "לאמת באופן עצמאי את ההנחות, היחידות והחישובים.",
+            "c": "לשאול את ה-AI אם הוא בטוח."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "בדקו את מקרה העומס, היחידות, המשוואות ותנאי השפה בשיטות או במקורות אמינים לפני שתסתמכו על התוצאה."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "מידע סודי",
+          "summary": "דעו מה אסור לשלוח למערכת שלא אושרה.",
+          "skill": "פרטיות",
+          "idea": "שתפו רק נתונים שהכלי והמוסד שלכם מורשים לעבד.",
+          "scenario": "מסמך פרויקט מכיל מזהי סטודנטים, נתוני ספקים ואסימון גישה פנימי.",
+          "question": "מהו הצעד הבא האחראי?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "להדביק הכול כי מדובר במשימה אקדמית.",
+            "b": "להסיר רק את שמות הסטודנטים.",
+            "c": "להשתמש במערכת מאושרת ולהסיר סודות ונתונים אישיים או סודיים שאינם נחוצים."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "גם ההרשאה וגם צמצום הנתונים חשובים. אסור לכלול פרטי התחברות, ויש להסיר הקשר רגיש שאינו נחוץ."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "AI בהנדסה",
+          "summary": "השתמשו ב-AI ככלי, לא כתחליף לחשיבה.",
+          "skill": "AI הנדסי",
+          "idea": "AI מועיל ביותר כשותף לחקירה, לניסוח ולביקורת כאשר המהנדס נשאר אחראי.",
+          "scenario": "אתם משווים שני רעיונות לתת-מערכת של לוויין קטן.",
+          "question": "איזה תהליך עבודה מנצל את ה-AI בצורה הטובה ביותר?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "לתת ל-AI לבחור את הרעיון ולהעתיק את הנימוק שלו.",
+            "b": "להשתמש בו כדי לחשוף פשרות, ואז לאמת את האילוצים ולתעד את ההחלטה.",
+            "c": "לא לתעד הנחות כדי שהדוח יישאר קצר."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI מעצים את השיקול ההנדסי. הוא אינו מחליף אימות, עקיבות או אחריות."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "שימוש אחראי",
+          "summary": "זהו מתי שימוש ב-AI מתאים, מוגבל או אסור.",
+          "skill": "פרקטיקה אחראית",
+          "idea": "השימוש הנכון תלוי במשימה, בכללי הקורס, בהרשאת הכלי וברמת האחריות האנושית הנדרשת.",
+          "scenario": "הכללים של מטלה מוערכת אינם ברורים לגבי עזרה מ-AI גנרטיבי.",
+          "question": "מה כדאי לעשות?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "להשתמש ב-AI בשקט כי כנראה כולם עושים את זה.",
+            "b": "לתת ל-AI להפיק את ההגשה הסופית ואז לשנות כמה מילים.",
+            "c": "לבדוק את מדיניות הקורס, לשאול כשמשהו לא ברור ולדווח על עזרה מותרת."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "שימוש אחראי מכבד את מטרת הלמידה ואת הכללים שנקבעו. כשהמדיניות אינה ברורה, הבהירו אותה לפני שתסתמכו על AI."
         }
       }
     },

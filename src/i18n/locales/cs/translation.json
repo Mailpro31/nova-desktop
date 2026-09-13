@@ -1271,14 +1271,14 @@
       "connect": "Pokračovat přes {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "Dovednosti AI",
       "description": "Krátké moduly pro kritické, efektivní a bezpečné používání AI při studiu.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "Dokončeno modulů: {{completed}} z {{total}}",
+      "minutes": "Asi {{count}} min",
+      "practice": "Vyzkoušejte si to",
+      "markComplete": "Označit jako dokončené",
+      "completed": "Dokončeno",
+      "unavailable": "Kurz je dočasně nedostupný."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "Základy AI",
+      "modulePosition": "Modul {{current}} z {{total}}",
+      "correct": "Správně",
+      "considerThis": "Zamyslete se",
+      "nextModule": "Další",
+      "continue": "Pokračovat ve studiu",
+      "start": "Začít",
+      "next": "Následuje",
+      "modulesTitle": "Základní dovednosti",
+      "mastery": "Úrovně zvládnutí",
+      "foundationCompleted": "Základní úroveň dokončena · {{date}}",
+      "foundationDescription": "Základní návyky pro efektivní a odpovědné používání AI.",
+      "futureLevel": "Bude k dispozici v budoucím kurzu Campus.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "Základy",
+        "practitioner": "Praktik",
+        "advanced": "Pokročilý"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "Práce s AI",
+          "summary": "Pochopte, co AI dokáže a co ne.",
+          "skill": "Principy AI",
+          "idea": "AI dokáže rychle navrhnout užitečné možnosti, ale plynulý text není důkazem, že je odpověď správná.",
+          "scenario": "Asistent AI navrhne konstrukční řešení pro letecký projekt a sebevědomě ho představí.",
+          "question": "Jaká je zde nejužitečnější role AI?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "Nahradit inženýrské rozhodnutí.",
+            "b": "Nabídnout kandidátní řešení, které inženýr posoudí.",
+            "c": "Schválit volbu, protože vysvětlení zní technicky."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "Používejte AI k rozšíření možností, které můžete posoudit. Za předpoklady, důkazy i konečné rozhodnutí dál odpovídá inženýrský úsudek."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "Ptejte se lépe",
+          "summary": "Dodejte dostatek kontextu a určete užitečný výsledek.",
+          "skill": "Zadávání požadavků",
+          "idea": "Užitečný požadavek uvádí cíl, relevantní kontext, omezení a očekávaný výstup.",
+          "scenario": "Potřebujete pomoc s laděním výpočtu v Pythonu pro studentský satelitní projekt.",
+          "question": "Který požadavek je nejbezpečnějším a nejužitečnějším výchozím bodem?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "Oprav mi kód.",
+            "b": "Vysvětli chybu, zachovej jednotky SI, uveď předpoklady a navrhni otestovanou opravu.",
+            "c": "Napiš delší odpověď."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "Konkrétní kontext a kritéria úspěchu usnadňují kontrolu výstupu a snižují riziko, že skryje chybný předpoklad."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "Ověřte výstup",
+          "summary": "Zkontrolujte výpočty, zdroje, tvrzení a předpoklady.",
+          "skill": "Ověřování",
+          "idea": "Ověření je samostatný inženýrský krok. Zeptat se stejného modelu, zda si je jistý, není nezávislá kontrola.",
+          "scenario": "AI vám poskytne výpočet zatížení pro statickou analýzu.",
+          "question": "Co byste měli udělat, než ho použijete?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "Použít ho přímo, protože jsou uvedeny jednotky.",
+            "b": "Nezávisle ověřit předpoklady, jednotky a výpočty.",
+            "c": "Zeptat se AI, zda si je jistá."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "Než se na výsledek spolehnete, zkontrolujte zatěžovací stav, jednotky, rovnice a okrajové podmínky pomocí důvěryhodných metod nebo zdrojů."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "Důvěrné informace",
+          "summary": "Vězte, co se nesmí odeslat do neschváleného systému.",
+          "skill": "Ochrana soukromí",
+          "idea": "Sdílejte jen data, která smí nástroj a vaše instituce zpracovávat.",
+          "scenario": "Projektový dokument obsahuje identifikátory studentů, údaje o dodavatelích a interní přístupový token.",
+          "question": "Jaký je odpovědný další krok?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "Vložit všechno, protože jde o akademický úkol.",
+            "b": "Odstranit jen jména studentů.",
+            "c": "Použít schválený systém a odstranit tajné údaje i zbytečná osobní nebo důvěrná data."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "Záleží na oprávnění i na minimalizaci dat. Přihlašovací údaje nesmí být nikdy zahrnuty a zbytečný citlivý kontext je třeba odstranit."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "AI v inženýrství",
+          "summary": "Používejte AI jako nástroj, ne jako náhradu uvažování.",
+          "skill": "AI pro inženýry",
+          "idea": "AI je nejsilnější jako spolupracovník při zkoumání, psaní návrhů a kritice, pokud odpovědnost zůstává na inženýrovi.",
+          "scenario": "Porovnáváte dva koncepty subsystému malého satelitu.",
+          "question": "Který postup využívá AI nejlépe?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "Nechat AI vybrat koncept a zkopírovat její zdůvodnění.",
+            "b": "Použít ji k odhalení kompromisů, poté ověřit omezení a zdokumentovat rozhodnutí.",
+            "c": "Nedokumentovat předpoklady, aby zpráva zůstala krátká."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI posiluje inženýrský úsudek. Nenahrazuje ověření, sledovatelnost ani odpovědnost."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "Odpovědné používání",
+          "summary": "Poznejte, kdy je použití AI vhodné, omezené nebo zakázané.",
+          "skill": "Odpovědná praxe",
+          "idea": "Správné použití závisí na úkolu, pravidlech předmětu, schválení nástroje a potřebné míře lidské odpovědnosti.",
+          "scenario": "Pravidla hodnoceného úkolu nejsou jasná ohledně pomoci generativní AI.",
+          "question": "Co byste měli udělat?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "Použít AI potichu, protože to nejspíš dělají všichni.",
+            "b": "Nechat AI vytvořit finální odevzdání a pak změnit pár slov.",
+            "c": "Zkontrolovat pravidla předmětu, zeptat se, když nejsou jasná, a přiznat povolenou pomoc."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "Odpovědné používání respektuje cíl učení a stanovená pravidla. Když pravidla nejsou jasná, ujasněte si je dřív, než se na AI spolehnete."
         }
       }
     },

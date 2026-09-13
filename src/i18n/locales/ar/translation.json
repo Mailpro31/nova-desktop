@@ -1271,14 +1271,14 @@
       "connect": "المتابعة باستخدام {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "مهارات الذكاء الاصطناعي",
       "description": "وحدات قصيرة لاستخدام الذكاء الاصطناعي بطريقة نقدية وفعّالة وآمنة في دراستك.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "أُكملت {{completed}} من {{total}} وحدات",
+      "minutes": "حوالي {{count}} دقيقة",
+      "practice": "جرّبه",
+      "markComplete": "وضع علامة كمكتمل",
+      "completed": "مكتمل",
+      "unavailable": "الدورة غير متاحة مؤقتًا."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "أساسيات الذكاء الاصطناعي",
+      "modulePosition": "الوحدة {{current}} من {{total}}",
+      "correct": "صحيح",
+      "considerThis": "فكّر في هذا",
+      "nextModule": "التالي",
+      "continue": "متابعة التعلّم",
+      "start": "ابدأ",
+      "next": "التالية",
+      "modulesTitle": "المهارات الأساسية",
+      "mastery": "مستويات الإتقان",
+      "foundationCompleted": "اكتمل المستوى الأساسي · {{date}}",
+      "foundationDescription": "عادات أساسية لاستخدام الذكاء الاصطناعي بفعالية ومسؤولية.",
+      "futureLevel": "متاح في مسار Campus مستقبلي.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "أساسي",
+        "practitioner": "ممارس",
+        "advanced": "متقدم"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "العمل مع الذكاء الاصطناعي",
+          "summary": "افهم ما يستطيع الذكاء الاصطناعي فعله وما لا يستطيعه.",
+          "skill": "مبادئ الذكاء الاصطناعي",
+          "idea": "يستطيع الذكاء الاصطناعي توليد خيارات مفيدة بسرعة، لكن الصياغة السلسة ليست دليلًا على صحة الإجابة.",
+          "scenario": "يقترح مساعد ذكاء اصطناعي خيار تصميم لمشروع في مجال الطيران والفضاء ويعرضه بثقة.",
+          "question": "ما الدور الأكثر فائدة للذكاء الاصطناعي هنا؟",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "أن يحلّ محلّ القرار الهندسي.",
+            "b": "أن يقدّم حلًا مرشّحًا يقيّمه مهندس.",
+            "c": "اعتماد الخيار لأن الشرح يبدو تقنيًا."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "استخدم الذكاء الاصطناعي لتوسيع الخيارات التي يمكنك دراستها. يبقى الحكم الهندسي مسؤولًا عن الافتراضات والأدلة والقرار النهائي."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "اطرح طلبًا أفضل",
+          "summary": "قدّم سياقًا كافيًا وحدّد نتيجة مفيدة.",
+          "skill": "صياغة الطلبات",
+          "idea": "الطلب المفيد يحدّد الهدف والسياق ذا الصلة والقيود والنتيجة المتوقعة.",
+          "scenario": "تحتاج إلى مساعدة في تصحيح عملية حسابية بلغة Python تُستخدم في مشروع قمر صناعي طلابي.",
+          "question": "أي طلب يمنحك نقطة البداية الأكثر أمانًا وفائدة؟",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "أصلح الكود الخاص بي.",
+            "b": "اشرح الخطأ، وحافظ على وحدات النظام الدولي، وحدّد الافتراضات، واقترح تصحيحًا مُختبرًا.",
+            "c": "اكتب إجابة أطول."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "السياق المحدد ومعايير النجاح تجعل الناتج أسهل في الفحص وأقل عرضة لإخفاء افتراض خاطئ."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "تحقّق من الناتج",
+          "summary": "افحص الحسابات والمصادر والادعاءات والافتراضات.",
+          "skill": "التحقق",
+          "idea": "التحقق خطوة هندسية مستقلة. سؤال النموذج نفسه عمّا إذا كان متأكدًا ليس فحصًا مستقلًا.",
+          "scenario": "يقدّم لك الذكاء الاصطناعي حساب أحمال لتحليل إنشائي.",
+          "question": "ماذا يجب أن تفعل قبل استخدامه؟",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "استخدامه مباشرة لأن الوحدات مذكورة.",
+            "b": "التحقق من الافتراضات والوحدات والحسابات بشكل مستقل.",
+            "c": "سؤال الذكاء الاصطناعي عمّا إذا كان متأكدًا."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "افحص حالة التحميل والوحدات والمعادلات والشروط الحدية بطرق أو مصادر موثوقة قبل الاعتماد على النتيجة."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "المعلومات السرية",
+          "summary": "اعرف ما يجب ألا يُرسل إلى نظام غير مصرّح به.",
+          "skill": "الخصوصية",
+          "idea": "لا تشارك إلا البيانات المصرّح للأداة ولمؤسستك بمعالجتها.",
+          "scenario": "يحتوي مستند مشروع على معرّفات طلاب وبيانات موردين ورمز وصول داخلي.",
+          "question": "ما الخطوة التالية المسؤولة؟",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "لصق كل شيء لأن المهمة أكاديمية.",
+            "b": "إزالة أسماء الطلاب فقط.",
+            "c": "استخدام نظام معتمد وإزالة الأسرار والبيانات الشخصية أو السرية غير الضرورية."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "التصريح وتقليل البيانات كلاهما مهم. يجب ألا تُضمَّن بيانات الاعتماد أبدًا، وينبغي إزالة السياق الحساس غير الضروري."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "الذكاء الاصطناعي في الهندسة",
+          "summary": "استخدم الذكاء الاصطناعي أداةً لا بديلًا عن التفكير.",
+          "skill": "الذكاء الاصطناعي الهندسي",
+          "idea": "يكون الذكاء الاصطناعي في أفضل حالاته شريكًا في الاستكشاف والصياغة والنقد عندما يبقى المهندس هو المسؤول.",
+          "scenario": "تقارن بين تصميمين لنظام فرعي في قمر صناعي صغير.",
+          "question": "أي سير عمل يستفيد من الذكاء الاصطناعي على أفضل وجه؟",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "ترك الذكاء الاصطناعي يختار التصميم ونسخ تبريره.",
+            "b": "استخدامه لإبراز المفاضلات، ثم التحقق من القيود وتوثيق قرارك.",
+            "c": "تجنّب توثيق الافتراضات لإبقاء التقرير قصيرًا."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "يعزّز الذكاء الاصطناعي الحكم الهندسي، لكنه لا يحلّ محلّ التحقق أو التتبع أو المساءلة."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "الاستخدام المسؤول",
+          "summary": "تعرّف متى يكون استخدام الذكاء الاصطناعي مناسبًا أو محدودًا أو محظورًا.",
+          "skill": "الممارسة المسؤولة",
+          "idea": "يعتمد الاستخدام الصحيح على المهمة وقواعد المقرر وتصريح الأداة ومستوى المساءلة البشرية المطلوب.",
+          "scenario": "قواعد واجب خاضع للتقييم غير واضحة بشأن الاستعانة بالذكاء الاصطناعي التوليدي.",
+          "question": "ماذا يجب أن تفعل؟",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "استخدام الذكاء الاصطناعي دون إفصاح لأن الجميع يفعل ذلك على الأرجح.",
+            "b": "ترك الذكاء الاصطناعي يُنتج العمل النهائي ثم تغيير بضع كلمات.",
+            "c": "مراجعة سياسة المقرر، والسؤال عند الغموض، والإفصاح عن المساعدة المسموح بها."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "الاستخدام المسؤول يحترم هدف التعلّم والقواعد المعلنة. عندما تكون السياسة غير واضحة، استوضحها قبل الاعتماد على الذكاء الاصطناعي."
         }
       }
     },

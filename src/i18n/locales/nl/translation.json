@@ -1271,14 +1271,14 @@
       "connect": "Doorgaan met {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "AI-vaardigheden",
       "description": "Korte modules om AI kritisch, effectief en veilig te gebruiken tijdens je studie.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "{{completed}} van {{total}} modules voltooid",
+      "minutes": "Ongeveer {{count}} min",
+      "practice": "Probeer het zelf",
+      "markComplete": "Markeren als voltooid",
+      "completed": "Voltooid",
+      "unavailable": "De cursus is tijdelijk niet beschikbaar."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "AI-basis",
+      "modulePosition": "Module {{current}} van {{total}}",
+      "correct": "Juist",
+      "considerThis": "Denk hierover na",
+      "nextModule": "Verder",
+      "continue": "Verder leren",
+      "start": "Beginnen",
+      "next": "Hierna",
+      "modulesTitle": "Basisvaardigheden",
+      "mastery": "Beheersingsniveaus",
+      "foundationCompleted": "Basisniveau voltooid · {{date}}",
+      "foundationDescription": "Essentiële gewoonten voor effectief en verantwoord AI-gebruik.",
+      "futureLevel": "Beschikbaar in een toekomstig Campus-traject.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "Basis",
+        "practitioner": "Praktijk",
+        "advanced": "Gevorderd"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "Werken met AI",
+          "summary": "Begrijp wat AI wel en niet kan.",
+          "skill": "AI-principes",
+          "idea": "AI kan snel bruikbare opties bedenken, maar vlot geschreven tekst bewijst niet dat een antwoord klopt.",
+          "scenario": "Een AI-assistent stelt een ontwerpkeuze voor een lucht- en ruimtevaartproject voor en brengt die vol zelfvertrouwen.",
+          "question": "Wat is hier de nuttigste rol voor AI?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "De technische beslissing overnemen.",
+            "b": "Een mogelijke oplossing aandragen die een ingenieur beoordeelt.",
+            "c": "De keuze goedkeuren omdat de uitleg technisch klinkt."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "Gebruik AI om de opties die je kunt onderzoeken uit te breiden. Het technische oordeel blijft verantwoordelijk voor aannames, onderbouwing en de uiteindelijke beslissing."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "Beter vragen",
+          "summary": "Geef genoeg context en bepaal een bruikbaar resultaat.",
+          "skill": "Prompts schrijven",
+          "idea": "Een bruikbare vraag noemt het doel, de relevante context, de beperkingen en de verwachte uitkomst.",
+          "scenario": "Je hebt hulp nodig bij het debuggen van een Python-berekening voor een satellietproject van studenten.",
+          "question": "Welke vraag geeft het veiligste en nuttigste vertrekpunt?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "Repareer mijn code.",
+            "b": "Leg de fout uit, houd SI-eenheden aan, benoem de aannames en stel een geteste correctie voor.",
+            "c": "Schrijf een langer antwoord."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "Concrete context en succescriteria maken de uitkomst makkelijker te controleren en verkleinen de kans dat een verkeerde aanname verborgen blijft."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "De uitkomst controleren",
+          "summary": "Controleer berekeningen, bronnen, beweringen en aannames.",
+          "skill": "Verificatie",
+          "idea": "Verificatie is een aparte technische stap. Hetzelfde model vragen of het zeker is, is geen onafhankelijke controle.",
+          "scenario": "Een AI geeft je een belastingberekening voor een constructieve analyse.",
+          "question": "Wat moet je doen voordat je die gebruikt?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "Hem direct gebruiken omdat de eenheden erbij staan.",
+            "b": "Aannames, eenheden en berekeningen onafhankelijk controleren.",
+            "c": "De AI vragen of hij het zeker weet."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "Controleer het belastinggeval, de eenheden, de vergelijkingen en de randvoorwaarden met betrouwbare methoden of bronnen voordat je op de uitkomst vertrouwt."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "Vertrouwelijke informatie",
+          "summary": "Weet wat niet naar een niet-goedgekeurd systeem mag.",
+          "skill": "Gegevensbescherming",
+          "idea": "Deel alleen gegevens die de tool en je onderwijsinstelling mogen verwerken.",
+          "scenario": "Een projectdocument bevat studentnummers, leveranciersgegevens en een intern toegangstoken.",
+          "question": "Wat is de verantwoorde volgende stap?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "Alles plakken omdat het een studieopdracht is.",
+            "b": "Alleen de namen van studenten verwijderen.",
+            "c": "Een goedgekeurd systeem gebruiken en geheimen en onnodige persoonlijke of vertrouwelijke gegevens verwijderen."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "Toestemming en dataminimalisatie tellen allebei. Inloggegevens horen er nooit bij, en onnodige gevoelige context moet eruit."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "AI in de techniek",
+          "summary": "Gebruik AI als hulpmiddel, niet als vervanging van nadenken.",
+          "skill": "AI voor ingenieurs",
+          "idea": "AI is het sterkst als partner bij verkennen, opstellen en kritisch bekijken, zolang de ingenieur verantwoordelijk blijft.",
+          "scenario": "Je vergelijkt twee concepten voor een subsysteem van een kleine satelliet.",
+          "question": "Welke werkwijze benut AI het best?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "De AI het concept laten kiezen en de onderbouwing overnemen.",
+            "b": "AI gebruiken om afwegingen zichtbaar te maken, daarna de randvoorwaarden toetsen en je beslissing vastleggen.",
+            "c": "Aannames niet vastleggen zodat het verslag kort blijft."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI versterkt het technische oordeel. Het vervangt geen validatie, traceerbaarheid of verantwoordelijkheid."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "Verantwoord gebruik",
+          "summary": "Herken wanneer AI-gebruik gepast, beperkt of verboden is.",
+          "skill": "Verantwoorde praktijk",
+          "idea": "Het juiste gebruik hangt af van de taak, de regels van het vak, de goedkeuring van de tool en de vereiste mate van menselijke verantwoordelijkheid.",
+          "scenario": "De regels van een beoordeelde opdracht zijn onduidelijk over hulp van generatieve AI.",
+          "question": "Wat moet je doen?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "Stilletjes AI gebruiken, want waarschijnlijk doet iedereen het.",
+            "b": "De AI de eindversie laten maken en daarna een paar woorden aanpassen.",
+            "c": "De regels van het vak nalezen, vragen bij onduidelijkheid en toegestane hulp vermelden."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "Verantwoord gebruik respecteert het leerdoel en de afgesproken regels. Zijn de regels onduidelijk, vraag dan eerst om uitleg voordat je op AI vertrouwt."
         }
       }
     },

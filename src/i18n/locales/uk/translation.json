@@ -1271,14 +1271,14 @@
       "connect": "Продовжити з {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "Навички роботи з AI",
       "description": "Короткі модулі про критичне, ефективне й безпечне використання AI у навчанні.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "Пройдено модулів: {{completed}} з {{total}}",
+      "minutes": "Близько {{count}} хв",
+      "practice": "Спробуйте самі",
+      "markComplete": "Позначити як пройдене",
+      "completed": "Пройдено",
+      "unavailable": "Курс тимчасово недоступний."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "Основи AI",
+      "modulePosition": "Модуль {{current}} з {{total}}",
+      "correct": "Правильно",
+      "considerThis": "Поміркуйте",
+      "nextModule": "Далі",
+      "continue": "Продовжити навчання",
+      "start": "Почати",
+      "next": "Наступний",
+      "modulesTitle": "Базові навички",
+      "mastery": "Рівні майстерності",
+      "foundationCompleted": "Базовий рівень пройдено · {{date}}",
+      "foundationDescription": "Основні звички для ефективного й відповідального використання AI.",
+      "futureLevel": "З'явиться в майбутньому курсі Campus.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "Базовий",
+        "practitioner": "Практичний",
+        "advanced": "Поглиблений"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "Робота з AI",
+          "summary": "Зрозумійте, що AI вміє, а що ні.",
+          "skill": "Принципи AI",
+          "idea": "AI може швидко запропонувати корисні варіанти, але гладкий текст не доводить, що відповідь правильна.",
+          "scenario": "AI-асистент пропонує конструкторське рішення для аерокосмічного проєкту й упевнено його подає.",
+          "question": "Яка роль AI тут найкорисніша?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "Замінити інженерне рішення.",
+            "b": "Запропонувати варіант рішення, який оцінить інженер.",
+            "c": "Затвердити вибір, бо пояснення звучить технічно."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "Використовуйте AI, щоб розширити коло варіантів для аналізу. За припущення, докази й остаточне рішення й надалі відповідає інженерне судження."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "Питайте краще",
+          "summary": "Надайте достатньо контексту й визначте корисний результат.",
+          "skill": "Складання запитів",
+          "idea": "Корисний запит указує мету, доречний контекст, обмеження й очікуваний результат.",
+          "scenario": "Вам потрібна допомога з налагодженням розрахунку на Python для студентського супутникового проєкту.",
+          "question": "Який запит дає найнадійнішу й найкориснішу відправну точку?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "Виправ мій код.",
+            "b": "Поясни помилку, збережи одиниці SI, назви припущення й запропонуй перевірене виправлення.",
+            "c": "Напиши довшу відповідь."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "Конкретний контекст і критерії успіху полегшують перевірку результату й зменшують ризик, що в ньому сховається хибне припущення."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "Перевірте результат",
+          "summary": "Перевіряйте розрахунки, джерела, твердження й припущення.",
+          "skill": "Перевірка",
+          "idea": "Перевірка — окремий інженерний етап. Запитати ту саму модель, чи вона впевнена, — це не незалежна перевірка.",
+          "scenario": "AI надає вам розрахунок навантажень для аналізу конструкції.",
+          "question": "Що слід зробити, перш ніж його використати?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "Використати одразу, адже одиниці вказано.",
+            "b": "Незалежно перевірити припущення, одиниці й розрахунки.",
+            "c": "Запитати AI, чи він упевнений."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "Перш ніж покладатися на результат, перевірте розрахунковий випадок навантаження, одиниці, рівняння й граничні умови надійними методами або за надійними джерелами."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "Конфіденційна інформація",
+          "summary": "Знайте, що не можна надсилати до несхваленої системи.",
+          "skill": "Конфіденційність",
+          "idea": "Передавайте лише ті дані, які інструмент і ваш навчальний заклад мають право обробляти.",
+          "scenario": "Проєктний документ містить ідентифікатори студентів, дані постачальників і внутрішній токен доступу.",
+          "question": "Який наступний крок буде відповідальним?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "Вставити все, адже завдання навчальне.",
+            "b": "Видалити лише імена студентів.",
+            "c": "Скористатися схваленою системою й видалити секрети та зайві персональні чи конфіденційні дані."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "Важливі і дозвіл, і мінімізація даних. Облікові дані ніколи не можна додавати, а зайвий чутливий контекст слід прибрати."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "AI в інженерії",
+          "summary": "Використовуйте AI як інструмент, а не заміну мисленню.",
+          "skill": "AI для інженерів",
+          "idea": "AI найсильніший як помічник у дослідженні, підготовці чернеток і критиці, коли відповідальність лишається за інженером.",
+          "scenario": "Ви порівнюєте дві концепції підсистеми малого супутника.",
+          "question": "Який робочий процес найкраще використовує AI?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "Дозволити AI обрати концепцію й скопіювати його обґрунтування.",
+            "b": "Використати AI, щоб виявити компроміси, а потім перевірити обмеження й задокументувати рішення.",
+            "c": "Не документувати припущення, щоб звіт був коротшим."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI посилює інженерне судження. Він не замінює перевірку, простежуваність і відповідальність."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "Відповідальне використання",
+          "summary": "Розрізняйте, коли використання AI доречне, обмежене чи заборонене.",
+          "skill": "Відповідальна практика",
+          "idea": "Правильне використання залежить від завдання, правил курсу, дозволу на інструмент і потрібного рівня людської відповідальності.",
+          "scenario": "У правилах оцінюваного завдання незрозуміло, чи дозволена допомога генеративного AI.",
+          "question": "Що слід зробити?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "Потайки використати AI, бо, мабуть, усі так роблять.",
+            "b": "Доручити AI підсумкову роботу, а потім змінити кілька слів.",
+            "c": "Перевірити правила курсу, уточнити незрозуміле й зазначити дозволену допомогу."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "Відповідальне використання поважає навчальну мету й установлені правила. Якщо правила незрозумілі, з'ясуйте їх, перш ніж покладатися на AI."
         }
       }
     },
