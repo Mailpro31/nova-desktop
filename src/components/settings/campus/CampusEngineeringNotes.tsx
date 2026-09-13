@@ -51,16 +51,20 @@ export const CampusEngineeringNotes: React.FC = () => {
           </p>
         </div>
       </div>
+      {/* `block w-full` : sans eux, les deux champs gardaient leur largeur par
+          défaut et se rangeaient côte à côte avec le bouton. */}
       <Textarea
         value={text}
         onChange={(event) => setText(event.target.value)}
         placeholder={t("campus.engineeringNotes.inputPlaceholder")}
         rows={5}
+        className="block w-full"
       />
       <Input
         value={instruction}
         onChange={(event) => setInstruction(event.target.value)}
         placeholder={t("campus.engineeringNotes.instructionPlaceholder")}
+        className="block w-full"
       />
       <Button
         type="button"

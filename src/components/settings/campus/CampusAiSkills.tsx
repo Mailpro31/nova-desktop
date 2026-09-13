@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AiSkillModulePlayer } from "@/components/campus/AiSkillModulePlayer";
-import { Button, PageHeader } from "@/components/ui";
+import { Button, SectionHeader } from "@/components/ui";
 import { useAiSkillsProgress } from "@/hooks/useAiSkillsProgress";
 import { AI_ESSENTIALS_TRACK } from "@/lib/aiSkills";
 import { useCampusStore } from "@/stores/campusStore";
@@ -63,9 +63,11 @@ export const CampusAiSkills: React.FC = () => {
 
   return (
     <div className="mx-auto w-full max-w-[760px] space-y-8">
-      <PageHeader
-        eyebrow={t("campus.aiCurriculum.levels.foundation")}
-        title={t("campus.aiSkills.title")}
+      {/* Rendu dans un onglet de Réglages, sous son titre : un titre de
+          section, pas un second titre de page. « AI Essentials » plutôt que
+          « AI Skills », que la barre latérale donne déjà à un autre écran. */}
+      <SectionHeader
+        title={t("campus.aiCurriculum.title")}
         description={t("campus.aiSkills.description")}
         actions={
           <Button

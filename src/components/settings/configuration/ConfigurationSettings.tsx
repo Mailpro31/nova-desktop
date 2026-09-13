@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CampusAiSkills } from "../campus/CampusAiSkills";
 import { CampusConnection } from "../campus/CampusConnection";
+import { CampusEngineeringNotes } from "../campus/CampusEngineeringNotes";
 import { GeneralSettings } from "../general/GeneralSettings";
 import {
   CampusGeneralSettings,
@@ -14,14 +16,22 @@ import { PageHeader } from "../../shell/PageHeader";
 import { ModelsSettings } from "../models/ModelsSettings";
 import { AdvancedSettings } from "../advanced/AdvancedSettings";
 import { PersonalizationSettings } from "../personalization/PersonalizationSettings";
+import { useCapability } from "@/hooks/useOrganizationContext";
 import { isOrganizationMode } from "@/lib/mode";
+import {
+  organizationSettingsTools,
+  type OrganizationSettingsTools,
+} from "@/lib/organization/settingsTools";
+import { announcedTypeFrom } from "@/lib/organization/wording";
+import { useCampusStore } from "@/stores/campusStore";
 
 type ConfigTab =
   | "general"
   | "voice"
   | "performance"
   | "advanced"
-  | "personalization";
+  | "personalization"
+  | keyof OrganizationSettingsTools;
 
 const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
   { id: "general", labelKey: "sidebar.general" },
@@ -46,6 +56,39 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
 ];
 
 /**
+ * Les fonctions que l'organisation sert, après les quatre catégories. Chacune
+ * n'apparaît que si l'organisation l'ouvre : voir `organizationSettingsTools`.
+ */
+const ORGANIZATION_TOOL_TABS: {
+  id: keyof OrganizationSettingsTools;
+  labelKey: string;
+}[] = [
+  { id: "aiEssentials", labelKey: "campus.aiCurriculum.title" },
+  { id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" },
+];
+
+/** Ce que l'organisation ouvre, lu dans ses capacités et sa nature annoncée. */
+function useOrganizationSettingsTools(): OrganizationSettingsTools {
+  const aiSkillsCapability = useCapability("aiSkills");
+  const engineeringNotesCapability = useCapability("engineeringNotes");
+  const aiSkillsPolicyEnabled = useCampusStore(
+    (state) => state.context.aiSkillsPolicy.enabled,
+  );
+  const organizationType = useCampusStore((state) =>
+    announcedTypeFrom(
+      state.serverIdentity?.organizationType,
+      state.config?.organization_type,
+    ),
+  );
+  return organizationSettingsTools({
+    aiSkillsCapability,
+    aiSkillsPolicyEnabled,
+    engineeringNotesCapability,
+    organizationType,
+  });
+}
+
+/**
  * « Configuration » regroupe les anciennes sections Général / Modèles /
  * Avancé sous une seule entrée de barre latérale, avec un sélecteur segmenté
  * compact pour naviguer entre les trois. Aucun réglage ni clé de
@@ -54,8 +97,16 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
 export const ConfigurationSettings: React.FC = () => {
   const { t } = useTranslation();
   const campusMode = isOrganizationMode();
-  const tabs = campusMode ? CAMPUS_TABS : ALL_TABS;
-  const [tab, setTab] = useState<ConfigTab>("general");
+  const tools = useOrganizationSettingsTools();
+  const tabs = campusMode
+    ? [...CAMPUS_TABS, ...ORGANIZATION_TOOL_TABS.filter(({ id }) => tools[id])]
+    : ALL_TABS;
+  const [selectedTab, setTab] = useState<ConfigTab>("general");
+  // Une fonction que l'organisation referme pendant qu'on la consulte ne reste
+  // pas affichée : on revient sur Général.
+  const tab = tabs.some(({ id }) => id === selectedTab)
+    ? selectedTab
+    : "general";
 
   return (
     // La largeur vient de l'app shell ; la répéter contraignait la colonne
@@ -64,7 +115,7 @@ export const ConfigurationSettings: React.FC = () => {
       <PageHeader title={t("sidebar.settings")} />
       {tabs.length > 1 && (
         <div
-          className="inline-flex items-center gap-0.5 p-0.5 rounded-full"
+          className="inline-flex max-w-full items-center gap-0.5 overflow-x-auto p-0.5 rounded-full"
           style={{ background: "var(--color-inset)" }}
           role="tablist"
         >
@@ -77,7 +128,7 @@ export const ConfigurationSettings: React.FC = () => {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setTab(item.id)}
-                className={`px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors cursor-pointer ${
+                className={`shrink-0 px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors cursor-pointer ${
                   active
                     ? "bg-accent text-white"
                     : "text-text-secondary hover:text-text"
@@ -102,6 +153,8 @@ export const ConfigurationSettings: React.FC = () => {
           {campusMode && <CampusPersonalizationSections />}
         </>
       )}
+      {tab === "aiEssentials" && <CampusAiSkills />}
+      {tab === "engineeringNotes" && <CampusEngineeringNotes />}
     </div>
   );
 };
