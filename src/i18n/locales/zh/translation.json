@@ -1836,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "请重新登录，以继续使用组织提供的功能。",
+    "logoutConfirmTitle": "要从组织注销吗？",
+    "logoutConfirmDescription": "你需要重新登录才能使用组织提供的功能。确定吗？",
+    "aboutSubtitle": "Nova 的信息和故障排除工具。",
+    "personalizationDescription": "在不更改组织政策的情况下，调整 Nova 的外观和交互。",
+    "organizationSubtitle": "你的组织、它提供的内容，以及你的数据去向。",
+    "statusConnected": "已连接组织",
+    "providesTitle": "你的组织提供的内容",
+    "providesPaused": "当前已暂停 — 无法访问组织服务器。",
+    "transcriptionDescription": "你的录音会发送到组织服务器，由其转换为文字。",
+    "rewritingDescription": "你的文字和所选风格会发送到组织服务器，由其改写。",
+    "vocabularyDescription": "组织添加的术语与你自己的术语，有助于识别和改写时正确拼写。",
+    "formattingDescription": "组织设定的规则与你自己的规则，会应用于每次改写。",
+    "dataOnServer": "组织服务器",
+    "dataNote": "组织服务器会统计你每天进行的转写和改写次数，但不保存其内容。",
+    "aiSkillsPrivacyOffline": "AI Skills 在组织服务器上运行，但目前无法访问。",
+    "notInOrganization": "此 Microsoft 帐户不属于你的组织。",
+    "codeForbidden": "无法访问。请联系管理员。"
   }
 }

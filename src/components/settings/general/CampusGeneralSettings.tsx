@@ -16,6 +16,7 @@ import { OutputDeviceSelector } from "../OutputDeviceSelector";
 import { PushToTalk } from "../PushToTalk";
 import { AudioFeedback } from "../AudioFeedback";
 import { useSettings } from "../../../hooks/useSettings";
+import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { CampusDictionarySection } from "./CampusDictionarySection";
@@ -142,6 +143,7 @@ export const CampusAdvancedSections: React.FC = () => <AboutSectionCard />;
 
 const AboutSectionCard: React.FC = () => {
   const { t } = useTranslation();
+  const word = useOrganizationWording();
   const [version, setVersion] = useState("");
 
   useEffect(() => {
@@ -154,7 +156,7 @@ const AboutSectionCard: React.FC = () => {
     <SectionCard
       icon={Info}
       title={t("sidebar.about")}
-      description={t("campus.settings.aboutSubtitle")}
+      description={word("aboutSubtitle")}
     >
       <div className="p-1">
         <div className="px-4 py-3 flex items-center justify-between border-b border-hairline">

@@ -1836,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Kuruluşunuzun sunduklarını kullanmaya devam etmek için yeniden oturum açın.",
+    "logoutConfirmTitle": "Kuruluşunuzdan çıkış yapılsın mı?",
+    "logoutConfirmDescription": "Kuruluşunuzun sunduklarını kullanmak için yeniden oturum açmanız gerekecek. Emin misiniz?",
+    "aboutSubtitle": "Nova için bilgiler ve sorun giderme araçları.",
+    "personalizationDescription": "Kuruluşunuzun kurallarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarlayın.",
+    "organizationSubtitle": "Kuruluşunuz, sundukları ve verilerinizin nereye gittiği.",
+    "statusConnected": "Kuruluş bağlı",
+    "providesTitle": "Kuruluşunuzun sundukları",
+    "providesPaused": "Şu anda duraklatıldı — kuruluşunuzun sunucusuna ulaşılamıyor.",
+    "transcriptionDescription": "Kaydınız, onu metne dönüştüren kuruluş sunucunuza gönderilir.",
+    "rewritingDescription": "Metniniz ve seçilen stil, metni yeniden yazan kuruluş sunucunuza gönderilir.",
+    "vocabularyDescription": "Kuruluşunuzun eklediği terimler, sizinkilerle birlikte, tanıma ve yeniden yazmanın bunları doğru yazmasına yardımcı olur.",
+    "formattingDescription": "Kuruluşunuzun belirlediği kurallar, sizinkilerle birlikte, her yeniden yazmada uygulanır.",
+    "dataOnServer": "Kuruluş sunucusu",
+    "dataNote": "Kuruluşunuzun sunucusu günde kaç transkripsiyon ve yeniden yazma yaptığınızı sayar. İçeriklerini saklamaz.",
+    "aiSkillsPrivacyOffline": "AI Skills, şu anda ulaşılamayan kuruluş sunucunuzda çalışır.",
+    "notInOrganization": "Bu Microsoft hesabı kuruluşunuza ait değil.",
+    "codeForbidden": "Erişim kullanılamıyor. Yöneticinize başvurun."
   }
 }

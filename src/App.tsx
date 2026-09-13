@@ -42,6 +42,7 @@ import { useOrganizationUpdates } from "./hooks/useOrganizationUpdates";
 import { reconcileWithLegacySetting } from "./lib/onboarding/progress";
 import { useSettingsStore } from "./stores/settingsStore";
 import { refreshCampusContext } from "./stores/campusStore";
+import { currentOrganizationWordingKey } from "./hooks/useOrganizationWording";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
 import {
@@ -364,11 +365,14 @@ function App() {
     const unlisten = listen("campus-session-invalid", () => {
       // La session disparue, `useCampusStatus` la relit et le parcours
       // réintroduit de lui-même l'étape de connexion.
+      // Les mots sont choisis avant d'effacer la session : c'est tant que le
+      // contexte existe encore qu'on sait si l'on parle à une école.
+      const description = t(currentOrganizationWordingKey("sessionExpired"));
       clearCampusSession()
         .then(() => {
           refreshCampusStatus();
           showAttentionToast("error", t("campus.sessionExpiredTitle"), {
-            description: t("campus.sessionExpired"),
+            description,
           });
         })
         .catch((e) => {

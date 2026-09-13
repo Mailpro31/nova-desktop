@@ -1836,5 +1836,25 @@
       "discovery": "Nova ne trouve pas le serveur de votre organisation. Vérifiez votre connexion et réessayez.",
       "authMethodUnavailable": "Votre organisation exige une méthode de connexion non prise en charge par cette version."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Reconnectez-vous pour continuer à utiliser ce que votre organisation fournit.",
+    "logoutConfirmTitle": "Se déconnecter de votre organisation ?",
+    "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser ce que votre organisation fournit. Voulez-vous continuer ?",
+    "aboutSubtitle": "Informations et outils de diagnostic pour Nova.",
+    "personalizationDescription": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre organisation.",
+    "organizationSubtitle": "Votre organisation, ce qu'elle fournit, et où vont vos données.",
+    "statusConnected": "Organisation connectée",
+    "providesTitle": "Ce que votre organisation fournit",
+    "providesPaused": "Actuellement en pause — le serveur de votre organisation est injoignable.",
+    "transcriptionDescription": "Votre enregistrement est envoyé au serveur de votre organisation, qui le transforme en texte.",
+    "rewritingDescription": "Votre texte et le style choisi sont envoyés au serveur de votre organisation, qui le reformule.",
+    "vocabularyDescription": "Les termes ajoutés par votre organisation, et les vôtres, aident la reconnaissance et la reformulation à les écrire correctement.",
+    "formattingDescription": "Les règles fixées par votre organisation, et les vôtres, s'appliquent à chaque reformulation.",
+    "dataOnServer": "Serveur de l'organisation",
+    "dataNote": "Le serveur de votre organisation compte le nombre de transcriptions et de reformulations effectuées chaque jour. Il n'en conserve pas le contenu.",
+    "aiSkillsPrivacyOffline": "Les AI Skills passent par le serveur de votre organisation, actuellement injoignable.",
+    "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre organisation.",
+    "codeForbidden": "L'accès est indisponible. Contactez votre administrateur."
   }
 }

@@ -1836,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Please sign in again to keep using what your organization provides.",
+    "logoutConfirmTitle": "Sign out of your organization?",
+    "logoutConfirmDescription": "You will need to sign in again to use what your organization provides. Are you sure?",
+    "aboutSubtitle": "Information and troubleshooting tools for Nova.",
+    "personalizationDescription": "Adjust Nova's appearance and interaction without changing your organization's policies.",
+    "organizationSubtitle": "Your organization, what it provides, and where your data goes.",
+    "statusConnected": "Organization connected",
+    "providesTitle": "What your organization provides",
+    "providesPaused": "Currently paused — your organization's server is unreachable.",
+    "transcriptionDescription": "Your recording is sent to your organization's server, which turns it into text.",
+    "rewritingDescription": "Your text and the selected style are sent to your organization's server, which rewrites it.",
+    "vocabularyDescription": "Terms added by your organization, plus your own, help both recognition and rewriting spell them correctly.",
+    "formattingDescription": "Rules set by your organization, plus your own, are applied to every rewrite.",
+    "dataOnServer": "Organization server",
+    "dataNote": "Your organization's server counts how many transcriptions and rewrites you run each day. It does not store their content.",
+    "aiSkillsPrivacyOffline": "AI Skills run on your organization's server, which is unreachable right now.",
+    "notInOrganization": "This Microsoft account is not part of your organization.",
+    "codeForbidden": "Access is unavailable. Contact your administrator."
   }
 }

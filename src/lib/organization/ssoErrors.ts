@@ -1,4 +1,6 @@
 import type { SsoError } from "@/bindings";
+import type { OrganizationType } from "./model";
+import { wordingKey } from "./wording";
 
 /**
  * Traduction des échecs de connexion Organization en message affichable.
@@ -7,7 +9,7 @@ import type { SsoError } from "@/bindings";
  *
  * 1. **l'utilisateur reçoit une phrase, pas un code.** « TENANT_NOT_ALLOWED »
  *    ne lui apprend rien et ressemble à une panne ; « ce compte Microsoft ne
- *    fait pas partie de votre établissement » lui dit quoi faire ;
+ *    fait pas partie de votre organisation » lui dit quoi faire ;
  * 2. **aucun détail technique n'apparaît.** Ni tenant, ni identifiant
  *    d'application, ni jeton, ni adresse de serveur. Le code de raison reste
  *    dans les journaux, où il sert au diagnostic.
@@ -17,7 +19,7 @@ import type { SsoError } from "@/bindings";
  * reviendrait à lui reprocher son propre geste.
  */
 
-/** Codes renvoyés par le serveur de l'établissement, tels quels. */
+/** Codes renvoyés par le serveur de l'organisation, tels quels. */
 const NOT_IN_ORGANIZATION = new Set([
   "TENANT_NOT_ALLOWED",
   "ORGANIZATION_MISMATCH",
@@ -30,8 +32,15 @@ export type TranslateFn = (key: string) => string;
 
 /**
  * Message à afficher, ou `null` quand il ne faut rien dire.
+ *
+ * `organizationType` est la nature annoncée par le serveur : seule une école
+ * lit « établissement » ; sans nature annoncée, le message reste neutre.
  */
-export function formatSsoError(error: SsoError, t: TranslateFn): string | null {
+export function formatSsoError(
+  error: SsoError,
+  t: TranslateFn,
+  organizationType: OrganizationType | null = null,
+): string | null {
   switch (error.code) {
     case "AuthCancelled":
       return null;
@@ -45,7 +54,7 @@ export function formatSsoError(error: SsoError, t: TranslateFn): string | null {
       return t("campus.microsoft.failed");
     case "Server": {
       if (NOT_IN_ORGANIZATION.has(error.detail)) {
-        return t("campus.microsoft.notInOrganization");
+        return t(wordingKey("notInOrganization", organizationType));
       }
       if (ACCESS_REVOKED.has(error.detail)) {
         return t("campus.microsoft.accessRevoked");

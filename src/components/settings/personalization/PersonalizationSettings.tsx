@@ -12,6 +12,7 @@ import { ShowOverlay } from "../ShowOverlay";
 import { isOrganizationMode } from "@/lib/mode";
 import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import { useSettings } from "../../../hooks/useSettings";
+import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import {
   ORB_THEMES,
   DEFAULT_ORB_ID,
@@ -50,6 +51,7 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
 
 export const PersonalizationSettings: React.FC = () => {
   const { t } = useTranslation();
+  const word = useOrganizationWording();
   const campusMode = isOrganizationMode();
   const [selected, setSelected] = useState<string>(getOrbThemeId());
   const [canCustomize, setCanCustomize] = useState(true);
@@ -96,7 +98,7 @@ export const PersonalizationSettings: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title={t("sidebar.personalization")}
-        description={t("campus.personalization.description")}
+        description={word("personalizationDescription")}
       />
 
       {/* En campus, langue et thème vivent dans « Général » : les répéter ici

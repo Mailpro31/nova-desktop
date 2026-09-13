@@ -109,3 +109,24 @@ describe("Messages d'échec de connexion Microsoft", () => {
     expect(formatSsoError(server("CODE_JAMAIS_VU"), translate)).toBeTruthy();
   });
 });
+
+describe("Vocabulaire selon la nature de l'organisation", () => {
+  test("hors d'une école, un refus d'appartenance ne parle pas d'établissement", () => {
+    for (const organizationType of ["business", null] as const) {
+      const message =
+        formatSsoError(
+          server("TENANT_NOT_ALLOWED"),
+          translate,
+          organizationType,
+        ) ?? "";
+      expect(message).not.toMatch(/institution|school|campus/i);
+      expect(message).toMatch(/organization/i);
+    }
+  });
+
+  test("une école garde son vocabulaire", () => {
+    expect(
+      formatSsoError(server("TENANT_NOT_ALLOWED"), translate, "education"),
+    ).toMatch(/institution/i);
+  });
+});

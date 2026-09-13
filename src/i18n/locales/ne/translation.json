@@ -1836,5 +1836,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "तपाईंको संस्थाले दिने सुविधा प्रयोग गरिरहन फेरि साइन इन गर्नुहोस्।",
+    "logoutConfirmTitle": "संस्थाबाट साइन आउट गर्ने?",
+    "logoutConfirmDescription": "तपाईंको संस्थाले दिने सुविधा प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
+    "aboutSubtitle": "Nova का लागि जानकारी र समस्या समाधान उपकरण।",
+    "personalizationDescription": "संस्थाका नियम नबदली Nova को रूप र अन्तर्क्रिया मिलाउनुहोस्।",
+    "organizationSubtitle": "तपाईंको संस्था, त्यसले के दिन्छ, र तपाईंको डेटा कहाँ जान्छ।",
+    "statusConnected": "संस्था जोडिएको छ",
+    "providesTitle": "तपाईंको संस्थाले के दिन्छ",
+    "providesPaused": "हाल रोकिएको — संस्थाको सर्भरमा पुग्न सकिएन।",
+    "transcriptionDescription": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा पठाइन्छ, जसले त्यसलाई पाठमा बदल्छ।",
+    "rewritingDescription": "तपाईंको पाठ र छानिएको शैली संस्थाको सर्भरमा पठाइन्छ, जसले पाठ पुनर्लेखन गर्छ।",
+    "vocabularyDescription": "संस्थाले थपेका शब्द र तपाईंका आफ्नै शब्दले पहिचान र पुनर्लेखनमा ती सही लेख्न मद्दत गर्छन्।",
+    "formattingDescription": "संस्थाले तोकेका नियम र तपाईंका आफ्नै नियम हरेक पुनर्लेखनमा लागू हुन्छन्।",
+    "dataOnServer": "संस्थाको सर्भर",
+    "dataNote": "संस्थाको सर्भरले तपाईंले दिनहुँ गर्ने ट्रान्सक्रिप्सन र पुनर्लेखनको सङ्ख्या गन्छ। त्यसले सामग्री राख्दैन।",
+    "aiSkillsPrivacyOffline": "AI Skills संस्थाको सर्भरमा चल्छन्, जुन अहिले पहुँचयोग्य छैन।",
+    "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
+    "codeForbidden": "पहुँच उपलब्ध छैन। प्रशासकलाई सम्पर्क गर्नुहोस्।"
   }
 }
