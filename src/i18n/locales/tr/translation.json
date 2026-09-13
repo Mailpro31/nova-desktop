@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "Bir test sunucusuna katıl",
+        "title": "Test sunucusuna katıl",
+        "subtitle": "Lab yöneticisinin verdiği davet kodunu yapıştır.",
+        "join": "Katıl",
+        "codeLabel": "Davet kodu",
+        "securityNote": "Nova, kodu göndermeden önce sunucunun kimliğini doğrular.",
+        "error": "Bu test sunucusuna katılınamadı. Kodun yeni olduğunu ve iki bilgisayarın aynı ağda bulunduğunu kontrol et.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Bu adresi yalnızca BT ekibin Nova'yı senin için yapılandırmadıysa gir."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "Kod yeniden gönderildi",
+        "resendCooldown": "{{seconds}} sn sonra yeniden gönder",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "Kodun {{position}}. hanesi"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "{{organization}} ile bağlantı kuruldu",
+        "subtitle": "Nova Campus bu bilgisayarda hazır.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "Kuruluş",
+        "account": "Hesap",
+        "processing": "İşleme",
+        "campusInfrastructure": "Campus altyapısı",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "Sunucuya ulaşılamadı. Bağlantınızı denetleyip yeniden deneyin.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "Bu kurum, bu sürümün henüz desteklemediği bir kimlik doğrulama yöntemi gerektiriyor."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "Sunucu",
+      "email": "Oturum açan hesap",
+      "role": "Görev",
+      "cohort": "Dönem",
+      "logout": "Oturumu kapat",
+      "logoutConfirmTitle": "Nova Campus oturumu kapatılsın mı?",
+      "logoutConfirmDescription": "Nova Campus'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",
+      "logoutConfirmButton": "Oturumu kapat",
+      "refresh": "Yenile",
+      "checking": "Bağlantı kontrol ediliyor…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "Sunucuya ulaşılamadı. Adresi ve bağlantını kontrol et."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "Oturumun süresi doldu",
+    "sessionExpired": "Nova Campus'ı kullanmaya devam etmek için lütfen yeniden oturum aç.",
+    "serverUnreachableTitle": "Sunucuya ulaşılamıyor",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "{{organization}} tarafından yönetiliyor",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "Tarayıcında oturum açmayı tamamla. Microsoft isterse bu kodu kullan.",
+      "expired": "Microsoft oturum açma isteğinin süresi doldu. Baştan başla.",
       "failed": "Oturum açma tamamlanmadı. Lütfen tekrar deneyin.",
       "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
       "accessRevoked": "Erişiminiz artık kullanılamıyor. Yöneticinizle iletişime geçin."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "Şimdilik atla",
       "continueLater": "Daha sonra devam et",
       "useNovaNow": "Nova'yı şimdi kullan",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "Bu temel eğitim {{organization}} tarafından zorunlu tutuluyor.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "{{organization}} kuruluşuna hoş geldin, {{name}}.",
+        "description": "Yapay zekâyla sorumlu biçimde çalışmayı öğren ya da Nova'yı hemen kullanmaya başla.",
+        "aiEssentials": "Yapay Zekânın Temelleri ile başla",
+        "recommended": "Önerilen · yaklaşık 6 dakika",
+        "setupNow": "Nova'yı şimdi kur"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Nova'yı kur",
+        "description": "Senin için önerilen kurulumu hazırladık.",
+        "microphone": "Mikrofon",
+        "language": "Dil",
+        "shortcut": "Dikte kısayolu",
+        "style": "Yazım stili",
+        "processing": "İşleme",
+        "ready": "Hazır",
+        "checkRequired": "Kontrol gerekiyor",
+        "noMicrophone": "Mikrofon algılanmadı",
+        "autoDetect": "Otomatik algıla",
+        "useRecommended": "Önerilen kurulumu kullan",
+        "customize": "Özelleştir",
+        "useRecommendations": "Önerileri kullan",
+        "purposeQuestion": "Nova'yı en çok ne için kullanıyorsun?",
+        "writingQuestion": "Nova genellikle nasıl yazmalı?",
+        "languageQuestion": "Tercih edilen dikte dili",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "Dersler ve notlar",
+          "engineering": "Mühendislik projeleri",
+          "emails": "E-postalar ve iletişim",
+          "coding": "Kodlama",
+          "everything": "Her şeyden biraz",
+          "courseNotes": "Ders materyalleri",
+          "feedback": "Öğrencilere geri bildirim",
+          "documents": "Belgeler"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "Sözcüklerimi koru",
+          "clean": "Toparla",
+          "professional": "Profesyonel",
+          "auto": "Otomatik"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Nova'yı dene",
+        "description": "Kısa bir dikte yap. Böylece mikrofonun kontrol edilir ve Nova'nın nasıl çalıştığını görürsün.",
+        "sample": "Şunu söyle: “Yarın sabah Lucas'a proje güncellemesini gönder.”",
+        "start": "Dikteyi başlat",
+        "listening": "Dinleniyor...",
+        "successTitle": "İşte bu kadar.",
+        "successDescription": "Mikrofonun hazır. Nova, imlecin olduğu her yerde çalışır.",
+        "openNova": "Nova'yı aç"
       }
     },
     "aiCurriculum": {

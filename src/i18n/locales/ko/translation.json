@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "테스트 서버에 참여",
+        "title": "테스트 서버에 참여하기",
+        "subtitle": "Lab 관리자가 제공한 초대 코드를 붙여 넣으세요.",
+        "join": "참여",
+        "codeLabel": "초대 코드",
+        "securityNote": "Nova는 코드를 보내기 전에 서버의 신원을 확인합니다.",
+        "error": "이 테스트 서버에 참여하지 못했습니다. 코드가 최신인지, 두 컴퓨터가 같은 네트워크에 있는지 확인하세요.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "IT 팀이 Nova를 설정해 주지 않은 경우에만 이 주소를 입력하세요."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "코드를 다시 보냈습니다",
+        "resendCooldown": "{{seconds}}초 후 다시 보내기",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "코드 {{position}}번째 자리"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "{{organization}}에 연결되었습니다",
+        "subtitle": "이 컴퓨터에서 Nova Campus를 사용할 준비가 되었습니다.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "조직",
+        "account": "계정",
+        "processing": "처리",
+        "campusInfrastructure": "Campus 인프라",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "서버에 연결할 수 없습니다. 연결을 확인한 뒤 다시 시도하세요.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "이 기관은 이 버전에서 아직 지원하지 않는 인증 방식을 요구합니다."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "서버",
+      "email": "로그인 계정",
+      "role": "역할",
+      "cohort": "기수",
+      "logout": "로그아웃",
+      "logoutConfirmTitle": "Nova Campus에서 로그아웃할까요?",
+      "logoutConfirmDescription": "Nova Campus를 사용하려면 다시 로그인해야 합니다. 계속할까요?",
+      "logoutConfirmButton": "로그아웃",
+      "refresh": "새로 고침",
+      "checking": "연결 확인 중…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "서버에 연결할 수 없습니다. 주소와 연결 상태를 확인하세요."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "세션 만료",
+    "sessionExpired": "Nova Campus를 계속 사용하려면 다시 로그인하세요.",
+    "serverUnreachableTitle": "서버에 연결할 수 없음",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "{{organization}}에서 관리",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "브라우저에서 로그인을 마치세요. Microsoft가 요청하면 이 코드를 사용하세요.",
+      "expired": "Microsoft 로그인 요청이 만료되었습니다. 처음부터 다시 시작하세요.",
       "failed": "로그인이 완료되지 않았습니다. 다시 시도하세요.",
       "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
       "accessRevoked": "액세스를 더 이상 사용할 수 없습니다. 관리자에게 문의하세요."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "지금은 건너뛰기",
       "continueLater": "나중에 계속하기",
       "useNovaNow": "지금 Nova 사용하기",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "이 기초 과정은 {{organization}}에서 필수입니다.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "{{organization}}에 오신 것을 환영합니다, {{name}}님.",
+        "description": "AI를 책임감 있게 활용하는 법을 배우거나, 바로 Nova를 사용해 보세요.",
+        "aiEssentials": "AI 기초로 시작하기",
+        "recommended": "추천 · 약 6분",
+        "setupNow": "지금 Nova 설정하기"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Nova 설정",
+        "description": "추천 설정을 준비해 두었습니다.",
+        "microphone": "마이크",
+        "language": "언어",
+        "shortcut": "받아쓰기 단축키",
+        "style": "글쓰기 스타일",
+        "processing": "처리",
+        "ready": "준비됨",
+        "checkRequired": "확인 필요",
+        "noMicrophone": "마이크가 감지되지 않음",
+        "autoDetect": "자동 감지",
+        "useRecommended": "추천 설정 사용",
+        "customize": "맞춤 설정",
+        "useRecommendations": "추천 사용",
+        "purposeQuestion": "Nova를 주로 어디에 사용하나요?",
+        "writingQuestion": "Nova가 평소 어떻게 쓰면 좋을까요?",
+        "languageQuestion": "선호하는 받아쓰기 언어",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "수업과 필기",
+          "engineering": "엔지니어링 프로젝트",
+          "emails": "이메일과 커뮤니케이션",
+          "coding": "코딩",
+          "everything": "이것저것 조금씩",
+          "courseNotes": "강의 자료",
+          "feedback": "학생 피드백",
+          "documents": "문서"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "내 말 그대로",
+          "clean": "다듬기",
+          "professional": "전문적으로",
+          "auto": "자동"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Nova 사용해 보기",
+        "description": "짧게 한 번 받아쓰기를 해 보세요. 마이크를 확인하고 Nova의 작동 방식을 보여 드립니다.",
+        "sample": "“내일 아침에 루카스에게 프로젝트 진행 상황을 보내 줘”라고 말해 보세요.",
+        "start": "받아쓰기 시작",
+        "listening": "듣는 중...",
+        "successTitle": "완료되었습니다.",
+        "successDescription": "마이크가 준비되었습니다. Nova는 커서가 있는 곳 어디에서나 작동합니다.",
+        "openNova": "Nova 열기"
       }
     },
     "aiCurriculum": {

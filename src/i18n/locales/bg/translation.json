@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "Присъединяване към тестов сървър",
+        "title": "Присъединяване към тестовия сървър",
+        "subtitle": "Поставете кода за покана, предоставен от администратора на Lab.",
+        "join": "Присъедини се",
+        "codeLabel": "Код за покана",
+        "securityNote": "Nova проверява самоличността на сървъра, преди да му изпрати кода.",
+        "error": "Неуспешно присъединяване към този тестов сървър. Проверете дали кодът е нов и дали двата компютъра са в една и съща мрежа.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Въведете този адрес само ако вашият ИТ екип не е конфигурирал Nova вместо вас."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "Кодът е изпратен отново",
+        "resendCooldown": "Повторно изпращане след {{seconds}} с",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "Цифра {{position}} от кода"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "Свързани сте с {{organization}}",
+        "subtitle": "Nova Campus е готов на този компютър.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "Организация",
+        "account": "Акаунт",
+        "processing": "Обработка",
+        "campusInfrastructure": "Инфраструктура на Campus",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "Сървърът е недостъпен. Проверете връзката и опитайте отново.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "Тази институция изисква метод за удостоверяване, който тази версия още не поддържа."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "Сървър",
+      "email": "Влезли сте като",
+      "role": "Роля",
+      "cohort": "Випуск",
+      "logout": "Изход",
+      "logoutConfirmTitle": "Изход от Nova Campus?",
+      "logoutConfirmDescription": "Ще трябва да влезете отново, за да използвате Nova Campus. Сигурни ли сте?",
+      "logoutConfirmButton": "Изход",
+      "refresh": "Обнови",
+      "checking": "Проверка на връзката…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "Сървърът не може да бъде достигнат. Проверете адреса и връзката си."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "Сесията е изтекла",
+    "sessionExpired": "Моля, влезте отново, за да продължите да използвате Nova Campus.",
+    "serverUnreachableTitle": "Сървърът е недостъпен",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "Управлява се от {{organization}}",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "Завършете влизането в браузъра си. Използвайте този код, ако Microsoft го поиска.",
+      "expired": "Заявката за влизане с Microsoft е изтекла. Започнете отново.",
       "failed": "Влизането не беше завършено. Опитайте отново.",
       "notInOrganization": "Този акаунт в Microsoft не принадлежи на вашата институция.",
       "accessRevoked": "Достъпът ви вече не е наличен. Свържете се с администратора."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "Пропусни засега",
       "continueLater": "Продължете по-късно",
       "useNovaNow": "Използвайте Nova сега",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "Този основен курс е задължителен за {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "Добре дошли в {{organization}}, {{name}}.",
+        "description": "Научете как да работите отговорно с ИИ или започнете да използвате Nova веднага.",
+        "aiEssentials": "Започнете с Основи на ИИ",
+        "recommended": "Препоръчително · около 6 минути",
+        "setupNow": "Настройте Nova сега"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Настройка на Nova",
+        "description": "Подготвихме препоръчителната настройка за вас.",
+        "microphone": "Микрофон",
+        "language": "Език",
+        "shortcut": "Клавишна комбинация за диктовка",
+        "style": "Стил на писане",
+        "processing": "Обработка",
+        "ready": "Готово",
+        "checkRequired": "Нужна е проверка",
+        "noMicrophone": "Не е открит микрофон",
+        "autoDetect": "Автоматично разпознаване",
+        "useRecommended": "Използвай препоръчителната настройка",
+        "customize": "Персонализирай",
+        "useRecommendations": "Използвай препоръките",
+        "purposeQuestion": "За какво използвате Nova най-често?",
+        "writingQuestion": "Как обикновено трябва да пише Nova?",
+        "languageQuestion": "Предпочитан език за диктовка",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "Лекции и бележки",
+          "engineering": "Инженерни проекти",
+          "emails": "Имейли и комуникация",
+          "coding": "Програмиране",
+          "everything": "По малко от всичко",
+          "courseNotes": "Учебни материали",
+          "feedback": "Обратна връзка за студенти",
+          "documents": "Документи"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "Запази думите ми",
+          "clean": "Изчисти ги",
+          "professional": "Професионално",
+          "auto": "Автоматично"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Изпробвайте Nova",
+        "description": "Направете една кратка диктовка. Така ще проверите микрофона и ще видите как работи Nova.",
+        "sample": "Кажете: „Изпрати на Лукас новините по проекта утре сутрин.“",
+        "start": "Започни диктовка",
+        "listening": "Слушане...",
+        "successTitle": "Това е всичко.",
+        "successDescription": "Микрофонът е готов. Nova работи навсякъде, където е курсорът ви.",
+        "openNova": "Отвори Nova"
       }
     },
     "aiCurriculum": {

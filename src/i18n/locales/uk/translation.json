@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "Приєднатися до тестового сервера",
+        "title": "Приєднання до тестового сервера",
+        "subtitle": "Вставте код запрошення, отриманий від адміністратора Lab.",
+        "join": "Приєднатися",
+        "codeLabel": "Код запрошення",
+        "securityNote": "Nova перевіряє справжність сервера, перш ніж надіслати йому код.",
+        "error": "Не вдалося приєднатися до цього тестового сервера. Переконайтеся, що код свіжий, а обидва комп'ютери в одній мережі.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Вводьте цю адресу, лише якщо ваш ІТ-відділ не налаштував Nova за вас."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "Код надіслано повторно",
+        "resendCooldown": "Повторне надсилання через {{seconds}} с",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "Цифра {{position}} коду"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "Ви підключені до {{organization}}",
+        "subtitle": "Nova Campus готовий до роботи на цьому комп'ютері.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "Організація",
+        "account": "Обліковий запис",
+        "processing": "Обробка",
+        "campusInfrastructure": "Інфраструктура Campus",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "Сервер недоступний. Перевірте з'єднання і спробуйте ще раз.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "Цей заклад вимагає способу входу, який ця версія ще не підтримує."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "Сервер",
+      "email": "Ви ввійшли як",
+      "role": "Роль",
+      "cohort": "Потік",
+      "logout": "Вийти",
+      "logoutConfirmTitle": "Вийти з Nova Campus?",
+      "logoutConfirmDescription": "Щоб користуватися Nova Campus, доведеться увійти знову. Продовжити?",
+      "logoutConfirmButton": "Вийти",
+      "refresh": "Оновити",
+      "checking": "Перевірка з'єднання…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "Не вдалося зв'язатися із сервером. Перевірте адресу та з'єднання."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "Сеанс завершився",
+    "sessionExpired": "Увійдіть знову, щоб і далі користуватися Nova Campus.",
+    "serverUnreachableTitle": "Сервер недоступний",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "Керує {{organization}}",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "Завершіть вхід у браузері. Використайте цей код, якщо Microsoft його попросить.",
+      "expired": "Запит на вхід через Microsoft закінчився. Почніть знову.",
       "failed": "Вхід не завершено. Спробуйте ще раз.",
       "notInOrganization": "Цей обліковий запис Microsoft не належить вашому закладу.",
       "accessRevoked": "Ваш доступ більше недоступний. Зверніться до адміністратора."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "Поки що пропустити",
       "continueLater": "Продовжити пізніше",
       "useNovaNow": "Перейти до Nova",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "Цей базовий курс обов'язковий у {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "Вітаємо в {{organization}}, {{name}}.",
+        "description": "Дізнайтеся, як відповідально працювати з AI, або одразу почніть користуватися Nova.",
+        "aiEssentials": "Почати з основ AI",
+        "recommended": "Рекомендовано · близько 6 хвилин",
+        "setupNow": "Налаштувати Nova зараз"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Налаштування Nova",
+        "description": "Ми підготували для вас рекомендовані налаштування.",
+        "microphone": "Мікрофон",
+        "language": "Мова",
+        "shortcut": "Комбінація клавіш для диктування",
+        "style": "Стиль письма",
+        "processing": "Обробка",
+        "ready": "Готово",
+        "checkRequired": "Потрібна перевірка",
+        "noMicrophone": "Мікрофон не виявлено",
+        "autoDetect": "Автовизначення",
+        "useRecommended": "Використати рекомендовані налаштування",
+        "customize": "Налаштувати вручну",
+        "useRecommendations": "Застосувати рекомендації",
+        "purposeQuestion": "Для чого ви найчастіше використовуєте Nova?",
+        "writingQuestion": "Як Nova зазвичай має писати?",
+        "languageQuestion": "Бажана мова диктування",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "Заняття та конспекти",
+          "engineering": "Інженерні проєкти",
+          "emails": "Листи та спілкування",
+          "coding": "Програмування",
+          "everything": "Потроху всього",
+          "courseNotes": "Навчальні матеріали",
+          "feedback": "Відгуки студентам",
+          "documents": "Документи"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "Зберігати мої слова",
+          "clean": "Причесати текст",
+          "professional": "Діловий стиль",
+          "auto": "Авто"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Спробуйте Nova",
+        "description": "Продиктуйте одну коротку фразу. Так ми перевіримо мікрофон і покажемо, як працює Nova.",
+        "sample": "Скажіть: «Надішли Лукасу новини щодо проєкту завтра вранці».",
+        "start": "Почати диктування",
+        "listening": "Слухаю...",
+        "successTitle": "Ось і все.",
+        "successDescription": "Мікрофон готовий. Nova працює всюди, де є курсор.",
+        "openNova": "Відкрити Nova"
       }
     },
     "aiCurriculum": {

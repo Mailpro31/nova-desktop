@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "Unirse a un servidor de prueba",
+        "title": "Unirse al servidor de prueba",
+        "subtitle": "Pega el código de invitación que te dio el administrador de Lab.",
+        "join": "Unirse",
+        "codeLabel": "Código de invitación",
+        "securityNote": "Nova verifica la identidad del servidor antes de enviarle el código.",
+        "error": "No se pudo unir a este servidor de prueba. Comprueba que el código sea reciente y que ambos equipos estén en la misma red.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Introduce esta dirección solo si tu equipo de TI no ha configurado Nova por ti."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "Código reenviado",
+        "resendCooldown": "Reenviar en {{seconds}} s",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "Dígito {{position}} del código"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "Estás conectado a {{organization}}",
+        "subtitle": "Nova Campus está listo en este equipo.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "Organización",
+        "account": "Cuenta",
+        "processing": "Procesamiento",
+        "campusInfrastructure": "Infraestructura de Campus",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "No se pudo contactar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "Esta institución exige un método de autenticación que esta versión aún no admite."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "Servidor",
+      "email": "Sesión iniciada como",
+      "role": "Rol",
+      "cohort": "Promoción",
+      "logout": "Cerrar sesión",
+      "logoutConfirmTitle": "¿Cerrar sesión en Nova Campus?",
+      "logoutConfirmDescription": "Tendrás que volver a iniciar sesión para usar Nova Campus. ¿Seguro que quieres continuar?",
+      "logoutConfirmButton": "Cerrar sesión",
+      "refresh": "Actualizar",
+      "checking": "Comprobando la conexión…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "No se pudo conectar con el servidor. Comprueba la dirección y tu conexión."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "Sesión caducada",
+    "sessionExpired": "Vuelve a iniciar sesión para seguir usando Nova Campus.",
+    "serverUnreachableTitle": "Servidor inaccesible",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "Gestionado por {{organization}}",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "Termina de iniciar sesión en tu navegador. Usa este código si Microsoft te lo pide.",
+      "expired": "La solicitud de inicio de sesión de Microsoft ha caducado. Vuelve a empezar.",
       "failed": "El inicio de sesión no se completó. Inténtalo de nuevo.",
       "notInOrganization": "Esta cuenta de Microsoft no pertenece a tu institución.",
       "accessRevoked": "Tu acceso ya no está disponible. Contacta con tu administrador."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "Omitir por ahora",
       "continueLater": "Continuar más tarde",
       "useNovaNow": "Usar Nova ahora",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "{{organization}} exige este itinerario básico.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "Bienvenido a {{organization}}, {{name}}.",
+        "description": "Aprende a trabajar con IA de forma responsable o empieza a usar Nova ahora mismo.",
+        "aiEssentials": "Empezar con Fundamentos de IA",
+        "recommended": "Recomendado · unos 6 minutos",
+        "setupNow": "Configurar Nova ahora"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Configurar Nova",
+        "description": "Hemos preparado la configuración recomendada para ti.",
+        "microphone": "Micrófono",
+        "language": "Idioma",
+        "shortcut": "Atajo de dictado",
+        "style": "Estilo de escritura",
+        "processing": "Procesamiento",
+        "ready": "Listo",
+        "checkRequired": "Requiere revisión",
+        "noMicrophone": "No se ha detectado ningún micrófono",
+        "autoDetect": "Detección automática",
+        "useRecommended": "Usar la configuración recomendada",
+        "customize": "Personalizar",
+        "useRecommendations": "Usar las recomendaciones",
+        "purposeQuestion": "¿Para qué usas Nova sobre todo?",
+        "writingQuestion": "¿Cómo debería escribir Nova normalmente?",
+        "languageQuestion": "Idioma de dictado preferido",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "Clases y apuntes",
+          "engineering": "Proyectos de ingeniería",
+          "emails": "Correos y comunicación",
+          "coding": "Programación",
+          "everything": "Un poco de todo",
+          "courseNotes": "Materiales de clase",
+          "feedback": "Comentarios a estudiantes",
+          "documents": "Documentos"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "Mantener mis palabras",
+          "clean": "Pulirlas",
+          "professional": "Profesional",
+          "auto": "Automático"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Prueba Nova",
+        "description": "Haz un dictado breve. Así se comprueba el micrófono y ves cómo funciona Nova.",
+        "sample": "Di: «Envía a Lucas el avance del proyecto mañana por la mañana.»",
+        "start": "Iniciar dictado",
+        "listening": "Escuchando...",
+        "successTitle": "¡Eso es todo!",
+        "successDescription": "Tu micrófono está listo. Nova funciona dondequiera que esté tu cursor.",
+        "openNova": "Abrir Nova"
       }
     },
     "aiCurriculum": {

@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "Připojit se k testovacímu serveru",
+        "title": "Připojení k testovacímu serveru",
+        "subtitle": "Vložte kód pozvánky od správce Lab.",
+        "join": "Připojit",
+        "codeLabel": "Kód pozvánky",
+        "securityNote": "Nova ověří identitu serveru dřív, než mu kód odešle.",
+        "error": "K tomuto testovacímu serveru se nepodařilo připojit. Ověřte, že je kód aktuální a že jsou oba počítače ve stejné síti.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Tuto adresu zadejte, jen pokud vám Novu nenastavilo IT oddělení."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "Kód odeslán znovu",
+        "resendCooldown": "Znovu odeslat za {{seconds}} s",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "Číslice {{position}} kódu"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "Jste připojeni k {{organization}}",
+        "subtitle": "Nova Campus je na tomto počítači připravena.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "Organizace",
+        "account": "Účet",
+        "processing": "Zpracování",
+        "campusInfrastructure": "Infrastruktura Campus",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "Server je nedostupný. Zkontrolujte připojení a zkuste to znovu.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "Tato instituce vyžaduje způsob ověření, který tato verze zatím nepodporuje."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "Adresa serveru",
+      "email": "Přihlášeno jako",
+      "role": "Uživatelská role",
+      "cohort": "Ročník",
+      "logout": "Odhlásit se",
+      "logoutConfirmTitle": "Odhlásit se z Nova Campus?",
+      "logoutConfirmDescription": "Pro používání Nova Campus se budete muset znovu přihlásit. Opravdu chcete pokračovat?",
+      "logoutConfirmButton": "Odhlásit se",
+      "refresh": "Obnovit",
+      "checking": "Kontrola připojení…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "Server se nepodařilo kontaktovat. Zkontrolujte adresu a připojení."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "Relace vypršela",
+    "sessionExpired": "Pro další používání Nova Campus se prosím znovu přihlaste.",
+    "serverUnreachableTitle": "Server je nedostupný",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "Spravuje {{organization}}",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "Dokončete přihlášení v prohlížeči. Pokud o to Microsoft požádá, použijte tento kód.",
+      "expired": "Žádost o přihlášení přes Microsoft vypršela. Začněte znovu.",
       "failed": "Přihlášení nebylo dokončeno. Zkuste to znovu.",
       "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
       "accessRevoked": "Váš přístup již není dostupný. Obraťte se na správce."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "Prozatím přeskočit",
       "continueLater": "Pokračovat později",
       "useNovaNow": "Použít Nova hned",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "Tento základní kurz vyžaduje {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "Vítejte v {{organization}}, {{name}}.",
+        "description": "Naučte se pracovat s AI zodpovědně, nebo začněte Novu používat hned.",
+        "aiEssentials": "Začít se Základy AI",
+        "recommended": "Doporučeno · asi 6 minut",
+        "setupNow": "Nastavit Novu hned"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Nastavení Novy",
+        "description": "Připravili jsme pro vás doporučené nastavení.",
+        "microphone": "Mikrofon",
+        "language": "Jazyk",
+        "shortcut": "Zkratka pro diktování",
+        "style": "Styl psaní",
+        "processing": "Zpracování",
+        "ready": "Připraveno",
+        "checkRequired": "Vyžaduje kontrolu",
+        "noMicrophone": "Nebyl zjištěn žádný mikrofon",
+        "autoDetect": "Automatická detekce",
+        "useRecommended": "Použít doporučené nastavení",
+        "customize": "Přizpůsobit",
+        "useRecommendations": "Použít doporučení",
+        "purposeQuestion": "K čemu Novu používáte nejčastěji?",
+        "writingQuestion": "Jak má Nova obvykle psát?",
+        "languageQuestion": "Preferovaný jazyk diktování",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "Výuka a poznámky",
+          "engineering": "Inženýrské projekty",
+          "emails": "E-maily a komunikace",
+          "coding": "Programování",
+          "everything": "Od všeho trochu",
+          "courseNotes": "Studijní materiály",
+          "feedback": "Zpětná vazba studentům",
+          "documents": "Dokumenty"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "Zachovat moje slova",
+          "clean": "Učesat je",
+          "professional": "Profesionálně",
+          "auto": "Automaticky"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Vyzkoušejte Novu",
+        "description": "Nadiktujte jednu krátkou větu. Ověříte tak mikrofon a uvidíte, jak Nova funguje.",
+        "sample": "Řekněte: „Pošli Lucasovi zítra ráno novinky k projektu.“",
+        "start": "Spustit diktování",
+        "listening": "Poslouchám...",
+        "successTitle": "A je to.",
+        "successDescription": "Mikrofon je připraven. Nova funguje všude, kde máte kurzor.",
+        "openNova": "Otevřít Novu"
       }
     },
     "aiCurriculum": {
