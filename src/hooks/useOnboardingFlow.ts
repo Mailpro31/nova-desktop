@@ -81,10 +81,14 @@ export function useOnboardingFlow({
     const pending: OnboardingStepId[] = [];
 
     // Étapes correctives : elles s'appliquent à tout le monde, y compris à un
-    // utilisateur de longue date dont la permission a été révoquée ou dont la
-    // session campus a expiré.
+    // utilisateur de longue date dont la permission a été révoquée.
     if (readiness.permissions === "action-needed") pending.push("permissions");
-    if (campusMode && !hasCampusSession) pending.push("campus");
+    // La connexion Organization n'est imposée qu'au premier lancement. Un poste
+    // déjà configuré dont la session a expiré, ou a été révoquée, démarre en
+    // Personal : l'imposer ici fermait Nova entière derrière un écran de
+    // connexion, dictée locale comprise. L'accueil dit qu'il est déconnecté,
+    // et la reconnexion reste dans les réglages.
+    if (campusMode && !hasCampusSession && isFirstRun) pending.push("campus");
     if (readiness.needsModelDownload) pending.push("model");
 
     // Le reste n'appartient qu'à la première ouverture.

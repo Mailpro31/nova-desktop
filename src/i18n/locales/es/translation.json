@@ -1517,6 +1517,11 @@
       "packages": "Contenido",
       "lessons": "Lecciones",
       "separator": " y "
+    },
+    "suspended": {
+      "title": "Acceso a la organización suspendido",
+      "description": "Nova sigue funcionando en Personal en este ordenador, con tu historial. Contacta con tu administrador.",
+      "restored": "Acceso a la organización restablecido"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "No se pudo pegar",
         "detail": "Tu dictado está en el portapapeles."
+      },
+      "campusSignedOut": {
+        "title": "Sesión cerrada en tu organización",
+        "detail": "Nova sigue funcionando en Personal en este ordenador. Vuelve a conectar tu organización desde los ajustes."
       }
     },
     "active": {

@@ -1517,6 +1517,11 @@
       "packages": "Content",
       "lessons": "Lessons",
       "separator": " and "
+    },
+    "suspended": {
+      "title": "Organization access suspended",
+      "description": "Nova keeps working in Personal on this computer, with your history. Contact your administrator.",
+      "restored": "Organization access restored"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "Couldn't paste",
         "detail": "Your dictation is in the clipboard."
+      },
+      "campusSignedOut": {
+        "title": "Signed out of your organization",
+        "detail": "Nova keeps working in Personal on this computer. Connect your organization again from the settings."
       }
     },
     "active": {

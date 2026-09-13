@@ -37,6 +37,7 @@ export type HeroSituation =
   | "microphoneMissing"
   | "modelMissing"
   | "shortcutMissing"
+  | "campusSignedOut"
   | "campusLocal"
   | "ready";
 
@@ -61,6 +62,8 @@ export interface HomeState {
   microphoneName: string | null;
   /** Hôte du serveur d'organisation, `null` hors mode Organization. */
   serverName: string | null;
+  /** L'organisation a suspendu ce membre : Nova Local le dit, sans accuser le réseau. */
+  organizationSuspended: boolean;
   lastDictationAt: number | null;
   checklist: ChecklistItem[];
   /** `true` tant que la liste apporte encore quelque chose. */
@@ -118,7 +121,11 @@ export function useHomeState(): HomeState {
     microphoneName: readiness.microphoneName,
     needsModelDownload: readiness.needsModelDownload,
     shortcut: readiness.shortcut,
-    campusLocal: campusMode && connection === "local",
+    // Suspendu ou hors ligne, la dictée passe par Nova Local : dégradé, jamais
+    // bloquant.
+    campusLocal:
+      campusMode && (connection === "local" || readiness.organizationSuspended),
+    campusSignedOut: readiness.organizationSignedOut,
   });
 
   const checklist: ChecklistItem[] = [];
@@ -182,6 +189,7 @@ export function useHomeState(): HomeState {
     // Nommé pour que le repli local cesse d'être muet : « Nova Local est actif »
     // ne dit pas quel serveur ne répond pas, et laisse croire à un choix.
     serverName,
+    organizationSuspended: readiness.organizationSuspended,
     lastDictationAt,
     checklist,
     showChecklist,
@@ -200,6 +208,8 @@ interface SituationInput {
   needsModelDownload: boolean;
   shortcut: string | null;
   campusLocal: boolean;
+  /** Poste Organization sans session : la dictée continue en Personal. */
+  campusSignedOut: boolean;
 }
 
 /** Exporté pour être testable sans monter React ni la couche Tauri. */
@@ -218,6 +228,9 @@ export function deriveSituation(input: SituationInput): HeroSituation {
   if (input.microphoneName === null) return "microphoneMissing";
   if (input.needsModelDownload) return "modelMissing";
   if (!input.shortcut) return "shortcutMissing";
+  // Déconnecté de l'organisation : Nova fonctionne en Personal, et il y a une
+  // action à proposer — se reconnecter. Dégradé, jamais bloquant.
+  if (input.campusSignedOut) return "campusSignedOut";
   // Dégradé, pas bloquant : la dictée fonctionne toujours en local.
   if (input.campusLocal) return "campusLocal";
   return "ready";
@@ -232,6 +245,7 @@ const ORB_BY_SITUATION: Record<HeroSituation, OrbState> = {
   microphoneMissing: "attention",
   modelMissing: "attention",
   shortcutMissing: "attention",
+  campusSignedOut: "degraded",
   campusLocal: "degraded",
   ready: "ready",
 };

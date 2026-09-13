@@ -49,6 +49,9 @@ import {
   showAttentionToast,
 } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
+import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
+import { useOrganizationSuspension } from "@/hooks/useOrganizationSuspension";
+import { useOrganizationSignInRequired } from "@/hooks/useOrganizationSignInRequired";
 import {
   forgetLabEnrollment,
   IS_LAB_BUILD,
@@ -96,6 +99,17 @@ function App() {
   const readiness = useSystemReadiness();
   const { session: campusSessionState, refresh: refreshCampusStatus } =
     useCampusStatus();
+  // Le repli local d'une organisation a besoin d'un modèle sur le disque. Il
+  // se prépare dès qu'un membre est connecté, dans sa langue de dictée.
+  useOrganizationLocalFallback({
+    signedIn: campusSessionState !== null,
+    language:
+      settings === null
+        ? null
+        : settings.selected_language && settings.selected_language !== "auto"
+          ? settings.selected_language
+          : i18n.language,
+  });
 
   // Un paquet unifié doit savoir s'il est personnel ou d'organisation avant
   // que quoi que ce soit d'autre ne soit calculé : le parcours d'accueil fige
@@ -187,6 +201,12 @@ function App() {
   // pendant que Nova tournait n'arrivait qu'au redemarrage suivant, sans que
   // rien ne l'annonce. Le guichet ci-dessous reprend la main ensuite.
   useOrganizationUpdates();
+  // Un membre suspendu continue de dicter en Personal ; il le sait, et il le
+  // sait aussi quand l'organisation le rétablit.
+  useOrganizationSuspension();
+  // La DSI peut interdire le repli Personal : sans session, la connexion
+  // s'impose alors de nouveau.
+  const organizationSignInRequired = useOrganizationSignInRequired();
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
@@ -699,6 +719,18 @@ function App() {
         stepIndex={flow.displayIndex}
         stepCount={flow.displayCount}
         onDone={flow.next}
+      />
+    );
+  } else if (organizationSignInRequired) {
+    // La DSI interdit le repli Personal et ce poste n'a plus de session : la
+    // connexion s'impose, au lancement comme en cours de session. Le parcours
+    // relit le contexte en aboutissant, ce qui lève cet écran de lui-même.
+    content = (
+      <CampusOnboarding
+        flowContext="settings"
+        onComplete={() => {
+          refreshCampusStatus();
+        }}
       />
     );
   } else {

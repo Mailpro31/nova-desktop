@@ -546,3 +546,239 @@ test.describe("single organization sign-in surface", () => {
     await expect(server).toHaveValue("https://nova.example.test");
   });
 });
+
+/**
+ * La dictée locale reste possible quand le serveur ne répond pas.
+ *
+ * L'édition Organization ne proposait aucun modèle local : son « repli local »
+ * n'avait rien pour transcrire. Une fois le membre connecté, Nova prépare donc
+ * un modèle en arrière-plan, sans écran et sans rien demander.
+ */
+test.describe("local dictation stays available without the server", () => {
+  const models = [
+    {
+      id: "english-first",
+      name: "English first",
+      source: { HuggingFace: {} },
+      is_downloaded: false,
+      is_recommended: true,
+      is_custom: false,
+      supported_languages: ["en"],
+    },
+    {
+      id: "multilingual",
+      name: "Multilingual",
+      source: { HuggingFace: {} },
+      is_downloaded: false,
+      is_recommended: true,
+      is_custom: false,
+      supported_languages: ["en", "fr", "de"],
+    },
+  ];
+
+  const preparedModel = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      JSON.parse(localStorage.getItem("nova.test.localFallback") ?? "null"),
+    );
+
+  test("a signed-in member gets a local model prepared in the background", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: {
+        server_url: "https://nova.example.test",
+        email: "member@example.test",
+      },
+      config: organization,
+      onboardingCompleted: true,
+      language: "fr",
+      models,
+    });
+    await page.goto("/");
+
+    await expect
+      .poll(() => preparedModel(page))
+      .toEqual({ modelId: "multilingual" });
+  });
+
+  test("nothing is downloaded before the member signs in", async ({ page }) => {
+    await mockTauri(page, {
+      config: null,
+      serverConfig: null,
+      onboardingCompleted: false,
+      models,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await page.waitForTimeout(1500);
+    expect(await preparedModel(page)).toBeNull();
+  });
+});
+
+/**
+ * Un membre suspendu continue de dicter, en Personal.
+ *
+ * `/api/me` répond 403 quand l'administrateur suspend un compte. Le poste ne
+ * se bloque pas et ne supprime rien : il cesse d'envoyer les dictées à
+ * l'organisation, le dit, et revient de lui-même dès que le compte est
+ * réactivé.
+ */
+test.describe("a suspended member keeps dictating in Personal", () => {
+  const signedIn = {
+    session: {
+      server_url: "https://nova.example.test",
+      email: "member@example.test",
+    },
+    config: organization,
+    onboardingCompleted: true,
+  };
+
+  const suspendedFlag = (page: import("@playwright/test").Page) =>
+    page.evaluate(() =>
+      JSON.parse(localStorage.getItem("nova.test.suspended") ?? "null"),
+    );
+
+  test("a 403 from the organization switches the workstation to Personal", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("nova.test.meStatus", "403");
+    });
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
+    await expect(
+      page.getByText("Organization access suspended").first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Nova Local is active" }),
+    ).toBeVisible();
+  });
+
+  test("access comes back by itself once the member is reactivated", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem("nova.test.meStatusSeeded")) return;
+      sessionStorage.setItem("nova.test.meStatusSeeded", "1");
+      localStorage.setItem("nova.test.meStatus", "403");
+    });
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
+
+    // L'administrateur réactive le compte ; le membre revient sur Nova.
+    await page.evaluate(() => {
+      localStorage.setItem("nova.test.meStatus", "ok");
+      window.dispatchEvent(new Event("focus"));
+    });
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
+    await expect(
+      page.getByText("Organization access restored").first(),
+    ).toBeVisible();
+  });
+
+  test("a member the server still recognises is never marked suspended", async ({
+    page,
+  }) => {
+    await mockTauri(page, signedIn);
+    await page.goto("/");
+
+    await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
+    await expect(page.getByText("Organization access suspended")).toHaveCount(
+      0,
+    );
+  });
+});
+
+/**
+ * Une session révoquée ne ferme plus Nova.
+ *
+ * Un poste déjà configuré dont la session a expiré, ou a été révoquée,
+ * démarrait sur l'écran de connexion, étape obligatoire : plus aucune dictée
+ * avant de s'être reconnecté. Il démarre désormais en Personal, dit qu'il est
+ * déconnecté, et laisse se reconnecter depuis les réglages.
+ */
+test.describe("a member signed out of the organization keeps using Nova", () => {
+  test("a configured workstation without a session starts in Personal, not on a sign-in wall", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: true,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toHaveCount(0);
+
+    // La reconnexion reste à portée : réglages, puis le même parcours.
+    await page.getByRole("button", { name: "Open settings" }).click();
+    await page.getByRole("button", { name: "Connect organization" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+  });
+
+  test("a first launch still starts with the organization sign-in", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: false,
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toHaveCount(0);
+  });
+});
+
+/**
+ * La DSI peut interdire le repli Personal.
+ *
+ * Avec `PersonalFallback = 0` dans la stratégie machine, un poste dont la
+ * session a été révoquée ne continue pas en Personal : la connexion à
+ * l'organisation s'impose de nouveau, comme avant le repli.
+ */
+test.describe("IT can forbid the Personal fallback", () => {
+  test("with the fallback forbidden, a signed-out workstation must sign in again", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session: null,
+      config: organization,
+      onboardingCompleted: true,
+      deployment: {
+        managed: false,
+        organization_id: null,
+        control_plane_origin: null,
+        error: null,
+        personal_fallback_allowed: false,
+      },
+    });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", { name: "Connect to your organization" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Signed out of your organization" }),
+    ).toHaveCount(0);
+  });
+});

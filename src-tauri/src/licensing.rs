@@ -31,6 +31,85 @@ pub fn is_campus_enabled() -> bool {
     CAMPUS_ENABLED.load(Ordering::Relaxed)
 }
 
+/// L'organisation a suspendu le membre connecté (`/api/me` répond 403).
+///
+/// Distinct de [`is_campus_enabled`], qui dit l'**édition** du poste — lue
+/// notamment par `get_deployment_state`. Une suspension ne change pas
+/// l'édition : elle retire seulement ce que l'organisation fournit.
+static ORGANIZATION_SUSPENDED: AtomicBool = AtomicBool::new(false);
+
+pub fn set_organization_suspended(suspended: bool) {
+    ORGANIZATION_SUSPENDED.store(suspended, Ordering::Relaxed);
+}
+
+pub fn is_organization_suspended() -> bool {
+    ORGANIZATION_SUSPENDED.load(Ordering::Relaxed)
+}
+
+/// L'organisation sert-elle ce poste — dictées envoyées, palier débloqué ?
+///
+/// Pas pour un membre suspendu : il retombe en Personal, avec la dictée locale
+/// et le palier de sa licence personnelle.
+pub fn organization_serves(campus_enabled: bool, suspended: bool) -> bool {
+    campus_enabled && !suspended
+}
+
+/// Un membre est connecté à l'organisation sur ce poste.
+///
+/// Tenu par la session elle-même (`commands::campus`) : enregistrée, relue ou
+/// effacée. **Vrai par défaut** : au lancement, avant que la session soit
+/// relue, un membre connecté ne doit jamais voir une offre payante s'afficher
+/// un instant ; un poste déconnecté, lui, peut rester débloqué le temps de
+/// cette relecture.
+static ORGANIZATION_SIGNED_IN: AtomicBool = AtomicBool::new(true);
+
+pub fn set_organization_signed_in(signed_in: bool) {
+    ORGANIZATION_SIGNED_IN.store(signed_in, Ordering::Relaxed);
+}
+
+/// L'organisation débloque-t-elle le palier ? Seulement pour un membre servi
+/// **et** connecté : une session révoquée ou expirée retombe en Personal, comme
+/// une suspension.
+pub fn organization_unlocks_tier(campus_enabled: bool, suspended: bool, signed_in: bool) -> bool {
+    organization_serves(campus_enabled, suspended) && signed_in
+}
+
+fn organization_unlocks() -> bool {
+    organization_unlocks_tier(
+        is_campus_enabled(),
+        is_organization_suspended(),
+        ORGANIZATION_SIGNED_IN.load(Ordering::Relaxed),
+    )
+}
+
+/// La DSI autorise-t-elle le repli Personal d'un poste sans session ?
+///
+/// Lu depuis la stratégie machine (`PersonalFallback`) au passage en mode
+/// Organization. **Vrai par défaut**, comme sans stratégie.
+static PERSONAL_FALLBACK_ALLOWED: AtomicBool = AtomicBool::new(true);
+
+pub fn set_personal_fallback_allowed(allowed: bool) {
+    PERSONAL_FALLBACK_ALLOWED.store(allowed, Ordering::Relaxed);
+}
+
+/// Faut-il se reconnecter avant de dicter ? Seulement sur un poste
+/// Organization, sans session, dont la DSI interdit le repli Personal.
+pub fn organization_requires_sign_in(
+    campus_enabled: bool,
+    signed_in: bool,
+    fallback_allowed: bool,
+) -> bool {
+    campus_enabled && !signed_in && !fallback_allowed
+}
+
+pub fn dictation_requires_organization_sign_in() -> bool {
+    organization_requires_sign_in(
+        is_campus_enabled(),
+        ORGANIZATION_SIGNED_IN.load(Ordering::Relaxed),
+        PERSONAL_FALLBACK_ALLOWED.load(Ordering::Relaxed),
+    )
+}
+
 /// Clé publique Ed25519 de l'éditeur (base64 standard, 32 octets bruts).
 /// VIDE = licences dormantes (accès complet). Renseignée = paliers actifs.
 const PUBLIC_KEY_B64: &str = "Q+U/LqaeFgLSDkvqiAXRcHQ8DSwqU9NcrHiPt8A6EJE=";
@@ -236,7 +315,9 @@ pub fn verify_key(key: &str) -> Option<LicenseInfo> {
 /// valide → Free ; sinon le palier de la licence. En mode campus, l'établissement
 /// paie : on renvoie toujours Ultra pour court-circuiter tous les verrous.
 pub fn current_tier(license_key: &str) -> Tier {
-    if is_campus_enabled() || !enabled() {
+    // Un membre suspendu garde l'édition Organization mais perd ce qu'elle
+    // débloque : il retombe sur le palier de sa licence personnelle.
+    if organization_unlocks() || !enabled() {
         return Tier::Ultra; // campus ou dormant = tout débloqué
     }
     verify_key(license_key)
@@ -261,7 +342,7 @@ pub fn effective_tier(license_key: &str, _trial_started_at: i64) -> Tier {
 /// La fonctionnalité est-elle accessible avec la licence active ?
 /// En mode campus, l'établissement débloque toutes les fonctionnalités.
 pub fn has(feature: &str, license_key: &str, trial_started_at: i64) -> bool {
-    if is_campus_enabled() {
+    if organization_unlocks() {
         return true;
     }
     effective_tier(license_key, trial_started_at).level() >= feature_min_tier(feature).level()
@@ -429,5 +510,84 @@ mod style_gating_tests {
         let recent_trial = now_secs();
         assert_eq!(effective_tier("", recent_trial), Tier::Free);
         assert!(!has("cloud_styles", "", recent_trial));
+    }
+}
+
+/// Une organisation ne débloque Nova — et ne reçoit les dictées — que tant
+/// que son membre n'est pas suspendu. Suspendu, le poste retombe en Personal :
+/// la dictée locale continue, avec le palier que la licence personnelle donne.
+#[cfg(test)]
+mod organization_suspension_tests {
+    use super::organization_serves;
+
+    #[test]
+    fn une_organisation_active_sert_son_membre() {
+        assert!(organization_serves(true, false));
+    }
+
+    #[test]
+    fn un_membre_suspendu_retombe_en_personal() {
+        assert!(!organization_serves(true, true));
+    }
+
+    #[test]
+    fn hors_organisation_rien_n_est_debloque() {
+        assert!(!organization_serves(false, false));
+        assert!(!organization_serves(false, true));
+    }
+}
+
+/// Sans session, l'organisation ne débloque rien : un membre déconnecté —
+/// session révoquée ou expirée — retombe en Personal, comme un membre suspendu.
+#[cfg(test)]
+mod organization_session_tests {
+    use super::organization_unlocks_tier;
+
+    #[test]
+    fn un_membre_connecte_et_servi_garde_le_palier_de_l_organisation() {
+        assert!(organization_unlocks_tier(true, false, true));
+    }
+
+    #[test]
+    fn un_membre_deconnecte_retombe_en_personal() {
+        assert!(!organization_unlocks_tier(true, false, false));
+    }
+
+    #[test]
+    fn la_suspension_l_emporte_meme_connecte() {
+        assert!(!organization_unlocks_tier(true, true, true));
+    }
+
+    #[test]
+    fn hors_organisation_la_session_ne_debloque_rien() {
+        assert!(!organization_unlocks_tier(false, false, true));
+    }
+}
+
+/// Quand la DSI interdit le repli Personal, un poste Organization sans session
+/// ne dicte plus : il attend que le membre se reconnecte. Rien ne change pour un
+/// membre connecté, ni hors de l'édition Organization.
+#[cfg(test)]
+mod personal_fallback_sign_in_tests {
+    use super::organization_requires_sign_in;
+
+    #[test]
+    fn repli_interdit_et_sans_session_la_connexion_est_exigee() {
+        assert!(organization_requires_sign_in(true, false, false));
+    }
+
+    #[test]
+    fn repli_autorise_le_poste_continue_en_personal() {
+        assert!(!organization_requires_sign_in(true, false, true));
+    }
+
+    #[test]
+    fn un_membre_connecte_n_est_jamais_bloque() {
+        assert!(!organization_requires_sign_in(true, true, false));
+    }
+
+    #[test]
+    fn hors_organisation_la_strategie_ne_bloque_rien() {
+        assert!(!organization_requires_sign_in(false, false, false));
     }
 }

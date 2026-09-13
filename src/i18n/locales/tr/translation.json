@@ -1517,6 +1517,11 @@
       "packages": "İçerik",
       "lessons": "Dersler",
       "separator": " ve "
+    },
+    "suspended": {
+      "title": "Kuruluş erişimi askıya alındı",
+      "description": "Nova bu bilgisayarda geçmişinizle birlikte Personal modunda çalışmaya devam ediyor. Yöneticinize başvurun.",
+      "restored": "Kuruluş erişimi geri yüklendi"
     }
   },
   "aiSkills": {
@@ -1632,6 +1637,10 @@
       "insertionFailed": {
         "title": "Yapıştırılamadı",
         "detail": "Dikteniz panoda."
+      },
+      "campusSignedOut": {
+        "title": "Kuruluşunuzdan çıkış yapıldı",
+        "detail": "Nova bu bilgisayarda Personal modunda çalışmaya devam ediyor. Kuruluşunuzu ayarlardan yeniden bağlayın."
       }
     },
     "active": {

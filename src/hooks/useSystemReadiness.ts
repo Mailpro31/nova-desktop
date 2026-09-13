@@ -10,6 +10,7 @@ import { isOrganizationMode } from "@/lib/mode";
 import { useSettings } from "./useSettings";
 import { useSettingsStore } from "@/stores/settingsStore";
 import { useCampusStatus } from "./useCampusStatus";
+import { useCampusStore } from "@/stores/campusStore";
 
 export type ReadinessState =
   | "checking"
@@ -29,6 +30,16 @@ export interface SystemReadiness {
   engineLabel: string | null;
   /** `true` quand un modèle local doit être téléchargé avant de dicter. */
   needsModelDownload: boolean;
+  /**
+   * L'organisation a suspendu ce membre : la dictée passe par Nova Local, en
+   * Personal, jusqu'à ce que le serveur le rétablisse.
+   */
+  organizationSuspended: boolean;
+  /**
+   * Poste Organization sans session : révoquée, expirée ou fermée. La dictée
+   * continue en Personal ; la reconnexion se fait depuis les réglages.
+   */
+  organizationSignedOut: boolean;
   shortcut: string | null;
   language: string | null;
   /** Au moins une dictée existe déjà dans l'historique. */
@@ -165,10 +176,23 @@ export function useSystemReadiness(): SystemReadiness {
   const needsModelDownload =
     !campusMode && models !== null && !hasDownloadedModel;
 
+  // Suspendu, le serveur répond encore mais ne sert plus ce membre : la dictée
+  // passe par Nova Local, exactement comme hors ligne.
+  const suspended = useCampusStore((state) => state.suspended);
+  const organizationSuspended = campusMode && suspended;
+  // Tranché par le store une fois la session relue, jamais avant : au premier
+  // rendu, l'absence de session ne prouve encore rien.
+  const signedOut = useCampusStore(
+    (state) => state.connectionStatus === "signed_out",
+  );
+  const organizationSignedOut = campusMode && signedOut;
+  const servedByOrganization =
+    connection === "connected" && !organizationSuspended;
+
   const engine: ReadinessState = campusMode
-    ? connection === "connected"
+    ? servedByOrganization
       ? "ready"
-      : connection === "local"
+      : connection === "local" || organizationSuspended
         ? "degraded"
         : "checking"
     : models === null
@@ -179,7 +203,7 @@ export function useSystemReadiness(): SystemReadiness {
 
   const engineLabel = campusMode
     ? session
-      ? connection === "connected"
+      ? servedByOrganization
         ? "campus"
         : "local-fallback"
       : null
@@ -199,6 +223,8 @@ export function useSystemReadiness(): SystemReadiness {
     engine,
     engineLabel,
     needsModelDownload,
+    organizationSuspended,
+    organizationSignedOut,
     shortcut: bindings?.["transcribe"]?.current_binding ?? null,
     language: (getSetting("selected_language") as string | undefined) ?? null,
     hasDictated,

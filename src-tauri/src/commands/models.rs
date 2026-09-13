@@ -165,6 +165,86 @@ pub async fn set_active_model(
     switch_active_model(&app_handle, &model_id)
 }
 
+/// Retient le modèle de repli local dans les réglages, et rien d'autre.
+///
+/// Un modèle déjà choisi et présent sur le disque reste celui du membre.
+/// `onboarding_completed` n'est jamais touché, contrairement à
+/// [`switch_active_model`] : c'est ce drapeau qui fait reprendre Nova avant la
+/// première dictée après un redémarrage, et préparer le repli pendant ce
+/// parcours ne doit pas le clore.
+fn adopt_fallback_model(
+    settings: &mut crate::settings::AppSettings,
+    model_id: &str,
+    selected_downloaded: bool,
+) -> bool {
+    if !settings.selected_model.is_empty() && selected_downloaded {
+        return false;
+    }
+    settings.selected_model = model_id.to_string();
+    true
+}
+
+fn is_model_downloaded(model_manager: &ModelManager, model_id: &str) -> bool {
+    !model_id.is_empty()
+        && model_manager
+            .get_model_info(model_id)
+            .is_some_and(|model| model.is_downloaded)
+}
+
+/// Prépare le modèle qui permet à une organisation de dicter sans serveur.
+///
+/// Télécharge le modèle s'il manque, puis ne le sélectionne que si aucun modèle
+/// présent sur le disque ne l'est déjà. Ne touche jamais `onboarding_completed`.
+#[tauri::command]
+#[specta::specta]
+pub async fn prepare_local_fallback_model(
+    app_handle: AppHandle,
+    model_manager: State<'_, Arc<ModelManager>>,
+    transcription_manager: State<'_, Arc<TranscriptionManager>>,
+    model_id: String,
+) -> Result<(), String> {
+    let model_info = model_manager
+        .get_model_info(&model_id)
+        .ok_or_else(|| format!("Model not found: {}", model_id))?;
+
+    if is_model_downloaded(&model_manager, &get_settings(&app_handle).selected_model) {
+        return Ok(());
+    }
+
+    if !model_info.is_downloaded {
+        // Aucun `model-download-failed` : il afficherait une erreur pour un
+        // téléchargement que le membre n'a jamais demandé. Le prochain
+        // lancement reprend là où celui-ci s'est arrêté.
+        model_manager
+            .download_model(&model_id)
+            .await
+            .map_err(|e| e.to_string())?;
+    }
+
+    // Relu après le téléchargement : le membre a pu choisir un modèle entre-temps.
+    let mut settings = get_settings(&app_handle);
+    let selected_downloaded = is_model_downloaded(&model_manager, &settings.selected_model);
+    if !adopt_fallback_model(&mut settings, &model_id, selected_downloaded) {
+        return Ok(());
+    }
+    let unload_timeout = settings.model_unload_timeout;
+    write_settings(&app_handle, settings);
+
+    let _ = app_handle.emit(
+        "model-state-changed",
+        ModelStateEvent {
+            event_type: "selection_changed".to_string(),
+            model_id: Some(model_id.clone()),
+            model_name: Some(model_info.name.clone()),
+            error: None,
+        },
+    );
+    if unload_timeout != ModelUnloadTimeout::Immediately {
+        transcription_manager.initiate_model_load();
+    }
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub async fn get_current_model(app_handle: AppHandle) -> Result<String, String> {
@@ -199,4 +279,41 @@ pub async fn cancel_download(
     model_manager
         .cancel_download(&model_id)
         .map_err(|e| e.to_string())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::adopt_fallback_model;
+    use crate::settings::get_default_settings;
+
+    /// Préparer le repli local pendant le premier parcours ne doit pas le
+    /// clore : c'est ce drapeau qui fait reprendre Nova avant la première
+    /// dictée après un redémarrage.
+    #[test]
+    fn un_modele_de_repli_ne_termine_pas_le_parcours() {
+        let mut settings = get_default_settings();
+        settings.onboarding_completed = false;
+
+        assert!(adopt_fallback_model(&mut settings, "multilingual", false));
+        assert_eq!(settings.selected_model, "multilingual");
+        assert!(!settings.onboarding_completed);
+    }
+
+    #[test]
+    fn un_modele_deja_choisi_et_present_est_garde() {
+        let mut settings = get_default_settings();
+        settings.selected_model = "choisi".to_string();
+
+        assert!(!adopt_fallback_model(&mut settings, "multilingual", true));
+        assert_eq!(settings.selected_model, "choisi");
+    }
+
+    #[test]
+    fn un_modele_choisi_mais_absent_du_disque_est_remplace() {
+        let mut settings = get_default_settings();
+        settings.selected_model = "supprime".to_string();
+
+        assert!(adopt_fallback_model(&mut settings, "multilingual", false));
+        assert_eq!(settings.selected_model, "multilingual");
+    }
 }
