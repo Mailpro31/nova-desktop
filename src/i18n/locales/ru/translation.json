@@ -1827,5 +1827,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Войдите снова, чтобы продолжить пользоваться возможностями вашей организации.",
+    "logoutConfirmTitle": "Выйти из организации?",
+    "logoutConfirmDescription": "Чтобы пользоваться возможностями вашей организации, придётся войти снова. Продолжить?",
+    "aboutSubtitle": "Сведения и средства диагностики Nova.",
+    "personalizationDescription": "Настройте внешний вид и взаимодействие с Nova, не меняя правил вашей организации.",
+    "organizationSubtitle": "Ваша организация, что она предоставляет и куда попадают ваши данные.",
+    "statusConnected": "Организация подключена",
+    "providesTitle": "Что предоставляет ваша организация",
+    "providesPaused": "Приостановлено — сервер вашей организации недоступен.",
+    "transcriptionDescription": "Запись отправляется на сервер вашей организации, который преобразует её в текст.",
+    "rewritingDescription": "Текст и выбранный стиль отправляются на сервер вашей организации, который его переписывает.",
+    "vocabularyDescription": "Термины, добавленные вашей организацией, и ваши собственные помогают правильно распознавать и писать их.",
+    "formattingDescription": "Правила вашей организации и ваши собственные применяются к каждому переписыванию.",
+    "dataOnServer": "Сервер организации",
+    "dataNote": "Сервер вашей организации подсчитывает, сколько транскрипций и переписываний вы выполняете в день. Их содержимое не сохраняется.",
+    "aiSkillsPrivacyOffline": "AI Skills работают на сервере вашей организации, который сейчас недоступен.",
+    "notInOrganization": "Эта учётная запись Microsoft не принадлежит вашей организации.",
+    "codeForbidden": "Доступ недоступен. Обратитесь к администратору."
   }
 }

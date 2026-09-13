@@ -40,6 +40,7 @@ import {
 import { ManagedBy } from "@/components/campus/ManagedBy";
 import { commands, type SsoProvider } from "@/bindings";
 import { formatSsoError } from "@/lib/organization/ssoErrors";
+import { wordingKey } from "@/lib/organization/wording";
 import {
   organizationSignInButtons,
   type AnnouncedProviders,
@@ -612,7 +613,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           config?.organization_code ?? null,
         );
         if (result.status === "error") {
-          setError(formatSsoError(result.error, t));
+          setError(formatSsoError(result.error, t, announcedOrganizationType));
           return;
         }
         const loadedProfile = await api.getMe().catch(() => null);
@@ -700,7 +701,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         if (caught.status === 400) {
           message = t("campus.onboarding.code.invalid");
         } else if (caught.status === 403) {
-          message = t("campus.onboarding.code.forbidden");
+          message = t(wordingKey("codeForbidden", announcedOrganizationType));
         }
       }
       setError(message);
@@ -716,6 +717,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     isLoading,
     machineName,
     refreshConnectedCampusState,
+    announcedOrganizationType,
     t,
   ]);
 

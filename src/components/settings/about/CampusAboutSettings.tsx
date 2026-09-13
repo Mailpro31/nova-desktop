@@ -9,6 +9,7 @@ import { DebugModeToggle } from "../DebugModeToggle";
 import { RestartApp } from "../RestartApp";
 import { Button } from "../../ui/Button";
 import { PageHeader } from "../../ui/PageHeader";
+import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 
 interface SectionCardProps {
   icon: React.ElementType;
@@ -39,6 +40,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
 export const CampusAboutSettings: React.FC = () => {
   const { t } = useTranslation();
+  const word = useOrganizationWording();
   const [version, setVersion] = useState("");
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export const CampusAboutSettings: React.FC = () => {
     <div className="space-y-5">
       <PageHeader
         title={t("sidebar.about")}
-        description={t("campus.settings.aboutSubtitle")}
+        description={word("aboutSubtitle")}
       />
 
       <SectionCard

@@ -546,3 +546,62 @@ test.describe("single organization sign-in surface", () => {
     await expect(server).toHaveValue("https://nova.example.test");
   });
 });
+
+/**
+ * Chaque organisation lit ses propres mots.
+ *
+ * La page Organisation, sa confirmation de déconnexion et ses capacités
+ * parlaient d'« établissement » et de « Nova Campus » à toutes les
+ * organisations. Une entreprise lit désormais un vocabulaire neutre ; une école,
+ * annoncée comme telle par son serveur, garde le sien.
+ */
+test.describe("each organization reads its own words", () => {
+  const signedIn = (config: Record<string, unknown>) => ({
+    session: {
+      server_url: "https://nova.example.test",
+      email: "member@example.test",
+    },
+    config,
+    onboardingCompleted: true,
+  });
+
+  test("a company never reads institution or Nova Campus on its organization page", async ({
+    page,
+  }) => {
+    await mockTauri(page, signedIn(organization));
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /Example Company/ }).click();
+    await expect(
+      page.getByText("What your organization provides"),
+    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(
+      /institution|Nova Campus|Campus connected|school/i,
+    );
+
+    await page.getByRole("button", { name: "Sign out", exact: true }).click();
+    await expect(
+      page.getByText("Sign out of your organization?"),
+    ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("Nova Campus");
+  });
+
+  test("a school announced by its server keeps its campus wording", async ({
+    page,
+  }) => {
+    await mockTauri(
+      page,
+      signedIn({
+        ...organization,
+        organization_type: "education",
+        organization: { id: "school", name: "Example School", managed: true },
+      }),
+    );
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /Example School/ }).click();
+    await expect(
+      page.getByText("What your institution provides"),
+    ).toBeVisible();
+  });
+});

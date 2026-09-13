@@ -1827,5 +1827,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "조직이 제공하는 기능을 계속 사용하려면 다시 로그인하세요.",
+    "logoutConfirmTitle": "조직에서 로그아웃할까요?",
+    "logoutConfirmDescription": "조직이 제공하는 기능을 사용하려면 다시 로그인해야 합니다. 계속할까요?",
+    "aboutSubtitle": "Nova 정보 및 문제 해결 도구.",
+    "personalizationDescription": "조직의 정책을 바꾸지 않고 Nova의 모양과 상호작용을 조정하세요.",
+    "organizationSubtitle": "조직, 조직이 제공하는 것, 데이터가 가는 곳.",
+    "statusConnected": "조직 연결됨",
+    "providesTitle": "조직이 제공하는 것",
+    "providesPaused": "일시 중지됨 — 조직 서버에 연결할 수 없습니다.",
+    "transcriptionDescription": "녹음은 조직 서버로 전송되어 텍스트로 변환됩니다.",
+    "rewritingDescription": "텍스트와 선택한 스타일은 조직 서버로 전송되어 다시 작성됩니다.",
+    "vocabularyDescription": "조직이 추가한 용어와 사용자의 용어는 인식과 다시 쓰기에서 올바르게 표기하는 데 도움이 됩니다.",
+    "formattingDescription": "조직이 정한 규칙과 사용자의 규칙이 모든 다시 쓰기에 적용됩니다.",
+    "dataOnServer": "조직 서버",
+    "dataNote": "조직 서버는 하루에 실행하는 전사 및 다시 쓰기 횟수를 셉니다. 내용은 저장하지 않습니다.",
+    "aiSkillsPrivacyOffline": "AI Skills는 조직 서버에서 실행되며, 지금은 연결할 수 없습니다.",
+    "notInOrganization": "이 Microsoft 계정은 조직에 속하지 않습니다.",
+    "codeForbidden": "액세스할 수 없습니다. 관리자에게 문의하세요."
   }
 }

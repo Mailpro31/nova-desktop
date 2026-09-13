@@ -1827,5 +1827,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Inicie sessão novamente para continuar a usar o que a sua organização disponibiliza.",
+    "logoutConfirmTitle": "Terminar sessão na sua organização?",
+    "logoutConfirmDescription": "Terá de iniciar sessão novamente para usar o que a sua organização disponibiliza. Tem a certeza?",
+    "aboutSubtitle": "Informações e ferramentas de diagnóstico do Nova.",
+    "personalizationDescription": "Ajuste a aparência e a interação do Nova sem alterar as regras da sua organização.",
+    "organizationSubtitle": "A sua organização, o que disponibiliza e para onde vão os seus dados.",
+    "statusConnected": "Organização ligada",
+    "providesTitle": "O que a sua organização disponibiliza",
+    "providesPaused": "Em pausa — o servidor da sua organização está inacessível.",
+    "transcriptionDescription": "A sua gravação é enviada para o servidor da sua organização, que a converte em texto.",
+    "rewritingDescription": "O seu texto e o estilo escolhido são enviados para o servidor da sua organização, que o reformula.",
+    "vocabularyDescription": "Os termos adicionados pela sua organização, juntamente com os seus, ajudam o reconhecimento e a reformulação a escrevê-los corretamente.",
+    "formattingDescription": "As regras definidas pela sua organização, juntamente com as suas, aplicam-se a cada reformulação.",
+    "dataOnServer": "Servidor da organização",
+    "dataNote": "O servidor da sua organização conta quantas transcrições e reformulações faz por dia. Não guarda o seu conteúdo.",
+    "aiSkillsPrivacyOffline": "As AI Skills funcionam no servidor da sua organização, que está inacessível neste momento.",
+    "notInOrganization": "Esta conta Microsoft não faz parte da sua organização.",
+    "codeForbidden": "O acesso não está disponível. Contacte o administrador."
   }
 }

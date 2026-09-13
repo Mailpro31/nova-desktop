@@ -1827,5 +1827,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "سجّل الدخول مجددًا لمواصلة استخدام ما توفره مؤسستك.",
+    "logoutConfirmTitle": "تسجيل الخروج من مؤسستك؟",
+    "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام ما توفره مؤسستك. هل أنت متأكد؟",
+    "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova.",
+    "personalizationDescription": "اضبط مظهر Nova وطريقة التفاعل معه دون تغيير سياسات مؤسستك.",
+    "organizationSubtitle": "مؤسستك، وما توفره، وإلى أين تذهب بياناتك.",
+    "statusConnected": "المؤسسة متصلة",
+    "providesTitle": "ما توفره مؤسستك",
+    "providesPaused": "متوقف مؤقتًا — تعذّر الوصول إلى خادم مؤسستك.",
+    "transcriptionDescription": "يُرسل تسجيلك إلى خادم مؤسستك الذي يحوّله إلى نص.",
+    "rewritingDescription": "يُرسل نصك والنمط المحدد إلى خادم مؤسستك الذي يعيد صياغته.",
+    "vocabularyDescription": "تساعد المصطلحات التي تضيفها مؤسستك، إلى جانب مصطلحاتك، على التعرّف عليها وإعادة صياغتها بشكل صحيح.",
+    "formattingDescription": "تُطبَّق القواعد التي تحددها مؤسستك، إلى جانب قواعدك، على كل إعادة صياغة.",
+    "dataOnServer": "خادم المؤسسة",
+    "dataNote": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة التي تجريها يوميًا، ولا يحتفظ بمحتواها.",
+    "aiSkillsPrivacyOffline": "تعمل AI Skills على خادم مؤسستك، وهو غير متاح حاليًا.",
+    "notInOrganization": "حساب Microsoft هذا لا ينتمي إلى مؤسستك.",
+    "codeForbidden": "الوصول غير متاح. تواصل مع المسؤول."
   }
 }

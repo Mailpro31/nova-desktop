@@ -1827,5 +1827,25 @@
       "discovery": "Nova could not find your organization's server. Check your connection and try again.",
       "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
     }
+  },
+  "organizationWording": {
+    "sessionExpired": "Hãy đăng nhập lại để tiếp tục dùng những gì tổ chức của bạn cung cấp.",
+    "logoutConfirmTitle": "Đăng xuất khỏi tổ chức của bạn?",
+    "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng những gì tổ chức của bạn cung cấp. Bạn chắc chứ?",
+    "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova.",
+    "personalizationDescription": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của tổ chức.",
+    "organizationSubtitle": "Tổ chức của bạn, những gì tổ chức cung cấp và dữ liệu của bạn đi đâu.",
+    "statusConnected": "Đã kết nối tổ chức",
+    "providesTitle": "Những gì tổ chức của bạn cung cấp",
+    "providesPaused": "Đang tạm dừng — không thể kết nối máy chủ của tổ chức.",
+    "transcriptionDescription": "Bản ghi âm được gửi đến máy chủ của tổ chức để chuyển thành văn bản.",
+    "rewritingDescription": "Văn bản và kiểu đã chọn được gửi đến máy chủ của tổ chức để viết lại.",
+    "vocabularyDescription": "Các thuật ngữ do tổ chức thêm vào, cùng với của bạn, giúp nhận dạng và viết lại chính xác.",
+    "formattingDescription": "Các quy tắc do tổ chức đặt ra, cùng với của bạn, được áp dụng cho mỗi lần viết lại.",
+    "dataOnServer": "Máy chủ của tổ chức",
+    "dataNote": "Máy chủ của tổ chức đếm số lần phiên âm và viết lại bạn thực hiện mỗi ngày. Máy chủ không lưu nội dung.",
+    "aiSkillsPrivacyOffline": "AI Skills chạy trên máy chủ của tổ chức, hiện không thể kết nối.",
+    "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
+    "codeForbidden": "Không thể truy cập. Hãy liên hệ quản trị viên."
   }
 }

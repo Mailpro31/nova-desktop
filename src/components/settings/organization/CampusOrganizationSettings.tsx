@@ -8,8 +8,10 @@ import { Dialog } from "../../ui/Dialog";
 import { CAMPUS_CAPABILITIES, DATA_ROWS } from "./campusCapabilities";
 import { useCampusStatus } from "../../../hooks/useCampusStatus";
 import { useOrganization } from "../../../hooks/useOrganization";
+import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { commands } from "@/bindings";
 import { clearCampusSession } from "@/lib/campusSession";
+import type { WordingId } from "@/lib/organization/wording";
 
 interface Profile {
   role: string;
@@ -17,21 +19,35 @@ interface Profile {
 }
 
 /**
- * Page « Établissement » — la surface institutionnelle de Nova Campus.
+ * Description de chaque capacité, dans le vocabulaire de l'organisation : ce
+ * sont elles qui disaient « le serveur de votre établissement » à tout le monde.
+ */
+const CAPABILITY_WORDING: Record<string, WordingId> = {
+  transcription: "transcriptionDescription",
+  rewriting: "rewritingDescription",
+  vocabulary: "vocabularyDescription",
+  formatting: "formattingDescription",
+};
+
+/**
+ * Page « Organisation » — ce que l'organisation fournit à ce poste.
  *
- * Elle répond à cinq questions et s'arrête là : à quel établissement suis-je
- * relié, dans quel état est cette liaison, que fournit-il, que se passe-t-il
+ * Elle répond à cinq questions et s'arrête là : à quelle organisation suis-je
+ * relié, dans quel état est cette liaison, que fournit-elle, que se passe-t-il
  * hors ligne, et où vont mes données.
  *
  * **Ce n'est pas une console d'administration.** Le serveur possède bien des
  * points de terminaison d'administration et une interface web dédiée ; les
- * exposer ici transformerait l'application étudiante en outil de gestion, et
- * afficherait des commandes qu'un étudiant n'a pas le droit d'exécuter.
+ * exposer ici transformerait l'application en outil de gestion, et
+ * afficherait des commandes que le membre n'a pas le droit d'exécuter.
  *
- * Aucun nom d'établissement n'est codé en dur : tout vient de `/api/me`.
+ * Aucun nom d'organisation n'est codé en dur : tout vient de `/api/me`. Le
+ * vocabulaire suit la nature annoncée par le serveur — seule une école lit
+ * « établissement » et « Campus ».
  */
 export const CampusOrganizationSettings: React.FC = () => {
   const { t } = useTranslation();
+  const word = useOrganizationWording();
   const { session, connection, serverName, refresh } = useCampusStatus();
   const organization = useOrganization();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -68,7 +84,7 @@ export const CampusOrganizationSettings: React.FC = () => {
   return (
     <>
       <PageHeader
-        // Le nom de l'établissement n'est le titre que lorsqu'il vient du
+        // Le nom de l'organisation n'est le titre que lorsqu'il vient du
         // serveur. Dérivé du nom d'hôte, il resterait une supposition — on
         // affiche alors le titre générique et l'hôte en donnée.
         title={
@@ -76,7 +92,7 @@ export const CampusOrganizationSettings: React.FC = () => {
             ? organization.name
             : t("campus.organization.title")
         }
-        description={t("campus.organization.subtitle")}
+        description={word("organizationSubtitle")}
       />
 
       <section aria-labelledby="campus-identity">
@@ -105,7 +121,7 @@ export const CampusOrganizationSettings: React.FC = () => {
             label={t("campus.organization.connection")}
             value={
               connection === "connected"
-                ? t("campus.status.connected")
+                ? word("statusConnected")
                 : connection === "local"
                   ? t("campus.status.localActive")
                   : t("campus.account.checking")
@@ -116,28 +132,31 @@ export const CampusOrganizationSettings: React.FC = () => {
 
       <section className="mt-[32px]" aria-labelledby="campus-provides">
         <SectionTitle id="campus-provides">
-          {t("campus.provides.title")}
+          {word("providesTitle")}
         </SectionTitle>
         {/* Quand le serveur est injoignable, la liste décrit ce qui reviendra,
             pas ce qui marche à cet instant : le dire évite de la lire comme un
             démenti de l'état affiché juste au-dessus. */}
         {connection === "local" && (
           <p className="mb-2 text-xs leading-relaxed text-warning">
-            {t("campus.provides.paused")}
+            {word("providesPaused")}
           </p>
         )}
         <ul>
-          {CAMPUS_CAPABILITIES.map((capability) => (
-            <li
-              key={capability.id}
-              className="border-b border-hairline py-2.5 last:border-b-0"
-            >
-              <p className="text-sm text-text">{t(capability.titleKey)}</p>
-              <p className="mt-0.5 text-xs leading-relaxed text-text-secondary">
-                {t(capability.descriptionKey)}
-              </p>
-            </li>
-          ))}
+          {CAMPUS_CAPABILITIES.map((capability) => {
+            const wording = CAPABILITY_WORDING[capability.id];
+            return (
+              <li
+                key={capability.id}
+                className="border-b border-hairline py-2.5 last:border-b-0"
+              >
+                <p className="text-sm text-text">{t(capability.titleKey)}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-text-secondary">
+                  {wording ? word(wording) : t(capability.descriptionKey)}
+                </p>
+              </li>
+            );
+          })}
         </ul>
       </section>
 
@@ -160,11 +179,11 @@ export const CampusOrganizationSettings: React.FC = () => {
             <Row
               key={row.id}
               label={t(row.labelKey)}
-              value={t(
+              value={
                 row.location === "device"
-                  ? "campus.data.onDevice"
-                  : "campus.data.onCampus",
-              )}
+                  ? t("campus.data.onDevice")
+                  : word("dataOnServer")
+              }
             />
           ))}
         </dl>
@@ -172,7 +191,7 @@ export const CampusOrganizationSettings: React.FC = () => {
             chiffrement, de conformité ni de non-conservation, faute de
             garantie technique vérifiable depuis l'application. */}
         <p className="mt-3 text-xs leading-relaxed text-text-secondary">
-          {t("campus.data.note")}
+          {word("dataNote")}
         </p>
       </section>
 
@@ -190,13 +209,13 @@ export const CampusOrganizationSettings: React.FC = () => {
         </section>
       )}
 
-      {/* Se déconnecter oblige à refaire l'authentification par e-mail et code
-          à usage unique : le coût est réel, la confirmation est justifiée. */}
+      {/* Se déconnecter oblige à refaire l'authentification : le coût est
+          réel, la confirmation est justifiée. */}
       <Dialog
         open={confirmLogout}
         onOpenChange={setConfirmLogout}
-        title={t("campus.account.logoutConfirmTitle")}
-        description={t("campus.account.logoutConfirmDescription")}
+        title={word("logoutConfirmTitle")}
+        description={word("logoutConfirmDescription")}
         closeLabel={t("common.close")}
         footer={
           <div className="flex items-center justify-end gap-2">

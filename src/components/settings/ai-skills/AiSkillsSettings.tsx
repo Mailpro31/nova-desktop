@@ -6,6 +6,7 @@ import NovaCommandsExperiment from "./NovaCommandsExperiment";
 import PreviewBadge from "./PreviewBadge";
 import { useSettings } from "../../../hooks/useSettings";
 import { useCampusStatus } from "../../../hooks/useCampusStatus";
+import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { isOrganizationMode } from "@/lib/mode";
 import {
   ASK_NOVA,
@@ -38,6 +39,7 @@ const HOW_IT_WORKS = [
  */
 export const AiSkillsSettings: React.FC = () => {
   const { t } = useTranslation();
+  const word = useOrganizationWording();
   const { getSetting } = useSettings();
   const { connection } = useCampusStatus();
 
@@ -107,7 +109,7 @@ export const AiSkillsSettings: React.FC = () => {
           le serveur de l'établissement. Rien n'est affirmé sur le chiffrement
           ni sur la conservation, faute de garantie technique à citer. */}
       <p className="mt-[24px] text-xs leading-relaxed text-text-secondary">
-        {offline ? t("aiSkills.privacyOffline") : t("aiSkills.privacy")}
+        {offline ? word("aiSkillsPrivacyOffline") : t("aiSkills.privacy")}
       </p>
 
       {campusMode && debugMode && <NovaCommandsExperiment />}
