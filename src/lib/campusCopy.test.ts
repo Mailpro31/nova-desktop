@@ -25,12 +25,21 @@ const SECTIONS = [
   "sessionExpiredTitle",
   "serverUnreachableTitle",
   "managedBy",
+  "settings",
+  "styles",
+  "dictionary",
+  "snippets",
+  "formatting",
+  "files",
+  "personalization",
+  "page",
 ];
 
 /** Noms propres, identiques dans toutes les langues. */
 const PRODUCT_NAMES = new Set([
   "campus.onboarding.label",
   "campus.onboarding.lab.productName",
+  "campus.page.processing.localTitle",
 ]);
 
 /** Mots qu'une langue écrit légitimement comme l'anglais. */
