@@ -1271,14 +1271,14 @@
       "connect": "Continuar com {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "Competências de IA",
       "description": "Módulos curtos para usar a IA de forma crítica, eficaz e segura nos seus estudos.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "{{completed}} de {{total}} módulos concluídos",
+      "minutes": "Cerca de {{count}} min",
+      "practice": "Experimente",
+      "markComplete": "Marcar como concluído",
+      "completed": "Concluído",
+      "unavailable": "O curso está temporariamente indisponível."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "Fundamentos de IA",
+      "modulePosition": "Módulo {{current}} de {{total}}",
+      "correct": "Certo",
+      "considerThis": "Pense nisto",
+      "nextModule": "Próximo",
+      "continue": "Continuar aprendendo",
+      "start": "Começar",
+      "next": "A seguir",
+      "modulesTitle": "Competências fundamentais",
+      "mastery": "Níveis de domínio",
+      "foundationCompleted": "Nível fundamental concluído · {{date}}",
+      "foundationDescription": "Hábitos essenciais para usar a IA de forma eficaz e responsável.",
+      "futureLevel": "Disponível em uma futura trilha do Campus.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "Fundamental",
+        "practitioner": "Prático",
+        "advanced": "Avançado"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "Trabalhar com IA",
+          "summary": "Entenda o que a IA pode e não pode fazer.",
+          "skill": "Princípios de IA",
+          "idea": "A IA pode gerar opções úteis rapidamente, mas um texto fluente não prova que uma resposta está correta.",
+          "scenario": "Um assistente de IA propõe uma escolha de projeto para um trabalho aeroespacial e a apresenta com confiança.",
+          "question": "Qual é o papel mais útil da IA aqui?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "Substituir a decisão de engenharia.",
+            "b": "Oferecer uma solução candidata para um engenheiro avaliar.",
+            "c": "Aprovar a escolha porque a explicação soa técnica."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "Use a IA para ampliar as opções que você pode examinar. O julgamento de engenharia continua responsável pelas premissas, pelas evidências e pela decisão final."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "Pergunte melhor",
+          "summary": "Dê contexto suficiente e defina um resultado útil.",
+          "skill": "Escrita de prompts",
+          "idea": "Um pedido útil informa o objetivo, o contexto relevante, as restrições e o resultado esperado.",
+          "scenario": "Você precisa de ajuda para depurar um cálculo em Python usado em um projeto estudantil de satélite.",
+          "question": "Qual pedido oferece o ponto de partida mais seguro e útil?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "Conserte meu código.",
+            "b": "Explique o erro, mantenha as unidades do SI, identifique as premissas e proponha uma correção testada.",
+            "c": "Escreva uma resposta mais longa."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "Contexto específico e critérios de sucesso tornam o resultado mais fácil de verificar e menos propenso a esconder uma premissa errada."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "Verifique o resultado",
+          "summary": "Confira cálculos, fontes, afirmações e premissas.",
+          "skill": "Verificação",
+          "idea": "A verificação é uma etapa de engenharia à parte. Perguntar ao mesmo modelo se ele tem certeza não é uma checagem independente.",
+          "scenario": "Uma IA fornece um cálculo de cargas para uma análise estrutural.",
+          "question": "O que você deve fazer antes de usá-lo?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "Usá-lo diretamente porque as unidades aparecem.",
+            "b": "Verificar de forma independente as premissas, as unidades e os cálculos.",
+            "c": "Perguntar à IA se ela tem certeza."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "Confira o caso de carga, as unidades, as equações e as condições de contorno com métodos ou fontes confiáveis antes de depender do resultado."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "Informações confidenciais",
+          "summary": "Saiba o que não deve ser enviado a um sistema não autorizado.",
+          "skill": "Privacidade",
+          "idea": "Compartilhe apenas os dados que a ferramenta e sua instituição estão autorizadas a processar.",
+          "scenario": "Um documento do projeto contém identificadores de estudantes, dados de fornecedores e um token de acesso interno.",
+          "question": "Qual é o próximo passo responsável?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "Colar tudo porque a tarefa é acadêmica.",
+            "b": "Remover apenas os nomes dos estudantes.",
+            "c": "Usar um sistema aprovado e remover segredos e dados pessoais ou confidenciais desnecessários."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "Autorização e minimização de dados importam igualmente. Credenciais nunca devem ser incluídas, e o contexto sensível desnecessário deve ser removido."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "IA na engenharia",
+          "summary": "Use a IA como ferramenta, não como substituta do raciocínio.",
+          "skill": "IA para engenharia",
+          "idea": "A IA funciona melhor como colaboradora para explorar, rascunhar e criticar quando o engenheiro continua responsável.",
+          "scenario": "Você está comparando dois conceitos para um subsistema de um pequeno satélite.",
+          "question": "Qual fluxo de trabalho aproveita melhor a IA?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "Deixar a IA escolher o conceito e copiar a justificativa dela.",
+            "b": "Usá-la para evidenciar os trade-offs, depois validar as restrições e documentar sua decisão.",
+            "c": "Não documentar as premissas para manter o relatório curto."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "A IA amplia o julgamento de engenharia. Ela não substitui validação, rastreabilidade nem responsabilidade."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "Uso responsável",
+          "summary": "Reconheça quando o uso de IA é adequado, limitado ou proibido.",
+          "skill": "Prática responsável",
+          "idea": "O uso correto depende da tarefa, das regras da disciplina, da autorização da ferramenta e do nível de responsabilidade humana exigido.",
+          "scenario": "As regras de um trabalho avaliado não deixam claro se a ajuda de IA generativa é permitida.",
+          "question": "O que você deve fazer?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "Usar a IA sem avisar, porque provavelmente todos fazem isso.",
+            "b": "Deixar a IA produzir a entrega final e depois trocar algumas palavras.",
+            "c": "Consultar a política da disciplina, perguntar em caso de dúvida e declarar a ajuda permitida."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "O uso responsável respeita o objetivo de aprendizagem e as regras estabelecidas. Se a política não estiver clara, esclareça-a antes de depender da IA."
         }
       }
     },

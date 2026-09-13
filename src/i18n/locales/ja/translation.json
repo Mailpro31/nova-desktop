@@ -1271,14 +1271,14 @@
       "connect": "{{provider}} で続行"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "AIスキル",
       "description": "学業でAIを批判的に、効果的に、安全に使うための短いモジュールです。",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "{{total}}モジュール中{{completed}}件完了",
+      "minutes": "約{{count}}分",
+      "practice": "やってみる",
+      "markComplete": "完了にする",
+      "completed": "完了",
+      "unavailable": "コースは一時的に利用できません。"
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "AIの基礎",
+      "modulePosition": "モジュール {{current}}/{{total}}",
+      "correct": "正解",
+      "considerThis": "考えてみましょう",
+      "nextModule": "次へ",
+      "continue": "学習を続ける",
+      "start": "始める",
+      "next": "次に進む",
+      "modulesTitle": "基礎スキル",
+      "mastery": "習熟レベル",
+      "foundationCompleted": "基礎レベル修了 · {{date}}",
+      "foundationDescription": "AIを効果的かつ責任をもって使うための基本的な習慣。",
+      "futureLevel": "今後の Campus コースで提供予定です。",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "基礎",
+        "practitioner": "実践",
+        "advanced": "上級"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "AIと協働する",
+          "summary": "AIにできること・できないことを理解する。",
+          "skill": "AIの基本",
+          "idea": "AIは役立つ選択肢をすばやく出せますが、文章が流暢だからといって答えが正しい証拠にはなりません。",
+          "scenario": "AIアシスタントが航空宇宙プロジェクトの設計案を自信たっぷりに提示しています。",
+          "question": "ここでAIが果たす最も有益な役割はどれですか？",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "エンジニアリング上の判断を代わりに下す。",
+            "b": "エンジニアが評価するための候補案を示す。",
+            "c": "説明が技術的に聞こえるので、その案を承認する。"
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "AIは検討できる選択肢を広げるために使いましょう。前提、根拠、最終判断に責任を持つのは、引き続きエンジニアの判断です。"
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "よりよく尋ねる",
+          "summary": "十分な文脈を伝え、役立つ成果を定義する。",
+          "skill": "プロンプト作成",
+          "idea": "役立つ依頼には、目的、関連する文脈、制約、期待する出力が含まれています。",
+          "scenario": "学生の人工衛星プロジェクトで使うPythonの計算をデバッグしたいと考えています。",
+          "question": "最も安全で役立つ出発点になる依頼はどれですか？",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "コードを直して。",
+            "b": "エラーを説明し、SI単位を保ち、前提を明らかにしたうえで、テスト済みの修正を提案して。",
+            "c": "もっと長く答えて。"
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "具体的な文脈と成功基準があると、出力を検証しやすくなり、誤った前提が隠れにくくなります。"
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "出力を検証する",
+          "summary": "計算、出典、主張、前提を確認する。",
+          "skill": "検証",
+          "idea": "検証は独立したエンジニアリングの工程です。同じモデルに「本当に正しいか」と尋ねても、独立した確認にはなりません。",
+          "scenario": "AIが構造解析のための荷重計算を示しました。",
+          "question": "使う前に何をすべきですか？",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "単位が書かれているので、そのまま使う。",
+            "b": "前提、単位、計算を独立して検証する。",
+            "c": "AIに本当に正しいか尋ねる。"
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "結果に頼る前に、荷重ケース、単位、方程式、境界条件を信頼できる手法や情報源で確認しましょう。"
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "機密情報",
+          "summary": "許可されていないシステムに送ってはいけない情報を知る。",
+          "skill": "プライバシー",
+          "idea": "共有するのは、そのツールと所属機関が処理を認められているデータだけにしましょう。",
+          "scenario": "プロジェクト文書に、学生の識別番号、取引先のデータ、社内用アクセストークンが含まれています。",
+          "question": "責任ある次の行動はどれですか？",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "学業の課題なので、すべて貼り付ける。",
+            "b": "学生の名前だけを削除する。",
+            "c": "承認されたシステムを使い、秘密情報や不要な個人情報・機密データを削除する。"
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "許可とデータの最小化はどちらも重要です。認証情報は決して含めず、不要な機密の文脈は取り除きましょう。"
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "エンジニアリングとAI",
+          "summary": "AIは思考の代わりではなく、道具として使う。",
+          "skill": "エンジニアリングAI",
+          "idea": "エンジニアが責任を持ち続けるとき、AIは探索、下書き、批評のパートナーとして最も力を発揮します。",
+          "scenario": "小型衛星のサブシステムについて、2つのコンセプトを比較しています。",
+          "question": "AIを最もうまく活用するワークフローはどれですか？",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "AIにコンセプトを選ばせ、その根拠をそのまま写す。",
+            "b": "AIでトレードオフを洗い出し、制約を検証して判断を記録する。",
+            "c": "報告書を短くするため、前提を記録しない。"
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AIはエンジニアリングの判断を強化します。検証、トレーサビリティ、説明責任の代わりにはなりません。"
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "責任ある利用",
+          "summary": "AIの利用が適切か、制限されるか、禁止されるかを見極める。",
+          "skill": "責任ある実践",
+          "idea": "適切な使い方は、課題の内容、授業のルール、ツールの利用許可、求められる人間の責任の度合いによって決まります。",
+          "scenario": "評価対象の課題で、生成AIの支援に関するルールがはっきりしません。",
+          "question": "どうすべきですか？",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "みんな使っているはずなので、黙ってAIを使う。",
+            "b": "AIに最終提出物を作らせ、いくつか言葉を変える。",
+            "c": "授業の方針を確認し、不明な点は質問し、認められた支援を明記する。"
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "責任ある利用とは、学習の目的と示されたルールを尊重することです。方針が不明確なときは、AIに頼る前に確認しましょう。"
         }
       }
     },

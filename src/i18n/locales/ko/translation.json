@@ -1271,14 +1271,14 @@
       "connect": "{{provider}} 계정으로 계속"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "AI 역량",
       "description": "학업에서 AI를 비판적이고 효과적이며 안전하게 활용하기 위한 짧은 모듈입니다.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "{{total}}개 모듈 중 {{completed}}개 완료",
+      "minutes": "약 {{count}}분",
+      "practice": "직접 해 보기",
+      "markComplete": "완료로 표시",
+      "completed": "완료됨",
+      "unavailable": "강좌를 일시적으로 이용할 수 없습니다."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "AI 기초",
+      "modulePosition": "모듈 {{current}}/{{total}}",
+      "correct": "정답",
+      "considerThis": "생각해 보세요",
+      "nextModule": "다음",
+      "continue": "계속 학습하기",
+      "start": "시작하기",
+      "next": "다음 차례",
+      "modulesTitle": "기초 역량",
+      "mastery": "숙련도 단계",
+      "foundationCompleted": "기초 단계 완료 · {{date}}",
+      "foundationDescription": "AI를 효과적이고 책임감 있게 사용하기 위한 핵심 습관입니다.",
+      "futureLevel": "향후 Campus 과정에서 제공될 예정입니다.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "기초",
+        "practitioner": "실무",
+        "advanced": "고급"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "AI와 함께 일하기",
+          "summary": "AI가 할 수 있는 일과 할 수 없는 일을 이해합니다.",
+          "skill": "AI 기본 원리",
+          "idea": "AI는 유용한 선택지를 빠르게 제시할 수 있지만, 매끄러운 문장이 답이 옳다는 증거는 아닙니다.",
+          "scenario": "AI 어시스턴트가 항공우주 프로젝트의 설계안을 확신에 찬 어조로 제시합니다.",
+          "question": "여기서 AI의 가장 유용한 역할은 무엇인가요?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "엔지니어링 의사결정을 대신한다.",
+            "b": "엔지니어가 평가할 후보 해결책을 제시한다.",
+            "c": "설명이 기술적으로 들리므로 그 선택을 승인한다."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "검토할 수 있는 선택지를 넓히는 데 AI를 활용하세요. 가정, 근거, 최종 결정에 대한 책임은 여전히 엔지니어의 판단에 있습니다."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "더 잘 묻기",
+          "summary": "충분한 맥락을 제공하고 유용한 결과를 정의합니다.",
+          "skill": "프롬프트 작성",
+          "idea": "유용한 요청에는 목표, 관련 맥락, 제약 조건, 기대하는 결과가 담겨 있습니다.",
+          "scenario": "학생 위성 프로젝트에 쓰이는 Python 계산 코드를 디버깅하는 데 도움이 필요합니다.",
+          "question": "가장 안전하고 유용한 출발점이 되는 요청은 무엇인가요?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "내 코드 고쳐 줘.",
+            "b": "오류를 설명하고, SI 단위를 유지하고, 가정을 밝히고, 테스트한 수정안을 제안해 줘.",
+            "c": "더 길게 답해 줘."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "구체적인 맥락과 성공 기준이 있으면 결과를 검토하기 쉬워지고 잘못된 가정이 숨어 있을 가능성도 줄어듭니다."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "결과 검증하기",
+          "summary": "계산, 출처, 주장, 가정을 확인합니다.",
+          "skill": "검증",
+          "idea": "검증은 별도의 엔지니어링 단계입니다. 같은 모델에게 확실하냐고 묻는 것은 독립적인 확인이 아닙니다.",
+          "scenario": "AI가 구조 해석을 위한 하중 계산을 제시합니다.",
+          "question": "사용하기 전에 무엇을 해야 할까요?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "단위가 표시되어 있으니 그대로 사용한다.",
+            "b": "가정, 단위, 계산을 독립적으로 검증한다.",
+            "c": "AI에게 확실한지 물어본다."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "결과에 의존하기 전에 신뢰할 수 있는 방법이나 출처로 하중 조건, 단위, 방정식, 경계 조건을 확인하세요."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "기밀 정보",
+          "summary": "승인되지 않은 시스템에 보내면 안 되는 정보를 알아 둡니다.",
+          "skill": "개인정보 보호",
+          "idea": "해당 도구와 소속 기관이 처리하도록 승인된 데이터만 공유하세요.",
+          "scenario": "프로젝트 문서에 학생 식별 번호, 공급업체 데이터, 내부 액세스 토큰이 들어 있습니다.",
+          "question": "책임 있는 다음 단계는 무엇인가요?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "학업 과제이므로 전부 붙여 넣는다.",
+            "b": "학생 이름만 삭제한다.",
+            "c": "승인된 시스템을 사용하고, 비밀 정보와 불필요한 개인 정보 또는 기밀 데이터를 삭제한다."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "승인과 데이터 최소화가 모두 중요합니다. 인증 정보는 절대 포함하지 말고, 불필요한 민감한 맥락은 제거하세요."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "엔지니어링에서의 AI",
+          "summary": "AI를 사고의 대체물이 아닌 도구로 사용합니다.",
+          "skill": "엔지니어링 AI",
+          "idea": "엔지니어가 책임을 유지할 때 AI는 탐색, 초안 작성, 비평을 돕는 협력자로서 가장 큰 힘을 발휘합니다.",
+          "scenario": "소형 위성 서브시스템을 위한 두 가지 콘셉트를 비교하고 있습니다.",
+          "question": "AI를 가장 잘 활용하는 작업 방식은 무엇인가요?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "AI에게 콘셉트를 고르게 하고 그 근거를 그대로 옮긴다.",
+            "b": "AI로 트레이드오프를 드러낸 뒤 제약 조건을 검증하고 결정을 문서화한다.",
+            "c": "보고서를 짧게 유지하려고 가정을 기록하지 않는다."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI는 엔지니어링 판단을 강화합니다. 검증, 추적성, 책임을 대신하지는 않습니다."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "책임 있는 사용",
+          "summary": "AI 사용이 적절한지, 제한되는지, 금지되는지 구분합니다.",
+          "skill": "책임 있는 실천",
+          "idea": "올바른 사용은 과제, 수업 규칙, 도구 승인 여부, 요구되는 인간의 책임 수준에 따라 달라집니다.",
+          "scenario": "평가 대상 과제의 규칙이 생성형 AI 도움에 대해 명확하지 않습니다.",
+          "question": "어떻게 해야 할까요?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "다들 쓸 테니 알리지 않고 AI를 사용한다.",
+            "b": "AI가 최종 제출물을 만들게 한 뒤 몇 단어만 바꾼다.",
+            "c": "수업 방침을 확인하고, 불분명하면 질문하고, 허용된 도움을 밝힌다."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "책임 있는 사용은 학습 목표와 명시된 규칙을 존중합니다. 방침이 불분명하다면 AI에 의존하기 전에 먼저 확인하세요."
         }
       }
     },

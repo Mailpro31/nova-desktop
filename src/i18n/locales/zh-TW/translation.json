@@ -1271,14 +1271,14 @@
       "connect": "使用 {{provider}} 繼續"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "AI 技能",
       "description": "簡短單元，協助你在學習中以批判、有效且安全的方式使用 AI。",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "已完成 {{completed}}/{{total}} 個單元",
+      "minutes": "約 {{count}} 分鐘",
+      "practice": "動手試試",
+      "markComplete": "標示為已完成",
+      "completed": "已完成",
+      "unavailable": "課程暫時無法使用。"
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "AI 基礎",
+      "modulePosition": "第 {{current}} 單元，共 {{total}} 個",
+      "correct": "正確",
+      "considerThis": "想一想",
+      "nextModule": "下一步",
+      "continue": "繼續學習",
+      "start": "開始",
+      "next": "下一個",
+      "modulesTitle": "基礎技能",
+      "mastery": "熟練程度",
+      "foundationCompleted": "已完成基礎階段 · {{date}}",
+      "foundationDescription": "有效且負責任地使用 AI 的核心習慣。",
+      "futureLevel": "將在未來的 Campus 課程中推出。",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "基礎",
+        "practitioner": "實務",
+        "advanced": "進階"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "與 AI 協作",
+          "summary": "了解 AI 能做什麼、不能做什麼。",
+          "skill": "AI 基本原理",
+          "idea": "AI 可以快速提出有用的選項，但表達流暢並不能證明答案正確。",
+          "scenario": "一個 AI 助理為航太專案提出一項設計方案，而且說得信心十足。",
+          "question": "在這裡，AI 最有用的角色是什麼？",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "取代工程決策。",
+            "b": "提供候選方案，由工程師評估。",
+            "c": "因為解釋聽起來很專業，就核准這個方案。"
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "用 AI 來擴展你能檢視的選項。對假設、證據與最終決策負責的，仍然是工程判斷。"
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "更好地提問",
+          "summary": "提供足夠的背景，並明確定義有用的結果。",
+          "skill": "提示詞撰寫",
+          "idea": "有用的請求會說明目標、相關背景、限制條件與預期的輸出。",
+          "scenario": "你需要協助除錯一個學生衛星專案所用的 Python 計算程式。",
+          "question": "哪個請求能提供最安全、最有用的起點？",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "幫我修好程式碼。",
+            "b": "解釋錯誤、維持 SI 單位、指出假設，並提出經過測試的修正方式。",
+            "c": "寫一個更長的回答。"
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "具體的背景與成功標準讓輸出更容易檢查，也更不容易藏住錯誤的假設。"
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "查核輸出",
+          "summary": "檢查計算、來源、主張與假設。",
+          "skill": "查核",
+          "idea": "查核是獨立的工程步驟。問同一個模型它是否確定，並不是獨立的檢查。",
+          "scenario": "AI 為一項結構分析提供了負載計算。",
+          "question": "使用之前你應該怎麼做？",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "因為有標示單位，直接使用。",
+            "b": "獨立查核假設、單位與計算。",
+            "c": "問 AI 它是否確定。"
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "在依賴結果之前，用可靠的方法或來源檢查負載情況、單位、方程式與邊界條件。"
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "機密資訊",
+          "summary": "了解哪些內容不能傳送到未經授權的系統。",
+          "skill": "隱私",
+          "idea": "只分享該工具與你的學校獲准處理的資料。",
+          "scenario": "一份專案文件包含學生學號、供應商資料和一組內部存取權杖。",
+          "question": "負責任的下一步是什麼？",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "因為是課業任務，全部貼上。",
+            "b": "只刪除學生姓名。",
+            "c": "使用經核准的系統，並刪除機密金鑰以及不必要的個人或機密資料。"
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "授權與資料最小化同樣重要。絕不能包含登入憑證，不必要的敏感背景也應移除。"
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "工程中的 AI",
+          "summary": "把 AI 當作工具，而不是思考的替代品。",
+          "skill": "工程 AI",
+          "idea": "當工程師仍然負責時，AI 作為探索、起草與批判的協作者最能發揮作用。",
+          "scenario": "你正在比較一顆小型衛星某個子系統的兩種概念設計。",
+          "question": "哪種工作流程最能發揮 AI 的作用？",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "讓 AI 選擇概念，並照抄它的理由。",
+            "b": "用它找出取捨，再查核限制條件並記錄你的決策。",
+            "c": "為了讓報告簡短，不記錄假設。"
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI 會強化工程判斷，但無法取代驗證、可追溯性與當責。"
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "負責任地使用",
+          "summary": "辨識何時使用 AI 是適當、受限或被禁止的。",
+          "skill": "負責任的實踐",
+          "idea": "正確的使用方式取決於任務、課程規定、工具是否獲准，以及所需的人類當責程度。",
+          "scenario": "一份計分作業的規定沒有說清楚能否借助生成式 AI。",
+          "question": "你應該怎麼做？",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "悄悄使用 AI，因為大家可能都在用。",
+            "b": "讓 AI 完成最終繳交內容，再改幾個字。",
+            "c": "查看課程規定，不清楚時提問，並說明獲准使用的協助。"
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "負責任的使用尊重學習目標與既定規則。規定不明確時，先釐清再依賴 AI。"
         }
       }
     },

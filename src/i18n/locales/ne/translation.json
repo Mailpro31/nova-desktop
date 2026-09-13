@@ -1271,14 +1271,14 @@
       "connect": "{{provider}} मार्फत जारी राख्नुहोस्"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "AI सीपहरू",
       "description": "तपाईंको अध्ययनमा AI लाई आलोचनात्मक, प्रभावकारी र सुरक्षित रूपमा प्रयोग गर्न छोटा मोड्युलहरू।",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "{{total}} मध्ये {{completed}} मोड्युल पूरा",
+      "minutes": "करिब {{count}} मिनेट",
+      "practice": "आफै प्रयास गर्नुहोस्",
+      "markComplete": "पूरा भएको चिन्ह लगाउनुहोस्",
+      "completed": "पूरा भयो",
+      "unavailable": "कोर्स अस्थायी रूपमा उपलब्ध छैन।"
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "AI का आधारभूत कुरा",
+      "modulePosition": "मोड्युल {{current}} / {{total}}",
+      "correct": "सही",
+      "considerThis": "यसबारे विचार गर्नुहोस्",
+      "nextModule": "अर्को",
+      "continue": "सिकाइ जारी राख्नुहोस्",
+      "start": "सुरु गर्नुहोस्",
+      "next": "अर्को पालो",
+      "modulesTitle": "आधारभूत सीपहरू",
+      "mastery": "दक्षताका तहहरू",
+      "foundationCompleted": "आधारभूत तह पूरा · {{date}}",
+      "foundationDescription": "AI को प्रभावकारी र जिम्मेवार प्रयोगका लागि मूल बानीहरू।",
+      "futureLevel": "भविष्यको Campus कोर्समा उपलब्ध हुनेछ।",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "आधारभूत",
+        "practitioner": "व्यावहारिक",
+        "advanced": "उन्नत"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "AI सँग काम गर्ने",
+          "summary": "AI ले के गर्न सक्छ र के सक्दैन, बुझ्नुहोस्।",
+          "skill": "AI का मूल सिद्धान्त",
+          "idea": "AI ले छिट्टै उपयोगी विकल्प दिन सक्छ, तर सरल र प्रवाहपूर्ण लेखाइ उत्तर सही भएको प्रमाण होइन।",
+          "scenario": "एउटा AI सहायकले एयरोस्पेस परियोजनाका लागि डिजाइनको विकल्प प्रस्ताव गर्छ र आत्मविश्वासका साथ प्रस्तुत गर्छ।",
+          "question": "यहाँ AI को सबैभन्दा उपयोगी भूमिका के हो?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "इन्जिनियरिङ निर्णयको सट्टा आफैँ निर्णय गर्ने।",
+            "b": "इन्जिनियरले मूल्याङ्कन गर्ने सम्भावित समाधान दिने।",
+            "c": "व्याख्या प्राविधिक सुनिएकाले त्यो विकल्प स्वीकृत गर्ने।"
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "तपाईंले जाँच्न सक्ने विकल्पहरू बढाउन AI प्रयोग गर्नुहोस्। अनुमान, प्रमाण र अन्तिम निर्णयको जिम्मेवारी इन्जिनियरिङ विवेकमै रहन्छ।"
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "अझ राम्रोसँग सोध्नुहोस्",
+          "summary": "पर्याप्त सन्दर्भ दिनुहोस् र उपयोगी नतिजा परिभाषित गर्नुहोस्।",
+          "skill": "प्रम्प्ट लेखन",
+          "idea": "उपयोगी अनुरोधले लक्ष्य, सान्दर्भिक सन्दर्भ, सीमाहरू र अपेक्षित नतिजा स्पष्ट गर्छ।",
+          "scenario": "विद्यार्थीको स्याटेलाइट परियोजनामा प्रयोग हुने Python गणनाको त्रुटि खोज्न तपाईंलाई सहयोग चाहिएको छ।",
+          "question": "कुन अनुरोधले सबैभन्दा सुरक्षित र उपयोगी सुरुवात दिन्छ?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "मेरो कोड मिलाइदेऊ।",
+            "b": "त्रुटि व्याख्या गर, SI एकाइ कायम राख, अनुमानहरू पहिचान गर र परीक्षण गरिएको सुधार प्रस्ताव गर।",
+            "c": "अझ लामो उत्तर लेख।"
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "स्पष्ट सन्दर्भ र सफलताका मापदण्डले नतिजा जाँच्न सजिलो बनाउँछन् र गलत अनुमान लुक्ने सम्भावना घटाउँछन्।"
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "नतिजा प्रमाणित गर्नुहोस्",
+          "summary": "गणना, स्रोत, दाबी र अनुमानहरू जाँच गर्नुहोस्।",
+          "skill": "प्रमाणीकरण",
+          "idea": "प्रमाणीकरण छुट्टै इन्जिनियरिङ चरण हो। उही मोडेललाई त्यो पक्का छ कि छैन भनेर सोध्नु स्वतन्त्र जाँच होइन।",
+          "scenario": "एउटा AI ले संरचनात्मक विश्लेषणका लागि भार गणना दिन्छ।",
+          "question": "प्रयोग गर्नुअघि तपाईंले के गर्नुपर्छ?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "एकाइ देखाइएकाले सिधै प्रयोग गर्ने।",
+            "b": "अनुमान, एकाइ र गणनाहरू स्वतन्त्र रूपमा प्रमाणित गर्ने।",
+            "c": "AI लाई त्यो पक्का छ कि छैन भनेर सोध्ने।"
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "नतिजामा भर पर्नुअघि भार अवस्था, एकाइ, समीकरण र सीमा अवस्थाहरू भरपर्दो विधि वा स्रोतबाट जाँच गर्नुहोस्।"
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "गोप्य जानकारी",
+          "summary": "अनधिकृत प्रणालीमा के पठाउनु हुँदैन, जान्नुहोस्।",
+          "skill": "गोपनीयता",
+          "idea": "उपकरण र तपाईंको संस्थालाई प्रशोधन गर्ने अनुमति भएको डेटा मात्र साझा गर्नुहोस्।",
+          "scenario": "एउटा परियोजना कागजातमा विद्यार्थी परिचय नम्बर, आपूर्तिकर्ताको डेटा र आन्तरिक पहुँच टोकन छन्।",
+          "question": "जिम्मेवार अर्को कदम के हो?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "काम शैक्षिक भएकाले सबै टाँस्ने।",
+            "b": "विद्यार्थीका नाम मात्र हटाउने।",
+            "c": "स्वीकृत प्रणाली प्रयोग गर्ने र गोप्य कुरा तथा अनावश्यक व्यक्तिगत वा गोप्य डेटा हटाउने।"
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "अनुमति र डेटा न्यूनीकरण दुवै महत्त्वपूर्ण छन्। लगइन विवरण कहिल्यै समावेश गर्नु हुँदैन, र अनावश्यक संवेदनशील सन्दर्भ हटाउनुपर्छ।"
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "इन्जिनियरिङमा AI",
+          "summary": "AI लाई सोचाइको विकल्प होइन, उपकरणका रूपमा प्रयोग गर्नुहोस्।",
+          "skill": "इन्जिनियरिङ AI",
+          "idea": "इन्जिनियर जिम्मेवार रहँदा AI खोज, मस्यौदा लेखन र समालोचनाको सहयोगीका रूपमा सबैभन्दा प्रभावकारी हुन्छ।",
+          "scenario": "तपाईं सानो स्याटेलाइटको उपप्रणालीका लागि दुई अवधारणाको तुलना गर्दै हुनुहुन्छ।",
+          "question": "कुन कार्यप्रवाहले AI को सबैभन्दा राम्रो उपयोग गर्छ?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "AI लाई अवधारणा छान्न दिने र त्यसको औचित्य नक्कल गर्ने।",
+            "b": "सम्झौताहरू देखाउन AI प्रयोग गर्ने, त्यसपछि सीमाहरू प्रमाणित गरेर निर्णय अभिलेख गर्ने।",
+            "c": "प्रतिवेदन छोटो राख्न अनुमानहरू अभिलेख नगर्ने।"
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI ले इन्जिनियरिङ विवेकलाई बलियो बनाउँछ। यसले प्रमाणीकरण, ट्रेस गर्न सकिने अभिलेख वा जवाफदेहिताको सट्टा लिँदैन।"
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "जिम्मेवार प्रयोग",
+          "summary": "AI प्रयोग कहिले उपयुक्त, सीमित वा निषेधित हुन्छ, पहिचान गर्नुहोस्।",
+          "skill": "जिम्मेवार अभ्यास",
+          "idea": "सही प्रयोग कार्य, कोर्सका नियम, उपकरणको अनुमति र आवश्यक मानवीय जवाफदेहिताको स्तरमा निर्भर गर्छ।",
+          "scenario": "मूल्याङ्कन हुने असाइनमेन्टका नियमहरू जेनेरेटिभ AI को सहयोगबारे स्पष्ट छैनन्।",
+          "question": "तपाईंले के गर्नुपर्छ?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "सबैले सायद प्रयोग गर्छन् भनेर चुपचाप AI प्रयोग गर्ने।",
+            "b": "AI लाई अन्तिम बुझाउने काम तयार गर्न दिने, अनि केही शब्द फेर्ने।",
+            "c": "कोर्सको नीति जाँच्ने, अस्पष्ट भए सोध्ने, र अनुमति भएको सहयोग खुलाउने।"
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "जिम्मेवार प्रयोगले सिकाइको उद्देश्य र तोकिएका नियमहरूको सम्मान गर्छ। नीति अस्पष्ट भए AI मा भर पर्नुअघि स्पष्ट गर्नुहोस्।"
         }
       }
     },

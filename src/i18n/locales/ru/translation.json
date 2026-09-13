@@ -1271,14 +1271,14 @@
       "connect": "Продолжить с {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "Навыки работы с ИИ",
       "description": "Короткие модули о критичном, эффективном и безопасном использовании ИИ в учёбе.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "Пройдено модулей: {{completed}} из {{total}}",
+      "minutes": "Около {{count}} мин",
+      "practice": "Попробуйте сами",
+      "markComplete": "Отметить как пройденное",
+      "completed": "Пройдено",
+      "unavailable": "Курс временно недоступен."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "Основы ИИ",
+      "modulePosition": "Модуль {{current}} из {{total}}",
+      "correct": "Верно",
+      "considerThis": "Подумайте об этом",
+      "nextModule": "Далее",
+      "continue": "Продолжить обучение",
+      "start": "Начать",
+      "next": "Следующий",
+      "modulesTitle": "Базовые навыки",
+      "mastery": "Уровни мастерства",
+      "foundationCompleted": "Базовый уровень пройден · {{date}}",
+      "foundationDescription": "Основные привычки для эффективного и ответственного использования ИИ.",
+      "futureLevel": "Появится в будущем курсе Campus.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "Базовый",
+        "practitioner": "Практический",
+        "advanced": "Продвинутый"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "Работа с ИИ",
+          "summary": "Поймите, что ИИ умеет, а что нет.",
+          "skill": "Принципы ИИ",
+          "idea": "ИИ может быстро предложить полезные варианты, но гладкий текст не доказывает, что ответ верен.",
+          "scenario": "ИИ-ассистент предлагает конструкторское решение для аэрокосмического проекта и уверенно его подаёт.",
+          "question": "Какая роль ИИ здесь наиболее полезна?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "Заменить инженерное решение.",
+            "b": "Предложить вариант решения, который оценит инженер.",
+            "c": "Утвердить выбор, потому что объяснение звучит технически."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "Используйте ИИ, чтобы расширить круг вариантов для анализа. За допущения, обоснования и окончательное решение по-прежнему отвечает инженерное суждение."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "Спрашивайте лучше",
+          "summary": "Дайте достаточно контекста и определите полезный результат.",
+          "skill": "Составление запросов",
+          "idea": "Полезный запрос указывает цель, значимый контекст, ограничения и ожидаемый результат.",
+          "scenario": "Вам нужна помощь в отладке расчёта на Python для студенческого спутникового проекта.",
+          "question": "Какой запрос даёт самую надёжную и полезную отправную точку?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "Исправь мой код.",
+            "b": "Объясни ошибку, сохрани единицы СИ, укажи допущения и предложи проверенное исправление.",
+            "c": "Напиши ответ подлиннее."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "Конкретный контекст и критерии успеха упрощают проверку результата и снижают риск, что в нём скроется неверное допущение."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "Проверьте результат",
+          "summary": "Проверяйте расчёты, источники, утверждения и допущения.",
+          "skill": "Проверка",
+          "idea": "Проверка — отдельный инженерный этап. Спросить ту же модель, уверена ли она, — это не независимая проверка.",
+          "scenario": "ИИ выдаёт вам расчёт нагрузок для прочностного анализа.",
+          "question": "Что нужно сделать, прежде чем его использовать?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "Использовать сразу, раз единицы указаны.",
+            "b": "Независимо проверить допущения, единицы и расчёты.",
+            "c": "Спросить ИИ, уверен ли он."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "Прежде чем опираться на результат, проверьте расчётный случай нагружения, единицы, уравнения и граничные условия надёжными методами или по надёжным источникам."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "Конфиденциальная информация",
+          "summary": "Знайте, что нельзя отправлять в неразрешённую систему.",
+          "skill": "Конфиденциальность",
+          "idea": "Передавайте только те данные, которые инструмент и ваше учебное заведение вправе обрабатывать.",
+          "scenario": "Проектный документ содержит идентификаторы студентов, данные поставщиков и внутренний токен доступа.",
+          "question": "Какой следующий шаг будет ответственным?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "Вставить всё, ведь задание учебное.",
+            "b": "Удалить только имена студентов.",
+            "c": "Использовать одобренную систему и удалить секреты и лишние персональные или конфиденциальные данные."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "Важны и разрешение, и минимизация данных. Учётные данные нельзя включать никогда, а лишний чувствительный контекст нужно удалить."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "ИИ в инженерии",
+          "summary": "Используйте ИИ как инструмент, а не замену мышлению.",
+          "skill": "ИИ для инженеров",
+          "idea": "ИИ сильнее всего как помощник в поиске идей, подготовке черновиков и критике, когда ответственность остаётся за инженером.",
+          "scenario": "Вы сравниваете две концепции подсистемы малого спутника.",
+          "question": "Какой рабочий процесс лучше всего использует ИИ?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "Позволить ИИ выбрать концепцию и скопировать его обоснование.",
+            "b": "Использовать ИИ, чтобы выявить компромиссы, затем проверить ограничения и задокументировать решение.",
+            "c": "Не документировать допущения, чтобы отчёт был короче."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "ИИ усиливает инженерное суждение. Он не заменяет проверку, прослеживаемость и ответственность."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "Ответственное использование",
+          "summary": "Различайте, когда ИИ уместен, ограничен или запрещён.",
+          "skill": "Ответственная практика",
+          "idea": "Правильное использование зависит от задачи, правил курса, разрешения на инструмент и требуемого уровня ответственности человека.",
+          "scenario": "В правилах оцениваемого задания неясно, допускается ли помощь генеративного ИИ.",
+          "question": "Что нужно сделать?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "Тайком использовать ИИ, ведь, наверное, все так делают.",
+            "b": "Поручить ИИ итоговую работу, а потом поменять несколько слов.",
+            "c": "Проверить правила курса, уточнить неясное и указать разрешённую помощь."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "Ответственное использование уважает учебную цель и установленные правила. Если правила неясны, уточните их, прежде чем полагаться на ИИ."
         }
       }
     },

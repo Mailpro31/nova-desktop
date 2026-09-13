@@ -1271,14 +1271,14 @@
       "connect": "Tiếp tục với {{provider}}"
     },
     "aiSkills": {
-      "title": "AI Skills",
+      "title": "Kỹ năng AI",
       "description": "Các học phần ngắn giúp bạn sử dụng AI một cách phản biện, hiệu quả và an toàn trong học tập.",
-      "progress": "{{completed}} of {{total}} modules completed",
-      "minutes": "About {{count}} min",
-      "practice": "Try it",
-      "markComplete": "Mark as completed",
-      "completed": "Completed",
-      "unavailable": "The course is temporarily unavailable."
+      "progress": "Đã hoàn thành {{completed}}/{{total}} học phần",
+      "minutes": "Khoảng {{count}} phút",
+      "practice": "Tự thử",
+      "markComplete": "Đánh dấu đã hoàn thành",
+      "completed": "Đã hoàn thành",
+      "unavailable": "Khóa học tạm thời không khả dụng."
     },
     "engineeringNotes": {
       "title": "Engineering Notes",
@@ -1363,108 +1363,108 @@
       }
     },
     "aiCurriculum": {
-      "title": "AI Essentials",
-      "modulePosition": "Module {{current}} of {{total}}",
-      "correct": "Correct",
-      "considerThis": "Consider this",
-      "nextModule": "Next",
-      "continue": "Continue learning",
-      "start": "Start",
-      "next": "Next",
-      "modulesTitle": "Foundation skills",
-      "mastery": "Mastery levels",
-      "foundationCompleted": "Foundation completed · {{date}}",
-      "foundationDescription": "Core habits for effective, responsible AI use.",
-      "futureLevel": "Available in a future Campus track.",
+      "title": "Nền tảng AI",
+      "modulePosition": "Học phần {{current}}/{{total}}",
+      "correct": "Chính xác",
+      "considerThis": "Hãy cân nhắc",
+      "nextModule": "Tiếp",
+      "continue": "Tiếp tục học",
+      "start": "Bắt đầu",
+      "next": "Tiếp theo",
+      "modulesTitle": "Kỹ năng nền tảng",
+      "mastery": "Các cấp độ thành thạo",
+      "foundationCompleted": "Đã hoàn thành cấp nền tảng · {{date}}",
+      "foundationDescription": "Những thói quen cốt lõi để sử dụng AI hiệu quả và có trách nhiệm.",
+      "futureLevel": "Sẽ có trong một lộ trình Campus sau này.",
       "levels": {
-        "foundation": "Foundation",
-        "practitioner": "Practitioner",
-        "advanced": "Advanced"
+        "foundation": "Nền tảng",
+        "practitioner": "Thực hành",
+        "advanced": "Nâng cao"
       },
       "modules": {
         "working-with-ai": {
-          "title": "Working with AI",
-          "summary": "Understand what AI can and cannot do.",
-          "skill": "AI fundamentals",
-          "idea": "AI can generate useful options quickly, but fluent output is not evidence that an answer is correct.",
-          "scenario": "An AI assistant proposes a design choice for an aerospace project and presents it with confidence.",
-          "question": "What is the most useful role for the AI here?",
+          "title": "Làm việc cùng AI",
+          "summary": "Hiểu AI làm được gì và không làm được gì.",
+          "skill": "Kiến thức cơ bản về AI",
+          "idea": "AI có thể nhanh chóng đưa ra các phương án hữu ích, nhưng câu chữ trôi chảy không chứng minh câu trả lời là đúng.",
+          "scenario": "Một trợ lý AI đề xuất một lựa chọn thiết kế cho dự án hàng không vũ trụ và trình bày rất tự tin.",
+          "question": "Vai trò hữu ích nhất của AI ở đây là gì?",
           "options": {
-            "a": "Replace the engineering decision.",
-            "b": "Provide a candidate solution for an engineer to evaluate.",
-            "c": "Approve the choice because the explanation sounds technical."
+            "a": "Thay thế quyết định kỹ thuật.",
+            "b": "Đưa ra một giải pháp khả dĩ để kỹ sư đánh giá.",
+            "c": "Chấp thuận lựa chọn vì lời giải thích nghe có vẻ chuyên môn."
           },
-          "explanation": "Use AI to expand the options you can examine. Engineering judgment still owns assumptions, evidence and the final decision."
+          "explanation": "Hãy dùng AI để mở rộng các phương án bạn có thể xem xét. Phán đoán kỹ thuật vẫn chịu trách nhiệm về giả định, bằng chứng và quyết định cuối cùng."
         },
         "ask-better": {
-          "title": "Ask better",
-          "summary": "Give enough context and define a useful outcome.",
-          "skill": "Prompting",
-          "idea": "A useful request states the goal, relevant context, constraints and expected output.",
-          "scenario": "You need help debugging a Python calculation used in a student satellite project.",
-          "question": "Which request gives the safest, most useful starting point?",
+          "title": "Hỏi tốt hơn",
+          "summary": "Cung cấp đủ bối cảnh và xác định kết quả hữu ích.",
+          "skill": "Viết câu lệnh",
+          "idea": "Một yêu cầu hữu ích nêu rõ mục tiêu, bối cảnh liên quan, các ràng buộc và kết quả mong đợi.",
+          "scenario": "Bạn cần giúp gỡ lỗi một phép tính Python dùng trong dự án vệ tinh của sinh viên.",
+          "question": "Yêu cầu nào là điểm khởi đầu an toàn và hữu ích nhất?",
           "options": {
-            "a": "Fix my code.",
-            "b": "Explain the error, keep SI units, identify assumptions and propose a tested correction.",
-            "c": "Write a longer answer."
+            "a": "Sửa code của tôi.",
+            "b": "Giải thích lỗi, giữ đơn vị SI, nêu rõ các giả định và đề xuất một bản sửa đã được kiểm thử.",
+            "c": "Viết câu trả lời dài hơn."
           },
-          "explanation": "Specific context and success criteria make the output easier to inspect and less likely to hide a wrong assumption."
+          "explanation": "Bối cảnh cụ thể và tiêu chí thành công giúp kết quả dễ kiểm tra hơn và ít có khả năng che giấu một giả định sai."
         },
         "verify-output": {
-          "title": "Verify the output",
-          "summary": "Check calculations, sources, claims and assumptions.",
-          "skill": "Verification",
-          "idea": "Verification is a separate engineering step. Asking the same model if it is sure is not independent checking.",
-          "scenario": "An AI gives you a load calculation for a structural analysis.",
-          "question": "What should you do before using it?",
+          "title": "Kiểm chứng kết quả",
+          "summary": "Kiểm tra phép tính, nguồn, nhận định và giả định.",
+          "skill": "Kiểm chứng",
+          "idea": "Kiểm chứng là một bước kỹ thuật riêng. Hỏi lại chính mô hình đó xem nó có chắc không thì không phải là kiểm tra độc lập.",
+          "scenario": "Một AI đưa cho bạn phép tính tải trọng cho một phân tích kết cấu.",
+          "question": "Bạn nên làm gì trước khi dùng nó?",
           "options": {
-            "a": "Use it directly because the units are shown.",
-            "b": "Verify assumptions, units and calculations independently.",
-            "c": "Ask the AI whether it is sure."
+            "a": "Dùng ngay vì đã có đơn vị.",
+            "b": "Kiểm chứng độc lập các giả định, đơn vị và phép tính.",
+            "c": "Hỏi AI xem nó có chắc không."
           },
-          "explanation": "Check the load case, units, equations and boundary conditions with trusted methods or sources before relying on the result."
+          "explanation": "Hãy kiểm tra trường hợp tải, đơn vị, phương trình và điều kiện biên bằng phương pháp hoặc nguồn đáng tin cậy trước khi dựa vào kết quả."
         },
         "confidential-information": {
-          "title": "Confidential information",
-          "summary": "Know what must not be sent to an unauthorized system.",
-          "skill": "Privacy",
-          "idea": "Only share data that the tool and your institution are authorized to process.",
-          "scenario": "A project document contains student identifiers, supplier data and an internal access token.",
-          "question": "What is the responsible next step?",
+          "title": "Thông tin bảo mật",
+          "summary": "Biết những gì không được gửi đến hệ thống chưa được phép.",
+          "skill": "Quyền riêng tư",
+          "idea": "Chỉ chia sẻ dữ liệu mà công cụ và cơ sở đào tạo của bạn được phép xử lý.",
+          "scenario": "Một tài liệu dự án chứa mã số sinh viên, dữ liệu nhà cung cấp và một token truy cập nội bộ.",
+          "question": "Bước tiếp theo có trách nhiệm là gì?",
           "options": {
-            "a": "Paste everything because the task is academic.",
-            "b": "Remove only the student names.",
-            "c": "Use an approved system and remove secrets and unnecessary personal or confidential data."
+            "a": "Dán toàn bộ vì đây là bài tập học thuật.",
+            "b": "Chỉ xóa tên sinh viên.",
+            "c": "Dùng hệ thống đã được phê duyệt và xóa thông tin bí mật cùng dữ liệu cá nhân hoặc bảo mật không cần thiết."
           },
-          "explanation": "Authorization and data minimization both matter. Credentials must never be included, and unnecessary sensitive context should be removed."
+          "explanation": "Cả việc được cấp phép lẫn giảm thiểu dữ liệu đều quan trọng. Tuyệt đối không đưa thông tin đăng nhập vào, và cần loại bỏ bối cảnh nhạy cảm không cần thiết."
         },
         "ai-in-engineering": {
-          "title": "AI in engineering",
-          "summary": "Use AI as a tool, not a replacement for reasoning.",
-          "skill": "Engineering AI",
-          "idea": "AI is strongest as a collaborator for exploration, drafting and critique when an engineer remains accountable.",
-          "scenario": "You are comparing two concepts for a small satellite subsystem.",
-          "question": "Which workflow best uses AI?",
+          "title": "AI trong kỹ thuật",
+          "summary": "Dùng AI như một công cụ, không thay thế cho tư duy.",
+          "skill": "AI cho kỹ thuật",
+          "idea": "AI phát huy tốt nhất khi là cộng sự để khám phá, soạn nháp và phản biện, trong khi kỹ sư vẫn giữ trách nhiệm.",
+          "scenario": "Bạn đang so sánh hai phương án cho một hệ thống con của vệ tinh cỡ nhỏ.",
+          "question": "Quy trình nào tận dụng AI tốt nhất?",
           "options": {
-            "a": "Let the AI select the concept and copy its justification.",
-            "b": "Use it to surface trade-offs, then validate constraints and document your decision.",
-            "c": "Avoid documenting assumptions to keep the report short."
+            "a": "Để AI chọn phương án rồi chép lại lập luận của nó.",
+            "b": "Dùng AI để làm rõ các đánh đổi, sau đó kiểm chứng các ràng buộc và ghi lại quyết định.",
+            "c": "Không ghi lại giả định để báo cáo ngắn gọn."
           },
-          "explanation": "AI amplifies engineering judgment. It does not replace validation, traceability or accountability."
+          "explanation": "AI khuếch đại phán đoán kỹ thuật. Nó không thay thế việc thẩm định, khả năng truy vết hay trách nhiệm giải trình."
         },
         "responsible-use": {
-          "title": "Responsible use",
-          "summary": "Recognize when AI use is appropriate, limited or prohibited.",
-          "skill": "Responsible practice",
-          "idea": "The right use depends on the task, course rules, tool authorization and the level of human accountability required.",
-          "scenario": "An assessed assignment has unclear rules about generative AI assistance.",
-          "question": "What should you do?",
+          "title": "Sử dụng có trách nhiệm",
+          "summary": "Nhận biết khi nào việc dùng AI là phù hợp, bị hạn chế hoặc bị cấm.",
+          "skill": "Thực hành có trách nhiệm",
+          "idea": "Cách dùng đúng phụ thuộc vào nhiệm vụ, quy định của môn học, việc công cụ có được phép hay không và mức độ trách nhiệm của con người cần có.",
+          "scenario": "Quy định của một bài tập được chấm điểm không nói rõ về việc dùng AI tạo sinh hỗ trợ.",
+          "question": "Bạn nên làm gì?",
           "options": {
-            "a": "Use AI silently because everyone probably does.",
-            "b": "Let AI produce the final submission, then change a few words.",
-            "c": "Check the course policy, ask when unclear and disclose permitted assistance."
+            "a": "Lặng lẽ dùng AI vì có lẽ ai cũng làm vậy.",
+            "b": "Để AI làm bài nộp cuối cùng rồi sửa vài chữ.",
+            "c": "Xem lại quy định của môn học, hỏi khi chưa rõ và khai báo sự hỗ trợ được phép."
           },
-          "explanation": "Responsible use respects the learning objective and the stated rules. When policy is unclear, clarify it before relying on AI."
+          "explanation": "Sử dụng có trách nhiệm là tôn trọng mục tiêu học tập và các quy định đã nêu. Khi quy định chưa rõ, hãy làm rõ trước khi dựa vào AI."
         }
       }
     },
