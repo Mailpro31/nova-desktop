@@ -17,7 +17,7 @@
     "history": "Histórico",
     "debug": "Depuração",
     "about": "Sobre",
-    "personalization": "Personalization",
+    "personalization": "Personalização",
     "home": "Início",
     "configuration": "Configuração",
     "account": "Conta",
@@ -1281,15 +1281,15 @@
       "unavailable": "The course is temporarily unavailable."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "Notas de engenharia",
+      "description": "Transforme observações brutas em uma nota de engenharia concisa e rastreável.",
+      "inputPlaceholder": "Cole ou dite suas observações, medições e incertezas...",
+      "instructionPlaceholder": "Instrução opcional, por exemplo: destacar as condições de ensaio",
+      "action": "Estruturar notas",
+      "working": "Estruturando...",
+      "result": "Nota estruturada",
+      "copied": "Nota copiada",
+      "error": "Não foi possível estruturar as notas."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "Continuar mais tarde",
+      "useNovaNow": "Usar o Nova agora",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

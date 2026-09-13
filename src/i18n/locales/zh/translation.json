@@ -17,7 +17,7 @@
     "history": "历史记录",
     "debug": "调试",
     "about": "关于",
-    "personalization": "Personalization",
+    "personalization": "个性化",
     "home": "首页",
     "configuration": "配置",
     "account": "账户",
@@ -1281,15 +1281,15 @@
       "unavailable": "The course is temporarily unavailable."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "工程笔记",
+      "description": "将原始观察整理成简洁、可追溯的工程笔记。",
+      "inputPlaceholder": "粘贴或口述你的观察、测量数据和不确定之处...",
+      "instructionPlaceholder": "可选说明，例如：突出测试条件",
+      "action": "整理笔记",
+      "working": "正在整理...",
+      "result": "整理后的笔记",
+      "copied": "已复制笔记",
+      "error": "无法整理笔记。"
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "稍后继续",
+      "useNovaNow": "立即使用 Nova",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

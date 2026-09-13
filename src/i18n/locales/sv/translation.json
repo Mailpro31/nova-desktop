@@ -17,7 +17,7 @@
     "history": "Historik",
     "debug": "Felsökning",
     "about": "Om",
-    "personalization": "Personalization",
+    "personalization": "Anpassning",
     "home": "Hem",
     "configuration": "Konfiguration",
     "account": "Konto",
@@ -1281,15 +1281,15 @@
       "unavailable": "The course is temporarily unavailable."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "Tekniska anteckningar",
+      "description": "Gör om råa observationer till en kortfattad, spårbar teknisk anteckning.",
+      "inputPlaceholder": "Klistra in eller diktera dina observationer, mätningar och osäkerheter...",
+      "instructionPlaceholder": "Valfri instruktion, t.ex. betona testförhållandena",
+      "action": "Strukturera anteckningar",
+      "working": "Strukturerar...",
+      "result": "Strukturerad anteckning",
+      "copied": "Anteckningen kopierades",
+      "error": "Anteckningarna kunde inte struktureras."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "Fortsätt senare",
+      "useNovaNow": "Använd Nova nu",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

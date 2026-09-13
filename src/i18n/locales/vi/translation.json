@@ -17,7 +17,7 @@
     "history": "Lịch sử",
     "debug": "Gỡ lỗi",
     "about": "Giới thiệu",
-    "personalization": "Personalization",
+    "personalization": "Cá nhân hóa",
     "home": "Trang chủ",
     "configuration": "Cấu hình",
     "account": "Tài khoản",
@@ -1281,15 +1281,15 @@
       "unavailable": "The course is temporarily unavailable."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "Ghi chú kỹ thuật",
+      "description": "Biến các quan sát thô thành một ghi chú kỹ thuật ngắn gọn, có thể truy vết.",
+      "inputPlaceholder": "Dán hoặc đọc các quan sát, số đo và điểm chưa chắc chắn của bạn...",
+      "instructionPlaceholder": "Chỉ dẫn tùy chọn, ví dụ: nhấn mạnh điều kiện thử nghiệm",
+      "action": "Sắp xếp ghi chú",
+      "working": "Đang sắp xếp...",
+      "result": "Ghi chú đã sắp xếp",
+      "copied": "Đã sao chép ghi chú",
+      "error": "Không thể sắp xếp ghi chú."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "Tiếp tục sau",
+      "useNovaNow": "Dùng Nova ngay",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

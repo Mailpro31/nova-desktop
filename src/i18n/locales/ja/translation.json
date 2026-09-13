@@ -17,7 +17,7 @@
     "history": "履歴",
     "debug": "デバッグ",
     "about": "概要",
-    "personalization": "Personalization",
+    "personalization": "パーソナライズ",
     "home": "ホーム",
     "configuration": "設定",
     "account": "アカウント",
@@ -1281,15 +1281,15 @@
       "unavailable": "The course is temporarily unavailable."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "エンジニアリングノート",
+      "description": "未整理の観察内容を、簡潔で追跡可能なエンジニアリングノートにまとめます。",
+      "inputPlaceholder": "観察内容、測定値、不確かな点を貼り付けるか、口述してください...",
+      "instructionPlaceholder": "任意の指示（例：試験条件を強調する）",
+      "action": "ノートを構造化",
+      "working": "構造化しています...",
+      "result": "構造化されたノート",
+      "copied": "ノートをコピーしました",
+      "error": "ノートを構造化できませんでした。"
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "あとで続ける",
+      "useNovaNow": "今すぐ Nova を使う",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
