@@ -114,8 +114,11 @@ export const ConfigurationSettings: React.FC = () => {
     <div className="space-y-6">
       <PageHeader title={t("sidebar.settings")} />
       {tabs.length > 1 && (
+        // Les onglets passent à la ligne quand la fenêtre est étroite plutôt
+        // que de défiler et de couper le dernier. Rayon de 18 px : une pilule
+        // sur une ligne (36 px de haut), un rectangle arrondi sur plusieurs.
         <div
-          className="inline-flex max-w-full items-center gap-0.5 overflow-x-auto p-0.5 rounded-full"
+          className="inline-flex max-w-full flex-wrap items-center gap-0.5 p-0.5 rounded-[18px]"
           style={{ background: "var(--color-inset)" }}
           role="tablist"
         >

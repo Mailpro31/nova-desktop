@@ -123,6 +123,47 @@ test.describe("organization tools are reachable from Settings", () => {
     expect(notes!.width).toBeGreaterThanOrEqual(tabs!.width);
   });
 
+  test("in a narrow window every Settings tab stays visible, on several lines", async ({
+    page,
+  }) => {
+    // Six onglets ne tiennent pas sur une ligne dans une fenêtre étroite : la
+    // barre défilait horizontalement et coupait le dernier onglet.
+    await page.setViewportSize({ width: 760, height: 600 });
+    await mockTauri(page, {
+      session,
+      config: school,
+      onboardingCompleted: true,
+    });
+    await page.goto("/");
+    await openSettings(page);
+
+    const tablist = page.getByRole("tablist");
+    const tabs = page.getByRole("tab");
+    const boxes = async () =>
+      Promise.all(
+        (await tabs.all()).map(async (tab) => (await tab.boundingBox())!),
+      );
+
+    expect(
+      await tablist.evaluate(
+        (element) => element.scrollWidth - element.clientWidth,
+      ),
+    ).toBeLessThanOrEqual(0);
+    const list = (await tablist.boundingBox())!;
+    const narrow = await boxes();
+    for (const box of narrow) {
+      expect(box.x).toBeGreaterThanOrEqual(list.x - 1);
+      expect(box.x + box.width).toBeLessThanOrEqual(list.x + list.width + 1);
+    }
+    expect(narrow[narrow.length - 1].y).toBeGreaterThan(narrow[0].y);
+
+    // Dans une fenêtre large, la barre reste sur une seule ligne.
+    await page.setViewportSize({ width: 1180, height: 760 });
+    await expect
+      .poll(async () => new Set((await boxes()).map((box) => box.y)).size)
+      .toBe(1);
+  });
+
   test("a company keeps engineering notes but is not offered the school course", async ({
     page,
   }) => {
