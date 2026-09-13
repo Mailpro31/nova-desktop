@@ -17,7 +17,7 @@
     "debug": "تصحيح الأخطاء",
     "about": "حول",
     "models": "الأداء",
-    "personalization": "Personalization",
+    "personalization": "التخصيص",
     "home": "الرئيسية",
     "configuration": "الإعدادات",
     "account": "الحساب",
@@ -1281,15 +1281,15 @@
       "unavailable": "الدورة غير متاحة مؤقتًا."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "ملاحظات هندسية",
+      "description": "حوّل الملاحظات الأولية إلى ملاحظة هندسية موجزة وقابلة للتتبع.",
+      "inputPlaceholder": "الصق ملاحظاتك وقياساتك وأوجه عدم اليقين أو أملِها...",
+      "instructionPlaceholder": "تعليمات اختيارية، مثل: التركيز على ظروف الاختبار",
+      "action": "تنظيم الملاحظات",
+      "working": "جارٍ التنظيم...",
+      "result": "ملاحظة منظمة",
+      "copied": "تم نسخ الملاحظة",
+      "error": "تعذّر تنظيم الملاحظات."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "المتابعة لاحقًا",
+      "useNovaNow": "استخدام Nova الآن",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

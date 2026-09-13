@@ -17,7 +17,7 @@
     "history": "Historial",
     "debug": "Depuración",
     "about": "Acerca de",
-    "personalization": "Personalization",
+    "personalization": "Personalización",
     "home": "Inicio",
     "configuration": "Configuración",
     "account": "Cuenta",
@@ -1281,15 +1281,15 @@
       "unavailable": "El curso no está disponible temporalmente."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "Notas de ingeniería",
+      "description": "Convierte observaciones en bruto en una nota de ingeniería concisa y trazable.",
+      "inputPlaceholder": "Pega o dicta tus observaciones, mediciones e incertidumbres...",
+      "instructionPlaceholder": "Instrucción opcional, p. ej., destacar las condiciones de ensayo",
+      "action": "Estructurar notas",
+      "working": "Estructurando...",
+      "result": "Nota estructurada",
+      "copied": "Nota copiada",
+      "error": "No se pudieron estructurar las notas."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "Continuar más tarde",
+      "useNovaNow": "Usar Nova ahora",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

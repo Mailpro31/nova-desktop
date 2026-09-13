@@ -17,7 +17,7 @@
     "history": "Geçmiş",
     "debug": "Hata Ayıklama",
     "about": "Hakkında",
-    "personalization": "Personalization",
+    "personalization": "Kişiselleştirme",
     "home": "Ana Sayfa",
     "configuration": "Yapılandırma",
     "account": "Hesap",
@@ -1281,15 +1281,15 @@
       "unavailable": "Kurs geçici olarak kullanılamıyor."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "Mühendislik notları",
+      "description": "Ham gözlemleri kısa ve izlenebilir bir mühendislik notuna dönüştür.",
+      "inputPlaceholder": "Gözlemlerini, ölçümlerini ve belirsizliklerini yapıştır ya da dikte et...",
+      "instructionPlaceholder": "İsteğe bağlı talimat, ör. test koşullarını vurgula",
+      "action": "Notları düzenle",
+      "working": "Düzenleniyor...",
+      "result": "Düzenlenmiş not",
+      "copied": "Not kopyalandı",
+      "error": "Notlar düzenlenemedi."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "Daha sonra devam et",
+      "useNovaNow": "Nova'yı şimdi kullan",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

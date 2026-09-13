@@ -17,7 +17,7 @@
     "history": "हिस्ट्री",
     "debug": "डिबग",
     "about": "बारेमा",
-    "personalization": "Personalization",
+    "personalization": "निजीकरण",
     "home": "गृहपृष्ठ",
     "configuration": "सेटिङ",
     "account": "खाता",
@@ -1281,15 +1281,15 @@
       "unavailable": "कोर्स अस्थायी रूपमा उपलब्ध छैन।"
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "इन्जिनियरिङ टिपोट",
+      "description": "कच्चा अवलोकनलाई छोटो र ट्रेस गर्न सकिने इन्जिनियरिङ टिपोटमा बदल्नुहोस्।",
+      "inputPlaceholder": "आफ्ना अवलोकन, मापन र अनिश्चितताहरू टाँस्नुहोस् वा बोलेर लेखाउनुहोस्...",
+      "instructionPlaceholder": "वैकल्पिक निर्देशन, जस्तै परीक्षणका अवस्थामा जोड दिनुहोस्",
+      "action": "टिपोट संरचित गर्नुहोस्",
+      "working": "संरचित गर्दै...",
+      "result": "संरचित टिपोट",
+      "copied": "टिपोट प्रतिलिपि गरियो",
+      "error": "टिपोट संरचित गर्न सकिएन।"
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "पछि जारी राख्नुहोस्",
+      "useNovaNow": "अहिले Nova प्रयोग गर्नुहोस्",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",

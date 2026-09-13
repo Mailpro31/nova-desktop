@@ -17,7 +17,7 @@
     "history": "Verlauf",
     "debug": "Debug",
     "about": "Info",
-    "personalization": "Personalization",
+    "personalization": "Personalisierung",
     "home": "Startseite",
     "configuration": "Konfiguration",
     "account": "Konto",
@@ -1281,15 +1281,15 @@
       "unavailable": "Der Kurs ist vorübergehend nicht verfügbar."
     },
     "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
+      "title": "Technische Notizen",
+      "description": "Verwandle Rohbeobachtungen in eine knappe, nachvollziehbare technische Notiz.",
+      "inputPlaceholder": "Füge deine Beobachtungen, Messwerte und Unsicherheiten ein oder diktiere sie...",
+      "instructionPlaceholder": "Optionale Anweisung, z. B. Prüfbedingungen hervorheben",
+      "action": "Notizen strukturieren",
+      "working": "Wird strukturiert...",
+      "result": "Strukturierte Notiz",
+      "copied": "Notiz kopiert",
+      "error": "Die Notizen konnten nicht strukturiert werden."
     },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
@@ -1303,8 +1303,8 @@
     },
     "firstRun": {
       "skipForNow": "Skip for now",
-      "continueLater": "Continue later",
-      "useNovaNow": "Use Nova now",
+      "continueLater": "Später fortsetzen",
+      "useNovaNow": "Nova jetzt verwenden",
       "requiredByInstitution": "This Foundation track is required by {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
