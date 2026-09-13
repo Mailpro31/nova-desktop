@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "加入测试服务器",
+        "title": "加入测试服务器",
+        "subtitle": "粘贴 Lab 管理员提供的邀请码。",
+        "join": "加入",
+        "codeLabel": "邀请码",
+        "securityNote": "Nova 会先验证服务器身份，再向其发送邀请码。",
+        "error": "无法加入此测试服务器。请确认邀请码是最新的，并且两台电脑在同一网络中。",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "仅当你的 IT 团队尚未为你配置 Nova 时，才需要输入此地址。"
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "验证码已重新发送",
+        "resendCooldown": "{{seconds}} 秒后重新发送",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "验证码第 {{position}} 位"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "你已连接到 {{organization}}",
+        "subtitle": "Nova Campus 已在这台电脑上准备就绪。",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "组织",
+        "account": "账户",
+        "processing": "处理方式",
+        "campusInfrastructure": "Campus 基础设施",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "无法连接服务器。请检查网络后重试。",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "该机构要求的身份验证方式当前版本尚不支持。"
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "服务器",
+      "email": "当前登录账户",
+      "role": "角色",
+      "cohort": "年级",
+      "logout": "退出登录",
+      "logoutConfirmTitle": "要退出 Nova Campus 吗？",
+      "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
+      "logoutConfirmButton": "退出登录",
+      "refresh": "刷新",
+      "checking": "正在检查连接…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "无法连接到服务器。请检查地址和网络连接。"
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "会话已过期",
+    "sessionExpired": "请重新登录以继续使用 Nova Campus。",
+    "serverUnreachableTitle": "无法连接服务器",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "由 {{organization}} 管理",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "请在浏览器中完成登录。如果 Microsoft 要求，请使用此代码。",
+      "expired": "Microsoft 登录请求已过期，请重新开始。",
       "failed": "登录未完成，请重试。",
       "notInOrganization": "此 Microsoft 账户不属于您的机构。",
       "accessRevoked": "您的访问权限已不可用，请联系管理员。"
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "暂时跳过",
       "continueLater": "稍后继续",
       "useNovaNow": "立即使用 Nova",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "{{organization}} 要求完成此基础课程。",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "欢迎来到 {{organization}}，{{name}}。",
+        "description": "学习如何负责任地使用 AI，或立即开始使用 Nova。",
+        "aiEssentials": "从 AI 基础开始",
+        "recommended": "推荐 · 约 6 分钟",
+        "setupNow": "立即设置 Nova"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "设置 Nova",
+        "description": "我们已为你准备好推荐设置。",
+        "microphone": "麦克风",
+        "language": "语言",
+        "shortcut": "听写快捷键",
+        "style": "写作风格",
+        "processing": "处理方式",
+        "ready": "已就绪",
+        "checkRequired": "需要检查",
+        "noMicrophone": "未检测到麦克风",
+        "autoDetect": "自动检测",
+        "useRecommended": "使用推荐设置",
+        "customize": "自定义",
+        "useRecommendations": "采用推荐",
+        "purposeQuestion": "你最常用 Nova 做什么？",
+        "writingQuestion": "Nova 通常应该怎样写？",
+        "languageQuestion": "首选听写语言",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "课堂与笔记",
+          "engineering": "工程项目",
+          "emails": "邮件与沟通",
+          "coding": "编程",
+          "everything": "各方面都用一点",
+          "courseNotes": "课程资料",
+          "feedback": "给学生的反馈",
+          "documents": "文档"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "保留我的原话",
+          "clean": "整理润色",
+          "professional": "正式专业",
+          "auto": "自动"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "试用 Nova",
+        "description": "做一次简短的听写。这会检查麦克风，并展示 Nova 的工作方式。",
+        "sample": "请说：“明天早上把项目进展发给卢卡斯。”",
+        "start": "开始听写",
+        "listening": "正在聆听...",
+        "successTitle": "就这么简单。",
+        "successDescription": "麦克风已就绪。光标在哪里，Nova 就能在哪里工作。",
+        "openNova": "打开 Nova"
       }
     },
     "aiCurriculum": {

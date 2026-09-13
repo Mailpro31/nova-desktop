@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "הצטרפות לשרת בדיקה",
+        "title": "הצטרפות לשרת הבדיקה",
+        "subtitle": "הדביקו את קוד ההזמנה שקיבלתם ממנהל ה-Lab.",
+        "join": "הצטרפות",
+        "codeLabel": "קוד הזמנה",
+        "securityNote": "Nova מאמת את זהות השרת לפני שהוא שולח אליו את הקוד.",
+        "error": "לא ניתן היה להצטרף לשרת הבדיקה הזה. ודאו שהקוד עדכני ושני המחשבים באותה רשת.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "הזינו את הכתובת הזו רק אם צוות ה-IT לא הגדיר עבורכם את Nova."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "הקוד נשלח שוב",
+        "resendCooldown": "שליחה חוזרת בעוד {{seconds}} שנ׳",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "ספרה {{position}} בקוד"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "אתם מחוברים ל-{{organization}}",
+        "subtitle": "Nova Campus מוכן במחשב הזה.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "ארגון",
+        "account": "חשבון",
+        "processing": "עיבוד",
+        "campusInfrastructure": "תשתית Campus",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "לא ניתן להגיע לשרת. בדקו את החיבור ונסו שוב.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "המוסד הזה דורש שיטת אימות שגרסה זו עדיין לא תומכת בה."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "שרת",
+      "email": "מחובר בתור",
+      "role": "תפקיד",
+      "cohort": "מחזור",
+      "logout": "התנתקות",
+      "logoutConfirmTitle": "להתנתק מ-Nova Campus?",
+      "logoutConfirmDescription": "תצטרכו להתחבר שוב כדי להשתמש ב-Nova Campus. להמשיך?",
+      "logoutConfirmButton": "התנתקות",
+      "refresh": "רענון",
+      "checking": "בודק את החיבור…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "לא ניתן להתחבר לשרת. בדקו את הכתובת ואת החיבור שלכם."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "תוקף החיבור פג",
+    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש ב-Nova Campus.",
+    "serverUnreachableTitle": "השרת אינו זמין",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "מנוהל על ידי {{organization}}",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "סיימו את ההתחברות בדפדפן. השתמשו בקוד הזה אם Microsoft מבקשת אותו.",
+      "expired": "תוקף בקשת ההתחברות של Microsoft פג. התחילו מחדש.",
       "failed": "ההתחברות לא הושלמה. נסה שוב.",
       "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
       "accessRevoked": "הגישה שלך אינה זמינה עוד. פנה למנהל המערכת."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "דילוג בינתיים",
       "continueLater": "להמשיך מאוחר יותר",
       "useNovaNow": "להשתמש ב-Nova עכשיו",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "מסלול היסוד הזה נדרש על ידי {{organization}}.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "ברוכים הבאים ל-{{organization}}, {{name}}.",
+        "description": "למדו לעבוד עם AI באחריות, או התחילו להשתמש ב-Nova מיד.",
+        "aiEssentials": "להתחיל עם יסודות ה-AI",
+        "recommended": "מומלץ · כ-6 דקות",
+        "setupNow": "להגדיר את Nova עכשיו"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "הגדרת Nova",
+        "description": "הכנו עבורכם את ההגדרה המומלצת.",
+        "microphone": "מיקרופון",
+        "language": "שפה",
+        "shortcut": "קיצור דרך להכתבה",
+        "style": "סגנון כתיבה",
+        "processing": "עיבוד",
+        "ready": "מוכן",
+        "checkRequired": "נדרשת בדיקה",
+        "noMicrophone": "לא זוהה מיקרופון",
+        "autoDetect": "זיהוי אוטומטי",
+        "useRecommended": "להשתמש בהגדרה המומלצת",
+        "customize": "התאמה אישית",
+        "useRecommendations": "להשתמש בהמלצות",
+        "purposeQuestion": "למה אתם משתמשים ב-Nova בעיקר?",
+        "writingQuestion": "איך Nova צריך לכתוב בדרך כלל?",
+        "languageQuestion": "שפת הכתבה מועדפת",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "שיעורים וסיכומים",
+          "engineering": "פרויקטים הנדסיים",
+          "emails": "אימיילים ותקשורת",
+          "coding": "תכנות",
+          "everything": "קצת מהכול",
+          "courseNotes": "חומרי קורס",
+          "feedback": "משוב לסטודנטים",
+          "documents": "מסמכים"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "לשמור על המילים שלי",
+          "clean": "לנקות אותן",
+          "professional": "מקצועי",
+          "auto": "אוטומטי"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "נסו את Nova",
+        "description": "הכתיבו משפט קצר אחד. כך נבדוק את המיקרופון ותראו איך Nova עובד.",
+        "sample": "אמרו: „שלח ללוקאס את עדכון הפרויקט מחר בבוקר.”",
+        "start": "התחלת הכתבה",
+        "listening": "מקשיב...",
+        "successTitle": "זהו.",
+        "successDescription": "המיקרופון מוכן. Nova עובד בכל מקום שבו נמצא הסמן.",
+        "openNova": "פתיחת Nova"
       }
     },
     "aiCurriculum": {

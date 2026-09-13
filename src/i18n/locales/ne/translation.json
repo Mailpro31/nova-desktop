@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "परीक्षण सर्भरमा जोडिनुहोस्",
+        "title": "परीक्षण सर्भरमा जोडिनुहोस्",
+        "subtitle": "Lab प्रशासकले दिएको निमन्त्रणा कोड टाँस्नुहोस्।",
+        "join": "जोडिनुहोस्",
+        "codeLabel": "निमन्त्रणा कोड",
+        "securityNote": "कोड पठाउनुअघि Nova ले सर्भरको पहिचान प्रमाणित गर्छ।",
+        "error": "यो परीक्षण सर्भरमा जोडिन सकिएन। कोड नयाँ छ र दुवै कम्प्युटर एउटै नेटवर्कमा छन् भनी जाँच गर्नुहोस्।",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "तपाईंको IT टोलीले Nova सेटअप नगरेको भए मात्र यो ठेगाना हाल्नुहोस्।"
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "कोड फेरि पठाइयो",
+        "resendCooldown": "{{seconds}} सेकेन्डमा फेरि पठाउनुहोस्",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "कोडको अङ्क {{position}}"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "तपाईं {{organization}} मा जोडिनुभयो",
+        "subtitle": "Nova Campus यो कम्प्युटरमा तयार छ।",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "संस्था",
+        "account": "खाता",
+        "processing": "प्रशोधन",
+        "campusInfrastructure": "Campus पूर्वाधार",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "सर्भरमा पुग्न सकिएन। जडान जाँचेर फेरि प्रयास गर्नुहोस्।",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "यो संस्थाले यो संस्करणले अझै समर्थन नगर्ने प्रमाणीकरण विधि माग्छ।"
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "सर्भर",
+      "email": "यस रूपमा साइन इन",
+      "role": "भूमिका",
+      "cohort": "समूह",
+      "logout": "साइन आउट",
+      "logoutConfirmTitle": "Nova Campus बाट साइन आउट गर्ने?",
+      "logoutConfirmDescription": "Nova Campus प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
+      "logoutConfirmButton": "साइन आउट",
+      "refresh": "रिफ्रेस",
+      "checking": "जडान जाँच गर्दै…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "सर्भरमा पुग्न सकिएन। ठेगाना र जडान जाँच गर्नुहोस्।"
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "सत्र सकियो",
+    "sessionExpired": "Nova Campus प्रयोग जारी राख्न कृपया फेरि साइन इन गर्नुहोस्।",
+    "serverUnreachableTitle": "सर्भरमा पुग्न सकिएन",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "{{organization}} द्वारा व्यवस्थित",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "ब्राउजरमा साइन इन पूरा गर्नुहोस्। Microsoft ले मागेमा यो कोड प्रयोग गर्नुहोस्।",
+      "expired": "Microsoft साइन इन अनुरोधको म्याद सकियो। फेरि सुरु गर्नुहोस्।",
       "failed": "साइन इन पूरा भएन। फेरि प्रयास गर्नुहोस्।",
       "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
       "accessRevoked": "तपाईंको पहुँच अब उपलब्ध छैन। प्रशासकलाई सम्पर्क गर्नुहोस्।"
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "अहिलेलाई छोड्नुहोस्",
       "continueLater": "पछि जारी राख्नुहोस्",
       "useNovaNow": "अहिले Nova प्रयोग गर्नुहोस्",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "यो आधारभूत कोर्स {{organization}} ले अनिवार्य गरेको छ।",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "{{organization}} मा स्वागत छ, {{name}}।",
+        "description": "AI सँग जिम्मेवारीपूर्वक काम गर्न सिक्नुहोस्, वा अहिले नै Nova प्रयोग गर्न सुरु गर्नुहोस्।",
+        "aiEssentials": "AI का आधारभूत कुराबाट सुरु गर्नुहोस्",
+        "recommended": "सिफारिस गरिएको · करिब 6 मिनेट",
+        "setupNow": "अहिले Nova सेटअप गर्नुहोस्"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Nova सेटअप",
+        "description": "तपाईंका लागि सिफारिस गरिएको सेटअप तयार गरिएको छ।",
+        "microphone": "माइक्रोफोन",
+        "language": "भाषा",
+        "shortcut": "डिक्टेसन सर्टकट",
+        "style": "लेखन शैली",
+        "processing": "प्रशोधन",
+        "ready": "तयार",
+        "checkRequired": "जाँच आवश्यक",
+        "noMicrophone": "कुनै माइक्रोफोन भेटिएन",
+        "autoDetect": "स्वचालित पहिचान",
+        "useRecommended": "सिफारिस गरिएको सेटअप प्रयोग गर्नुहोस्",
+        "customize": "आफ्नो अनुकूल बनाउनुहोस्",
+        "useRecommendations": "सिफारिसहरू प्रयोग गर्नुहोस्",
+        "purposeQuestion": "तपाईं Nova प्रायः केका लागि प्रयोग गर्नुहुन्छ?",
+        "writingQuestion": "Nova ले सामान्यतया कसरी लेख्नुपर्छ?",
+        "languageQuestion": "मनपर्ने डिक्टेसन भाषा",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "कक्षा र टिपोट",
+          "engineering": "इन्जिनियरिङ परियोजना",
+          "emails": "इमेल र सञ्चार",
+          "coding": "कोडिङ",
+          "everything": "सबै थोरै थोरै",
+          "courseNotes": "कोर्स सामग्री",
+          "feedback": "विद्यार्थीलाई प्रतिक्रिया",
+          "documents": "कागजातहरू"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "मेरै शब्द राख्नुहोस्",
+          "clean": "मिलाउनुहोस्",
+          "professional": "व्यावसायिक",
+          "auto": "स्वचालित"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Nova प्रयास गर्नुहोस्",
+        "description": "एउटा छोटो डिक्टेसन गर्नुहोस्। यसले माइक्रोफोन जाँच्छ र Nova कसरी काम गर्छ देखाउँछ।",
+        "sample": "भन्नुहोस्: “भोलि बिहान लुकासलाई परियोजनाको अपडेट पठाऊ।”",
+        "start": "डिक्टेसन सुरु गर्नुहोस्",
+        "listening": "सुन्दै...",
+        "successTitle": "भयो।",
+        "successDescription": "तपाईंको माइक्रोफोन तयार छ। कर्सर जहाँ छ, Nova त्यहाँ काम गर्छ।",
+        "openNova": "Nova खोल्नुहोस्"
       }
     },
     "aiCurriculum": {

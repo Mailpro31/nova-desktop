@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "テストサーバーに参加",
+        "title": "テストサーバーに参加する",
+        "subtitle": "Lab の管理者から受け取った招待コードを貼り付けてください。",
+        "join": "参加",
+        "codeLabel": "招待コード",
+        "securityNote": "Nova はコードを送信する前にサーバーの身元を確認します。",
+        "error": "このテストサーバーに参加できませんでした。コードが最新であること、両方のパソコンが同じネットワークにあることを確認してください。",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "IT 部門が Nova を設定していない場合にのみ、このアドレスを入力してください。"
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "コードを再送信しました",
+        "resendCooldown": "{{seconds}} 秒後に再送信",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "コードの {{position}} 桁目"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "{{organization}} に接続しました",
+        "subtitle": "このパソコンで Nova Campus を使う準備ができました。",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "組織",
+        "account": "アカウント",
+        "processing": "処理",
+        "campusInfrastructure": "Campus インフラ",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "サーバーに接続できません。接続を確認してもう一度お試しください。",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "この機関では、このバージョンがまだ対応していない認証方法が必要です。"
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "サーバー",
+      "email": "ログイン中のアカウント",
+      "role": "役割",
+      "cohort": "学年",
+      "logout": "ログアウト",
+      "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
+      "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",
+      "logoutConfirmButton": "ログアウト",
+      "refresh": "更新",
+      "checking": "接続を確認しています…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "サーバーに接続できませんでした。アドレスと接続を確認してください。"
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "セッションの有効期限切れ",
+    "sessionExpired": "Nova Campus を引き続き使うには、もう一度ログインしてください。",
+    "serverUnreachableTitle": "サーバーに接続できません",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "{{organization}} が管理",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "ブラウザーでログインを完了してください。Microsoft から求められたら、このコードを使ってください。",
+      "expired": "Microsoft のログイン要求の有効期限が切れました。最初からやり直してください。",
       "failed": "サインインが完了しませんでした。もう一度お試しください。",
       "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
       "accessRevoked": "アクセスは利用できなくなりました。管理者にお問い合わせください。"
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "今はスキップ",
       "continueLater": "あとで続ける",
       "useNovaNow": "今すぐ Nova を使う",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "この基礎コースは {{organization}} で必須です。",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "{{organization}} へようこそ、{{name}} さん。",
+        "description": "AI を責任をもって使う方法を学ぶか、すぐに Nova を使い始めましょう。",
+        "aiEssentials": "AIの基礎から始める",
+        "recommended": "おすすめ · 約 6 分",
+        "setupNow": "今すぐ Nova を設定"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Nova を設定",
+        "description": "おすすめの設定を用意しました。",
+        "microphone": "マイク",
+        "language": "言語",
+        "shortcut": "音声入力のショートカット",
+        "style": "文章スタイル",
+        "processing": "処理",
+        "ready": "準備完了",
+        "checkRequired": "確認が必要",
+        "noMicrophone": "マイクが検出されません",
+        "autoDetect": "自動検出",
+        "useRecommended": "おすすめの設定を使う",
+        "customize": "カスタマイズ",
+        "useRecommendations": "おすすめを使う",
+        "purposeQuestion": "Nova を主に何に使いますか？",
+        "writingQuestion": "Nova にはふだんどのように書いてほしいですか？",
+        "languageQuestion": "優先する音声入力の言語",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "授業とノート",
+          "engineering": "エンジニアリングのプロジェクト",
+          "emails": "メールとコミュニケーション",
+          "coding": "プログラミング",
+          "everything": "いろいろ少しずつ",
+          "courseNotes": "授業資料",
+          "feedback": "学生へのフィードバック",
+          "documents": "文書"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "自分の言葉のまま",
+          "clean": "整える",
+          "professional": "ビジネス向け",
+          "auto": "自動"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Nova を試す",
+        "description": "短い音声入力を一度してみましょう。マイクを確認し、Nova の動作がわかります。",
+        "sample": "「明日の朝、プロジェクトの進捗をルーカスに送って」と話してください。",
+        "start": "音声入力を開始",
+        "listening": "聞き取り中...",
+        "successTitle": "これで完了です。",
+        "successDescription": "マイクの準備ができました。Nova はカーソルのある場所ならどこでも使えます。",
+        "openNova": "Nova を開く"
       }
     },
     "aiCurriculum": {

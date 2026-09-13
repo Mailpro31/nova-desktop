@@ -974,13 +974,13 @@
         "connect": "Sign in"
       },
       "lab": {
-        "open": "Join a test server",
-        "title": "Join the test server",
-        "subtitle": "Paste the invitation code provided by the Lab administrator.",
-        "join": "Join",
-        "codeLabel": "Invitation code",
-        "securityNote": "Nova verifies the server identity before sending it the code.",
-        "error": "Could not join this test server. Check that the code is recent and both computers are on the same network.",
+        "open": "Tham gia máy chủ thử nghiệm",
+        "title": "Tham gia máy chủ thử nghiệm",
+        "subtitle": "Dán mã mời do quản trị viên Lab cung cấp.",
+        "join": "Tham gia",
+        "codeLabel": "Mã mời",
+        "securityNote": "Nova xác minh danh tính máy chủ trước khi gửi mã cho máy chủ đó.",
+        "error": "Không thể tham gia máy chủ thử nghiệm này. Hãy kiểm tra mã còn mới và hai máy tính đang ở cùng một mạng.",
         "productName": "Nova Lab"
       },
       "email": {
@@ -990,48 +990,48 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Chỉ nhập địa chỉ này nếu bộ phận CNTT chưa cấu hình Nova cho bạn."
       },
       "code": {
         "title": "Verification code",
         "subtitle": "A 6-digit code has been sent to {{email}}.",
         "resend": "Resend",
-        "resent": "Code resent",
-        "resendCooldown": "Resend in {{seconds}}s",
+        "resent": "Đã gửi lại mã",
+        "resendCooldown": "Gửi lại sau {{seconds}} giây",
         "invalid": "Incorrect or expired code.",
         "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
-        "digitLabel": "Code digit {{position}}"
+        "digitLabel": "Chữ số thứ {{position}} của mã"
       },
       "ready": {
-        "title": "Ready to dictate",
-        "subtitle": "Connected to {{server}}.",
+        "title": "Bạn đã kết nối với {{organization}}",
+        "subtitle": "Nova Campus đã sẵn sàng trên máy tính này.",
         "shortcut": "Press {{shortcut}} to dictate.",
         "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
-        "organization": "Organization",
-        "account": "Account",
-        "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure",
+        "organization": "Tổ chức",
+        "account": "Tài khoản",
+        "processing": "Xử lý",
+        "campusInfrastructure": "Hạ tầng Campus",
         "managed": "Your institution manages this Campus access."
       },
       "label": "Nova Campus",
       "errors": {
         "network": "Không kết nối được máy chủ. Hãy kiểm tra kết nối và thử lại.",
-        "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
+        "authMethodUnavailable": "Cơ sở này yêu cầu một phương thức xác thực mà phiên bản này chưa hỗ trợ."
       }
     },
     "account": {
       "title": "Account",
-      "server": "Server",
-      "email": "Signed in as",
-      "role": "Role",
-      "cohort": "Cohort",
-      "logout": "Sign out",
-      "logoutConfirmTitle": "Sign out of Nova Campus?",
-      "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-      "logoutConfirmButton": "Sign out",
-      "refresh": "Refresh",
-      "checking": "Checking connection…",
+      "server": "Máy chủ",
+      "email": "Đã đăng nhập bằng",
+      "role": "Vai trò",
+      "cohort": "Khóa",
+      "logout": "Đăng xuất",
+      "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
+      "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",
+      "logoutConfirmButton": "Đăng xuất",
+      "refresh": "Làm mới",
+      "checking": "Đang kiểm tra kết nối…",
       "connected": "Connected to {{server}}",
       "offline": "{{server}} — offline"
     },
@@ -1047,7 +1047,7 @@
       "hide": "Hide bubble"
     },
     "errors": {
-      "network": "Could not reach the server. Check the address and your connection."
+      "network": "Không thể kết nối tới máy chủ. Hãy kiểm tra địa chỉ và kết nối của bạn."
     },
     "home": {
       "title": "Dictate, don't type",
@@ -1203,11 +1203,11 @@
       "copiedToClipboard": "Transcription copied to clipboard and saved in History!",
       "error": "Failed to transcribe audio file."
     },
-    "sessionExpiredTitle": "Session expired",
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "serverUnreachableTitle": "Server unreachable",
+    "sessionExpiredTitle": "Phiên đã hết hạn",
+    "sessionExpired": "Vui lòng đăng nhập lại để tiếp tục dùng Nova Campus.",
+    "serverUnreachableTitle": "Không thể kết nối máy chủ",
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
-    "managedBy": "Managed by {{organization}}",
+    "managedBy": "Do {{organization}} quản lý",
     "roles": {
       "student": "Student",
       "teacher": "Teacher",
@@ -1258,8 +1258,8 @@
     },
     "microsoft": {
       "connect": "Continue with Microsoft",
-      "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
-      "expired": "The Microsoft sign-in request expired. Start again.",
+      "browserHelp": "Hoàn tất đăng nhập trong trình duyệt. Dùng mã này nếu Microsoft yêu cầu.",
+      "expired": "Yêu cầu đăng nhập Microsoft đã hết hạn. Hãy bắt đầu lại.",
       "failed": "Đăng nhập chưa hoàn tất. Vui lòng thử lại.",
       "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
       "accessRevoked": "Quyền truy cập của bạn không còn khả dụng. Hãy liên hệ quản trị viên."
@@ -1302,64 +1302,64 @@
       "alwaysVisibleDescription": "Keep Nova's compact status indicator visible. It only captures pointer input while hovered."
     },
     "firstRun": {
-      "skipForNow": "Skip for now",
+      "skipForNow": "Bỏ qua lúc này",
       "continueLater": "Tiếp tục sau",
       "useNovaNow": "Dùng Nova ngay",
-      "requiredByInstitution": "This Foundation track is required by {{organization}}.",
+      "requiredByInstitution": "{{organization}} yêu cầu hoàn thành lộ trình nền tảng này.",
       "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
       "homeAiSkillsStart": "Learn to work with AI effectively.",
       "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
-        "title": "Welcome to {{organization}}, {{name}}.",
-        "description": "Learn how to work with AI responsibly, or start using Nova right away.",
-        "aiEssentials": "Start with AI Essentials",
-        "recommended": "Recommended · about 6 minutes",
-        "setupNow": "Set up Nova now"
+        "title": "Chào mừng đến với {{organization}}, {{name}}.",
+        "description": "Học cách làm việc có trách nhiệm với AI, hoặc bắt đầu dùng Nova ngay.",
+        "aiEssentials": "Bắt đầu với Nền tảng AI",
+        "recommended": "Đề xuất · khoảng 6 phút",
+        "setupNow": "Thiết lập Nova ngay"
       },
       "setup": {
-        "title": "Set up Nova",
-        "description": "We've prepared the recommended setup for you.",
-        "microphone": "Microphone",
-        "language": "Language",
-        "shortcut": "Dictation shortcut",
-        "style": "Writing style",
-        "processing": "Processing",
-        "ready": "Ready",
-        "checkRequired": "Check required",
-        "noMicrophone": "No microphone detected",
-        "autoDetect": "Auto detect",
-        "useRecommended": "Use recommended setup",
-        "customize": "Customize",
-        "useRecommendations": "Use recommendations",
-        "purposeQuestion": "What do you use Nova for most?",
-        "writingQuestion": "How should Nova usually write?",
-        "languageQuestion": "Preferred dictation language",
+        "title": "Thiết lập Nova",
+        "description": "Chúng tôi đã chuẩn bị sẵn thiết lập đề xuất cho bạn.",
+        "microphone": "Micrô",
+        "language": "Ngôn ngữ",
+        "shortcut": "Phím tắt đọc chính tả",
+        "style": "Phong cách viết",
+        "processing": "Xử lý",
+        "ready": "Sẵn sàng",
+        "checkRequired": "Cần kiểm tra",
+        "noMicrophone": "Không phát hiện micrô",
+        "autoDetect": "Tự động nhận diện",
+        "useRecommended": "Dùng thiết lập đề xuất",
+        "customize": "Tùy chỉnh",
+        "useRecommendations": "Dùng các đề xuất",
+        "purposeQuestion": "Bạn dùng Nova chủ yếu để làm gì?",
+        "writingQuestion": "Nova thường nên viết như thế nào?",
+        "languageQuestion": "Ngôn ngữ đọc chính tả ưu tiên",
         "purposes": {
-          "classes": "Classes & notes",
-          "engineering": "Engineering projects",
-          "emails": "Emails & communication",
-          "coding": "Coding",
-          "everything": "A bit of everything",
-          "courseNotes": "Course notes",
-          "feedback": "Feedback",
-          "documents": "Documents"
+          "classes": "Lớp học và ghi chép",
+          "engineering": "Dự án kỹ thuật",
+          "emails": "Email và giao tiếp",
+          "coding": "Lập trình",
+          "everything": "Mỗi thứ một chút",
+          "courseNotes": "Tài liệu môn học",
+          "feedback": "Nhận xét cho sinh viên",
+          "documents": "Tài liệu"
         },
         "writing": {
-          "keep": "Keep my words",
-          "clean": "Clean them up",
-          "professional": "Professional",
-          "auto": "Auto"
+          "keep": "Giữ nguyên lời tôi",
+          "clean": "Chỉnh gọn",
+          "professional": "Chuyên nghiệp",
+          "auto": "Tự động"
         }
       },
       "try": {
-        "title": "Try Nova",
-        "description": "Make one short dictation. This checks your microphone and shows how Nova works.",
-        "sample": "Say: “Send Lucas the project update tomorrow morning.”",
-        "start": "Start dictation",
-        "listening": "Listening...",
-        "successTitle": "That's it.",
-        "successDescription": "Your microphone is ready. Nova works anywhere your cursor is.",
-        "openNova": "Open Nova"
+        "title": "Dùng thử Nova",
+        "description": "Đọc một câu ngắn. Việc này kiểm tra micrô và cho bạn thấy Nova hoạt động thế nào.",
+        "sample": "Hãy nói: “Gửi cho Lucas cập nhật dự án vào sáng mai.”",
+        "start": "Bắt đầu đọc chính tả",
+        "listening": "Đang nghe...",
+        "successTitle": "Xong rồi.",
+        "successDescription": "Micrô của bạn đã sẵn sàng. Nova hoạt động ở bất cứ đâu con trỏ của bạn đang ở.",
+        "openNova": "Mở Nova"
       }
     },
     "aiCurriculum": {
