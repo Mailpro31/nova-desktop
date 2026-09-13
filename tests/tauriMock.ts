@@ -196,6 +196,12 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
               (settings.config?.organization as { name?: string } | undefined)
                 ?.name ?? null,
           };
+        case "format_campus_engineering_notes":
+          localStorage.setItem(
+            "nova.test.engineeringNotes",
+            JSON.stringify(args),
+          );
+          return { text: `Structured: ${String(args.text)}` };
         case "get_history_entries":
           return { entries: [], total: 0 };
         case "get_available_microphones":
