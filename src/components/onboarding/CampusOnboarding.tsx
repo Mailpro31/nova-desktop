@@ -860,7 +860,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       !isLoading &&
       !microsoftFlow;
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
+      // `w-full`, pas `w-screen` : ouvert depuis les réglages, l'écran partage
+      // la fenêtre avec la barre latérale, et la largeur de toute la fenêtre
+      // le faisait déborder. Au premier lancement, son parent est la racine :
+      // la largeur reste celle de la fenêtre.
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
         <HandyTextLogo width={160} />
         <div className="max-w-[480px] space-y-3 text-center">
           <p className="text-xs font-medium tracking-wide text-text-secondary">
