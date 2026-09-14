@@ -472,11 +472,6 @@ pub fn show_transcribing_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "transcribing");
 }
 
-/// Shows the processing overlay window
-pub fn show_processing_overlay(app_handle: &AppHandle) {
-    show_overlay_state(app_handle, "processing");
-}
-
 /// Keep the last transcription available when Nova cannot paste it safely.
 pub fn show_paste_fallback(app_handle: &AppHandle, text: &str) {
     show_overlay_state(app_handle, "paste-fallback");
