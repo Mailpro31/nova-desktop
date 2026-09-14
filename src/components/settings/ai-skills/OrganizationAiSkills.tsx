@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { Button, PageHeader, Textarea } from "@/components/ui";
 import { CampusApi, type OrganizationSkillEntry } from "@/lib/campusApi";
+import { isCampusMode } from "@/lib/mode";
 import { loadCampusSession } from "@/lib/campusSession";
 import { useCampusStore } from "@/stores/campusStore";
 
@@ -53,10 +54,14 @@ export const OrganizationAiSkills: React.FC = () => {
         >
           {t("aiSkillTools.builtin")}
         </h2>
-        {/* Dire qu'il n'y en a pas encore, plutôt que d'afficher des modules
+        {/* Les actions intégrées (Expliquer, Résumer…) vivent dans Nova
+            Commands. Là où cette entrée existe, le dire ; ailleurs, dire qu'il
+            n'y en a pas encore plutôt que d'afficher des modules
             d'apprentissage en les faisant passer pour des outils. */}
         <p className="px-2 py-2 text-sm text-text-secondary">
-          {t("aiSkillTools.noBuiltin")}
+          {isCampusMode()
+            ? t("aiSkillTools.builtinInCommands")
+            : t("aiSkillTools.noBuiltin")}
         </p>
       </section>
 

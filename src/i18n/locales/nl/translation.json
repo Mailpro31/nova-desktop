@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Werk met de tekst die u selecteert.",
     "preview": "Voorbeeld",
-    "previewHint": "AI Skills worden momenteel getest.",
+    "previewHint": "Nova Commands worden momenteel getest.",
     "essentials": "Het wezenlijke",
     "howItWorks": "Zo werkt het",
     "how": {
       "select": "Selecteer tekst in een willekeurige toepassing",
       "open": "Open Nova met uw sneltoets",
-      "choose": "Kies een AI Skill",
+      "choose": "Kies een opdracht",
       "review": "Bekijk het resultaat voordat er iets verandert"
     },
     "privacy": "Verwerkt via uw Campus-verbinding.",
-    "privacyOffline": "AI Skills draaien op de server van uw instelling, die nu onbereikbaar is."
+    "privacyOffline": "Nova Commands draaien op de server van uw instelling, die nu onbereikbaar is."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Kant-en-klare AI-acties voor elke tekst.",
     "builtin": "Ingebouwd",
     "noBuiltin": "Nog geen ingebouwde AI Skills.",
+    "builtinInCommands": "De ingebouwde acties van Nova staan in Nova Commands.",
     "organization": "Van je organisatie",
     "noOrganization": "Je organisatie heeft geen AI Skills gepubliceerd.",
     "fromOrganization": "Van je organisatie",

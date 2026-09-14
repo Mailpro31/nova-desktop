@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Работете с избрания текст.",
     "preview": "Преглед",
-    "previewHint": "AI Skills се тестват в момента.",
+    "previewHint": "Nova Commands се тестват в момента.",
     "essentials": "Основното",
     "howItWorks": "Как работи",
     "how": {
       "select": "Изберете текст в което и да е приложение",
       "open": "Отворете Nova с вашата клавишна комбинация",
-      "choose": "Изберете AI Skill",
+      "choose": "Изберете команда",
       "review": "Прегледайте резултата, преди нещо да се промени"
     },
     "privacy": "Обработва се през вашата връзка с Campus.",
-    "privacyOffline": "AI Skills работят на сървъра на вашето учебно заведение, който сега е недостъпен."
+    "privacyOffline": "Nova Commands работят на сървъра на вашето учебно заведение, който сега е недостъпен."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Готови ИИ действия за произволен текст.",
     "builtin": "Вградени",
     "noBuiltin": "Все още няма вградени AI Skills.",
+    "builtinInCommands": "Вградените действия на Nova са в Nova Commands.",
     "organization": "От вашата организация",
     "noOrganization": "Вашата организация не е публикувала AI Skills.",
     "fromOrganization": "От вашата организация",

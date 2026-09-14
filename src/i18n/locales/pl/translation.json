@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Działaj na zaznaczonym tekście.",
     "preview": "Podgląd",
-    "previewHint": "AI Skills są obecnie testowane.",
+    "previewHint": "Nova Commands są obecnie testowane.",
     "essentials": "To, co najważniejsze",
     "howItWorks": "Jak to działa",
     "how": {
       "select": "Zaznacz tekst w dowolnej aplikacji",
       "open": "Otwórz Novę swoim skrótem",
-      "choose": "Wybierz AI Skill",
+      "choose": "Wybierz polecenie",
       "review": "Przejrzyj wynik, zanim cokolwiek się zmieni"
     },
     "privacy": "Przetwarzane przez Twoje połączenie z Campusem.",
-    "privacyOffline": "AI Skills działają na serwerze Twojej uczelni, teraz nieosiągalnym."
+    "privacyOffline": "Nova Commands działają na serwerze Twojej uczelni, teraz nieosiągalnym."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Gotowe akcje AI do zastosowania na dowolnym tekście.",
     "builtin": "Wbudowane",
     "noBuiltin": "Brak wbudowanych AI Skills.",
+    "builtinInCommands": "Wbudowane działania Nova znajdziesz w Nova Commands.",
     "organization": "Od Twojej organizacji",
     "noOrganization": "Twoja organizacja nie opublikowała żadnych AI Skills.",
     "fromOrganization": "Od Twojej organizacji",

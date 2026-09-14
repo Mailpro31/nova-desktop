@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Arbeta med texten du markerar.",
     "preview": "Förhandsvisning",
-    "previewHint": "AI Skills testas för närvarande.",
+    "previewHint": "Nova Commands testas för närvarande.",
     "essentials": "Det väsentliga",
     "howItWorks": "Så fungerar det",
     "how": {
       "select": "Markera text i valfritt program",
       "open": "Öppna Nova med ditt kortkommando",
-      "choose": "Välj en AI Skill",
+      "choose": "Välj ett kommando",
       "review": "Läs resultatet innan något ändras"
     },
     "privacy": "Behandlas via din Campus-anslutning.",
-    "privacyOffline": "AI Skills körs på din lärosätesserver, som just nu inte går att nå."
+    "privacyOffline": "Nova Commands körs på din lärosätesserver, som just nu inte går att nå."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Färdiga AI-åtgärder för valfri text.",
     "builtin": "Inbyggda",
     "noBuiltin": "Inga inbyggda AI Skills ännu.",
+    "builtinInCommands": "Novas inbyggda åtgärder finns i Nova Commands.",
     "organization": "Från din organisation",
     "noOrganization": "Din organisation har inte publicerat några AI Skills.",
     "fromOrganization": "Från din organisation",

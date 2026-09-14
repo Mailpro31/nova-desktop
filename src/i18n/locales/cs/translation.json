@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Pracujte s označeným textem.",
     "preview": "Náhled",
-    "previewHint": "AI Skills se právě testují.",
+    "previewHint": "Nova Commands se právě testují.",
     "essentials": "To podstatné",
     "howItWorks": "Jak to funguje",
     "how": {
       "select": "Označte text v libovolné aplikaci",
       "open": "Otevřete Novu svou zkratkou",
-      "choose": "Vyberte AI Skill",
+      "choose": "Vyberte příkaz",
       "review": "Přečtěte si výsledek, než se cokoli změní"
     },
     "privacy": "Zpracováno přes vaše připojení ke Campusu.",
-    "privacyOffline": "AI Skills běží na serveru vaší instituce, který je nyní nedostupný."
+    "privacyOffline": "Nova Commands běží na serveru vaší instituce, který je nyní nedostupný."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Připravené akce AI pro libovolný text.",
     "builtin": "Vestavěné",
     "noBuiltin": "Zatím žádné vestavěné AI Skills.",
+    "builtinInCommands": "Vestavěné akce Nova najdete v Nova Commands.",
     "organization": "Od vaší organizace",
     "noOrganization": "Vaše organizace nezveřejnila žádné AI Skills.",
     "fromOrganization": "Od vaší organizace",

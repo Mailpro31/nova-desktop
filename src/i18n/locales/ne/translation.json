@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "छानिएको पाठमा काम गर्नुहोस्।",
     "preview": "पूर्वावलोकन",
-    "previewHint": "AI Skills हाल परीक्षणमा छन्।",
+    "previewHint": "Nova Commands हाल परीक्षणमा छन्।",
     "essentials": "मुख्य कुरा",
     "howItWorks": "कसरी चल्छ",
     "how": {
       "select": "कुनै पनि अनुप्रयोगमा पाठ छान्नुहोस्",
       "open": "आफ्नो सर्टकटले Nova खोल्नुहोस्",
-      "choose": "एउटा AI Skill छान्नुहोस्",
+      "choose": "एउटा आदेश छान्नुहोस्",
       "review": "केही बदलिनुअघि नतिजा हेर्नुहोस्"
     },
     "privacy": "तपाईंको Campus जडानमार्फत प्रशोधन हुन्छ।",
-    "privacyOffline": "AI Skills तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।"
+    "privacyOffline": "Nova Commands तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।"
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "जुनसुकै पाठमा चलाउन मिल्ने तयार AI कार्यहरू।",
     "builtin": "अन्तर्निहित",
     "noBuiltin": "अहिलेसम्म अन्तर्निहित AI Skills छैनन्।",
+    "builtinInCommands": "Nova का अन्तर्निहित कार्यहरू Nova Commands मा छन्।",
     "organization": "तपाईंको संस्थाबाट",
     "noOrganization": "तपाईंको संस्थाले कुनै AI Skills प्रकाशित गरेको छैन।",
     "fromOrganization": "तपाईंको संस्थाबाट",

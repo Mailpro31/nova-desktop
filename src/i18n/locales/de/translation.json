@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Arbeiten Sie mit markiertem Text.",
     "preview": "Vorschau",
-    "previewHint": "AI Skills werden derzeit getestet.",
+    "previewHint": "Nova Commands werden derzeit getestet.",
     "essentials": "Das Wesentliche",
     "howItWorks": "So funktioniert es",
     "how": {
       "select": "Markieren Sie Text in einer beliebigen Anwendung",
       "open": "Öffnen Sie Nova mit Ihrem Kurzbefehl",
-      "choose": "Wählen Sie einen AI Skill",
+      "choose": "Wählen Sie einen Befehl",
       "review": "Prüfen Sie das Ergebnis, bevor sich etwas ändert"
     },
     "privacy": "Verarbeitet über Ihre Campus-Verbindung.",
-    "privacyOffline": "AI Skills laufen auf dem Server Ihrer Einrichtung, der gerade nicht erreichbar ist."
+    "privacyOffline": "Nova Commands laufen auf dem Server Ihrer Einrichtung, der gerade nicht erreichbar ist."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Fertige KI-Aktionen für beliebigen Text.",
     "builtin": "Integriert",
     "noBuiltin": "Noch keine integrierten AI Skills.",
+    "builtinInCommands": "Die integrierten Aktionen von Nova finden Sie unter Nova Commands.",
     "organization": "Von Ihrer Organisation",
     "noOrganization": "Ihre Organisation hat keine AI Skills veröffentlicht.",
     "fromOrganization": "Von Ihrer Organisation",

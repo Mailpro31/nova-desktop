@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Work with selected text using Nova.",
     "preview": "Preview",
-    "previewHint": "AI Skills are currently being tested.",
+    "previewHint": "Nova Commands are currently being tested.",
     "essentials": "Essentials",
     "howItWorks": "How it works",
     "how": {
       "select": "Select text in any application",
       "open": "Open Nova with your shortcut",
-      "choose": "Choose an AI Skill",
+      "choose": "Choose a command",
       "review": "Review the result before anything changes"
     },
     "privacy": "Processed through your Campus connection.",
-    "privacyOffline": "AI Skills run on your institution's server, which is unreachable right now."
+    "privacyOffline": "Nova Commands run on your institution's server, which is unreachable right now."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Ready-made AI actions you can run on any text.",
     "builtin": "Built-in",
     "noBuiltin": "No built-in AI Skills yet.",
+    "builtinInCommands": "Nova's built-in actions are in Nova Commands.",
     "organization": "From your organization",
     "noOrganization": "Your organization has not published any AI Skills.",
     "fromOrganization": "From your organization",
