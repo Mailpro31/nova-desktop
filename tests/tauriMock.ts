@@ -299,6 +299,18 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         return path;
       },
     };
+    // Déclenche un événement Tauri déjà écouté, comme le ferait le backend :
+    // la bulle, par exemple, n'affiche sa carte au repos que sur `show-overlay`.
+    (
+      window as typeof window & {
+        __NOVA_TEST_EMIT__?: (event: string, payload: unknown) => boolean;
+      }
+    ).__NOVA_TEST_EMIT__ = (event: string, payload: unknown) => {
+      const handler = eventCallbacks.get(event);
+      if (!handler) return false;
+      callbacks.get(handler)?.({ event, id: 0, payload });
+      return true;
+    };
     browserWindow.__TAURI_OS_PLUGIN_INTERNALS__ = {
       platform: "linux",
       os_type: "linux",

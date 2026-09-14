@@ -30,16 +30,33 @@
   --ov-base-h: 40px; /* control-row height (.sbase) */
   --ov-cap-max-h: 64px; /* max height of the scrolling live-text region */
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Keep the same action blue in both themes; only its soft surface changes. */
-    --s-accent-soft: color-mix(in srgb, var(--s-accent) 20%, transparent);
-    --s-muted: #a3a09a;
-    --s-faint: #6f6c66;
-    /* Hairlines flip to the near-white text token for contrast on dark. */
-    --s-border: color-mix(in srgb, var(--color-text) 12%, transparent);
-    --s-hair: color-mix(in srgb, var(--color-text) 8%, transparent);
-  }
+/* Dark bubble, keyed on the theme Nova resolved (overlayTheme.ts sets
+   `data-theme`), never on Windows alone: Nova light + Windows dark used to give
+   white icons on a light card. The overlay does not load App.css, so the dark
+   base tokens it relies on are declared here too. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-text: var(--nova-text);
+  --color-background: var(--nova-window);
+  --color-surface: var(--nova-surface);
+  --color-inset: var(--nova-inset);
+  --color-text-secondary: var(--nova-text-secondary);
+  --color-hairline: var(--nova-hairline);
+  --color-hairline-strong: var(--nova-hairline-strong);
+  --color-success: var(--nova-success);
+  --color-warning: var(--nova-warning);
+  --color-danger: var(--nova-danger);
+  --color-ultra: var(--nova-ultra);
+  /* Keep the same action blue in both themes; only its soft surface changes. */
+  --s-accent-soft: color-mix(in srgb, var(--s-accent) 20%, transparent);
+  --s-muted: #a3a09a;
+  --s-faint: #6f6c66;
+  /* Hairlines flip to the near-white text token for contrast on dark. */
+  --s-border: color-mix(in srgb, var(--color-text) 12%, transparent);
+  --s-hair: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
 }
 
 /* ============================================================
@@ -687,14 +704,12 @@
   fill-opacity: 0.25;
 }
 
-@media (prefers-color-scheme: dark) {
-  .sgear {
-    color: rgba(255, 255, 255, 0.92);
-  }
-  .sgear:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.14);
-  }
+:root[data-theme="dark"] .sgear {
+  color: rgba(255, 255, 255, 0.92);
+}
+:root[data-theme="dark"] .sgear:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .smenu {
