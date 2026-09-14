@@ -1026,6 +1026,11 @@
       "server": "Servidor",
       "email": "Sesión iniciada como",
       "role": "Rol",
+      "access": "Administración",
+      "securityRoles": {
+        "organization_admin": "Administrador de la organización",
+        "it_admin": "Administrador de TI"
+      },
       "cohort": "Promoción",
       "logout": "Cerrar sesión",
       "logoutConfirmTitle": "¿Cerrar sesión en Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Empleado",
+      "manager": "Responsable"
     },
     "navigation": {
       "label": "Campus navigation",

@@ -1026,6 +1026,11 @@
       "server": "Adresa serveru",
       "email": "Přihlášeno jako",
       "role": "Uživatelská role",
+      "access": "Správa",
+      "securityRoles": {
+        "organization_admin": "Správce organizace",
+        "it_admin": "Správce IT"
+      },
       "cohort": "Ročník",
       "logout": "Odhlásit se",
       "logoutConfirmTitle": "Odhlásit se z Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Zaměstnanec",
+      "manager": "Manažer"
     },
     "navigation": {
       "label": "Campus navigation",

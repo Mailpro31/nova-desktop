@@ -1026,6 +1026,11 @@
       "server": "Serwer",
       "email": "Zalogowano jako",
       "role": "Rola",
+      "access": "Administracja",
+      "securityRoles": {
+        "organization_admin": "Administrator organizacji",
+        "it_admin": "Administrator IT"
+      },
       "cohort": "Rocznik",
       "logout": "Wyloguj się",
       "logoutConfirmTitle": "Wylogować się z Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Pracownik",
+      "manager": "Kierownik"
     },
     "navigation": {
       "label": "Campus navigation",

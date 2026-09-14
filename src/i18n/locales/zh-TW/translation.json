@@ -1026,6 +1026,11 @@
       "server": "伺服器",
       "email": "目前登入帳戶",
       "role": "角色",
+      "access": "管理",
+      "securityRoles": {
+        "organization_admin": "組織管理員",
+        "it_admin": "IT 管理員"
+      },
       "cohort": "年級",
       "logout": "登出",
       "logoutConfirmTitle": "要登出 Nova Campus 嗎？",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "員工",
+      "manager": "經理"
     },
     "navigation": {
       "label": "Campus navigation",

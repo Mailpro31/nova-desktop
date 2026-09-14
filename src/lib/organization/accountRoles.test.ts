@@ -39,8 +39,10 @@ describe("rôles affichés sur la page Organisation", () => {
       securityRole: "campus.account.securityRoles.organization_admin",
     });
     expect(
-      accountRoleLabels({ role: "staff", membership: { security_role: "it_admin" } })
-        .securityRole,
+      accountRoleLabels({
+        role: "staff",
+        membership: { security_role: "it_admin" },
+      }).securityRole,
     ).toBe("campus.account.securityRoles.it_admin");
   });
 

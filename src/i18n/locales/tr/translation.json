@@ -1026,6 +1026,11 @@
       "server": "Sunucu",
       "email": "Oturum açan hesap",
       "role": "Görev",
+      "access": "Yönetim",
+      "securityRoles": {
+        "organization_admin": "Kuruluş yöneticisi",
+        "it_admin": "BT yöneticisi"
+      },
       "cohort": "Dönem",
       "logout": "Oturumu kapat",
       "logoutConfirmTitle": "Nova Campus oturumu kapatılsın mı?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Çalışan",
+      "manager": "Yönetici"
     },
     "navigation": {
       "label": "Campus navigation",

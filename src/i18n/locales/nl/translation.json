@@ -1026,6 +1026,11 @@
       "server": "Serveradres",
       "email": "Aangemeld als",
       "role": "Rol",
+      "access": "Beheer",
+      "securityRoles": {
+        "organization_admin": "Organisatiebeheerder",
+        "it_admin": "IT-beheerder"
+      },
       "cohort": "Jaargroep",
       "logout": "Afmelden",
       "logoutConfirmTitle": "Afmelden bij Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Medewerker",
+      "manager": "Manager"
     },
     "navigation": {
       "label": "Campus navigation",
