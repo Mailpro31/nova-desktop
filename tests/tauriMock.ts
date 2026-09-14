@@ -34,6 +34,11 @@ interface MockOptions {
   discoveryError?: unknown;
   /** Dictées servies par `get_history_entries`. Absentes, l'historique est vide. */
   historyEntries?: Array<Record<string, unknown>>;
+  /**
+   * Catalogue Learn servi par `fetch_learning_catalog`. Absent, la commande
+   * répond `null` comme avant, et la progression aussi.
+   */
+  learningCatalog?: Record<string, unknown>;
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -208,6 +213,12 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           const entries = settings.historyEntries ?? [];
           return { entries, total: entries.length };
         }
+        case "fetch_learning_catalog":
+          return settings.learningCatalog ?? null;
+        case "fetch_learning_progress":
+          return settings.learningCatalog
+            ? { catalog_version: 1, lessons: [] }
+            : null;
         case "get_available_microphones":
           return [
             { index: "default", name: "System microphone", is_default: true },

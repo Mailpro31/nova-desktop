@@ -1741,6 +1741,7 @@
     "subtitle": "Mejora con la IA, unos minutos cada vez.",
     "loading": "Cargando…",
     "empty": "Aún no hay lecciones disponibles.",
+    "languageNote": "Por ahora, estas lecciones solo están disponibles en {{language}}.",
     "continue": "Continuar",
     "recommended": "Recomendado para ti",
     "start": "Empezar",

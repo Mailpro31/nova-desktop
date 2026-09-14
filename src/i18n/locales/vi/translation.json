@@ -1741,6 +1741,7 @@
     "subtitle": "Giỏi hơn cùng AI, mỗi lần vài phút.",
     "loading": "Đang tải…",
     "empty": "Chưa có bài học nào.",
+    "languageNote": "Hiện tại các bài học này chỉ có bằng {{language}}.",
     "continue": "Tiếp tục",
     "recommended": "Gợi ý cho bạn",
     "start": "Bắt đầu",

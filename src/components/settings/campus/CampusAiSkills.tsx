@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BadgeCheck,
   Check,
@@ -13,7 +13,18 @@ import { useAiSkillsProgress } from "@/hooks/useAiSkillsProgress";
 import { AI_ESSENTIALS_TRACK } from "@/lib/aiSkills";
 import { useCampusStore } from "@/stores/campusStore";
 
-export const CampusAiSkills: React.FC = () => {
+interface CampusAiSkillsProps {
+  /**
+   * Prévenu quand un module s'ouvre ou se ferme. La page qui accueille le cours
+   * (Apprendre) masque ce qui l'entoure pendant qu'un module occupe la page ;
+   * Réglages n'en a pas besoin et ne le passe pas.
+   */
+  onModuleOpenChange?: (open: boolean) => void;
+}
+
+export const CampusAiSkills: React.FC<CampusAiSkillsProps> = ({
+  onModuleOpenChange,
+}) => {
   const { t, i18n } = useTranslation();
   const session = useCampusStore((state) => state.session);
   const organization = useCampusStore((state) => state.context.organization);
@@ -33,6 +44,9 @@ export const CampusAiSkills: React.FC = () => {
       null,
     [activeModuleId],
   );
+  useEffect(() => {
+    onModuleOpenChange?.(activeModuleId !== null);
+  }, [activeModuleId, onModuleOpenChange]);
   const completedCount = progress.completedModuleIds.length;
   const percentage = Math.round(
     (completedCount / AI_ESSENTIALS_TRACK.modules.length) * 100,

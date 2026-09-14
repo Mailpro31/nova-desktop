@@ -1741,6 +1741,7 @@
     "subtitle": "每次幾分鐘，和 AI 一起進步。",
     "loading": "載入中…",
     "empty": "目前還沒有課程。",
+    "languageNote": "這些課程目前僅提供{{language}}版本。",
     "continue": "繼續",
     "recommended": "為你推薦",
     "start": "開始",

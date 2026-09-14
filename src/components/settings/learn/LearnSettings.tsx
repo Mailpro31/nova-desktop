@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 
@@ -14,6 +14,9 @@ import {
   type ProgressSnapshot,
 } from "@/lib/learning/model";
 import { useLearningStore } from "@/stores/learningStore";
+import { CampusAiSkills } from "../campus/CampusAiSkills";
+import { useOrganizationSettingsTools } from "@/hooks/useOrganizationSettingsTools";
+import { catalogLanguageDiffers, languageName } from "@/lib/learning/language";
 
 /**
  * Learn — la page d'accueil.
@@ -64,7 +67,7 @@ const Home: React.FC<{
   progress: ProgressSnapshot | null;
   onOpen: (lessonId: string) => void;
 }> = ({ catalog, progress, onOpen }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const overall = overallProgress(catalog, progress);
   const summaries = pillarSummaries(catalog, progress);
   const next = useMemo(
@@ -106,6 +109,16 @@ const Home: React.FC<{
           total: overall.total,
         })}
       </p>
+
+      {/* Les leçons du serveur sont écrites dans une seule langue : le dire
+          plutôt que de montrer une autre langue sans explication. */}
+      {catalogLanguageDiffers(catalog.locale, i18n.language) && (
+        <p className="text-xs text-text-secondary">
+          {t("learn.languageNote", {
+            language: languageName(catalog.locale, i18n.language),
+          })}
+        </p>
+      )}
 
       {ordered.map((summary) => {
         const path = catalog.paths.find((item) => item.id === summary.pathId);
@@ -151,6 +164,11 @@ const Home: React.FC<{
 
 export const LearnSettings: React.FC = () => {
   const { t } = useTranslation();
+  // « Apprendre » est la page des cours : le cours AI Essentials y figure, aux
+  // mêmes conditions que dans Réglages.
+  const tools = useOrganizationSettingsTools();
+  const [moduleOpen, setModuleOpen] = useState(false);
+  const showServerLessons = !(tools.aiEssentials && moduleOpen);
   const catalog = useLearningStore((store) => store.catalog);
   const catalogState = useLearningStore((store) => store.catalogState);
   const progress = useLearningStore((store) => store.progress);
@@ -173,27 +191,38 @@ export const LearnSettings: React.FC = () => {
     <>
       <PageHeader title={t("learn.title")} description={t("learn.subtitle")} />
       <div className="px-1 pb-8">
-        {catalogState === "loading" && !catalog && (
-          <p className="text-sm text-text-secondary">{t("learn.loading")}</p>
+        {tools.aiEssentials && !active && (
+          <div className={moduleOpen ? undefined : "mb-10"}>
+            <CampusAiSkills onModuleOpenChange={setModuleOpen} />
+          </div>
         )}
-        {catalogState === "error" && !catalog && (
-          // Message simple, sans trace technique : la personne ne peut rien
-          // faire d'une pile d'appels, et l'action utile tient en une phrase.
-          <p className="text-sm text-text-secondary">
-            {t("learn.error.catalog")}
-          </p>
-        )}
-        {catalog && active && (
-          // `key` : chaque leçon repart de son propre état de reprise, sans
-          // effet de resynchronisation.
-          <LessonView
-            key={active.lesson.id}
-            lesson={active.lesson}
-            onBack={() => openLesson(null)}
-          />
-        )}
-        {catalog && !active && (
-          <Home catalog={catalog} progress={progress} onOpen={openLesson} />
+        {showServerLessons && (
+          <>
+            {catalogState === "loading" && !catalog && (
+              <p className="text-sm text-text-secondary">
+                {t("learn.loading")}
+              </p>
+            )}
+            {catalogState === "error" && !catalog && (
+              // Message simple, sans trace technique : la personne ne peut rien
+              // faire d'une pile d'appels, et l'action utile tient en une phrase.
+              <p className="text-sm text-text-secondary">
+                {t("learn.error.catalog")}
+              </p>
+            )}
+            {catalog && active && (
+              // `key` : chaque leçon repart de son propre état de reprise, sans
+              // effet de resynchronisation.
+              <LessonView
+                key={active.lesson.id}
+                lesson={active.lesson}
+                onBack={() => openLesson(null)}
+              />
+            )}
+            {catalog && !active && (
+              <Home catalog={catalog} progress={progress} onOpen={openLesson} />
+            )}
+          </>
         )}
       </div>
     </>
