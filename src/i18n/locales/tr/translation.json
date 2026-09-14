@@ -15,6 +15,7 @@
     "postProcessing": "Son İşlem",
     "meeting": "Meeting",
     "history": "Geçmiş",
+    "prompts": "Promptlar",
     "debug": "Hata Ayıklama",
     "about": "Hakkında",
     "personalization": "Kişiselleştirme",
@@ -1697,6 +1698,11 @@
     "empty": "Dikteleriniz burada görünecek.",
     "copy": "Kopyala",
     "copied": "Kopyalandı"
+  },
+  "prompts": {
+    "subtitle": "Nova'nın dikteleriniz üzerinden yazdığı, yeniden kullanıma hazır promptlar.",
+    "empty": "Prompt stiliyle dikte edin; promptlarınız burada görünecek.",
+    "searchPlaceholder": "Promptlarınızda arayın"
   },
   "settingsNav": {
     "voice": "Ses"

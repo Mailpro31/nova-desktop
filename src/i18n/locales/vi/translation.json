@@ -15,6 +15,7 @@
     "postProcessing": "Xử lý sau",
     "meeting": "Meeting",
     "history": "Lịch sử",
+    "prompts": "Prompt",
     "debug": "Gỡ lỗi",
     "about": "Giới thiệu",
     "personalization": "Cá nhân hóa",
@@ -1697,6 +1698,11 @@
     "empty": "Các lần đọc của bạn sẽ hiện ở đây.",
     "copy": "Sao chép",
     "copied": "Đã sao chép"
+  },
+  "prompts": {
+    "subtitle": "Các prompt Nova đã viết từ những lần đọc chính tả của bạn, sẵn sàng dùng lại.",
+    "empty": "Hãy đọc chính tả với lối viết prompt, các prompt của bạn sẽ hiện ở đây.",
+    "searchPlaceholder": "Tìm trong prompt của bạn"
   },
   "settingsNav": {
     "voice": "Giọng nói"

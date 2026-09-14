@@ -17,6 +17,7 @@
     "meeting": "Meeting",
     "personalization": "Personalization",
     "history": "History",
+    "prompts": "Prompts",
     "debug": "Debug",
     "about": "About",
     "home": "Home",
@@ -1697,6 +1698,11 @@
     "empty": "Your dictations will appear here.",
     "copy": "Copy",
     "copied": "Copied"
+  },
+  "prompts": {
+    "subtitle": "Prompts Nova wrote from your dictations, ready to reuse.",
+    "empty": "Dictate with the prompt Style and your prompts will appear here.",
+    "searchPlaceholder": "Search your prompts"
   },
   "settingsNav": {
     "voice": "Voice"

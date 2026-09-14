@@ -15,6 +15,7 @@
     "postProcessing": "後処理",
     "meeting": "Meeting",
     "history": "履歴",
+    "prompts": "プロンプト",
     "debug": "デバッグ",
     "about": "概要",
     "personalization": "パーソナライズ",
@@ -1697,6 +1698,11 @@
     "empty": "音声入力した内容がここに表示されます。",
     "copy": "コピー",
     "copied": "コピーしました"
+  },
+  "prompts": {
+    "subtitle": "Nova が音声入力から作成した、再利用できるプロンプトです。",
+    "empty": "プロンプトのスタイルで音声入力すると、ここにプロンプトが表示されます。",
+    "searchPlaceholder": "プロンプトを検索"
   },
   "settingsNav": {
     "voice": "音声"

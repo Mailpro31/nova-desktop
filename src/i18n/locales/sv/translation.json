@@ -15,6 +15,7 @@
     "postProcessing": "Efterbearbetning",
     "meeting": "Meeting",
     "history": "Historik",
+    "prompts": "Promptar",
     "debug": "Felsökning",
     "about": "Om",
     "personalization": "Anpassning",
@@ -1697,6 +1698,11 @@
     "empty": "Här visas dina dikteringar.",
     "copy": "Kopiera",
     "copied": "Kopierat"
+  },
+  "prompts": {
+    "subtitle": "Promptar som Nova har skrivit utifrån dina dikteringar, redo att återanvändas.",
+    "empty": "Diktera med promptstilen så visas dina promptar här.",
+    "searchPlaceholder": "Sök bland dina promptar"
   },
   "settingsNav": {
     "voice": "Röst"

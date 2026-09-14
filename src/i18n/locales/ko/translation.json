@@ -15,6 +15,7 @@
     "postProcessing": "후처리",
     "meeting": "Meeting",
     "history": "히스토리",
+    "prompts": "프롬프트",
     "debug": "디버그",
     "about": "정보",
     "personalization": "개인 설정",
@@ -1697,6 +1698,11 @@
     "empty": "받아쓴 내용이 여기에 나타납니다.",
     "copy": "복사",
     "copied": "복사했습니다"
+  },
+  "prompts": {
+    "subtitle": "Nova가 받아쓰기로 작성한, 다시 쓸 수 있는 프롬프트입니다.",
+    "empty": "프롬프트 스타일로 받아쓰면 프롬프트가 여기에 표시됩니다.",
+    "searchPlaceholder": "프롬프트 검색"
   },
   "settingsNav": {
     "voice": "음성"

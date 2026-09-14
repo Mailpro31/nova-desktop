@@ -15,6 +15,7 @@
     "postProcessing": "Nachbearbeitung",
     "meeting": "Meeting",
     "history": "Verlauf",
+    "prompts": "Prompts",
     "debug": "Debug",
     "about": "Info",
     "personalization": "Personalisierung",
@@ -1697,6 +1698,11 @@
     "empty": "Hier erscheinen Ihre Diktate.",
     "copy": "Kopieren",
     "copied": "Kopiert"
+  },
+  "prompts": {
+    "subtitle": "Prompts, die Nova aus Ihren Diktaten geschrieben hat, bereit zur Wiederverwendung.",
+    "empty": "Diktieren Sie mit dem Prompt-Stil, dann erscheinen Ihre Prompts hier.",
+    "searchPlaceholder": "Prompts durchsuchen"
   },
   "settingsNav": {
     "voice": "Stimme"

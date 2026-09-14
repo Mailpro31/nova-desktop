@@ -15,6 +15,7 @@
     "postProcessing": "Post-Elaborazione",
     "meeting": "Meeting",
     "history": "Cronologia",
+    "prompts": "Prompt",
     "debug": "Debug",
     "about": "Informazioni",
     "personalization": "Personalizzazione",
@@ -1697,6 +1698,11 @@
     "empty": "Qui appariranno le tue dettature.",
     "copy": "Copia",
     "copied": "Copiato"
+  },
+  "prompts": {
+    "subtitle": "I prompt che Nova ha scritto dalle tue dettature, pronti da riutilizzare.",
+    "empty": "Detta con lo stile prompt e i tuoi prompt appariranno qui.",
+    "searchPlaceholder": "Cerca nei tuoi prompt"
   },
   "settingsNav": {
     "voice": "Voce"

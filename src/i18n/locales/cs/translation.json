@@ -15,6 +15,7 @@
     "postProcessing": "Následné zpracování",
     "meeting": "Meeting",
     "history": "Historie",
+    "prompts": "Prompty",
     "debug": "Ladění",
     "about": "O aplikaci",
     "personalization": "Přizpůsobení",
@@ -1697,6 +1698,11 @@
     "empty": "Tady se objeví vaše diktáty.",
     "copy": "Kopírovat",
     "copied": "Zkopírováno"
+  },
+  "prompts": {
+    "subtitle": "Prompty, které Nova napsala z vašich diktátů, připravené k dalšímu použití.",
+    "empty": "Diktujte se stylem prompt a vaše prompty se objeví zde.",
+    "searchPlaceholder": "Hledat v promptech"
   },
   "settingsNav": {
     "voice": "Hlas"

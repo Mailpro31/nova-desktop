@@ -15,6 +15,7 @@
     "postProcessing": "后处理",
     "meeting": "Meeting",
     "history": "历史记录",
+    "prompts": "提示词",
     "debug": "调试",
     "about": "关于",
     "personalization": "个性化",
@@ -1697,6 +1698,11 @@
     "empty": "你的语音输入会显示在这里。",
     "copy": "复制",
     "copied": "已复制"
+  },
+  "prompts": {
+    "subtitle": "Nova 根据你的听写生成的提示词，可直接再次使用。",
+    "empty": "使用提示词风格听写，你的提示词会显示在这里。",
+    "searchPlaceholder": "搜索提示词"
   },
   "settingsNav": {
     "voice": "语音"

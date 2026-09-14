@@ -32,6 +32,8 @@ interface MockOptions {
   deployment?: Record<string, unknown> | null;
   discovery?: Record<string, unknown>;
   discoveryError?: unknown;
+  /** Dictées servies par `get_history_entries`. Absentes, l'historique est vide. */
+  historyEntries?: Array<Record<string, unknown>>;
   /**
    * Catalogue Learn servi par `fetch_learning_catalog`. Absent, la commande
    * répond `null` comme avant, et la progression aussi.
@@ -207,8 +209,10 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             JSON.stringify(args),
           );
           return { text: `Structured: ${String(args.text)}` };
-        case "get_history_entries":
-          return { entries: [], total: 0 };
+        case "get_history_entries": {
+          const entries = settings.historyEntries ?? [];
+          return { entries, total: entries.length };
+        }
         case "fetch_learning_catalog":
           return settings.learningCatalog ?? null;
         case "fetch_learning_progress":
