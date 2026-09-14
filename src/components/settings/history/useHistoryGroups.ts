@@ -74,6 +74,30 @@ export function filterEntries(
   );
 }
 
+/**
+ * Libellé du Style d'une entrée, tel que l'historique doit l'afficher.
+ *
+ * Nova enregistre avec chaque dictée le **texte complet de la consigne** du
+ * Style, pas son nom. L'historique l'affichait tel quel : une consigne interne
+ * de plusieurs paragraphes au-dessus de la dictée. On retrouve donc le nom du
+ * Style à partir de sa consigne ; un nom déjà enregistré s'affiche tel quel ; et
+ * une consigne qui ne correspond plus à aucun Style n'est jamais montrée.
+ */
+export function historyStyleLabel(
+  stored: string | null,
+  styles: readonly { name: string; prompt: string }[],
+): string | null {
+  const value = stored?.trim();
+  if (!value) return null;
+  const byPrompt = styles.find((style) => style.prompt.trim() === value);
+  if (byPrompt) return byPrompt.name;
+  const byName = styles.find((style) => style.name.trim() === value);
+  if (byName) return byName.name;
+  // Ni consigne connue ni nom connu : un libellé court d'une ligne peut
+  // s'afficher, une consigne jamais.
+  return value.length <= 60 && !value.includes("\n") ? value : null;
+}
+
 function normalize(value: string): string {
   return (
     value
