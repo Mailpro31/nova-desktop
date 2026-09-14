@@ -671,6 +671,86 @@ fn urlencode(value: &str) -> String {
 mod tests {
     use super::*;
 
+    /// Répond comme un serveur Nova : la route historique
+    /// `/api/auth/entra/pkce/available` n'annonce que des types, la route
+    /// détaillée `/api/auth/providers` porte les noms choisis par
+    /// l'organisation. `detailed: None` imite un serveur antérieur à celle-ci.
+    fn serve_provider_routes(listener: std::net::TcpListener, detailed: Option<&'static str>) {
+        use std::io::{BufRead, BufReader, Write};
+        for stream in listener.incoming().take(2) {
+            let Ok(mut stream) = stream else { return };
+            let _ = stream.set_read_timeout(Some(std::time::Duration::from_secs(10)));
+            let Ok(clone) = stream.try_clone() else {
+                return;
+            };
+            let mut reader = BufReader::new(clone);
+            let mut request_line = String::new();
+            let _ = reader.read_line(&mut request_line);
+            loop {
+                let mut header = String::new();
+                if reader.read_line(&mut header).unwrap_or(0) == 0 || header == "\r\n" {
+                    break;
+                }
+            }
+            let path = request_line.split_whitespace().nth(1).unwrap_or("");
+            let not_found = ("404 Not Found", r#"{"detail":"Not Found"}"#);
+            let (status, body) = match (path, detailed) {
+                ("/api/auth/providers", Some(body)) => ("200 OK", body),
+                ("/api/auth/entra/pkce/available", _) => (
+                    "200 OK",
+                    r#"{"available":true,"providers":["oidc","legacy_email_code"]}"#,
+                ),
+                _ => not_found,
+            };
+            let _ = write!(
+                stream,
+                "HTTP/1.1 {status}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+                body.len()
+            );
+        }
+    }
+
+    fn providers_from(detailed: Option<&'static str>) -> OrganizationAuthProviders {
+        let _exclusive = crate::commands::campus::wire_test_support::exclusive();
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").expect("port local");
+        let port = listener.local_addr().expect("adresse").port();
+        std::thread::spawn(move || serve_provider_routes(listener, detailed));
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("runtime")
+            .block_on(organization_auth_providers(format!(
+                "http://127.0.0.1:{port}"
+            )))
+            .expect("fournisseurs")
+    }
+
+    #[test]
+    fn the_sign_in_button_carries_the_name_the_organization_chose() {
+        // Mesuré sur un vrai serveur : l'organisation « IPSA » annonçait son
+        // nom, et le poste affichait « Continuer avec Company SSO » — il ne
+        // lisait que la route historique, qui ne porte aucun nom.
+        let providers = providers_from(Some(
+            r#"{"provider_configs":[{"id":"cfg-ipsa","type":"oidc","display_name":"IPSA"}],"providers":["oidc","legacy_email_code"],"display_names":{"oidc":"IPSA"}}"#,
+        ));
+        assert!(providers.oidc);
+        assert_eq!(providers.oidc_display_name.as_deref(), Some("IPSA"));
+        assert_eq!(providers.configs.len(), 1);
+        assert_eq!(providers.configs[0].id, "cfg-ipsa");
+        assert_eq!(providers.configs[0].display_name, "IPSA");
+    }
+
+    #[test]
+    fn a_server_without_the_detailed_route_still_offers_its_providers() {
+        // Un serveur antérieur ne connaît que la route historique : ses
+        // boutons restent proposés, avec le libellé de repli de l'interface.
+        let providers = providers_from(None);
+        assert!(providers.oidc);
+        assert!(providers.legacy_email_code);
+        assert!(providers.configs.is_empty());
+        assert_eq!(providers.oidc_display_name, None);
+    }
+
     #[test]
     fn the_challenge_matches_the_rfc_7636_test_vector() {
         // Vecteur de l'annexe B de la RFC 7636 : si notre calcul en diverge,
