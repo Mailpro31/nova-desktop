@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "選択した文章に対して操作します。",
     "preview": "試験公開",
-    "previewHint": "AI Skills は現在検証中です。",
+    "previewHint": "Nova Commands は現在検証中です。",
     "essentials": "基本の操作",
     "howItWorks": "使い方",
     "how": {
       "select": "任意のアプリで文章を選択する",
       "open": "ショートカットで Nova を開く",
-      "choose": "AI Skill を選ぶ",
+      "choose": "コマンドを選ぶ",
       "review": "何かが変わる前に結果を確認する"
     },
     "privacy": "Campus 接続を通じて処理されます。",
-    "privacyOffline": "AI Skills は所属機関のサーバーで動作しますが、現在つながりません。"
+    "privacyOffline": "Nova Commands は所属機関のサーバーで動作しますが、現在つながりません。"
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "任意のテキストに使える、すぐ実行できるAIアクション。",
     "builtin": "組み込み",
     "noBuiltin": "組み込みのAI Skillsはまだありません。",
+    "builtinInCommands": "Nova の組み込みアクションは Nova Commands にあります。",
     "organization": "組織から提供",
     "noOrganization": "組織はAI Skillsを公開していません。",
     "fromOrganization": "組織から提供",

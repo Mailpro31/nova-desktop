@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Seçtiğiniz metin üzerinde çalışın.",
     "preview": "Önizleme",
-    "previewHint": "AI Skills şu anda test ediliyor.",
+    "previewHint": "Nova Commands şu anda test ediliyor.",
     "essentials": "Temeller",
     "howItWorks": "Nasıl çalışır",
     "how": {
       "select": "Herhangi bir uygulamada metin seçin",
       "open": "Nova'yı kısayolunuzla açın",
-      "choose": "Bir AI Skill seçin",
+      "choose": "Bir komut seçin",
       "review": "Bir şey değişmeden önce sonucu gözden geçirin"
     },
     "privacy": "Campus bağlantınız üzerinden işlenir.",
-    "privacyOffline": "AI Skills kurumunuzun sunucusunda çalışır; şu anda erişilemiyor."
+    "privacyOffline": "Nova Commands kurumunuzun sunucusunda çalışır; şu anda erişilemiyor."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Herhangi bir metne uygulanabilen hazır yapay zekâ eylemleri.",
     "builtin": "Yerleşik",
     "noBuiltin": "Henüz yerleşik AI Skill yok.",
+    "builtinInCommands": "Nova'nın yerleşik eylemleri Nova Commands bölümünde.",
     "organization": "Kuruluşunuzdan",
     "noOrganization": "Kuruluşunuz hiç AI Skill yayınlamadı.",
     "fromOrganization": "Kuruluşunuzdan",

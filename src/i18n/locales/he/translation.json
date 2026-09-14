@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "פעלו על הטקסט שאתם מסמנים.",
     "preview": "תצוגה מקדימה",
-    "previewHint": "‏AI Skills נמצאים כעת בבדיקה.",
+    "previewHint": "‏Nova Commands נמצאות כעת בבדיקה.",
     "essentials": "העיקר",
     "howItWorks": "איך זה עובד",
     "how": {
       "select": "סמנו טקסט בכל יישום",
       "open": "פתחו את Nova עם קיצור הדרך שלכם",
-      "choose": "בחרו AI Skill",
+      "choose": "בחרו פקודה",
       "review": "קראו את התוצאה לפני שמשהו משתנה"
     },
     "privacy": "מעובד דרך חיבור ה־Campus שלכם.",
-    "privacyOffline": "‏AI Skills פועלים על שרת המוסד שלכם, שאינו זמין כרגע."
+    "privacyOffline": "‏Nova Commands פועלות על שרת המוסד שלכם, שאינו זמין כרגע."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "פעולות AI מוכנות לשימוש על כל טקסט.",
     "builtin": "מובנות",
     "noBuiltin": "אין עדיין AI Skills מובנות.",
+    "builtinInCommands": "הפעולות המובנות של Nova נמצאות ב-Nova Commands.",
     "organization": "מהארגון שלך",
     "noOrganization": "הארגון שלך לא פרסם AI Skills.",
     "fromOrganization": "מהארגון שלך",

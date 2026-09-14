@@ -50,7 +50,10 @@ export const AiSkillsSettings: React.FC = () => {
   return (
     <>
       <PageHeader
-        title={t("aiSkills.title")}
+        // L'entrée de la barre latérale s'appelle « Nova Commands » : l'écran
+        // porte le même nom. Titré « AI Skills », il se confondait avec l'écran
+        // des AI Skills de l'organisation.
+        title={t("novaCommands.title")}
         description={t("aiSkills.subtitle")}
         actions={
           // Traitement discret plutôt qu'un bandeau d'avertissement : la

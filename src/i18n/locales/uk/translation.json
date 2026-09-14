@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Працюйте з виділеним текстом.",
     "preview": "Попередній перегляд",
-    "previewHint": "AI Skills зараз проходять перевірку.",
+    "previewHint": "Nova Commands зараз проходять перевірку.",
     "essentials": "Головне",
     "howItWorks": "Як це працює",
     "how": {
       "select": "Виділіть текст у будь-якій програмі",
       "open": "Відкрийте Nova своїм скороченням",
-      "choose": "Оберіть AI Skill",
+      "choose": "Оберіть команду",
       "review": "Прочитайте результат, перш ніж щось зміниться"
     },
     "privacy": "Обробляється через ваше з'єднання з Campus.",
-    "privacyOffline": "AI Skills виконуються на сервері вашого закладу, зараз недоступному."
+    "privacyOffline": "Nova Commands виконуються на сервері вашого закладу, зараз недоступному."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Готові дії ШІ для будь-якого тексту.",
     "builtin": "Вбудовані",
     "noBuiltin": "Вбудованих AI Skills поки немає.",
+    "builtinInCommands": "Вбудовані дії Nova знаходяться в Nova Commands.",
     "organization": "Від вашої організації",
     "noOrganization": "Ваша організація не опублікувала жодного AI Skill.",
     "fromOrganization": "Від вашої організації",

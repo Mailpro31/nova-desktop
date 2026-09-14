@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "Làm việc với đoạn bạn chọn.",
     "preview": "Thử nghiệm",
-    "previewHint": "AI Skills đang trong giai đoạn kiểm thử.",
+    "previewHint": "Nova Commands đang trong giai đoạn kiểm thử.",
     "essentials": "Điều cốt yếu",
     "howItWorks": "Cách dùng",
     "how": {
       "select": "Chọn văn bản trong bất kỳ ứng dụng nào",
       "open": "Mở Nova bằng phím tắt của bạn",
-      "choose": "Chọn một AI Skill",
+      "choose": "Chọn một lệnh",
       "review": "Đọc kết quả trước khi có gì thay đổi"
     },
     "privacy": "Được xử lý qua kết nối Campus của bạn.",
-    "privacyOffline": "AI Skills chạy trên máy chủ của trường bạn, hiện không kết nối được."
+    "privacyOffline": "Nova Commands chạy trên máy chủ của trường bạn, hiện không kết nối được."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "Các thao tác AI dùng ngay cho mọi văn bản.",
     "builtin": "Tích hợp sẵn",
     "noBuiltin": "Chưa có AI Skills tích hợp sẵn.",
+    "builtinInCommands": "Các thao tác tích hợp sẵn của Nova nằm trong Nova Commands.",
     "organization": "Từ tổ chức của bạn",
     "noOrganization": "Tổ chức của bạn chưa phát hành AI Skills nào.",
     "fromOrganization": "Từ tổ chức của bạn",

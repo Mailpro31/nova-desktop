@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "对选中的文字执行操作。",
     "preview": "预览",
-    "previewHint": "AI Skills 正在测试中。",
+    "previewHint": "Nova Commands 正在测试中。",
     "essentials": "常用操作",
     "howItWorks": "使用方法",
     "how": {
       "select": "在任意应用中选中文字",
       "open": "用你的快捷键打开 Nova",
-      "choose": "选择一个 AI Skill",
+      "choose": "选择一个命令",
       "review": "在任何内容改动前先看结果"
     },
     "privacy": "通过你的 Campus 连接处理。",
-    "privacyOffline": "AI Skills 运行在你所在机构的服务器上，目前无法连接。"
+    "privacyOffline": "Nova Commands 运行在你所在机构的服务器上，目前无法连接。"
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "可对任意文本直接运行的 AI 操作。",
     "builtin": "内置",
     "noBuiltin": "暂无内置 AI Skills。",
+    "builtinInCommands": "Nova 的内置操作位于 Nova Commands。",
     "organization": "来自您的组织",
     "noOrganization": "您的组织尚未发布任何 AI Skills。",
     "fromOrganization": "来自您的组织",

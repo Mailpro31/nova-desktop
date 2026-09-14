@@ -1528,17 +1528,17 @@
     "title": "AI Skills",
     "subtitle": "اعمل على النص الذي تحدّده.",
     "preview": "معاينة",
-    "previewHint": "‏AI Skills قيد الاختبار حاليًا.",
+    "previewHint": "‏Nova Commands قيد الاختبار حاليًا.",
     "essentials": "الأساسيات",
     "howItWorks": "كيف يعمل",
     "how": {
       "select": "حدّد نصًا في أي تطبيق",
       "open": "افتح Nova باختصارك",
-      "choose": "اختر AI Skill",
+      "choose": "اختر أمرًا",
       "review": "راجع النتيجة قبل أن يتغيّر أي شيء"
     },
     "privacy": "تتم المعالجة عبر اتصالك بـ Campus.",
-    "privacyOffline": "تعمل AI Skills على خادم مؤسستك، وهو غير متاح الآن."
+    "privacyOffline": "تعمل Nova Commands على خادم مؤسستك، وهو غير متاح الآن."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1711,6 +1711,7 @@
     "subtitle": "إجراءات ذكاء اصطناعي جاهزة لأي نص.",
     "builtin": "المدمجة",
     "noBuiltin": "لا توجد AI Skills مدمجة بعد.",
+    "builtinInCommands": "الإجراءات المدمجة في Nova موجودة في Nova Commands.",
     "organization": "من مؤسستك",
     "noOrganization": "لم تنشر مؤسستك أي AI Skills.",
     "fromOrganization": "من مؤسستك",
