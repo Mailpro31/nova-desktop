@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { isServerReachable } from "@/lib/campusApi";
+import {
+  connectionOf,
+  withSession,
+  type CampusConnection,
+  type CampusSnapshot,
+} from "@/lib/campusConnectionState";
 import { loadCampusSession, type CampusSession } from "@/lib/campusSession";
 import { isOrganizationMode } from "@/lib/mode";
 
 /** Intervalle de re-vérification de la joignabilité du serveur. */
 const POLL_MS = 30_000;
 
-export type CampusConnection = "unknown" | "connected" | "local";
+export type { CampusConnection };
 
 export interface CampusStatus {
   /** Session campus persistée, `null` en mode personnel ou avant chargement. */
@@ -20,10 +26,7 @@ export interface CampusStatus {
   refresh: () => Promise<void>;
 }
 
-interface Snapshot {
-  session: CampusSession | null;
-  reachable: boolean | null;
-}
+type Snapshot = CampusSnapshot;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sondage unique, partagé
@@ -51,7 +54,7 @@ function publish(next: Snapshot) {
 
 async function loadSession() {
   const session = await loadCampusSession();
-  publish({ ...snapshot, session });
+  publish(withSession(snapshot, session));
 }
 
 async function checkReachability() {
@@ -123,12 +126,7 @@ export function useCampusStatus(): CampusStatus {
       })()
     : null;
 
-  const connection: CampusConnection =
-    local.reachable === null
-      ? "unknown"
-      : local.reachable
-        ? "connected"
-        : "local";
+  const connection: CampusConnection = connectionOf(local);
 
   return { session: local.session, connection, serverName, refresh };
 }
