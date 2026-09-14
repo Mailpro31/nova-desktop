@@ -1026,6 +1026,11 @@
       "server": "Máy chủ",
       "email": "Đã đăng nhập bằng",
       "role": "Vai trò",
+      "access": "Quản trị",
+      "securityRoles": {
+        "organization_admin": "Quản trị viên tổ chức",
+        "it_admin": "Quản trị viên CNTT"
+      },
       "cohort": "Khóa",
       "logout": "Đăng xuất",
       "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Nhân viên",
+      "manager": "Quản lý"
     },
     "navigation": {
       "label": "Campus navigation",

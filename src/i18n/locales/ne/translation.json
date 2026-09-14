@@ -1026,6 +1026,11 @@
       "server": "सर्भर",
       "email": "यस रूपमा साइन इन",
       "role": "भूमिका",
+      "access": "प्रशासन",
+      "securityRoles": {
+        "organization_admin": "संस्थाका प्रशासक",
+        "it_admin": "आईटी प्रशासक"
+      },
       "cohort": "समूह",
       "logout": "साइन आउट",
       "logoutConfirmTitle": "Nova Campus बाट साइन आउट गर्ने?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "कर्मचारी",
+      "manager": "प्रबन्धक"
     },
     "navigation": {
       "label": "Campus navigation",

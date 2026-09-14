@@ -1026,6 +1026,11 @@
       "server": "服务器",
       "email": "当前登录账户",
       "role": "角色",
+      "access": "管理",
+      "securityRoles": {
+        "organization_admin": "组织管理员",
+        "it_admin": "IT 管理员"
+      },
       "cohort": "年级",
       "logout": "退出登录",
       "logoutConfirmTitle": "要退出 Nova Campus 吗？",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "员工",
+      "manager": "经理"
     },
     "navigation": {
       "label": "Campus navigation",

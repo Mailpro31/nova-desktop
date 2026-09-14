@@ -1026,6 +1026,11 @@
       "server": "שרת",
       "email": "מחובר בתור",
       "role": "תפקיד",
+      "access": "ניהול",
+      "securityRoles": {
+        "organization_admin": "מנהל הארגון",
+        "it_admin": "מנהל IT"
+      },
       "cohort": "מחזור",
       "logout": "התנתקות",
       "logoutConfirmTitle": "להתנתק מ-Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "עובד",
+      "manager": "מנהל"
     },
     "navigation": {
       "label": "Campus navigation",

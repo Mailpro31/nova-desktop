@@ -1026,6 +1026,11 @@
       "server": "Serveradress",
       "email": "Inloggad som",
       "role": "Roll",
+      "access": "Administration",
+      "securityRoles": {
+        "organization_admin": "Organisationsadministratör",
+        "it_admin": "IT-administratör"
+      },
       "cohort": "Årskull",
       "logout": "Logga ut",
       "logoutConfirmTitle": "Logga ut från Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Anställd",
+      "manager": "Chef"
     },
     "navigation": {
       "label": "Campus navigation",

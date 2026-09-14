@@ -1026,6 +1026,11 @@
       "server": "Сървър",
       "email": "Влезли сте като",
       "role": "Роля",
+      "access": "Администриране",
+      "securityRoles": {
+        "organization_admin": "Администратор на организацията",
+        "it_admin": "ИТ администратор"
+      },
       "cohort": "Випуск",
       "logout": "Изход",
       "logoutConfirmTitle": "Изход от Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Служител",
+      "manager": "Мениджър"
     },
     "navigation": {
       "label": "Campus navigation",

@@ -1026,6 +1026,11 @@
       "server": "Servidor",
       "email": "Conectado como",
       "role": "Função",
+      "access": "Administração",
+      "securityRoles": {
+        "organization_admin": "Administrador da organização",
+        "it_admin": "Administrador de TI"
+      },
       "cohort": "Turma",
       "logout": "Sair",
       "logoutConfirmTitle": "Sair do Nova Campus?",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "Funcionário",
+      "manager": "Gestor"
     },
     "navigation": {
       "label": "Campus navigation",

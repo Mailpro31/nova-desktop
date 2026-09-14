@@ -1026,6 +1026,11 @@
       "server": "الخادم",
       "email": "تم تسجيل الدخول باسم",
       "role": "الدور",
+      "access": "الإدارة",
+      "securityRoles": {
+        "organization_admin": "مسؤول المؤسسة",
+        "it_admin": "مسؤول تقنية المعلومات"
+      },
       "cohort": "الدفعة",
       "logout": "تسجيل الخروج",
       "logoutConfirmTitle": "تسجيل الخروج من Nova Campus؟",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "موظف",
+      "manager": "مدير"
     },
     "navigation": {
       "label": "Campus navigation",

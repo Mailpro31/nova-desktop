@@ -11,10 +11,14 @@ import { useOrganization } from "../../../hooks/useOrganization";
 import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { commands } from "@/bindings";
 import { clearCampusSession } from "@/lib/campusSession";
+import {
+  accountRoleLabels,
+  type AccountRoleLabels,
+} from "@/lib/organization/accountRoles";
 import type { WordingId } from "@/lib/organization/wording";
 
 interface Profile {
-  role: string;
+  roles: AccountRoleLabels;
   cohort: string;
 }
 
@@ -63,7 +67,10 @@ export const CampusOrganizationSettings: React.FC = () => {
       .getCampusMe()
       .then((result) => {
         if (cancelled || result.status !== "ok") return;
-        setProfile({ role: result.data.role, cohort: result.data.cohort });
+        setProfile({
+          roles: accountRoleLabels(result.data),
+          cohort: result.data.cohort,
+        });
       })
       .catch(() => {
         // Profil illisible : les lignes correspondantes disparaissent plutôt
@@ -110,9 +117,19 @@ export const CampusOrganizationSettings: React.FC = () => {
             <Row label={t("campus.account.email")} value={session.email} />
           )}
           {/* Rôle et cohorte n'existent que si le serveur les renseigne :
-              beaucoup de comptes n'en ont pas. */}
-          {profile?.role && (
-            <Row label={t("campus.account.role")} value={profile.role} />
+              beaucoup de comptes n'en ont pas. Le métier est traduit, et un
+              administrateur de l'organisation est présenté comme tel. */}
+          {profile?.roles.memberType && (
+            <Row
+              label={t("campus.account.role")}
+              value={t(profile.roles.memberType)}
+            />
+          )}
+          {profile?.roles.securityRole && (
+            <Row
+              label={t("campus.account.access")}
+              value={t(profile.roles.securityRole)}
+            />
           )}
           {profile?.cohort && (
             <Row label={t("campus.account.cohort")} value={profile.cohort} />

@@ -1026,6 +1026,11 @@
       "server": "サーバー",
       "email": "ログイン中のアカウント",
       "role": "役割",
+      "access": "管理",
+      "securityRoles": {
+        "organization_admin": "組織管理者",
+        "it_admin": "IT 管理者"
+      },
       "cohort": "学年",
       "logout": "ログアウト",
       "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
@@ -1213,7 +1218,9 @@
       "student": "Student",
       "teacher": "Teacher",
       "staff": "Staff",
-      "partner": "Partner"
+      "partner": "Partner",
+      "employee": "従業員",
+      "manager": "マネージャー"
     },
     "navigation": {
       "label": "Campus navigation",
