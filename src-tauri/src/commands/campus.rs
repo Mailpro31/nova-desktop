@@ -2509,6 +2509,28 @@ mod tests {
     use super::*;
 
     #[test]
+    fn the_learning_catalog_is_asked_in_the_interface_language() {
+        assert_eq!(
+            learning_catalog_url("https://nova.example.edu", "fr"),
+            "https://nova.example.edu/api/learning/catalog?locale=fr"
+        );
+        assert_eq!(
+            learning_catalog_url("https://nova.example.edu", "pt-BR"),
+            "https://nova.example.edu/api/learning/catalog?locale=pt-BR"
+        );
+    }
+
+    #[test]
+    fn a_value_that_is_not_a_language_code_is_never_sent() {
+        for language in ["", "fr&admin=1", "../fr", "fr fr"] {
+            assert_eq!(
+                learning_catalog_url("https://nova.example.edu", language),
+                "https://nova.example.edu/api/learning/catalog"
+            );
+        }
+    }
+
+    #[test]
     fn session_metadata_never_serializes_a_token() {
         let stored = StoredCampusSession {
             server_url: "https://campus.example.edu".to_string(),
