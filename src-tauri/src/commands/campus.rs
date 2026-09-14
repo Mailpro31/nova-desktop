@@ -1292,12 +1292,32 @@ struct LearningExerciseBody {
     text: String,
 }
 
+/// Adresse du catalogue Learn, dans la langue de l'interface.
+///
+/// La langue part dans l'URL : seul un code de langue (`fr`, `pt-BR`,
+/// `zh-Hans`) y va. Sans code valable, le serveur sert le catalogue anglais,
+/// exactement comme avant que Nova n'envoie la langue.
+fn learning_catalog_url(base_url: &str, language: &str) -> String {
+    let endpoint = format!("{}/api/learning/catalog", base_url);
+    let is_code = !language.is_empty()
+        && language.len() <= 35
+        && language
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_');
+    if is_code {
+        format!("{}?locale={}", endpoint, language)
+    } else {
+        endpoint
+    }
+}
+
 #[tauri::command]
 #[specta::specta]
 pub async fn fetch_learning_catalog(app: AppHandle) -> Result<LearningCatalog, String> {
     let (base_url, client) = authenticated_client(&app)?;
+    let language = get_settings(&app).app_language;
     let response = client
-        .get(format!("{}/api/learning/catalog", base_url))
+        .get(learning_catalog_url(&base_url, &language))
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
