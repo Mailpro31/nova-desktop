@@ -231,11 +231,6 @@ pub fn is_builtin_style(id: &str) -> bool {
     BUILTIN_STYLE_IDS.contains(&id)
 }
 
-/// Un Style est-il distribué par l'organisation ?
-pub fn is_organization_style(id: &str) -> bool {
-    style_origin(id) == StyleOrigin::Organization
-}
-
 /// Le palier requis pour appliquer un Style, ou `None` si aucun ne l'est.
 ///
 /// C'est le seul endroit qui traduit une provenance en exigence commerciale.
@@ -255,7 +250,6 @@ pub fn style_required_feature(id: &str) -> Option<&'static str> {
 pub struct LicenseInfo {
     pub tier: Tier,
     pub email: String,
-    pub expiry: i64,
 }
 
 /// Le système de licence est-il ACTIF (clé publique configurée) ?
@@ -304,11 +298,7 @@ pub fn verify_key(key: &str) -> Option<LicenseInfo> {
         .and_then(|e| e.as_str())
         .unwrap_or("")
         .to_string();
-    Some(LicenseInfo {
-        tier,
-        email,
-        expiry,
-    })
+    Some(LicenseInfo { tier, email })
 }
 
 /// Palier courant d'après la clé stockée. Dormant → Ultra ; actif sans clé
