@@ -1734,6 +1734,7 @@
     "subtitle": "Bli bättre med AI, några minuter i taget.",
     "loading": "Läser in…",
     "empty": "Inga lektioner är tillgängliga än.",
+    "languageNote": "De här lektionerna finns för närvarande bara på {{language}}.",
     "continue": "Fortsätt",
     "recommended": "Rekommenderat för dig",
     "start": "Börja",

@@ -1734,6 +1734,7 @@
     "subtitle": "Yapay zekâyla birkaç dakikada bir adım ilerleyin.",
     "loading": "Yükleniyor…",
     "empty": "Henüz ders yok.",
+    "languageNote": "Bu dersler şimdilik yalnızca şu dilde sunuluyor: {{language}}.",
     "continue": "Devam",
     "recommended": "Sizin için önerilen",
     "start": "Başla",

@@ -1734,6 +1734,7 @@
     "subtitle": "Get better with AI, a few minutes at a time.",
     "loading": "Loading…",
     "empty": "No lessons are available yet.",
+    "languageNote": "These lessons are currently available in {{language}} only.",
     "continue": "Continue",
     "recommended": "Recommended for you",
     "start": "Start",

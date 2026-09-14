@@ -16,14 +16,9 @@ import { PageHeader } from "../../shell/PageHeader";
 import { ModelsSettings } from "../models/ModelsSettings";
 import { AdvancedSettings } from "../advanced/AdvancedSettings";
 import { PersonalizationSettings } from "../personalization/PersonalizationSettings";
-import { useCapability } from "@/hooks/useOrganizationContext";
+import { useOrganizationSettingsTools } from "@/hooks/useOrganizationSettingsTools";
 import { isOrganizationMode } from "@/lib/mode";
-import {
-  organizationSettingsTools,
-  type OrganizationSettingsTools,
-} from "@/lib/organization/settingsTools";
-import { announcedTypeFrom } from "@/lib/organization/wording";
-import { useCampusStore } from "@/stores/campusStore";
+import { type OrganizationSettingsTools } from "@/lib/organization/settingsTools";
 
 type ConfigTab =
   | "general"
@@ -66,27 +61,6 @@ const ORGANIZATION_TOOL_TABS: {
   { id: "aiEssentials", labelKey: "campus.aiCurriculum.title" },
   { id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" },
 ];
-
-/** Ce que l'organisation ouvre, lu dans ses capacités et sa nature annoncée. */
-function useOrganizationSettingsTools(): OrganizationSettingsTools {
-  const aiSkillsCapability = useCapability("aiSkills");
-  const engineeringNotesCapability = useCapability("engineeringNotes");
-  const aiSkillsPolicyEnabled = useCampusStore(
-    (state) => state.context.aiSkillsPolicy.enabled,
-  );
-  const organizationType = useCampusStore((state) =>
-    announcedTypeFrom(
-      state.serverIdentity?.organizationType,
-      state.config?.organization_type,
-    ),
-  );
-  return organizationSettingsTools({
-    aiSkillsCapability,
-    aiSkillsPolicyEnabled,
-    engineeringNotesCapability,
-    organizationType,
-  });
-}
 
 /**
  * « Configuration » regroupe les anciennes sections Général / Modèles /

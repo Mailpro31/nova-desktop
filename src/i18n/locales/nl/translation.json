@@ -1734,6 +1734,7 @@
     "subtitle": "Word beter met AI, een paar minuten per keer.",
     "loading": "Laden…",
     "empty": "Er zijn nog geen lessen beschikbaar.",
+    "languageNote": "Deze lessen zijn voorlopig alleen in het {{language}} beschikbaar.",
     "continue": "Doorgaan",
     "recommended": "Aanbevolen voor jou",
     "start": "Beginnen",

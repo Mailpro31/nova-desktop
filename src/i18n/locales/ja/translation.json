@@ -1734,6 +1734,7 @@
     "subtitle": "AIとともに、数分ずつ上達しましょう。",
     "loading": "読み込み中…",
     "empty": "利用できるレッスンはまだありません。",
+    "languageNote": "これらのレッスンは現在、{{language}}でのみ提供されています。",
     "continue": "次へ",
     "recommended": "あなたへのおすすめ",
     "start": "始める",
