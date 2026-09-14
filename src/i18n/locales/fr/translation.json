@@ -16,6 +16,7 @@
     "meeting": "Mode réunion",
     "personalization": "Personnalisation",
     "history": "Historique",
+    "prompts": "Prompts",
     "debug": "Débogage",
     "about": "À propos",
     "home": "Accueil",
@@ -1697,6 +1698,11 @@
     "empty": "Vos dictées apparaîtront ici.",
     "copy": "Copier",
     "copied": "Copié"
+  },
+  "prompts": {
+    "subtitle": "Les prompts que Nova a écrits à partir de vos dictées, prêts à réutiliser.",
+    "empty": "Dictez avec le Style prompt : vos prompts apparaîtront ici.",
+    "searchPlaceholder": "Rechercher dans vos prompts"
   },
   "settingsNav": {
     "voice": "Voix"

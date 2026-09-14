@@ -18,6 +18,7 @@ import { Input } from "../../ui/Input";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { AudioPlayer } from "../../ui/AudioPlayer";
 import {
+  entriesForStyle,
   filterEntries,
   groupByRecency,
   historyStyleLabel,
@@ -56,8 +57,23 @@ const BUCKET_LABEL: Record<HistoryBucket, string> = {
  * base SQLite locale : tout charger d'un coup est correct, et la recherche se
  * fait donc en mémoire, sans requête serveur ni pagination à trous.
  */
-export const HistorySettings: React.FC = () => {
+/** Style intégré qui transforme une dictée en prompt pour une IA. */
+const PROMPT_STYLE_ID = "nova_style_prompt";
+
+interface HistorySettingsProps {
+  /**
+   * `history` : toutes les dictées. `prompts` : seulement celles que le Style
+   * prompt a écrites — la page « Prompts », pour les retrouver et les
+   * réutiliser sans fouiller l'historique.
+   */
+  variant?: "history" | "prompts";
+}
+
+export const HistorySettings: React.FC<HistorySettingsProps> = ({
+  variant = "history",
+}) => {
   const { t, i18n } = useTranslation();
+  const prompts = variant === "prompts";
   const { getSetting } = useSettings();
   const osType = useOsType();
   const styles = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
@@ -117,9 +133,14 @@ export const HistorySettings: React.FC = () => {
     };
   }, []);
 
+  const visibleEntries = useMemo(
+    () =>
+      prompts ? entriesForStyle(entries, styles, PROMPT_STYLE_ID) : entries,
+    [prompts, entries, styles],
+  );
   const groups = useMemo(
-    () => groupByRecency(filterEntries(entries, query)),
-    [entries, query],
+    () => groupByRecency(filterEntries(visibleEntries, query)),
+    [visibleEntries, query],
   );
   const matchCount = groups.reduce((n, g) => n + g.entries.length, 0);
 
@@ -140,23 +161,27 @@ export const HistorySettings: React.FC = () => {
   return (
     <>
       <PageHeader
-        title={t("settings.history.title")}
-        description={t("history.subtitle")}
+        title={prompts ? t("sidebar.prompts") : t("settings.history.title")}
+        description={prompts ? t("prompts.subtitle") : t("history.subtitle")}
         actions={
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => void commands.openRecordingsFolder()}
-          >
-            <FolderOpen size={15} strokeWidth={1.75} aria-hidden="true" />
-            {t("settings.history.openFolder")}
-          </Button>
+          // Le dossier des enregistrements concerne l'audio de l'historique,
+          // pas les prompts.
+          prompts ? undefined : (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => void commands.openRecordingsFolder()}
+            >
+              <FolderOpen size={15} strokeWidth={1.75} aria-hidden="true" />
+              {t("settings.history.openFolder")}
+            </Button>
+          )
         }
       />
 
       {/* La recherche n'apparaît que lorsqu'il y a matière à chercher : un
           champ au-dessus de trois entrées est du décor. */}
-      {entries.length > 8 && (
+      {visibleEntries.length > 8 && (
         <div className="relative mb-[20px]">
           <Search
             size={15}
@@ -168,8 +193,16 @@ export const HistorySettings: React.FC = () => {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("history.searchPlaceholder")}
-            aria-label={t("history.searchPlaceholder")}
+            placeholder={
+              prompts
+                ? t("prompts.searchPlaceholder")
+                : t("history.searchPlaceholder")
+            }
+            aria-label={
+              prompts
+                ? t("prompts.searchPlaceholder")
+                : t("history.searchPlaceholder")
+            }
             className="w-full ps-9"
           />
         </div>
@@ -179,9 +212,11 @@ export const HistorySettings: React.FC = () => {
         <p className="py-6 text-sm text-text-secondary">
           {t("settings.history.loading")}
         </p>
-      ) : entries.length === 0 ? (
+      ) : visibleEntries.length === 0 ? (
         <div className="py-[48px] text-center">
-          <p className="text-sm text-text">{t("history.empty")}</p>
+          <p className="text-sm text-text">
+            {prompts ? t("prompts.empty") : t("history.empty")}
+          </p>
           {shortcut && (
             <p className="mt-3 flex flex-wrap items-center justify-center gap-2 text-sm text-text-secondary">
               <KeyboardShortcut binding={shortcut} size="sm" />

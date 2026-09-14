@@ -15,6 +15,7 @@
     "postProcessing": "Naverwerking",
     "meeting": "Meeting",
     "history": "Geschiedenis",
+    "prompts": "Prompts",
     "debug": "Probleemoplossing",
     "about": "Over Nova",
     "personalization": "Personalisatie",
@@ -1697,6 +1698,11 @@
     "empty": "Hier verschijnen uw dictaten.",
     "copy": "Kopiëren",
     "copied": "Gekopieerd"
+  },
+  "prompts": {
+    "subtitle": "Prompts die Nova uit uw dictaten heeft geschreven, klaar om te hergebruiken.",
+    "empty": "Dicteer met de promptstijl en uw prompts verschijnen hier.",
+    "searchPlaceholder": "Zoek in uw prompts"
   },
   "settingsNav": {
     "voice": "Stem"

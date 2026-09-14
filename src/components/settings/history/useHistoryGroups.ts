@@ -98,6 +98,28 @@ export function historyStyleLabel(
   return value.length <= 60 && !value.includes("\n") ? value : null;
 }
 
+/**
+ * Dictées écrites avec un Style donné, dans leur ordre d'origine.
+ *
+ * Même rapprochement que `historyStyleLabel` : ce qui est enregistré est la
+ * consigne du Style (ou, parfois, son nom). Un Style absent des réglages ne
+ * retient rien — on ne devine pas une consigne qu'on ne connaît plus.
+ */
+export function entriesForStyle(
+  entries: HistoryEntry[],
+  styles: readonly { id: string; name: string; prompt: string }[],
+  styleId: string,
+): HistoryEntry[] {
+  const style = styles.find((item) => item.id === styleId);
+  if (!style) return [];
+  const prompt = style.prompt.trim();
+  const name = style.name.trim();
+  return entries.filter((entry) => {
+    const stored = entry.post_process_prompt?.trim();
+    return stored === prompt || stored === name;
+  });
+}
+
 function normalize(value: string): string {
   return (
     value

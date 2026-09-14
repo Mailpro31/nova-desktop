@@ -15,6 +15,7 @@
     "postProcessing": "עיבוד משלים",
     "meeting": "Meeting",
     "history": "היסטוריה",
+    "prompts": "פרומפטים",
     "debug": "ניפוי שגיאות",
     "about": "אודות",
     "personalization": "התאמה אישית",
@@ -1697,6 +1698,11 @@
     "empty": "ההכתבות שלכם יופיעו כאן.",
     "copy": "העתק",
     "copied": "הועתק"
+  },
+  "prompts": {
+    "subtitle": "פרומפטים ש-Nova כתבה מההכתבות שלכם, מוכנים לשימוש חוזר.",
+    "empty": "הכתיבו עם סגנון הפרומפט והפרומפטים שלכם יופיעו כאן.",
+    "searchPlaceholder": "חיפוש בפרומפטים"
   },
   "settingsNav": {
     "voice": "קול"

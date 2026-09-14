@@ -15,6 +15,7 @@
     "postProcessing": "Postproces",
     "meeting": "Meeting",
     "history": "Historia",
+    "prompts": "Prompty",
     "debug": "Debugowanie",
     "about": "O programie",
     "personalization": "Personalizacja",
@@ -1697,6 +1698,11 @@
     "empty": "Tu pojawią się Twoje dyktowania.",
     "copy": "Kopiuj",
     "copied": "Skopiowano"
+  },
+  "prompts": {
+    "subtitle": "Prompty napisane przez Nova na podstawie Twoich dyktowań, gotowe do ponownego użycia.",
+    "empty": "Dyktuj ze stylem prompt, a Twoje prompty pojawią się tutaj.",
+    "searchPlaceholder": "Szukaj w promptach"
   },
   "settingsNav": {
     "voice": "Głos"

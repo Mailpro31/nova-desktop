@@ -15,6 +15,7 @@
     "postProcessing": "Post Proceso",
     "meeting": "Meeting",
     "history": "Historial",
+    "prompts": "Prompts",
     "debug": "Depuración",
     "about": "Acerca de",
     "personalization": "Personalización",
@@ -1697,6 +1698,11 @@
     "empty": "Aquí aparecerán tus dictados.",
     "copy": "Copiar",
     "copied": "Copiado"
+  },
+  "prompts": {
+    "subtitle": "Los prompts que Nova ha escrito a partir de tus dictados, listos para reutilizar.",
+    "empty": "Dicta con el estilo prompt y tus prompts aparecerán aquí.",
+    "searchPlaceholder": "Buscar en tus prompts"
   },
   "settingsNav": {
     "voice": "Voz"

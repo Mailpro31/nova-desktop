@@ -10,6 +10,7 @@ import {
   History,
   House,
   Info,
+  MessageSquareText,
   Settings,
   Sparkles,
   Palette,
@@ -55,6 +56,11 @@ const AccountSettings = lazy(() =>
 const HistorySettings = lazy(() =>
   import("./settings/history/HistorySettings").then((module) => ({
     default: module.HistorySettings,
+  })),
+);
+const PromptsSettings = lazy(() =>
+  import("./settings/history/PromptsSettings").then((module) => ({
+    default: module.PromptsSettings,
   })),
 );
 const DebugSettings = lazy(() =>
@@ -183,6 +189,16 @@ export const SECTIONS_CONFIG = {
     enabled: () => true,
     campusVisible: true,
   },
+  prompts: {
+    // Les prompts écrits par le Style prompt, retrouvés sans fouiller
+    // l'historique. Juste après Styles : c'est un Style qui les produit.
+    labelKey: "sidebar.prompts",
+    campusLabelKey: undefined,
+    icon: MessageSquareText,
+    component: PromptsSettings,
+    enabled: () => true,
+    campusVisible: true,
+  },
   meeting: {
     labelKey: "sidebar.meeting",
     campusLabelKey: undefined,
@@ -265,6 +281,7 @@ const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "aiskilltools",
   "aiskills",
   "postprocessing",
+  "prompts",
   "history",
 ];
 
