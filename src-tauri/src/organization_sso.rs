@@ -470,19 +470,26 @@ pub async fn organization_auth_providers(
     server_url: String,
 ) -> Result<OrganizationAuthProviders, String> {
     let base_url = normalize_base_url(&server_url);
-    let response = sso_client()
-        .get(format!("{}/api/auth/entra/pkce/available", base_url))
-        .send()
-        .await;
 
-    // Un serveur plus ancien ne connaît pas cette route : le code par adresse
-    // reste alors le seul chemin, exactement comme aujourd'hui.
-    let Ok(response) = response else {
+    // `/api/auth/providers` porte les noms choisis par l'organisation
+    // (`provider_configs`, `display_names`) ; la route historique n'annonce que
+    // des types. Ne lire que celle-ci faisait afficher « Company SSO » à une
+    // organisation qui s'appelait IPSA. Un serveur antérieur ne connaît que la
+    // route historique : on y retombe, exactement comme avant.
+    let mut answered = None;
+    for route in ["/api/auth/providers", "/api/auth/entra/pkce/available"] {
+        if let Ok(candidate) = sso_client().get(format!("{base_url}{route}")).send().await {
+            if candidate.status().is_success() {
+                answered = Some(candidate);
+                break;
+            }
+        }
+    }
+
+    // Aucune des deux routes : le code par adresse reste le seul chemin.
+    let Some(response) = answered else {
         return Ok(legacy_only_providers());
     };
-    if !response.status().is_success() {
-        return Ok(legacy_only_providers());
-    }
     let body = response
         .json::<AvailabilityResponse>()
         .await
@@ -670,6 +677,86 @@ fn urlencode(value: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Répond comme un serveur Nova : la route historique
+    /// `/api/auth/entra/pkce/available` n'annonce que des types, la route
+    /// détaillée `/api/auth/providers` porte les noms choisis par
+    /// l'organisation. `detailed: None` imite un serveur antérieur à celle-ci.
+    fn serve_provider_routes(listener: std::net::TcpListener, detailed: Option<&'static str>) {
+        use std::io::{BufRead, BufReader, Write};
+        for stream in listener.incoming().take(2) {
+            let Ok(mut stream) = stream else { return };
+            let _ = stream.set_read_timeout(Some(std::time::Duration::from_secs(10)));
+            let Ok(clone) = stream.try_clone() else {
+                return;
+            };
+            let mut reader = BufReader::new(clone);
+            let mut request_line = String::new();
+            let _ = reader.read_line(&mut request_line);
+            loop {
+                let mut header = String::new();
+                if reader.read_line(&mut header).unwrap_or(0) == 0 || header == "\r\n" {
+                    break;
+                }
+            }
+            let path = request_line.split_whitespace().nth(1).unwrap_or("");
+            let not_found = ("404 Not Found", r#"{"detail":"Not Found"}"#);
+            let (status, body) = match (path, detailed) {
+                ("/api/auth/providers", Some(body)) => ("200 OK", body),
+                ("/api/auth/entra/pkce/available", _) => (
+                    "200 OK",
+                    r#"{"available":true,"providers":["oidc","legacy_email_code"]}"#,
+                ),
+                _ => not_found,
+            };
+            let _ = write!(
+                stream,
+                "HTTP/1.1 {status}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+                body.len()
+            );
+        }
+    }
+
+    fn providers_from(detailed: Option<&'static str>) -> OrganizationAuthProviders {
+        let _exclusive = crate::commands::campus::wire_test_support::exclusive();
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").expect("port local");
+        let port = listener.local_addr().expect("adresse").port();
+        std::thread::spawn(move || serve_provider_routes(listener, detailed));
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("runtime")
+            .block_on(organization_auth_providers(format!(
+                "http://127.0.0.1:{port}"
+            )))
+            .expect("fournisseurs")
+    }
+
+    #[test]
+    fn the_sign_in_button_carries_the_name_the_organization_chose() {
+        // Mesuré sur un vrai serveur : l'organisation « IPSA » annonçait son
+        // nom, et le poste affichait « Continuer avec Company SSO » — il ne
+        // lisait que la route historique, qui ne porte aucun nom.
+        let providers = providers_from(Some(
+            r#"{"provider_configs":[{"id":"cfg-ipsa","type":"oidc","display_name":"IPSA"}],"providers":["oidc","legacy_email_code"],"display_names":{"oidc":"IPSA"}}"#,
+        ));
+        assert!(providers.oidc);
+        assert_eq!(providers.oidc_display_name.as_deref(), Some("IPSA"));
+        assert_eq!(providers.configs.len(), 1);
+        assert_eq!(providers.configs[0].id, "cfg-ipsa");
+        assert_eq!(providers.configs[0].display_name, "IPSA");
+    }
+
+    #[test]
+    fn a_server_without_the_detailed_route_still_offers_its_providers() {
+        // Un serveur antérieur ne connaît que la route historique : ses
+        // boutons restent proposés, avec le libellé de repli de l'interface.
+        let providers = providers_from(None);
+        assert!(providers.oidc);
+        assert!(providers.legacy_email_code);
+        assert!(providers.configs.is_empty());
+        assert_eq!(providers.oidc_display_name, None);
+    }
 
     #[test]
     fn the_challenge_matches_the_rfc_7636_test_vector() {
