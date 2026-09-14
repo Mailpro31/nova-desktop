@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "الإملاء الصوتي الذي توفّره مؤسستك، ببريدك الأكاديمي.",
-        "connect": "Sign in"
+        "subtitle": "الإملاء الصوتي الذي توفّره مؤسستك، ببريدك الأكاديمي."
       },
       "lab": {
         "open": "الانضمام إلى خادم تجريبي",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "أنت متصل بـ {{organization}}",
         "subtitle": "Nova Campus جاهز على هذا الكمبيوتر.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "المؤسسة",
         "account": "الحساب",
         "processing": "المعالجة",
-        "campusInfrastructure": "بنية Campus",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "بنية Campus"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "الخادم",
       "email": "تم تسجيل الدخول باسم",
       "role": "الدور",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام Nova Campus. هل أنت متأكد؟",
       "logoutConfirmButton": "تسجيل الخروج",
       "refresh": "تحديث",
-      "checking": "جارٍ التحقق من الاتصال…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "جارٍ التحقق من الاتصال…"
     },
     "errors": {
       "network": "تعذّر الوصول إلى الخادم. تحقق من العنوان ومن اتصالك."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova Campus.",
       "shortcuts": {
         "title": "اختصارات لوحة المفاتيح",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "الصوت",
         "description": "الميكروفون والتنبيهات الصوتية ومستوى الصوت"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "اختر أسلوب الكتابة المطبّق على إملاءاتك أو خصّصه.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "دع Nova يختار تلقائيًا أفضل تنسيق لإملائك.",
         "default_improve_transcriptions": "نظّف النص المُملى: علامات الترقيم والأخطاء وسلاسة الصياغة.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "بدء التحليل",
       "analyzeSuccess": "تم استخراج {{count}} مصطلح جديد وإضافته!",
       "analyzeEmpty": "لم يُعثر على مصطلحات جديدة في المستند.",
-      "analyzing": "جارٍ تحليل المفردات بالذكاء الاصطناعي…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "جارٍ تحليل المفردات بالذكاء الاصطناعي…"
     },
     "snippets": {
       "title": "المقتطفات الصوتية",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "مثال: اكتب كل النسب المئوية بالأرقام متبوعة بالرمز %",
       "addRule": "إضافة القاعدة"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "نسخ ملف صوتي",
       "description": "أفلت ملفًا صوتيًا لنسخه عبر خادم Nova Campus.",
@@ -1222,71 +1136,31 @@
       "employee": "موظف",
       "manager": "مدير"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "الحرم متصل",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local نشط"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "أكمل تسجيل الدخول في متصفحك. استخدم هذا الرمز إذا طلبته Microsoft.",
       "expired": "انتهت صلاحية طلب تسجيل الدخول عبر Microsoft. ابدأ من جديد.",
       "failed": "لم يكتمل تسجيل الدخول. حاول مرة أخرى.",
       "notInOrganization": "حساب Microsoft هذا لا ينتمي إلى مؤسستك.",
       "accessRevoked": "لم يعد وصولك متاحًا. تواصل مع المسؤول."
     },
-    "google": {
-      "connect": "المتابعة باستخدام Google"
-    },
     "sso": {
       "connect": "المتابعة باستخدام {{provider}}"
     },
     "aiSkills": {
-      "title": "مهارات الذكاء الاصطناعي",
       "description": "وحدات قصيرة لاستخدام الذكاء الاصطناعي بطريقة نقدية وفعّالة وآمنة في دراستك.",
       "progress": "أُكملت {{completed}} من {{total}} وحدات",
       "minutes": "حوالي {{count}} دقيقة",
-      "practice": "جرّبه",
-      "markComplete": "وضع علامة كمكتمل",
-      "completed": "مكتمل",
-      "unavailable": "الدورة غير متاحة مؤقتًا."
+      "completed": "مكتمل"
     },
     "engineeringNotes": {
       "title": "ملاحظات هندسية",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "اضبط مظهر Nova وطريقة التفاعل معه دون تغيير سياسات مؤسستك.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "لون الكرة",
       "orbDescription": "اختر اللون المستخدم في شريط Nova ومؤشر التسجيل.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "إظهار الفقاعة دائمًا",
       "alwaysVisibleDescription": "أبقِ مؤشر حالة Nova المصغّر ظاهرًا. لا يلتقط النقرات إلا عند مرور المؤشر فوقه."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "المتابعة لاحقًا",
       "useNovaNow": "استخدام Nova الآن",
       "requiredByInstitution": "تشترط {{organization}} إتمام هذا المسار الأساسي.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "مرحبًا بك في {{organization}}، {{name}}.",
         "description": "تعلّم كيف تعمل مع الذكاء الاصطناعي بمسؤولية، أو ابدأ استخدام Nova فورًا.",

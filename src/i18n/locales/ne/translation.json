@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "तपाईंको संस्थाले दिने आवाज श्रुतिलेखन, तपाईंको शैक्षिक इमेलसँग।",
-        "connect": "Sign in"
+        "subtitle": "तपाईंको संस्थाले दिने आवाज श्रुतिलेखन, तपाईंको शैक्षिक इमेलसँग।"
       },
       "lab": {
         "open": "परीक्षण सर्भरमा जोडिनुहोस्",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "तपाईं {{organization}} मा जोडिनुभयो",
         "subtitle": "Nova Campus यो कम्प्युटरमा तयार छ।",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "संस्था",
         "account": "खाता",
         "processing": "प्रशोधन",
-        "campusInfrastructure": "Campus पूर्वाधार",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus पूर्वाधार"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "सर्भर",
       "email": "यस रूपमा साइन इन",
       "role": "भूमिका",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Nova Campus प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
       "logoutConfirmButton": "साइन आउट",
       "refresh": "रिफ्रेस",
-      "checking": "जडान जाँच गर्दै…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "जडान जाँच गर्दै…"
     },
     "errors": {
       "network": "सर्भरमा पुग्न सकिएन। ठेगाना र जडान जाँच गर्नुहोस्।"
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Nova Campus का लागि जानकारी र समस्या समाधान उपकरण।",
       "shortcuts": {
         "title": "किबोर्ड सर्टकट",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "आवाज",
         "description": "माइक्रोफोन, ध्वनि संकेत र भोल्युम"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "तपाईंका डिक्टेसनमा लागू हुने लेखन शैली छान्नुहोस् वा मिलाउनुहोस्।",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "तपाईंको डिक्टेसनका लागि उत्तम ढाँचा Nova आफैँ छानोस्।",
         "default_improve_transcriptions": "बोलेर लेखिएको पाठ मिलाउनुहोस्: विराम चिह्न, टाइपिङ त्रुटि र सहज वाक्य।",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "विश्लेषण सुरु गर्नुहोस्",
       "analyzeSuccess": "{{count}} नयाँ शब्द निकालेर थपियो!",
       "analyzeEmpty": "कागजातमा कुनै नयाँ शब्द भेटिएन।",
-      "analyzing": "AI सँग शब्दहरू विश्लेषण गर्दै…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "AI सँग शब्दहरू विश्लेषण गर्दै…"
     },
     "snippets": {
       "title": "आवाज स्निपेट",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "जस्तै सबै प्रतिशत अङ्कमा लेखेर पछि % चिह्न राख्नुहोस्",
       "addRule": "नियम थप्नुहोस्"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "फाइल ट्रान्सक्राइब गर्नुहोस्",
       "description": "Nova Campus सर्भरबाट ट्रान्सक्राइब गर्न अडियो फाइल छोड्नुहोस्।",
@@ -1222,71 +1136,31 @@
       "employee": "कर्मचारी",
       "manager": "प्रबन्धक"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "क्याम्पस जोडिएको",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local सक्रिय"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "ब्राउजरमा साइन इन पूरा गर्नुहोस्। Microsoft ले मागेमा यो कोड प्रयोग गर्नुहोस्।",
       "expired": "Microsoft साइन इन अनुरोधको म्याद सकियो। फेरि सुरु गर्नुहोस्।",
       "failed": "साइन इन पूरा भएन। फेरि प्रयास गर्नुहोस्।",
       "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
       "accessRevoked": "तपाईंको पहुँच अब उपलब्ध छैन। प्रशासकलाई सम्पर्क गर्नुहोस्।"
     },
-    "google": {
-      "connect": "Google मार्फत जारी राख्नुहोस्"
-    },
     "sso": {
       "connect": "{{provider}} मार्फत जारी राख्नुहोस्"
     },
     "aiSkills": {
-      "title": "AI सीपहरू",
       "description": "तपाईंको अध्ययनमा AI लाई आलोचनात्मक, प्रभावकारी र सुरक्षित रूपमा प्रयोग गर्न छोटा मोड्युलहरू।",
       "progress": "{{total}} मध्ये {{completed}} मोड्युल पूरा",
       "minutes": "करिब {{count}} मिनेट",
-      "practice": "आफै प्रयास गर्नुहोस्",
-      "markComplete": "पूरा भएको चिन्ह लगाउनुहोस्",
-      "completed": "पूरा भयो",
-      "unavailable": "कोर्स अस्थायी रूपमा उपलब्ध छैन।"
+      "completed": "पूरा भयो"
     },
     "engineeringNotes": {
       "title": "इन्जिनियरिङ टिपोट",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "तपाईंको संस्थाका नीति नबदली Nova को रूप र प्रयोग मिलाउनुहोस्।",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "गोलोको रङ",
       "orbDescription": "Nova को डक र रेकर्डिङ सूचकमा प्रयोग हुने रङ छान्नुहोस्।",
-      "bubble": "Connection bubble",
       "alwaysVisible": "बबल सधैँ देखाउनुहोस्",
       "alwaysVisibleDescription": "Nova को सानो स्थिति सूचक देखिइरहन दिनुहोस्। माउस माथि हुँदा मात्र क्लिक लिन्छ।"
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "पछि जारी राख्नुहोस्",
       "useNovaNow": "अहिले Nova प्रयोग गर्नुहोस्",
       "requiredByInstitution": "यो आधारभूत कोर्स {{organization}} ले अनिवार्य गरेको छ।",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "{{organization}} मा स्वागत छ, {{name}}।",
         "description": "AI सँग जिम्मेवारीपूर्वक काम गर्न सिक्नुहोस्, वा अहिले नै Nova प्रयोग गर्न सुरु गर्नुहोस्।",

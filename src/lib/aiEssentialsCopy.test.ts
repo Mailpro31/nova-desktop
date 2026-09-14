@@ -85,7 +85,10 @@ const ENGLISH_COURSE = course("en");
 
 describe("AI Essentials course", () => {
   test("le cours anglais a bien ses textes", () => {
-    expect(Object.keys(ENGLISH_COURSE).length).toBeGreaterThan(80);
+    // 80 textes affichés par le cours. Le seuil était « plus de 80 » quand
+    // quatre textes `campus.aiSkills.*` que plus aucun écran ne lisait
+    // (title, practice, markComplete, unavailable) étaient encore comptés.
+    expect(Object.keys(ENGLISH_COURSE).length).toBeGreaterThanOrEqual(80);
   });
 
   for (const locale of LOCALES.filter((name) => name !== "en")) {

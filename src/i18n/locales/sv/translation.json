@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Röstdiktering från ditt lärosäte, med din studentadress.",
-        "connect": "Sign in"
+        "subtitle": "Röstdiktering från ditt lärosäte, med din studentadress."
       },
       "lab": {
         "open": "Anslut till en testserver",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "Du är ansluten till {{organization}}",
         "subtitle": "Nova Campus är redo på den här datorn.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "Organisation",
         "account": "Konto",
         "processing": "Bearbetning",
-        "campusInfrastructure": "Campus-infrastruktur",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus-infrastruktur"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "Serveradress",
       "email": "Inloggad som",
       "role": "Roll",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova Campus. Är du säker?",
       "logoutConfirmButton": "Logga ut",
       "refresh": "Uppdatera",
-      "checking": "Kontrollerar anslutningen…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "Kontrollerar anslutningen…"
     },
     "errors": {
       "network": "Det gick inte att nå servern. Kontrollera adressen och din anslutning."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Information och felsökningsverktyg för Nova Campus.",
       "shortcuts": {
         "title": "Kortkommandon",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Ljud",
         "description": "Mikrofon, ljudsignaler och volym"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "Välj eller anpassa skrivstilen som används för dina dikteringar.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "Låt Nova automatiskt välja den bästa formateringen för din diktering.",
         "default_improve_transcriptions": "Snygga till din dikterade text: skiljetecken, stavfel och flytande formuleringar.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Starta analys",
       "analyzeSuccess": "{{count}} ny(a) term(er) extraherades och lades till!",
       "analyzeEmpty": "Inga nya termer hittades i dokumentet.",
-      "analyzing": "Analyserar ordförrådet med AI…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "Analyserar ordförrådet med AI…"
     },
     "snippets": {
       "title": "Röstsnuttar",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "T.ex. Skriv alla procentsatser med siffror följda av %-tecknet",
       "addRule": "Lägg till regel"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "Transkribera en fil",
       "description": "Släpp en ljudfil för att transkribera den via Nova Campus-servern.",
@@ -1222,71 +1136,31 @@
       "employee": "Anställd",
       "manager": "Chef"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "Campus anslutet",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local aktivt"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "Slutför inloggningen i webbläsaren. Använd den här koden om Microsoft ber om den.",
       "expired": "Inloggningsbegäran från Microsoft har gått ut. Börja om.",
       "failed": "Inloggningen slutfördes inte. Försök igen.",
       "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
       "accessRevoked": "Din åtkomst är inte längre tillgänglig. Kontakta administratören."
     },
-    "google": {
-      "connect": "Fortsätt med Google"
-    },
     "sso": {
       "connect": "Fortsätt med {{provider}}"
     },
     "aiSkills": {
-      "title": "AI-färdigheter",
       "description": "Korta moduler för att använda AI kritiskt, effektivt och säkert i dina studier.",
       "progress": "{{completed}} av {{total}} moduler klara",
       "minutes": "Cirka {{count}} min",
-      "practice": "Prova själv",
-      "markComplete": "Markera som klar",
-      "completed": "Klar",
-      "unavailable": "Kursen är tillfälligt otillgänglig."
+      "completed": "Klar"
     },
     "engineeringNotes": {
       "title": "Tekniska anteckningar",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "Klotets färg",
       "orbDescription": "Välj accentfärg för Novas docka och inspelningsindikatorn.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "Visa alltid bubblan",
       "alwaysVisibleDescription": "Håll Novas kompakta statusindikator synlig. Den tar bara emot klick när muspekaren är över den."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Fortsätt senare",
       "useNovaNow": "Använd Nova nu",
       "requiredByInstitution": "Den här grundkursen krävs av {{organization}}.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "Välkommen till {{organization}}, {{name}}.",
         "description": "Lär dig att arbeta ansvarsfullt med AI, eller börja använda Nova direkt.",

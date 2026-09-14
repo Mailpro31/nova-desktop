@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "所属機関が提供する音声入力を、大学のメールアドレスで。",
-        "connect": "Sign in"
+        "subtitle": "所属機関が提供する音声入力を、大学のメールアドレスで。"
       },
       "lab": {
         "open": "テストサーバーに参加",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "{{organization}} に接続しました",
         "subtitle": "このパソコンで Nova Campus を使う準備ができました。",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "組織",
         "account": "アカウント",
         "processing": "処理",
-        "campusInfrastructure": "Campus インフラ",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus インフラ"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "サーバー",
       "email": "ログイン中のアカウント",
       "role": "役割",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",
       "logoutConfirmButton": "ログアウト",
       "refresh": "更新",
-      "checking": "接続を確認しています…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "接続を確認しています…"
     },
     "errors": {
       "network": "サーバーに接続できませんでした。アドレスと接続を確認してください。"
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Nova Campus の情報とトラブルシューティング用ツール。",
       "shortcuts": {
         "title": "キーボードショートカット",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "サウンド",
         "description": "マイク、効果音、音量"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "音声入力に適用する文章スタイルを選ぶか、カスタマイズします。",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "音声入力に最適な書式を Nova が自動で選びます。",
         "default_improve_transcriptions": "音声入力したテキストを整えます：句読点、誤字、自然な言い回し。",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "分析を開始",
       "analyzeSuccess": "新しい用語を {{count}} 件抽出して追加しました！",
       "analyzeEmpty": "文書から新しい用語は見つかりませんでした。",
-      "analyzing": "AI で語彙を分析しています…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "AI で語彙を分析しています…"
     },
     "snippets": {
       "title": "音声スニペット",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "例：パーセントはすべて数字と % 記号で書く",
       "addRule": "ルールを追加"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "ファイルを文字起こし",
       "description": "音声ファイルをドロップすると、Nova Campus サーバーで文字起こしします。",
@@ -1222,71 +1136,31 @@
       "employee": "従業員",
       "manager": "マネージャー"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "キャンパスに接続済み",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local 動作中"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "ブラウザーでログインを完了してください。Microsoft から求められたら、このコードを使ってください。",
       "expired": "Microsoft のログイン要求の有効期限が切れました。最初からやり直してください。",
       "failed": "サインインが完了しませんでした。もう一度お試しください。",
       "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
       "accessRevoked": "アクセスは利用できなくなりました。管理者にお問い合わせください。"
     },
-    "google": {
-      "connect": "Google で続行"
-    },
     "sso": {
       "connect": "{{provider}} で続行"
     },
     "aiSkills": {
-      "title": "AIスキル",
       "description": "学業でAIを批判的に、効果的に、安全に使うための短いモジュールです。",
       "progress": "{{total}}モジュール中{{completed}}件完了",
       "minutes": "約{{count}}分",
-      "practice": "やってみる",
-      "markComplete": "完了にする",
-      "completed": "完了",
-      "unavailable": "コースは一時的に利用できません。"
+      "completed": "完了"
     },
     "engineeringNotes": {
       "title": "エンジニアリングノート",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "所属機関のポリシーを変えずに、Nova の見た目と操作を調整します。",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "オーブの色",
       "orbDescription": "Nova のドックと録音インジケーターのアクセントカラーを選びます。",
-      "bubble": "Connection bubble",
       "alwaysVisible": "バブルを常に表示",
       "alwaysVisibleDescription": "Nova の小さな状態表示を常に表示します。マウスを重ねたときだけクリックを受け付けます。"
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "あとで続ける",
       "useNovaNow": "今すぐ Nova を使う",
       "requiredByInstitution": "この基礎コースは {{organization}} で必須です。",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "{{organization}} へようこそ、{{name}} さん。",
         "description": "AI を責任をもって使う方法を学ぶか、すぐに Nova を使い始めましょう。",

@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Голосовая диктовка от вашего учебного заведения, с академической почтой.",
-        "connect": "Sign in"
+        "subtitle": "Голосовая диктовка от вашего учебного заведения, с академической почтой."
       },
       "lab": {
         "open": "Подключиться к тестовому серверу",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "Вы подключены к {{organization}}",
         "subtitle": "Nova Campus готов к работе на этом компьютере.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "Организация",
         "account": "Учётная запись",
         "processing": "Обработка",
-        "campusInfrastructure": "Инфраструктура Campus",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Инфраструктура Campus"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "Сервер",
       "email": "Вы вошли как",
       "role": "Роль",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Чтобы пользоваться Nova Campus, придётся войти снова. Продолжить?",
       "logoutConfirmButton": "Выйти",
       "refresh": "Обновить",
-      "checking": "Проверка подключения…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "Проверка подключения…"
     },
     "errors": {
       "network": "Не удалось связаться с сервером. Проверьте адрес и подключение."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Сведения и средства диагностики Nova Campus.",
       "shortcuts": {
         "title": "Сочетания клавиш",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Звук",
         "description": "Микрофон, звуковые сигналы и громкость"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "Выберите или настройте стиль письма для ваших диктовок.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "Nova сам подберёт лучшее оформление для вашей диктовки.",
         "default_improve_transcriptions": "Приведите надиктованный текст в порядок: пунктуация, опечатки и гладкие фразы.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Начать анализ",
       "analyzeSuccess": "Извлечено и добавлено новых терминов: {{count}}!",
       "analyzeEmpty": "Новых терминов в документе не найдено.",
-      "analyzing": "Анализ словаря с помощью ИИ…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "Анализ словаря с помощью ИИ…"
     },
     "snippets": {
       "title": "Голосовые фрагменты",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "Напр. Записывай все проценты цифрами со знаком %",
       "addRule": "Добавить правило"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "Расшифровать файл",
       "description": "Перетащите аудиофайл, чтобы расшифровать его на сервере Nova Campus.",
@@ -1222,71 +1136,31 @@
       "employee": "Сотрудник",
       "manager": "Руководитель"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "Кампус подключён",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local активен"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "Завершите вход в браузере. Используйте этот код, если Microsoft его запросит.",
       "expired": "Запрос на вход через Microsoft истёк. Начните заново.",
       "failed": "Вход не завершён. Попробуйте ещё раз.",
       "notInOrganization": "Эта учётная запись Microsoft не относится к вашей организации.",
       "accessRevoked": "Ваш доступ больше не действителен. Обратитесь к администратору."
     },
-    "google": {
-      "connect": "Продолжить с Google"
-    },
     "sso": {
       "connect": "Продолжить с {{provider}}"
     },
     "aiSkills": {
-      "title": "Навыки работы с ИИ",
       "description": "Короткие модули о критичном, эффективном и безопасном использовании ИИ в учёбе.",
       "progress": "Пройдено модулей: {{completed}} из {{total}}",
       "minutes": "Около {{count}} мин",
-      "practice": "Попробуйте сами",
-      "markComplete": "Отметить как пройденное",
-      "completed": "Пройдено",
-      "unavailable": "Курс временно недоступен."
+      "completed": "Пройдено"
     },
     "engineeringNotes": {
       "title": "Инженерные заметки",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Настройте внешний вид и поведение Nova, не меняя правил вашего учебного заведения.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "Цвет сферы",
       "orbDescription": "Выберите акцентный цвет панели Nova и индикатора записи.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "Всегда показывать пузырёк",
       "alwaysVisibleDescription": "Компактный индикатор состояния Nova остаётся на экране. Щелчки он принимает, только когда на нём курсор."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Продолжить позже",
       "useNovaNow": "Перейти к Nova",
       "requiredByInstitution": "Этот базовый курс обязателен в {{organization}}.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "Добро пожаловать в {{organization}}, {{name}}.",
         "description": "Узнайте, как ответственно работать с ИИ, или сразу начните пользоваться Nova.",

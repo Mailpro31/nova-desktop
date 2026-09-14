@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "由你所在机构提供的语音输入，使用你的校园邮箱。",
-        "connect": "Sign in"
+        "subtitle": "由你所在机构提供的语音输入，使用你的校园邮箱。"
       },
       "lab": {
         "open": "加入测试服务器",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "你已连接到 {{organization}}",
         "subtitle": "Nova Campus 已在这台电脑上准备就绪。",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "组织",
         "account": "账户",
         "processing": "处理方式",
-        "campusInfrastructure": "Campus 基础设施",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus 基础设施"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "服务器",
       "email": "当前登录账户",
       "role": "角色",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
       "logoutConfirmButton": "退出登录",
       "refresh": "刷新",
-      "checking": "正在检查连接…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "正在检查连接…"
     },
     "errors": {
       "network": "无法连接到服务器。请检查地址和网络连接。"
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Nova Campus 的信息与故障排查工具。",
       "shortcuts": {
         "title": "键盘快捷键",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "声音",
         "description": "麦克风、提示音与音量"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "选择或自定义应用于听写内容的写作风格。",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "让 Nova 自动为你的听写选择最合适的格式。",
         "default_improve_transcriptions": "整理听写文本：标点、错别字与语句通顺。",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "开始分析",
       "analyzeSuccess": "已提取并添加 {{count}} 个新词条！",
       "analyzeEmpty": "文档中未发现新词条。",
-      "analyzing": "正在用 AI 分析词汇…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "正在用 AI 分析词汇…"
     },
     "snippets": {
       "title": "语音片段",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "例如：所有百分比都用数字加 % 符号表示",
       "addRule": "添加规则"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "转写文件",
       "description": "拖入音频文件，通过 Nova Campus 服务器进行转写。",
@@ -1222,71 +1136,31 @@
       "employee": "员工",
       "manager": "经理"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "校园已连接",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local 已启用"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "请在浏览器中完成登录。如果 Microsoft 要求，请使用此代码。",
       "expired": "Microsoft 登录请求已过期，请重新开始。",
       "failed": "登录未完成，请重试。",
       "notInOrganization": "此 Microsoft 账户不属于您的机构。",
       "accessRevoked": "您的访问权限已不可用，请联系管理员。"
     },
-    "google": {
-      "connect": "使用 Google 继续"
-    },
     "sso": {
       "connect": "使用 {{provider}} 继续"
     },
     "aiSkills": {
-      "title": "AI 技能",
       "description": "简短单元，帮助你在学习中以批判、有效且安全的方式使用 AI。",
       "progress": "已完成 {{completed}}/{{total}} 个单元",
       "minutes": "约 {{count}} 分钟",
-      "practice": "动手试试",
-      "markComplete": "标记为已完成",
-      "completed": "已完成",
-      "unavailable": "课程暂时无法使用。"
+      "completed": "已完成"
     },
     "engineeringNotes": {
       "title": "工程笔记",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "光球颜色",
       "orbDescription": "选择 Nova 停靠栏和录音指示器使用的强调色。",
-      "bubble": "Connection bubble",
       "alwaysVisible": "始终显示气泡",
       "alwaysVisibleDescription": "让 Nova 的紧凑状态指示器保持可见。只有鼠标悬停在上面时才会接收点击。"
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "稍后继续",
       "useNovaNow": "立即使用 Nova",
       "requiredByInstitution": "{{organization}} 要求完成此基础课程。",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "欢迎来到 {{organization}}，{{name}}。",
         "description": "学习如何负责任地使用 AI，或立即开始使用 Nova。",

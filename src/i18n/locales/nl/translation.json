@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Spraakdictaat aangeboden door uw instelling, met uw academische e-mail.",
-        "connect": "Sign in"
+        "subtitle": "Spraakdictaat aangeboden door uw instelling, met uw academische e-mail."
       },
       "lab": {
         "open": "Deelnemen aan een testserver",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "Je bent verbonden met {{organization}}",
         "subtitle": "Nova Campus is klaar op deze computer.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "Organisatie",
         "account": "Gebruikersaccount",
         "processing": "Verwerking",
-        "campusInfrastructure": "Campus-infrastructuur",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus-infrastructuur"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "Serveradres",
       "email": "Aangemeld als",
       "role": "Rol",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Je moet je opnieuw aanmelden om Nova Campus te gebruiken. Weet je het zeker?",
       "logoutConfirmButton": "Afmelden",
       "refresh": "Vernieuwen",
-      "checking": "Verbinding controleren…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "Verbinding controleren…"
     },
     "errors": {
       "network": "De server is niet bereikbaar. Controleer het adres en je verbinding."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Informatie en hulpmiddelen voor probleemoplossing voor Nova Campus.",
       "shortcuts": {
         "title": "Sneltoetsen",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Geluid",
         "description": "Microfoon, geluidssignalen en volume"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "Kies of pas de schrijfstijl aan die op je dictaten wordt toegepast.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "Laat Nova automatisch de beste opmaak voor je dictaat kiezen.",
         "default_improve_transcriptions": "Maak je gedicteerde tekst op: interpunctie, typefouten en vlotte zinnen.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Analyse starten",
       "analyzeSuccess": "{{count}} nieuwe term(en) gevonden en toegevoegd!",
       "analyzeEmpty": "Geen nieuwe termen gevonden in het document.",
-      "analyzing": "Woordenschat wordt met AI geanalyseerd…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "Woordenschat wordt met AI geanalyseerd…"
     },
     "snippets": {
       "title": "Spraakfragmenten",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "Bijv. Schrijf alle percentages in cijfers gevolgd door het %-teken",
       "addRule": "Regel toevoegen"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "Een bestand transcriberen",
       "description": "Sleep een audiobestand hierheen om het via de Nova Campus-server te transcriberen.",
@@ -1222,71 +1136,31 @@
       "employee": "Medewerker",
       "manager": "Manager"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "Campus verbonden",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local actief"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "Rond het aanmelden af in je browser. Gebruik deze code als Microsoft erom vraagt.",
       "expired": "Het aanmeldverzoek van Microsoft is verlopen. Begin opnieuw.",
       "failed": "Aanmelden is niet voltooid. Probeer het opnieuw.",
       "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
       "accessRevoked": "Uw toegang is niet meer beschikbaar. Neem contact op met uw beheerder."
     },
-    "google": {
-      "connect": "Doorgaan met Google"
-    },
     "sso": {
       "connect": "Doorgaan met {{provider}}"
     },
     "aiSkills": {
-      "title": "AI-vaardigheden",
       "description": "Korte modules om AI kritisch, effectief en veilig te gebruiken tijdens je studie.",
       "progress": "{{completed}} van {{total}} modules voltooid",
       "minutes": "Ongeveer {{count}} min",
-      "practice": "Probeer het zelf",
-      "markComplete": "Markeren als voltooid",
-      "completed": "Voltooid",
-      "unavailable": "De cursus is tijdelijk niet beschikbaar."
+      "completed": "Voltooid"
     },
     "engineeringNotes": {
       "title": "Technische notities",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "Kleur van de bol",
       "orbDescription": "Kies de accentkleur voor het Nova-dock en de opname-indicator.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "Bubbel altijd tonen",
       "alwaysVisibleDescription": "Houd de compacte statusindicator van Nova zichtbaar. Hij reageert alleen op klikken als de muis erboven is."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Later verdergaan",
       "useNovaNow": "Nova nu gebruiken",
       "requiredByInstitution": "Deze basistraining is verplicht gesteld door {{organization}}.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "Welkom bij {{organization}}, {{name}}.",
         "description": "Leer verantwoord met AI werken, of begin meteen met Nova.",
