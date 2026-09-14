@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "소속 기관이 제공하는 음성 받아쓰기를, 학교 이메일로.",
-        "connect": "Sign in"
+        "subtitle": "소속 기관이 제공하는 음성 받아쓰기를, 학교 이메일로."
       },
       "lab": {
         "open": "테스트 서버에 참여",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "{{organization}}에 연결되었습니다",
         "subtitle": "이 컴퓨터에서 Nova Campus를 사용할 준비가 되었습니다.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "조직",
         "account": "계정",
         "processing": "처리",
-        "campusInfrastructure": "Campus 인프라",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus 인프라"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "서버",
       "email": "로그인 계정",
       "role": "역할",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Nova Campus를 사용하려면 다시 로그인해야 합니다. 계속할까요?",
       "logoutConfirmButton": "로그아웃",
       "refresh": "새로 고침",
-      "checking": "연결 확인 중…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "연결 확인 중…"
     },
     "errors": {
       "network": "서버에 연결할 수 없습니다. 주소와 연결 상태를 확인하세요."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Nova Campus 정보와 문제 해결 도구입니다.",
       "shortcuts": {
         "title": "키보드 단축키",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "사운드",
         "description": "마이크, 효과음, 음량"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "받아쓰기에 적용할 글쓰기 스타일을 선택하거나 맞춤 설정하세요.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "받아쓰기에 가장 알맞은 서식을 Nova가 자동으로 고릅니다.",
         "default_improve_transcriptions": "받아쓴 텍스트를 다듬습니다: 문장 부호, 오타, 자연스러운 문장.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "분석 시작",
       "analyzeSuccess": "새 용어 {{count}}개를 추출해 추가했습니다!",
       "analyzeEmpty": "문서에서 새 용어를 찾지 못했습니다.",
-      "analyzing": "AI로 어휘를 분석하는 중…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "AI로 어휘를 분석하는 중…"
     },
     "snippets": {
       "title": "음성 스니펫",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "예: 모든 백분율은 숫자 뒤에 % 기호를 붙여 쓰기",
       "addRule": "규칙 추가"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "파일 받아쓰기",
       "description": "오디오 파일을 끌어다 놓으면 Nova Campus 서버로 받아씁니다.",
@@ -1222,71 +1136,31 @@
       "employee": "직원",
       "manager": "매니저"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "캠퍼스 연결됨",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local 활성"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "브라우저에서 로그인을 마치세요. Microsoft가 요청하면 이 코드를 사용하세요.",
       "expired": "Microsoft 로그인 요청이 만료되었습니다. 처음부터 다시 시작하세요.",
       "failed": "로그인이 완료되지 않았습니다. 다시 시도하세요.",
       "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
       "accessRevoked": "액세스를 더 이상 사용할 수 없습니다. 관리자에게 문의하세요."
     },
-    "google": {
-      "connect": "Google 계정으로 계속"
-    },
     "sso": {
       "connect": "{{provider}} 계정으로 계속"
     },
     "aiSkills": {
-      "title": "AI 역량",
       "description": "학업에서 AI를 비판적이고 효과적이며 안전하게 활용하기 위한 짧은 모듈입니다.",
       "progress": "{{total}}개 모듈 중 {{completed}}개 완료",
       "minutes": "약 {{count}}분",
-      "practice": "직접 해 보기",
-      "markComplete": "완료로 표시",
-      "completed": "완료됨",
-      "unavailable": "강좌를 일시적으로 이용할 수 없습니다."
+      "completed": "완료됨"
     },
     "engineeringNotes": {
       "title": "엔지니어링 노트",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "기관 정책을 바꾸지 않고 Nova의 모양과 사용 방식을 조정합니다.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "오브 색상",
       "orbDescription": "Nova 독과 녹음 표시기에 쓰일 강조 색을 고르세요.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "버블 항상 표시",
       "alwaysVisibleDescription": "Nova의 작은 상태 표시기를 계속 보이게 합니다. 포인터를 올렸을 때만 클릭을 받습니다."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "나중에 계속하기",
       "useNovaNow": "지금 Nova 사용하기",
       "requiredByInstitution": "이 기초 과정은 {{organization}}에서 필수입니다.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "{{organization}}에 오신 것을 환영합니다, {{name}}님.",
         "description": "AI를 책임감 있게 활용하는 법을 배우거나, 바로 Nova를 사용해 보세요.",

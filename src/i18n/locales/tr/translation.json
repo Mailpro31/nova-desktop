@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Kurumunuzun sağladığı sesli dikte, akademik e-postanızla.",
-        "connect": "Sign in"
+        "subtitle": "Kurumunuzun sağladığı sesli dikte, akademik e-postanızla."
       },
       "lab": {
         "open": "Bir test sunucusuna katıl",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "{{organization}} ile bağlantı kuruldu",
         "subtitle": "Nova Campus bu bilgisayarda hazır.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "Kuruluş",
         "account": "Hesap",
         "processing": "İşleme",
-        "campusInfrastructure": "Campus altyapısı",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Campus altyapısı"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "Sunucu",
       "email": "Oturum açan hesap",
       "role": "Görev",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Nova Campus'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",
       "logoutConfirmButton": "Oturumu kapat",
       "refresh": "Yenile",
-      "checking": "Bağlantı kontrol ediliyor…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "Bağlantı kontrol ediliyor…"
     },
     "errors": {
       "network": "Sunucuya ulaşılamadı. Adresi ve bağlantını kontrol et."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Nova Campus için bilgiler ve sorun giderme araçları.",
       "shortcuts": {
         "title": "Klavye kısayolları",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Ses",
         "description": "Mikrofon, sesli geri bildirim ve ses düzeyi"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "Diktelerine uygulanan yazım stilini seç ya da özelleştir.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "Diktene en uygun biçimi Nova otomatik olarak seçsin.",
         "default_improve_transcriptions": "Dikte ettiğin metni düzelt: noktalama, yazım hataları ve akıcı ifadeler.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Analizi başlat",
       "analyzeSuccess": "{{count}} yeni terim çıkarıldı ve eklendi!",
       "analyzeEmpty": "Belgede yeni terim bulunamadı.",
-      "analyzing": "Kelime dağarcığı yapay zekâyla analiz ediliyor…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "Kelime dağarcığı yapay zekâyla analiz ediliyor…"
     },
     "snippets": {
       "title": "Sesli parçacıklar",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "Örn. Tüm yüzdeleri rakamla ve ardından % işaretiyle yaz",
       "addRule": "Kural ekle"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "Bir dosyayı dök",
       "description": "Nova Campus sunucusuyla metne dökmek için bir ses dosyası bırak.",
@@ -1222,71 +1136,31 @@
       "employee": "Çalışan",
       "manager": "Yönetici"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "Kampüs bağlı",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local etkin"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "Tarayıcında oturum açmayı tamamla. Microsoft isterse bu kodu kullan.",
       "expired": "Microsoft oturum açma isteğinin süresi doldu. Baştan başla.",
       "failed": "Oturum açma tamamlanmadı. Lütfen tekrar deneyin.",
       "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
       "accessRevoked": "Erişiminiz artık kullanılamıyor. Yöneticinizle iletişime geçin."
     },
-    "google": {
-      "connect": "Google ile devam et"
-    },
     "sso": {
       "connect": "{{provider}} ile devam et"
     },
     "aiSkills": {
-      "title": "Yapay Zekâ Becerileri",
       "description": "Yapay zekâyı çalışmalarınızda eleştirel, etkili ve güvenli biçimde kullanmak için kısa modüller.",
       "progress": "{{total}} modülden {{completed}} tanesi tamamlandı",
       "minutes": "Yaklaşık {{count}} dk",
-      "practice": "Kendin dene",
-      "markComplete": "Tamamlandı olarak işaretle",
-      "completed": "Tamamlandı",
-      "unavailable": "Kurs geçici olarak kullanılamıyor."
+      "completed": "Tamamlandı"
     },
     "engineeringNotes": {
       "title": "Mühendislik notları",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "Küre rengi",
       "orbDescription": "Nova'nın dock'unda ve kayıt göstergesinde kullanılan vurgu rengini seç.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "Baloncuğu her zaman göster",
       "alwaysVisibleDescription": "Nova'nın küçük durum göstergesini görünür tut. Yalnızca imleç üzerindeyken tıklamaları alır."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Daha sonra devam et",
       "useNovaNow": "Nova'yı şimdi kullan",
       "requiredByInstitution": "Bu temel eğitim {{organization}} tarafından zorunlu tutuluyor.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "{{organization}} kuruluşuna hoş geldin, {{name}}.",
         "description": "Yapay zekâyla sorumlu biçimde çalışmayı öğren ya da Nova'yı hemen kullanmaya başla.",

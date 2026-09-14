@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "הכתבה קולית שמספק המוסד שלכם, עם הדוא\"ל האקדמי שלכם.",
-        "connect": "Sign in"
+        "subtitle": "הכתבה קולית שמספק המוסד שלכם, עם הדוא\"ל האקדמי שלכם."
       },
       "lab": {
         "open": "הצטרפות לשרת בדיקה",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "אתם מחוברים ל-{{organization}}",
         "subtitle": "Nova Campus מוכן במחשב הזה.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "ארגון",
         "account": "חשבון",
         "processing": "עיבוד",
-        "campusInfrastructure": "תשתית Campus",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "תשתית Campus"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "שרת",
       "email": "מחובר בתור",
       "role": "תפקיד",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "תצטרכו להתחבר שוב כדי להשתמש ב-Nova Campus. להמשיך?",
       "logoutConfirmButton": "התנתקות",
       "refresh": "רענון",
-      "checking": "בודק את החיבור…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "בודק את החיבור…"
     },
     "errors": {
       "network": "לא ניתן להתחבר לשרת. בדקו את הכתובת ואת החיבור שלכם."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "מידע וכלי אבחון עבור Nova Campus.",
       "shortcuts": {
         "title": "קיצורי מקלדת",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "צליל",
         "description": "מיקרופון, משוב קולי ועוצמת שמע"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "בחרו או התאימו את סגנון הכתיבה שיוחל על ההכתבות שלכם.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "תנו ל-Nova לבחור אוטומטית את העיצוב הטוב ביותר להכתבה.",
         "default_improve_transcriptions": "נקו את הטקסט המוכתב: פיסוק, שגיאות הקלדה וניסוח זורם.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "התחלת ניתוח",
       "analyzeSuccess": "{{count}} מונחים חדשים חולצו ונוספו!",
       "analyzeEmpty": "לא נמצאו מונחים חדשים במסמך.",
-      "analyzing": "מנתח את אוצר המילים באמצעות AI…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "מנתח את אוצר המילים באמצעות AI…"
     },
     "snippets": {
       "title": "קטעים קוליים",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "לדוגמה: לכתוב את כל האחוזים בספרות ואחריהן הסימן %",
       "addRule": "הוספת כלל"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "תמלול קובץ",
       "description": "גררו קובץ שמע כדי לתמלל אותו באמצעות שרת Nova Campus.",
@@ -1222,71 +1136,31 @@
       "employee": "עובד",
       "manager": "מנהל"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "הקמפוס מחובר",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local פעיל"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "סיימו את ההתחברות בדפדפן. השתמשו בקוד הזה אם Microsoft מבקשת אותו.",
       "expired": "תוקף בקשת ההתחברות של Microsoft פג. התחילו מחדש.",
       "failed": "ההתחברות לא הושלמה. נסה שוב.",
       "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
       "accessRevoked": "הגישה שלך אינה זמינה עוד. פנה למנהל המערכת."
     },
-    "google": {
-      "connect": "המשך עם Google"
-    },
     "sso": {
       "connect": "המשך עם {{provider}}"
     },
     "aiSkills": {
-      "title": "מיומנויות AI",
       "description": "יחידות קצרות לשימוש ביקורתי, יעיל ובטוח ב-AI במהלך הלימודים.",
       "progress": "הושלמו {{completed}} מתוך {{total}} יחידות",
       "minutes": "כ-{{count}} דק׳",
-      "practice": "נסו בעצמכם",
-      "markComplete": "סימון כהושלם",
-      "completed": "הושלם",
-      "unavailable": "הקורס אינו זמין כרגע."
+      "completed": "הושלם"
     },
     "engineeringNotes": {
       "title": "הערות הנדסיות",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "התאימו את המראה והאינטראקציה של Nova בלי לשנות את המדיניות של המוסד שלכם.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "צבע הכדור",
       "orbDescription": "בחרו את צבע ההדגשה של סרגל Nova ושל מחוון ההקלטה.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "להציג תמיד את הבועה",
       "alwaysVisibleDescription": "השאירו את מחוון המצב הקומפקטי של Nova גלוי. הוא קולט לחיצות רק כשהסמן מעליו."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "להמשיך מאוחר יותר",
       "useNovaNow": "להשתמש ב-Nova עכשיו",
       "requiredByInstitution": "מסלול היסוד הזה נדרש על ידי {{organization}}.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "ברוכים הבאים ל-{{organization}}, {{name}}.",
         "description": "למדו לעבוד עם AI באחריות, או התחילו להשתמש ב-Nova מיד.",

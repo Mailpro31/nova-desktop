@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Rejoignez votre Campus",
-        "subtitle": "La dictée vocale fournie par votre établissement, avec votre adresse académique.",
-        "connect": "Continuer"
+        "subtitle": "La dictée vocale fournie par votre établissement, avec votre adresse académique."
       },
       "lab": {
         "open": "Rejoindre un serveur de test",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Email école",
-        "subtitle": "Utilisez l'adresse fournie par votre établissement.",
         "serverLabel": "Serveur Campus",
         "serverPlaceholder": "https://nova.ecole.fr",
         "emailLabel": "Email école",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "Vous êtes connecté à {{organization}}",
         "subtitle": "Nova Campus est prêt sur cet ordinateur.",
-        "shortcut": "Appuyez sur {{shortcut}} pour dicter.",
-        "shortcutFallback": "Votre raccourci de dictée est configuré dans les réglages.",
         "start": "Commencer à utiliser Nova",
         "organization": "Organisation",
         "account": "Compte",
         "processing": "Traitement",
-        "campusInfrastructure": "Infrastructure Campus",
-        "managed": "Votre établissement gère cet accès Campus."
+        "campusInfrastructure": "Infrastructure Campus"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Compte",
       "server": "Serveur",
       "email": "Connecté en tant que",
       "role": "Rôle",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser Nova Campus. Êtes-vous sûr ?",
       "logoutConfirmButton": "Se déconnecter",
       "refresh": "Actualiser",
-      "checking": "Vérification de la connexion…",
-      "connected": "Connecté à {{server}}",
-      "offline": "{{server}} — hors ligne"
-    },
-    "footer": {
-      "connected": "{{server}} — connecté",
-      "offline": "Hors ligne — mode secours"
-    },
-    "bubble": {
-      "checking": "vérification…",
-      "connected": "connecté",
-      "offline": "hors ligne",
-      "resetPosition": "Réinitialiser la position",
-      "hide": "Masquer la bulle"
+      "checking": "Vérification de la connexion…"
     },
     "errors": {
       "network": "Impossible de joindre le serveur. Vérifiez l'adresse et votre connexion."
     },
-    "home": {
-      "title": "Parlez. Nova écrit.",
-      "subtitle": "Maintenez {{shortcut}} et parlez naturellement. Nova écrit là où se trouve votre curseur.",
-      "action": {
-        "dictate": "Dicter",
-        "cancel": "Annuler",
-        "postProcess": "Dicter avec Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "Tout voir",
-      "statusTitle": "Connexion",
-      "connected": "Connecté à {{server}}",
-      "offline": "{{server}} — hors ligne, mode secours",
-      "privacyNote": "Vos données restent sur le réseau de votre établissement. Seul le texte transcrit et la consigne du Style actif sont envoyés au serveur.",
-      "recentTitle": "Récent",
-      "recentEmpty": "Aucune transcription récente.",
-      "primary": {
-        "title": "Maintenez {{shortcut}} pour dicter",
-        "description": "Fonctionne dans vos emails, notes, navigateurs et documents.",
-        "start": "Démarrer la dictée"
-      },
-      "secondary": {
-        "title": "Autres façons d'écrire",
-        "rewrite": "Reformuler",
-        "chooseStyle": "Choisir un Style"
-      },
-      "viewHistory": "Voir l'historique"
-    },
     "settings": {
-      "generalSubtitle": "Configurez Nova sans exposer les contrôles techniques.",
       "aboutSubtitle": "Informations et outils de diagnostic pour Nova Campus.",
       "shortcuts": {
         "title": "Raccourcis clavier",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Son",
         "description": "Micro, retour sonore et volume"
-      },
-      "account": {
-        "title": "Compte",
-        "description": "Votre session Nova Campus"
-      },
-      "bubble": {
-        "title": "Bulle de connexion",
-        "description": "Indicateur flottant de votre connexion Nova Campus",
-        "helper": "Glissez la bulle pour la déplacer. Utilisez les boutons ci-dessous pour l'afficher, la masquer ou réinitialiser sa position.",
-        "show": "Afficher la bulle",
-        "hide": "Masquer la bulle",
-        "resetPosition": "Réinitialiser la position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Réglages",
-      "tabs": {
-        "general": "Général",
-        "writing": "Écriture",
-        "campus": "Campus",
-        "advanced": "Avancé"
-      },
-      "advanced": {
-        "title": "Dépannage",
-        "description": "Version, données, journaux et outils de diagnostic"
       }
     },
     "styles": {
       "subtitle": "Choisissez ou personnalisez le style d'écriture appliqué à vos dictées.",
-      "listTitle": "Styles d'écriture",
       "descriptions": {
         "auto": "Laissez Nova choisir automatiquement la meilleure mise en forme pour votre dictée.",
         "default_improve_transcriptions": "Nettoyez votre texte dicté : ponctuation, fautes et phrases fluides.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Lancer l'analyse",
       "analyzeSuccess": "{{count}} nouveau(x) terme(s) extrait(s) et ajouté(s) !",
       "analyzeEmpty": "Aucun nouveau terme trouvé dans le document.",
-      "analyzing": "Analyse du vocabulaire en cours…",
-      "learnedToast": "Nova s'en souviendra pour vos prochaines dictées"
+      "analyzing": "Analyse du vocabulaire en cours…"
     },
     "snippets": {
       "title": "Snippets vocaux",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "Ex: Écrire les pourcentages en chiffres suivis du symbole %",
       "addRule": "Ajouter la règle"
     },
-    "command": {
-      "title": "Mode commande",
-      "description": "Sélectionnez du texte, dictez une consigne vocale pour le modifier avec l'IA.",
-      "shortcutTitle": "Raccourci du mode commande",
-      "shortcutDescription": "Raccourci clavier pour déclencher la consigne vocale sur la sélection",
-      "modalTitle": "Mode Commande",
-      "modalInstructionPlaceholder": "Ex: Traduis en anglais, résume en 3 points, rends plus formel...",
-      "executing": "Traitement de l'instruction par le serveur…",
-      "success": "Sélection modifiée avec succès.",
-      "error": "Impossible d'appliquer la commande au texte sélectionné."
-    },
     "files": {
       "title": "Transcrire un fichier",
       "description": "Glissez un fichier audio pour le transcrire via le serveur Nova Campus.",
@@ -1222,71 +1136,31 @@
       "employee": "Salarié",
       "manager": "Manager"
     },
-    "navigation": {
-      "label": "Navigation Campus",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Vérification",
       "connected": "Campus connecté",
       "local": "Nova Local actif",
-      "unavailable": "Indisponible",
       "localActive": "Nova Local actif"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Confidentialité gérée par votre établissement",
-      "institutionPolicyDescription": "Votre établissement définit la politique de traitement et de conservation de ce service Campus.",
-      "notStoredTitle": "Le contenu de vos dictées n'est pas stocké par Nova Campus",
-      "privateByDesign": "Confidentiel par conception",
-      "countersOnly": "Votre établissement peut recevoir des compteurs d'usage sans accéder à vos dictées."
-    },
     "page": {
-      "eyebrow": "Organisation",
       "processing": {
-        "label": "Traitement",
-        "campusTitle": "Infrastructure Campus",
-        "campusDescription": "Nova utilise l'infrastructure approuvée par votre établissement lorsque Campus est disponible.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus est temporairement indisponible. La dictée continue en local."
-      },
-      "features": "Fonctionnalités",
-      "privacy": "Confidentialité",
-      "systemStatus": "État du système",
-      "authMethod": "Authentification",
-      "educationMode": "Mode éducatif"
-    },
-    "features": {
-      "dictation": "Dictée",
-      "rewrite": "Reformulation",
-      "styles": "Styles",
-      "fileTranscription": "Transcription de fichiers",
-      "engineeringNotes": "Notes d'ingénierie",
-      "aiSkills": "Compétences IA",
-      "personalization": "Personnalisation"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continuer avec Microsoft",
       "browserHelp": "Terminez la connexion dans votre navigateur. Utilisez ce code si Microsoft le demande.",
       "expired": "La demande de connexion Microsoft a expiré. Recommencez.",
       "failed": "La connexion n'a pas abouti. Réessayez.",
       "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
       "accessRevoked": "Votre accès n'est plus disponible. Contactez votre administrateur."
     },
-    "google": {
-      "connect": "Continuer avec Google"
-    },
     "sso": {
       "connect": "Continuer avec {{provider}}"
     },
     "aiSkills": {
-      "title": "Compétences IA",
       "description": "Des modules courts pour utiliser l'IA de façon critique, efficace et sûre dans vos études.",
       "progress": "{{completed}} module(s) terminé(s) sur {{total}}",
       "minutes": "Environ {{count}} min",
-      "practice": "À vous de jouer",
-      "markComplete": "Marquer comme terminé",
-      "completed": "Terminé",
-      "unavailable": "Le parcours est temporairement indisponible."
+      "completed": "Terminé"
     },
     "engineeringNotes": {
       "title": "Notes d'ingénierie",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre établissement.",
-      "appearance": "Apparence",
       "orb": "Orbe Nova",
       "orbColor": "Teinte de l'orbe",
       "orbDescription": "Choisissez la teinte utilisée par le dock Nova et l'indicateur d'enregistrement.",
-      "bubble": "Bulle de connexion",
       "alwaysVisible": "Toujours afficher la bulle",
       "alwaysVisibleDescription": "Gardez l'indicateur compact de Nova visible. Il ne capte les clics que lorsque la souris le survole."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Continuer plus tard",
       "useNovaNow": "Utiliser Nova maintenant",
       "requiredByInstitution": "Ce parcours Fondamentaux est demandé par {{organization}}.",
-      "homeAiSkillsProgress": "Fondamentaux · {{completed}} / {{total}} terminés",
-      "homeAiSkillsStart": "Apprenez à travailler efficacement avec l'IA.",
-      "verificationHint": "Une reformulation IA peut changer le sens. Vérifiez les détails importants avant de l'utiliser.",
       "welcome": {
         "title": "Bienvenue à {{organization}}, {{name}}.",
         "description": "Apprenez à travailler avec l'IA de façon responsable, ou commencez immédiatement à utiliser Nova.",

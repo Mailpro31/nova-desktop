@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Hlasové diktování poskytované vaší institucí, s vaší školní adresou.",
-        "connect": "Sign in"
+        "subtitle": "Hlasové diktování poskytované vaší institucí, s vaší školní adresou."
       },
       "lab": {
         "open": "Připojit se k testovacímu serveru",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "Jste připojeni k {{organization}}",
         "subtitle": "Nova Campus je na tomto počítači připravena.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "Organizace",
         "account": "Účet",
         "processing": "Zpracování",
-        "campusInfrastructure": "Infrastruktura Campus",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Infrastruktura Campus"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "Adresa serveru",
       "email": "Přihlášeno jako",
       "role": "Uživatelská role",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Pro používání Nova Campus se budete muset znovu přihlásit. Opravdu chcete pokračovat?",
       "logoutConfirmButton": "Odhlásit se",
       "refresh": "Obnovit",
-      "checking": "Kontrola připojení…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "Kontrola připojení…"
     },
     "errors": {
       "network": "Server se nepodařilo kontaktovat. Zkontrolujte adresu a připojení."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Informace a diagnostické nástroje pro Nova Campus.",
       "shortcuts": {
         "title": "Klávesové zkratky",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Zvuk",
         "description": "Mikrofon, zvuková odezva a hlasitost"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "Vyberte nebo upravte styl psaní, který se použije na vaše diktáty.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "Nechte Novu automaticky zvolit nejlepší formátování diktátu.",
         "default_improve_transcriptions": "Učešte nadiktovaný text: interpunkce, překlepy a plynulé formulace.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Spustit analýzu",
       "analyzeSuccess": "Nově vytěžené a přidané termíny: {{count}}!",
       "analyzeEmpty": "V dokumentu nebyly nalezeny žádné nové termíny.",
-      "analyzing": "Analýza slovní zásoby pomocí AI…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "Analýza slovní zásoby pomocí AI…"
     },
     "snippets": {
       "title": "Hlasové úryvky",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "Např. Všechna procenta zapisuj číslicemi se znakem %",
       "addRule": "Přidat pravidlo"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "Přepsat soubor",
       "description": "Přetáhněte zvukový soubor a přepište ho pomocí serveru Nova Campus.",
@@ -1222,71 +1136,31 @@
       "employee": "Zaměstnanec",
       "manager": "Manažer"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "Kampus připojen",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local je aktivní"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "Dokončete přihlášení v prohlížeči. Pokud o to Microsoft požádá, použijte tento kód.",
       "expired": "Žádost o přihlášení přes Microsoft vypršela. Začněte znovu.",
       "failed": "Přihlášení nebylo dokončeno. Zkuste to znovu.",
       "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
       "accessRevoked": "Váš přístup již není dostupný. Obraťte se na správce."
     },
-    "google": {
-      "connect": "Pokračovat přes Google"
-    },
     "sso": {
       "connect": "Pokračovat přes {{provider}}"
     },
     "aiSkills": {
-      "title": "Dovednosti AI",
       "description": "Krátké moduly pro kritické, efektivní a bezpečné používání AI při studiu.",
       "progress": "Dokončeno modulů: {{completed}} z {{total}}",
       "minutes": "Asi {{count}} min",
-      "practice": "Vyzkoušejte si to",
-      "markComplete": "Označit jako dokončené",
-      "completed": "Dokončeno",
-      "unavailable": "Kurz je dočasně nedostupný."
+      "completed": "Dokončeno"
     },
     "engineeringNotes": {
       "title": "Inženýrské poznámky",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "Barva koule",
       "orbDescription": "Vyberte barvu doku Novy a indikátoru nahrávání.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "Vždy zobrazovat bublinu",
       "alwaysVisibleDescription": "Nechte kompaktní stavový indikátor Novy viditelný. Kliknutí zachytává, jen když je nad ním myš."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Pokračovat později",
       "useNovaNow": "Použít Nova hned",
       "requiredByInstitution": "Tento základní kurz vyžaduje {{organization}}.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "Vítejte v {{organization}}, {{name}}.",
         "description": "Naučte se pracovat s AI zodpovědně, nebo začněte Novu používat hned.",

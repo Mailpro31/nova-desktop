@@ -971,8 +971,7 @@
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
-        "subtitle": "Đọc chính tả do trường của bạn cung cấp, với email học thuật của bạn.",
-        "connect": "Sign in"
+        "subtitle": "Đọc chính tả do trường của bạn cung cấp, với email học thuật của bạn."
       },
       "lab": {
         "open": "Tham gia máy chủ thử nghiệm",
@@ -985,8 +984,6 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "title": "Connect to Nova Campus",
-        "subtitle": "Enter your institution's Nova server and academic email.",
         "serverLabel": "Nova Server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
@@ -1006,14 +1003,11 @@
       "ready": {
         "title": "Bạn đã kết nối với {{organization}}",
         "subtitle": "Nova Campus đã sẵn sàng trên máy tính này.",
-        "shortcut": "Press {{shortcut}} to dictate.",
-        "shortcutFallback": "Your dictation shortcut is configured in settings.",
         "start": "Get started",
         "organization": "Tổ chức",
         "account": "Tài khoản",
         "processing": "Xử lý",
-        "campusInfrastructure": "Hạ tầng Campus",
-        "managed": "Your institution manages this Campus access."
+        "campusInfrastructure": "Hạ tầng Campus"
       },
       "label": "Nova Campus",
       "errors": {
@@ -1022,7 +1016,6 @@
       }
     },
     "account": {
-      "title": "Account",
       "server": "Máy chủ",
       "email": "Đã đăng nhập bằng",
       "role": "Vai trò",
@@ -1037,54 +1030,12 @@
       "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",
       "logoutConfirmButton": "Đăng xuất",
       "refresh": "Làm mới",
-      "checking": "Đang kiểm tra kết nối…",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline"
-    },
-    "footer": {
-      "connected": "{{server}} — connected",
-      "offline": "Offline — fallback mode"
-    },
-    "bubble": {
-      "checking": "checking…",
-      "connected": "connected",
-      "offline": "offline",
-      "resetPosition": "Reset position",
-      "hide": "Hide bubble"
+      "checking": "Đang kiểm tra kết nối…"
     },
     "errors": {
       "network": "Không thể kết nối tới máy chủ. Hãy kiểm tra địa chỉ và kết nối của bạn."
     },
-    "home": {
-      "title": "Dictate, don't type",
-      "subtitle": "Your institution's voice dictation, one shortcut away.",
-      "action": {
-        "dictate": "Dictate",
-        "cancel": "Cancel",
-        "postProcess": "Dictate with Style"
-      },
-      "stylesTitle": "Styles",
-      "seeAll": "See all",
-      "statusTitle": "Connection",
-      "connected": "Connected to {{server}}",
-      "offline": "{{server}} — offline fallback",
-      "privacyNote": "Your data stays on your institution's network. Only the transcribed text and the active Style prompt are sent to the server.",
-      "recentTitle": "Recent transcriptions",
-      "recentEmpty": "No recent transcription yet",
-      "primary": {
-        "title": "Hold {{shortcut}} to dictate",
-        "description": "Works in your email, notes, browser and documents.",
-        "start": "Start dictation"
-      },
-      "secondary": {
-        "title": "More ways to write",
-        "rewrite": "Rewrite",
-        "chooseStyle": "Choose a Style"
-      },
-      "viewHistory": "View history"
-    },
     "settings": {
-      "generalSubtitle": "Configure your dictation preferences.",
       "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova Campus.",
       "shortcuts": {
         "title": "Phím tắt",
@@ -1093,35 +1044,10 @@
       "sound": {
         "title": "Âm thanh",
         "description": "Micrô, âm báo và âm lượng"
-      },
-      "account": {
-        "title": "Account",
-        "description": "Your Nova Campus session"
-      },
-      "bubble": {
-        "title": "Connection bubble",
-        "description": "Floating indicator showing your Nova Campus connection",
-        "helper": "Drag the bubble to move it. Use the buttons below to show, hide or reset its position.",
-        "show": "Show bubble",
-        "hide": "Hide bubble",
-        "resetPosition": "Reset position"
-      },
-      "drawerTitle": "Settings",
-      "title": "Settings",
-      "tabs": {
-        "general": "General",
-        "writing": "Writing",
-        "campus": "Campus",
-        "advanced": "Advanced"
-      },
-      "advanced": {
-        "title": "Troubleshooting",
-        "description": "Version, data, logs and diagnostic controls"
       }
     },
     "styles": {
       "subtitle": "Chọn hoặc tùy chỉnh phong cách viết áp dụng cho các lần đọc chính tả.",
-      "listTitle": "Writing styles",
       "descriptions": {
         "auto": "Để Nova tự động chọn định dạng phù hợp nhất cho nội dung bạn đọc.",
         "default_improve_transcriptions": "Chỉnh sửa văn bản đã đọc: dấu câu, lỗi gõ và câu văn trôi chảy.",
@@ -1162,8 +1088,7 @@
       "analyzeDocButton": "Bắt đầu phân tích",
       "analyzeSuccess": "Đã trích xuất và thêm {{count}} thuật ngữ mới!",
       "analyzeEmpty": "Không tìm thấy thuật ngữ mới trong tài liệu.",
-      "analyzing": "Đang phân tích từ vựng bằng AI…",
-      "learnedToast": "Nova will remember this for future dictations"
+      "analyzing": "Đang phân tích từ vựng bằng AI…"
     },
     "snippets": {
       "title": "Đoạn giọng nói",
@@ -1188,17 +1113,6 @@
       "rulePlaceholder": "Ví dụ: Viết mọi tỷ lệ phần trăm bằng chữ số kèm ký hiệu %",
       "addRule": "Thêm quy tắc"
     },
-    "command": {
-      "title": "Command mode",
-      "description": "Select text, dictate a voice instruction to transform it with AI.",
-      "shortcutTitle": "Command mode shortcut",
-      "shortcutDescription": "Keyboard shortcut to trigger voice instruction on the selected text",
-      "modalTitle": "Command Mode",
-      "modalInstructionPlaceholder": "E.g. Translate to English, summarize in 3 bullets, make more formal...",
-      "executing": "Processing command on server…",
-      "success": "Text rewritten successfully.",
-      "error": "Failed to apply command to selected text."
-    },
     "files": {
       "title": "Chép lời một tệp",
       "description": "Thả tệp âm thanh để chép lời bằng máy chủ Nova Campus.",
@@ -1222,71 +1136,31 @@
       "employee": "Nhân viên",
       "manager": "Quản lý"
     },
-    "navigation": {
-      "label": "Campus navigation",
-      "campus": "Campus"
-    },
     "status": {
-      "checking": "Checking",
       "connected": "Đã kết nối Campus",
       "local": "Nova Local active",
-      "unavailable": "Unavailable",
       "localActive": "Nova Local đang hoạt động"
     },
-    "privacy": {
-      "institutionPolicyTitle": "Privacy managed by your institution",
-      "institutionPolicyDescription": "Your institution defines the processing and retention policy for this Campus service.",
-      "notStoredTitle": "Your dictated content is not stored by Nova Campus",
-      "privateByDesign": "Private by design",
-      "countersOnly": "Your institution can receive usage counters without accessing your dictations."
-    },
     "page": {
-      "eyebrow": "Organization",
       "processing": {
-        "label": "Processing",
-        "campusTitle": "Campus infrastructure",
-        "campusDescription": "Nova uses infrastructure approved by your institution when Campus is available.",
-        "localTitle": "Nova Local",
-        "localDescription": "Campus is temporarily unavailable. Dictation continues locally."
-      },
-      "features": "Features",
-      "privacy": "Privacy",
-      "systemStatus": "System status",
-      "authMethod": "Authentication",
-      "educationMode": "Education mode"
-    },
-    "features": {
-      "dictation": "Dictation",
-      "rewrite": "Rewrite",
-      "styles": "Styles",
-      "fileTranscription": "File transcription",
-      "engineeringNotes": "Engineering Notes",
-      "aiSkills": "AI Skills",
-      "personalization": "Personalization"
+        "localTitle": "Nova Local"
+      }
     },
     "microsoft": {
-      "connect": "Continue with Microsoft",
       "browserHelp": "Hoàn tất đăng nhập trong trình duyệt. Dùng mã này nếu Microsoft yêu cầu.",
       "expired": "Yêu cầu đăng nhập Microsoft đã hết hạn. Hãy bắt đầu lại.",
       "failed": "Đăng nhập chưa hoàn tất. Vui lòng thử lại.",
       "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
       "accessRevoked": "Quyền truy cập của bạn không còn khả dụng. Hãy liên hệ quản trị viên."
     },
-    "google": {
-      "connect": "Tiếp tục với Google"
-    },
     "sso": {
       "connect": "Tiếp tục với {{provider}}"
     },
     "aiSkills": {
-      "title": "Kỹ năng AI",
       "description": "Các học phần ngắn giúp bạn sử dụng AI một cách phản biện, hiệu quả và an toàn trong học tập.",
       "progress": "Đã hoàn thành {{completed}}/{{total}} học phần",
       "minutes": "Khoảng {{count}} phút",
-      "practice": "Tự thử",
-      "markComplete": "Đánh dấu đã hoàn thành",
-      "completed": "Đã hoàn thành",
-      "unavailable": "Khóa học tạm thời không khả dụng."
+      "completed": "Đã hoàn thành"
     },
     "engineeringNotes": {
       "title": "Ghi chú kỹ thuật",
@@ -1301,11 +1175,9 @@
     },
     "personalization": {
       "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
-      "appearance": "Appearance",
       "orb": "Nova orb",
       "orbColor": "Màu quả cầu",
       "orbDescription": "Chọn màu nhấn cho thanh dock Nova và chỉ báo ghi âm.",
-      "bubble": "Connection bubble",
       "alwaysVisible": "Luôn hiển thị bong bóng",
       "alwaysVisibleDescription": "Giữ chỉ báo trạng thái thu gọn của Nova luôn hiển thị. Nó chỉ nhận nhấp chuột khi con trỏ nằm trên nó."
     },
@@ -1314,9 +1186,6 @@
       "continueLater": "Tiếp tục sau",
       "useNovaNow": "Dùng Nova ngay",
       "requiredByInstitution": "{{organization}} yêu cầu hoàn thành lộ trình nền tảng này.",
-      "homeAiSkillsProgress": "Foundation · {{completed}} / {{total}} complete",
-      "homeAiSkillsStart": "Learn to work with AI effectively.",
-      "verificationHint": "AI rewrites can change meaning. Review important details before using them.",
       "welcome": {
         "title": "Chào mừng đến với {{organization}}, {{name}}.",
         "description": "Học cách làm việc có trách nhiệm với AI, hoặc bắt đầu dùng Nova ngay.",
