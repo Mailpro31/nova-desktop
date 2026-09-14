@@ -48,7 +48,9 @@ const SAME_AS_ENGLISH: Record<string, string[]> = {
     "campus.firstRun.setup.microphone",
     "campus.firstRun.setup.purposes.documents",
     "campus.firstRun.setup.writing.auto",
+    "campus.account.access",
   ],
+  sv: ["campus.account.access"],
 };
 
 type Tree = { [key: string]: string | Tree };
