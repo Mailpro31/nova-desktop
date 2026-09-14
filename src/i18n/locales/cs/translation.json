@@ -1735,6 +1735,7 @@
     "subtitle": "Zlepšujte se s AI, vždy po pár minutách.",
     "loading": "Načítání…",
     "empty": "Zatím nejsou k dispozici žádné lekce.",
+    "languageNote": "Tyto lekce jsou zatím dostupné pouze v jazyce: {{language}}.",
     "continue": "Pokračovat",
     "recommended": "Doporučeno pro vás",
     "start": "Začít",

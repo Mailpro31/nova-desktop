@@ -1735,6 +1735,7 @@
     "subtitle": "Rozwijaj się z AI, po kilka minut naraz.",
     "loading": "Wczytywanie…",
     "empty": "Nie ma jeszcze żadnych lekcji.",
+    "languageNote": "Te lekcje są na razie dostępne tylko w języku: {{language}}.",
     "continue": "Dalej",
     "recommended": "Polecane dla Ciebie",
     "start": "Zacznij",

@@ -1735,6 +1735,7 @@
     "subtitle": "Werde besser mit KI – ein paar Minuten am Stück.",
     "loading": "Wird geladen…",
     "empty": "Es sind noch keine Lektionen verfügbar.",
+    "languageNote": "Diese Lektionen sind derzeit nur auf {{language}} verfügbar.",
     "continue": "Weiter",
     "recommended": "Für dich empfohlen",
     "start": "Starten",

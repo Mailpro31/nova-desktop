@@ -1735,6 +1735,7 @@
     "subtitle": "Progressez avec l'IA, quelques minutes à la fois.",
     "loading": "Chargement…",
     "empty": "Aucune leçon n'est encore disponible.",
+    "languageNote": "Ces leçons sont pour l'instant disponibles en {{language}} uniquement.",
     "continue": "Continuer",
     "recommended": "Recommandé pour vous",
     "start": "Commencer",
