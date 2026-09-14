@@ -470,19 +470,26 @@ pub async fn organization_auth_providers(
     server_url: String,
 ) -> Result<OrganizationAuthProviders, String> {
     let base_url = normalize_base_url(&server_url);
-    let response = sso_client()
-        .get(format!("{}/api/auth/entra/pkce/available", base_url))
-        .send()
-        .await;
 
-    // Un serveur plus ancien ne connaît pas cette route : le code par adresse
-    // reste alors le seul chemin, exactement comme aujourd'hui.
-    let Ok(response) = response else {
+    // `/api/auth/providers` porte les noms choisis par l'organisation
+    // (`provider_configs`, `display_names`) ; la route historique n'annonce que
+    // des types. Ne lire que celle-ci faisait afficher « Company SSO » à une
+    // organisation qui s'appelait IPSA. Un serveur antérieur ne connaît que la
+    // route historique : on y retombe, exactement comme avant.
+    let mut answered = None;
+    for route in ["/api/auth/providers", "/api/auth/entra/pkce/available"] {
+        if let Ok(candidate) = sso_client().get(format!("{base_url}{route}")).send().await {
+            if candidate.status().is_success() {
+                answered = Some(candidate);
+                break;
+            }
+        }
+    }
+
+    // Aucune des deux routes : le code par adresse reste le seul chemin.
+    let Some(response) = answered else {
         return Ok(legacy_only_providers());
     };
-    if !response.status().is_success() {
-        return Ok(legacy_only_providers());
-    }
     let body = response
         .json::<AvailabilityResponse>()
         .await
