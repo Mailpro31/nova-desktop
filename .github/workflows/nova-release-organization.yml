@@ -56,15 +56,56 @@ jobs:
             echo "::error::Le secret RELEASES_TOKEN est vide ou absent de ce depot."
             exit 1
           fi
-          if ! PERMS="$(gh api "repos/$RELEASES_REPO" --jq '.permissions.push' 2>/dev/null)"; then
-            echo "::error::Le jeton ne voit pas $RELEASES_REPO. Ajoute ce depot a sa portee (Repository access), avec Contents: write."
-            exit 1
-          fi
-          if [ "$PERMS" != "true" ]; then
-            echo "::error::Le jeton voit $RELEASES_REPO mais ne peut pas y ecrire. Il lui faut Contents: write."
-            exit 1
-          fi
-          echo "Le jeton peut publier sur $RELEASES_REPO."
+          # `permissions.push` ne suffit pas : avec un jeton a portee fine, il
+          # reflete les droits du PROPRIETAIRE du jeton sur le depot, pas ceux
+          # du jeton. Le 14 septembre 2026, cette sonde a repondu « peut
+          # publier » pour un jeton qui ne couvrait pas le depot, et la
+          # publication a echoue en 403 apres toute la compilation.
+          #
+          # On fait donc ce que la publication fera : creer une release, ici en
+          # brouillon (invisible au public, sans etiquette), puis la supprimer
+          # aussitot. Un corps vide ne suffit pas : GitHub valide le contenu
+          # avant les droits, et repond 422 meme pour un depot inexistant.
+          #   201 puis 204 -> le jeton peut ecrire, et rien ne reste
+          #   403 -> le jeton ne couvre pas le depot, ou sans Contents: write
+          #   404 -> le jeton ne voit pas le depot
+          #   401 -> le jeton est invalide ou expire
+          TAG="preflight-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          BODY="$(printf '{"tag_name":"%s","name":"preflight","draft":true}' "$TAG")"
+          API="https://api.github.com/repos/$RELEASES_REPO/releases"
+          CODE="$(curl -sS -o "$RUNNER_TEMP/preflight.json" -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            -d "$BODY" "$API" || true)"
+          case "$CODE" in
+            201)
+              # python3 plutot que jq : un outil absent ne doit pas laisser un
+              # brouillon derriere lui.
+              ID="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["id"])' "$RUNNER_TEMP/preflight.json" || true)"
+              if [ -z "$ID" ]; then
+                echo "::error::Brouillon de verification cree sur $RELEASES_REPO, identifiant illisible. Supprime la release « preflight » a la main."
+                exit 1
+              fi
+              DELETED="$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE \
+                -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+                "$API/$ID" || true)"
+              if [ "$DELETED" != "204" ]; then
+                echo "::error::Brouillon de verification $ID cree sur $RELEASES_REPO mais non supprime (HTTP $DELETED). Supprime-le a la main."
+                exit 1
+              fi
+              echo "Le jeton peut publier sur $RELEASES_REPO." ;;
+            401)
+              echo "::error::Le jeton RELEASES_TOKEN est invalide ou expire (HTTP 401)."
+              exit 1 ;;
+            403)
+              echo "::error::Le jeton ne peut pas ecrire sur $RELEASES_REPO (HTTP 403). Ajoute ce depot a sa portee (Repository access), avec Contents: write."
+              exit 1 ;;
+            404)
+              echo "::error::Le jeton ne voit pas $RELEASES_REPO (HTTP 404). Ajoute ce depot a sa portee (Repository access), avec Contents: write."
+              exit 1 ;;
+            *)
+              echo "::error::Reponse inattendue de l'API pour $RELEASES_REPO : '${CODE:-aucune}'. Publication non tentee."
+              exit 1 ;;
+          esac
 
   publish-windows-organization:
     needs: preflight
