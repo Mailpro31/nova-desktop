@@ -1,7 +1,11 @@
 import { describe, expect, test } from "bun:test";
 
 import en from "../../../i18n/locales/en/translation.json";
-import { filterEntries, groupByRecency } from "./useHistoryGroups";
+import {
+  filterEntries,
+  groupByRecency,
+  historyStyleLabel,
+} from "./useHistoryGroups";
 import type { HistoryEntry } from "@/bindings";
 
 /** Référence fixe : mardi 12 mars 2024, 10 h locales. */
@@ -88,5 +92,43 @@ describe("recherche locale", () => {
 
   test("une requête sans correspondance ne renvoie rien", () => {
     expect(filterEntries(entries, "facture")).toHaveLength(0);
+  });
+});
+
+describe("Style affiché dans l'historique", () => {
+  // Ce que Nova enregistre réellement : le texte complet de la consigne du
+  // Style, pas son nom. Mesuré sur un poste : l'historique affichait cette
+  // consigne en entier au-dessus de la dictée.
+  const promptText =
+    "Tu es le moteur de reformulation de Nova. Transforme la dictée en prompt clair et structuré pour une IA générative.\n\n" +
+    "Règles impératives : - Langue : réponds EXACTEMENT dans la langue de la dictée.\n" +
+    "<transcript> ${output} </transcript>";
+  const styles = [
+    { name: "Prompt IA", prompt: promptText },
+    {
+      name: "E-mail",
+      prompt: "Tu es le moteur de reformulation de Nova. Rédige un e-mail.",
+    },
+  ];
+
+  test("la consigne enregistrée redevient le nom de son Style", () => {
+    expect(historyStyleLabel(promptText, styles)).toBe("Prompt IA");
+  });
+
+  test("une consigne qui ne correspond plus à aucun Style n'est jamais affichée", () => {
+    // Style supprimé ou modifié depuis : mieux vaut aucun libellé que la
+    // consigne interne entière.
+    expect(
+      historyStyleLabel(`${promptText} (ancienne version)`, []),
+    ).toBeNull();
+  });
+
+  test("un nom de Style déjà enregistré s'affiche tel quel", () => {
+    expect(historyStyleLabel("E-mail", styles)).toBe("E-mail");
+  });
+
+  test("rien d'enregistré, aucun libellé", () => {
+    expect(historyStyleLabel(null, styles)).toBeNull();
+    expect(historyStyleLabel("   ", styles)).toBeNull();
   });
 });

@@ -20,10 +20,16 @@ import { AudioPlayer } from "../../ui/AudioPlayer";
 import {
   filterEntries,
   groupByRecency,
+  historyStyleLabel,
   type HistoryBucket,
 } from "./useHistoryGroups";
 import { useSettings } from "../../../hooks/useSettings";
-import { commands, events, type HistoryEntry } from "@/bindings";
+import {
+  commands,
+  events,
+  type HistoryEntry,
+  type LLMPrompt,
+} from "@/bindings";
 import { formatDateTime } from "@/utils/dateFormat";
 import { useOsType } from "@/hooks/useOsType";
 import { convertFileSrc } from "@tauri-apps/api/core";
@@ -54,6 +60,7 @@ export const HistorySettings: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { getSetting } = useSettings();
   const osType = useOsType();
+  const styles = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
 
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -206,6 +213,7 @@ export const HistorySettings: React.FC = () => {
                     onDelete={() => void remove(entry.id)}
                     osType={osType}
                     locale={i18n.language}
+                    styles={styles}
                   />
                 ))}
               </ul>
@@ -225,6 +233,8 @@ interface HistoryRowProps {
   onDelete: () => void;
   osType: string | null;
   locale: string;
+  /** Styles configurés, pour retrouver le nom d'un Style à partir de sa consigne. */
+  styles: readonly LLMPrompt[];
 }
 
 /**
@@ -240,6 +250,7 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
   onDelete,
   osType,
   locale,
+  styles,
 }) => {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
@@ -250,8 +261,9 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
   // Le Style employé est enregistré avec la transcription mais n'était affiché
   // nulle part. C'est la seule métadonnée réellement stockée qui explique
-  // pourquoi un texte est rédigé ainsi.
-  const styleName = entry.post_process_prompt?.trim() || null;
+  // pourquoi un texte est rédigé ainsi. Ce qui est stocké est la consigne du
+  // Style, pas son nom : on affiche le nom, jamais la consigne.
+  const styleName = historyStyleLabel(entry.post_process_prompt, styles);
 
   const copy = async () => {
     if (!hasText) return;
