@@ -32,6 +32,11 @@ interface MockOptions {
   deployment?: Record<string, unknown> | null;
   discovery?: Record<string, unknown>;
   discoveryError?: unknown;
+  /**
+   * Catalogue Learn servi par `fetch_learning_catalog`. Absent, la commande
+   * répond `null` comme avant, et la progression aussi.
+   */
+  learningCatalog?: Record<string, unknown>;
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -204,6 +209,12 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return { text: `Structured: ${String(args.text)}` };
         case "get_history_entries":
           return { entries: [], total: 0 };
+        case "fetch_learning_catalog":
+          return settings.learningCatalog ?? null;
+        case "fetch_learning_progress":
+          return settings.learningCatalog
+            ? { catalog_version: 1, lessons: [] }
+            : null;
         case "get_available_microphones":
           return [
             { index: "default", name: "System microphone", is_default: true },
