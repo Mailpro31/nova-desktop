@@ -1,5 +1,5 @@
 {
-  "reason": "Names that stay identical in every language: model names, key combinations, example addresses and Nova product names. The translation review does not count them as left in English. `*` matches one key segment.",
+  "reason": "Text the translation review accepts as identical to English. `keys`: names that stay identical in every language (model names, key combinations, example addresses, Nova product names). `byLanguage`: words that are also correct in one language, such as Version in French or Auto in German. `*` matches one key segment.",
   "keys": [
     "onboarding.models.*.name",
     "onboarding.models.parakeet-tdt-0.6b-v2.name",
@@ -23,5 +23,142 @@
     "sidebar.aiSkills",
     "sidebar.novaCommands",
     "settings.about.acknowledgments.ggml.title"
-  ]
+  ],
+  "byLanguage": {
+    "cs": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.postProcessing.api.model.title",
+      "tray.model",
+      "campus.roles.partner",
+      "campus.roles.student"
+    ],
+    "de": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "campus.roles.partner",
+      "sidebar.prompts",
+      "novaCommands.original",
+      "settings.about.version.title",
+      "theme.options.system",
+      "home.active.engine",
+      "settings.advanced.overlay.style.options.minimal",
+      "settings.advanced.overlay.style.options.live"
+    ],
+    "es": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "sidebar.prompts",
+      "novaCommands.original",
+      "settings.advanced.groups.experimental",
+      "edition.choice.personal.title",
+      "settings.general.title",
+      "sidebar.general",
+      "structuredNotes.types.ideas"
+    ],
+    "fr": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "sidebar.prompts",
+      "novaCommands.original",
+      "settings.about.version.title",
+      "campus.roles.manager",
+      "settings.advanced.overlay.style.options.minimal",
+      "settings.advanced.pasteMethod.options.direct",
+      "campus.account.access",
+      "structuredNotes.types.observation",
+      "sidebar.models",
+      "sidebar.postProcessing",
+      "sidebar.styles",
+      "sidebar.configuration",
+      "onboarding.smartSetup.row.microphone",
+      "settings.sound.microphone.title",
+      "settings.sound.volume.title",
+      "settings.advanced.groups.transcription",
+      "settings.postProcessing.enable.title",
+      "settings.postProcessing.prompts.title",
+      "performanceOptimizer.classes.performance",
+      "campus.firstRun.setup.microphone",
+      "campus.firstRun.setup.purposes.documents",
+      "campus.firstRun.setup.writing.auto",
+      "campus.aiCurriculum.correct",
+      "home.active.microphone",
+      "styles.section.builtin",
+      "learn.quiz.correct"
+    ],
+    "it": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "campus.roles.partner",
+      "campus.roles.manager",
+      "settings.advanced.overlay.style.title",
+      "settings.postProcessing.api.provider.title",
+      "sidebar.home",
+      "sidebar.account",
+      "settings.sound.volume.title",
+      "settings.advanced.groups.output"
+    ],
+    "nl": [
+      "modelSelector.streaming",
+      "settings.postProcessing.api.model.title",
+      "tray.model",
+      "campus.roles.partner",
+      "campus.roles.student",
+      "campus.roles.manager",
+      "sidebar.prompts",
+      "settings.sound.volume.title",
+      "home.active.engine",
+      "settings.advanced.pasteMethod.options.direct",
+      "sidebar.account",
+      "settings.advanced.overlay.style.title",
+      "settings.postProcessing.api.provider.title",
+      "personalization.overlay",
+      "learn.exercise.feedback",
+      "settings.advanced.overlay.style.options.live"
+    ],
+    "pl": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "settings.postProcessing.api.model.title",
+      "tray.model",
+      "campus.roles.partner",
+      "campus.roles.student",
+      "theme.options.system"
+    ],
+    "pt": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "sidebar.prompts",
+      "novaCommands.original",
+      "settings.advanced.groups.experimental",
+      "settings.sound.volume.title"
+    ],
+    "sv": [
+      "modelSelector.streaming",
+      "settings.general.language.auto",
+      "settings.advanced.acceleration.gpuDevice.auto",
+      "campus.roles.partner",
+      "campus.roles.student",
+      "novaCommands.original",
+      "settings.about.version.title",
+      "theme.options.system",
+      "campus.account.access",
+      "structuredNotes.types.observation",
+      "settings.advanced.overlay.style.options.minimal",
+      "settings.advanced.overlay.style.options.live",
+      "performanceOptimizer.acceleration",
+      "performanceOptimizer.median"
+    ],
+    "tr": [
+      "settings.postProcessing.api.model.title",
+      "tray.model",
+      "settings.advanced.overlay.style.options.minimal"
+    ]
+  }
 }
