@@ -185,8 +185,8 @@ describe("words kept per language", () => {
   });
 
   test("a file without per-language words keeps the shared names only", () => {
-    expect([
-      ...keptKeysFor({ keys: ["sidebar.home"] }, "fr", keys),
-    ]).toEqual(["sidebar.home"]);
+    expect([...keptKeysFor({ keys: ["sidebar.home"] }, "fr", keys)]).toEqual([
+      "sidebar.home",
+    ]);
   });
 });
