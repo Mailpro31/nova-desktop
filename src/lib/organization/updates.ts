@@ -53,6 +53,44 @@ export function changesBetween(
 }
 
 /**
+ * Les repères légers de `/api/organization/changes`.
+ *
+ * Interrogés toutes les trente secondes : c'est ce qui fait arriver un
+ * changement de la console en moins d'une minute sans tout recharger à chaque
+ * fois. `learning_version` intègre les réglages de l'organisation — une leçon
+ * archivée ou rendue obligatoire le fait bouger.
+ */
+export interface ChangeMarkers {
+  policy_revision: number;
+  packages_version: string;
+  learning_version: string;
+}
+
+export type Reload = "policy" | "packages" | "lessons";
+
+/**
+ * Ce qu'il faut recharger, et rien de plus.
+ *
+ * Sans observation précédente, rien : le lancement vient de tout charger.
+ */
+export function whatToReload(
+  previous: ChangeMarkers | null,
+  current: ChangeMarkers,
+): Reload[] {
+  if (previous === null) return [];
+  const reload: Reload[] = [];
+  if (current.policy_revision !== previous.policy_revision)
+    reload.push("policy");
+  if (current.packages_version !== previous.packages_version) {
+    reload.push("packages");
+  }
+  if (current.learning_version !== previous.learning_version) {
+    reload.push("lessons");
+  }
+  return reload;
+}
+
+/**
  * Fusionne ce qu'on vient d'observer avec ce qu'on savait.
  *
  * Une sonde en échec ne doit pas effacer l'empreinte connue : la prochaine
@@ -68,7 +106,10 @@ export function mergeMarkers(
   };
 }
 
-const KEY = "nova.organization.catalogMarkers.v1";
+// v2 : le repère des leçons intègre les réglages de l'organisation (« 2:… »)
+// au lieu de la seule version du catalogue livré (« 2 »). Relire la v1
+// comparerait deux formes différentes et annoncerait une nouveauté fictive.
+const KEY = "nova.organization.catalogMarkers.v2";
 
 /**
  * Le stockage est `localStorage`, comme la progression du parcours d'accueil :

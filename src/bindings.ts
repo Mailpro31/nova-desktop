@@ -931,6 +931,18 @@ async fetchLearningCatalog() : Promise<Result<LearningCatalog, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Un serveur plus ancien répond 404 : l'erreur remonte, et l'interface garde
+ * alors son rythme de rafraîchissement complet.
+ */
+async fetchOrganizationChanges() : Promise<Result<OrganizationChanges, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("fetch_organization_changes") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async fetchLearningProgress() : Promise<Result<LearningProgressSnapshot, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("fetch_learning_progress") };
@@ -2277,6 +2289,13 @@ export type LearningModule = { id: string; title: string; description: string; o
 export type LearningPath = { id: string; pillar: string; title: string; description: string; icon: string | null; order: number; tags: string[]; modules: LearningModule[] }
 export type LearningProgressSnapshot = { catalog_version: number; lessons: LearningLessonProgress[] }
 export type OrganizationCatalogSnapshot = { catalog_version: string; styles: OrganizationStyle[]; skills: OrganizationSkill[] }
+/**
+ * Les trois repères de `/api/organization/changes`, sans aucun contenu.
+ *
+ * L'interface les demande souvent et ne recharge que ce qui a bougé : c'est
+ * ce qui fait arriver un changement de la console en moins d'une minute.
+ */
+export type OrganizationChanges = { policy_revision: number; packages_version: string; learning_version: string }
 /**
  * Un AI Skill publié par l'organisation.
  * 

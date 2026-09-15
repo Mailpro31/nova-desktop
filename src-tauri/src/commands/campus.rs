@@ -1203,6 +1203,35 @@ pub struct OrganizationCatalogSnapshot {
     pub skills: Vec<crate::organization_packages::OrganizationSkill>,
 }
 
+/// Les trois repères de `/api/organization/changes`, sans aucun contenu.
+///
+/// L'interface les demande souvent et ne recharge que ce qui a bougé : c'est
+/// ce qui fait arriver un changement de la console en moins d'une minute.
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct OrganizationChanges {
+    pub policy_revision: i64,
+    pub packages_version: String,
+    pub learning_version: String,
+}
+
+/// Un serveur plus ancien répond 404 : l'erreur remonte, et l'interface garde
+/// alors son rythme de rafraîchissement complet.
+#[tauri::command]
+#[specta::specta]
+pub async fn fetch_organization_changes(app: AppHandle) -> Result<OrganizationChanges, String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .get(format!("{}/api/organization/changes", base_url))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    let response = handle_authed_response(&app, response).await?;
+    response
+        .json::<OrganizationChanges>()
+        .await
+        .map_err(|e| format!("invalid response: {}", e))
+}
+
 // ──────────────────────────────── Learn ────────────────────────────────
 //
 // Learn appartient au Nova Core, et ces commandes n'en decident rien : elles
