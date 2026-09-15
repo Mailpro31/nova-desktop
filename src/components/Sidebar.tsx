@@ -356,9 +356,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // Même règle pour les Notes structurées : une organisation qui ferme la
   // fonction la retire ; Nova Personal la garde.
   const notesOpen = useCapability("engineeringNotes");
+  // Styles, Prompts et Historique : du Core, fermés seulement quand
+  // l'organisation l'annonce. Nova Personal les garde toujours.
+  const stylesOpen = useCapability("writingStyles");
+  const promptsOpen = useCapability("prompts");
+  const historyOpen = useCapability("history");
   const visible = (id: SidebarSection) =>
     (id !== "learn" || learningOpen) &&
-    (id !== "notes" || !organizationMode || notesOpen);
+    (id !== "notes" || !organizationMode || notesOpen) &&
+    (id !== "postprocessing" || !organizationMode || stylesOpen) &&
+    (id !== "prompts" || !organizationMode || promptsOpen) &&
+    (id !== "history" || !organizationMode || historyOpen);
 
   if (organizationMode) {
     return (

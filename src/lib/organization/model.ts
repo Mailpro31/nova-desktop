@@ -52,7 +52,12 @@ export type MemberType =
  * membre connecté en `member` — y compris un enseignant ou un responsable,
  * parce qu'un métier ne confère aucun privilège.
  */
-export type SecurityRole = "member" | "organization_admin" | "it_admin";
+export type SecurityRole =
+  | "member"
+  | "organization_admin"
+  | "it_admin"
+  | "read_only"
+  | "content_editor";
 
 /**
  * D'où vient un groupe. La garantie n'est pas la même selon la source, donc
@@ -140,7 +145,11 @@ export type CapabilityId =
   | "organizationFormattingRules"
   | "organizationStyles"
   | "aiSkills"
-  | "learning";
+  | "learning"
+  // — Catégories du Core qu'une organisation peut fermer, sur annonce
+  //   explicite du serveur (`closed_capabilities`) —
+  | "prompts"
+  | "history";
 
 export type CapabilityMap = Readonly<Record<CapabilityId, boolean>>;
 

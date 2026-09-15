@@ -127,7 +127,16 @@ const memberTypeSchema = z.enum([
   "other",
 ]);
 
-const securityRoleSchema = z.enum(["member", "organization_admin", "it_admin"]);
+// Les rôles que le serveur attribue. `read_only` et `content_editor` en font
+// partie : absents, ils faisaient rejeter tout le contrat v2 pour ces membres,
+// qui perdaient alors les capacités annoncées par leur organisation.
+const securityRoleSchema = z.enum([
+  "member",
+  "organization_admin",
+  "it_admin",
+  "read_only",
+  "content_editor",
+]);
 
 const groupSourceSchema = z.enum([
   "legacy_cohort",
@@ -183,6 +192,7 @@ const meV2Schema = z.object({
   membership: membershipSchema.nullish(),
   identity: identitySchema.nullish(),
   capabilities: z.array(z.string()).nullish(),
+  closed_capabilities: z.array(z.string()).nullish(),
 });
 
 /** Ce que le serveur a réellement annoncé sur le membre connecté. */
@@ -200,6 +210,12 @@ export interface ServerIdentitySnapshot {
    * signifie « l'organisation ne fournit rien ».
    */
   capabilities: readonly string[] | null;
+  /**
+   * Catégories du Nova Core que l'organisation a fermées, nommées par le
+   * serveur. Vide quand il n'en annonce aucune — y compris un serveur plus
+   * ancien : l'absence ne ferme rien.
+   */
+  closedCapabilities: readonly string[];
 }
 
 function toGroup(raw: z.infer<typeof groupSchema>): Group {
@@ -234,6 +250,7 @@ export function parseServerIdentity(raw: unknown): ServerIdentitySnapshot {
       provider: "legacy_email_code",
       member: null,
       capabilities: null,
+      closedCapabilities: [],
     };
   }
 
@@ -257,5 +274,6 @@ export function parseServerIdentity(raw: unknown): ServerIdentitySnapshot {
     provider: data.identity?.provider ?? "legacy_email_code",
     member,
     capabilities: data.capabilities ?? null,
+    closedCapabilities: data.closed_capabilities ?? [],
   };
 }

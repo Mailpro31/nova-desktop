@@ -214,7 +214,41 @@ function resolveCapabilities(campus: CampusContext | null): CapabilityMap {
     // par le serveur. Ce n'est pas une surface d'organisation : c'est du Core
     // qu'une policy peut fermer.
     learning: capabilities.learning,
+    // Prompts et Historique vivent sur le poste : ouverts, sauf fermeture
+    // annoncée explicitement par le serveur.
+    prompts: true,
+    history: true,
   });
+}
+
+/**
+ * Catégories du Nova Core qu'une organisation peut fermer : nom serveur →
+ * capacité Nova.
+ *
+ * Elles ne passent pas par `SERVER_CAPABILITY_IDS`, où l'absence vaut refus :
+ * une liste `capabilities` incomplète éteindrait alors Apprendre ou
+ * l'Historique sans que personne ne l'ait décidé. Le serveur les nomme dans
+ * `closed_capabilities`, et seul ce qui y figure se ferme.
+ */
+const CLOSABLE_CORE_CAPABILITIES: Readonly<Record<string, CapabilityId>> =
+  Object.freeze({
+    learning: "learning",
+    styles: "writingStyles",
+    prompts: "prompts",
+    history: "history",
+  });
+
+function applyClosedCapabilities(
+  capabilities: CapabilityMap,
+  closed: readonly string[],
+): CapabilityMap {
+  if (closed.length === 0) return capabilities;
+  const next: Record<string, boolean> = { ...capabilities };
+  for (const name of closed) {
+    const capability = CLOSABLE_CORE_CAPABILITIES[name];
+    if (capability) next[capability] = false;
+  }
+  return Object.freeze(next) as CapabilityMap;
 }
 
 export interface ResolveOrganizationContextInput {
@@ -284,11 +318,16 @@ export function resolveOrganizationContext(
     // idempotente, et la reposer ici garantit que l'interface ne montre jamais
     // plus que ce que l'organisation autorise, même si un contrat plus ancien
     // laissait passer une capacité gouvernée.
-    capabilities: resolveEffectiveCapabilities(
-      server?.capabilities
-        ? applyServerCapabilities(capabilities, server.capabilities)
-        : capabilities,
-      input.policy ?? DEFAULT_ORGANIZATION_POLICY,
+    // Les catégories que l'organisation a explicitement fermées passent en
+    // dernier : elles ne peuvent que retirer, jamais rouvrir.
+    capabilities: applyClosedCapabilities(
+      resolveEffectiveCapabilities(
+        server?.capabilities
+          ? applyServerCapabilities(capabilities, server.capabilities)
+          : capabilities,
+        input.policy ?? DEFAULT_ORGANIZATION_POLICY,
+      ),
+      server?.closedCapabilities ?? [],
     ),
   };
 }

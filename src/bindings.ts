@@ -1905,7 +1905,13 @@ capabilities?: string[] | null;
  * Bornes fixées par l'organisation. Absentes d'un serveur plus ancien :
  * aucune limite ne s'applique alors.
  */
-limits?: CampusLimits | null }
+limits?: CampusLimits | null;
+/**
+ * Catégories du Nova Core que l'organisation a fermées, nommées
+ * explicitement. Sans ce champ, serde l'écartait et aucune fermeture
+ * n'atteignait l'interface.
+ */
+closed_capabilities?: string[] | null }
 export type CampusLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.

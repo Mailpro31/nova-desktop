@@ -903,6 +903,11 @@ pub struct CampusMeResponse {
     /// aucune limite ne s'applique alors.
     #[serde(default)]
     pub limits: Option<CampusLimits>,
+    /// Catégories du Nova Core que l'organisation a fermées, nommées
+    /// explicitement. Sans ce champ, serde l'écartait et aucune fermeture
+    /// n'atteignait l'interface.
+    #[serde(default)]
+    pub closed_capabilities: Option<Vec<String>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -2582,6 +2587,24 @@ mod tests {
                "difficulty":"beginner","order":1,"version":1,"tags":[],
                "blocks":[]{extra}}}"#
         )
+    }
+
+    #[test]
+    fn closed_categories_announced_by_the_server_reach_the_interface() {
+        let me: CampusMeResponse = serde_json::from_str(
+            r#"{"email":"a@example.edu","role":"student","cohort":"",
+                "closed_capabilities":["history","styles"]}"#,
+        )
+        .expect("me");
+        assert_eq!(
+            me.closed_capabilities,
+            Some(vec!["history".to_string(), "styles".to_string()])
+        );
+        let sent = serde_json::to_value(&me).expect("serialize");
+        assert_eq!(
+            sent["closed_capabilities"],
+            serde_json::json!(["history", "styles"])
+        );
     }
 
     #[test]
