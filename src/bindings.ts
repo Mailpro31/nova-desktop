@@ -1900,7 +1900,17 @@ organization_id?: string | null; organization_type?: string | null; membership?:
  * Capacités déclarées par l'organisation. Ne peut jamais fermer une
  * capacité du Nova Core — voir `src/lib/organization/resolve.ts`.
  */
-capabilities?: string[] | null }
+capabilities?: string[] | null;
+/**
+ * Bornes fixées par l'organisation. Absentes d'un serveur plus ancien :
+ * aucune limite ne s'applique alors.
+ */
+limits?: CampusLimits | null }
+export type CampusLimits = {
+/**
+ * Durée maximale d'une dictée, en secondes.
+ */
+max_dictation_seconds?: number | null }
 /**
  * Appartenance du membre à l'organisation, telle que le serveur la décide.
  */

@@ -899,6 +899,17 @@ pub struct CampusMeResponse {
     /// capacité du Nova Core — voir `src/lib/organization/resolve.ts`.
     #[serde(default)]
     pub capabilities: Option<Vec<String>>,
+    /// Bornes fixées par l'organisation. Absentes d'un serveur plus ancien :
+    /// aucune limite ne s'applique alors.
+    #[serde(default)]
+    pub limits: Option<CampusLimits>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusLimits {
+    /// Durée maximale d'une dictée, en secondes.
+    #[serde(default)]
+    pub max_dictation_seconds: Option<u32>,
 }
 
 fn campus_client_no_auth() -> reqwest::Client {
@@ -1422,6 +1433,7 @@ pub async fn logout_campus_session(app: AppHandle) -> Result<(), String> {
             .await;
         let _ = response;
     }
+    crate::dictation_limit::set_limit(None);
     clear_campus_session(app)
 }
 
@@ -1439,10 +1451,16 @@ pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
         .map_err(|e| format!("network error: {}", e))?;
     let response = handle_authed_response(&app, response).await?;
 
-    response
+    let me = response
         .json::<CampusMeResponse>()
         .await
-        .map_err(|e| format!("invalid response: {}", e))
+        .map_err(|e| format!("invalid response: {}", e))?;
+    crate::dictation_limit::set_limit(
+        me.limits
+            .as_ref()
+            .and_then(|limits| limits.max_dictation_seconds),
+    );
+    Ok(me)
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]

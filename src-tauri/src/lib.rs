@@ -11,6 +11,7 @@ pub mod cli;
 mod clipboard;
 mod commands;
 mod deployment;
+mod dictation_limit;
 mod dictation_state;
 mod helpers;
 mod input;
