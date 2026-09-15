@@ -2654,6 +2654,17 @@ mod tests {
         let lesson: LearningLesson = serde_json::from_str(&lesson_json("")).expect("lesson");
         assert!(!lesson.required);
         assert_eq!(lesson.due_at, None);
+        assert_eq!(lesson.content_locale, None);
+    }
+
+    #[test]
+    fn a_lesson_written_by_the_organization_keeps_the_language_of_its_text() {
+        let lesson: LearningLesson =
+            serde_json::from_str(&lesson_json(r#","custom":true,"content_locale":"fr""#))
+                .expect("lesson");
+        assert_eq!(lesson.content_locale.as_deref(), Some("fr"));
+        let sent = serde_json::to_value(&lesson).expect("serialize");
+        assert_eq!(sent["content_locale"], serde_json::json!("fr"));
     }
 
     #[test]

@@ -243,6 +243,55 @@ test.describe("Learn is where the courses live", () => {
     ).toBeVisible();
   });
 
+  test("a lesson the organization wrote in another language says so", async ({
+    page,
+  }) => {
+    // Le catalogue est dans la langue de l'interface, mais une leçon écrite
+    // par l'organisation peut ne l'être qu'en français : la note du catalogue
+    // ne le dirait pas.
+    const withCustom = structuredClone(catalog);
+    withCustom.paths[1].modules[0].lessons.push({
+      ...lesson("org-report-rules", "Nos règles de rapport", 2),
+      custom: true,
+      content_locale: "fr",
+    } as ReturnType<typeof lesson>);
+    await mockTauri(page, {
+      session,
+      config: school,
+      onboardingCompleted: true,
+      learningCatalog: withCustom,
+    });
+    await page.goto("/");
+    await openLearn(page);
+    await page.getByRole("button", { name: /Nos règles de rapport/ }).click();
+
+    await expect(
+      page.getByRole("heading", { name: "Nos règles de rapport" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("This lesson is available in French only."),
+    ).toBeVisible();
+  });
+
+  test("a lesson in the interface language carries no lesson notice", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session,
+      config: school,
+      onboardingCompleted: true,
+      learningCatalog: catalog,
+    });
+    await page.goto("/");
+    await openLearn(page);
+    await page.getByRole("button", { name: /Ask better questions/ }).click();
+
+    await expect(
+      page.getByRole("heading", { name: "Ask better questions" }),
+    ).toBeVisible();
+    await expect(page.getByText(/This lesson is available in/)).toHaveCount(0);
+  });
+
   test("lessons in the interface language carry no notice", async ({
     page,
   }) => {
