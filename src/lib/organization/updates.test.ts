@@ -17,7 +17,9 @@ import {
   mergeMarkers,
   readSeenMarkers,
   rememberMarkers,
+  whatToReload,
   type CatalogMarkers,
+  type ChangeMarkers,
 } from "./updates";
 
 /**
@@ -99,7 +101,64 @@ describe("la persistance des repères", () => {
   });
 
   test("un contenu illisible ne fait pas planter le lancement", () => {
-    localStorage.setItem("nova.organization.catalogMarkers.v1", "{pas du json");
+    localStorage.setItem("nova.organization.catalogMarkers.v2", "{pas du json");
     expect(readSeenMarkers()).toBeNull();
+  });
+
+  test("un repère de l'ancienne forme n'est pas comparé", () => {
+    // Avant, le repère des leçons valait la version du catalogue livré (« 2 »).
+    // Il intègre maintenant les réglages de l'organisation (« 2:… ») :
+    // comparer les deux annoncerait une nouveauté qui n'existe pas.
+    localStorage.setItem(
+      "nova.organization.catalogMarkers.v1",
+      JSON.stringify(markers("abc", "2")),
+    );
+    expect(readSeenMarkers()).toBeNull();
+  });
+});
+
+/**
+ * Les repères légers de `/api/organization/changes`, interrogés souvent :
+ * ce qu'ils disent de recharger, et rien de plus.
+ */
+const changes = (
+  policy_revision: number,
+  packages_version: string,
+  learning_version: string,
+): ChangeMarkers => ({ policy_revision, packages_version, learning_version });
+
+describe("ce qu'il faut recharger", () => {
+  test("la première observation ne recharge rien : le lancement vient de tout charger", () => {
+    expect(whatToReload(null, changes(1, "p", "2:a"))).toEqual([]);
+  });
+
+  test("rien n'a bougé, rien n'est rechargé", () => {
+    expect(
+      whatToReload(changes(1, "p", "2:a"), changes(1, "p", "2:a")),
+    ).toEqual([]);
+  });
+
+  test("une policy modifiée recharge la policy", () => {
+    expect(
+      whatToReload(changes(1, "p", "2:a"), changes(2, "p", "2:a")),
+    ).toEqual(["policy"]);
+  });
+
+  test("des packages publiés rechargent les packages", () => {
+    expect(
+      whatToReload(changes(1, "p", "2:a"), changes(1, "q", "2:a")),
+    ).toEqual(["packages"]);
+  });
+
+  test("une leçon archivée ou rendue obligatoire recharge les leçons", () => {
+    expect(
+      whatToReload(changes(1, "p", "2:a"), changes(1, "p", "2:b")),
+    ).toEqual(["lessons"]);
+  });
+
+  test("plusieurs changements à la fois rechargent chacun", () => {
+    expect(
+      whatToReload(changes(1, "p", "2:a"), changes(3, "q", "2:b")),
+    ).toEqual(["policy", "packages", "lessons"]);
   });
 });
