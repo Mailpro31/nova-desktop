@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} דק'",
       "continue": "המשך",
       "finish": "סיים את השיעור",
-      "answerFirst": "ענה כדי להמשיך."
+      "answerFirst": "ענה כדי להמשיך.",
+      "languageNote": "השיעור הזה זמין כרגע רק ב{{language}}."
     },
     "quiz": {
       "correct": "נכון",

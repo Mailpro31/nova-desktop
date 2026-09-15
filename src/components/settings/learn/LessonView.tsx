@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, Check } from "lucide-react";
 
 import BlockRenderer from "./BlockRenderer";
+import { catalogLanguageDiffers, languageName } from "@/lib/learning/language";
 import type { LearningLesson } from "@/lib/learning/model";
 import {
   completionIsEarned,
@@ -32,7 +33,7 @@ interface LessonViewProps {
 }
 
 export const LessonView: React.FC<LessonViewProps> = ({ lesson, onBack }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const blocks = useMemo(() => orderedBlocks(lesson), [lesson]);
   const progress = useLearningStore((store) => store.progress);
   const recordProgress = useLearningStore((store) => store.recordProgress);
@@ -110,6 +111,17 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson, onBack }) => {
           {t("learn.lesson.minutes", { count: lesson.estimated_minutes })}
           {completed ? ` · ${t("learn.status.completed")}` : ""}
         </p>
+        {/* Une leçon écrite par l'organisation peut n'exister que dans une
+            autre langue que l'interface, même quand le catalogue est traduit :
+            le dire à l'ouverture plutôt que de laisser surprendre. */}
+        {lesson.content_locale &&
+          catalogLanguageDiffers(lesson.content_locale, i18n.language) && (
+            <p className="text-xs text-text-secondary">
+              {t("learn.lesson.languageNote", {
+                language: languageName(lesson.content_locale, i18n.language),
+              })}
+            </p>
+          )}
       </div>
 
       <ol className="space-y-5">

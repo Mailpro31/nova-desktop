@@ -2299,7 +2299,13 @@ required?: boolean;
 /**
  * Échéance fixée par l'organisation, en secondes depuis l'époque Unix.
  */
-due_at?: number | null }
+due_at?: number | null;
+/**
+ * Langue du texte reçu, pour une leçon écrite par l'organisation. Elle peut
+ * différer de celle du catalogue quand la leçon n'est pas traduite dans la
+ * langue du poste.
+ */
+content_locale?: string | null }
 export type LearningLessonProgress = { lesson_id: string; status: string; lesson_version: number; completed_blocks: string[]; last_block_id: string | null; started_at: number | null; updated_at: number; completed_at: number | null }
 export type LearningModule = { id: string; title: string; description: string; order: number; lessons: LearningLesson[] }
 export type LearningPath = { id: string; pillar: string; title: string; description: string; icon: string | null; order: number; tags: string[]; modules: LearningModule[] }

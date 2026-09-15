@@ -67,6 +67,11 @@ export interface LearningLesson {
   required?: boolean;
   /** Échéance fixée par l'organisation, en secondes depuis l'époque Unix. */
   due_at?: number | null;
+  /**
+   * Langue du texte reçu, pour une leçon écrite par l'organisation : elle peut
+   * ne pas exister dans la langue de l'interface.
+   */
+  content_locale?: string | null;
 }
 
 export interface LearningModule {

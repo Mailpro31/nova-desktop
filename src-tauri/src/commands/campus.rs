@@ -1278,6 +1278,11 @@ pub struct LearningLesson {
     /// Échéance fixée par l'organisation, en secondes depuis l'époque Unix.
     #[serde(default)]
     pub due_at: Option<f64>,
+    /// Langue du texte reçu, pour une leçon écrite par l'organisation. Elle
+    /// peut différer de celle du catalogue quand la leçon n'est pas traduite
+    /// dans la langue du poste ; sans ce champ, serde l'écartait en silence.
+    #[serde(default)]
+    pub content_locale: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]

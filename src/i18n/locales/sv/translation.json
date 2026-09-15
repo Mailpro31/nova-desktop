@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} min",
       "continue": "Fortsätt",
       "finish": "Avsluta lektionen",
-      "answerFirst": "Svara för att fortsätta."
+      "answerFirst": "Svara för att fortsätta.",
+      "languageNote": "Den här lektionen finns för närvarande bara på {{language}}."
     },
     "quiz": {
       "correct": "Rätt",
