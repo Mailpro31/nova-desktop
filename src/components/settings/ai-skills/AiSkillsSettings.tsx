@@ -112,7 +112,6 @@ export const AiSkillsSettings: React.FC = () => {
       <p className="mt-[24px] text-xs leading-relaxed text-text-secondary">
         {offline ? word("aiSkillsPrivacyOffline") : t("aiSkills.privacy")}
       </p>
-
     </>
   );
 };

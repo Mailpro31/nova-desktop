@@ -51,9 +51,9 @@ describe("mode débogage retiré", () => {
     expect(existsSync("src/components/settings/DebugModeToggle.tsx")).toBe(
       false,
     );
-    expect(
-      existsSync("src/components/settings/debug/DebugSettings.tsx"),
-    ).toBe(false);
+    expect(existsSync("src/components/settings/debug/DebugSettings.tsx")).toBe(
+      false,
+    );
   });
 });
 

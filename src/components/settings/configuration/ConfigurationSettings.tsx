@@ -56,9 +56,7 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
 const ORGANIZATION_TOOL_TABS: {
   id: keyof OrganizationSettingsTools;
   labelKey: string;
-}[] = [
-  { id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" },
-];
+}[] = [{ id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" }];
 
 /**
  * « Configuration » regroupe les anciennes sections Général / Modèles /
