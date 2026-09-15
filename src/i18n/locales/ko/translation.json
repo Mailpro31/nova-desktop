@@ -13,7 +13,7 @@
     "models": "성능",
     "advanced": "고급",
     "postProcessing": "후처리",
-    "meeting": "Meeting",
+    "meeting": "회의",
     "history": "히스토리",
     "prompts": "프롬프트",
     "structuredNotes": "구조화된 노트",
@@ -795,10 +795,10 @@
     "upgrade": "구독하기"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "타이핑 시간 약 {{count}}분 절약",
+    "minutes_other": "타이핑 시간 약 {{count}}분 절약",
+    "words_one": "이번 주에 받아쓴 단어 {{count}}개",
+    "words_other": "이번 주에 받아쓴 단어 {{count}}개"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "음성 명령",
+    "description": "‘새 문단’, ‘줄 바꿈’, ‘물음표’와 메모, 목록, 회의, 현재 받아쓰기 취소를 위한 Nova 명령을 이해합니다.",
+    "added": "{{word}}이(가) 개인 사전에 추가되었습니다"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "제거",
+    "upgradeToUltra": "Nova Ultra로 업그레이드",
+    "requiresTier": "{{tier}} 필요",
     "active": "라이선스 활성",
     "trial": {
       "badge": "Pro 체험",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "온라인 엔진은 Nova Pro와 Ultra 전용이라 리포뮬레이션 없이 붙여넣어졌습니다."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "내 어휘 학습",
+    "description": "자주 받아쓰는 이름이나 용어를 Nova가 발견하면 개인 사전에 추가할지 제안합니다. 확인 없이 추가되는 것은 없습니다.",
+    "suggestionTitle": "“{{term}}”을(를) 말씀하신 건가요?",
+    "suggestionDescription": "개인 사전에 추가하면 Nova가 더 잘 인식합니다.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "무시",
+    "added": "“{{term}}”이(가) 사전에 추가되었습니다."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "회의 모드",
+    "description": "회의를 서면 보고서로 만듭니다. Nova가 내 마이크와 다른 참가자들의 소리를 캡처한 뒤, 내가 한 말과 상대가 한 말을 구분한 요약을 만듭니다.",
+    "start": "회의 시작",
+    "starting": "시작하는 중…",
+    "finish": "종료",
+    "finishing": "종료하는 중…",
+    "capturing": "{{app}} 캡처 중",
+    "capturingHint": "Nova가 이 회의를 녹음하고 있습니다. 종료하면 보고서를 받을 수 있습니다.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "다른 참가자",
+    "reportTitle": "회의 보고서",
+    "reportMeta": "받아쓴 구간 {{transcribed}}개, 건너뛴 구간 {{skipped}}개",
+    "reportEmpty": "캡처된 내용이 없습니다. 회의 중에 아무 소리도 들리지 않았습니다.",
+    "reportNotTranscribed": "Nova가 소리를 캡처했지만 받아쓰지 못했습니다. 모델이 다운로드되어 있고 실제로 누군가 말하고 있었는지 확인한 뒤 다시 시도하세요.",
+    "showTranscript": "원본 받아쓰기 보기",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "시작하기 전에",
+      "subtitle": "회의에 참여한 다른 사람들과 관련된 내용입니다.",
+      "body": "시작하면 감지된 회의 앱이 앞에 있는 동안 Nova는 내 목소리뿐 아니라 다른 참가자들의 목소리도 녹음합니다. 있는 곳에 따라 법적으로 먼저 알려야 할 수 있습니다. Nova가 이를 대신할 수는 없습니다.",
+      "checkbox": "캡처하는 회의마다 시작 전에 다른 참가자들에게 알리겠습니다.",
+      "cancel": "취소",
+      "confirm": "캡처 시작"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "앞에 회의 앱이 없습니다. 회의를 열고 창을 활성화한 채로 다시 시작하세요.",
+      "already_running": "이미 회의를 캡처하고 있습니다.",
+      "no_active_meeting": "현재 캡처 중인 회의가 없습니다.",
+      "unavailable": "이 컴퓨터는 앱 하나의 소리만 캡처할 수 없습니다. Windows 10 버전 2004 이상이 필요합니다.",
+      "no_audio": "스트림은 열렸지만 소리가 나지 않습니다. 이 컴퓨터에서 회의 소리가 재생되는지 확인하세요.",
+      "stream_error": "캡처가 예기치 않게 중지되었습니다.",
+      "requires_ultra": "회의 모드는 Nova Ultra가 필요합니다.",
+      "internal": "회의를 시작할 수 없습니다."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "회의 앱이 감지되지 않았습니다. 회의(Zoom, Teams, Google Meet…)를 연 다음 새로 고치세요.",
+    "pickApp": "캡처할 회의를 선택하세요.",
+    "oneApp": "{{app}}을(를) 캡처할 준비가 되었습니다.",
+    "refresh": "새로 고침",
+    "newMeeting": "새 회의"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "조직에 연결",
+    "subtitle": "조직에서 제공한 계정을 사용하세요.",
+    "emailAlternative": "대신 이메일 코드 사용",
+    "server": "조직 서버",
+    "email": "회사 이메일",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "조직 이메일",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "코드 보내기",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "이 컴퓨터에서 Nova를 사용할 준비가 되었습니다.",
+    "processing": "조직 서비스",
+    "retry": "다시 시도",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova가 이 컴퓨터의 관리 설정을 읽지 못했습니다. IT 팀에 문의하세요.",
+      "organizationUnavailable": "이 조직을 사용할 수 없습니다. IT 팀에 문의하세요.",
+      "discovery": "Nova가 조직의 서버를 찾지 못했습니다. 연결을 확인한 뒤 다시 시도하세요.",
+      "authMethodUnavailable": "조직에서 요구하는 로그인 방식을 이 버전은 지원하지 않습니다."
     }
   },
   "organizationWording": {

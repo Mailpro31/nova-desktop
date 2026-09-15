@@ -13,7 +13,7 @@
     "models": "Prestaties",
     "advanced": "Geavanceerd",
     "postProcessing": "Naverwerking",
-    "meeting": "Meeting",
+    "meeting": "Vergadering",
     "history": "Geschiedenis",
     "prompts": "Prompts",
     "structuredNotes": "Gestructureerde notities",
@@ -795,10 +795,10 @@
     "upgrade": "Abonneren"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "≈ {{count}} minuut typen bespaard",
+    "minutes_other": "≈ {{count}} minuten typen bespaard",
+    "words_one": "{{count}} woord gedicteerd deze week",
+    "words_other": "{{count}} woorden gedicteerd deze week"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Spraakopdrachten",
+    "description": "Begrijpt ‘nieuwe alinea’, ‘nieuwe regel’, ‘vraagteken’ en expliciete Nova-opdrachten voor notities, lijsten, vergaderingen of het annuleren van het huidige dictaat.",
+    "added": "{{word}} is toegevoegd aan het persoonlijke woordenboek"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Verwijderen",
+    "upgradeToUltra": "Upgraden naar Nova Ultra",
+    "requiresTier": "Vereist {{tier}}",
     "active": "Licentie actief",
     "trial": {
       "badge": "Pro-proefperiode",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "De online engine is voorbehouden aan Nova Pro en Ultra — je tekst is zonder herformulering geplakt."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Mijn woordenschat leren",
+    "description": "Als Nova een naam of term opmerkt die u vaak dicteert, stelt Nova voor om die aan uw persoonlijke lexicon toe te voegen. Er wordt nooit iets toegevoegd zonder uw bevestiging.",
+    "suggestionTitle": "Bedoelde u “{{term}}”?",
+    "suggestionDescription": "Voeg het toe aan uw persoonlijke lexicon zodat Nova het beter herkent.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Negeren",
+    "added": "“{{term}}” is toegevoegd aan uw lexicon."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Vergadermodus",
+    "description": "Maak van een vergadering een schriftelijk verslag. Nova neemt uw microfoon en het geluid van de andere deelnemers op en maakt daarna een samenvatting die scheidt wat u zei en wat zij zeiden.",
+    "start": "Vergadering starten",
+    "starting": "Bezig met starten…",
+    "finish": "Afronden",
+    "finishing": "Bezig met afronden…",
+    "capturing": "{{app}} wordt opgenomen",
+    "capturingHint": "Nova neemt deze vergadering op. Rond af om het verslag te krijgen.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Anderen",
+    "reportTitle": "Vergaderverslag",
+    "reportMeta": "{{transcribed}} fragmenten getranscribeerd, {{skipped}} overgeslagen",
+    "reportEmpty": "Er is niets opgenomen — tijdens de vergadering was niemand te horen.",
+    "reportNotTranscribed": "Nova heeft geluid opgenomen maar kon het niet transcriberen. Controleer of uw model is gedownload en of er echt iemand sprak, en probeer het opnieuw.",
+    "showTranscript": "Ruwe transcriptie tonen",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Voordat u begint",
+      "subtitle": "Dit gaat over de andere mensen in uw vergadering.",
+      "body": "Na het starten neemt Nova ook de stemmen van de andere deelnemers op — niet alleen die van u — zolang de gedetecteerde vergaderapp op de voorgrond staat. Afhankelijk van waar u bent, kan de wet vereisen dat u hen eerst op de hoogte brengt. Nova kan dit niet voor u doen.",
+      "checkbox": "Ik breng de andere deelnemers vóór elke opgenomen vergadering op de hoogte.",
+      "cancel": "Annuleren",
+      "confirm": "Opname starten"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "Geen vergaderapp op de voorgrond. Open uw vergadering, houd het venster actief en start opnieuw.",
+      "already_running": "Er wordt al een vergadering opgenomen.",
+      "no_active_meeting": "Er wordt momenteel geen vergadering opgenomen.",
+      "unavailable": "Deze computer kan het geluid van één app niet opnemen. Windows 10 versie 2004 of nieuwer is vereist.",
+      "no_audio": "De stream is geopend maar geeft geen geluid. Controleer of de vergadering geluid afspeelt op deze computer.",
+      "stream_error": "De opname is onverwacht gestopt.",
+      "requires_ultra": "Vergadermodus vereist Nova Ultra.",
+      "internal": "De vergadering kon niet worden gestart."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Geen vergaderapp gevonden. Open uw vergadering (Zoom, Teams, Google Meet…) en vernieuw daarna.",
+    "pickApp": "Kies welke vergadering u wilt opnemen.",
+    "oneApp": "Klaar om {{app}} op te nemen.",
+    "refresh": "Vernieuwen",
+    "newMeeting": "Nieuwe vergadering"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Verbinden met uw organisatie",
+    "subtitle": "Gebruik het account dat uw organisatie heeft verstrekt.",
+    "emailAlternative": "Gebruik in plaats daarvan een e-mailcode",
+    "server": "Server van de organisatie",
+    "email": "Zakelijk e-mailadres",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "E-mailadres van je organisatie",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Code versturen",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova is klaar voor gebruik op deze computer.",
+    "processing": "Dienst van de organisatie",
+    "retry": "Opnieuw proberen",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova kon de beheerde configuratie van deze computer niet lezen. Neem contact op met uw IT-team.",
+      "organizationUnavailable": "Deze organisatie is niet beschikbaar. Neem contact op met uw IT-team.",
+      "discovery": "Nova kon de server van uw organisatie niet vinden. Controleer uw verbinding en probeer het opnieuw.",
+      "authMethodUnavailable": "Uw organisatie vereist een aanmeldmethode die deze versie niet ondersteunt."
     }
   },
   "organizationWording": {

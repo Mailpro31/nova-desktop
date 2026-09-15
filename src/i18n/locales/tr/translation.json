@@ -13,7 +13,7 @@
     "models": "Performans",
     "advanced": "Gelişmiş",
     "postProcessing": "Son İşlem",
-    "meeting": "Meeting",
+    "meeting": "Toplantı",
     "history": "Geçmiş",
     "prompts": "Promptlar",
     "structuredNotes": "Yapılandırılmış notlar",
@@ -795,10 +795,10 @@
     "upgrade": "Abone ol"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "≈ {{count}} dakika yazma süresi kazanıldı",
+    "minutes_other": "≈ {{count}} dakika yazma süresi kazanıldı",
+    "words_one": "Bu hafta {{count}} kelime dikte edildi",
+    "words_other": "Bu hafta {{count}} kelime dikte edildi"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Sesli komutlar",
+    "description": "“Yeni paragraf”, “yeni satır”, “soru işareti” ile notlar, listeler, toplantılar veya geçerli dikteyi iptal etmek için açık Nova komutlarını anlar.",
+    "added": "{{word}} kişisel sözlüğe eklendi"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Kaldır",
+    "upgradeToUltra": "Nova Ultra'ya yükselt",
+    "requiresTier": "{{tier}} gerekir",
     "active": "Lisans etkin",
     "trial": {
       "badge": "Pro deneme",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "Çevrimiçi motor Nova Pro ve Ultra'ya özeldir — metniniz yeniden biçimlendirilmeden yapıştırıldı."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Kelime dağarcığımı öğren",
+    "description": "Nova sık dikte ettiğiniz bir ad veya terimi fark ettiğinde, onu kişisel sözlüğünüze eklemenizi önerir. Onayınız olmadan hiçbir şey eklenmez.",
+    "suggestionTitle": "“{{term}}” mı demek istediniz?",
+    "suggestionDescription": "Nova'nın onu daha iyi tanıması için kişisel sözlüğünüze ekleyin.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Yoksay",
+    "added": "“{{term}}” sözlüğünüze eklendi."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Toplantı modu",
+    "description": "Bir toplantıyı yazılı bir rapora dönüştürün. Nova mikrofonunuzu ve diğer katılımcıların sesini kaydeder, ardından sizin söylediklerinizi onların söylediklerinden ayıran bir özet hazırlar.",
+    "start": "Toplantıyı başlat",
+    "starting": "Başlatılıyor…",
+    "finish": "Bitir",
+    "finishing": "Bitiriliyor…",
+    "capturing": "{{app}} kaydediliyor",
+    "capturingHint": "Nova bu toplantıyı kaydediyor. Raporu almak için bitirin.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Diğerleri",
+    "reportTitle": "Toplantı raporu",
+    "reportMeta": "Yazıya dökülen bölüm: {{transcribed}}, atlanan: {{skipped}}",
+    "reportEmpty": "Hiçbir şey kaydedilmedi; toplantı boyunca kimse duyulmadı.",
+    "reportNotTranscribed": "Nova ses kaydetti ancak yazıya dökemedi. Modelinizin indirildiğinden ve gerçekten birinin konuştuğundan emin olup yeniden deneyin.",
+    "showTranscript": "Ham dökümü göster",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Başlamadan önce",
+      "subtitle": "Bu, toplantınızdaki diğer kişileri ilgilendirir.",
+      "body": "Başlatıldıktan sonra Nova, algılanan toplantı uygulaması ön plandayken yalnızca sizin değil diğer katılımcıların seslerini de kaydeder. Bulunduğunuz yere bağlı olarak yasa, önce onları bilgilendirmenizi gerektirebilir. Nova bunu sizin yerinize yapamaz.",
+      "checkbox": "Kaydedilen her toplantıdan önce diğer katılımcıları bilgilendireceğim.",
+      "cancel": "İptal",
+      "confirm": "Kaydı başlat"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "Ön planda toplantı uygulaması yok. Toplantınızı açın, penceresini etkin tutun ve yeniden başlatın.",
+      "already_running": "Zaten bir toplantı kaydediliyor.",
+      "no_active_meeting": "Şu anda kaydedilen bir toplantı yok.",
+      "unavailable": "Bu bilgisayar tek bir uygulamanın sesini kaydedemiyor. Windows 10 sürüm 2004 veya daha yenisi gerekir.",
+      "no_audio": "Akış açıldı ancak ses gelmedi. Toplantının bu bilgisayarda ses çaldığını denetleyin.",
+      "stream_error": "Kayıt beklenmedik şekilde durdu.",
+      "requires_ultra": "Toplantı modu için Nova Ultra gerekir.",
+      "internal": "Toplantı başlatılamadı."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Toplantı uygulaması algılanmadı. Toplantınızı açın (Zoom, Teams, Google Meet…) ve ardından yenileyin.",
+    "pickApp": "Kaydedilecek toplantıyı seçin.",
+    "oneApp": "{{app}} kaydetmeye hazır.",
+    "refresh": "Yenile",
+    "newMeeting": "Yeni toplantı"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Kuruluşunuza bağlanın",
+    "subtitle": "Kuruluşunuzun sağladığı hesabı kullanın.",
+    "emailAlternative": "Bunun yerine e-posta kodu kullan",
+    "server": "Kuruluş sunucusu",
+    "email": "İş e-postası",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "Kuruluş e-posta adresi",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Kodu gönder",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova bu bilgisayarda hazır.",
+    "processing": "Kuruluş hizmeti",
+    "retry": "Yeniden dene",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova bu bilgisayarın yönetilen kurulumunu okuyamadı. BT ekibinizle iletişime geçin.",
+      "organizationUnavailable": "Bu kuruluş kullanılamıyor. BT ekibinizle iletişime geçin.",
+      "discovery": "Nova, kuruluşunuzun sunucusunu bulamadı. Bağlantınızı denetleyip yeniden deneyin.",
+      "authMethodUnavailable": "Kuruluşunuz, bu sürümün desteklemediği bir oturum açma yöntemi gerektiriyor."
     }
   },
   "organizationWording": {

@@ -13,7 +13,7 @@
     "models": "Продуктивність",
     "advanced": "Розширені",
     "postProcessing": "Постобробка",
-    "meeting": "Meeting",
+    "meeting": "Зустріч",
     "history": "Історія",
     "prompts": "Промпти",
     "structuredNotes": "Структуровані нотатки",
@@ -795,10 +795,10 @@
     "upgrade": "Підписатися"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "Зекономлено часу на наборі: ≈ {{count}} хв",
+    "minutes_other": "Зекономлено часу на наборі: ≈ {{count}} хв",
+    "words_one": "Слів надиктовано за тиждень: {{count}}",
+    "words_other": "Слів надиктовано за тиждень: {{count}}"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Голосові команди",
+    "description": "Розуміє «новий абзац», «новий рядок», «знак питання» та явні команди Nova для нотаток, списків, зустрічей або скасування поточного диктування.",
+    "added": "{{word}} додано до особистого словника"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Видалити",
+    "upgradeToUltra": "Перейти на Nova Ultra",
+    "requiresTier": "Потрібна {{tier}}",
     "active": "Ліцензія активна",
     "trial": {
       "badge": "Пробний Pro",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "Онлайн-рушій доступний у Nova Pro і Ultra — текст вставлено без переформулювання."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Запам'ятовувати мій словник",
+    "description": "Коли Nova помічає ім'я або термін, який ви часто диктуєте, Nova пропонує додати його до вашого особистого словника. Без вашого підтвердження нічого не додається.",
+    "suggestionTitle": "Ви мали на увазі «{{term}}»?",
+    "suggestionDescription": "Додайте його до особистого словника, щоб покращити розпізнавання.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Ігнорувати",
+    "added": "«{{term}}» додано до вашого словника."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Режим зустрічі",
+    "description": "Перетворіть зустріч на письмовий звіт. Nova записує ваш мікрофон і звук інших учасників, а потім складає підсумок, у якому сказане вами відокремлено від сказаного ними.",
+    "start": "Почати зустріч",
+    "starting": "Запуск…",
+    "finish": "Завершити",
+    "finishing": "Завершення…",
+    "capturing": "Запис: {{app}}",
+    "capturingHint": "Nova записує цю зустріч. Завершіть, щоб отримати звіт.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Інші",
+    "reportTitle": "Звіт про зустріч",
+    "reportMeta": "Розшифровано фрагментів: {{transcribed}}, пропущено: {{skipped}}",
+    "reportEmpty": "Нічого не записано — під час зустрічі нікого не було чути.",
+    "reportNotTranscribed": "Звук записано, але розшифрувати його не вдалося. Переконайтеся, що модель завантажено і хтось справді говорив, а потім спробуйте ще раз.",
+    "showTranscript": "Показати вихідну розшифровку",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Перш ніж почати",
+      "subtitle": "Це стосується інших учасників вашої зустрічі.",
+      "body": "Після запуску Nova записує не лише ваш голос, а й голоси інших учасників, доки виявлений застосунок для зустрічей на передньому плані. Залежно від того, де ви перебуваєте, закон може вимагати спершу повідомити їх про це. Nova не може зробити це за вас.",
+      "checkbox": "Я попереджатиму інших учасників перед кожною зустріччю, що записується.",
+      "cancel": "Скасувати",
+      "confirm": "Почати запис"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "На передньому плані немає застосунку для зустрічей. Відкрийте зустріч, залиште її вікно активним і почніть знову.",
+      "already_running": "Зустріч уже записується.",
+      "no_active_meeting": "Зараз не записується жодна зустріч.",
+      "unavailable": "Цей комп'ютер не може записувати звук окремого застосунку. Потрібна Windows 10 версії 2004 або новіша.",
+      "no_audio": "Потік відкрився, але звуку немає. Перевірте, чи відтворюється звук зустрічі на цьому комп'ютері.",
+      "stream_error": "Запис несподівано зупинився.",
+      "requires_ultra": "Для режиму зустрічі потрібна Nova Ultra.",
+      "internal": "Не вдалося розпочати зустріч."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Застосунок для зустрічей не виявлено. Відкрийте зустріч (Zoom, Teams, Google Meet…), а потім оновіть.",
+    "pickApp": "Виберіть, яку зустріч записувати.",
+    "oneApp": "Готово до запису: {{app}}.",
+    "refresh": "Оновити",
+    "newMeeting": "Нова зустріч"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Підключення до організації",
+    "subtitle": "Використовуйте обліковий запис, наданий вашою організацією.",
+    "emailAlternative": "Використати код з електронного листа",
+    "server": "Сервер організації",
+    "email": "Робоча електронна пошта",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "Електронна пошта організації",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Надіслати код",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova готова до роботи на цьому комп'ютері.",
+    "processing": "Сервіс організації",
+    "retry": "Спробувати ще раз",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Не вдалося прочитати кероване налаштування цього комп'ютера. Зверніться до ІТ-відділу.",
+      "organizationUnavailable": "Ця організація недоступна. Зверніться до ІТ-відділу.",
+      "discovery": "Не вдалося знайти сервер вашої організації. Перевірте з'єднання і спробуйте ще раз.",
+      "authMethodUnavailable": "Ваша організація вимагає спосіб входу, який ця версія не підтримує."
     }
   },
   "organizationWording": {

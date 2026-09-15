@@ -13,7 +13,7 @@
     "models": "Výkon",
     "advanced": "Pokročilé",
     "postProcessing": "Následné zpracování",
-    "meeting": "Meeting",
+    "meeting": "Schůzka",
     "history": "Historie",
     "prompts": "Prompty",
     "structuredNotes": "Strukturované poznámky",
@@ -795,10 +795,10 @@
     "upgrade": "Předplatit"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "Ušetřený čas psaní: ≈ {{count}} min",
+    "minutes_other": "Ušetřený čas psaní: ≈ {{count}} min",
+    "words_one": "Slova nadiktovaná tento týden: {{count}}",
+    "words_other": "Slova nadiktovaná tento týden: {{count}}"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Hlasové příkazy",
+    "description": "Rozumí povelům nový odstavec, nový řádek, otazník a výslovným příkazům Nova pro poznámky, seznamy, schůzky nebo zrušení aktuálního diktování.",
+    "added": "{{word}} bylo přidáno do osobního slovníku"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Odebrat",
+    "upgradeToUltra": "Přejít na Nova Ultra",
+    "requiresTier": "Vyžaduje {{tier}}",
     "active": "Licence aktivní",
     "trial": {
       "badge": "Zkušební Pro",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "Online engine je vyhrazen pro Nova Pro a Ultra — text byl vložen bez přeformulování."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Učit se moji slovní zásobu",
+    "description": "Když Nova zaznamená jméno nebo výraz, který často diktujete, navrhne jeho přidání do vašeho osobního slovníku. Bez vašeho potvrzení se nikdy nic nepřidá.",
+    "suggestionTitle": "Mysleli jste „{{term}}“?",
+    "suggestionDescription": "Přidáním do osobního slovníku zlepšíte jeho rozpoznávání.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Ignorovat",
+    "added": "„{{term}}“ bylo přidáno do vašeho slovníku."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Režim schůzky",
+    "description": "Proměňte schůzku v písemný zápis. Nova zaznamená váš mikrofon i zvuk ostatních účastníků a poté vytvoří shrnutí, které odděluje, co jste řekli vy a co oni.",
+    "start": "Zahájit schůzku",
+    "starting": "Spouštění…",
+    "finish": "Dokončit",
+    "finishing": "Dokončování…",
+    "capturing": "Zaznamenává se {{app}}",
+    "capturingHint": "Nova nahrává tuto schůzku. Pro zápis ji ukončete.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Ostatní",
+    "reportTitle": "Zápis ze schůzky",
+    "reportMeta": "Přepsané úseky: {{transcribed}}, přeskočené: {{skipped}}",
+    "reportEmpty": "Nic nebylo zaznamenáno — během schůzky nikoho nebylo slyšet.",
+    "reportNotTranscribed": "Zvuk byl zaznamenán, ale nepodařilo se ho přepsat. Ověřte, že je model stažený a že skutečně někdo mluvil, a zkuste to znovu.",
+    "showTranscript": "Zobrazit surový přepis",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Než začnete",
+      "subtitle": "Týká se to ostatních lidí na vaší schůzce.",
+      "body": "Po spuštění Nova nahrává i hlasy ostatních účastníků — nejen váš — dokud je rozpoznaná aplikace pro schůzky v popředí. V závislosti na tom, kde se nacházíte, vám zákon může ukládat, abyste je nejprve informovali. Nova to za vás udělat nemůže.",
+      "checkbox": "Před každou nahrávanou schůzkou dám ostatním účastníkům vědět.",
+      "cancel": "Zrušit",
+      "confirm": "Spustit nahrávání"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "V popředí není žádná aplikace pro schůzky. Otevřete schůzku, nechte její okno aktivní a začněte znovu.",
+      "already_running": "Již se nahrává jiná schůzka.",
+      "no_active_meeting": "Momentálně se nenahrává žádná schůzka.",
+      "unavailable": "Tento počítač nedokáže zaznamenat zvuk jedné aplikace. Je vyžadován Windows 10 verze 2004 nebo novější.",
+      "no_audio": "Stream se otevřel, ale nevydal žádný zvuk. Zkontrolujte, že schůzka na tomto počítači přehrává zvuk.",
+      "stream_error": "Nahrávání se neočekávaně zastavilo.",
+      "requires_ultra": "Režim schůzky vyžaduje Nova Ultra.",
+      "internal": "Schůzku se nepodařilo spustit."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Nebyla zjištěna žádná aplikace pro schůzky. Otevřete schůzku (Zoom, Teams, Google Meet…) a obnovte.",
+    "pickApp": "Vyberte, kterou schůzku nahrávat.",
+    "oneApp": "Připraveno nahrávat {{app}}.",
+    "refresh": "Obnovit",
+    "newMeeting": "Nová schůzka"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Připojte se ke své organizaci",
+    "subtitle": "Použijte účet, který vám poskytla vaše organizace.",
+    "emailAlternative": "Použít místo toho kód z e-mailu",
+    "server": "Server organizace",
+    "email": "Pracovní e-mail",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "E-mail organizace",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Odeslat kód",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova je na tomto počítači připravena.",
+    "processing": "Služba organizace",
+    "retry": "Zkusit znovu",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Spravované nastavení tohoto počítače se nepodařilo načíst. Obraťte se na oddělení IT.",
+      "organizationUnavailable": "Tato organizace není dostupná. Obraťte se na oddělení IT.",
+      "discovery": "Server vaší organizace se nepodařilo najít. Zkontrolujte připojení a zkuste to znovu.",
+      "authMethodUnavailable": "Vaše organizace vyžaduje způsob přihlášení, který tato verze nepodporuje."
     }
   },
   "organizationWording": {

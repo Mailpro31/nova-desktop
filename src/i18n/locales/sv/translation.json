@@ -13,7 +13,7 @@
     "models": "Prestanda",
     "advanced": "Avancerat",
     "postProcessing": "Efterbearbetning",
-    "meeting": "Meeting",
+    "meeting": "Möte",
     "history": "Historik",
     "prompts": "Promptar",
     "structuredNotes": "Strukturerade anteckningar",
@@ -795,10 +795,10 @@
     "upgrade": "Prenumerera"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "≈ {{count}} minut skrivande sparad",
+    "minutes_other": "≈ {{count}} minuter skrivande sparade",
+    "words_one": "{{count}} ord dikterat den här veckan",
+    "words_other": "{{count}} ord dikterade den här veckan"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Röstkommandon",
+    "description": "Förstår ”nytt stycke”, ”ny rad”, ”frågetecken” och uttryckliga Nova-kommandon för anteckningar, listor, möten eller för att avbryta den pågående dikteringen.",
+    "added": "{{word}} har lagts till i den personliga ordlistan"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Ta bort",
+    "upgradeToUltra": "Uppgradera till Nova Ultra",
+    "requiresTier": "Kräver {{tier}}",
     "active": "Licens aktiv",
     "trial": {
       "badge": "Pro-provperiod",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "Onlinemotorn är reserverad för Nova Pro och Ultra — texten klistrades in utan omformulering."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Lär dig mitt ordförråd",
+    "description": "När Nova märker ett namn eller en term som du ofta dikterar föreslår Nova att du lägger till det i ditt personliga lexikon. Inget läggs någonsin till utan din bekräftelse.",
+    "suggestionTitle": "Menade du ”{{term}}”?",
+    "suggestionDescription": "Lägg till det i ditt personliga lexikon så att Nova känner igen det bättre.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Ignorera",
+    "added": "”{{term}}” har lagts till i ditt lexikon."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Mötesläge",
+    "description": "Gör om ett möte till en skriftlig rapport. Nova spelar in din mikrofon och ljudet från de andra deltagarna och skapar sedan en sammanfattning som skiljer på vad du sa och vad de sa.",
+    "start": "Starta möte",
+    "starting": "Startar…",
+    "finish": "Avsluta",
+    "finishing": "Avslutar…",
+    "capturing": "Spelar in {{app}}",
+    "capturingHint": "Nova spelar in det här mötet. Avsluta för att få rapporten.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Övriga",
+    "reportTitle": "Mötesrapport",
+    "reportMeta": "{{transcribed}} avsnitt transkriberade, {{skipped}} överhoppade",
+    "reportEmpty": "Inget spelades in — ingen hördes under mötet.",
+    "reportNotTranscribed": "Nova spelade in ljud men kunde inte transkribera det. Kontrollera att din modell är nedladdad och att någon faktiskt pratade, och försök sedan igen.",
+    "showTranscript": "Visa rå transkription",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Innan du börjar",
+      "subtitle": "Det här gäller de andra personerna i ditt möte.",
+      "body": "När inspelningen har startat spelar Nova även in de andra deltagarnas röster — inte bara din — så länge den upptäckta mötesappen ligger i förgrunden. Beroende på var du befinner dig kan lagen kräva att du informerar dem först. Nova kan inte göra det åt dig.",
+      "checkbox": "Jag informerar de andra deltagarna före varje möte som spelas in.",
+      "cancel": "Avbryt",
+      "confirm": "Starta inspelning"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "Ingen mötesapp i förgrunden. Öppna ditt möte, håll fönstret aktivt och starta igen.",
+      "already_running": "Ett möte spelas redan in.",
+      "no_active_meeting": "Inget möte spelas in just nu.",
+      "unavailable": "Den här datorn kan inte spela in ljudet från en enskild app. Windows 10 version 2004 eller senare krävs.",
+      "no_audio": "Strömmen öppnades men gav inget ljud. Kontrollera att mötet spelar upp ljud på den här datorn.",
+      "stream_error": "Inspelningen stoppades oväntat.",
+      "requires_ultra": "Mötesläget kräver Nova Ultra.",
+      "internal": "Mötet kunde inte startas."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Ingen mötesapp hittades. Öppna ditt möte (Zoom, Teams, Google Meet…) och uppdatera sedan.",
+    "pickApp": "Välj vilket möte som ska spelas in.",
+    "oneApp": "Redo att spela in {{app}}.",
+    "refresh": "Uppdatera",
+    "newMeeting": "Nytt möte"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Anslut till din organisation",
+    "subtitle": "Använd kontot som din organisation tillhandahåller.",
+    "emailAlternative": "Använd en e-postkod i stället",
+    "server": "Organisationens server",
+    "email": "Jobbmejl",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "Organisationens e-postadress",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Skicka koden",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova är redo på den här datorn.",
+    "processing": "Organisationens tjänst",
+    "retry": "Försök igen",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova kunde inte läsa den här datorns hanterade konfiguration. Kontakta din IT-avdelning.",
+      "organizationUnavailable": "Den här organisationen är inte tillgänglig. Kontakta din IT-avdelning.",
+      "discovery": "Nova kunde inte hitta din organisations server. Kontrollera anslutningen och försök igen.",
+      "authMethodUnavailable": "Din organisation kräver en inloggningsmetod som den här versionen inte stöder."
     }
   },
   "organizationWording": {
