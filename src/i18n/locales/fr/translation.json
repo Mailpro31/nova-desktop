@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Apprendre est indisponible pour le moment. Réessayez dans un instant."
+    },
+    "required": {
+      "title": "Demandé par votre organisation",
+      "badge": "Obligatoire",
+      "due": "À faire avant le {{date}}",
+      "overdue": "En retard depuis le {{date}}"
     }
   },
   "edition": {

@@ -179,6 +179,52 @@ test.describe("Learn is where the courses live", () => {
     ).toHaveCount(0);
   });
 
+  test("a lesson the organization requires says so, with its due date", async ({
+    page,
+  }) => {
+    const required = structuredClone(catalog);
+    const lessonToDo = required.paths[2].modules[0].lessons[0];
+    Object.assign(lessonToDo, { required: true, due_at: 4_102_444_800 });
+    await mockTauri(page, {
+      session,
+      config: school,
+      onboardingCompleted: true,
+      learningCatalog: required,
+    });
+    await page.goto("/");
+    await openLearn(page);
+
+    const todo = page.getByRole("region", {
+      name: "Required by your organization",
+    });
+    await expect(todo).toBeVisible();
+    await expect(todo.getByText("Why AI can hallucinate")).toBeVisible();
+    await expect(todo.getByText(/Due .*2100/)).toBeVisible();
+    // Elle est proposée en premier, avant la découverte.
+    await expect(page.getByText("Recommended for you")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Why AI can hallucinate" }).first(),
+    ).toBeVisible();
+  });
+
+  test("without required lessons there is no to-do section", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session,
+      config: school,
+      onboardingCompleted: true,
+      learningCatalog: catalog,
+    });
+    await page.goto("/");
+    await openLearn(page);
+
+    await expect(page.getByText("Ask better questions").first()).toBeVisible();
+    await expect(
+      page.getByRole("region", { name: "Required by your organization" }),
+    ).toHaveCount(0);
+  });
+
   test("lessons written in another language say so", async ({ page }) => {
     await mockTauri(page, {
       session,

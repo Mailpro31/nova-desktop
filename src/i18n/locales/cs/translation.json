@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Učit se je právě nedostupné. Zkuste to za chvíli znovu."
+    },
+    "required": {
+      "title": "Vyžadováno vaší organizací",
+      "badge": "Povinná",
+      "due": "Termín: {{date}}",
+      "overdue": "Po termínu od {{date}}"
     }
   },
   "edition": {

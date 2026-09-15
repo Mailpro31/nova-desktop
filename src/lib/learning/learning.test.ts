@@ -4,6 +4,8 @@ import {
   BLOCK_TYPES,
   INTERACTIVE_BLOCK_TYPES,
   completionIsEarned,
+  dueState,
+  pendingRequiredLessons,
   isKnownBlockType,
   lessonsIndex,
   orderedBlocks,
@@ -334,5 +336,90 @@ describe("recommandation", () => {
     const without = recommendedLesson(catalog, null);
     // Le domaine ne peut que réordonner à l'intérieur du même pilier.
     expect(withDomain?.pillar).toBe(without?.pillar ?? "use_ai");
+  });
+});
+
+/**
+ * L'organisation peut rendre une leçon obligatoire, avec une échéance. Le
+ * serveur l'annonce sur la leçon (`required`, `due_at` en secondes).
+ */
+function withRequired(
+  catalog: LearningCatalog,
+  settings: Record<number, { due_at?: number | null }>,
+): string[] {
+  const lessons = [...lessonsIndex(catalog).values()].map(
+    (entry) => entry.lesson,
+  );
+  for (const [position, value] of Object.entries(settings)) {
+    const lesson = lessons[Number(position)];
+    lesson.required = true;
+    lesson.due_at = value.due_at ?? null;
+  }
+  return lessons.map((lesson) => lesson.id);
+}
+
+describe("leçons obligatoires", () => {
+  test("une leçon obligatoire passe avant la découverte, l'échéance la plus proche d'abord", () => {
+    const catalog = realCatalog();
+    const ids = withRequired(catalog, {
+      7: { due_at: 2_000_000_000 },
+      5: { due_at: 1_900_000_000 },
+      8: {},
+    });
+    expect(recommendedLesson(catalog, null)?.lesson.id).toBe(ids[5]);
+    expect(
+      recommendedLesson(
+        catalog,
+        snapshot([{ id: ids[5], status: "completed" }]),
+      )?.lesson.id,
+    ).toBe(ids[7]);
+    // Sans échéance, elle vient après celles qui en ont une.
+    expect(
+      recommendedLesson(
+        catalog,
+        snapshot([
+          { id: ids[5], status: "completed" },
+          { id: ids[7], status: "completed" },
+        ]),
+      )?.lesson.id,
+    ).toBe(ids[8]);
+  });
+
+  test("reprendre reste prioritaire sur une leçon obligatoire", () => {
+    const catalog = realCatalog();
+    const ids = withRequired(catalog, { 5: { due_at: 1_900_000_000 } });
+    const next = recommendedLesson(
+      catalog,
+      snapshot([{ id: ids[1], status: "in_progress" }]),
+    );
+    expect(next?.lesson.id).toBe(ids[1]);
+  });
+
+  test("la liste à faire ne garde que l'obligatoire non terminé, par échéance", () => {
+    const catalog = realCatalog();
+    const ids = withRequired(catalog, {
+      2: {},
+      6: { due_at: 2_000_000_000 },
+      4: { due_at: 1_900_000_000 },
+    });
+    const pending = pendingRequiredLessons(
+      catalog,
+      snapshot([{ id: ids[6], status: "completed" }]),
+    );
+    expect(pending.map((entry) => entry.lesson.id)).toEqual([ids[4], ids[2]]);
+  });
+
+  test("un catalogue sans réglage n'a rien d'obligatoire", () => {
+    expect(pendingRequiredLessons(realCatalog(), null)).toEqual([]);
+  });
+
+  test("l'échéance se lit : dépassée, proche, ou plus tard", () => {
+    const now = 1_900_000_000_000; // millisecondes
+    const day = 24 * 60 * 60;
+    expect(dueState(null, now)).toBeNull();
+    expect(dueState(undefined, now)).toBeNull();
+    expect(dueState(now / 1000 - 60, now)).toBe("overdue");
+    expect(dueState(now / 1000 + 3 * day, now)).toBe("soon");
+    expect(dueState(now / 1000 + 30 * day, now)).toBe("later");
   });
 });

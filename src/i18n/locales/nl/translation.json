@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Leren is nu niet beschikbaar. Probeer het zo meteen opnieuw."
+    },
+    "required": {
+      "title": "Vereist door je organisatie",
+      "badge": "Verplicht",
+      "due": "Uiterlijk {{date}}",
+      "overdue": "Te laat sinds {{date}}"
     }
   },
   "edition": {

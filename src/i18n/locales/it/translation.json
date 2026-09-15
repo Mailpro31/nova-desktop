@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Impara non è disponibile in questo momento. Riprova tra poco."
+    },
+    "required": {
+      "title": "Richiesto dalla tua organizzazione",
+      "badge": "Obbligatoria",
+      "due": "Scadenza: {{date}}",
+      "overdue": "Scaduta dal {{date}}"
     }
   },
   "edition": {

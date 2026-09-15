@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Học hiện không khả dụng. Vui lòng thử lại sau giây lát."
+    },
+    "required": {
+      "title": "Tổ chức của bạn yêu cầu",
+      "badge": "Bắt buộc",
+      "due": "Hạn: {{date}}",
+      "overdue": "Quá hạn từ {{date}}"
     }
   },
   "edition": {

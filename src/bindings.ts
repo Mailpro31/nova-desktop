@@ -2271,7 +2271,17 @@ export type JsonValue = null | boolean | number | string | JsonValue[] | { [key 
 export type LearningBlock = { id: string; type: string; order: number; content: { [key in string]: JsonValue } }
 export type LearningCatalog = { catalog_version: number; locale: string; paths: LearningPath[] }
 export type LearningExerciseFeedback = { exercise_id: string; feedback: string }
-export type LearningLesson = { id: string; title: string; description: string; estimated_minutes: number; difficulty: string; order: number; version: number; tags: string[]; blocks: LearningBlock[] }
+export type LearningLesson = { id: string; title: string; description: string; estimated_minutes: number; difficulty: string; order: number; version: number; tags: string[]; blocks: LearningBlock[];
+/**
+ * Rendue obligatoire par l'organisation. Absent d'un serveur plus ancien :
+ * la leçon est alors facultative. Sans ce champ, serde l'écartait en
+ * silence et l'interface ne pouvait jamais le montrer.
+ */
+required?: boolean;
+/**
+ * Échéance fixée par l'organisation, en secondes depuis l'époque Unix.
+ */
+due_at?: number | null }
 export type LearningLessonProgress = { lesson_id: string; status: string; lesson_version: number; completed_blocks: string[]; last_block_id: string | null; started_at: number | null; updated_at: number; completed_at: number | null }
 export type LearningModule = { id: string; title: string; description: string; order: number; lessons: LearningLesson[] }
 export type LearningPath = { id: string; pillar: string; title: string; description: string; icon: string | null; order: number; tags: string[]; modules: LearningModule[] }
