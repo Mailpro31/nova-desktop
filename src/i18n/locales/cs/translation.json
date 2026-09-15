@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Kompatibilní modely",
+    "downloadModelsTitle": "K dispozici ke stažení",
+    "showAllModels": "Zobrazit všechny modely ({{total}})",
+    "showFewerModels": "Zobrazit méně modelů",
     "recommended": "Doporučeno",
     "customModelDescription": "Oficiálně nepodporováno",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Podporuje více vstupních jazyků",
-      "languageCount": "{{total}} languages",
+      "languageCount": "Jazyky: {{total}}",
       "translation": "Umí překládat do angličtiny",
       "translate": "Přeložit do angličtiny",
       "singleLanguage": "Podporuje pouze tento jazyk",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Indikátor nahrávání",
+          "description": "Vyberte indikátor nahrávání: „Žádné“ ho skryje, „Minimální“ zobrazí kompaktní panel, „Živě“ zobrazuje přepis v reálném čase během mluvení (jen u modelů podporujících streaming — hledejte štítek „Streaming“ ve výběru modelu). V Linuxu doporučujeme „Žádné“.",
           "options": {
             "none": "Žádné",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "Minimální",
+            "live": "Živě"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" již existuje"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Detekce hlasové aktivity",
+        "description": "Odfiltruje ticho z nahrávek. Modely podporující streaming používají delší doběh VAD; vypnutí VAD nahrává surový zvuk."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Co AI píše podle kontextu."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Zkopírováno",
       "title": "Historie",
       "openFolder": "Otevřít složku nahrávek",
       "loading": "Načítám historii...",
       "empty": "Zatím žádné přepisy. Začněte nahrávat a vytvořte si historii!",
       "copyToClipboard": "Kopírovat přepis do schránky",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Kopírování do schránky se nezdařilo.",
       "save": "Uložit přepis",
       "unsave": "Odebrat z uložených",
       "delete": "Smazat záznam",
@@ -772,11 +772,11 @@
     "processing": "Zpracovávám...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Otevřít nastavení",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Slyším vás",
+    "micTooLow": "Mluvte trochu hlasitěji",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Znovu nezobrazovat",
     "dictationLimitWarning": "Zastavení za {{seconds}} s (limit organizace)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "Slova nadiktovaná tento týden: {{count}}"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Automatická optimalizace",
+    "description": "Vylaďte Nova pro tento počítač a prohlédněte si skutečný řetězec přepisu.",
+    "autoLabel": "Automatický výkonový režim",
+    "autoDescription": "Zvolí bezpečné nastavení akcelerace a paměti modelu podle vaší RAM, procesoru a kompatibilních GPU.",
+    "diagnosticsDescription": "Zkontrolujte mikrofon, model, poskytovatele přeformulování, paměť a akceleraci.",
+    "run": "Spustit diagnostiku",
+    "running": "Probíhá kontrola…",
+    "profile": "Profil",
+    "memory": "Paměť",
+    "cpu": "Vlákna CPU",
+    "acceleration": "Akcelerace",
+    "latency": "Naměřená latence",
+    "median": "medián {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Otevřít nastavení mikrofonu",
+    "retryGpu": "Po restartu znovu zkusit GPU",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Málo paměti",
+      "balanced": "Vyvážený",
+      "performance": "Výkon"
     }
   },
   "voiceCommands": {
@@ -1066,15 +1066,15 @@
     "managedBy": "Spravuje {{organization}}",
     "roles": {
       "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
+      "teacher": "Vyučující",
+      "staff": "Zaměstnanec",
       "partner": "Partner",
       "employee": "Zaměstnanec",
       "manager": "Manažer"
     },
     "status": {
       "connected": "Kampus připojen",
-      "local": "Nova Local active",
+      "local": "Nova Local je aktivní",
       "localActive": "Nova Local je aktivní"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
-      "orb": "Nova orb",
+      "orb": "Koule Nova",
       "orbColor": "Barva koule",
       "orbDescription": "Vyberte barvu doku Novy a indikátoru nahrávání.",
       "alwaysVisible": "Vždy zobrazovat bublinu",

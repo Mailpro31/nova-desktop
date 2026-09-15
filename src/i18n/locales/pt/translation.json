@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "Para começar, escolha um modelo de transcrição",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Modelos compatíveis",
+    "downloadModelsTitle": "Disponíveis para transferir",
+    "showAllModels": "Mostrar os {{total}} modelos",
+    "showFewerModels": "Mostrar menos modelos",
     "recommended": "Recomendado",
     "customModelDescription": "Não suportado oficialmente",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Suporta vários idiomas de entrada",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} idiomas",
       "translation": "Pode traduzir para inglês",
       "translate": "Traduzir para inglês",
       "singleLanguage": "Suporta apenas este idioma",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Indicador de gravação",
+          "description": "Escolha o indicador de gravação: «Nenhum» oculta-o, «Mínimo» mostra uma pastilha compacta e «Em direto» mostra a transcrição em tempo real enquanto fala (apenas modelos com streaming — procure o distintivo «Streaming» no seletor de modelos). No Linux recomenda-se «Nenhum».",
           "options": {
             "none": "Nenhum",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "Mínimo",
+            "live": "Em direto"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" já existe"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Deteção de atividade de voz",
+        "description": "Filtra o silêncio das gravações. Os modelos com streaming usam uma cauda de VAD mais longa; desativar a VAD grava o áudio em bruto."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "O que a IA escreve, de acordo com o contexto."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Copiado",
       "title": "Histórico",
       "openFolder": "Abrir Pasta de Gravações",
       "loading": "Carregando histórico...",
       "empty": "Nenhuma transcrição ainda. Comece a gravar para construir seu histórico!",
       "copyToClipboard": "Copiar transcrição para área de transferência",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Não foi possível copiar para a área de transferência.",
       "save": "Salvar transcrição",
       "unsave": "Remover dos salvos",
       "delete": "Excluir entrada",
@@ -772,11 +772,11 @@
     "processing": "Processando...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Abrir definições",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Estou a ouvir",
+    "micTooLow": "Fale um pouco mais alto",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Não mostrar novamente",
     "dictationLimitWarning": "Para em {{seconds}} s (limite da organização)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} palavras ditadas esta semana"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Otimização automática",
+    "description": "Ajuste o Nova a este computador e inspecione a cadeia de transcrição real.",
+    "autoLabel": "Modo de desempenho automático",
+    "autoDescription": "Escolhe definições seguras de aceleração e memória do modelo com base na RAM, na CPU e nas GPU compatíveis.",
+    "diagnosticsDescription": "Verifique o microfone, o modelo, o fornecedor de reformulação, a memória e a aceleração.",
+    "run": "Executar diagnóstico",
+    "running": "A verificar…",
+    "profile": "Perfil",
+    "memory": "Memória",
+    "cpu": "Threads da CPU",
+    "acceleration": "Aceleração",
+    "latency": "Latência medida",
+    "median": "mediana {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Abrir definições do microfone",
+    "retryGpu": "Tentar a GPU de novo após reiniciar",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Pouca memória",
+      "balanced": "Equilibrado",
+      "performance": "Desempenho"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "Gerenciado por {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "Estudante",
+      "teacher": "Docente",
+      "staff": "Funcionário",
+      "partner": "Parceiro",
       "employee": "Funcionário",
       "manager": "Gestor"
     },
     "status": {
       "connected": "Campus ligado",
-      "local": "Nova Local active",
+      "local": "Nova Local ativo",
       "localActive": "Nova Local ativo"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Ajuste a aparência e a interação do Nova sem alterar as políticas da sua instituição.",
-      "orb": "Nova orb",
+      "orb": "Orbe do Nova",
       "orbColor": "Cor do orbe",
       "orbDescription": "Escolha a cor de destaque do dock do Nova e do indicador de gravação.",
       "alwaysVisible": "Sempre mostrar a bolha",

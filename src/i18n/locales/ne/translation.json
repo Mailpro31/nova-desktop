@@ -580,13 +580,13 @@
       "subtitle": "सन्दर्भ अनुसार AI ले के लेख्छ।"
     },
     "history": {
-      "copied": "Copied",
+      "copied": "प्रतिलिपि गरियो",
       "title": "हिस्ट्री",
       "openFolder": "रेकर्डिङ फोल्डर खोल्नुहोस्",
       "loading": "हिस्ट्री लोड गरिँदैछ...",
       "empty": "अहिलेसम्म कुनै ट्रान्सक्रिप्सन छैन। हिस्ट्री बनाउन रेकर्डिङ सुरु गर्नुहोस्!",
       "copyToClipboard": "ट्रान्सक्रिप्सन क्लिपबोर्डमा कपी गर्नुहोस्",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "क्लिपबोर्डमा प्रतिलिपि गर्न सकिएन।",
       "save": "ट्रान्सक्रिप्सन सेभ गर्नुहोस्",
       "unsave": "सेभ गरिएकाबाट हटाउनुहोस्",
       "delete": "प्रविष्टि मेटाउनुहोस्",
@@ -778,11 +778,11 @@
     "processing": "प्रशोधन गरिँदैछ...",
     "chooseStyle": "Choose a Style",
     "openSettings": "सेटिङ खोल्नुहोस्",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "म तपाईंलाई सुनिरहेको छु",
+    "micTooLow": "अलि ठूलो स्वरमा बोल्नुहोस्",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "फेरि नदेखाउनुहोस्",
     "dictationLimitWarning": "{{seconds}} सेकेन्डमा रोकिन्छ (संस्थाको सीमा)"
   },
   "quota": {
@@ -801,26 +801,26 @@
     "words_other": "यो हप्ता {{count}} शब्द डिक्टेट गरियो"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "स्वचालित अनुकूलन",
+    "description": "यो कम्प्युटरका लागि Nova मिलाउनुहोस् र वास्तविक ट्रान्सक्रिप्सन प्रक्रिया जाँच्नुहोस्।",
+    "autoLabel": "स्वचालित कार्यसम्पादन मोड",
+    "autoDescription": "तपाईंको RAM, CPU र मिल्दो GPU अनुसार सुरक्षित एक्सेलेरेसन र मोडेल मेमोरी सेटिङ छान्छ।",
+    "diagnosticsDescription": "माइक्रोफोन, मोडेल, पुनर्लेखन प्रदायक, मेमोरी र एक्सेलेरेसन जाँच्नुहोस्।",
+    "run": "निदान चलाउनुहोस्",
+    "running": "जाँच्दै…",
+    "profile": "प्रोफाइल",
+    "memory": "मेमोरी",
+    "cpu": "CPU थ्रेड",
+    "acceleration": "एक्सेलेरेसन",
+    "latency": "मापन गरिएको ढिलाइ",
+    "median": "मध्यिका {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "माइक्रोफोन सेटिङ खोल्नुहोस्",
+    "retryGpu": "पुनः सुरु गरेपछि GPU फेरि प्रयास गर्नुहोस्",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "कम मेमोरी",
+      "balanced": "सन्तुलित",
+      "performance": "कार्यसम्पादन"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "{{organization}} द्वारा व्यवस्थित",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "विद्यार्थी",
+      "teacher": "शिक्षक",
+      "staff": "कर्मचारी",
+      "partner": "साझेदार",
       "employee": "कर्मचारी",
       "manager": "प्रबन्धक"
     },
     "status": {
       "connected": "क्याम्पस जोडिएको",
-      "local": "Nova Local active",
+      "local": "Nova Local सक्रिय",
       "localActive": "Nova Local सक्रिय"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "तपाईंको संस्थाका नीति नबदली Nova को रूप र प्रयोग मिलाउनुहोस्।",
-      "orb": "Nova orb",
+      "orb": "Nova गोला",
       "orbColor": "गोलोको रङ",
       "orbDescription": "Nova को डक र रेकर्डिङ सूचकमा प्रयोग हुने रङ छान्नुहोस्।",
       "alwaysVisible": "बबल सधैँ देखाउनुहोस्",

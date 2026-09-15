@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "시작하려면 음성 인식 모델을 선택하세요",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "호환 모델",
+    "downloadModelsTitle": "다운로드 가능",
+    "showAllModels": "모델 {{total}}개 모두 보기",
+    "showFewerModels": "모델 적게 보기",
     "recommended": "추천",
     "customModelDescription": "공식 지원되지 않음",
     "modelCard": {
@@ -249,7 +249,7 @@
     "capabilities": {
       "languageSelection": "여러 입력 언어를 지원합니다",
       "singleLanguage": "이 언어만 지원합니다",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}}개 언어",
       "languageOnly": "{{language}} 전용",
       "translation": "영어로 번역 가능",
       "translate": "영어로 번역",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "녹음 오버레이",
+          "description": "녹음 오버레이를 선택하세요. ‘없음’은 숨기고, ‘최소’는 작은 알약 모양 표시를, ‘실시간’은 말하는 동안 받아쓰기를 실시간으로 보여 줍니다(스트리밍 지원 모델만 해당 — 모델 선택기에서 ‘스트리밍’ 배지를 찾으세요). Linux에서는 ‘없음’을 권장합니다.",
           "options": {
             "none": "없음",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "최소",
+            "live": "실시간"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\"이(가) 이미 존재합니다"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "음성 활동 감지",
+        "description": "녹음에서 무음을 걸러냅니다. 스트리밍 지원 모델은 더 긴 VAD 꼬리를 사용하며, VAD를 끄면 원본 오디오가 녹음됩니다."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "문맥에 따라 AI가 작성하는 내용입니다."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "복사됨",
       "title": "히스토리",
       "openFolder": "녹음 폴더 열기",
       "loading": "히스토리 로딩 중...",
       "empty": "아직 변환된 내용이 없습니다. 녹음을 시작하여 히스토리를 만드세요!",
       "copyToClipboard": "녹음 내용을 클립보드에 복사",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "클립보드에 복사하지 못했습니다.",
       "save": "변환된 텍스트 저장",
       "unsave": "저장에서 제거",
       "delete": "항목 삭제",
@@ -772,11 +772,11 @@
     "processing": "처리 중...",
     "chooseStyle": "Choose a Style",
     "openSettings": "설정 열기",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "잘 들려요",
+    "micTooLow": "조금 더 크게 말해 주세요",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "다시 보지 않기",
     "dictationLimitWarning": "{{seconds}}초 후 중지 (조직 제한)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "이번 주에 받아쓴 단어 {{count}}개"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "자동 최적화",
+    "description": "이 컴퓨터에 맞게 Nova를 조정하고 실제 받아쓰기 과정을 점검합니다.",
+    "autoLabel": "자동 성능 모드",
+    "autoDescription": "RAM, CPU, 호환 GPU를 바탕으로 안전한 가속 및 모델 메모리 설정을 선택합니다.",
+    "diagnosticsDescription": "마이크, 모델, 다시 쓰기 제공자, 메모리, 가속을 점검합니다.",
+    "run": "진단 실행",
+    "running": "확인하는 중…",
+    "profile": "프로필",
+    "memory": "메모리",
+    "cpu": "CPU 스레드",
+    "acceleration": "가속",
+    "latency": "측정된 지연 시간",
+    "median": "중앙값 {{value}}ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "마이크 설정 열기",
+    "retryGpu": "다시 시작 후 GPU 재시도",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "낮은 메모리",
+      "balanced": "균형",
+      "performance": "성능"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "{{organization}}에서 관리",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "학생",
+      "teacher": "교원",
+      "staff": "직원",
+      "partner": "파트너",
       "employee": "직원",
       "manager": "매니저"
     },
     "status": {
       "connected": "캠퍼스 연결됨",
-      "local": "Nova Local active",
+      "local": "Nova Local 활성",
       "localActive": "Nova Local 활성"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "기관 정책을 바꾸지 않고 Nova의 모양과 사용 방식을 조정합니다.",
-      "orb": "Nova orb",
+      "orb": "Nova 오브",
       "orbColor": "오브 색상",
       "orbDescription": "Nova 독과 녹음 표시기에 쓰일 강조 색을 고르세요.",
       "alwaysVisible": "버블 항상 표시",

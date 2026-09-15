@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "相容的模型",
+    "downloadModelsTitle": "可供下載",
+    "showAllModels": "顯示全部 {{total}} 個模型",
+    "showFewerModels": "顯示較少模型",
     "recommended": "推薦",
     "customModelDescription": "官方不支援",
     "modelCard": {
@@ -249,7 +249,7 @@
     "capabilities": {
       "languageSelection": "支援多種輸入語言",
       "singleLanguage": "僅支援此語言",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} 種語言",
       "languageOnly": "僅 {{language}}",
       "translation": "可翻譯為英語",
       "translate": "翻譯為英語",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "錄音浮層",
+          "description": "選擇錄音浮層：「無」會隱藏它，「簡潔」顯示精簡的膠囊，「即時」會在你說話時即時顯示轉寫（僅限支援串流的模型——在模型選擇器中尋找「串流」標記）。在 Linux 上建議選擇「無」。",
           "options": {
             "none": "無",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "簡潔",
+            "live": "即時"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "「{{word}}」已存在"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "語音活動偵測",
+        "description": "過濾錄音中的靜音。支援串流的模型使用較長的 VAD 尾段；關閉 VAD 會錄製原始音訊。"
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "根據上下文,AI 會寫出的內容。"
     },
     "history": {
-      "copied": "Copied",
+      "copied": "已複製",
       "title": "歷史紀錄",
       "openFolder": "開啟錄音資料夾",
       "loading": "載入歷史紀錄中...",
       "empty": "還沒有轉錄紀錄。開始錄製以建立您的歷史紀錄！",
       "copyToClipboard": "複製轉錄到剪貼簿",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "複製到剪貼簿失敗。",
       "save": "儲存轉錄",
       "unsave": "從已儲存中移除",
       "delete": "刪除條目",
@@ -772,11 +772,11 @@
     "processing": "處理中...",
     "chooseStyle": "Choose a Style",
     "openSettings": "開啟設定",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "我聽得到你",
+    "micTooLow": "請稍微大聲一點",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "不再顯示",
     "dictationLimitWarning": "{{seconds}} 秒後停止（組織限制）"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "本週已聽寫 {{count}} 個字詞"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "自動最佳化",
+    "description": "為這台電腦調整 Nova，並檢查實際的轉寫流程。",
+    "autoLabel": "自動效能模式",
+    "autoDescription": "依你的記憶體、CPU 與相容的 GPU，選擇安全的加速與模型記憶體設定。",
+    "diagnosticsDescription": "檢查麥克風、模型、改寫服務、記憶體與加速。",
+    "run": "執行診斷",
+    "running": "正在檢查…",
+    "profile": "設定檔",
+    "memory": "記憶體",
+    "cpu": "CPU 執行緒",
+    "acceleration": "加速",
+    "latency": "實測延遲",
+    "median": "中位數 {{value}} 毫秒",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "開啟麥克風設定",
+    "retryGpu": "重新啟動後重試 GPU",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "低記憶體",
+      "balanced": "平衡",
+      "performance": "效能"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "由 {{organization}} 管理",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "學生",
+      "teacher": "教師",
+      "staff": "職員",
+      "partner": "合作夥伴",
       "employee": "員工",
       "manager": "經理"
     },
     "status": {
       "connected": "校園已連線",
-      "local": "Nova Local active",
+      "local": "Nova Local 已啟用",
       "localActive": "Nova Local 已啟用"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "調整 Nova 的外觀與互動方式，不會變更你所屬學校的規定。",
-      "orb": "Nova orb",
+      "orb": "Nova 光球",
       "orbColor": "光球顏色",
       "orbDescription": "選擇 Nova 停駐列與錄音指示器使用的強調色。",
       "alwaysVisible": "一律顯示泡泡",

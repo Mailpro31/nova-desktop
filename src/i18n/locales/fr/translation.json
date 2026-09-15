@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} Mo/s",
     "capabilities": {
       "languageSelection": "Prend en charge plusieurs langues d'entrée",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} langues",
       "translation": "Peut traduire en anglais",
       "translate": "Traduire en anglais",
       "singleLanguage": "Prend en charge uniquement cette langue",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Indicateur d'enregistrement",
+          "description": "Choisissez l'indicateur d'enregistrement : « Aucune » le masque, « Minimal » affiche une pastille compacte, « En direct » affiche la transcription en temps réel pendant que vous parlez (modèles compatibles streaming uniquement — repérez le badge « Streaming » dans le sélecteur de modèle). Sous Linux, « Aucune » est recommandé.",
           "options": {
             "none": "Aucune",
             "minimal": "Minimal",
-            "live": "Live"
+            "live": "En direct"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" existe déjà"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Détection d'activité vocale",
+        "description": "Filtre les silences des enregistrements. Les modèles compatibles streaming utilisent une traîne VAD plus longue ; désactiver la VAD enregistre l'audio brut."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Ce que l'IA écrit selon le contexte."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Copié",
       "title": "Historique",
       "openFolder": "Ouvrir le dossier des enregistrements",
       "loading": "Chargement de l'historique...",
       "empty": "Pas encore de transcriptions. Commencez à enregistrer pour créer votre historique !",
       "copyToClipboard": "Copier la transcription dans le presse-papiers",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Échec de la copie dans le presse-papiers.",
       "save": "Enregistrer la transcription",
       "unsave": "Retirer des favoris",
       "delete": "Supprimer l'entrée",

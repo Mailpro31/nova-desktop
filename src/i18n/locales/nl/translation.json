@@ -580,13 +580,13 @@
       "subtitle": "Wat de AI schrijft, afhankelijk van de context."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Gekopieerd",
       "title": "Geschiedenis",
       "openFolder": "Opnamemap openen",
       "loading": "Geschiedenis laden...",
       "empty": "Nog geen transcripties. Start met opnemen om je geschiedenis op te bouwen!",
       "copyToClipboard": "Transcriptie naar klembord kopiëren",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Kopiëren naar het klembord mislukt.",
       "save": "Transcriptie opslaan",
       "unsave": "Verwijderen uit opgeslagen",
       "delete": "Item verwijderen",
@@ -778,11 +778,11 @@
     "processing": "Verwerken...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Instellingen openen",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Ik hoor u",
+    "micTooLow": "Spreek iets luider",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Niet meer tonen",
     "dictationLimitWarning": "Stopt over {{seconds}} s (limiet van de organisatie)"
   },
   "quota": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} woorden gedicteerd deze week"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Automatische optimalisatie",
+    "description": "Stem Nova af op deze computer en bekijk de werkelijke transcriptieketen.",
+    "autoLabel": "Automatische prestatiemodus",
+    "autoDescription": "Kiest veilige instellingen voor versnelling en modelgeheugen op basis van uw RAM, CPU en compatibele GPU's.",
+    "diagnosticsDescription": "Controleer de microfoon, het model, de herformuleringsprovider, het geheugen en de versnelling.",
+    "run": "Diagnose uitvoeren",
+    "running": "Bezig met controleren…",
+    "profile": "Profiel",
+    "memory": "Geheugen",
+    "cpu": "CPU-threads",
+    "acceleration": "Versnelling",
+    "latency": "Gemeten latentie",
+    "median": "mediaan {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Microfooninstellingen openen",
+    "retryGpu": "GPU opnieuw proberen na herstart",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Weinig geheugen",
+      "balanced": "Gebalanceerd",
+      "performance": "Prestaties"
     }
   },
   "voiceCommands": {
@@ -1066,15 +1066,15 @@
     "managedBy": "Beheerd door {{organization}}",
     "roles": {
       "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
+      "teacher": "Docent",
+      "staff": "Medewerker",
       "partner": "Partner",
       "employee": "Medewerker",
       "manager": "Manager"
     },
     "status": {
       "connected": "Campus verbonden",
-      "local": "Nova Local active",
+      "local": "Nova Local actief",
       "localActive": "Nova Local actief"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
-      "orb": "Nova orb",
+      "orb": "Nova-bol",
       "orbColor": "Kleur van de bol",
       "orbDescription": "Kies de accentkleur voor het Nova-dock en de opname-indicator.",
       "alwaysVisible": "Bubbel altijd tonen",

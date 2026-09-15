@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "النماذج المتوافقة",
+    "downloadModelsTitle": "متاحة للتنزيل",
+    "showAllModels": "عرض كل النماذج ({{total}})",
+    "showFewerModels": "عرض نماذج أقل",
     "recommended": "موصى به",
     "customModelDescription": "غير مدعوم رسميًا",
     "modelCard": {
@@ -249,7 +249,7 @@
     "capabilities": {
       "languageSelection": "يدعم اختيار اللغة",
       "singleLanguage": "يدعم هذه اللغة فقط",
-      "languageCount": "{{total}} languages",
+      "languageCount": "اللغات: {{total}}",
       "languageOnly": "{{language}} فقط",
       "translation": "يدعم الترجمة",
       "translate": "ترجمة",
@@ -371,12 +371,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "مؤشر التسجيل",
+          "description": "اختر مؤشر التسجيل: «بلا» يخفيه، و«مصغّر» يعرض شريطًا صغيرًا، و«مباشر» يعرض النص أثناء حديثك (للنماذج التي تدعم البث فقط — ابحث عن شارة «البث» في منتقي النماذج). على Linux يُنصح بـ«بلا».",
           "options": {
             "none": "بلا",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "مصغّر",
+            "live": "مباشر"
           }
         },
         "position": {
@@ -454,8 +454,8 @@
         "duplicate": "\"{{word}}\" موجود بالفعل"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "اكتشاف النشاط الصوتي",
+        "description": "يزيل الصمت من التسجيلات. تستخدم النماذج الداعمة للبث مدة VAD أطول في نهاية الكلام؛ وتعطيل VAD يسجّل الصوت الخام."
       }
     },
     "postProcessing": {
@@ -559,13 +559,13 @@
       "subtitle": "ما تكتبه الذكاء الاصطناعي حسب السياق."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "تم النسخ",
       "title": "السجل",
       "openFolder": "فتح مجلد التسجيلات",
       "loading": "...جاري تحميل السجل",
       "empty": "!لا يوجد تفريغ صوتي بعد. ابدأ التسجيل لبناء سجلك",
       "copyToClipboard": "نسخ التفريغ إلى الحافظة",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "تعذّر النسخ إلى الحافظة.",
       "save": "حفظ التفريغ",
       "unsave": "إزالة من المحفوظات",
       "delete": "حذف الإدخال",
@@ -772,11 +772,11 @@
     "processing": "...جاري المعالجة",
     "chooseStyle": "Choose a Style",
     "openSettings": "فتح الإعدادات",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "أسمعك",
+    "micTooLow": "تحدّث بصوت أعلى قليلًا",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "عدم الإظهار مرة أخرى",
     "dictationLimitWarning": "يتوقف بعد {{seconds}} ث (حد المؤسسة)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "الكلمات المُملاة هذا الأسبوع: {{count}}"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "التحسين التلقائي",
+    "description": "اضبط Nova لهذا الكمبيوتر وافحص مسار النسخ الفعلي.",
+    "autoLabel": "وضع الأداء التلقائي",
+    "autoDescription": "يختار إعدادات تسريع وذاكرة نموذج آمنة بناءً على ذاكرة RAM والمعالج ووحدات GPU المتوافقة.",
+    "diagnosticsDescription": "افحص الميكروفون والنموذج ومزوّد إعادة الصياغة والذاكرة والتسريع.",
+    "run": "تشغيل التشخيص",
+    "running": "جارٍ الفحص…",
+    "profile": "الملف",
+    "memory": "الذاكرة",
+    "cpu": "خيوط المعالج",
+    "acceleration": "التسريع",
+    "latency": "زمن الاستجابة المُقاس",
+    "median": "الوسيط {{value}} مللي ثانية",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "فتح إعدادات الميكروفون",
+    "retryGpu": "إعادة محاولة GPU بعد إعادة التشغيل",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "ذاكرة منخفضة",
+      "balanced": "متوازن",
+      "performance": "الأداء"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "تُديره {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "طالب",
+      "teacher": "معلّم",
+      "staff": "موظف",
+      "partner": "شريك",
       "employee": "موظف",
       "manager": "مدير"
     },
     "status": {
       "connected": "الحرم متصل",
-      "local": "Nova Local active",
+      "local": "Nova Local نشط",
       "localActive": "Nova Local نشط"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "اضبط مظهر Nova وطريقة التفاعل معه دون تغيير سياسات مؤسستك.",
-      "orb": "Nova orb",
+      "orb": "كرة Nova",
       "orbColor": "لون الكرة",
       "orbDescription": "اختر اللون المستخدم في شريط Nova ومؤشر التسجيل.",
       "alwaysVisible": "إظهار الفقاعة دائمًا",

@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Kompatible Modelle",
+    "downloadModelsTitle": "Zum Herunterladen verfügbar",
+    "showAllModels": "Alle {{total}} Modelle anzeigen",
+    "showFewerModels": "Weniger Modelle anzeigen",
     "recommended": "Empfohlen",
     "customModelDescription": "Nicht offiziell unterstützt",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Unterstützt mehrere Eingabesprachen",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} Sprachen",
       "translation": "Kann ins Englische übersetzen",
       "translate": "Ins Englische übersetzen",
       "singleLanguage": "Unterstützt nur diese Sprache",
@@ -392,8 +392,8 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Aufnahmeanzeige",
+          "description": "Wählen Sie die Aufnahmeanzeige: „Keine“ blendet sie aus, „Minimal“ zeigt eine kompakte Leiste, „Live“ zeigt die Transkription in Echtzeit, während Sie sprechen (nur Modelle mit Streaming — achten Sie auf das Abzeichen „Streaming“ in der Modellauswahl). Unter Linux wird „Keine“ empfohlen.",
           "options": {
             "none": "Keine",
             "minimal": "Minimal",
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" existiert bereits"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Sprachaktivitätserkennung",
+        "description": "Filtert Stille aus Aufnahmen. Modelle mit Streaming nutzen einen längeren VAD-Nachlauf; ohne VAD wird das Rohaudio aufgenommen."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Was die KI je nach Kontext schreibt."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Kopiert",
       "title": "Verlauf",
       "openFolder": "Aufnahmeordner öffnen",
       "loading": "Verlauf wird geladen...",
       "empty": "Noch keine Transkriptionen. Starte eine Aufnahme, um deinen Verlauf aufzubauen!",
       "copyToClipboard": "Transkription in Zwischenablage kopieren",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Kopieren in die Zwischenablage fehlgeschlagen.",
       "save": "Transkription speichern",
       "unsave": "Aus Gespeicherten entfernen",
       "delete": "Eintrag löschen",
@@ -772,11 +772,11 @@
     "processing": "Verarbeite...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Einstellungen öffnen",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Ich höre Sie",
+    "micTooLow": "Sprechen Sie etwas lauter",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Nicht mehr anzeigen",
     "dictationLimitWarning": "Stopp in {{seconds}} s (Limit der Organisation)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} Wörter diese Woche diktiert"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Automatische Optimierung",
+    "description": "Stimmen Sie Nova auf diesen Computer ab und prüfen Sie die tatsächliche Transkriptionskette.",
+    "autoLabel": "Automatischer Leistungsmodus",
+    "autoDescription": "Wählt sichere Einstellungen für Beschleunigung und Modellspeicher anhand Ihres RAM, Ihrer CPU und kompatibler GPUs.",
+    "diagnosticsDescription": "Prüfen Sie Mikrofon, Modell, Umformulierungsanbieter, Speicher und Beschleunigung.",
+    "run": "Diagnose ausführen",
+    "running": "Wird geprüft…",
+    "profile": "Profil",
+    "memory": "Speicher",
+    "cpu": "CPU-Threads",
+    "acceleration": "Beschleunigung",
+    "latency": "Gemessene Latenz",
+    "median": "Median {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Mikrofoneinstellungen öffnen",
+    "retryGpu": "GPU nach Neustart erneut versuchen",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Wenig Speicher",
+      "balanced": "Ausgewogen",
+      "performance": "Leistung"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "Verwaltet von {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
+      "student": "Studierende",
+      "teacher": "Lehrkraft",
+      "staff": "Mitarbeitende",
       "partner": "Partner",
       "employee": "Mitarbeiter",
       "manager": "Führungskraft"
     },
     "status": {
       "connected": "Campus verbunden",
-      "local": "Nova Local active",
+      "local": "Nova Local aktiv",
       "localActive": "Nova Local aktiv"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Passe Aussehen und Bedienung von Nova an, ohne die Richtlinien deiner Einrichtung zu ändern.",
-      "orb": "Nova orb",
+      "orb": "Nova-Kugel",
       "orbColor": "Farbe der Kugel",
       "orbDescription": "Wähle die Akzentfarbe für Novas Dock und die Aufnahmeanzeige.",
       "alwaysVisible": "Blase immer anzeigen",

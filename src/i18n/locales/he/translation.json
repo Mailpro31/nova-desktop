@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "מודלים תואמים",
+    "downloadModelsTitle": "זמינים להורדה",
+    "showAllModels": "הצגת כל {{total}} המודלים",
+    "showFewerModels": "הצגת פחות מודלים",
     "recommended": "מומלץ",
     "customModelDescription": "לא נתמך באופן רשמי",
     "modelCard": {
@@ -249,7 +249,7 @@
     "capabilities": {
       "languageSelection": "תומך בכמה שפות קלט",
       "singleLanguage": "תומך רק בשפה הזו",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} שפות",
       "languageOnly": "{{language}} בלבד",
       "translation": "יכול לתרגם לאנגלית",
       "translate": "תרגם לאנגלית",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "מחוון הקלטה",
+          "description": "בחרו את מחוון ההקלטה: „ללא” מסתיר אותו, „מינימלי” מציג פס קטן, „בזמן אמת” מציג את התמלול תוך כדי דיבור (רק במודלים שתומכים בסטרימינג — חפשו את התג „סטרימינג” בבורר המודלים). ב-Linux מומלץ „ללא”.",
           "options": {
             "none": "ללא",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "מינימלי",
+            "live": "בזמן אמת"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" כבר קיימת"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "זיהוי פעילות קולית",
+        "description": "מסנן שקט מההקלטות. מודלים שתומכים בסטרימינג משתמשים בזנב VAD ארוך יותר; כיבוי VAD מקליט שמע גולמי."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "מה הבינה המלאכותית כותבת בהתאם להקשר."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "הועתק",
       "title": "היסטוריה",
       "openFolder": "פתח את תיקיית ההקלטות",
       "loading": "טוען היסטוריה...",
       "empty": "עדיין אין תמלולים. התחל להקליט כדי לבנות את ההיסטוריה שלך!",
       "copyToClipboard": "העתק תמלול ללוח",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "ההעתקה ללוח נכשלה.",
       "save": "שמור תמלול",
       "unsave": "הסר משמורים",
       "delete": "מחק רשומה",
@@ -772,11 +772,11 @@
     "processing": "מעבד...",
     "chooseStyle": "Choose a Style",
     "openSettings": "פתח הגדרות",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "שומעים אתכם",
+    "micTooLow": "דברו קצת יותר חזק",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "לא להציג שוב",
     "dictationLimitWarning": "נעצר בעוד {{seconds}} שנ׳ (מגבלת הארגון)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} מילים הוכתבו השבוע"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "אופטימיזציה אוטומטית",
+    "description": "כווננו את Nova למחשב הזה ובדקו את תהליך התמלול בפועל.",
+    "autoLabel": "מצב ביצועים אוטומטי",
+    "autoDescription": "בוחר הגדרות האצה וזיכרון מודל בטוחות לפי ה-RAM, המעבד וה-GPU התואמים שלכם.",
+    "diagnosticsDescription": "בדקו את המיקרופון, המודל, ספק הניסוח מחדש, הזיכרון וההאצה.",
+    "run": "הפעלת בדיקה",
+    "running": "בודק…",
+    "profile": "פרופיל",
+    "memory": "זיכרון",
+    "cpu": "תהליכוני CPU",
+    "acceleration": "האצה",
+    "latency": "השהיה שנמדדה",
+    "median": "חציון {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "פתיחת הגדרות המיקרופון",
+    "retryGpu": "ניסיון חוזר של GPU אחרי הפעלה מחדש",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "זיכרון נמוך",
+      "balanced": "מאוזן",
+      "performance": "ביצועים"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "מנוהל על ידי {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "סטודנט",
+      "teacher": "מרצה",
+      "staff": "סגל",
+      "partner": "שותף",
       "employee": "עובד",
       "manager": "מנהל"
     },
     "status": {
       "connected": "הקמפוס מחובר",
-      "local": "Nova Local active",
+      "local": "Nova Local פעיל",
       "localActive": "Nova Local פעיל"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "התאימו את המראה והאינטראקציה של Nova בלי לשנות את המדיניות של המוסד שלכם.",
-      "orb": "Nova orb",
+      "orb": "כדור Nova",
       "orbColor": "צבע הכדור",
       "orbDescription": "בחרו את צבע ההדגשה של סרגל Nova ושל מחוון ההקלטה.",
       "alwaysVisible": "להציג תמיד את הבועה",

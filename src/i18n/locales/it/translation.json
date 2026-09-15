@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Supporta più lingue di input",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} lingue",
       "translation": "Può tradurre in inglese",
       "translate": "Traduci in inglese",
       "singleLanguage": "Supporta solo questa lingua",
@@ -580,13 +580,13 @@
       "subtitle": "Cosa scrive l'IA in base al contesto."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Copiato",
       "title": "Cronologia",
       "openFolder": "Apri la cartella delle registrazioni",
       "loading": "Caricamento cronologia...",
       "empty": "Non ci sono ancora trascrizioni. Comincia a registrare per costruire la tua cronologia!",
       "copyToClipboard": "Copia la trascrizione negli appunti",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Impossibile copiare negli appunti.",
       "save": "Salva la trascrizione",
       "unsave": "Rimuovi dai salvataggi",
       "delete": "Elimina elemento",
@@ -772,11 +772,11 @@
     "processing": "Elaborazione...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Apri impostazioni",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Ti sento",
+    "micTooLow": "Parla un po' più forte",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Non mostrare più",
     "dictationLimitWarning": "Si ferma tra {{seconds}} s (limite dell'organizzazione)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} parole dettate questa settimana"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Ottimizzazione automatica",
+    "description": "Regola Nova per questo computer ed esamina la catena di trascrizione reale.",
+    "autoLabel": "Modalità prestazioni automatica",
+    "autoDescription": "Sceglie impostazioni sicure di accelerazione e memoria del modello in base a RAM, CPU e GPU compatibili.",
+    "diagnosticsDescription": "Controlla microfono, modello, fornitore di riformulazione, memoria e accelerazione.",
+    "run": "Esegui diagnostica",
+    "running": "Verifica in corso…",
+    "profile": "Profilo",
+    "memory": "Memoria",
+    "cpu": "Thread CPU",
+    "acceleration": "Accelerazione",
+    "latency": "Latenza misurata",
+    "median": "mediana {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Apri impostazioni microfono",
+    "retryGpu": "Riprova la GPU dopo il riavvio",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Memoria ridotta",
+      "balanced": "Bilanciato",
+      "performance": "Prestazioni"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "Gestito da {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
+      "student": "Studente",
+      "teacher": "Docente",
+      "staff": "Personale",
       "partner": "Partner",
       "employee": "Dipendente",
       "manager": "Manager"
     },
     "status": {
       "connected": "Campus connesso",
-      "local": "Nova Local active",
+      "local": "Nova Local attivo",
       "localActive": "Nova Local attivo"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Regola l'aspetto e l'interazione di Nova senza cambiare le regole del tuo istituto.",
-      "orb": "Nova orb",
+      "orb": "Sfera di Nova",
       "orbColor": "Colore della sfera",
       "orbDescription": "Scegli il colore d'accento del dock di Nova e dell'indicatore di registrazione.",
       "alwaysVisible": "Mostra sempre la bolla",
