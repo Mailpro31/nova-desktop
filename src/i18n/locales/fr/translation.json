@@ -17,6 +17,7 @@
     "personalization": "Personnalisation",
     "history": "Historique",
     "prompts": "Prompts",
+    "structuredNotes": "Notes structurées",
     "about": "À propos",
     "home": "Accueil",
     "configuration": "Configuration",
@@ -1096,17 +1097,6 @@
       "minutes": "Environ {{count}} min",
       "completed": "Terminé"
     },
-    "engineeringNotes": {
-      "title": "Notes d'ingénierie",
-      "description": "Transformez des observations brutes en note d'ingénierie concise et traçable.",
-      "inputPlaceholder": "Collez ou dictez vos observations, mesures et incertitudes...",
-      "instructionPlaceholder": "Consigne facultative, ex. insister sur les conditions d'essai",
-      "action": "Structurer les notes",
-      "working": "Structuration...",
-      "result": "Note structurée",
-      "copied": "Note copiée",
-      "error": "Impossible de structurer les notes."
-    },
     "personalization": {
       "description": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre établissement.",
       "orb": "Orbe Nova",
@@ -1508,6 +1498,51 @@
     "subtitle": "Les prompts que Nova a écrits à partir de vos dictées, prêts à réutiliser.",
     "empty": "Dictez avec le Style prompt : vos prompts apparaîtront ici.",
     "searchPlaceholder": "Rechercher dans vos prompts"
+  },
+  "structuredNotes": {
+    "title": "Notes structurées",
+    "subtitle": "Collez ou dictez des notes brutes. Nova les range selon leur type, sans perdre un seul fait.",
+    "typeLabel": "Type de note",
+    "types": {
+      "meeting": "Réunion",
+      "lecture": "Cours",
+      "observation": "Observation",
+      "ideas": "Idées",
+      "free": "Libre"
+    },
+    "inputPlaceholder": "Collez ou dictez vos notes brutes…",
+    "instructionPlaceholder": "Consigne facultative, ex. mettre les échéances en gras",
+    "action": "Structurer mes notes",
+    "working": "Structuration…",
+    "result": "Note structurée",
+    "copied": "Note copiée",
+    "error": "Nova n'a pas pu structurer ces notes. Réessayez dans un instant.",
+    "unavailable": "Choisissez un moteur de réécriture dans Styles pour utiliser les notes structurées.",
+    "exampleTitle": "Exemple",
+    "exampleBefore": "Avant",
+    "exampleAfter": "Après",
+    "examples": {
+      "meeting": {
+        "before": "appel avec Léa et Tom, lancement décalé au 12 mars, Tom envoie le budget d'ici vendredi, lieu toujours pas fixé",
+        "after": "Résumé\n- Point lancement avec Léa et Tom\n\nDécisions\n- Lancement décalé au 12 mars\n\nActions\n- Tom : envoyer le budget d'ici vendredi\n\nQuestions ouvertes\n- Lieu pas encore fixé"
+      },
+      "lecture": {
+        "before": "cours de thermo, premier principe = conservation de l'énergie, dU = Q - W, exemple : gaz chauffé dans un piston, revoir le signe de W",
+        "after": "Résumé\n- Thermodynamique : le premier principe\n\nNotions clés\n- L'énergie se conserve\n\nDéfinitions et formules\n- dU = Q − W\n\nExemples\n- Gaz chauffé dans un piston\n\nÀ revoir\n- Convention de signe de W"
+      },
+      "observation": {
+        "before": "éprouvette B fissurée à 42 kN, essai à 20 °C, peut-être la soudure, refaire avec une nouvelle soudure la semaine prochaine",
+        "after": "Observation\n- Éprouvette B fissurée à 42 kN (20 °C)\n\nHypothèse\n- La soudure pourrait être en cause (incertain)\n\nRésultat\n- Rupture à 42 kN\n\nAction\n- Refaire l'essai avec une nouvelle soudure la semaine prochaine"
+      },
+      "ideas": {
+        "before": "idée newsletter : astuces chaque mois, peut-être des vidéos courtes, demander aux utilisateurs ce qu'ils veulent, commencer petit",
+        "after": "Idées\n- Une newsletter d'astuces mensuelle\n- Des vidéos courtes\n\nPourquoi c'est utile\n- Garder les utilisateurs impliqués\n\nQuestions ouvertes\n- Qu'attendent les utilisateurs ?\n\nProchaines étapes\n- Demander aux utilisateurs, puis commencer petit"
+      },
+      "free": {
+        "before": "dentiste mardi 9h, acheter de l'encre, appeler la banque pour la carte, sport jeudi peut-être",
+        "after": "Résumé\n- Rendez-vous et courses de la semaine\n\nPoints clés\n- Dentiste mardi à 9 h\n- Appeler la banque pour la carte\n\nDétails\n- Acheter de l'encre pour l'imprimante\n\nProchaines étapes\n- Sport jeudi (à confirmer)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Voix"

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CampusConnection } from "../campus/CampusConnection";
-import { CampusEngineeringNotes } from "../campus/CampusEngineeringNotes";
 import { GeneralSettings } from "../general/GeneralSettings";
 import {
   CampusGeneralSettings,
@@ -15,17 +14,14 @@ import { PageHeader } from "../../shell/PageHeader";
 import { ModelsSettings } from "../models/ModelsSettings";
 import { AdvancedSettings } from "../advanced/AdvancedSettings";
 import { PersonalizationSettings } from "../personalization/PersonalizationSettings";
-import { useOrganizationSettingsTools } from "@/hooks/useOrganizationSettingsTools";
 import { isOrganizationMode } from "@/lib/mode";
-import { type OrganizationSettingsTools } from "@/lib/organization/settingsTools";
 
 type ConfigTab =
   | "general"
   | "voice"
   | "performance"
   | "advanced"
-  | "personalization"
-  | keyof OrganizationSettingsTools;
+  | "personalization";
 
 const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
   { id: "general", labelKey: "sidebar.general" },
@@ -50,15 +46,6 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
 ];
 
 /**
- * Les fonctions que l'organisation sert, après les quatre catégories. Chacune
- * n'apparaît que si l'organisation l'ouvre : voir `organizationSettingsTools`.
- */
-const ORGANIZATION_TOOL_TABS: {
-  id: keyof OrganizationSettingsTools;
-  labelKey: string;
-}[] = [{ id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" }];
-
-/**
  * « Configuration » regroupe les anciennes sections Général / Modèles /
  * Avancé sous une seule entrée de barre latérale, avec un sélecteur segmenté
  * compact pour naviguer entre les trois. Aucun réglage ni clé de
@@ -67,10 +54,7 @@ const ORGANIZATION_TOOL_TABS: {
 export const ConfigurationSettings: React.FC = () => {
   const { t } = useTranslation();
   const campusMode = isOrganizationMode();
-  const tools = useOrganizationSettingsTools();
-  const tabs = campusMode
-    ? [...CAMPUS_TABS, ...ORGANIZATION_TOOL_TABS.filter(({ id }) => tools[id])]
-    : ALL_TABS;
+  const tabs = campusMode ? CAMPUS_TABS : ALL_TABS;
   const [selectedTab, setTab] = useState<ConfigTab>("general");
   // Une fonction que l'organisation referme pendant qu'on la consulte ne reste
   // pas affichée : on revient sur Général.
@@ -126,7 +110,6 @@ export const ConfigurationSettings: React.FC = () => {
           {campusMode && <CampusPersonalizationSections />}
         </>
       )}
-      {tab === "engineeringNotes" && <CampusEngineeringNotes />}
     </div>
   );
 };

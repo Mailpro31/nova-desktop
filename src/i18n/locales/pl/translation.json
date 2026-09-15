@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Historia",
     "prompts": "Prompty",
+    "structuredNotes": "Uporządkowane notatki",
     "about": "O programie",
     "personalization": "Personalizacja",
     "home": "Start",
@@ -1096,17 +1097,6 @@
       "minutes": "Około {{count}} min",
       "completed": "Ukończono"
     },
-    "engineeringNotes": {
-      "title": "Notatki inżynierskie",
-      "description": "Zamień surowe obserwacje w zwięzłą, identyfikowalną notatkę inżynierską.",
-      "inputPlaceholder": "Wklej lub podyktuj swoje obserwacje, pomiary i niepewności...",
-      "instructionPlaceholder": "Opcjonalne polecenie, np. podkreśl warunki badania",
-      "action": "Uporządkuj notatki",
-      "working": "Porządkowanie...",
-      "result": "Uporządkowana notatka",
-      "copied": "Skopiowano notatkę",
-      "error": "Nie udało się uporządkować notatek."
-    },
     "personalization": {
       "description": "Dostosuj wygląd i obsługę Novy bez zmieniania zasad swojej instytucji.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Prompty napisane przez Nova na podstawie Twoich dyktowań, gotowe do ponownego użycia.",
     "empty": "Dyktuj ze stylem prompt, a Twoje prompty pojawią się tutaj.",
     "searchPlaceholder": "Szukaj w promptach"
+  },
+  "structuredNotes": {
+    "title": "Uporządkowane notatki",
+    "subtitle": "Wklej lub podyktuj surowe notatki. Nova porządkuje je według rodzaju i zachowuje każdy fakt.",
+    "typeLabel": "Rodzaj notatki",
+    "types": {
+      "meeting": "Spotkanie",
+      "lecture": "Wykład",
+      "observation": "Obserwacja",
+      "ideas": "Pomysły",
+      "free": "Dowolna"
+    },
+    "inputPlaceholder": "Wklej lub podyktuj surowe notatki…",
+    "instructionPlaceholder": "Opcjonalne polecenie, np. terminy pogrubione",
+    "action": "Uporządkuj notatki",
+    "working": "Porządkowanie…",
+    "result": "Uporządkowana notatka",
+    "copied": "Notatka skopiowana",
+    "error": "Nova nie mogła uporządkować tych notatek. Spróbuj ponownie za chwilę.",
+    "unavailable": "Aby korzystać z uporządkowanych notatek, wybierz silnik przepisywania w Stylach.",
+    "exampleTitle": "Przykład",
+    "exampleBefore": "Przed",
+    "exampleAfter": "Po",
+    "examples": {
+      "meeting": {
+        "before": "rozmowa z Leą i Tomem, start przesunięty na 12 marca, Tom wyśle budżet do piątku, miejsce jeszcze niepewne",
+        "after": "Podsumowanie\n- Rozmowa o starcie z Leą i Tomem\n\nDecyzje\n- Start przesunięty na 12 marca\n\nZadania\n- Tom: wysłać budżet do piątku\n\nOtwarte pytania\n- Miejsce jeszcze nieustalone"
+      },
+      "lecture": {
+        "before": "wykład z termodynamiki, pierwsza zasada = zachowanie energii, dU = Q - W, przykład: ogrzany gaz w tłoku, powtórzyć znak W",
+        "after": "Podsumowanie\n- Termodynamika: pierwsza zasada\n\nKluczowe pojęcia\n- Energia jest zachowana\n\nDefinicje i wzory\n- dU = Q − W\n\nPrzykłady\n- Ogrzany gaz w tłoku\n\nDo powtórki\n- Konwencja znaku W"
+      },
+      "observation": {
+        "before": "próbka B pękła przy 42 kN, próba w 20 °C, może spaw, powtórzyć z nowym spawem w przyszłym tygodniu",
+        "after": "Obserwacja\n- Próbka B pękła przy 42 kN (20 °C)\n\nHipoteza\n- Przyczyną może być spaw (niepewne)\n\nWynik\n- Zniszczenie przy 42 kN\n\nDziałanie\n- Powtórzyć próbę z nowym spawem w przyszłym tygodniu"
+      },
+      "ideas": {
+        "before": "pomysł na newsletter: comiesięczne porady, może krótkie filmy, zapytać użytkowników, czego chcą, zacząć od małego",
+        "after": "Pomysły\n- Comiesięczny newsletter z poradami\n- Krótkie filmy\n\nDlaczego to ważne\n- Utrzymanie zaangażowania użytkowników\n\nOtwarte pytania\n- Czego chcą użytkownicy?\n\nKolejne kroki\n- Zapytać użytkowników i zacząć od małego"
+      },
+      "free": {
+        "before": "dentysta wtorek 9:00, kupić tusz do drukarki, zadzwonić do banku w sprawie karty, siłownia może w czwartek",
+        "after": "Podsumowanie\n- Wizyty i sprawy na ten tydzień\n\nNajważniejsze punkty\n- Dentysta we wtorek o 9:00\n- Zadzwonić do banku w sprawie karty\n\nSzczegóły\n- Kupić tusz do drukarki\n\nKolejne kroki\n- Siłownia w czwartek (do potwierdzenia)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Głos"

@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Verlauf",
     "prompts": "Prompts",
+    "structuredNotes": "Strukturierte Notizen",
     "about": "Info",
     "personalization": "Personalisierung",
     "home": "Startseite",
@@ -1096,17 +1097,6 @@
       "minutes": "Etwa {{count}} Min.",
       "completed": "Abgeschlossen"
     },
-    "engineeringNotes": {
-      "title": "Technische Notizen",
-      "description": "Verwandle Rohbeobachtungen in eine knappe, nachvollziehbare technische Notiz.",
-      "inputPlaceholder": "Füge deine Beobachtungen, Messwerte und Unsicherheiten ein oder diktiere sie...",
-      "instructionPlaceholder": "Optionale Anweisung, z. B. Prüfbedingungen hervorheben",
-      "action": "Notizen strukturieren",
-      "working": "Wird strukturiert...",
-      "result": "Strukturierte Notiz",
-      "copied": "Notiz kopiert",
-      "error": "Die Notizen konnten nicht strukturiert werden."
-    },
     "personalization": {
       "description": "Passe Aussehen und Bedienung von Nova an, ohne die Richtlinien deiner Einrichtung zu ändern.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Prompts, die Nova aus Ihren Diktaten geschrieben hat, bereit zur Wiederverwendung.",
     "empty": "Diktieren Sie mit dem Prompt-Stil, dann erscheinen Ihre Prompts hier.",
     "searchPlaceholder": "Prompts durchsuchen"
+  },
+  "structuredNotes": {
+    "title": "Strukturierte Notizen",
+    "subtitle": "Rohe Notizen einfügen oder diktieren. Nova ordnet sie nach Typ und behält jede Angabe.",
+    "typeLabel": "Art der Notiz",
+    "types": {
+      "meeting": "Besprechung",
+      "lecture": "Vorlesung",
+      "observation": "Beobachtung",
+      "ideas": "Ideen",
+      "free": "Frei"
+    },
+    "inputPlaceholder": "Rohe Notizen einfügen oder diktieren…",
+    "instructionPlaceholder": "Optionale Anweisung, z. B. Fristen fett markieren",
+    "action": "Notizen strukturieren",
+    "working": "Wird strukturiert…",
+    "result": "Strukturierte Notiz",
+    "copied": "Notiz kopiert",
+    "error": "Nova konnte diese Notizen nicht strukturieren. Bitte gleich noch einmal versuchen.",
+    "unavailable": "Wählen Sie unter Stile eine Umschreib-Engine, um strukturierte Notizen zu nutzen.",
+    "exampleTitle": "Beispiel",
+    "exampleBefore": "Vorher",
+    "exampleAfter": "Nachher",
+    "examples": {
+      "meeting": {
+        "before": "Call mit Lea und Tom, Start auf 12. März verschoben, Tom schickt das Budget bis Freitag, Ort noch offen",
+        "after": "Zusammenfassung\n- Start-Call mit Lea und Tom\n\nEntscheidungen\n- Start auf 12. März verschoben\n\nAufgaben\n- Tom: Budget bis Freitag schicken\n\nOffene Fragen\n- Ort noch nicht festgelegt"
+      },
+      "lecture": {
+        "before": "Thermo-Vorlesung, erster Hauptsatz = Energie bleibt erhalten, dU = Q - W, Beispiel: erhitztes Gas im Kolben, Vorzeichen von W wiederholen",
+        "after": "Zusammenfassung\n- Thermodynamik: der erste Hauptsatz\n\nKernbegriffe\n- Energie bleibt erhalten\n\nDefinitionen und Formeln\n- dU = Q − W\n\nBeispiele\n- Erhitztes Gas im Kolben\n\nZum Wiederholen\n- Vorzeichenkonvention für W"
+      },
+      "observation": {
+        "before": "Probe B bei 42 kN gerissen, Test bei 20 °C, vielleicht die Schweißnaht, nächste Woche mit neuer Naht wiederholen",
+        "after": "Beobachtung\n- Probe B bei 42 kN gerissen (20 °C)\n\nHypothese\n- Möglicherweise die Schweißnaht (unsicher)\n\nErgebnis\n- Bruch bei 42 kN\n\nMaßnahme\n- Test nächste Woche mit neuer Schweißnaht wiederholen"
+      },
+      "ideas": {
+        "before": "Newsletter-Idee: monatliche Tipps, vielleicht kurze Videos, Nutzer fragen, was sie wollen, klein anfangen",
+        "after": "Ideen\n- Monatlicher Tipps-Newsletter\n- Kurze Videos\n\nWarum das zählt\n- Nutzer bleiben dabei\n\nOffene Fragen\n- Was wollen die Nutzer?\n\nNächste Schritte\n- Nutzer fragen, dann klein anfangen"
+      },
+      "free": {
+        "before": "Zahnarzt Dienstag 9 Uhr, Druckertinte kaufen, Bank wegen der Karte anrufen, Sport vielleicht Donnerstag",
+        "after": "Zusammenfassung\n- Termine und Erledigungen der Woche\n\nWichtige Punkte\n- Zahnarzt am Dienstag um 9 Uhr\n- Bank wegen der Karte anrufen\n\nDetails\n- Druckertinte kaufen\n\nNächste Schritte\n- Sport am Donnerstag (noch offen)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Stimme"

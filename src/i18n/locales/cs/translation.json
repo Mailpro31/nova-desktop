@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Historie",
     "prompts": "Prompty",
+    "structuredNotes": "Strukturované poznámky",
     "about": "O aplikaci",
     "personalization": "Přizpůsobení",
     "home": "Domů",
@@ -1096,17 +1097,6 @@
       "minutes": "Asi {{count}} min",
       "completed": "Dokončeno"
     },
-    "engineeringNotes": {
-      "title": "Inženýrské poznámky",
-      "description": "Proměňte surová pozorování ve stručnou a dohledatelnou inženýrskou poznámku.",
-      "inputPlaceholder": "Vložte nebo nadiktujte svá pozorování, měření a nejistoty...",
-      "instructionPlaceholder": "Volitelný pokyn, např. zdůraznit podmínky zkoušky",
-      "action": "Strukturovat poznámky",
-      "working": "Strukturuji...",
-      "result": "Strukturovaná poznámka",
-      "copied": "Poznámka zkopírována",
-      "error": "Poznámky se nepodařilo strukturovat."
-    },
     "personalization": {
       "description": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Prompty, které Nova napsala z vašich diktátů, připravené k dalšímu použití.",
     "empty": "Diktujte se stylem prompt a vaše prompty se objeví zde.",
     "searchPlaceholder": "Hledat v promptech"
+  },
+  "structuredNotes": {
+    "title": "Strukturované poznámky",
+    "subtitle": "Vložte nebo nadiktujte hrubé poznámky. Nova je uspořádá podle typu a zachová každý údaj.",
+    "typeLabel": "Typ poznámky",
+    "types": {
+      "meeting": "Schůzka",
+      "lecture": "Přednáška",
+      "observation": "Pozorování",
+      "ideas": "Nápady",
+      "free": "Volná"
+    },
+    "inputPlaceholder": "Vložte nebo nadiktujte své hrubé poznámky…",
+    "instructionPlaceholder": "Volitelný pokyn, např. termíny tučně",
+    "action": "Uspořádat poznámky",
+    "working": "Probíhá uspořádání…",
+    "result": "Strukturovaná poznámka",
+    "copied": "Poznámka zkopírována",
+    "error": "Nova tyto poznámky nedokázala uspořádat. Zkuste to za chvíli znovu.",
+    "unavailable": "Pro strukturované poznámky vyberte v Stylech modul pro přepis textu.",
+    "exampleTitle": "Příklad",
+    "exampleBefore": "Před",
+    "exampleAfter": "Po",
+    "examples": {
+      "meeting": {
+        "before": "hovor s Leou a Tomem, spuštění přesunuto na 12. března, Tom pošle rozpočet do pátku, místo zatím nejisté",
+        "after": "Shrnutí\n- Hovor ke spuštění s Leou a Tomem\n\nRozhodnutí\n- Spuštění přesunuto na 12. března\n\nÚkoly\n- Tom: poslat rozpočet do pátku\n\nOtevřené otázky\n- Místo zatím není určeno"
+      },
+      "lecture": {
+        "before": "přednáška z termodynamiky, první zákon = energie se zachovává, dU = Q - W, příklad: ohřátý plyn v pístu, zopakovat znaménko W",
+        "after": "Shrnutí\n- Termodynamika: první zákon\n\nKlíčové pojmy\n- Energie se zachovává\n\nDefinice a vzorce\n- dU = Q − W\n\nPříklady\n- Ohřátý plyn v pístu\n\nK zopakování\n- Znaménková konvence pro W"
+      },
+      "observation": {
+        "before": "vzorek B praskl při 42 kN, zkouška při 20 °C, možná svar, příští týden zopakovat s novým svarem",
+        "after": "Pozorování\n- Vzorek B praskl při 42 kN (20 °C)\n\nHypotéza\n- Příčinou může být svar (nejisté)\n\nVýsledek\n- Porušení při 42 kN\n\nOpatření\n- Příští týden zopakovat zkoušku s novým svarem"
+      },
+      "ideas": {
+        "before": "nápad na newsletter: měsíční tipy, možná krátká videa, zeptat se uživatelů, co chtějí, začít v malém",
+        "after": "Nápady\n- Měsíční newsletter s tipy\n- Krátká videa\n\nProč na tom záleží\n- Udržet uživatele zapojené\n\nOtevřené otázky\n- Co uživatelé chtějí?\n\nDalší kroky\n- Zeptat se uživatelů a začít v malém"
+      },
+      "free": {
+        "before": "zubař úterý 9:00, koupit inkoust do tiskárny, zavolat do banky kvůli kartě, posilovna možná ve čtvrtek",
+        "after": "Shrnutí\n- Schůzky a pochůzky tento týden\n\nHlavní body\n- Zubař v úterý v 9:00\n- Zavolat do banky kvůli kartě\n\nPodrobnosti\n- Koupit inkoust do tiskárny\n\nDalší kroky\n- Posilovna ve čtvrtek (potvrdit)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Hlas"

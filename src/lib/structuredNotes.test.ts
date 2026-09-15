@@ -159,7 +159,8 @@ describe("textes", () => {
     for (const locale of locales.filter((name) => name !== "en")) {
       expect({
         locale,
-        same: value(locale, "structuredNotes.subtitle") ===
+        same:
+          value(locale, "structuredNotes.subtitle") ===
           value("en", "structuredNotes.subtitle"),
       }).toEqual({ locale, same: false });
     }

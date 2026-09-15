@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "히스토리",
     "prompts": "프롬프트",
+    "structuredNotes": "구조화된 노트",
     "about": "정보",
     "personalization": "개인 설정",
     "home": "홈",
@@ -1096,17 +1097,6 @@
       "minutes": "약 {{count}}분",
       "completed": "완료됨"
     },
-    "engineeringNotes": {
-      "title": "엔지니어링 노트",
-      "description": "정리되지 않은 관찰 내용을 간결하고 추적 가능한 엔지니어링 노트로 바꿉니다.",
-      "inputPlaceholder": "관찰 내용, 측정값, 불확실한 점을 붙여 넣거나 받아쓰게 하세요...",
-      "instructionPlaceholder": "선택 지시 사항(예: 시험 조건 강조)",
-      "action": "노트 구조화",
-      "working": "구조화하는 중...",
-      "result": "구조화된 노트",
-      "copied": "노트를 복사했습니다",
-      "error": "노트를 구조화하지 못했습니다."
-    },
     "personalization": {
       "description": "기관 정책을 바꾸지 않고 Nova의 모양과 사용 방식을 조정합니다.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Nova가 받아쓰기로 작성한, 다시 쓸 수 있는 프롬프트입니다.",
     "empty": "프롬프트 스타일로 받아쓰면 프롬프트가 여기에 표시됩니다.",
     "searchPlaceholder": "프롬프트 검색"
+  },
+  "structuredNotes": {
+    "title": "구조화된 노트",
+    "subtitle": "정리되지 않은 메모를 붙여넣거나 받아쓰세요. Nova가 유형별로 정리하고 모든 사실을 그대로 둡니다.",
+    "typeLabel": "노트 유형",
+    "types": {
+      "meeting": "회의",
+      "lecture": "강의",
+      "observation": "관찰",
+      "ideas": "아이디어",
+      "free": "자유"
+    },
+    "inputPlaceholder": "정리되지 않은 메모를 붙여넣거나 받아쓰세요…",
+    "instructionPlaceholder": "선택 지시 사항, 예: 마감일은 굵게",
+    "action": "노트 정리하기",
+    "working": "정리하는 중…",
+    "result": "정리된 노트",
+    "copied": "노트를 복사했습니다",
+    "error": "Nova가 이 메모를 정리하지 못했습니다. 잠시 후 다시 시도하세요.",
+    "unavailable": "구조화된 노트를 사용하려면 스타일에서 다시 쓰기 엔진을 선택하세요.",
+    "exampleTitle": "예시",
+    "exampleBefore": "정리 전",
+    "exampleAfter": "정리 후",
+    "examples": {
+      "meeting": {
+        "before": "레아, 톰과 통화, 출시 3월 12일로 연기, 톰이 금요일까지 예산 전달, 장소는 아직 미정",
+        "after": "요약\n- 레아, 톰과 출시 논의\n\n결정 사항\n- 출시를 3월 12일로 연기\n\n할 일\n- 톰: 금요일까지 예산 전달\n\n미해결 질문\n- 장소 미정"
+      },
+      "lecture": {
+        "before": "열역학 강의, 제1법칙 = 에너지 보존, dU = Q - W, 예: 피스톤 안에서 가열된 기체, W 부호 복습",
+        "after": "요약\n- 열역학: 제1법칙\n\n핵심 개념\n- 에너지는 보존된다\n\n정의와 공식\n- dU = Q − W\n\n예시\n- 피스톤 안에서 가열된 기체\n\n복습할 내용\n- W의 부호 규약"
+      },
+      "observation": {
+        "before": "시편 B가 42 kN에서 균열, 20 °C에서 시험, 용접 문제일 수도, 다음 주 새 용접으로 재시험",
+        "after": "관찰\n- 시편 B가 42 kN에서 균열 (20 °C)\n\n가설\n- 용접이 원인일 수 있음 (불확실)\n\n결과\n- 42 kN에서 파단\n\n조치\n- 다음 주 새 용접으로 재시험"
+      },
+      "ideas": {
+        "before": "뉴스레터 아이디어: 매달 팁, 짧은 영상도 괜찮을 듯, 사용자에게 원하는 것 묻기, 작게 시작",
+        "after": "아이디어\n- 매달 팁을 담은 뉴스레터\n- 짧은 영상\n\n왜 중요한가\n- 사용자 참여 유지\n\n미해결 질문\n- 사용자는 무엇을 원하나?\n\n다음 단계\n- 사용자에게 묻고 작게 시작"
+      },
+      "free": {
+        "before": "화요일 9시 치과, 프린터 잉크 사기, 카드 문제로 은행에 전화, 헬스장은 목요일쯤",
+        "after": "요약\n- 이번 주 약속과 할 일\n\n핵심 사항\n- 화요일 9시 치과\n- 카드 문제로 은행에 전화\n\n세부 사항\n- 프린터 잉크 사기\n\n다음 단계\n- 목요일 헬스장 (확인 필요)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "음성"

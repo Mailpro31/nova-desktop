@@ -1000,9 +1000,23 @@ async runOrganizationSkill(skillId: string, text: string) : Promise<Result<Campu
     else return { status: "error", error: e  as any };
 }
 },
-async formatCampusEngineeringNotes(instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
+/**
+ * Notes structurées rangées par le serveur de l'organisation.
+ */
+async formatCampusStructuredNotes(text: string, noteType: string, instruction: string) : Promise<Result<CampusCommandResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("format_campus_engineering_notes", { instruction, text }) };
+    return { status: "ok", data: await TAURI_INVOKE("format_campus_structured_notes", { text, noteType, instruction }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Nova Personal : structure les notes avec le moteur de réécriture choisi.
+ */
+async formatStructuredNotesLocally(text: string, noteType: string, instruction: string) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("format_structured_notes_locally", { text, noteType, instruction }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

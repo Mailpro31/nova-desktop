@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "歷史紀錄",
     "prompts": "提示詞",
+    "structuredNotes": "結構化筆記",
     "about": "關於",
     "personalization": "個人化",
     "home": "首頁",
@@ -1096,17 +1097,6 @@
       "minutes": "約 {{count}} 分鐘",
       "completed": "已完成"
     },
-    "engineeringNotes": {
-      "title": "工程筆記",
-      "description": "將原始觀察整理成簡潔、可追溯的工程筆記。",
-      "inputPlaceholder": "貼上或口述你的觀察、量測數據與不確定之處...",
-      "instructionPlaceholder": "選填指示，例如：強調測試條件",
-      "action": "整理筆記",
-      "working": "正在整理...",
-      "result": "整理後的筆記",
-      "copied": "已複製筆記",
-      "error": "無法整理筆記。"
-    },
     "personalization": {
       "description": "調整 Nova 的外觀與互動方式，不會變更你所屬學校的規定。",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Nova 根據你的聽寫產生的提示詞，可直接再次使用。",
     "empty": "使用提示詞風格聽寫，你的提示詞會顯示在這裡。",
     "searchPlaceholder": "搜尋提示詞"
+  },
+  "structuredNotes": {
+    "title": "結構化筆記",
+    "subtitle": "貼上或口述原始筆記。Nova 會依類型整理，並保留每一項事實。",
+    "typeLabel": "筆記類型",
+    "types": {
+      "meeting": "會議",
+      "lecture": "課程",
+      "observation": "觀察",
+      "ideas": "想法",
+      "free": "自由"
+    },
+    "inputPlaceholder": "貼上或口述你的原始筆記…",
+    "instructionPlaceholder": "選填指示，例如：將截止日期設為粗體",
+    "action": "整理我的筆記",
+    "working": "整理中…",
+    "result": "整理後的筆記",
+    "copied": "已複製筆記",
+    "error": "Nova 無法整理這些筆記，請稍後再試。",
+    "unavailable": "請在「風格」中選擇改寫引擎，才能使用結構化筆記。",
+    "exampleTitle": "範例",
+    "exampleBefore": "整理前",
+    "exampleAfter": "整理後",
+    "examples": {
+      "meeting": {
+        "before": "和 Lea、Tom 通話，發表延到 3 月 12 日，Tom 週五前寄預算，場地還沒定",
+        "after": "摘要\n- 與 Lea、Tom 的發表會議\n\n決議\n- 發表延到 3 月 12 日\n\n待辦事項\n- Tom：週五前寄出預算\n\n待解決問題\n- 場地尚未確定"
+      },
+      "lecture": {
+        "before": "熱力學課，第一定律 = 能量守恆，dU = Q - W，例子：活塞中被加熱的氣體，複習 W 的符號",
+        "after": "摘要\n- 熱力學：第一定律\n\n關鍵概念\n- 能量守恆\n\n定義與公式\n- dU = Q − W\n\n例子\n- 活塞中被加熱的氣體\n\n需要複習\n- W 的符號約定"
+      },
+      "observation": {
+        "before": "試片 B 在 42 kN 破裂，20 °C 下測試，可能是焊道問題，下週用新焊道重做",
+        "after": "觀察\n- 試片 B 在 42 kN 破裂（20 °C）\n\n假設\n- 可能是焊道造成（不確定）\n\n結果\n- 在 42 kN 斷裂\n\n行動\n- 下週用新焊道重新測試"
+      },
+      "ideas": {
+        "before": "電子報想法：每月小技巧，也許做短影片，問問使用者想要什麼，從小處開始",
+        "after": "想法\n- 每月小技巧電子報\n- 短影片\n\n為什麼重要\n- 讓使用者持續參與\n\n待解決問題\n- 使用者想要什麼？\n\n下一步\n- 先問使用者，再從小處開始"
+      },
+      "free": {
+        "before": "週二上午 9 點看牙醫，買印表機墨水，打電話問銀行卡片的事，週四也許去健身",
+        "after": "摘要\n- 本週的預約與雜事\n\n重點\n- 週二上午 9 點看牙醫\n- 打電話問銀行卡片的事\n\n細節\n- 買印表機墨水\n\n下一步\n- 週四去健身（待確認）"
+      }
+    }
   },
   "settingsNav": {
     "voice": "語音"

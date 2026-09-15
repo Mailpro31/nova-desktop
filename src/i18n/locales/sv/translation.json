@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Historik",
     "prompts": "Promptar",
+    "structuredNotes": "Strukturerade anteckningar",
     "about": "Om",
     "personalization": "Anpassning",
     "home": "Hem",
@@ -1096,17 +1097,6 @@
       "minutes": "Cirka {{count}} min",
       "completed": "Klar"
     },
-    "engineeringNotes": {
-      "title": "Tekniska anteckningar",
-      "description": "Gör om råa observationer till en kortfattad, spårbar teknisk anteckning.",
-      "inputPlaceholder": "Klistra in eller diktera dina observationer, mätningar och osäkerheter...",
-      "instructionPlaceholder": "Valfri instruktion, t.ex. betona testförhållandena",
-      "action": "Strukturera anteckningar",
-      "working": "Strukturerar...",
-      "result": "Strukturerad anteckning",
-      "copied": "Anteckningen kopierades",
-      "error": "Anteckningarna kunde inte struktureras."
-    },
     "personalization": {
       "description": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Promptar som Nova har skrivit utifrån dina dikteringar, redo att återanvändas.",
     "empty": "Diktera med promptstilen så visas dina promptar här.",
     "searchPlaceholder": "Sök bland dina promptar"
+  },
+  "structuredNotes": {
+    "title": "Strukturerade anteckningar",
+    "subtitle": "Klistra in eller diktera råa anteckningar. Nova ordnar dem efter typ och behåller varje fakta.",
+    "typeLabel": "Typ av anteckning",
+    "types": {
+      "meeting": "Möte",
+      "lecture": "Föreläsning",
+      "observation": "Observation",
+      "ideas": "Idéer",
+      "free": "Fri"
+    },
+    "inputPlaceholder": "Klistra in eller diktera dina råa anteckningar…",
+    "instructionPlaceholder": "Valfri instruktion, t.ex. deadlines i fetstil",
+    "action": "Strukturera mina anteckningar",
+    "working": "Strukturerar…",
+    "result": "Strukturerad anteckning",
+    "copied": "Anteckningen kopierades",
+    "error": "Nova kunde inte strukturera anteckningarna. Försök igen om en stund.",
+    "unavailable": "Välj en omskrivningsmotor under Stilar för att använda strukturerade anteckningar.",
+    "exampleTitle": "Exempel",
+    "exampleBefore": "Före",
+    "exampleAfter": "Efter",
+    "examples": {
+      "meeting": {
+        "before": "samtal med Lea och Tom, lansering flyttad till 12 mars, Tom skickar budgeten före fredag, plats inte bestämd än",
+        "after": "Sammanfattning\n- Lanseringssamtal med Lea och Tom\n\nBeslut\n- Lansering flyttad till 12 mars\n\nÅtgärder\n- Tom: skicka budgeten före fredag\n\nÖppna frågor\n- Plats inte bestämd än"
+      },
+      "lecture": {
+        "before": "termodynamikföreläsning, första huvudsatsen = energin bevaras, dU = Q - W, exempel: uppvärmd gas i en kolv, repetera tecknet för W",
+        "after": "Sammanfattning\n- Termodynamik: första huvudsatsen\n\nNyckelbegrepp\n- Energin bevaras\n\nDefinitioner och formler\n- dU = Q − W\n\nExempel\n- Uppvärmd gas i en kolv\n\nAtt repetera\n- Teckenkonventionen för W"
+      },
+      "observation": {
+        "before": "provbit B sprack vid 42 kN, test vid 20 °C, kanske svetsen, gör om med ny svets nästa vecka",
+        "after": "Observation\n- Provbit B sprack vid 42 kN (20 °C)\n\nHypotes\n- Svetsen kan vara orsaken (osäkert)\n\nResultat\n- Brott vid 42 kN\n\nÅtgärd\n- Gör om testet med ny svets nästa vecka"
+      },
+      "ideas": {
+        "before": "idé till nyhetsbrev: tips varje månad, kanske korta videor, fråga användarna vad de vill ha, börja smått",
+        "after": "Idéer\n- Ett månatligt tipsnyhetsbrev\n- Korta videor\n\nVarför det spelar roll\n- Håller användarna engagerade\n\nÖppna frågor\n- Vad vill användarna ha?\n\nNästa steg\n- Fråga användarna och börja smått"
+      },
+      "free": {
+        "before": "tandläkare tisdag kl. 9, köpa bläck till skrivaren, ringa banken om kortet, gym kanske torsdag",
+        "after": "Sammanfattning\n- Tider och ärenden den här veckan\n\nViktiga punkter\n- Tandläkare på tisdag kl. 9\n- Ringa banken om kortet\n\nDetaljer\n- Köpa bläck till skrivaren\n\nNästa steg\n- Gym på torsdag (ska bekräftas)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Röst"

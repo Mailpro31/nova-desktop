@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Histórico",
     "prompts": "Prompts",
+    "structuredNotes": "Notas estruturadas",
     "about": "Sobre",
     "personalization": "Personalização",
     "home": "Início",
@@ -1096,17 +1097,6 @@
       "minutes": "Cerca de {{count}} min",
       "completed": "Concluído"
     },
-    "engineeringNotes": {
-      "title": "Notas de engenharia",
-      "description": "Transforme observações brutas em uma nota de engenharia concisa e rastreável.",
-      "inputPlaceholder": "Cole ou dite suas observações, medições e incertezas...",
-      "instructionPlaceholder": "Instrução opcional, por exemplo: destacar as condições de ensaio",
-      "action": "Estruturar notas",
-      "working": "Estruturando...",
-      "result": "Nota estruturada",
-      "copied": "Nota copiada",
-      "error": "Não foi possível estruturar as notas."
-    },
     "personalization": {
       "description": "Ajuste a aparência e a interação do Nova sem alterar as políticas da sua instituição.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Os prompts que o Nova escreveu a partir dos seus ditados, prontos a reutilizar.",
     "empty": "Dite com o estilo prompt e os seus prompts aparecerão aqui.",
     "searchPlaceholder": "Pesquisar nos seus prompts"
+  },
+  "structuredNotes": {
+    "title": "Notas estruturadas",
+    "subtitle": "Cole ou dite anotações brutas. O Nova organiza-as por tipo e mantém cada dado.",
+    "typeLabel": "Tipo de nota",
+    "types": {
+      "meeting": "Reunião",
+      "lecture": "Aula",
+      "observation": "Observação",
+      "ideas": "Ideias",
+      "free": "Livre"
+    },
+    "inputPlaceholder": "Cole ou dite as suas anotações brutas…",
+    "instructionPlaceholder": "Instrução opcional, ex.: prazos a negrito",
+    "action": "Estruturar as minhas notas",
+    "working": "A estruturar…",
+    "result": "Nota estruturada",
+    "copied": "Nota copiada",
+    "error": "O Nova não conseguiu estruturar estas notas. Tente novamente dentro de instantes.",
+    "unavailable": "Escolha um motor de reescrita em Estilos para usar as notas estruturadas.",
+    "exampleTitle": "Exemplo",
+    "exampleBefore": "Antes",
+    "exampleAfter": "Depois",
+    "examples": {
+      "meeting": {
+        "before": "chamada com a Lea e o Tom, lançamento passa para 12 de março, o Tom envia o orçamento até sexta, local ainda por decidir",
+        "after": "Resumo\n- Chamada de lançamento com a Lea e o Tom\n\nDecisões\n- Lançamento adiado para 12 de março\n\nTarefas\n- Tom: enviar o orçamento até sexta-feira\n\nQuestões em aberto\n- Local ainda por decidir"
+      },
+      "lecture": {
+        "before": "aula de termo, primeira lei = a energia conserva-se, dU = Q - W, exemplo: gás aquecido num pistão, rever o sinal de W",
+        "after": "Resumo\n- Termodinâmica: a primeira lei\n\nConceitos-chave\n- A energia conserva-se\n\nDefinições e fórmulas\n- dU = Q − W\n\nExemplos\n- Gás aquecido num pistão\n\nA rever\n- Convenção de sinal de W"
+      },
+      "observation": {
+        "before": "provete B fissurado a 42 kN, ensaio a 20 °C, talvez a soldadura, repetir com nova soldadura na próxima semana",
+        "after": "Observação\n- Provete B fissurado a 42 kN (20 °C)\n\nHipótese\n- A soldadura pode ser a causa (incerto)\n\nResultado\n- Rotura a 42 kN\n\nAção\n- Repetir o ensaio com nova soldadura na próxima semana"
+      },
+      "ideas": {
+        "before": "ideia de newsletter: dicas mensais, talvez vídeos curtos, perguntar aos utilizadores o que querem, começar pequeno",
+        "after": "Ideias\n- Uma newsletter mensal de dicas\n- Vídeos curtos\n\nPorque importa\n- Manter os utilizadores envolvidos\n\nQuestões em aberto\n- O que querem os utilizadores?\n\nPróximos passos\n- Perguntar aos utilizadores e começar pequeno"
+      },
+      "free": {
+        "before": "dentista terça às 9h, comprar tinteiro, ligar ao banco por causa do cartão, ginásio talvez quinta",
+        "after": "Resumo\n- Consultas e recados da semana\n\nPontos-chave\n- Dentista na terça às 9h\n- Ligar ao banco por causa do cartão\n\nDetalhes\n- Comprar tinteiro para a impressora\n\nPróximos passos\n- Ginásio na quinta (a confirmar)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Voz"

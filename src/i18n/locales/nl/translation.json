@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Geschiedenis",
     "prompts": "Prompts",
+    "structuredNotes": "Gestructureerde notities",
     "about": "Over Nova",
     "personalization": "Personalisatie",
     "home": "Start",
@@ -1096,17 +1097,6 @@
       "minutes": "Ongeveer {{count}} min",
       "completed": "Voltooid"
     },
-    "engineeringNotes": {
-      "title": "Technische notities",
-      "description": "Maak van ruwe waarnemingen een beknopte, herleidbare technische notitie.",
-      "inputPlaceholder": "Plak of dicteer je waarnemingen, metingen en onzekerheden...",
-      "instructionPlaceholder": "Optionele instructie, bijv. benadruk de testomstandigheden",
-      "action": "Notities structureren",
-      "working": "Bezig met structureren...",
-      "result": "Gestructureerde notitie",
-      "copied": "Notitie gekopieerd",
-      "error": "De notities konden niet worden gestructureerd."
-    },
     "personalization": {
       "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Prompts die Nova uit uw dictaten heeft geschreven, klaar om te hergebruiken.",
     "empty": "Dicteer met de promptstijl en uw prompts verschijnen hier.",
     "searchPlaceholder": "Zoek in uw prompts"
+  },
+  "structuredNotes": {
+    "title": "Gestructureerde notities",
+    "subtitle": "Plak of dicteer ruwe notities. Nova ordent ze per type en bewaart elk feit.",
+    "typeLabel": "Soort notitie",
+    "types": {
+      "meeting": "Vergadering",
+      "lecture": "College",
+      "observation": "Waarneming",
+      "ideas": "Ideeën",
+      "free": "Vrij"
+    },
+    "inputPlaceholder": "Plak of dicteer je ruwe notities…",
+    "instructionPlaceholder": "Optionele instructie, bijv. deadlines vetgedrukt",
+    "action": "Mijn notities structureren",
+    "working": "Bezig met structureren…",
+    "result": "Gestructureerde notitie",
+    "copied": "Notitie gekopieerd",
+    "error": "Nova kon deze notities niet structureren. Probeer het zo opnieuw.",
+    "unavailable": "Kies een herschrijfengine in Stijlen om gestructureerde notities te gebruiken.",
+    "exampleTitle": "Voorbeeld",
+    "exampleBefore": "Voor",
+    "exampleAfter": "Na",
+    "examples": {
+      "meeting": {
+        "before": "call met Lea en Tom, lancering verschoven naar 12 maart, Tom stuurt het budget voor vrijdag, locatie nog onbekend",
+        "after": "Samenvatting\n- Lanceringscall met Lea en Tom\n\nBesluiten\n- Lancering verschoven naar 12 maart\n\nActiepunten\n- Tom: budget voor vrijdag sturen\n\nOpen vragen\n- Locatie nog niet bepaald"
+      },
+      "lecture": {
+        "before": "thermo-college, eerste hoofdwet = energie blijft behouden, dU = Q - W, voorbeeld: verwarmd gas in een zuiger, teken van W herhalen",
+        "after": "Samenvatting\n- Thermodynamica: de eerste hoofdwet\n\nKernbegrippen\n- Energie blijft behouden\n\nDefinities en formules\n- dU = Q − W\n\nVoorbeelden\n- Verwarmd gas in een zuiger\n\nOm te herhalen\n- Tekenconventie voor W"
+      },
+      "observation": {
+        "before": "proefstuk B gescheurd bij 42 kN, test bij 20 °C, misschien de las, volgende week herhalen met een nieuwe las",
+        "after": "Waarneming\n- Proefstuk B gescheurd bij 42 kN (20 °C)\n\nHypothese\n- Mogelijk de las (onzeker)\n\nResultaat\n- Breuk bij 42 kN\n\nActie\n- Test volgende week herhalen met een nieuwe las"
+      },
+      "ideas": {
+        "before": "idee nieuwsbrief: maandelijkse tips, misschien korte video's, gebruikers vragen wat ze willen, klein beginnen",
+        "after": "Ideeën\n- Een maandelijkse tipsnieuwsbrief\n- Korte video's\n\nWaarom het telt\n- Gebruikers betrokken houden\n\nOpen vragen\n- Wat willen gebruikers?\n\nVolgende stappen\n- Gebruikers vragen en klein beginnen"
+      },
+      "free": {
+        "before": "tandarts dinsdag 9 uur, printerinkt kopen, bank bellen over de pas, sporten misschien donderdag",
+        "after": "Samenvatting\n- Afspraken en klusjes deze week\n\nBelangrijkste punten\n- Tandarts dinsdag om 9 uur\n- Bank bellen over de pas\n\nDetails\n- Printerinkt kopen\n\nVolgende stappen\n- Sporten op donderdag (nog bevestigen)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Stem"

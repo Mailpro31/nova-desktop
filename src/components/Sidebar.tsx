@@ -10,6 +10,7 @@ import {
   House,
   Info,
   MessageSquareText,
+  NotebookPen,
   Settings,
   Sparkles,
   Palette,
@@ -60,6 +61,11 @@ const HistorySettings = lazy(() =>
 const PromptsSettings = lazy(() =>
   import("./settings/history/PromptsSettings").then((module) => ({
     default: module.PromptsSettings,
+  })),
+);
+const StructuredNotesSettings = lazy(() =>
+  import("./settings/notes/StructuredNotesSettings").then((module) => ({
+    default: module.StructuredNotesSettings,
   })),
 );
 const MeetingSettings = lazy(() =>
@@ -200,6 +206,16 @@ export const SECTIONS_CONFIG = {
     enabled: always,
     campusVisible: true,
   },
+  notes: {
+    // Notes structurées : des notes brutes rangées selon leur type. Juste
+    // après Prompts, l'autre catégorie qui transforme ce qu'on dicte.
+    labelKey: "sidebar.structuredNotes",
+    campusLabelKey: undefined,
+    icon: NotebookPen,
+    component: StructuredNotesSettings,
+    enabled: always,
+    campusVisible: true,
+  },
   meeting: {
     labelKey: "sidebar.meeting",
     campusLabelKey: undefined,
@@ -275,6 +291,7 @@ const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "aiskills",
   "postprocessing",
   "prompts",
+  "notes",
   "history",
 ];
 
@@ -336,7 +353,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // organisation qui ferme Learn le ferme pour tout le monde, et Personal le
   // garde sans qu'aucune condition d'édition n'ait à l'énoncer.
   const learningOpen = useCapability("learning");
-  const visible = (id: SidebarSection) => id !== "learn" || learningOpen;
+  // Même règle pour les Notes structurées : une organisation qui ferme la
+  // fonction la retire ; Nova Personal la garde.
+  const notesOpen = useCapability("engineeringNotes");
+  const visible = (id: SidebarSection) =>
+    (id !== "learn" || learningOpen) &&
+    (id !== "notes" || !organizationMode || notesOpen);
 
   if (organizationMode) {
     return (

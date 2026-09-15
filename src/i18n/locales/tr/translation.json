@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Geçmiş",
     "prompts": "Promptlar",
+    "structuredNotes": "Yapılandırılmış notlar",
     "about": "Hakkında",
     "personalization": "Kişiselleştirme",
     "home": "Ana Sayfa",
@@ -1096,17 +1097,6 @@
       "minutes": "Yaklaşık {{count}} dk",
       "completed": "Tamamlandı"
     },
-    "engineeringNotes": {
-      "title": "Mühendislik notları",
-      "description": "Ham gözlemleri kısa ve izlenebilir bir mühendislik notuna dönüştür.",
-      "inputPlaceholder": "Gözlemlerini, ölçümlerini ve belirsizliklerini yapıştır ya da dikte et...",
-      "instructionPlaceholder": "İsteğe bağlı talimat, ör. test koşullarını vurgula",
-      "action": "Notları düzenle",
-      "working": "Düzenleniyor...",
-      "result": "Düzenlenmiş not",
-      "copied": "Not kopyalandı",
-      "error": "Notlar düzenlenemedi."
-    },
     "personalization": {
       "description": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Nova'nın dikteleriniz üzerinden yazdığı, yeniden kullanıma hazır promptlar.",
     "empty": "Prompt stiliyle dikte edin; promptlarınız burada görünecek.",
     "searchPlaceholder": "Promptlarınızda arayın"
+  },
+  "structuredNotes": {
+    "title": "Yapılandırılmış notlar",
+    "subtitle": "Ham notlarınızı yapıştırın veya dikte edin. Nova onları türüne göre düzenler ve her bilgiyi korur.",
+    "typeLabel": "Not türü",
+    "types": {
+      "meeting": "Toplantı",
+      "lecture": "Ders",
+      "observation": "Gözlem",
+      "ideas": "Fikirler",
+      "free": "Serbest"
+    },
+    "inputPlaceholder": "Ham notlarınızı yapıştırın veya dikte edin…",
+    "instructionPlaceholder": "İsteğe bağlı talimat, ör. son tarihleri kalın yaz",
+    "action": "Notlarımı düzenle",
+    "working": "Düzenleniyor…",
+    "result": "Yapılandırılmış not",
+    "copied": "Not kopyalandı",
+    "error": "Nova bu notları düzenleyemedi. Birazdan tekrar deneyin.",
+    "unavailable": "Yapılandırılmış notları kullanmak için Stiller bölümünden bir yeniden yazma motoru seçin.",
+    "exampleTitle": "Örnek",
+    "exampleBefore": "Önce",
+    "exampleAfter": "Sonra",
+    "examples": {
+      "meeting": {
+        "before": "Lea ve Tom ile görüşme, lansman 12 Mart'a ertelendi, Tom bütçeyi cumaya kadar gönderecek, yer henüz belli değil",
+        "after": "Özet\n- Lea ve Tom ile lansman görüşmesi\n\nKararlar\n- Lansman 12 Mart'a ertelendi\n\nYapılacaklar\n- Tom: bütçeyi cumaya kadar gönder\n\nAçık sorular\n- Yer henüz belirlenmedi"
+      },
+      "lecture": {
+        "before": "termodinamik dersi, birinci yasa = enerji korunur, dU = Q - W, örnek: pistonda ısıtılan gaz, W'nin işaretini tekrar et",
+        "after": "Özet\n- Termodinamik: birinci yasa\n\nTemel kavramlar\n- Enerji korunur\n\nTanımlar ve formüller\n- dU = Q − W\n\nÖrnekler\n- Pistonda ısıtılan gaz\n\nTekrar edilecekler\n- W için işaret kuralı"
+      },
+      "observation": {
+        "before": "B numunesi 42 kN'da çatladı, test 20 °C'de, belki kaynak, gelecek hafta yeni kaynakla tekrarla",
+        "after": "Gözlem\n- B numunesi 42 kN'da çatladı (20 °C)\n\nHipotez\n- Neden kaynak olabilir (belirsiz)\n\nSonuç\n- 42 kN'da kırılma\n\nEylem\n- Testi gelecek hafta yeni kaynakla tekrarla"
+      },
+      "ideas": {
+        "before": "bülten fikri: aylık ipuçları, belki kısa videolar, kullanıcılara ne istediklerini sor, küçük başla",
+        "after": "Fikirler\n- Aylık ipucu bülteni\n- Kısa videolar\n\nNeden önemli\n- Kullanıcıların ilgisini korumak\n\nAçık sorular\n- Kullanıcılar ne istiyor?\n\nSonraki adımlar\n- Kullanıcılara sor, sonra küçük başla"
+      },
+      "free": {
+        "before": "salı 9'da diş hekimi, yazıcı mürekkebi al, kart için bankayı ara, spor belki perşembe",
+        "after": "Özet\n- Bu haftanın randevuları ve işleri\n\nÖnemli noktalar\n- Salı saat 9'da diş hekimi\n- Kart için bankayı ara\n\nAyrıntılar\n- Yazıcı mürekkebi al\n\nSonraki adımlar\n- Perşembe spor (kesinleşecek)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Ses"
