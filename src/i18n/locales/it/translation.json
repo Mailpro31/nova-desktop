@@ -12,7 +12,7 @@
     "general": "Generale",
     "models": "Prestazioni",
     "advanced": "Avanzate",
-    "postProcessing": "Post-Elaborazione",
+    "postProcessing": "Stili",
     "meeting": "Riunione",
     "history": "Cronologia",
     "prompts": "Prompt",
@@ -22,7 +22,7 @@
     "home": "Home",
     "configuration": "Configurazione",
     "account": "Account",
-    "styles": "Post-Elaborazione",
+    "styles": "Stili",
     "aiSkills": "AI Skills",
     "settings": "Impostazioni",
     "organization": "Organizzazione",
@@ -511,7 +511,7 @@
           "refreshModels": "Aggiorna modelli"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo è gestito da Nova: la tua licenza funge da chiave, nessuna configurazione necessaria.",
           "confirmTitle": "Attivare Turbo?",
           "confirmDescription": "Turbo invia la tua dettatura a Nova per riformularla online — un po' meno privato dell'Intelligence privée, che resta interamente locale. Puoi tornare a Intelligence privée in qualsiasi momento.",
           "confirmEnable": "Attiva Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Stili",
         "selectedPrompt": {
           "title": "Prompt Selezionato",
           "description": "Seleziona un template per migliorare le trascrizioni o creane uno nuovo. Usa ${output} nel prompt per fare riferimento alla trascrizione."
@@ -538,7 +538,7 @@
         "cancel": "Annulla",
         "selectToEdit": "Scegli un prompt qui sopra per visualizzare o modificare i dettagli.",
         "createFirst": "Clicca 'Crea un nuovo prompt' qui sopra per creare il tuo primo prompt di post-elaborazione.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Creare e modificare gli Stili richiede Nova Ultra.",
         "badgeAuto": "Automatico",
         "badgeBuiltin": "Integrato",
         "badgeCustom": "Personale",
@@ -547,35 +547,35 @@
         "copySuffix": "copia"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Aggiungi regola",
+        "blocklistLabel": "App ignorate (privacy)",
+        "blocklistTip": "Separate da virgole. Queste app non vengono mai lette (es. home banking, gestore di password). I gestori di password più comuni sono già esclusi per impostazione predefinita.",
+        "description": "Nova sceglie lo Stile al posto tuo in base all'app in primo piano (per esempio uno Stile email in un'app di posta, uno Stile prompt in ChatGPT). La finestra attiva viene letta al momento della dettatura e poi dimenticata: non viene salvato nulla.",
+        "keywordPlaceholder": "Parola chiave (nome dell'app o della scheda)",
+        "option": "Automatico",
+        "rulesLabel": "Regole personalizzate",
+        "save": "Salva"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Riformulazione"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Profilo di potenza",
         "recommended": "Consigliato",
         "downloaded": "scaricato",
         "downloadingModel": "Download del modello…",
         "downloadingEngine": "Download del motore…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Qualità e velocità di Intelligence privée, il motore completamente locale, sono identiche in tutti i piani: Nova Free, Pro e Ultra. Il tuo piano cambia solo l'accesso a Turbo, il motore online."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Lettura del contesto",
+        "description": "Nova legge ciò che è sullo schermo, come l'email a cui rispondi o la conversazione, per scrivere una risposta adatta alla situazione. Letto al momento della dettatura, poi dimenticato.",
+        "enableLabel": "Leggi il contesto sullo schermo",
+        "enableDescription": "Consenti a Nova di leggere il testo della finestra attiva per basare la risposta. Veloce, e resta sul tuo computer.",
+        "visualLabel": "Lettura visiva avanzata",
+        "visualDescription": "Quando il testo non basta, Nova analizza un'immagine dello schermo tramite il motore online per capire la situazione.",
+        "privacyNote": "Le app nella tua lista di esclusione per la privacy non vengono mai lette, nemmeno il loro contenuto.",
+        "experimentalNote": "Sperimentale: disattivato per impostazione predefinita."
       },
       "subtitle": "Cosa scrive l'IA in base al contesto."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova si sta preparando…",
     "transcribing": "Trascrizione...",
     "processing": "Elaborazione...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Scegli uno Stile",
     "openSettings": "Apri impostazioni",
     "micHearing": "Ti sento",
     "micTooLow": "Parla un po' più forte",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "Detti spesso in {{app}}: prova lo Stile {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Non mostrare più",
     "dictationLimitWarning": "Si ferma tra {{seconds}} s (limite dell'organizzazione)"

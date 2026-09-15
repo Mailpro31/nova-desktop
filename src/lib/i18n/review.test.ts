@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   flatten,
   formatReport,
+  keptKeysFor,
   placeholdersOf,
   reviewLanguage,
   tagsOf,
@@ -156,5 +157,36 @@ describe("flattening and report", () => {
     expect(report).toContain("| fr | 0 | 0 |");
     expect(report).toContain("`title`");
     expect(report).toContain("`button`");
+  });
+});
+
+describe("words kept per language", () => {
+  // « Version » est du français, « Auto » de l'allemand : identiques à
+  // l'anglais sans être oubliés. Les garder pour toutes les langues cacherait
+  // un vrai oubli ailleurs.
+  const kept = {
+    keys: ["onboarding.models.*.name"],
+    byLanguage: { fr: ["settings.about.version.title"] },
+  };
+  const keys = [
+    "onboarding.models.small.name",
+    "settings.about.version.title",
+    "sidebar.home",
+  ];
+
+  test("a word kept for one language is kept there only", () => {
+    expect([...keptKeysFor(kept, "fr", keys)].sort()).toEqual([
+      "onboarding.models.small.name",
+      "settings.about.version.title",
+    ]);
+    expect([...keptKeysFor(kept, "de", keys)]).toEqual([
+      "onboarding.models.small.name",
+    ]);
+  });
+
+  test("a file without per-language words keeps the shared names only", () => {
+    expect([...keptKeysFor({ keys: ["sidebar.home"] }, "fr", keys)]).toEqual([
+      "sidebar.home",
+    ]);
   });
 });

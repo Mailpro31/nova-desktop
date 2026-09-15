@@ -4,10 +4,11 @@ import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 
 import {
-  expandKeptKeys,
   flatten,
   formatReport,
+  keptKeysFor,
   reviewLanguage,
+  type KeptInEnglish,
   type LanguageReview,
 } from "../src/lib/i18n/review";
 
@@ -38,15 +39,18 @@ const kept = JSON.parse(
     path.join(root, "src", "i18n", "kept-in-english.json"),
     "utf8",
   ),
-) as { keys: string[] };
-const keep = expandKeptKeys(kept.keys, english.keys());
+) as KeptInEnglish;
 
 const results: Record<string, LanguageReview> = {};
 for (const locale of fs
   .readdirSync(localesDir)
   .filter((name) => name !== "en")
   .sort()) {
-  results[locale] = reviewLanguage(english, load(locale), keep);
+  results[locale] = reviewLanguage(
+    english,
+    load(locale),
+    keptKeysFor(kept, locale, english.keys()),
+  );
 }
 
 const reportPath = path.join(root, "docs", "translation-review.md");

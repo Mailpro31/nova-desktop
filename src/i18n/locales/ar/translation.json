@@ -11,7 +11,7 @@
   "sidebar": {
     "general": "عام",
     "advanced": "متقدم",
-    "postProcessing": "معالجة لاحقة",
+    "postProcessing": "الأساليب",
     "meeting": "اجتماع",
     "history": "السجل",
     "prompts": "الموجِّهات",
@@ -22,7 +22,7 @@
     "home": "الرئيسية",
     "configuration": "الإعدادات",
     "account": "الحساب",
-    "styles": "معالجة لاحقة",
+    "styles": "الأساليب",
     "aiSkills": "AI Skills",
     "settings": "الإعدادات",
     "organization": "المؤسسة",
@@ -490,7 +490,7 @@
           "refreshModels": "تحديث النماذج"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "يدير Nova خدمة Turbo: ترخيصك يعمل كمفتاح، ولا حاجة لأي إعداد.",
           "confirmTitle": "تفعيل Turbo؟",
           "confirmDescription": "يرسل Turbo إملاءك إلى Nova لإعادة صياغته عبر الإنترنت — أقل خصوصية قليلاً من Intelligence privée التي تبقى محلية بالكامل. يمكنك العودة إلى Intelligence privée في أي وقت.",
           "confirmEnable": "تفعيل Turbo",
@@ -498,7 +498,7 @@
         }
       },
       "prompts": {
-        "title": "المطالبة",
+        "title": "الأساليب",
         "selectedPrompt": {
           "title": "المطالبة المختارة",
           "description": ".اختر قالباً لتحسين التفريغ الصوتي أو أنشئ قالباً جديداً. استخدم ${output} داخل نص المطالبة للإشارة إلى النص الملتقط"
@@ -517,7 +517,7 @@
         "cancel": "إلغاء",
         "selectToEdit": ".اختر مطالبة أعلاه لعرض وتعديل تفاصيلها",
         "createFirst": ".انقر على 'إنشاء مطالبة جديدة' أعلاه لإنشاء أول مطالبة معالجة لاحقة لك",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "يتطلب إنشاء الأساليب وتعديلها Nova Ultra.",
         "badgeAuto": "تلقائي",
         "badgeBuiltin": "مدمج",
         "badgeCustom": "مخصص",
@@ -526,35 +526,35 @@
         "copySuffix": "نسخة"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "إضافة قاعدة",
+        "blocklistLabel": "التطبيقات المتجاهلة (الخصوصية)",
+        "blocklistTip": "افصل بينها بفواصل. لا تُفحص هذه التطبيقات أبدًا (مثل تطبيقات البنوك ومديري كلمات المرور). مديرو كلمات المرور الشائعون مستبعدون مسبقًا بشكل افتراضي.",
+        "description": "يختار Nova الأسلوب نيابةً عنك حسب التطبيق الظاهر في المقدمة (مثلًا أسلوب البريد في تطبيق البريد، وأسلوب المطالبة في ChatGPT). تُقرأ النافذة النشطة لحظة الإملاء ثم تُنسى — لا يُخزَّن شيء.",
+        "keywordPlaceholder": "كلمة مفتاحية (اسم التطبيق أو علامة التبويب)",
+        "option": "تلقائي",
+        "rulesLabel": "قواعد مخصّصة",
+        "save": "حفظ"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "إعادة الصياغة"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "ملف الطاقة",
         "recommended": "موصى به",
         "downloaded": "تم التنزيل",
         "downloadingModel": "جارٍ تنزيل النموذج…",
         "downloadingEngine": "جارٍ تنزيل المحرك…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "جودة وسرعة Intelligence privée — المحرّك المحلي بالكامل — متطابقتان في كل الخطط: Nova Free وPro وUltra. لا تغيّر خطتك سوى الوصول إلى Turbo، المحرّك عبر الإنترنت."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "قراءة السياق",
+        "description": "يقرأ Nova ما يظهر على الشاشة — البريد الذي ترد عليه، أو المحادثة — ليكتب ردًا يناسب الموقف. يُقرأ لحظة الإملاء ثم يُنسى.",
+        "enableLabel": "قراءة سياق الشاشة",
+        "enableDescription": "اسمح لـ Nova بقراءة نص النافذة النشطة ليبني رده عليه. سريع، ويبقى على جهازك.",
+        "visualLabel": "قراءة بصرية متقدمة",
+        "visualDescription": "عندما لا يكفي النص، يحلّل Nova صورة للشاشة عبر المحرّك عبر الإنترنت لفهم الموقف.",
+        "privacyNote": "لا تُقرأ التطبيقات الموجودة في قائمة الخصوصية المحظورة أبدًا — ولا حتى محتواها.",
+        "experimentalNote": "تجريبي — معطّل افتراضيًا."
       },
       "subtitle": "ما تكتبه الذكاء الاصطناعي حسب السياق."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova تستعد…",
     "transcribing": "...جاري التفريغ",
     "processing": "...جاري المعالجة",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "اختر أسلوبًا",
     "openSettings": "فتح الإعدادات",
     "micHearing": "أسمعك",
     "micTooLow": "تحدّث بصوت أعلى قليلًا",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "تُملي كثيرًا في {{app}} — جرّب أسلوب {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "عدم الإظهار مرة أخرى",
     "dictationLimitWarning": "يتوقف بعد {{seconds}} ث (حد المؤسسة)"

@@ -12,7 +12,7 @@
     "general": "Allmänt",
     "models": "Prestanda",
     "advanced": "Avancerat",
-    "postProcessing": "Efterbearbetning",
+    "postProcessing": "Stilar",
     "meeting": "Möte",
     "history": "Historik",
     "prompts": "Promptar",
@@ -22,7 +22,7 @@
     "home": "Hem",
     "configuration": "Konfiguration",
     "account": "Konto",
-    "styles": "Efterbearbetning",
+    "styles": "Stilar",
     "aiSkills": "AI Skills",
     "settings": "Inställningar",
     "organization": "Organisation",
@@ -511,7 +511,7 @@
           "refreshModels": "Uppdatera modeller"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo hanteras av Nova: din licens fungerar som nyckel, ingen konfiguration behövs.",
           "confirmTitle": "Aktivera Turbo?",
           "confirmDescription": "Turbo skickar din diktering till Nova för omformulering online — lite mindre privat än Intelligence privée, som förblir helt lokal. Du kan när som helst växla tillbaka till Intelligence privée.",
           "confirmEnable": "Aktivera Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Stilar",
         "selectedPrompt": {
           "title": "Vald prompt",
           "description": "Välj en mall för att förfina transkriptioner eller skapa en ny. Använd ${output} inuti prompttexten för att referera till den fångade transkriptionen."
@@ -538,7 +538,7 @@
         "cancel": "Avbryt",
         "selectToEdit": "Välj en prompt ovan för att visa och redigera dess detaljer.",
         "createFirst": "Klicka på 'Skapa ny prompt' ovan för att skapa din första prompt för efterbearbetning.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Att skapa och redigera stilar kräver Nova Ultra.",
         "badgeAuto": "Automatisk",
         "badgeBuiltin": "Inbyggd",
         "badgeCustom": "Egen",
@@ -547,35 +547,35 @@
         "copySuffix": "kopia"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Lägg till regel",
+        "blocklistLabel": "Ignorerade appar (integritet)",
+        "blocklistTip": "Kommaseparerade. De här apparna läses aldrig (t.ex. bank, lösenordshanterare). Vanliga lösenordshanterare är redan undantagna som standard.",
+        "description": "Nova väljer stil åt dig utifrån appen i förgrunden (till exempel en e-poststil i en mejlapp, en promptstil i ChatGPT). Det aktiva fönstret läses i samma stund som du dikterar och glöms sedan — inget sparas.",
+        "keywordPlaceholder": "Nyckelord (app- eller fliknamn)",
+        "option": "Automatiskt",
+        "rulesLabel": "Egna regler",
+        "save": "Spara"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Omformulering"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Prestandaprofil",
         "recommended": "Rekommenderas",
         "downloaded": "nedladdad",
         "downloadingModel": "Laddar ner modellen…",
         "downloadingEngine": "Laddar ner motorn…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Kvaliteten och hastigheten hos Intelligence privée — den helt lokala motorn — är desamma i alla abonnemang: Nova Free, Pro och Ultra. Ditt abonnemang påverkar bara åtkomsten till Turbo, onlinemotorn."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Kontextläsning",
+        "description": "Nova läser det som visas på skärmen — mejlet du svarar på, konversationen — för att skriva ett svar som passar situationen. Läses när du dikterar och glöms sedan.",
+        "enableLabel": "Läs kontext på skärmen",
+        "enableDescription": "Låt Nova läsa texten i det aktiva fönstret för att grunda svaret på den. Snabbt, och stannar på din dator.",
+        "visualLabel": "Avancerad visuell läsning",
+        "visualDescription": "När texten inte räcker analyserar Nova en bild av skärmen via onlinemotorn för att förstå situationen.",
+        "privacyNote": "Appar på din integritetsspärrlista läses aldrig — inte ens deras innehåll.",
+        "experimentalNote": "Experimentellt — av som standard."
       },
       "subtitle": "Vad AI:n skriver, utifrån sammanhanget."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova förbereder sig…",
     "transcribing": "Transkriberar...",
     "processing": "Bearbetar...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Välj en Stil",
     "openSettings": "Öppna inställningar",
     "micHearing": "Jag hör dig",
     "micTooLow": "Tala lite högre",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "Du dikterar ofta i {{app}} — prova stilen {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Visa inte igen",
     "dictationLimitWarning": "Stoppar om {{seconds}} s (organisationens gräns)"

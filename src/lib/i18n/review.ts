@@ -190,3 +190,26 @@ export function expandKeptKeys(
     [...keys].filter((key) => matchers.some((matcher) => matcher.test(key))),
   );
 }
+
+/** Le fichier `src/i18n/kept-in-english.json`. */
+export interface KeptInEnglish {
+  /** Noms identiques dans toutes les langues : modèles, produits, adresses. */
+  keys: string[];
+  /**
+   * Mots identiques à l'anglais dans une langue seulement — « Version » en
+   * français, « Auto » en allemand. Les garder partout cacherait un oubli.
+   */
+  byLanguage?: Record<string, string[]>;
+}
+
+/** Les clés qu'une langue garde en anglais : les noms communs, puis les siens. */
+export function keptKeysFor(
+  kept: KeptInEnglish,
+  locale: string,
+  keys: Iterable<string>,
+): Set<string> {
+  return expandKeptKeys(
+    [...kept.keys, ...(kept.byLanguage?.[locale] ?? [])],
+    keys,
+  );
+}

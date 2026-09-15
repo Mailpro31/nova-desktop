@@ -12,7 +12,7 @@
     "general": "Общи",
     "models": "Производителност",
     "advanced": "Разширени",
-    "postProcessing": "Постобработка",
+    "postProcessing": "Стилове",
     "meeting": "Среща",
     "history": "История",
     "prompts": "Промптове",
@@ -22,7 +22,7 @@
     "home": "Начало",
     "configuration": "Конфигурация",
     "account": "Акаунт",
-    "styles": "Постобработка",
+    "styles": "Стилове",
     "aiSkills": "AI Skills",
     "settings": "Настройки",
     "organization": "Организация",
@@ -108,7 +108,7 @@
       }
     },
     "errors": {
-      "selectModel": "Failed to select model"
+      "selectModel": "Моделът не можа да бъде избран"
     },
     "step": {
       "skip": "Пропуснете",
@@ -511,7 +511,7 @@
           "refreshModels": "Опресняване на моделите"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo се управлява от Nova: лицензът ви служи като ключ, не е нужна настройка.",
           "confirmTitle": "Активиране на Turbo?",
           "confirmDescription": "Turbo изпраща вашата диктовка към Nova за преформулиране онлайн — малко по-малко поверително от Intelligence privée, което остава напълно локално. Можете да се върнете към Intelligence privée по всяко време.",
           "confirmEnable": "Активирай Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Подкана",
+        "title": "Стилове",
         "selectedPrompt": {
           "title": "Избрана подкана",
           "description": "Изберете шаблон за подобряване на транскрипции или създайте нов. Използвайте ${output} в текста на подканата, за да препратите към уловения транскрипт."
@@ -538,7 +538,7 @@
         "cancel": "Отказ",
         "selectToEdit": "Изберете подкана по-горе, за да видите и редактирате подробностите ѝ.",
         "createFirst": "Натиснете „Нова подкана“ по-горе, за да създадете първата си подкана за постобработка.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Създаването и редактирането на стилове изисква Nova Ultra.",
         "badgeAuto": "Автоматичен",
         "badgeBuiltin": "Вграден",
         "badgeCustom": "Собствен",
@@ -547,35 +547,35 @@
         "copySuffix": "копие"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Добави правило",
+        "blocklistLabel": "Игнорирани приложения (поверителност)",
+        "blocklistTip": "Разделени със запетая. Тези приложения никога не се проверяват (напр. банкиране, мениджър на пароли). Често срещаните мениджъри на пароли са изключени по подразбиране.",
+        "description": "Nova избира стила вместо вас според приложението на преден план (напр. стил за имейл в пощенско приложение, стил за подкана в ChatGPT). Активният прозорец се прочита в момента на диктовката и после се забравя — нищо не се съхранява.",
+        "keywordPlaceholder": "Ключова дума (име на приложение или раздел)",
+        "option": "Автоматично",
+        "rulesLabel": "Персонализирани правила",
+        "save": "Запази"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Преформулиране"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Профил на мощност",
         "recommended": "Препоръчано",
         "downloaded": "изтеглено",
         "downloadingModel": "Изтегляне на модела…",
         "downloadingEngine": "Изтегляне на модула…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Качеството и скоростта на Intelligence privée — изцяло локалния двигател — са еднакви във всички планове: Nova Free, Pro и Ultra. Планът ви променя само достъпа до Turbo, онлайн двигателя."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Четене на контекста",
+        "description": "Nova чете какво има на екрана — имейла, на който отговаряте, разговора — за да напише отговор, който пасва на ситуацията. Чете се в момента на диктовката и после се забравя.",
+        "enableLabel": "Четене на контекста на екрана",
+        "enableDescription": "Позволете на Nova да чете текста на активния прозорец, за да основе отговора си на него. Бързо и остава на вашия компютър.",
+        "visualLabel": "Разширено визуално четене",
+        "visualDescription": "Когато текстът не е достатъчен, Nova анализира изображение на екрана чрез онлайн двигателя, за да разбере ситуацията.",
+        "privacyNote": "Приложенията в списъка ви за поверителност никога не се четат — дори съдържанието им.",
+        "experimentalNote": "Експериментално — изключено по подразбиране."
       },
       "subtitle": "Какво пише изкуственият интелект според контекста."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova се подготвя…",
     "transcribing": "Транскрибиране...",
     "processing": "Обработка...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Изберете стил",
     "openSettings": "Отвори настройките",
     "micHearing": "Чувам ви",
     "micTooLow": "Говорете малко по-силно",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "Често диктувате в {{app}} — опитайте стила {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Не показвай отново",
     "dictationLimitWarning": "Спиране след {{seconds}} с (лимит на организацията)"

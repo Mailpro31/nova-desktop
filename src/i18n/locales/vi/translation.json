@@ -12,7 +12,7 @@
     "general": "Chung",
     "models": "Hiệu năng",
     "advanced": "Nâng cao",
-    "postProcessing": "Xử lý sau",
+    "postProcessing": "Phong cách",
     "meeting": "Cuộc họp",
     "history": "Lịch sử",
     "prompts": "Prompt",
@@ -22,7 +22,7 @@
     "home": "Trang chủ",
     "configuration": "Cấu hình",
     "account": "Tài khoản",
-    "styles": "Xử lý sau",
+    "styles": "Phong cách",
     "aiSkills": "AI Skills",
     "settings": "Cài đặt",
     "organization": "Tổ chức",
@@ -413,9 +413,9 @@
         "title": "Phương thức dán",
         "description": "Chọn cách chèn văn bản. Trực tiếp: mô phỏng gõ phím qua đầu vào hệ thống. Không có: bỏ qua dán, chỉ cập nhật lịch sử/clipboard.",
         "options": {
-          "clipboard": "Clipboard ({{modifier}}+V)",
-          "clipboardCtrlShiftV": "Clipboard (Ctrl+Shift+V)",
-          "clipboardShiftInsert": "Clipboard (Shift+Insert)",
+          "clipboard": "Bảng tạm ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Bảng tạm (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "Bảng tạm (Shift+Insert)",
           "direct": "Trực tiếp",
           "none": "Không có",
           "externalScript": "Script bên ngoài"
@@ -511,7 +511,7 @@
           "refreshModels": "Làm mới mô hình"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo do Nova quản lý: giấy phép của bạn đóng vai trò khóa, không cần cấu hình.",
           "confirmTitle": "Kích hoạt Turbo?",
           "confirmDescription": "Turbo gửi bản đọc chính tả của bạn đến Nova để viết lại trực tuyến — kém riêng tư hơn một chút so với Intelligence privée, vốn hoàn toàn cục bộ. Bạn có thể chuyển lại Intelligence privée bất cứ lúc nào.",
           "confirmEnable": "Kích hoạt Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Phong cách",
         "selectedPrompt": {
           "title": "Prompt đã chọn",
           "description": "Chọn một mẫu để tinh chỉnh bản ghi hoặc tạo mới. Sử dụng ${output} trong văn bản prompt để tham chiếu bản ghi đã chụp."
@@ -538,7 +538,7 @@
         "cancel": "Hủy",
         "selectToEdit": "Chọn một prompt ở trên để xem và chỉnh sửa chi tiết.",
         "createFirst": "Nhấn 'Tạo Prompt mới' ở trên để tạo prompt xử lý sau đầu tiên của bạn.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Tạo và chỉnh sửa Phong cách yêu cầu Nova Ultra.",
         "badgeAuto": "Tự động",
         "badgeBuiltin": "Tích hợp",
         "badgeCustom": "Tùy chỉnh",
@@ -547,35 +547,35 @@
         "copySuffix": "bản sao"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Thêm quy tắc",
+        "blocklistLabel": "Ứng dụng bị bỏ qua (quyền riêng tư)",
+        "blocklistTip": "Phân tách bằng dấu phẩy. Các ứng dụng này không bao giờ được đọc (ví dụ: ngân hàng, trình quản lý mật khẩu). Các trình quản lý mật khẩu phổ biến đã được loại trừ theo mặc định.",
+        "description": "Nova chọn Phong cách cho bạn dựa trên ứng dụng ở nền trước (ví dụ Phong cách email trong ứng dụng thư, Phong cách prompt trong ChatGPT). Cửa sổ đang hoạt động chỉ được đọc lúc bạn đọc chính tả rồi bị quên đi — không có gì được lưu.",
+        "keywordPlaceholder": "Từ khóa (tên ứng dụng hoặc thẻ)",
+        "option": "Tự động",
+        "rulesLabel": "Quy tắc tùy chỉnh",
+        "save": "Lưu"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Diễn đạt lại"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Hồ sơ hiệu năng",
         "recommended": "Đề xuất",
         "downloaded": "đã tải",
         "downloadingModel": "Đang tải mô hình…",
         "downloadingEngine": "Đang tải công cụ…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Chất lượng và tốc độ của Intelligence privée — bộ máy chạy hoàn toàn trên máy — là như nhau ở mọi gói: Nova Free, Pro và Ultra. Gói của bạn chỉ thay đổi quyền dùng Turbo, bộ máy trực tuyến."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Đọc ngữ cảnh",
+        "description": "Nova đọc nội dung trên màn hình — email bạn đang trả lời, cuộc trò chuyện — để viết câu trả lời phù hợp với tình huống. Chỉ đọc lúc đọc chính tả rồi quên đi.",
+        "enableLabel": "Đọc ngữ cảnh trên màn hình",
+        "enableDescription": "Cho phép Nova đọc văn bản của cửa sổ đang hoạt động để làm căn cứ cho câu trả lời. Nhanh và chỉ ở trên máy của bạn.",
+        "visualLabel": "Đọc hình ảnh nâng cao",
+        "visualDescription": "Khi văn bản chưa đủ, Nova phân tích ảnh chụp màn hình qua bộ máy trực tuyến để hiểu tình huống.",
+        "privacyNote": "Các ứng dụng trong danh sách chặn quyền riêng tư không bao giờ được đọc — kể cả nội dung của chúng.",
+        "experimentalNote": "Thử nghiệm — tắt theo mặc định."
       },
       "subtitle": "Nội dung AI viết ra, tùy theo ngữ cảnh."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova đang chuẩn bị…",
     "transcribing": "Đang chuyển đổi...",
     "processing": "Đang xử lý...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Chọn Phong cách",
     "openSettings": "Mở cài đặt",
     "micHearing": "Tôi nghe thấy bạn",
     "micTooLow": "Hãy nói to hơn một chút",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "Bạn thường đọc chính tả trong {{app}} — hãy thử Phong cách {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Không hiện lại",
     "dictationLimitWarning": "Dừng sau {{seconds}} giây (giới hạn của tổ chức)"
