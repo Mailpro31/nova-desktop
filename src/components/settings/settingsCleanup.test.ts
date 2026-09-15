@@ -66,9 +66,12 @@ describe("Réglages sans « Fondamentaux IA »", () => {
     expect(settings).not.toContain("CampusAiSkills");
   });
 
-  test("le cours reste accessible depuis Apprendre", () => {
-    expect(read("src/components/settings/learn/LearnSettings.tsx")).toContain(
-      "CampusAiSkills",
-    );
+  test("ses modules sont des leçons du catalogue, pas un second cours dans Apprendre", () => {
+    expect(
+      read("src/components/settings/learn/LearnSettings.tsx"),
+    ).not.toContain("CampusAiSkills");
+    expect(
+      existsSync("src/components/settings/campus/CampusAiSkills.tsx"),
+    ).toBe(false);
   });
 });

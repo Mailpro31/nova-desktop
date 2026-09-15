@@ -39,6 +39,8 @@ interface MockOptions {
    * répond `null` comme avant, et la progression aussi.
    */
   learningCatalog?: Record<string, unknown>;
+  /** Progression servie par `fetch_learning_progress`. Absente, rien n'est commencé. */
+  learningProgress?: Record<string, unknown>;
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -225,7 +227,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return settings.learningCatalog ?? null;
         case "fetch_learning_progress":
           return settings.learningCatalog
-            ? { catalog_version: 1, lessons: [] }
+            ? (settings.learningProgress ?? { catalog_version: 1, lessons: [] })
             : null;
         case "get_available_microphones":
           return [
