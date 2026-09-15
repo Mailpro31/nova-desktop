@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "历史记录",
     "prompts": "提示词",
+    "structuredNotes": "结构化笔记",
     "about": "关于",
     "personalization": "个性化",
     "home": "首页",
@@ -1096,17 +1097,6 @@
       "minutes": "约 {{count}} 分钟",
       "completed": "已完成"
     },
-    "engineeringNotes": {
-      "title": "工程笔记",
-      "description": "将原始观察整理成简洁、可追溯的工程笔记。",
-      "inputPlaceholder": "粘贴或口述你的观察、测量数据和不确定之处...",
-      "instructionPlaceholder": "可选说明，例如：突出测试条件",
-      "action": "整理笔记",
-      "working": "正在整理...",
-      "result": "整理后的笔记",
-      "copied": "已复制笔记",
-      "error": "无法整理笔记。"
-    },
     "personalization": {
       "description": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Nova 根据你的听写生成的提示词，可直接再次使用。",
     "empty": "使用提示词风格听写，你的提示词会显示在这里。",
     "searchPlaceholder": "搜索提示词"
+  },
+  "structuredNotes": {
+    "title": "结构化笔记",
+    "subtitle": "粘贴或口述原始笔记。Nova 按类型整理，保留每一个事实。",
+    "typeLabel": "笔记类型",
+    "types": {
+      "meeting": "会议",
+      "lecture": "课程",
+      "observation": "观察",
+      "ideas": "想法",
+      "free": "自由"
+    },
+    "inputPlaceholder": "粘贴或口述你的原始笔记…",
+    "instructionPlaceholder": "可选指令，例如：把截止日期加粗",
+    "action": "整理我的笔记",
+    "working": "正在整理…",
+    "result": "整理后的笔记",
+    "copied": "笔记已复制",
+    "error": "Nova 无法整理这些笔记，请稍后重试。",
+    "unavailable": "请在“风格”中选择改写引擎，才能使用结构化笔记。",
+    "exampleTitle": "示例",
+    "exampleBefore": "整理前",
+    "exampleAfter": "整理后",
+    "examples": {
+      "meeting": {
+        "before": "和 Lea、Tom 通话，发布推迟到 3 月 12 日，Tom 周五前发预算，场地还没定",
+        "after": "摘要\n- 与 Lea、Tom 的发布会议\n\n决定\n- 发布推迟到 3 月 12 日\n\n待办事项\n- Tom：周五前发送预算\n\n待解决问题\n- 场地尚未确定"
+      },
+      "lecture": {
+        "before": "热力学课，第一定律 = 能量守恒，dU = Q - W，例子：活塞中被加热的气体，复习 W 的符号",
+        "after": "摘要\n- 热力学：第一定律\n\n关键概念\n- 能量守恒\n\n定义与公式\n- dU = Q − W\n\n例子\n- 活塞中被加热的气体\n\n需要复习\n- W 的符号约定"
+      },
+      "observation": {
+        "before": "试样 B 在 42 kN 开裂，20 °C 下测试，可能是焊缝问题，下周用新焊缝重做",
+        "after": "观察\n- 试样 B 在 42 kN 开裂（20 °C）\n\n假设\n- 可能是焊缝导致（不确定）\n\n结果\n- 在 42 kN 断裂\n\n行动\n- 下周用新焊缝重新测试"
+      },
+      "ideas": {
+        "before": "新闻简报想法：每月小贴士，也许做短视频，问问用户想要什么，从小处开始",
+        "after": "想法\n- 每月小贴士简报\n- 短视频\n\n为什么重要\n- 保持用户参与\n\n待解决问题\n- 用户想要什么？\n\n下一步\n- 先问用户，再从小处开始"
+      },
+      "free": {
+        "before": "周二上午 9 点看牙医，买打印机墨水，打电话问银行卡的事，周四也许去健身",
+        "after": "摘要\n- 本周的预约和杂事\n\n要点\n- 周二上午 9 点看牙医\n- 打电话问银行卡的事\n\n细节\n- 买打印机墨水\n\n下一步\n- 周四去健身（待确认）"
+      }
+    }
   },
   "settingsNav": {
     "voice": "语音"

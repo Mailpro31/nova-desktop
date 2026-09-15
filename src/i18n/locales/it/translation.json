@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Cronologia",
     "prompts": "Prompt",
+    "structuredNotes": "Note strutturate",
     "about": "Informazioni",
     "personalization": "Personalizzazione",
     "home": "Home",
@@ -1096,17 +1097,6 @@
       "minutes": "Circa {{count}} min",
       "completed": "Completato"
     },
-    "engineeringNotes": {
-      "title": "Note di ingegneria",
-      "description": "Trasforma osservazioni grezze in una nota di ingegneria concisa e tracciabile.",
-      "inputPlaceholder": "Incolla o detta le tue osservazioni, misure e incertezze...",
-      "instructionPlaceholder": "Istruzione facoltativa, ad es. evidenziare le condizioni di prova",
-      "action": "Struttura le note",
-      "working": "Strutturazione...",
-      "result": "Nota strutturata",
-      "copied": "Nota copiata",
-      "error": "Non è stato possibile strutturare le note."
-    },
     "personalization": {
       "description": "Regola l'aspetto e l'interazione di Nova senza cambiare le regole del tuo istituto.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "I prompt che Nova ha scritto dalle tue dettature, pronti da riutilizzare.",
     "empty": "Detta con lo stile prompt e i tuoi prompt appariranno qui.",
     "searchPlaceholder": "Cerca nei tuoi prompt"
+  },
+  "structuredNotes": {
+    "title": "Note strutturate",
+    "subtitle": "Incolla o detta appunti grezzi. Nova li ordina per tipo e conserva ogni dato.",
+    "typeLabel": "Tipo di nota",
+    "types": {
+      "meeting": "Riunione",
+      "lecture": "Lezione",
+      "observation": "Osservazione",
+      "ideas": "Idee",
+      "free": "Libera"
+    },
+    "inputPlaceholder": "Incolla o detta i tuoi appunti grezzi…",
+    "instructionPlaceholder": "Istruzione facoltativa, ad es. scadenze in grassetto",
+    "action": "Struttura i miei appunti",
+    "working": "Strutturazione…",
+    "result": "Nota strutturata",
+    "copied": "Nota copiata",
+    "error": "Nova non è riuscita a strutturare questi appunti. Riprova tra poco.",
+    "unavailable": "Scegli un motore di riscrittura in Stili per usare le note strutturate.",
+    "exampleTitle": "Esempio",
+    "exampleBefore": "Prima",
+    "exampleAfter": "Dopo",
+    "examples": {
+      "meeting": {
+        "before": "chiamata con Lea e Tom, lancio spostato al 12 marzo, Tom manda il budget entro venerdì, luogo ancora da decidere",
+        "after": "Sintesi\n- Chiamata di lancio con Lea e Tom\n\nDecisioni\n- Lancio spostato al 12 marzo\n\nAzioni\n- Tom: inviare il budget entro venerdì\n\nQuestioni aperte\n- Luogo ancora da decidere"
+      },
+      "lecture": {
+        "before": "lezione di termo, primo principio = l'energia si conserva, dU = Q - W, esempio: gas riscaldato in un pistone, ripassare il segno di W",
+        "after": "Sintesi\n- Termodinamica: il primo principio\n\nConcetti chiave\n- L'energia si conserva\n\nDefinizioni e formule\n- dU = Q − W\n\nEsempi\n- Gas riscaldato in un pistone\n\nDa ripassare\n- Convenzione di segno di W"
+      },
+      "observation": {
+        "before": "provino B incrinato a 42 kN, prova a 20 °C, forse la saldatura, rifare con una saldatura nuova la prossima settimana",
+        "after": "Osservazione\n- Provino B incrinato a 42 kN (20 °C)\n\nIpotesi\n- Potrebbe essere la saldatura (incerto)\n\nRisultato\n- Rottura a 42 kN\n\nAzione\n- Ripetere la prova con una saldatura nuova la prossima settimana"
+      },
+      "ideas": {
+        "before": "idea newsletter: consigli mensili, forse video brevi, chiedere agli utenti cosa vogliono, partire in piccolo",
+        "after": "Idee\n- Una newsletter mensile di consigli\n- Video brevi\n\nPerché conta\n- Tenere coinvolti gli utenti\n\nQuestioni aperte\n- Cosa vogliono gli utenti?\n\nPassi successivi\n- Chiedere agli utenti, poi partire in piccolo"
+      },
+      "free": {
+        "before": "dentista martedì ore 9, comprare inchiostro, chiamare la banca per la carta, palestra forse giovedì",
+        "after": "Sintesi\n- Appuntamenti e commissioni della settimana\n\nPunti chiave\n- Dentista martedì alle 9\n- Chiamare la banca per la carta\n\nDettagli\n- Comprare l'inchiostro per la stampante\n\nPassi successivi\n- Palestra giovedì (da confermare)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Voce"

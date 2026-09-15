@@ -55,6 +55,7 @@ mod screen_vlm;
 mod settings;
 mod shortcut;
 mod signal_handle;
+mod structured_notes;
 mod telemetry;
 mod transcription_coordinator;
 mod tray;
@@ -714,7 +715,8 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::campus::request_learning_feedback,
                 commands::campus::clear_organization_packages,
                 commands::campus::run_organization_skill,
-                commands::campus::format_campus_engineering_notes,
+                commands::campus::format_campus_structured_notes,
+                structured_notes::format_structured_notes_locally,
                 commands::campus::transcribe_campus_audio_file,
                 commands::get_lexicon_suggestions,
                 commands::accept_lexicon_suggestion,

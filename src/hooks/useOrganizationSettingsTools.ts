@@ -15,7 +15,6 @@ import { useCampusStore } from "@/stores/campusStore";
  */
 export function useOrganizationSettingsTools(): OrganizationSettingsTools {
   const aiSkillsCapability = useCapability("aiSkills");
-  const engineeringNotesCapability = useCapability("engineeringNotes");
   const aiSkillsPolicyEnabled = useCampusStore(
     (state) => state.context.aiSkillsPolicy.enabled,
   );
@@ -28,7 +27,6 @@ export function useOrganizationSettingsTools(): OrganizationSettingsTools {
   return organizationSettingsTools({
     aiSkillsCapability,
     aiSkillsPolicyEnabled,
-    engineeringNotesCapability,
     organizationType,
   });
 }

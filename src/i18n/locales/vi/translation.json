@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Lịch sử",
     "prompts": "Prompt",
+    "structuredNotes": "Ghi chú có cấu trúc",
     "about": "Giới thiệu",
     "personalization": "Cá nhân hóa",
     "home": "Trang chủ",
@@ -1096,17 +1097,6 @@
       "minutes": "Khoảng {{count}} phút",
       "completed": "Đã hoàn thành"
     },
-    "engineeringNotes": {
-      "title": "Ghi chú kỹ thuật",
-      "description": "Biến các quan sát thô thành một ghi chú kỹ thuật ngắn gọn, có thể truy vết.",
-      "inputPlaceholder": "Dán hoặc đọc các quan sát, số đo và điểm chưa chắc chắn của bạn...",
-      "instructionPlaceholder": "Chỉ dẫn tùy chọn, ví dụ: nhấn mạnh điều kiện thử nghiệm",
-      "action": "Sắp xếp ghi chú",
-      "working": "Đang sắp xếp...",
-      "result": "Ghi chú đã sắp xếp",
-      "copied": "Đã sao chép ghi chú",
-      "error": "Không thể sắp xếp ghi chú."
-    },
     "personalization": {
       "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Các prompt Nova đã viết từ những lần đọc chính tả của bạn, sẵn sàng dùng lại.",
     "empty": "Hãy đọc chính tả với lối viết prompt, các prompt của bạn sẽ hiện ở đây.",
     "searchPlaceholder": "Tìm trong prompt của bạn"
+  },
+  "structuredNotes": {
+    "title": "Ghi chú có cấu trúc",
+    "subtitle": "Dán hoặc đọc ghi chú thô. Nova sắp xếp theo loại và giữ nguyên mọi dữ kiện.",
+    "typeLabel": "Loại ghi chú",
+    "types": {
+      "meeting": "Cuộc họp",
+      "lecture": "Bài giảng",
+      "observation": "Quan sát",
+      "ideas": "Ý tưởng",
+      "free": "Tự do"
+    },
+    "inputPlaceholder": "Dán hoặc đọc ghi chú thô của bạn…",
+    "instructionPlaceholder": "Chỉ dẫn tùy chọn, ví dụ: in đậm các hạn chót",
+    "action": "Sắp xếp ghi chú",
+    "working": "Đang sắp xếp…",
+    "result": "Ghi chú đã sắp xếp",
+    "copied": "Đã sao chép ghi chú",
+    "error": "Nova không thể sắp xếp các ghi chú này. Hãy thử lại sau giây lát.",
+    "unavailable": "Hãy chọn một công cụ viết lại trong Kiểu để dùng ghi chú có cấu trúc.",
+    "exampleTitle": "Ví dụ",
+    "exampleBefore": "Trước",
+    "exampleAfter": "Sau",
+    "examples": {
+      "meeting": {
+        "before": "gọi với Lea và Tom, ra mắt dời sang 12/3, Tom gửi ngân sách trước thứ Sáu, địa điểm chưa chốt",
+        "after": "Tóm tắt\n- Cuộc gọi ra mắt với Lea và Tom\n\nQuyết định\n- Dời ngày ra mắt sang 12/3\n\nViệc cần làm\n- Tom: gửi ngân sách trước thứ Sáu\n\nCâu hỏi còn mở\n- Địa điểm chưa chốt"
+      },
+      "lecture": {
+        "before": "bài giảng nhiệt động học, định luật thứ nhất = bảo toàn năng lượng, dU = Q - W, ví dụ: khí được nung trong piston, ôn lại dấu của W",
+        "after": "Tóm tắt\n- Nhiệt động học: định luật thứ nhất\n\nKhái niệm chính\n- Năng lượng được bảo toàn\n\nĐịnh nghĩa và công thức\n- dU = Q − W\n\nVí dụ\n- Khí được nung trong piston\n\nCần ôn lại\n- Quy ước dấu của W"
+      },
+      "observation": {
+        "before": "mẫu B nứt ở 42 kN, thử ở 20 °C, có thể do mối hàn, làm lại với mối hàn mới tuần sau",
+        "after": "Quan sát\n- Mẫu B nứt ở 42 kN (20 °C)\n\nGiả thuyết\n- Có thể do mối hàn (chưa chắc)\n\nKết quả\n- Gãy ở 42 kN\n\nHành động\n- Thử lại với mối hàn mới vào tuần sau"
+      },
+      "ideas": {
+        "before": "ý tưởng bản tin: mẹo hằng tháng, có thể thêm video ngắn, hỏi người dùng họ muốn gì, bắt đầu nhỏ",
+        "after": "Ý tưởng\n- Bản tin mẹo hằng tháng\n- Video ngắn\n\nVì sao quan trọng\n- Giữ người dùng gắn bó\n\nCâu hỏi còn mở\n- Người dùng muốn gì?\n\nBước tiếp theo\n- Hỏi người dùng rồi bắt đầu nhỏ"
+      },
+      "free": {
+        "before": "nha sĩ thứ Ba 9 giờ, mua mực máy in, gọi ngân hàng về thẻ, tập gym có lẽ thứ Năm",
+        "after": "Tóm tắt\n- Lịch hẹn và việc vặt tuần này\n\nÝ chính\n- Nha sĩ thứ Ba lúc 9 giờ\n- Gọi ngân hàng về thẻ\n\nChi tiết\n- Mua mực máy in\n\nBước tiếp theo\n- Tập gym thứ Năm (cần xác nhận)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Giọng nói"

@@ -1966,20 +1966,42 @@ pub async fn get_campus_ai_skills(app: AppHandle) -> Result<CampusAiSkillsRespon
         .map_err(|e| format!("invalid response: {}", e))
 }
 
+/// Notes structurées rangées par le serveur de l'organisation.
+///
+/// Un serveur antérieur à `/api/structured-notes` répond 404 : la note part
+/// alors vers `/api/engineering-notes`, avec la structure du type en
+/// consigne, plutôt que d'échouer tant que le serveur n'est pas à jour.
 #[tauri::command]
 #[specta::specta]
-pub async fn format_campus_engineering_notes(
+pub async fn format_campus_structured_notes(
     app: AppHandle,
-    instruction: String,
     text: String,
+    note_type: String,
+    instruction: String,
 ) -> Result<CampusCommandResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
-        .post(format!("{}/api/engineering-notes", base_url))
-        .json(&serde_json::json!({ "instruction": instruction, "text": text }))
+        .post(format!("{}/api/structured-notes", base_url))
+        .json(&serde_json::json!({
+            "text": text,
+            "note_type": note_type,
+            "instruction": instruction,
+        }))
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;
+    let response = if response.status() == reqwest::StatusCode::NOT_FOUND {
+        let legacy_instruction = crate::structured_notes::instruction(&note_type, &instruction)
+            .ok_or_else(|| "unknown-note-type".to_string())?;
+        client
+            .post(format!("{}/api/engineering-notes", base_url))
+            .json(&serde_json::json!({ "instruction": legacy_instruction, "text": text }))
+            .send()
+            .await
+            .map_err(|e| format!("network error: {}", e))?
+    } else {
+        response
+    };
     let response = handle_authed_response(&app, response).await?;
 
     response

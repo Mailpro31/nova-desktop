@@ -376,20 +376,6 @@ export class CampusApi {
     }
   }
 
-  async formatEngineeringNotes(
-    text: string,
-    instruction = "",
-  ): Promise<CampusCommandResponse> {
-    try {
-      return await invoke<CampusCommandResponse>(
-        "format_campus_engineering_notes",
-        { instruction, text },
-      );
-    } catch (err) {
-      throw parseCommandError(err);
-    }
-  }
-
   async transcribeAudioFile(
     fileBytes: number[] | Uint8Array,
     filename: string,

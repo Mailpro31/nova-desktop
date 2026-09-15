@@ -203,6 +203,14 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
               (settings.config?.organization as { name?: string } | undefined)
                 ?.name ?? null,
           };
+        case "format_campus_structured_notes":
+          localStorage.setItem(
+            "nova.test.structuredNotes",
+            JSON.stringify(args),
+          );
+          return {
+            text: `Structured ${String(args.noteType)}: ${String(args.text)}`,
+          };
         case "format_campus_engineering_notes":
           localStorage.setItem(
             "nova.test.engineeringNotes",

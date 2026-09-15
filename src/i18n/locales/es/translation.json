@@ -16,6 +16,7 @@
     "meeting": "Meeting",
     "history": "Historial",
     "prompts": "Prompts",
+    "structuredNotes": "Notas estructuradas",
     "about": "Acerca de",
     "personalization": "Personalización",
     "home": "Inicio",
@@ -1096,17 +1097,6 @@
       "minutes": "Unos {{count}} min",
       "completed": "Completado"
     },
-    "engineeringNotes": {
-      "title": "Notas de ingeniería",
-      "description": "Convierte observaciones en bruto en una nota de ingeniería concisa y trazable.",
-      "inputPlaceholder": "Pega o dicta tus observaciones, mediciones e incertidumbres...",
-      "instructionPlaceholder": "Instrucción opcional, p. ej., destacar las condiciones de ensayo",
-      "action": "Estructurar notas",
-      "working": "Estructurando...",
-      "result": "Nota estructurada",
-      "copied": "Nota copiada",
-      "error": "No se pudieron estructurar las notas."
-    },
     "personalization": {
       "description": "Ajusta el aspecto y la interacción de Nova sin cambiar las normas de tu institución.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Los prompts que Nova ha escrito a partir de tus dictados, listos para reutilizar.",
     "empty": "Dicta con el estilo prompt y tus prompts aparecerán aquí.",
     "searchPlaceholder": "Buscar en tus prompts"
+  },
+  "structuredNotes": {
+    "title": "Notas estructuradas",
+    "subtitle": "Pega o dicta notas en bruto. Nova las ordena según su tipo y conserva cada dato.",
+    "typeLabel": "Tipo de nota",
+    "types": {
+      "meeting": "Reunión",
+      "lecture": "Clase",
+      "observation": "Observación",
+      "ideas": "Ideas",
+      "free": "Libre"
+    },
+    "inputPlaceholder": "Pega o dicta tus notas en bruto…",
+    "instructionPlaceholder": "Instrucción opcional, p. ej. poner los plazos en negrita",
+    "action": "Estructurar mis notas",
+    "working": "Estructurando…",
+    "result": "Nota estructurada",
+    "copied": "Nota copiada",
+    "error": "Nova no pudo estructurar estas notas. Inténtalo de nuevo en un momento.",
+    "unavailable": "Elige un motor de reescritura en Estilos para usar las notas estructuradas.",
+    "exampleTitle": "Ejemplo",
+    "exampleBefore": "Antes",
+    "exampleAfter": "Después",
+    "examples": {
+      "meeting": {
+        "before": "llamada con Lea y Tom, lanzamiento pasa al 12 de marzo, Tom envía el presupuesto antes del viernes, lugar aún sin decidir",
+        "after": "Resumen\n- Llamada de lanzamiento con Lea y Tom\n\nDecisiones\n- Lanzamiento aplazado al 12 de marzo\n\nTareas\n- Tom: enviar el presupuesto antes del viernes\n\nPreguntas abiertas\n- Lugar aún sin decidir"
+      },
+      "lecture": {
+        "before": "clase de termo, primer principio = la energía se conserva, dU = Q - W, ejemplo: gas calentado en un pistón, repasar el signo de W",
+        "after": "Resumen\n- Termodinámica: el primer principio\n\nConceptos clave\n- La energía se conserva\n\nDefiniciones y fórmulas\n- dU = Q − W\n\nEjemplos\n- Gas calentado en un pistón\n\nPara repasar\n- Convenio de signos de W"
+      },
+      "observation": {
+        "before": "probeta B agrietada a 42 kN, ensayo a 20 °C, quizá la soldadura, repetir con soldadura nueva la semana que viene",
+        "after": "Observación\n- Probeta B agrietada a 42 kN (20 °C)\n\nHipótesis\n- Podría ser la soldadura (incierto)\n\nResultado\n- Rotura a 42 kN\n\nAcción\n- Repetir el ensayo con una soldadura nueva la semana que viene"
+      },
+      "ideas": {
+        "before": "idea de boletín: consejos mensuales, quizá vídeos cortos, preguntar a los usuarios qué quieren, empezar poco a poco",
+        "after": "Ideas\n- Un boletín mensual de consejos\n- Vídeos cortos\n\nPor qué importa\n- Mantener a los usuarios implicados\n\nPreguntas abiertas\n- ¿Qué quieren los usuarios?\n\nPróximos pasos\n- Preguntar a los usuarios y empezar poco a poco"
+      },
+      "free": {
+        "before": "dentista martes 9h, comprar tinta, llamar al banco por la tarjeta, gimnasio quizá el jueves",
+        "after": "Resumen\n- Citas y recados de la semana\n\nPuntos clave\n- Dentista el martes a las 9\n- Llamar al banco por la tarjeta\n\nDetalles\n- Comprar tinta para la impresora\n\nPróximos pasos\n- Gimnasio el jueves (por confirmar)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Voz"

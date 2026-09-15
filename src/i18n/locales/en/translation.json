@@ -18,6 +18,7 @@
     "personalization": "Personalization",
     "history": "History",
     "prompts": "Prompts",
+    "structuredNotes": "Structured notes",
     "about": "About",
     "home": "Home",
     "configuration": "Configuration",
@@ -1096,17 +1097,6 @@
       "minutes": "About {{count}} min",
       "completed": "Completed"
     },
-    "engineeringNotes": {
-      "title": "Engineering Notes",
-      "description": "Turn raw observations into a concise, traceable engineering note.",
-      "inputPlaceholder": "Paste or dictate your observations, measurements and uncertainties...",
-      "instructionPlaceholder": "Optional instruction, e.g. emphasize test conditions",
-      "action": "Structure notes",
-      "working": "Structuring...",
-      "result": "Structured note",
-      "copied": "Note copied",
-      "error": "The notes could not be structured."
-    },
     "personalization": {
       "description": "Adjust Nova's appearance and interaction without changing your institution's policies.",
       "orb": "Nova orb",
@@ -1508,6 +1498,51 @@
     "subtitle": "Prompts Nova wrote from your dictations, ready to reuse.",
     "empty": "Dictate with the prompt Style and your prompts will appear here.",
     "searchPlaceholder": "Search your prompts"
+  },
+  "structuredNotes": {
+    "title": "Structured notes",
+    "subtitle": "Paste or dictate raw notes. Nova organizes them by type and keeps every fact.",
+    "typeLabel": "Type of note",
+    "types": {
+      "meeting": "Meeting",
+      "lecture": "Lecture",
+      "observation": "Observation",
+      "ideas": "Ideas",
+      "free": "Free"
+    },
+    "inputPlaceholder": "Paste or dictate your raw notes…",
+    "instructionPlaceholder": "Optional instruction, e.g. put deadlines in bold",
+    "action": "Structure my notes",
+    "working": "Structuring…",
+    "result": "Structured note",
+    "copied": "Note copied",
+    "error": "Nova couldn't structure these notes. Try again in a moment.",
+    "unavailable": "Choose a rewrite engine in Styles to use structured notes.",
+    "exampleTitle": "Example",
+    "exampleBefore": "Before",
+    "exampleAfter": "After",
+    "examples": {
+      "meeting": {
+        "before": "call with Lea and Tom, launch moved to march 12, Tom sends the budget by friday, still unsure about the venue",
+        "after": "Summary\n- Launch call with Lea and Tom\n\nDecisions\n- Launch moved to March 12\n\nAction items\n- Tom: send the budget by Friday\n\nOpen questions\n- Venue not decided yet"
+      },
+      "lecture": {
+        "before": "thermo lecture, first law = energy is conserved, dU = Q - W, example: heated gas in a piston, review the sign of W",
+        "after": "Summary\n- Thermodynamics: the first law\n\nKey concepts\n- Energy is conserved\n\nDefinitions and formulas\n- dU = Q − W\n\nExamples\n- Heated gas in a piston\n\nQuestions to review\n- Sign convention for W"
+      },
+      "observation": {
+        "before": "sample B cracked at 42 kN, test at 20°C, maybe the weld, redo with a new weld next week",
+        "after": "Observation\n- Sample B cracked at 42 kN (20 °C)\n\nHypothesis\n- The weld may be the cause (uncertain)\n\nResult\n- Failure at 42 kN\n\nAction\n- Repeat the test with a new weld next week"
+      },
+      "ideas": {
+        "before": "newsletter idea: monthly tips, maybe short videos, ask users what they want, start small",
+        "after": "Ideas\n- A monthly tips newsletter\n- Short videos\n\nWhy they matter\n- Keep users engaged\n\nOpen questions\n- What do users want?\n\nNext steps\n- Ask users, then start small"
+      },
+      "free": {
+        "before": "dentist tuesday 9am, buy printer ink, call the bank about the card, gym maybe thursday",
+        "after": "Summary\n- Appointments and errands this week\n\nKey points\n- Dentist on Tuesday at 9 am\n- Call the bank about the card\n\nDetails\n- Buy printer ink\n\nNext steps\n- Gym on Thursday (to confirm)"
+      }
+    }
   },
   "settingsNav": {
     "voice": "Voice"

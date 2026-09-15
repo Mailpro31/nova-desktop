@@ -5,8 +5,8 @@ import { readdirSync, readFileSync } from "node:fs";
  * Les textes visibles autour des outils d'organisation sont traduits.
  *
  * Vérifiés à l'écran en allemand, népalais, vietnamien, russe et arabe : le
- * bouton « Continue later » d'un module AI Essentials, l'onglet et l'écran
- * « Engineering Notes » et l'onglet « Personalization » de Réglages restaient
+ * bouton « Continue later » d'un module AI Essentials et l'onglet
+ * « Personalization » de Réglages restaient
  * en anglais dans vingt langues.
  */
 
@@ -16,15 +16,6 @@ const KEYS = [
   "sidebar.personalization",
   "campus.firstRun.continueLater",
   "campus.firstRun.useNovaNow",
-  "campus.engineeringNotes.title",
-  "campus.engineeringNotes.description",
-  "campus.engineeringNotes.inputPlaceholder",
-  "campus.engineeringNotes.instructionPlaceholder",
-  "campus.engineeringNotes.action",
-  "campus.engineeringNotes.working",
-  "campus.engineeringNotes.result",
-  "campus.engineeringNotes.copied",
-  "campus.engineeringNotes.error",
 ];
 
 function translation(locale: string): unknown {
