@@ -791,7 +791,8 @@
     "micTooLow": "Parlez un peu plus fort",
     "styleSuggestion": "Vous dictez souvent dans {{app}} — essayez le Style {{style}}",
     "styleSuggestionApply": "Essayer",
-    "styleSuggestionDismiss": "Ne plus afficher"
+    "styleSuggestionDismiss": "Ne plus afficher",
+    "dictationLimitWarning": "Arrêt dans {{seconds}} s (limite de l'organisation)"
   },
   "whatsNew": {
     "updatedNotice": "Nova a été mis à jour",
@@ -1092,10 +1093,7 @@
       "connect": "Continuer avec {{provider}}"
     },
     "aiSkills": {
-      "description": "Des modules courts pour utiliser l'IA de façon critique, efficace et sûre dans vos études.",
-      "progress": "{{completed}} module(s) terminé(s) sur {{total}}",
-      "minutes": "Environ {{count}} min",
-      "completed": "Terminé"
+      "minutes": "Environ {{count}} min"
     },
     "personalization": {
       "description": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre établissement.",
@@ -1169,19 +1167,7 @@
       "correct": "Correct",
       "considerThis": "À retenir",
       "nextModule": "Suivant",
-      "continue": "Continuer",
-      "start": "Commencer",
       "next": "À suivre",
-      "modulesTitle": "Compétences fondamentales",
-      "mastery": "Niveaux de maîtrise",
-      "foundationCompleted": "Fondamentaux terminés · {{date}}",
-      "foundationDescription": "Les habitudes essentielles pour un usage efficace et responsable de l'IA.",
-      "futureLevel": "Disponible dans un futur parcours Campus.",
-      "levels": {
-        "foundation": "Fondamentaux",
-        "practitioner": "Praticien",
-        "advanced": "Avancé"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Travailler avec l'IA",

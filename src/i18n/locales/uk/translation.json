@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Зупинка через {{seconds}} с (ліміт організації)"
   },
   "whatsNew": {
     "updatedNotice": "Nova оновлено",
@@ -1092,10 +1093,7 @@
       "connect": "Продовжити з {{provider}}"
     },
     "aiSkills": {
-      "description": "Короткі модулі про критичне, ефективне й безпечне використання AI у навчанні.",
-      "progress": "Пройдено модулів: {{completed}} з {{total}}",
-      "minutes": "Близько {{count}} хв",
-      "completed": "Пройдено"
+      "minutes": "Близько {{count}} хв"
     },
     "personalization": {
       "description": "Налаштуйте вигляд і поведінку Nova, не змінюючи правил вашого навчального закладу.",
@@ -1169,19 +1167,7 @@
       "correct": "Правильно",
       "considerThis": "Поміркуйте",
       "nextModule": "Далі",
-      "continue": "Продовжити навчання",
-      "start": "Почати",
       "next": "Наступний",
-      "modulesTitle": "Базові навички",
-      "mastery": "Рівні майстерності",
-      "foundationCompleted": "Базовий рівень пройдено · {{date}}",
-      "foundationDescription": "Основні звички для ефективного й відповідального використання AI.",
-      "futureLevel": "З'явиться в майбутньому курсі Campus.",
-      "levels": {
-        "foundation": "Базовий",
-        "practitioner": "Практичний",
-        "advanced": "Поглиблений"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Робота з AI",

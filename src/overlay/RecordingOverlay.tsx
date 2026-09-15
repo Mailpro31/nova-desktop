@@ -209,6 +209,21 @@ const RecordingOverlay: React.FC = () => {
     okSince: 0,
   });
   const listeningCompact = isVisible && state === "recording";
+  // Secondes restantes avant l'arrêt imposé par la durée maximale de
+  // l'organisation. `null` tant que l'avertissement n'est pas arrivé.
+  const [limitWarning, setLimitWarning] = useState<number | null>(null);
+
+  // Le serveur n'envoie qu'un avertissement ; le décompte se fait ici, pour
+  // qu'un « 30 s » ne reste pas affiché pendant trente secondes.
+  useEffect(() => {
+    if (limitWarning === null || limitWarning <= 0) return;
+    const id = setTimeout(
+      () =>
+        setLimitWarning((seconds) => (seconds === null ? null : seconds - 1)),
+      1000,
+    );
+    return () => clearTimeout(id);
+  }, [limitWarning]);
 
   useEffect(() => {
     if (!listeningCompact) {
@@ -324,6 +339,8 @@ const RecordingOverlay: React.FC = () => {
         if (overlayState === "recording" || overlayState === "streaming") {
           setStreamText({ committed: "", tentative: "" });
           setThinkingProgress(0);
+        } else {
+          setLimitWarning(null);
         }
         if (overlayState === "transcribing") {
           setThinkingProgress(4);
@@ -412,6 +429,11 @@ const RecordingOverlay: React.FC = () => {
         setIsVisible(true);
       });
 
+      const unlistenLimitWarning = await listen<number>(
+        "dictation-limit-warning",
+        (event) => setLimitWarning(event.payload),
+      );
+
       const unlistenAttention = await listen<boolean>(
         "notification-attention",
         (event) => setHasUnreadNotification(event.payload),
@@ -455,6 +477,7 @@ const RecordingOverlay: React.FC = () => {
         unlistenThinkingComplete();
         unlistenPasteFallback();
         unlistenRecordingError();
+        unlistenLimitWarning();
         unlistenAttention();
         unlistenContext();
       };
@@ -570,7 +593,25 @@ const RecordingOverlay: React.FC = () => {
       <div className="sbase-l">{cancelBtn}</div>
       {waveform}
       <div className="sbase-r">
-        {showTimer && <span className="stimer">{fmtTime(elapsed)}</span>}
+        {showTimer &&
+          (limitWarning !== null ? (
+            // Le panneau Live n'a pas d'indice micro : le minuteur devient le
+            // décompte avant l'arrêt, et son libellé dit pourquoi.
+            <span
+              className="stimer"
+              role="status"
+              aria-label={t("overlay.dictationLimitWarning", {
+                seconds: limitWarning,
+              })}
+              title={t("overlay.dictationLimitWarning", {
+                seconds: limitWarning,
+              })}
+            >
+              {fmtTime(limitWarning)}
+            </span>
+          ) : (
+            <span className="stimer">{fmtTime(elapsed)}</span>
+          ))}
         {finishBtn}
       </div>
     </div>
@@ -869,15 +910,19 @@ const RecordingOverlay: React.FC = () => {
         </div>
         {/* Indice micro discret : jamais dans la même rangée que la forme d'onde
             (au-dessus/en dessous de la pilule), ne la recouvre donc jamais. */}
+        {/* L'arrêt imminent passe avant l'indice micro : c'est la seule
+            information qui demande à la personne de conclure sa phrase. */}
         <div
-          className={`smic-hint ${micHint ?? ""} ${micHint ? "show" : ""}`}
+          className={`smic-hint ${limitWarning !== null ? "low" : (micHint ?? "")} ${limitWarning !== null || micHint ? "show" : ""}`}
           aria-live="polite"
         >
-          {micHint === "low"
-            ? t("overlay.micTooLow")
-            : micHint === "ok"
-              ? t("overlay.micHearing")
-              : ""}
+          {limitWarning !== null
+            ? t("overlay.dictationLimitWarning", { seconds: limitWarning })
+            : micHint === "low"
+              ? t("overlay.micTooLow")
+              : micHint === "ok"
+                ? t("overlay.micHearing")
+                : ""}
         </div>
       </div>
     </div>

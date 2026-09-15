@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Zatrzymanie za {{seconds}} s (limit organizacji)"
   },
   "whatsNew": {
     "updatedNotice": "Nova została zaktualizowana",
@@ -1092,10 +1093,7 @@
       "connect": "Kontynuuj z {{provider}}"
     },
     "aiSkills": {
-      "description": "Krótkie moduły o krytycznym, skutecznym i bezpiecznym korzystaniu z AI podczas nauki.",
-      "progress": "Ukończone moduły: {{completed}} z {{total}}",
-      "minutes": "Około {{count}} min",
-      "completed": "Ukończono"
+      "minutes": "Około {{count}} min"
     },
     "personalization": {
       "description": "Dostosuj wygląd i obsługę Novy bez zmieniania zasad swojej instytucji.",
@@ -1169,19 +1167,7 @@
       "correct": "Dobrze",
       "considerThis": "Zastanów się",
       "nextModule": "Dalej",
-      "continue": "Kontynuuj naukę",
-      "start": "Zacznij",
       "next": "Następny",
-      "modulesTitle": "Umiejętności podstawowe",
-      "mastery": "Poziomy biegłości",
-      "foundationCompleted": "Poziom podstawowy ukończony · {{date}}",
-      "foundationDescription": "Podstawowe nawyki skutecznego i odpowiedzialnego korzystania z AI.",
-      "futureLevel": "Dostępne w przyszłej ścieżce Campus.",
-      "levels": {
-        "foundation": "Podstawowy",
-        "practitioner": "Praktyczny",
-        "advanced": "Zaawansowany"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Praca z AI",

@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Zastavení za {{seconds}} s (limit organizace)"
   },
   "whatsNew": {
     "updatedNotice": "Nova byla aktualizována",
@@ -1092,10 +1093,7 @@
       "connect": "Pokračovat přes {{provider}}"
     },
     "aiSkills": {
-      "description": "Krátké moduly pro kritické, efektivní a bezpečné používání AI při studiu.",
-      "progress": "Dokončeno modulů: {{completed}} z {{total}}",
-      "minutes": "Asi {{count}} min",
-      "completed": "Dokončeno"
+      "minutes": "Asi {{count}} min"
     },
     "personalization": {
       "description": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
@@ -1169,19 +1167,7 @@
       "correct": "Správně",
       "considerThis": "Zamyslete se",
       "nextModule": "Další",
-      "continue": "Pokračovat ve studiu",
-      "start": "Začít",
       "next": "Následuje",
-      "modulesTitle": "Základní dovednosti",
-      "mastery": "Úrovně zvládnutí",
-      "foundationCompleted": "Základní úroveň dokončena · {{date}}",
-      "foundationDescription": "Základní návyky pro efektivní a odpovědné používání AI.",
-      "futureLevel": "Bude k dispozici v budoucím kurzu Campus.",
-      "levels": {
-        "foundation": "Základy",
-        "practitioner": "Praktik",
-        "advanced": "Pokročilý"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Práce s AI",

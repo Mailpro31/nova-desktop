@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Stoppar om {{seconds}} s (organisationens gräns)"
   },
   "whatsNew": {
     "updatedNotice": "Nova har uppdaterats",
@@ -1092,10 +1093,7 @@
       "connect": "Fortsätt med {{provider}}"
     },
     "aiSkills": {
-      "description": "Korta moduler för att använda AI kritiskt, effektivt och säkert i dina studier.",
-      "progress": "{{completed}} av {{total}} moduler klara",
-      "minutes": "Cirka {{count}} min",
-      "completed": "Klar"
+      "minutes": "Cirka {{count}} min"
     },
     "personalization": {
       "description": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
@@ -1169,19 +1167,7 @@
       "correct": "Rätt",
       "considerThis": "Tänk på det här",
       "nextModule": "Nästa",
-      "continue": "Fortsätt lära dig",
-      "start": "Börja",
       "next": "Härnäst",
-      "modulesTitle": "Grundläggande färdigheter",
-      "mastery": "Kunskapsnivåer",
-      "foundationCompleted": "Grundnivån klar · {{date}}",
-      "foundationDescription": "Grundläggande vanor för effektiv och ansvarsfull AI-användning.",
-      "futureLevel": "Kommer i ett framtida Campus-spår.",
-      "levels": {
-        "foundation": "Grund",
-        "practitioner": "Praktiker",
-        "advanced": "Avancerad"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Arbeta med AI",

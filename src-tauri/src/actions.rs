@@ -1991,6 +1991,9 @@ impl ShortcutAction for TranscribeAction {
         if recording_error.is_none() {
             // Dynamically register the cancel shortcut in a separate task to avoid deadlock
             shortcut::register_cancel_shortcut(app);
+            // Durée maximale fixée par l'organisation : prévenir, puis arrêter
+            // et transcrire. Sans organisation, aucune limite n'est posée.
+            crate::dictation_limit::watch_recording(app);
 
             // The engine wakes in parallel with capture. Keep the explanatory
             // state until the attempt completes, then reveal the real listening
@@ -2049,6 +2052,9 @@ impl ShortcutAction for TranscribeAction {
     fn stop(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
         // Unregister the cancel shortcut when transcription stops
         shortcut::unregister_cancel_shortcut(app);
+        // La surveillance de durée de cet enregistrement ne doit plus rien
+        // déclencher, ni sur celui-ci ni sur le suivant.
+        crate::dictation_limit::end_session();
 
         // `start` a refusé la dictée faute de connexion : rien n'a été
         // enregistré, rien n'est à montrer ni à transcrire. Un enregistrement

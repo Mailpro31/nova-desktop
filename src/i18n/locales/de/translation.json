@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Stopp in {{seconds}} s (Limit der Organisation)"
   },
   "whatsNew": {
     "updatedNotice": "Nova wurde aktualisiert",
@@ -1092,10 +1093,7 @@
       "connect": "Mit {{provider}} fortfahren"
     },
     "aiSkills": {
-      "description": "Kurze Module für einen kritischen, wirksamen und sicheren Umgang mit KI im Studium.",
-      "progress": "{{completed}} von {{total}} Modulen abgeschlossen",
-      "minutes": "Etwa {{count}} Min.",
-      "completed": "Abgeschlossen"
+      "minutes": "Etwa {{count}} Min."
     },
     "personalization": {
       "description": "Passe Aussehen und Bedienung von Nova an, ohne die Richtlinien deiner Einrichtung zu ändern.",
@@ -1169,19 +1167,7 @@
       "correct": "Richtig",
       "considerThis": "Zum Nachdenken",
       "nextModule": "Weiter",
-      "continue": "Weiterlernen",
-      "start": "Loslegen",
       "next": "Als Nächstes",
-      "modulesTitle": "Grundlegende Kompetenzen",
-      "mastery": "Kompetenzstufen",
-      "foundationCompleted": "Grundlagen abgeschlossen · {{date}}",
-      "foundationDescription": "Grundlegende Gewohnheiten für einen wirksamen, verantwortungsvollen Umgang mit KI.",
-      "futureLevel": "Verfügbar in einem künftigen Campus-Kurs.",
-      "levels": {
-        "foundation": "Grundlagen",
-        "practitioner": "Anwendung",
-        "advanced": "Fortgeschritten"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Mit KI arbeiten",

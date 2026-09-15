@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "נעצר בעוד {{seconds}} שנ׳ (מגבלת הארגון)"
   },
   "whatsNew": {
     "updatedNotice": "Nova עודכנה",
@@ -1092,10 +1093,7 @@
       "connect": "המשך עם {{provider}}"
     },
     "aiSkills": {
-      "description": "יחידות קצרות לשימוש ביקורתי, יעיל ובטוח ב-AI במהלך הלימודים.",
-      "progress": "הושלמו {{completed}} מתוך {{total}} יחידות",
-      "minutes": "כ-{{count}} דק׳",
-      "completed": "הושלם"
+      "minutes": "כ-{{count}} דק׳"
     },
     "personalization": {
       "description": "התאימו את המראה והאינטראקציה של Nova בלי לשנות את המדיניות של המוסד שלכם.",
@@ -1169,19 +1167,7 @@
       "correct": "נכון",
       "considerThis": "שווה לחשוב על זה",
       "nextModule": "הבא",
-      "continue": "להמשיך ללמוד",
-      "start": "להתחיל",
       "next": "הבאה בתור",
-      "modulesTitle": "מיומנויות יסוד",
-      "mastery": "רמות שליטה",
-      "foundationCompleted": "רמת היסוד הושלמה · {{date}}",
-      "foundationDescription": "הרגלי יסוד לשימוש יעיל ואחראי ב-AI.",
-      "futureLevel": "יהיה זמין במסלול Campus עתידי.",
-      "levels": {
-        "foundation": "יסוד",
-        "practitioner": "מעשי",
-        "advanced": "מתקדם"
-      },
       "modules": {
         "working-with-ai": {
           "title": "עבודה עם AI",

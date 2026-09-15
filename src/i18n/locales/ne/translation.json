@@ -782,7 +782,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "{{seconds}} सेकेन्डमा रोकिन्छ (संस्थाको सीमा)"
   },
   "quota": {
     "lifetimeUsage": "निःशुल्क Turbo पुनर्लेखन",
@@ -1092,10 +1093,7 @@
       "connect": "{{provider}} मार्फत जारी राख्नुहोस्"
     },
     "aiSkills": {
-      "description": "तपाईंको अध्ययनमा AI लाई आलोचनात्मक, प्रभावकारी र सुरक्षित रूपमा प्रयोग गर्न छोटा मोड्युलहरू।",
-      "progress": "{{total}} मध्ये {{completed}} मोड्युल पूरा",
-      "minutes": "करिब {{count}} मिनेट",
-      "completed": "पूरा भयो"
+      "minutes": "करिब {{count}} मिनेट"
     },
     "personalization": {
       "description": "तपाईंको संस्थाका नीति नबदली Nova को रूप र प्रयोग मिलाउनुहोस्।",
@@ -1169,19 +1167,7 @@
       "correct": "सही",
       "considerThis": "यसबारे विचार गर्नुहोस्",
       "nextModule": "अर्को",
-      "continue": "सिकाइ जारी राख्नुहोस्",
-      "start": "सुरु गर्नुहोस्",
       "next": "अर्को पालो",
-      "modulesTitle": "आधारभूत सीपहरू",
-      "mastery": "दक्षताका तहहरू",
-      "foundationCompleted": "आधारभूत तह पूरा · {{date}}",
-      "foundationDescription": "AI को प्रभावकारी र जिम्मेवार प्रयोगका लागि मूल बानीहरू।",
-      "futureLevel": "भविष्यको Campus कोर्समा उपलब्ध हुनेछ।",
-      "levels": {
-        "foundation": "आधारभूत",
-        "practitioner": "व्यावहारिक",
-        "advanced": "उन्नत"
-      },
       "modules": {
         "working-with-ai": {
           "title": "AI सँग काम गर्ने",

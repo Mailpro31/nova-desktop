@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Спиране след {{seconds}} с (лимит на организацията)"
   },
   "whatsNew": {
     "updatedNotice": "Nova беше актуализирана",
@@ -1092,10 +1093,7 @@
       "connect": "Продължете с {{provider}}"
     },
     "aiSkills": {
-      "description": "Кратки модули за критично, ефективно и безопасно използване на ИИ в обучението ви.",
-      "progress": "Завършени модули: {{completed}} от {{total}}",
-      "minutes": "Около {{count}} мин",
-      "completed": "Завършено"
+      "minutes": "Около {{count}} мин"
     },
     "personalization": {
       "description": "Настройте външния вид и взаимодействието с Nova, без да променяте правилата на вашата институция.",
@@ -1169,19 +1167,7 @@
       "correct": "Вярно",
       "considerThis": "Помислете",
       "nextModule": "Напред",
-      "continue": "Продължете обучението",
-      "start": "Започнете",
       "next": "Следва",
-      "modulesTitle": "Основни умения",
-      "mastery": "Нива на владеене",
-      "foundationCompleted": "Основното ниво е завършено · {{date}}",
-      "foundationDescription": "Основни навици за ефективно и отговорно използване на ИИ.",
-      "futureLevel": "Ще бъде достъпно в бъдещ курс на Campus.",
-      "levels": {
-        "foundation": "Основно",
-        "practitioner": "Практикуващ",
-        "advanced": "Напреднало"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Работа с ИИ",

@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "يتوقف بعد {{seconds}} ث (حد المؤسسة)"
   },
   "whatsNew": {
     "updatedNotice": "تم تحديث Nova",
@@ -1092,10 +1093,7 @@
       "connect": "المتابعة باستخدام {{provider}}"
     },
     "aiSkills": {
-      "description": "وحدات قصيرة لاستخدام الذكاء الاصطناعي بطريقة نقدية وفعّالة وآمنة في دراستك.",
-      "progress": "أُكملت {{completed}} من {{total}} وحدات",
-      "minutes": "حوالي {{count}} دقيقة",
-      "completed": "مكتمل"
+      "minutes": "حوالي {{count}} دقيقة"
     },
     "personalization": {
       "description": "اضبط مظهر Nova وطريقة التفاعل معه دون تغيير سياسات مؤسستك.",
@@ -1169,19 +1167,7 @@
       "correct": "صحيح",
       "considerThis": "فكّر في هذا",
       "nextModule": "التالي",
-      "continue": "متابعة التعلّم",
-      "start": "ابدأ",
       "next": "التالية",
-      "modulesTitle": "المهارات الأساسية",
-      "mastery": "مستويات الإتقان",
-      "foundationCompleted": "اكتمل المستوى الأساسي · {{date}}",
-      "foundationDescription": "عادات أساسية لاستخدام الذكاء الاصطناعي بفعالية ومسؤولية.",
-      "futureLevel": "متاح في مسار Campus مستقبلي.",
-      "levels": {
-        "foundation": "أساسي",
-        "practitioner": "ممارس",
-        "advanced": "متقدم"
-      },
       "modules": {
         "working-with-ai": {
           "title": "العمل مع الذكاء الاصطناعي",
