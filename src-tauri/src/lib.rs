@@ -710,6 +710,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::campus::execute_campus_command,
                 commands::campus::get_campus_ai_skills,
                 commands::campus::refresh_organization_packages,
+                commands::campus::fetch_organization_changes,
                 commands::campus::fetch_learning_catalog,
                 commands::campus::fetch_learning_progress,
                 commands::campus::update_learning_progress,

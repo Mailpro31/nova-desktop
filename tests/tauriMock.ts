@@ -225,6 +225,9 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         }
         case "fetch_learning_catalog":
           return settings.learningCatalog ?? null;
+        case "fetch_organization_changes":
+          // Absents, comme face à un serveur qui ne connaît pas la sonde.
+          return null;
         case "fetch_learning_progress":
           return settings.learningCatalog
             ? (settings.learningProgress ?? { catalog_version: 1, lessons: [] })
