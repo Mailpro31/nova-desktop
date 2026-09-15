@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 
@@ -14,14 +14,13 @@ import {
   type ProgressSnapshot,
 } from "@/lib/learning/model";
 import { useLearningStore } from "@/stores/learningStore";
-import { CampusAiSkills } from "../campus/CampusAiSkills";
-import { useOrganizationSettingsTools } from "@/hooks/useOrganizationSettingsTools";
 import { catalogLanguageDiffers, languageName } from "@/lib/learning/language";
 
 /**
  * Learn — la page d'accueil.
  *
- * Trois piliers, ce qu'il y a à reprendre, et une progression sobre. Pas de
+ * Les parcours du catalogue dans leur ordre, ce qu'il y a à reprendre, et une
+ * progression sobre par parcours. Pas de
  * classement, pas de série à ne pas rompre, pas de points : Learn aide à
  * devenir meilleur avec l'IA, il ne cherche pas à faire revenir.
  *
@@ -29,8 +28,6 @@ import { catalogLanguageDiffers, languageName } from "@/lib/learning/language";
  * progression ; l'inférence n'intervient que dans un bloc qui l'exige
  * explicitement.
  */
-
-const PILLAR_ORDER = ["use_ai", "learn_ai", "adapt_ai"];
 
 const LessonRow: React.FC<{
   title: string;
@@ -69,6 +66,8 @@ const Home: React.FC<{
 }> = ({ catalog, progress, onOpen }) => {
   const { t, i18n } = useTranslation();
   const overall = overallProgress(catalog, progress);
+  // Dans l'ordre du catalogue : plusieurs parcours peuvent partager un pilier,
+  // et trier sur le pilier les mélangerait.
   const summaries = pillarSummaries(catalog, progress);
   const next = useMemo(
     () => recommendedLesson(catalog, progress),
@@ -77,10 +76,6 @@ const Home: React.FC<{
   const index = useMemo(() => lessonsIndex(catalog), [catalog]);
   const resuming =
     next !== null && statusOf(progress, next.lesson.id) === "in_progress";
-
-  const ordered = [...summaries].sort(
-    (a, b) => PILLAR_ORDER.indexOf(a.pillar) - PILLAR_ORDER.indexOf(b.pillar),
-  );
 
   return (
     <div className="space-y-6">
@@ -120,7 +115,7 @@ const Home: React.FC<{
         </p>
       )}
 
-      {ordered.map((summary) => {
+      {summaries.map((summary) => {
         const path = catalog.paths.find((item) => item.id === summary.pathId);
         if (!path) return null;
         const lessons = [...path.modules]
@@ -138,6 +133,21 @@ const Home: React.FC<{
                   total: summary.total,
                 })}
               </span>
+            </div>
+            <div
+              role="progressbar"
+              aria-label={summary.title}
+              aria-valuemin={0}
+              aria-valuemax={summary.total}
+              aria-valuenow={summary.completed}
+              className="h-1 overflow-hidden rounded-full bg-mid-gray/15"
+            >
+              <div
+                className="h-full rounded-full bg-accent transition-[width] duration-300 motion-reduce:transition-none"
+                style={{
+                  width: `${summary.total === 0 ? 0 : (summary.completed / summary.total) * 100}%`,
+                }}
+              />
             </div>
             <p className="text-sm text-text-secondary">{summary.description}</p>
             <div className="mt-1 divide-y divide-mid-gray/10 rounded-lg border border-mid-gray/15">
@@ -164,11 +174,8 @@ const Home: React.FC<{
 
 export const LearnSettings: React.FC = () => {
   const { t } = useTranslation();
-  // « Apprendre » est la page des cours : le cours AI Essentials y figure, aux
-  // mêmes conditions que dans Réglages.
-  const tools = useOrganizationSettingsTools();
-  const [moduleOpen, setModuleOpen] = useState(false);
-  const showServerLessons = !(tools.aiEssentials && moduleOpen);
+  // Un seul cours : les modules de l'ancien « Fondamentaux IA » sont des leçons
+  // du catalogue, rangées dans ses parcours.
   const catalog = useLearningStore((store) => store.catalog);
   const catalogState = useLearningStore((store) => store.catalogState);
   const progress = useLearningStore((store) => store.progress);
@@ -191,38 +198,27 @@ export const LearnSettings: React.FC = () => {
     <>
       <PageHeader title={t("learn.title")} description={t("learn.subtitle")} />
       <div className="px-1 pb-8">
-        {tools.aiEssentials && !active && (
-          <div className={moduleOpen ? undefined : "mb-10"}>
-            <CampusAiSkills onModuleOpenChange={setModuleOpen} />
-          </div>
+        {catalogState === "loading" && !catalog && (
+          <p className="text-sm text-text-secondary">{t("learn.loading")}</p>
         )}
-        {showServerLessons && (
-          <>
-            {catalogState === "loading" && !catalog && (
-              <p className="text-sm text-text-secondary">
-                {t("learn.loading")}
-              </p>
-            )}
-            {catalogState === "error" && !catalog && (
-              // Message simple, sans trace technique : la personne ne peut rien
-              // faire d'une pile d'appels, et l'action utile tient en une phrase.
-              <p className="text-sm text-text-secondary">
-                {t("learn.error.catalog")}
-              </p>
-            )}
-            {catalog && active && (
-              // `key` : chaque leçon repart de son propre état de reprise, sans
-              // effet de resynchronisation.
-              <LessonView
-                key={active.lesson.id}
-                lesson={active.lesson}
-                onBack={() => openLesson(null)}
-              />
-            )}
-            {catalog && !active && (
-              <Home catalog={catalog} progress={progress} onOpen={openLesson} />
-            )}
-          </>
+        {catalogState === "error" && !catalog && (
+          // Message simple, sans trace technique : la personne ne peut rien
+          // faire d'une pile d'appels, et l'action utile tient en une phrase.
+          <p className="text-sm text-text-secondary">
+            {t("learn.error.catalog")}
+          </p>
+        )}
+        {catalog && active && (
+          // `key` : chaque leçon repart de son propre état de reprise, sans
+          // effet de resynchronisation.
+          <LessonView
+            key={active.lesson.id}
+            lesson={active.lesson}
+            onBack={() => openLesson(null)}
+          />
+        )}
+        {catalog && !active && (
+          <Home catalog={catalog} progress={progress} onOpen={openLesson} />
         )}
       </div>
     </>
