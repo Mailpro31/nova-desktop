@@ -167,8 +167,11 @@ export function useOrganizationUpdates(): void {
     const fullTimer = setInterval(() => void full(), INTERVAL_MS);
     const quickTimer = setInterval(() => void quick(), CHANGES_INTERVAL_MS);
     // Revenir sur l'application est le moment où l'on s'attend le plus à
-    // trouver ce qui vient d'être publié.
-    const onFocus = () => void quick();
+    // trouver ce qui vient d'être publié — et celui où un membre réactivé
+    // doit retrouver son organisation. Le passage complet relit le contexte
+    // et `/api/me` ; la sonde légère, elle, ne sait rien d'une suspension, et
+    // ne répond pas du tout face à un serveur plus ancien.
+    const onFocus = () => void full();
     window.addEventListener("focus", onFocus);
 
     return () => {
