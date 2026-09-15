@@ -1278,6 +1278,11 @@ pub struct LearningLesson {
     /// Échéance fixée par l'organisation, en secondes depuis l'époque Unix.
     #[serde(default)]
     pub due_at: Option<f64>,
+    /// Langue du texte reçu, pour une leçon écrite par l'organisation. Elle
+    /// peut différer de celle du catalogue quand la leçon n'est pas traduite
+    /// dans la langue du poste ; sans ce champ, serde l'écartait en silence.
+    #[serde(default)]
+    pub content_locale: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -2654,6 +2659,17 @@ mod tests {
         let lesson: LearningLesson = serde_json::from_str(&lesson_json("")).expect("lesson");
         assert!(!lesson.required);
         assert_eq!(lesson.due_at, None);
+        assert_eq!(lesson.content_locale, None);
+    }
+
+    #[test]
+    fn a_lesson_written_by_the_organization_keeps_the_language_of_its_text() {
+        let lesson: LearningLesson =
+            serde_json::from_str(&lesson_json(r#","custom":true,"content_locale":"fr""#))
+                .expect("lesson");
+        assert_eq!(lesson.content_locale.as_deref(), Some("fr"));
+        let sent = serde_json::to_value(&lesson).expect("serialize");
+        assert_eq!(sent["content_locale"], serde_json::json!("fr"));
     }
 
     #[test]

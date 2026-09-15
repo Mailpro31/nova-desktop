@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} 分钟",
       "continue": "继续",
       "finish": "完成本课",
-      "answerFirst": "作答后即可继续。"
+      "answerFirst": "作答后即可继续。",
+      "languageNote": "这节课目前仅提供{{language}}版本。"
     },
     "quiz": {
       "correct": "正确",

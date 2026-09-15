@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} phút",
       "continue": "Tiếp tục",
       "finish": "Kết thúc bài học",
-      "answerFirst": "Hãy trả lời để tiếp tục."
+      "answerFirst": "Hãy trả lời để tiếp tục.",
+      "languageNote": "Hiện tại bài học này chỉ có bằng {{language}}."
     },
     "quiz": {
       "correct": "Chính xác",

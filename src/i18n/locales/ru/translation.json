@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} мин",
       "continue": "Продолжить",
       "finish": "Завершить урок",
-      "answerFirst": "Ответьте, чтобы продолжить."
+      "answerFirst": "Ответьте, чтобы продолжить.",
+      "languageNote": "Пока этот урок доступен только на языке: {{language}}."
     },
     "quiz": {
       "correct": "Верно",

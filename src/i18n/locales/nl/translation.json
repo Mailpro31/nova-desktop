@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} min",
       "continue": "Doorgaan",
       "finish": "Les afronden",
-      "answerFirst": "Geef een antwoord om door te gaan."
+      "answerFirst": "Geef een antwoord om door te gaan.",
+      "languageNote": "Deze les is voorlopig alleen in het {{language}} beschikbaar."
     },
     "quiz": {
       "correct": "Juist",

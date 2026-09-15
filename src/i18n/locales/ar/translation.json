@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} دقيقة",
       "continue": "متابعة",
       "finish": "إنهاء الدرس",
-      "answerFirst": "أجب للمتابعة."
+      "answerFirst": "أجب للمتابعة.",
+      "languageNote": "هذا الدرس متاح حاليًا باللغة {{language}} فقط."
     },
     "quiz": {
       "correct": "صحيح",

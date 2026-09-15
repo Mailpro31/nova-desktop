@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} मिनेट",
       "continue": "जारी राख्नुहोस्",
       "finish": "पाठ सिध्याउनुहोस्",
-      "answerFirst": "जारी राख्न उत्तर दिनुहोस्।"
+      "answerFirst": "जारी राख्न उत्तर दिनुहोस्।",
+      "languageNote": "यो पाठ हाललाई {{language}}मा मात्र उपलब्ध छ।"
     },
     "quiz": {
       "correct": "सही",

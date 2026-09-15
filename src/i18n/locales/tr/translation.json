@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} dk",
       "continue": "Devam",
       "finish": "Dersi bitir",
-      "answerFirst": "Devam etmek için yanıtlayın."
+      "answerFirst": "Devam etmek için yanıtlayın.",
+      "languageNote": "Bu ders şimdilik yalnızca şu dilde sunuluyor: {{language}}."
     },
     "quiz": {
       "correct": "Doğru",

@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} min",
       "continue": "Pokračovat",
       "finish": "Dokončit lekci",
-      "answerFirst": "Odpovězte a pokračujte."
+      "answerFirst": "Odpovězte a pokračujte.",
+      "languageNote": "Tato lekce je zatím dostupná pouze v jazyce: {{language}}."
     },
     "quiz": {
       "correct": "Správně",

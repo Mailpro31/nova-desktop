@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} min",
       "continue": "Dalej",
       "finish": "Zakończ lekcję",
-      "answerFirst": "Odpowiedz, aby przejść dalej."
+      "answerFirst": "Odpowiedz, aby przejść dalej.",
+      "languageNote": "Ta lekcja jest na razie dostępna tylko w języku: {{language}}."
     },
     "quiz": {
       "correct": "Poprawnie",

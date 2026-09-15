@@ -1587,7 +1587,8 @@
       "minutes_other": "{{count}} 分",
       "continue": "次へ",
       "finish": "レッスンを終える",
-      "answerFirst": "回答すると次へ進めます。"
+      "answerFirst": "回答すると次へ進めます。",
+      "languageNote": "このレッスンは現在、{{language}}でのみ提供されています。"
     },
     "quiz": {
       "correct": "正解",
