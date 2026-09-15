@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Dừng sau {{seconds}} giây (giới hạn của tổ chức)"
   },
   "whatsNew": {
     "updatedNotice": "Nova đã được cập nhật",
@@ -1092,10 +1093,7 @@
       "connect": "Tiếp tục với {{provider}}"
     },
     "aiSkills": {
-      "description": "Các học phần ngắn giúp bạn sử dụng AI một cách phản biện, hiệu quả và an toàn trong học tập.",
-      "progress": "Đã hoàn thành {{completed}}/{{total}} học phần",
-      "minutes": "Khoảng {{count}} phút",
-      "completed": "Đã hoàn thành"
+      "minutes": "Khoảng {{count}} phút"
     },
     "personalization": {
       "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
@@ -1169,19 +1167,7 @@
       "correct": "Chính xác",
       "considerThis": "Hãy cân nhắc",
       "nextModule": "Tiếp",
-      "continue": "Tiếp tục học",
-      "start": "Bắt đầu",
       "next": "Tiếp theo",
-      "modulesTitle": "Kỹ năng nền tảng",
-      "mastery": "Các cấp độ thành thạo",
-      "foundationCompleted": "Đã hoàn thành cấp nền tảng · {{date}}",
-      "foundationDescription": "Những thói quen cốt lõi để sử dụng AI hiệu quả và có trách nhiệm.",
-      "futureLevel": "Sẽ có trong một lộ trình Campus sau này.",
-      "levels": {
-        "foundation": "Nền tảng",
-        "practitioner": "Thực hành",
-        "advanced": "Nâng cao"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Làm việc cùng AI",

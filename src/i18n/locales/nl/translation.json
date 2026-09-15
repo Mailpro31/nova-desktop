@@ -782,7 +782,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Stopt over {{seconds}} s (limiet van de organisatie)"
   },
   "quota": {
     "lifetimeUsage": "Gratis Turbo-herformuleringen",
@@ -1092,10 +1093,7 @@
       "connect": "Doorgaan met {{provider}}"
     },
     "aiSkills": {
-      "description": "Korte modules om AI kritisch, effectief en veilig te gebruiken tijdens je studie.",
-      "progress": "{{completed}} van {{total}} modules voltooid",
-      "minutes": "Ongeveer {{count}} min",
-      "completed": "Voltooid"
+      "minutes": "Ongeveer {{count}} min"
     },
     "personalization": {
       "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
@@ -1169,19 +1167,7 @@
       "correct": "Juist",
       "considerThis": "Denk hierover na",
       "nextModule": "Verder",
-      "continue": "Verder leren",
-      "start": "Beginnen",
       "next": "Hierna",
-      "modulesTitle": "Basisvaardigheden",
-      "mastery": "Beheersingsniveaus",
-      "foundationCompleted": "Basisniveau voltooid · {{date}}",
-      "foundationDescription": "Essentiële gewoonten voor effectief en verantwoord AI-gebruik.",
-      "futureLevel": "Beschikbaar in een toekomstig Campus-traject.",
-      "levels": {
-        "foundation": "Basis",
-        "practitioner": "Praktijk",
-        "advanced": "Gevorderd"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Werken met AI",

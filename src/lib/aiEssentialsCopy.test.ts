@@ -2,51 +2,17 @@ import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 
 /**
- * La présentation du cours AI Essentials dit vrai, dans chaque langue.
+ * Les textes du cours AI Essentials — titres, questions, réponses,
+ * explications, libellés — s'affichaient en anglais dans vingt langues. Chaque
+ * texte a désormais sa traduction, et garde les variables que l'écran remplit.
  *
- * Elle annonçait « Five short modules » (« Cinq modules courts ») alors que le
- * cours en compte six, et vingt langues affichaient ce texte en anglais. Elle ne
- * donne plus de nombre — la progression (« 0 of 6 modules completed ») le fait
- * déjà, à partir du cours lui-même — et chaque langue a sa traduction.
+ * La présentation du cours (sa description, sa progression « 0 of 6 modules
+ * completed ») vivait dans Apprendre. Ses modules y sont devenus des leçons du
+ * catalogue : ces textes ont été retirés, et ne sont donc plus vérifiés ici.
  */
 
 const LOCALES_DIR = "src/i18n/locales";
-
-function description(locale: string): string {
-  const translation = JSON.parse(
-    readFileSync(`${LOCALES_DIR}/${locale}/translation.json`, "utf8"),
-  ) as { campus: { aiSkills: { description: string } } };
-  return translation.campus.aiSkills.description;
-}
-
 const LOCALES = readdirSync(LOCALES_DIR);
-const ENGLISH = description("en");
-
-describe("AI Essentials description", () => {
-  test("toutes les langues sont présentes", () => {
-    expect(LOCALES).toHaveLength(22);
-  });
-
-  for (const locale of LOCALES) {
-    test(`${locale} : n'annonce aucun nombre de modules`, () => {
-      const text = description(locale);
-      expect(text).not.toMatch(/\d/);
-      expect(text).not.toMatch(/\bfive\b|\bcinq\b/i);
-    });
-  }
-
-  for (const locale of LOCALES.filter((name) => name !== "en")) {
-    test(`${locale} : est traduite, pas recopiée de l'anglais`, () => {
-      expect(description(locale)).not.toBe(ENGLISH);
-    });
-  }
-});
-
-/**
- * Le reste du cours — titres, questions, réponses, explications, libellés —
- * s'affichait lui aussi en anglais dans vingt langues. Chaque texte a
- * désormais sa traduction, et garde les variables que l'écran remplit.
- */
 
 type Tree = { [key: string]: string | Tree };
 
@@ -84,11 +50,15 @@ function placeholders(text: string): string[] {
 const ENGLISH_COURSE = course("en");
 
 describe("AI Essentials course", () => {
+  test("toutes les langues sont présentes", () => {
+    expect(LOCALES).toHaveLength(22);
+  });
+
   test("le cours anglais a bien ses textes", () => {
-    // 80 textes affichés par le cours. Le seuil était « plus de 80 » quand
-    // quatre textes `campus.aiSkills.*` que plus aucun écran ne lisait
-    // (title, practice, markComplete, unavailable) étaient encore comptés.
-    expect(Object.keys(ENGLISH_COURSE).length).toBeGreaterThanOrEqual(80);
+    // 67 textes affichés par le cours au premier lancement. Le seuil était 80
+    // tant que les 13 textes de sa présentation dans Apprendre (description,
+    // progression, niveaux, boutons) existaient ; ils ont été retirés avec elle.
+    expect(Object.keys(ENGLISH_COURSE).length).toBeGreaterThanOrEqual(67);
   });
 
   for (const locale of LOCALES.filter((name) => name !== "en")) {

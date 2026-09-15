@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "{{seconds}} 秒後に停止（組織の上限）"
   },
   "whatsNew": {
     "updatedNotice": "Nova が更新されました",
@@ -1092,10 +1093,7 @@
       "connect": "{{provider}} で続行"
     },
     "aiSkills": {
-      "description": "学業でAIを批判的に、効果的に、安全に使うための短いモジュールです。",
-      "progress": "{{total}}モジュール中{{completed}}件完了",
-      "minutes": "約{{count}}分",
-      "completed": "完了"
+      "minutes": "約{{count}}分"
     },
     "personalization": {
       "description": "所属機関のポリシーを変えずに、Nova の見た目と操作を調整します。",
@@ -1169,19 +1167,7 @@
       "correct": "正解",
       "considerThis": "考えてみましょう",
       "nextModule": "次へ",
-      "continue": "学習を続ける",
-      "start": "始める",
       "next": "次に進む",
-      "modulesTitle": "基礎スキル",
-      "mastery": "習熟レベル",
-      "foundationCompleted": "基礎レベル修了 · {{date}}",
-      "foundationDescription": "AIを効果的かつ責任をもって使うための基本的な習慣。",
-      "futureLevel": "今後の Campus コースで提供予定です。",
-      "levels": {
-        "foundation": "基礎",
-        "practitioner": "実践",
-        "advanced": "上級"
-      },
       "modules": {
         "working-with-ai": {
           "title": "AIと協働する",

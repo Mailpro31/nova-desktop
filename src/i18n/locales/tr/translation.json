@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "{{seconds}} sn içinde duracak (kuruluş sınırı)"
   },
   "whatsNew": {
     "updatedNotice": "Nova güncellendi",
@@ -1092,10 +1093,7 @@
       "connect": "{{provider}} ile devam et"
     },
     "aiSkills": {
-      "description": "Yapay zekâyı çalışmalarınızda eleştirel, etkili ve güvenli biçimde kullanmak için kısa modüller.",
-      "progress": "{{total}} modülden {{completed}} tanesi tamamlandı",
-      "minutes": "Yaklaşık {{count}} dk",
-      "completed": "Tamamlandı"
+      "minutes": "Yaklaşık {{count}} dk"
     },
     "personalization": {
       "description": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
@@ -1169,19 +1167,7 @@
       "correct": "Doğru",
       "considerThis": "Bunu düşün",
       "nextModule": "İleri",
-      "continue": "Öğrenmeye devam et",
-      "start": "Başla",
       "next": "Sıradaki",
-      "modulesTitle": "Temel beceriler",
-      "mastery": "Ustalık seviyeleri",
-      "foundationCompleted": "Temel seviye tamamlandı · {{date}}",
-      "foundationDescription": "Yapay zekâyı etkili ve sorumlu kullanmak için temel alışkanlıklar.",
-      "futureLevel": "İleride bir Campus programında sunulacak.",
-      "levels": {
-        "foundation": "Temel",
-        "practitioner": "Uygulayıcı",
-        "advanced": "İleri"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Yapay zekâ ile çalışmak",

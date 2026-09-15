@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "{{seconds}} 秒后停止（组织限制）"
   },
   "whatsNew": {
     "updatedNotice": "Nova 已更新",
@@ -1092,10 +1093,7 @@
       "connect": "使用 {{provider}} 继续"
     },
     "aiSkills": {
-      "description": "简短单元，帮助你在学习中以批判、有效且安全的方式使用 AI。",
-      "progress": "已完成 {{completed}}/{{total}} 个单元",
-      "minutes": "约 {{count}} 分钟",
-      "completed": "已完成"
+      "minutes": "约 {{count}} 分钟"
     },
     "personalization": {
       "description": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
@@ -1169,19 +1167,7 @@
       "correct": "正确",
       "considerThis": "想一想",
       "nextModule": "下一步",
-      "continue": "继续学习",
-      "start": "开始",
       "next": "下一个",
-      "modulesTitle": "基础技能",
-      "mastery": "掌握程度",
-      "foundationCompleted": "已完成基础阶段 · {{date}}",
-      "foundationDescription": "高效、负责任地使用 AI 的核心习惯。",
-      "futureLevel": "将在未来的 Campus 课程中推出。",
-      "levels": {
-        "foundation": "基础",
-        "practitioner": "实践",
-        "advanced": "进阶"
-      },
       "modules": {
         "working-with-ai": {
           "title": "与 AI 协作",

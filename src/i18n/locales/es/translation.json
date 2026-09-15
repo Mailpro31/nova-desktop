@@ -776,7 +776,8 @@
     "micTooLow": "Speak a little louder",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again"
+    "styleSuggestionDismiss": "Don't show again",
+    "dictationLimitWarning": "Se detiene en {{seconds}} s (límite de la organización)"
   },
   "whatsNew": {
     "updatedNotice": "Nova se ha actualizado",
@@ -1092,10 +1093,7 @@
       "connect": "Continuar con {{provider}}"
     },
     "aiSkills": {
-      "description": "Módulos breves para usar la IA de forma crítica, eficaz y segura en tus estudios.",
-      "progress": "{{completed}} de {{total}} módulos completados",
-      "minutes": "Unos {{count}} min",
-      "completed": "Completado"
+      "minutes": "Unos {{count}} min"
     },
     "personalization": {
       "description": "Ajusta el aspecto y la interacción de Nova sin cambiar las normas de tu institución.",
@@ -1169,19 +1167,7 @@
       "correct": "Correcto",
       "considerThis": "Ten en cuenta esto",
       "nextModule": "Siguiente",
-      "continue": "Seguir aprendiendo",
-      "start": "Empezar",
       "next": "A continuación",
-      "modulesTitle": "Habilidades básicas",
-      "mastery": "Niveles de dominio",
-      "foundationCompleted": "Nivel básico completado · {{date}}",
-      "foundationDescription": "Hábitos esenciales para usar la IA de forma eficaz y responsable.",
-      "futureLevel": "Disponible en un futuro itinerario de Campus.",
-      "levels": {
-        "foundation": "Básico",
-        "practitioner": "Práctico",
-        "advanced": "Avanzado"
-      },
       "modules": {
         "working-with-ai": {
           "title": "Trabajar con IA",
