@@ -29,11 +29,19 @@ const reference = new Map([
 
 describe("placeholders and tags", () => {
   test("placeholders are read with or without inner spaces", () => {
-    expect(placeholdersOf("Hello {{ name }}, {{count}} new")).toEqual(["count", "name"]);
+    expect(placeholdersOf("Hello {{ name }}, {{count}} new")).toEqual([
+      "count",
+      "name",
+    ]);
   });
 
   test("tags are read by name, numbered Trans tags included", () => {
-    expect(tagsOf("<strong>Nova</strong> and <1>more</1>")).toEqual(["1", "1", "strong", "strong"]);
+    expect(tagsOf("<strong>Nova</strong> and <1>more</1>")).toEqual([
+      "1",
+      "1",
+      "strong",
+      "strong",
+    ]);
   });
 });
 
@@ -50,13 +58,21 @@ describe("a language under review", () => {
     ]);
 
   test("a faithful translation has no finding, placeholders may move", () => {
-    const result = reviewLanguage(reference, translated({}), new Set(["model"]));
+    const result = reviewLanguage(
+      reference,
+      translated({}),
+      new Set(["model"]),
+    );
     expect(result.errors).toEqual([]);
     expect(result.untranslated).toEqual([]);
   });
 
   test("a dropped placeholder is an error", () => {
-    const result = reviewLanguage(reference, translated({ title: "Paramètres" }), new Set());
+    const result = reviewLanguage(
+      reference,
+      translated({ title: "Paramètres" }),
+      new Set(),
+    );
     expect(result.errors).toContainEqual({
       key: "title",
       kind: "placeholder",
@@ -71,21 +87,39 @@ describe("a language under review", () => {
       translated({ count: "{{nombre}} nouveaux, {{total}} au total" }),
       new Set(),
     );
-    expect(result.errors.map((error) => [error.key, error.kind])).toEqual([["count", "placeholder"]]);
+    expect(result.errors.map((error) => [error.key, error.kind])).toEqual([
+      ["count", "placeholder"],
+    ]);
   });
 
   test("a lost tag is an error", () => {
-    const result = reviewLanguage(reference, translated({ rich: "Nova est prêt" }), new Set());
-    expect(result.errors.map((error) => [error.key, error.kind])).toEqual([["rich", "tag"]]);
+    const result = reviewLanguage(
+      reference,
+      translated({ rich: "Nova est prêt" }),
+      new Set(),
+    );
+    expect(result.errors.map((error) => [error.key, error.kind])).toEqual([
+      ["rich", "tag"],
+    ]);
   });
 
   test("an empty text is an error", () => {
-    const result = reviewLanguage(reference, translated({ button: "  " }), new Set());
-    expect(result.errors.map((error) => [error.key, error.kind])).toEqual([["button", "empty"]]);
+    const result = reviewLanguage(
+      reference,
+      translated({ button: "  " }),
+      new Set(),
+    );
+    expect(result.errors.map((error) => [error.key, error.kind])).toEqual([
+      ["button", "empty"],
+    ]);
   });
 
   test("text left in English is listed, except names kept on purpose and wordless text", () => {
-    const result = reviewLanguage(reference, translated({ button: "Save" }), new Set(["model"]));
+    const result = reviewLanguage(
+      reference,
+      translated({ button: "Save" }),
+      new Set(["model"]),
+    );
     expect(result.untranslated).toEqual(["button"]);
     expect(result.errors).toEqual([]);
   });
@@ -93,7 +127,9 @@ describe("a language under review", () => {
   test("a key missing from the translation is not reviewed twice", () => {
     const partial = translated({});
     partial.delete("button");
-    expect(reviewLanguage(reference, partial, new Set(["model"])).errors).toEqual([]);
+    expect(
+      reviewLanguage(reference, partial, new Set(["model"])).errors,
+    ).toEqual([]);
   });
 });
 
@@ -109,7 +145,9 @@ describe("flattening and report", () => {
   test("the report gives one row per language and details what to fix", () => {
     const report = formatReport({
       ar: {
-        errors: [{ key: "title", kind: "placeholder", expected: ["model"], found: [] }],
+        errors: [
+          { key: "title", kind: "placeholder", expected: ["model"], found: [] },
+        ],
         untranslated: ["button"],
       },
       fr: { errors: [], untranslated: [] },

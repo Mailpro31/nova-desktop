@@ -669,7 +669,7 @@
       }
     },
     "modelSettings": {
-      "title": "إعدادات النموذج"
+      "title": "إعدادات {{model}}"
     },
     "models": {
       "title": "نماذج النسخ",

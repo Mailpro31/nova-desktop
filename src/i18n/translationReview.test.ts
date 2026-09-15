@@ -14,7 +14,9 @@ import { flatten, reviewLanguage } from "@/lib/i18n/review";
 const LOCALES = "src/i18n/locales";
 
 const load = (locale: string) =>
-  flatten(JSON.parse(readFileSync(`${LOCALES}/${locale}/translation.json`, "utf8")));
+  flatten(
+    JSON.parse(readFileSync(`${LOCALES}/${locale}/translation.json`, "utf8")),
+  );
 
 describe("translation review", () => {
   test("no language breaks a placeholder or a tag, or leaves a text empty", () => {
