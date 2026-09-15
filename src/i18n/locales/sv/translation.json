@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Kompatibla modeller",
+    "downloadModelsTitle": "Tillgängliga för nedladdning",
+    "showAllModels": "Visa alla {{total}} modeller",
+    "showFewerModels": "Visa färre modeller",
     "recommended": "Rekommenderat",
     "customModelDescription": "Stöds inte officiellt",
     "modelCard": {
@@ -249,7 +249,7 @@
     "capabilities": {
       "languageSelection": "Stöder flera indataspråk",
       "singleLanguage": "Stöder endast detta språk",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} språk",
       "languageOnly": "Endast {{language}}",
       "translation": "Kan översätta till engelska",
       "translate": "Översätt till engelska",
@@ -392,8 +392,8 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Inspelningsindikator",
+          "description": "Välj inspelningsindikator: ”Ingen” döljer den, ”Minimal” visar en kompakt ruta och ”Live” visar transkriptionen i realtid medan du talar (endast modeller med streaming — leta efter märket ”Streaming” i modellväljaren). På Linux rekommenderas ”Ingen”.",
           "options": {
             "none": "Ingen",
             "minimal": "Minimal",
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" finns redan"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Röstaktivitetsdetektering",
+        "description": "Filtrerar bort tystnad från inspelningar. Modeller med streaming använder en längre VAD-svans; om VAD stängs av spelas råljud in."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Vad AI:n skriver, utifrån sammanhanget."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Kopierat",
       "title": "Historik",
       "openFolder": "Öppna mapp för inspelningar",
       "loading": "Laddar historik...",
       "empty": "Inga transkriptioner ännu. Börja spela in för att bygga upp din historik!",
       "copyToClipboard": "Kopiera transkription till urklipp",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Det gick inte att kopiera till urklipp.",
       "save": "Spara transkription",
       "unsave": "Ta bort från sparade",
       "delete": "Ta bort post",
@@ -772,11 +772,11 @@
     "processing": "Bearbetar...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Öppna inställningar",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Jag hör dig",
+    "micTooLow": "Tala lite högre",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Visa inte igen",
     "dictationLimitWarning": "Stoppar om {{seconds}} s (organisationens gräns)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} ord dikterade den här veckan"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
+    "title": "Automatisk optimering",
+    "description": "Anpassa Nova för den här datorn och granska den faktiska transkriptionskedjan.",
+    "autoLabel": "Automatiskt prestandaläge",
+    "autoDescription": "Väljer säkra inställningar för acceleration och modellminne utifrån ditt RAM, din processor och kompatibla GPU:er.",
+    "diagnosticsDescription": "Kontrollera mikrofon, modell, omformuleringstjänst, minne och acceleration.",
+    "run": "Kör diagnostik",
+    "running": "Kontrollerar…",
+    "profile": "Profil",
+    "memory": "Minne",
+    "cpu": "CPU-trådar",
     "acceleration": "Acceleration",
-    "latency": "Measured latency",
+    "latency": "Uppmätt latens",
     "median": "median {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Öppna mikrofoninställningar",
+    "retryGpu": "Försök med GPU igen efter omstart",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Lite minne",
+      "balanced": "Balanserad",
+      "performance": "Prestanda"
     }
   },
   "voiceCommands": {
@@ -1066,15 +1066,15 @@
     "managedBy": "Hanteras av {{organization}}",
     "roles": {
       "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
+      "teacher": "Lärare",
+      "staff": "Personal",
       "partner": "Partner",
       "employee": "Anställd",
       "manager": "Chef"
     },
     "status": {
       "connected": "Campus anslutet",
-      "local": "Nova Local active",
+      "local": "Nova Local aktiv",
       "localActive": "Nova Local aktivt"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
-      "orb": "Nova orb",
+      "orb": "Nova-klot",
       "orbColor": "Klotets färg",
       "orbDescription": "Välj accentfärg för Novas docka och inspelningsindikatorn.",
       "alwaysVisible": "Visa alltid bubblan",

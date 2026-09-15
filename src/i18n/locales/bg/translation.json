@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "За да започнете, изберете модел за транскрипция",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Съвместими модели",
+    "downloadModelsTitle": "Налични за изтегляне",
+    "showAllModels": "Покажи всички модели ({{total}})",
+    "showFewerModels": "Покажи по-малко модели",
     "recommended": "Препоръчан",
     "customModelDescription": "Не се поддържа официално",
     "modelCard": {
@@ -249,7 +249,7 @@
     "capabilities": {
       "languageSelection": "Поддържа няколко входни езика",
       "singleLanguage": "Поддържа само този език",
-      "languageCount": "{{total}} languages",
+      "languageCount": "Езици: {{total}}",
       "languageOnly": "Само {{language}}",
       "translation": "Може да превежда на английски",
       "translate": "Превод на английски",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Индикатор за запис",
+          "description": "Изберете индикатора за запис: „Няма“ го скрива, „Минимален“ показва компактна лента, „На живо“ показва транскрипцията в реално време, докато говорите (само за модели с поточно разпознаване — търсете значката „Стрийминг“ в избора на модел). В Linux се препоръчва „Няма“.",
           "options": {
             "none": "Няма",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "Минимален",
+            "live": "На живо"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "„{{word}}“ вече съществува"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Засичане на гласова активност",
+        "description": "Филтрира тишината в записите. Моделите с поточно разпознаване използват по-дълъг VAD интервал в края; изключването на VAD записва необработен звук."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Какво пише изкуственият интелект според контекста."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Копирано",
       "title": "История",
       "openFolder": "Отваряне на папката с записи",
       "loading": "Зареждане на историята...",
       "empty": "Все още няма транскрипции. Започнете запис, за да изградите история!",
       "copyToClipboard": "Копиране на транскрипцията в клипборда",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Копирането в клипборда не бе успешно.",
       "save": "Запазване на транскрипцията",
       "unsave": "Премахване от запазените",
       "delete": "Изтриване на записа",
@@ -772,11 +772,11 @@
     "processing": "Обработка...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Отвори настройките",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Чувам ви",
+    "micTooLow": "Говорете малко по-силно",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Не показвай отново",
     "dictationLimitWarning": "Спиране след {{seconds}} с (лимит на организацията)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "{{count}} продиктувани думи тази седмица"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Автоматична оптимизация",
+    "description": "Настройте Nova за този компютър и проверете реалния процес на транскрипция.",
+    "autoLabel": "Автоматичен режим на производителност",
+    "autoDescription": "Избира безопасни настройки за ускорение и памет на модела според вашата RAM, процесор и съвместими GPU.",
+    "diagnosticsDescription": "Проверете микрофона, модела, доставчика на преформулиране, паметта и ускорението.",
+    "run": "Стартирай диагностика",
+    "running": "Проверка…",
+    "profile": "Профил",
+    "memory": "Памет",
+    "cpu": "Нишки на процесора",
+    "acceleration": "Ускорение",
+    "latency": "Измерено закъснение",
+    "median": "медиана {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Отвори настройките на микрофона",
+    "retryGpu": "Опитай отново GPU след рестарт",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Малко памет",
+      "balanced": "Балансиран",
+      "performance": "Производителност"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "Управлява се от {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "Студент",
+      "teacher": "Преподавател",
+      "staff": "Персонал",
+      "partner": "Партньор",
       "employee": "Служител",
       "manager": "Мениджър"
     },
     "status": {
       "connected": "Кампусът е свързан",
-      "local": "Nova Local active",
+      "local": "Nova Local е активен",
       "localActive": "Nova Local е активен"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Настройте външния вид и взаимодействието с Nova, без да променяте правилата на вашата институция.",
-      "orb": "Nova orb",
+      "orb": "Сферата на Nova",
       "orbColor": "Цвят на сферата",
       "orbDescription": "Изберете цвета на лентата на Nova и на индикатора за запис.",
       "alwaysVisible": "Винаги показвай балончето",

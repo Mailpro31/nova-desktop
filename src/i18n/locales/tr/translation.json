@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Uyumlu modeller",
+    "downloadModelsTitle": "İndirilebilir",
+    "showAllModels": "{{total}} modelin tümünü göster",
+    "showFewerModels": "Daha az model göster",
     "recommended": "Önerilen",
     "customModelDescription": "Resmi olarak desteklenmiyor",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Birden fazla giriş dilini destekler",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} dil",
       "translation": "İngilizce'ye çevirebilir",
       "translate": "İngilizce'ye çevir",
       "singleLanguage": "Yalnızca bu dili destekler",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Kayıt göstergesi",
+          "description": "Kayıt göstergesini seçin: “Yok” gizler, “Minimal” küçük bir hap gösterir, “Canlı” konuşurken dökümü gerçek zamanlı gösterir (yalnızca akış destekli modeller — model seçicide “Akış” rozetine bakın). Linux'ta “Yok” önerilir.",
           "options": {
             "none": "Yok",
             "minimal": "Minimal",
-            "live": "Live"
+            "live": "Canlı"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" zaten mevcut"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Ses etkinliği algılama",
+        "description": "Kayıtlardaki sessizliği filtreler. Akış destekli modeller daha uzun bir VAD kuyruğu kullanır; VAD kapatılırsa ham ses kaydedilir."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Yapay zekânın bağlama göre ne yazdığı."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Kopyalandı",
       "title": "Geçmiş",
       "openFolder": "Kayıtlar Klasörünü Aç",
       "loading": "Geçmiş yükleniyor...",
       "empty": "Henüz transkripsiyon yok. Geçmişinizi oluşturmak için kayda başlayın!",
       "copyToClipboard": "Transkripsiyonu panoya kopyala",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Panoya kopyalanamadı.",
       "save": "Transkripsiyonu kaydet",
       "unsave": "Kaydedilenlerden kaldır",
       "delete": "Kaydı sil",
@@ -772,11 +772,11 @@
     "processing": "İşleniyor...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Ayarları aç",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Sizi duyuyorum",
+    "micTooLow": "Biraz daha yüksek sesle konuşun",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Bir daha gösterme",
     "dictationLimitWarning": "{{seconds}} sn içinde duracak (kuruluş sınırı)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "Bu hafta {{count}} kelime dikte edildi"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Otomatik iyileştirme",
+    "description": "Nova'yı bu bilgisayar için ayarlayın ve gerçek yazıya dökme sürecini inceleyin.",
+    "autoLabel": "Otomatik performans modu",
+    "autoDescription": "RAM'inize, işlemcinize ve uyumlu GPU'larınıza göre güvenli hızlandırma ve model belleği ayarlarını seçer.",
+    "diagnosticsDescription": "Mikrofonu, modeli, yeniden yazma sağlayıcısını, belleği ve hızlandırmayı denetleyin.",
+    "run": "Tanılamayı çalıştır",
+    "running": "Denetleniyor…",
+    "profile": "Profil",
+    "memory": "Bellek",
+    "cpu": "CPU iş parçacıkları",
+    "acceleration": "Hızlandırma",
+    "latency": "Ölçülen gecikme",
+    "median": "ortanca {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Mikrofon ayarlarını aç",
+    "retryGpu": "Yeniden başlattıktan sonra GPU'yu tekrar dene",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Düşük bellek",
+      "balanced": "Dengeli",
+      "performance": "Performans"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "{{organization}} tarafından yönetiliyor",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "Öğrenci",
+      "teacher": "Öğretmen",
+      "staff": "Personel",
+      "partner": "İş ortağı",
       "employee": "Çalışan",
       "manager": "Yönetici"
     },
     "status": {
       "connected": "Kampüs bağlı",
-      "local": "Nova Local active",
+      "local": "Nova Local etkin",
       "localActive": "Nova Local etkin"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
-      "orb": "Nova orb",
+      "orb": "Nova küresi",
       "orbColor": "Küre rengi",
       "orbDescription": "Nova'nın dock'unda ve kayıt göstergesinde kullanılan vurgu rengini seç.",
       "alwaysVisible": "Baloncuğu her zaman göster",

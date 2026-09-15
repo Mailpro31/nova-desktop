@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "Для початку оберіть модель транскрипції",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Сумісні моделі",
+    "downloadModelsTitle": "Доступні для завантаження",
+    "showAllModels": "Показати всі моделі ({{total}})",
+    "showFewerModels": "Показати менше моделей",
     "recommended": "Рекомендовано",
     "customModelDescription": "Офіційно не підтримується",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Підтримує кілька мов введення",
-      "languageCount": "{{total}} languages",
+      "languageCount": "Мов: {{total}}",
       "translation": "Може перекладати на англійську",
       "translate": "Перекласти на англійську",
       "singleLanguage": "Підтримує лише цю мову",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Індикатор запису",
+          "description": "Виберіть індикатор запису: «Немає» приховує його, «Мінімальний» показує компактну плашку, «У реальному часі» показує розшифровку просто під час мовлення (лише для моделей із потоковим розпізнаванням — шукайте позначку «Потокове» у виборі моделі). У Linux рекомендовано «Немає».",
           "options": {
             "none": "Немає",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "Мінімальний",
+            "live": "У реальному часі"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" вже існує"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Виявлення голосової активності",
+        "description": "Відфільтровує тишу із записів. Моделі з потоковим розпізнаванням використовують довший хвіст VAD; вимкнення VAD записує необроблений звук."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Що ШІ пише залежно від контексту."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Скопійовано",
       "title": "Історія",
       "openFolder": "Відкрити папку записів",
       "loading": "Завантаження історії...",
       "empty": "Транскрипцій поки немає. Почніть запис, щоб створити історію!",
       "copyToClipboard": "Копіювати транскрипцію в буфер обміну",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Не вдалося скопіювати в буфер обміну.",
       "save": "Зберегти транскрипцію",
       "unsave": "Видалити зі збережених",
       "delete": "Видалити запис",
@@ -772,11 +772,11 @@
     "processing": "Постобробка...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Відкрити налаштування",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Я вас чую",
+    "micTooLow": "Говоріть трохи гучніше",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Більше не показувати",
     "dictationLimitWarning": "Зупинка через {{seconds}} с (ліміт організації)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "Слів надиктовано за тиждень: {{count}}"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Автоматична оптимізація",
+    "description": "Налаштуйте Nova для цього комп'ютера й перевірте реальний процес розшифрування.",
+    "autoLabel": "Автоматичний режим продуктивності",
+    "autoDescription": "Підбирає безпечні налаштування прискорення та пам'яті моделі відповідно до RAM, процесора й сумісних GPU.",
+    "diagnosticsDescription": "Перевірте мікрофон, модель, сервіс переформулювання, пам'ять і прискорення.",
+    "run": "Запустити діагностику",
+    "running": "Перевірка…",
+    "profile": "Профіль",
+    "memory": "Пам'ять",
+    "cpu": "Потоки ЦП",
+    "acceleration": "Прискорення",
+    "latency": "Виміряна затримка",
+    "median": "медіана {{value}} мс",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Відкрити налаштування мікрофона",
+    "retryGpu": "Повторити GPU після перезапуску",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Мало пам'яті",
+      "balanced": "Збалансований",
+      "performance": "Продуктивність"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "Керує {{organization}}",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "Студент",
+      "teacher": "Викладач",
+      "staff": "Працівник",
+      "partner": "Партнер",
       "employee": "Працівник",
       "manager": "Керівник"
     },
     "status": {
       "connected": "Кампус підключено",
-      "local": "Nova Local active",
+      "local": "Nova Local активний",
       "localActive": "Nova Local активний"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Налаштуйте вигляд і поведінку Nova, не змінюючи правил вашого навчального закладу.",
-      "orb": "Nova orb",
+      "orb": "Сфера Nova",
       "orbColor": "Колір сфери",
       "orbDescription": "Виберіть акцентний колір панелі Nova та індикатора запису.",
       "alwaysVisible": "Завжди показувати бульбашку",

@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "Mô hình tương thích",
+    "downloadModelsTitle": "Có thể tải xuống",
+    "showAllModels": "Hiện tất cả {{total}} mô hình",
+    "showFewerModels": "Hiện ít mô hình hơn",
     "recommended": "Đề xuất",
     "customModelDescription": "Không được hỗ trợ chính thức",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "Hỗ trợ nhiều ngôn ngữ đầu vào",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} ngôn ngữ",
       "translation": "Có thể dịch sang tiếng Anh",
       "translate": "Dịch sang tiếng Anh",
       "singleLanguage": "Chỉ hỗ trợ ngôn ngữ này",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "Chỉ báo ghi âm",
+          "description": "Chọn chỉ báo ghi âm: “Không có” sẽ ẩn nó, “Tối giản” hiện một viên nhỏ gọn, “Trực tiếp” hiện bản chép lời theo thời gian thực khi bạn nói (chỉ với mô hình hỗ trợ truyền trực tiếp — tìm huy hiệu “Truyền trực tiếp” trong bộ chọn mô hình). Trên Linux nên chọn “Không có”.",
           "options": {
             "none": "Không có",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "Tối giản",
+            "live": "Trực tiếp"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" đã tồn tại"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "Phát hiện hoạt động giọng nói",
+        "description": "Lọc khoảng lặng khỏi bản ghi. Mô hình hỗ trợ truyền trực tiếp dùng đoạn đuôi VAD dài hơn; tắt VAD sẽ ghi âm thanh thô."
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "Nội dung AI viết ra, tùy theo ngữ cảnh."
     },
     "history": {
-      "copied": "Copied",
+      "copied": "Đã sao chép",
       "title": "Lịch sử",
       "openFolder": "Mở thư mục ghi âm",
       "loading": "Đang tải lịch sử...",
       "empty": "Chưa có bản ghi nào. Bắt đầu ghi âm để xây dựng lịch sử của bạn!",
       "copyToClipboard": "Sao chép bản ghi vào clipboard",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "Không thể sao chép vào bảng tạm.",
       "save": "Lưu bản ghi",
       "unsave": "Xóa khỏi đã lưu",
       "delete": "Xóa mục",
@@ -772,11 +772,11 @@
     "processing": "Đang xử lý...",
     "chooseStyle": "Choose a Style",
     "openSettings": "Mở cài đặt",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Tôi nghe thấy bạn",
+    "micTooLow": "Hãy nói to hơn một chút",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "Không hiện lại",
     "dictationLimitWarning": "Dừng sau {{seconds}} giây (giới hạn của tổ chức)"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "Đã đọc chính tả {{count}} từ trong tuần này"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "Tối ưu tự động",
+    "description": "Tinh chỉnh Nova cho máy tính này và kiểm tra quy trình chép lời thực tế.",
+    "autoLabel": "Chế độ hiệu năng tự động",
+    "autoDescription": "Chọn thiết lập tăng tốc và bộ nhớ mô hình an toàn dựa trên RAM, CPU và GPU tương thích của bạn.",
+    "diagnosticsDescription": "Kiểm tra micrô, mô hình, nhà cung cấp viết lại, bộ nhớ và tăng tốc.",
+    "run": "Chạy chẩn đoán",
+    "running": "Đang kiểm tra…",
+    "profile": "Hồ sơ",
+    "memory": "Bộ nhớ",
+    "cpu": "Luồng CPU",
+    "acceleration": "Tăng tốc",
+    "latency": "Độ trễ đo được",
+    "median": "trung vị {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "Mở cài đặt micrô",
+    "retryGpu": "Thử lại GPU sau khi khởi động lại",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "Ít bộ nhớ",
+      "balanced": "Cân bằng",
+      "performance": "Hiệu năng"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "Do {{organization}} quản lý",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "Sinh viên",
+      "teacher": "Giảng viên",
+      "staff": "Nhân viên",
+      "partner": "Đối tác",
       "employee": "Nhân viên",
       "manager": "Quản lý"
     },
     "status": {
       "connected": "Đã kết nối Campus",
-      "local": "Nova Local active",
+      "local": "Nova Local đang hoạt động",
       "localActive": "Nova Local đang hoạt động"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
-      "orb": "Nova orb",
+      "orb": "Quả cầu Nova",
       "orbColor": "Màu quả cầu",
       "orbDescription": "Chọn màu nhấn cho thanh dock Nova và chỉ báo ghi âm.",
       "alwaysVisible": "Luôn hiển thị bong bóng",

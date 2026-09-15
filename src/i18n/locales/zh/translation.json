@@ -31,10 +31,10 @@
   },
   "onboarding": {
     "subtitle": "请选择一个转录模型以开始使用",
-    "existingModelsTitle": "Compatible Models",
-    "downloadModelsTitle": "Available to Download",
-    "showAllModels": "Show all {{total}} models",
-    "showFewerModels": "Show fewer models",
+    "existingModelsTitle": "兼容的模型",
+    "downloadModelsTitle": "可供下载",
+    "showAllModels": "显示全部 {{total}} 个模型",
+    "showFewerModels": "显示较少模型",
     "recommended": "推荐",
     "customModelDescription": "非官方支持",
     "modelCard": {
@@ -246,7 +246,7 @@
     "downloadSpeed": "{{speed}} MB/s",
     "capabilities": {
       "languageSelection": "支持多种输入语言",
-      "languageCount": "{{total}} languages",
+      "languageCount": "{{total}} 种语言",
       "translation": "可翻译为英语",
       "translate": "翻译为英语",
       "singleLanguage": "仅支持此语言",
@@ -392,12 +392,12 @@
       },
       "overlay": {
         "style": {
-          "title": "Overlay",
-          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "title": "录音浮层",
+          "description": "选择录音浮层：“无”会隐藏它，“简洁”显示紧凑的胶囊，“实时”会在你说话时实时显示转写（仅限支持流式的模型——在模型选择器中查找“流式”标记）。在 Linux 上建议选择“无”。",
           "options": {
             "none": "无",
-            "minimal": "Minimal",
-            "live": "Live"
+            "minimal": "简洁",
+            "live": "实时"
           }
         },
         "position": {
@@ -475,8 +475,8 @@
         "duplicate": "\"{{word}}\" 已存在"
       },
       "voiceActivityDetection": {
-        "title": "Voice Activity Detection",
-        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+        "title": "语音活动检测",
+        "description": "过滤录音中的静音。支持流式的模型使用更长的 VAD 尾段；关闭 VAD 会录制原始音频。"
       }
     },
     "postProcessing": {
@@ -580,13 +580,13 @@
       "subtitle": "根据上下文,AI 会写出的内容。"
     },
     "history": {
-      "copied": "Copied",
+      "copied": "已复制",
       "title": "历史记录",
       "openFolder": "打开录音文件夹",
       "loading": "加载历史记录中...",
       "empty": "还没有转录记录。开始录制以建立您的历史记录！",
       "copyToClipboard": "复制转录到剪贴板",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "复制到剪贴板失败。",
       "save": "保存转录",
       "unsave": "从已保存中移除",
       "delete": "删除条目",
@@ -772,11 +772,11 @@
     "processing": "处理中...",
     "chooseStyle": "Choose a Style",
     "openSettings": "打开设置",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "我听得到你",
+    "micTooLow": "请稍微大声一点",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "不再显示",
     "dictationLimitWarning": "{{seconds}} 秒后停止（组织限制）"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "本周已听写 {{count}} 个字词"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "自动优化",
+    "description": "为这台电脑调整 Nova，并检查实际的转写流程。",
+    "autoLabel": "自动性能模式",
+    "autoDescription": "根据你的内存、CPU 和兼容的 GPU，选择安全的加速和模型内存设置。",
+    "diagnosticsDescription": "检查麦克风、模型、改写服务、内存和加速。",
+    "run": "运行诊断",
+    "running": "正在检查…",
+    "profile": "配置",
+    "memory": "内存",
+    "cpu": "CPU 线程",
+    "acceleration": "加速",
+    "latency": "实测延迟",
+    "median": "中位数 {{value}} 毫秒",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "打开麦克风设置",
+    "retryGpu": "重启后重试 GPU",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "低内存",
+      "balanced": "均衡",
+      "performance": "性能"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "由 {{organization}} 管理",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "学生",
+      "teacher": "教师",
+      "staff": "职员",
+      "partner": "合作伙伴",
       "employee": "员工",
       "manager": "经理"
     },
     "status": {
       "connected": "校园已连接",
-      "local": "Nova Local active",
+      "local": "Nova Local 已启用",
       "localActive": "Nova Local 已启用"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
-      "orb": "Nova orb",
+      "orb": "Nova 光球",
       "orbColor": "光球颜色",
       "orbDescription": "选择 Nova 停靠栏和录音指示器使用的强调色。",
       "alwaysVisible": "始终显示气泡",

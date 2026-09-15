@@ -580,13 +580,13 @@
       "subtitle": "文脈に応じてAIが書く内容です。"
     },
     "history": {
-      "copied": "Copied",
+      "copied": "コピーしました",
       "title": "履歴",
       "openFolder": "録音フォルダを開く",
       "loading": "履歴を読み込み中…",
       "empty": "まだ文字起こしがありません。録音を開始して履歴を作成しましょう!",
       "copyToClipboard": "文字起こしをクリップボードにコピー",
-      "copyError": "Failed to copy to clipboard.",
+      "copyError": "クリップボードにコピーできませんでした。",
       "save": "文字起こしを保存",
       "unsave": "保存から削除",
       "delete": "エントリーを削除",
@@ -772,11 +772,11 @@
     "processing": "処理中…",
     "chooseStyle": "Choose a Style",
     "openSettings": "設定を開く",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "聞こえています",
+    "micTooLow": "もう少し大きな声で話してください",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
-    "styleSuggestionDismiss": "Don't show again",
+    "styleSuggestionDismiss": "今後表示しない",
     "dictationLimitWarning": "{{seconds}} 秒後に停止（組織の上限）"
   },
   "whatsNew": {
@@ -801,26 +801,26 @@
     "words_other": "今週の口述：{{count}} 語"
   },
   "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
+    "title": "自動最適化",
+    "description": "この PC に合わせて Nova を調整し、実際の文字起こしの流れを確認します。",
+    "autoLabel": "自動パフォーマンスモード",
+    "autoDescription": "RAM、CPU、対応 GPU に応じて、安全なアクセラレーションとモデルのメモリ設定を選びます。",
+    "diagnosticsDescription": "マイク、モデル、書き換えプロバイダー、メモリ、アクセラレーションを確認します。",
+    "run": "診断を実行",
+    "running": "確認しています…",
+    "profile": "プロファイル",
+    "memory": "メモリ",
+    "cpu": "CPU スレッド",
+    "acceleration": "アクセラレーション",
+    "latency": "計測したレイテンシ",
+    "median": "中央値 {{value}} ms",
     "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
+    "openMicrophone": "マイク設定を開く",
+    "retryGpu": "再起動後に GPU を再試行",
     "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
+      "low_memory": "低メモリ",
+      "balanced": "バランス",
+      "performance": "パフォーマンス"
     }
   },
   "voiceCommands": {
@@ -1065,16 +1065,16 @@
     "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
     "managedBy": "{{organization}} が管理",
     "roles": {
-      "student": "Student",
-      "teacher": "Teacher",
-      "staff": "Staff",
-      "partner": "Partner",
+      "student": "学生",
+      "teacher": "教員",
+      "staff": "職員",
+      "partner": "パートナー",
       "employee": "従業員",
       "manager": "マネージャー"
     },
     "status": {
       "connected": "キャンパスに接続済み",
-      "local": "Nova Local active",
+      "local": "Nova Local 有効",
       "localActive": "Nova Local 動作中"
     },
     "page": {
@@ -1097,7 +1097,7 @@
     },
     "personalization": {
       "description": "所属機関のポリシーを変えずに、Nova の見た目と操作を調整します。",
-      "orb": "Nova orb",
+      "orb": "Nova オーブ",
       "orbColor": "オーブの色",
       "orbDescription": "Nova のドックと録音インジケーターのアクセントカラーを選びます。",
       "alwaysVisible": "バブルを常に表示",
