@@ -12,7 +12,7 @@
     "general": "Obecné",
     "models": "Výkon",
     "advanced": "Pokročilé",
-    "postProcessing": "Následné zpracování",
+    "postProcessing": "Styly",
     "meeting": "Schůzka",
     "history": "Historie",
     "prompts": "Prompty",
@@ -22,7 +22,7 @@
     "home": "Domů",
     "configuration": "Konfigurace",
     "account": "Účet",
-    "styles": "Následné zpracování",
+    "styles": "Styly",
     "aiSkills": "AI Skills",
     "settings": "Nastavení",
     "organization": "Organizace",
@@ -511,7 +511,7 @@
           "refreshModels": "Obnovit modely"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo spravuje Nova: vaše licence slouží jako klíč, není potřeba nic nastavovat.",
           "confirmTitle": "Aktivovat Turbo?",
           "confirmDescription": "Turbo odesílá váš diktát do Nova k online přeformulování — o něco méně soukromé než Intelligence privée, která zůstává zcela lokální. Kdykoli se můžete vrátit k Intelligence privée.",
           "confirmEnable": "Aktivovat Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Styly",
         "selectedPrompt": {
           "title": "Vybraný prompt",
           "description": "Vyberte šablonu pro zpřesnění přepisu nebo vytvořte novou. V textu promptu použijte ${output} pro vložení zachyceného přepisu."
@@ -538,7 +538,7 @@
         "cancel": "Zrušit",
         "selectToEdit": "Vyberte výše prompt, abyste zobrazili a upravili jeho podrobnosti.",
         "createFirst": "Klikněte nahoře na 'Vytvořit nový prompt' a vytvořte svůj první prompt pro následné zpracování.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Vytváření a úpravy Stylů vyžadují Nova Ultra.",
         "badgeAuto": "Automatický",
         "badgeBuiltin": "Vestavěný",
         "badgeCustom": "Vlastní",
@@ -547,35 +547,35 @@
         "copySuffix": "kopie"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Přidat pravidlo",
+        "blocklistLabel": "Ignorované aplikace (soukromí)",
+        "blocklistTip": "Oddělte čárkami. Tyto aplikace se nikdy nekontrolují (např. bankovnictví, správce hesel). Běžní správci hesel jsou ve výchozím stavu vyloučeni.",
+        "description": "Nova vybere Styl za vás podle aplikace v popředí (například e-mailový Styl v poštovní aplikaci, Styl pro prompty v ChatGPT). Aktivní okno se přečte ve chvíli diktování a pak se zapomene — nic se neukládá.",
+        "keywordPlaceholder": "Klíčové slovo (název aplikace nebo karty)",
+        "option": "Automaticky",
+        "rulesLabel": "Vlastní pravidla",
+        "save": "Uložit"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Přeformulování"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Výkonový profil",
         "recommended": "Doporučeno",
         "downloaded": "staženo",
         "downloadingModel": "Stahování modelu…",
         "downloadingEngine": "Stahování jádra…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Kvalita a rychlost Intelligence privée — plně lokálního modulu — jsou ve všech plánech stejné: Nova Free, Pro i Ultra. Váš plán mění jen přístup k Turbo, online modulu."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Čtení kontextu",
+        "description": "Nova čte, co je na obrazovce — e-mail, na který odpovídáte, konverzaci — aby odpověď seděla k situaci. Čte se v okamžiku diktování a pak se zapomene.",
+        "enableLabel": "Číst kontext na obrazovce",
+        "enableDescription": "Umožněte Nova číst text aktivního okna, aby se odpověď opírala o skutečný obsah. Rychlé a zůstává ve vašem počítači.",
+        "visualLabel": "Pokročilé vizuální čtení",
+        "visualDescription": "Když text nestačí, analyzuje se obrázek obrazovky pomocí online modulu, aby byla situace srozumitelná.",
+        "privacyNote": "Aplikace na vašem seznamu pro soukromí se nikdy nečtou — ani jejich obsah.",
+        "experimentalNote": "Experimentální — ve výchozím stavu vypnuto."
       },
       "subtitle": "Co AI píše podle kontextu."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova se připravuje…",
     "transcribing": "Přepisuji...",
     "processing": "Zpracovávám...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Vyberte Styl",
     "openSettings": "Otevřít nastavení",
     "micHearing": "Slyším vás",
     "micTooLow": "Mluvte trochu hlasitěji",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "V {{app}} často diktujete — vyzkoušejte Styl {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Znovu nezobrazovat",
     "dictationLimitWarning": "Zastavení za {{seconds}} s (limit organizace)"

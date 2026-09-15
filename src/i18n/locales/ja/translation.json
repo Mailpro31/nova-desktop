@@ -12,7 +12,7 @@
     "general": "一般",
     "models": "パフォーマンス",
     "advanced": "詳細設定",
-    "postProcessing": "後処理",
+    "postProcessing": "スタイル",
     "meeting": "会議",
     "history": "履歴",
     "prompts": "プロンプト",
@@ -22,7 +22,7 @@
     "home": "ホーム",
     "configuration": "設定",
     "account": "アカウント",
-    "styles": "後処理",
+    "styles": "スタイル",
     "aiSkills": "AI Skills",
     "settings": "設定",
     "organization": "組織",
@@ -511,7 +511,7 @@
           "refreshModels": "モデルを更新"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo は Nova が管理します。ライセンスがキーの役割を果たすため、設定は不要です。",
           "confirmTitle": "Turboを有効にしますか？",
           "confirmDescription": "Turboは口述をNovaに送信してオンラインでリライトします — 完全にローカルのIntelligence privéeよりもややプライバシー性が下がります。いつでもIntelligence privéeに戻せます。",
           "confirmEnable": "Turboを有効にする",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "プロンプト",
+        "title": "スタイル",
         "selectedPrompt": {
           "title": "選択したプロンプト",
           "description": "文字起こしを改善するテンプレートを選択するか、新しく作成します。プロンプトテキスト内で ${output} を使用して、キャプチャした文字起こしを参照します。"
@@ -538,7 +538,7 @@
         "cancel": "キャンセル",
         "selectToEdit": "上からプロンプトを選択して、詳細を表示・編集します。",
         "createFirst": "上の「新しいプロンプトを作成」をクリックして、最初の後処理プロンプトを作成してください。",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "スタイルの作成と編集には Nova Ultra が必要です。",
         "badgeAuto": "自動",
         "badgeBuiltin": "内蔵",
         "badgeCustom": "カスタム",
@@ -547,35 +547,35 @@
         "copySuffix": "コピー"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "ルールを追加",
+        "blocklistLabel": "無視するアプリ（プライバシー）",
+        "blocklistTip": "カンマ区切り。これらのアプリは読み取られません（例：銀行、パスワード管理）。一般的なパスワード管理アプリは既定で除外されています。",
+        "description": "前面のアプリに応じて、Nova がスタイルを選びます（メールアプリならメール向け、ChatGPT ならプロンプト向けなど）。アクティブなウィンドウは口述の瞬間に読み取られ、その後は保存されずに破棄されます。",
+        "keywordPlaceholder": "キーワード（アプリ名またはタブ名）",
+        "option": "自動",
+        "rulesLabel": "カスタムルール",
+        "save": "保存"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "リフォーミュレーション"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "パワープロファイル",
         "recommended": "おすすめ",
         "downloaded": "ダウンロード済み",
         "downloadingModel": "モデルをダウンロード中…",
         "downloadingEngine": "エンジンをダウンロード中…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "完全ローカルのエンジン Intelligence privée の品質と速度は、Nova Free・Pro・Ultra のどのプランでも同じです。プランによって変わるのは、オンラインエンジン Turbo を使えるかどうかだけです。"
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "コンテキストの読み取り",
+        "description": "Nova は画面の内容（返信するメールや会話など）を読み取り、状況に合った返信を書きます。口述の時点で読み取り、その後は破棄します。",
+        "enableLabel": "画面のコンテキストを読み取る",
+        "enableDescription": "アクティブなウィンドウのテキストを Nova が読み取り、返信の根拠にします。高速で、データはこの PC から出ません。",
+        "visualLabel": "高度な画像読み取り",
+        "visualDescription": "テキストだけでは足りない場合、Nova はオンラインエンジンで画面の画像を分析し、状況を把握します。",
+        "privacyNote": "プライバシーの除外リストにあるアプリは、内容も含めて一切読み取られません。",
+        "experimentalNote": "試験運用中 — 既定ではオフです。"
       },
       "subtitle": "文脈に応じてAIが書く内容です。"
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova を準備しています…",
     "transcribing": "文字起こし中…",
     "processing": "処理中…",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "スタイルを選択",
     "openSettings": "設定を開く",
     "micHearing": "聞こえています",
     "micTooLow": "もう少し大きな声で話してください",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "{{app}} でよく口述しています。{{style}} スタイルを試してみましょう",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "今後表示しない",
     "dictationLimitWarning": "{{seconds}} 秒後に停止（組織の上限）"

@@ -12,7 +12,7 @@
     "general": "一般",
     "models": "效能",
     "advanced": "進階",
-    "postProcessing": "後處理",
+    "postProcessing": "風格",
     "meeting": "會議",
     "history": "歷史紀錄",
     "prompts": "提示詞",
@@ -22,7 +22,7 @@
     "home": "首頁",
     "configuration": "配置",
     "account": "帳戶",
-    "styles": "後處理",
+    "styles": "風格",
     "aiSkills": "AI Skills",
     "settings": "設定",
     "organization": "組織",
@@ -511,7 +511,7 @@
           "refreshModels": "重新整理模型"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo 由 Nova 管理：你的授權即是金鑰，無須任何設定。",
           "confirmTitle": "啟用 Turbo？",
           "confirmDescription": "Turbo 會將您的聽寫傳送到 Nova 進行線上改寫——比完全在地的隱私智能略微降低隱私性。您可以隨時切換回隱私智能。",
           "confirmEnable": "啟用 Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "提示詞",
+        "title": "風格",
         "selectedPrompt": {
           "title": "已選提示詞",
           "description": "選擇用於最佳化轉錄的範本或建立新範本。在提示詞文字中使用 ${output} 來引用轉錄結果"
@@ -538,7 +538,7 @@
         "cancel": "取消",
         "selectToEdit": "選擇上方的提示詞以檢視和編輯其詳細資訊",
         "createFirst": "點選上方的「建立新提示詞」來建立您的第一個後處理提示詞",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "建立與編輯風格需要 Nova Ultra。",
         "badgeAuto": "自動",
         "badgeBuiltin": "內建",
         "badgeCustom": "自訂",
@@ -547,35 +547,35 @@
         "copySuffix": "副本"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "新增規則",
+        "blocklistLabel": "忽略的應用程式（隱私）",
+        "blocklistTip": "以逗號分隔。這些應用程式永遠不會被讀取（例如網路銀行、密碼管理工具）。常見的密碼管理工具預設已排除。",
+        "description": "Nova 會依前景應用程式為你選擇風格（例如郵件應用程式使用郵件風格，ChatGPT 使用提示詞風格）。作用中視窗只在你聽寫時讀取，隨後即被遺忘——不會儲存任何內容。",
+        "keywordPlaceholder": "關鍵字（應用程式或分頁名稱）",
+        "option": "自動",
+        "rulesLabel": "自訂規則",
+        "save": "儲存"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "改寫"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "效能設定檔",
         "recommended": "推薦",
         "downloaded": "已下載",
         "downloadingModel": "正在下載模型…",
         "downloadingEngine": "正在下載引擎…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "完全在本機運作的引擎 Intelligence privée 在所有方案中品質與速度都相同：Nova Free、Pro 與 Ultra。你的方案只影響能否使用線上引擎 Turbo。"
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "讀取情境",
+        "description": "Nova 會讀取螢幕上的內容——你正在回覆的郵件、對話——以寫出符合情境的回覆。只在聽寫時讀取，隨後即被遺忘。",
+        "enableLabel": "讀取螢幕情境",
+        "enableDescription": "允許 Nova 讀取作用中視窗的文字，作為回覆的依據。速度快，資料不會離開你的電腦。",
+        "visualLabel": "進階視覺讀取",
+        "visualDescription": "當文字不足以說明情況時，Nova 會透過線上引擎分析螢幕畫面來理解情境。",
+        "privacyNote": "隱私封鎖清單中的應用程式永遠不會被讀取——包括其內容。",
+        "experimentalNote": "實驗功能——預設關閉。"
       },
       "subtitle": "根據上下文,AI 會寫出的內容。"
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova 正在準備…",
     "transcribing": "正在轉錄...",
     "processing": "處理中...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "選擇風格",
     "openSettings": "開啟設定",
     "micHearing": "我聽得到你",
     "micTooLow": "請稍微大聲一點",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "你經常在 {{app}} 中聽寫——試試 {{style}} 風格",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "不再顯示",
     "dictationLimitWarning": "{{seconds}} 秒後停止（組織限制）"

@@ -12,7 +12,7 @@
     "general": "כללי",
     "models": "ביצועים",
     "advanced": "מתקדם",
-    "postProcessing": "עיבוד משלים",
+    "postProcessing": "סגנונות",
     "meeting": "פגישה",
     "history": "היסטוריה",
     "prompts": "פרומפטים",
@@ -22,7 +22,7 @@
     "home": "בית",
     "configuration": "הגדרות",
     "account": "חשבון",
-    "styles": "עיבוד משלים",
+    "styles": "סגנונות",
     "aiSkills": "AI Skills",
     "settings": "הגדרות",
     "organization": "ארגון",
@@ -511,7 +511,7 @@
           "refreshModels": "רענן מודלים"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo מנוהל על ידי Nova: הרישיון שלכם משמש כמפתח, ואין צורך בהגדרה.",
           "confirmTitle": "להפעיל את Turbo?",
           "confirmDescription": "Turbo שולח את ההכתבה שלך ל-Nova לניסוח מחדש באינטרנט — פרטי מעט פחות מ-Intelligence privée, שנשארת מקומית לחלוטין. תוכל לחזור ל-Intelligence privée בכל עת.",
           "confirmEnable": "הפעלת Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "פרומפט",
+        "title": "סגנונות",
         "selectedPrompt": {
           "title": "פרומפט נבחר",
           "description": "בחר תבנית לשיפור התמלול או צור חדשה. השתמש ב-${output} בתוך טקסט הפרומפט כדי להפנות לתמלול שנקלט."
@@ -538,7 +538,7 @@
         "cancel": "ביטול",
         "selectToEdit": "בחר פרומפט למעלה כדי לצפות בפרטים שלו ולערוך אותם.",
         "createFirst": "לחץ על 'צור פרומפט חדש' למעלה כדי ליצור את פרומפט העיבוד הראשון שלך.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "יצירה ועריכה של סגנונות דורשות Nova Ultra.",
         "badgeAuto": "אוטומטי",
         "badgeBuiltin": "מובנה",
         "badgeCustom": "מותאם",
@@ -547,35 +547,35 @@
         "copySuffix": "עותק"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "הוספת כלל",
+        "blocklistLabel": "אפליקציות שמתעלמים מהן (פרטיות)",
+        "blocklistTip": "מופרדות בפסיקים. האפליקציות האלה לעולם לא נבדקות (למשל בנקאות, מנהל סיסמאות). מנהלי סיסמאות נפוצים כבר מוחרגים כברירת מחדל.",
+        "description": "Nova בוחר עבורכם את הסגנון לפי האפליקציה שבחזית (למשל סגנון אימייל באפליקציית דואר, סגנון פרומפט ב-ChatGPT). החלון הפעיל נקרא ברגע ההכתבה ואז נשכח — שום דבר לא נשמר.",
+        "keywordPlaceholder": "מילת מפתח (שם אפליקציה או כרטיסייה)",
+        "option": "אוטומטי",
+        "rulesLabel": "כללים מותאמים",
+        "save": "שמירה"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "ניסוח מחדש"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "פרופיל עוצמה",
         "recommended": "מומלץ",
         "downloaded": "הורד",
         "downloadingModel": "מוריד את המודל…",
         "downloadingEngine": "מוריד את המנוע…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "האיכות והמהירות של Intelligence privée — המנוע המקומי לחלוטין — זהות בכל התוכניות: Nova Free, Pro ו-Ultra. התוכנית שלכם משנה רק את הגישה ל-Turbo, המנוע המקוון."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "קריאת הקשר",
+        "description": "Nova קורא את מה שמוצג במסך — האימייל שאתם עונים עליו, השיחה — כדי לכתוב תשובה שמתאימה למצב. נקרא ברגע ההכתבה ואז נשכח.",
+        "enableLabel": "קריאת ההקשר שבמסך",
+        "enableDescription": "אפשרו ל-Nova לקרוא את הטקסט של החלון הפעיל כדי לבסס עליו את התשובה. מהיר, ונשאר במחשב שלכם.",
+        "visualLabel": "קריאה חזותית מתקדמת",
+        "visualDescription": "כשהטקסט לא מספיק, Nova מנתח תמונה של המסך באמצעות המנוע המקוון כדי להבין את המצב.",
+        "privacyNote": "אפליקציות ברשימת החסימה לפרטיות לעולם לא נקראות — גם לא התוכן שלהן.",
+        "experimentalNote": "ניסיוני — כבוי כברירת מחדל."
       },
       "subtitle": "מה הבינה המלאכותית כותבת בהתאם להקשר."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova מתכוננת…",
     "transcribing": "מתמלל...",
     "processing": "מעבד...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "בחרו סגנון",
     "openSettings": "פתח הגדרות",
     "micHearing": "שומעים אתכם",
     "micTooLow": "דברו קצת יותר חזק",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "אתם מכתיבים הרבה ב-{{app}} — נסו את הסגנון {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "לא להציג שוב",
     "dictationLimitWarning": "נעצר בעוד {{seconds}} שנ׳ (מגבלת הארגון)"

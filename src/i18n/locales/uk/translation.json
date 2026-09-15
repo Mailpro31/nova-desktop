@@ -12,7 +12,7 @@
     "general": "Загальні",
     "models": "Продуктивність",
     "advanced": "Розширені",
-    "postProcessing": "Постобробка",
+    "postProcessing": "Стилі",
     "meeting": "Зустріч",
     "history": "Історія",
     "prompts": "Промпти",
@@ -22,7 +22,7 @@
     "home": "Головна",
     "configuration": "Конфігурація",
     "account": "Обліковий запис",
-    "styles": "Постобробка",
+    "styles": "Стилі",
     "aiSkills": "AI Skills",
     "settings": "Налаштування",
     "organization": "Організація",
@@ -511,7 +511,7 @@
           "refreshModels": "Оновити моделі"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo керує Nova: ваша ліцензія слугує ключем, налаштування не потрібне.",
           "confirmTitle": "Увімкнути Turbo?",
           "confirmDescription": "Turbo надсилає вашу диктовку до Nova для переформулювання онлайн — трохи менш приватно, ніж Intelligence privée, яка залишається повністю локальною. Ви можете повернутися до Intelligence privée в будь-який момент.",
           "confirmEnable": "Увімкнути Turbo",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Промпт",
+        "title": "Стилі",
         "selectedPrompt": {
           "title": "Обраний промпт",
           "description": "Оберіть шаблон для покращення транскрипцій або створіть новий. Використовуйте ${output} у тексті промпта для посилання на захоплену транскрипцію."
@@ -538,7 +538,7 @@
         "cancel": "Скасувати",
         "selectToEdit": "Оберіть промпт вище для перегляду та редагування його деталей.",
         "createFirst": "Натисніть «Створити новий промпт» вище, щоб створити ваш перший промпт постобробки.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Для створення й редагування Стилів потрібна Nova Ultra.",
         "badgeAuto": "Автоматично",
         "badgeBuiltin": "Вбудований",
         "badgeCustom": "Власний",
@@ -547,35 +547,35 @@
         "copySuffix": "копія"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Додати правило",
+        "blocklistLabel": "Ігноровані застосунки (конфіденційність)",
+        "blocklistTip": "Через кому. Ці застосунки ніколи не зчитуються (наприклад, банкінг, менеджер паролів). Поширені менеджери паролів уже виключено за замовчуванням.",
+        "description": "Nova добирає Стиль за застосунком на передньому плані (наприклад, Стиль листа в поштовому застосунку, Стиль промпту в ChatGPT). Активне вікно зчитується в момент диктування і одразу забувається — нічого не зберігається.",
+        "keywordPlaceholder": "Ключове слово (назва застосунку або вкладки)",
+        "option": "Автоматично",
+        "rulesLabel": "Власні правила",
+        "save": "Зберегти"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Переформулювання"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Профіль потужності",
         "recommended": "Рекомендовано",
         "downloaded": "завантажено",
         "downloadingModel": "Завантаження моделі…",
         "downloadingEngine": "Завантаження рушія…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Якість і швидкість Intelligence privée — повністю локального рушія — однакові в усіх тарифах: Nova Free, Pro та Ultra. Тариф впливає лише на доступ до Turbo, онлайн-рушія."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Читання контексту",
+        "description": "Nova зчитує те, що на екрані, — лист, на який ви відповідаєте, розмову, — щоб написати відповідь, яка пасує до ситуації. Зчитується під час диктування, потім забувається.",
+        "enableLabel": "Зчитувати контекст з екрана",
+        "enableDescription": "Дозвольте Nova зчитувати текст активного вікна, щоб спиратися на нього у відповіді. Швидко і не залишає ваш комп'ютер.",
+        "visualLabel": "Розширене візуальне читання",
+        "visualDescription": "Коли тексту недостатньо, Nova аналізує знімок екрана через онлайн-рушій, щоб зрозуміти ситуацію.",
+        "privacyNote": "Застосунки з вашого списку конфіденційності ніколи не зчитуються — навіть їхній вміст.",
+        "experimentalNote": "Експериментальна функція — за замовчуванням вимкнена."
       },
       "subtitle": "Що ШІ пише залежно від контексту."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova готується…",
     "transcribing": "Обробка...",
     "processing": "Постобробка...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Оберіть Стиль",
     "openSettings": "Відкрити налаштування",
     "micHearing": "Я вас чую",
     "micTooLow": "Говоріть трохи гучніше",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "Ви часто диктуєте в {{app}} — спробуйте Стиль {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Більше не показувати",
     "dictationLimitWarning": "Зупинка через {{seconds}} с (ліміт організації)"

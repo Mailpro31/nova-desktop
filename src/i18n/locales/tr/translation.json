@@ -12,7 +12,7 @@
     "general": "Genel",
     "models": "Performans",
     "advanced": "Gelişmiş",
-    "postProcessing": "Son İşlem",
+    "postProcessing": "Stiller",
     "meeting": "Toplantı",
     "history": "Geçmiş",
     "prompts": "Promptlar",
@@ -22,7 +22,7 @@
     "home": "Ana Sayfa",
     "configuration": "Yapılandırma",
     "account": "Hesap",
-    "styles": "Son İşlem",
+    "styles": "Stiller",
     "aiSkills": "AI Skills",
     "settings": "Ayarlar",
     "organization": "Kuruluş",
@@ -511,7 +511,7 @@
           "refreshModels": "Modelleri Yenile"
         },
         "turbo": {
-          "managed": "Turbo is managed by Nova: your license acts as the key, no configuration needed.",
+          "managed": "Turbo, Nova tarafından yönetilir: lisansınız anahtar görevi görür, yapılandırma gerekmez.",
           "confirmTitle": "Turbo etkinleştirilsin mi?",
           "confirmDescription": "Turbo, dikteyi çevrimiçi olarak yeniden yazmak için Nova'ya gönderir — tamamen yerel kalan Intelligence privée'ye göre biraz daha az özel. İstediğiniz zaman Intelligence privée'ye geri dönebilirsiniz.",
           "confirmEnable": "Turbo'yu etkinleştir",
@@ -519,7 +519,7 @@
         }
       },
       "prompts": {
-        "title": "Prompt",
+        "title": "Stiller",
         "selectedPrompt": {
           "title": "Seçili Prompt",
           "description": "Transkripsiyonları iyileştirmek için bir şablon seçin veya yeni bir tane oluşturun. Yakalanan transkripte referans vermek için prompt metni içinde ${output} kullanın."
@@ -538,7 +538,7 @@
         "cancel": "İptal",
         "selectToEdit": "Ayrıntılarını görüntülemek ve düzenlemek için yukarıdan bir prompt seçin.",
         "createFirst": "İlk son işlem prompt'unuzu oluşturmak için yukarıdaki “Yeni Prompt Oluştur” seçeneğine tıklayın.",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
+        "ultraOnly": "Stil oluşturmak ve düzenlemek için Nova Ultra gerekir.",
         "badgeAuto": "Otomatik",
         "badgeBuiltin": "Yerleşik",
         "badgeCustom": "Özel",
@@ -547,35 +547,35 @@
         "copySuffix": "kopya"
       },
       "autoStyle": {
-        "addRule": "Add rule",
-        "blocklistLabel": "Ignored apps (privacy)",
-        "blocklistTip": "Comma-separated. These apps are never inspected (e.g. banking, password manager). Common password managers are already excluded by default.",
-        "description": "Nova picks the Style for you based on the foreground app (a mail app → Email, ChatGPT → Prompt, etc.). The active window is read the moment you dictate, then forgotten — nothing is stored.",
-        "keywordPlaceholder": "Keyword (app or tab name)",
-        "option": "Automatic",
-        "rulesLabel": "Custom rules",
-        "save": "Save"
+        "addRule": "Kural ekle",
+        "blocklistLabel": "Yok sayılan uygulamalar (gizlilik)",
+        "blocklistTip": "Virgülle ayırın. Bu uygulamalar hiçbir zaman okunmaz (ör. bankacılık, parola yöneticisi). Yaygın parola yöneticileri varsayılan olarak zaten hariç tutulur.",
+        "description": "Nova, ön plandaki uygulamaya göre Stili sizin için seçer (örneğin bir e-posta uygulamasında e-posta Stili, ChatGPT'de istem Stili). Etkin pencere dikte ettiğiniz anda okunur, sonra unutulur; hiçbir şey saklanmaz.",
+        "keywordPlaceholder": "Anahtar sözcük (uygulama veya sekme adı)",
+        "option": "Otomatik",
+        "rulesLabel": "Özel kurallar",
+        "save": "Kaydet"
       },
       "enable": {
-        "title": "Reformulation"
+        "title": "Yeniden yazma"
       },
       "powerProfile": {
-        "label": "Power profile",
+        "label": "Güç profili",
         "recommended": "Önerilen",
         "downloaded": "indirildi",
         "downloadingModel": "Model indiriliyor…",
         "downloadingEngine": "Motor indiriliyor…",
-        "sameOnAllTiers": "The quality and speed of Intelligence privée — the fully local engine — are identical on every plan: Nova Free, Pro and Ultra. Your plan only changes access to Turbo, the online engine."
+        "sameOnAllTiers": "Tamamen yerel motor olan Intelligence privée'nin kalitesi ve hızı her planda aynıdır: Nova Free, Pro ve Ultra. Planınız yalnızca çevrimiçi motor Turbo'ya erişimi değiştirir."
       },
       "contextReading": {
-        "title": "Context reading",
-        "description": "Nova reads what's on screen — the email you're replying to, the conversation — to write a reply that fits the situation. Read at dictation time, then forgotten.",
-        "enableLabel": "Read on-screen context",
-        "enableDescription": "Let Nova read the active window's text to ground its reply. Fast, and stays on your machine.",
-        "visualLabel": "Advanced visual reading",
-        "visualDescription": "When text isn't enough, Nova analyzes an image of the screen through the online engine to understand the situation.",
-        "privacyNote": "Apps in your privacy blocklist are never read — not even their content.",
-        "experimentalNote": "Experimental — off by default."
+        "title": "Bağlam okuma",
+        "description": "Nova, duruma uygun bir yanıt yazmak için ekrandakileri okur: yanıtladığınız e-postayı, konuşmayı. Dikte anında okunur, sonra unutulur.",
+        "enableLabel": "Ekrandaki bağlamı oku",
+        "enableDescription": "Nova'nın yanıtını dayandırmak için etkin pencerenin metnini okumasına izin verin. Hızlıdır ve bilgisayarınızda kalır.",
+        "visualLabel": "Gelişmiş görsel okuma",
+        "visualDescription": "Metin yetmediğinde Nova, durumu anlamak için çevrimiçi motor aracılığıyla ekranın bir görüntüsünü analiz eder.",
+        "privacyNote": "Gizlilik engel listenizdeki uygulamalar asla okunmaz; içerikleri bile.",
+        "experimentalNote": "Deneysel — varsayılan olarak kapalı."
       },
       "subtitle": "Yapay zekânın bağlama göre ne yazdığı."
     },
@@ -770,11 +770,11 @@
     "preparing": "Nova hazırlanıyor…",
     "transcribing": "Transkribe ediliyor...",
     "processing": "İşleniyor...",
-    "chooseStyle": "Choose a Style",
+    "chooseStyle": "Bir Stil seçin",
     "openSettings": "Ayarları aç",
     "micHearing": "Sizi duyuyorum",
     "micTooLow": "Biraz daha yüksek sesle konuşun",
-    "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
+    "styleSuggestion": "{{app}} içinde sık dikte ediyorsunuz — {{style}} Stilini deneyin",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Bir daha gösterme",
     "dictationLimitWarning": "{{seconds}} sn içinde duracak (kuruluş sınırı)"
