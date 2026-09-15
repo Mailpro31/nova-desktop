@@ -41,6 +41,8 @@ interface MockOptions {
   learningCatalog?: Record<string, unknown>;
   /** Progression servie par `fetch_learning_progress`. Absente, rien n'est commencé. */
   learningProgress?: Record<string, unknown>;
+  /** Catégories que `/api/me` annonce fermées (`closed_capabilities`). */
+  closedCapabilities?: string[];
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -204,6 +206,12 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             organization:
               (settings.config?.organization as { name?: string } | undefined)
                 ?.name ?? null,
+            ...(settings.closedCapabilities
+              ? {
+                  contract_version: 2,
+                  closed_capabilities: settings.closedCapabilities,
+                }
+              : {}),
           };
         case "format_campus_structured_notes":
           localStorage.setItem(
