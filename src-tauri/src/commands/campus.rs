@@ -1236,6 +1236,14 @@ pub struct LearningLesson {
     #[serde(default)]
     pub tags: Vec<String>,
     pub blocks: Vec<LearningBlock>,
+    /// Rendue obligatoire par l'organisation. Absent d'un serveur plus ancien :
+    /// la leçon est alors facultative. Sans ce champ, serde l'écartait en
+    /// silence et l'interface ne pouvait jamais le montrer.
+    #[serde(default)]
+    pub required: bool,
+    /// Échéance fixée par l'organisation, en secondes depuis l'époque Unix.
+    #[serde(default)]
+    pub due_at: Option<f64>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -2567,6 +2575,34 @@ pub fn invalidate_server_reachability_cache(base_url: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn lesson_json(extra: &str) -> String {
+        format!(
+            r#"{{"id":"l1","title":"T","description":"D","estimated_minutes":4,
+               "difficulty":"beginner","order":1,"version":1,"tags":[],
+               "blocks":[]{extra}}}"#
+        )
+    }
+
+    #[test]
+    fn a_required_lesson_keeps_its_requirement_and_due_date() {
+        let lesson: LearningLesson =
+            serde_json::from_str(&lesson_json(r#","required":true,"due_at":1900000000.0"#))
+                .expect("lesson");
+        assert!(lesson.required);
+        assert_eq!(lesson.due_at, Some(1_900_000_000.0));
+        // Et l'interface les reçoit : la sérialisation vers le frontend les garde.
+        let sent = serde_json::to_value(&lesson).expect("serialize");
+        assert_eq!(sent["required"], serde_json::json!(true));
+        assert_eq!(sent["due_at"], serde_json::json!(1_900_000_000.0));
+    }
+
+    #[test]
+    fn a_lesson_from_an_older_server_is_optional_without_due_date() {
+        let lesson: LearningLesson = serde_json::from_str(&lesson_json("")).expect("lesson");
+        assert!(!lesson.required);
+        assert_eq!(lesson.due_at, None);
+    }
 
     #[test]
     fn the_learning_catalog_is_asked_in_the_interface_language() {
