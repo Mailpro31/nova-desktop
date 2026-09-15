@@ -5,7 +5,6 @@ import {
   Building2,
   Cog,
   CreditCard,
-  FlaskConical,
   GraduationCap,
   History,
   House,
@@ -63,11 +62,6 @@ const PromptsSettings = lazy(() =>
     default: module.PromptsSettings,
   })),
 );
-const DebugSettings = lazy(() =>
-  import("./settings/debug/DebugSettings").then((module) => ({
-    default: module.DebugSettings,
-  })),
-);
 const MeetingSettings = lazy(() =>
   import("./settings/meeting/MeetingSettings").then((module) => ({
     default: module.MeetingSettings,
@@ -121,13 +115,20 @@ interface SectionConfig {
   campusVisible: boolean;
 }
 
+/**
+ * Entrée toujours présente. Typée comme un prédicat de `SectionConfig`, qui
+ * reçoit les réglages : les deux barres appellent `enabled(settings)` sur
+ * chaque entrée, y compris celles qui n'en ont pas besoin.
+ */
+const always: SectionConfig["enabled"] = () => true;
+
 export const SECTIONS_CONFIG = {
   home: {
     labelKey: "sidebar.home",
     campusLabelKey: undefined,
     icon: House,
     component: HomeSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: true,
   },
   learn: {
@@ -140,7 +141,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: GraduationCap,
     component: LearnSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: true,
   },
   aiskills: {
@@ -178,7 +179,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: "sidebar.settings",
     icon: Cog,
     component: ConfigurationSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: true,
   },
   postprocessing: {
@@ -186,7 +187,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: "sidebar.styles",
     icon: Sparkles,
     component: PostProcessingSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: true,
   },
   prompts: {
@@ -196,7 +197,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: MessageSquareText,
     component: PromptsSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: true,
   },
   meeting: {
@@ -204,7 +205,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: Users,
     component: MeetingSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: false,
   },
   personalization: {
@@ -212,7 +213,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: Palette,
     component: PersonalizationSettings,
-    enabled: () => true,
+    enabled: always,
     // En campus, la personnalisation vit dans Réglages (onglet dédié) :
     // la navigation principale reste à quatre destinations.
     campusVisible: false,
@@ -222,7 +223,7 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: CreditCard,
     component: AccountSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: false,
   },
   organization: {
@@ -241,23 +242,15 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: History,
     component: HistorySettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: true,
-  },
-  debug: {
-    labelKey: "sidebar.debug",
-    campusLabelKey: undefined,
-    icon: FlaskConical,
-    component: DebugSettings,
-    enabled: (settings) => settings?.debug_mode ?? false,
-    campusVisible: false,
   },
   about: {
     labelKey: "sidebar.about",
     campusLabelKey: undefined,
     icon: Info,
     component: AboutSettings,
-    enabled: () => true,
+    enabled: always,
     campusVisible: false,
   },
 } as const satisfies Record<string, SectionConfig>;

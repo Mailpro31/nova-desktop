@@ -16,7 +16,6 @@
     "meeting": "Meeting",
     "history": "Lịch sử",
     "prompts": "Prompt",
-    "debug": "Gỡ lỗi",
     "about": "Giới thiệu",
     "personalization": "Cá nhân hóa",
     "home": "Trang chủ",
@@ -597,37 +596,13 @@
       "transcriptionFailed": "Phiên âm thất bại. Bạn có thể phiên âm lại bằng biểu tượng thử lại."
     },
     "debug": {
-      "title": "Gỡ lỗi",
       "logDirectory": {
         "title": "Thư mục nhật ký",
         "description": "Vị trí lưu trữ các tệp nhật ký"
       },
-      "logLevel": {
-        "title": "Mức nhật ký",
-        "description": "Đặt mức độ chi tiết của nhật ký"
-      },
-      "liveLogs": {
-        "title": "Nhật ký trực tiếp",
-        "description": "Truyền nhật ký ứng dụng theo thời gian thực để chẩn đoán sự cố mà không cần mở tệp nhật ký. Chỉ hiển thị nhật ký được tạo khi bảng này đang mở; tuân theo cài đặt Mức nhật ký ở trên.",
-        "live": "Trực tiếp",
-        "paused": "Đã tạm dừng",
-        "pause": "Tạm dừng",
-        "resume": "Tiếp tục",
-        "copied": "Đã sao chép",
-        "lineCount": "{{count}} dòng",
-        "empty": "Đang chờ nhật ký… Các mục sẽ xuất hiện ở đây khi ứng dụng phát ra."
-      },
       "updateChecks": {
         "label": "Kiểm tra cập nhật",
         "description": "Tự động kiểm tra phiên bản mới của Nova"
-      },
-      "soundTheme": {
-        "label": "Chủ đề âm thanh",
-        "description": "Chọn chủ đề âm thanh cho phản hồi bắt đầu và kết thúc ghi âm"
-      },
-      "wordCorrectionThreshold": {
-        "title": "Ngưỡng sửa từ",
-        "description": "Độ nhạy cho việc sửa từ tùy chỉnh"
       },
       "historyLimit": {
         "title": "Giới hạn lịch sử",
@@ -673,42 +648,6 @@
         "appData": "Dữ liệu ứng dụng:",
         "models": "Mô hình:",
         "settings": "Cài đặt:"
-      },
-      "pasteDelay": {
-        "title": "Độ trễ dán (trước)",
-        "description": "Độ trễ (tính bằng mili giây) sau khi sao chép văn bản, trước khi gửi phím dán. Tăng nếu không có gì được dán."
-      },
-      "pasteDelayAfter": {
-        "title": "Độ trễ dán (sau)",
-        "description": "Độ trễ (tính bằng mili giây) sau khi gửi phím dán, trước khi khôi phục bảng nhớ tạm trước đó. Tăng nếu nội dung bảng nhớ tạm cũ được dán thay vì bản chép lời."
-      },
-      "recordingBuffer": {
-        "title": "Bộ đệm ghi âm thêm",
-        "description": "Thời gian thêm (tính bằng mili giây) để tiếp tục ghi âm sau khi nhả phím, để thu âm thanh cuối. 0 = không có bộ đệm thêm."
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
-      },
-      "whatsNewPreview": {
-        "title": "Xem trước điểm mới",
-        "description": "Mở ghi chú phát hành mới nhất được đóng gói mà không đánh dấu là đã xem",
-        "button": "Xem trước",
-        "noNotes": "Không tìm thấy ghi chú phát hành được đóng gói",
-        "error": "Không thể xem trước ghi chú phát hành"
       }
     },
     "about": {
@@ -720,10 +659,6 @@
       "appDataDirectory": {
         "title": "Thư mục dữ liệu ứng dụng",
         "description": "Vị trí Nova lưu trữ dữ liệu"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "Mã nguồn",
@@ -777,7 +712,6 @@
     "close": "Đóng",
     "open": "Mở",
     "copy": "Sao chép",
-    "clear": "Xóa",
     "noOptionsFound": "Không tìm thấy tùy chọn",
     "cancel": "Huỷ",
     "remove": "Bỏ",
@@ -1449,11 +1383,6 @@
     "copy": "Sao chép",
     "close": "Đóng",
     "copied": "Đã sao chép",
-    "experimentTitle": "Thử nghiệm",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "Chọn văn bản trong bất kỳ ứng dụng nào rồi chạy một tác vụ AI trên đó. Chưa kiểm chứng ở mọi ứng dụng.",
-    "shortcutMissing": "Chưa gán phím tắt nào. Hãy đặt một phím tắt cho Nova Commands trong Cài đặt — việc thu nhận chỉ hoạt động khi ứng dụng của bạn còn ở phía trước.",
-    "runDiagnostics": "Chạy chẩn đoán",
     "error": {
       "busy": "Đã có một lệnh đang chạy.",
       "nonTextClipboard": "Bảng nháp chứa thứ không phải văn bản và Nova sẽ không thể trả lại. Hãy sao chép nó sang nơi khác trước.",

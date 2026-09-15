@@ -16,7 +16,6 @@
     "meeting": "Meeting",
     "history": "历史记录",
     "prompts": "提示词",
-    "debug": "调试",
     "about": "关于",
     "personalization": "个性化",
     "home": "首页",
@@ -597,37 +596,13 @@
       "transcriptionFailed": "转录失败。您可以使用重试图标重新转录。"
     },
     "debug": {
-      "title": "调试",
       "logDirectory": {
         "title": "日志目录",
         "description": "日志文件的存储位置"
       },
-      "logLevel": {
-        "title": "日志级别",
-        "description": "设置日志的详细程度"
-      },
-      "liveLogs": {
-        "title": "实时日志",
-        "description": "实时传输应用程序日志，无需打开日志文件即可诊断问题。仅显示此面板打开期间产生的日志；遵循上方的“日志级别”设置。",
-        "live": "实时",
-        "paused": "已暂停",
-        "pause": "暂停",
-        "resume": "继续",
-        "copied": "已复制",
-        "lineCount": "{{count}} 行",
-        "empty": "正在等待日志…… 应用产生日志时将显示在此处。"
-      },
       "updateChecks": {
         "label": "检查更新",
         "description": "自动检查 Nova 的新版本"
-      },
-      "soundTheme": {
-        "label": "声音主题",
-        "description": "选择录制开始和停止反馈的声音主题"
-      },
-      "wordCorrectionThreshold": {
-        "title": "词汇修正阈值",
-        "description": "自定义词汇修正的灵敏度"
       },
       "historyLimit": {
         "title": "历史记录上限",
@@ -673,42 +648,6 @@
         "appData": "应用数据:",
         "models": "模型:",
         "settings": "设置:"
-      },
-      "pasteDelay": {
-        "title": "粘贴延迟（前）",
-        "description": "复制文本后、发送粘贴按键前的延迟（毫秒）。如果没有粘贴任何内容，请增加此值。"
-      },
-      "pasteDelayAfter": {
-        "title": "粘贴延迟（后）",
-        "description": "发送粘贴按键后、恢复先前剪贴板前的延迟（毫秒）。如果粘贴的是旧的剪贴板内容而非转录文本，请增加此值。"
-      },
-      "recordingBuffer": {
-        "title": "额外录音缓冲",
-        "description": "放开按键后继续录音的额外时间（毫秒），以捕捉尾音。0 = 无额外缓冲。"
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
-      },
-      "whatsNewPreview": {
-        "title": "预览新功能",
-        "description": "打开最新内置发行说明，且不标记为已查看",
-        "button": "预览",
-        "noNotes": "未找到内置发行说明",
-        "error": "无法预览发行说明"
       }
     },
     "about": {
@@ -720,10 +659,6 @@
       "appDataDirectory": {
         "title": "应用数据目录",
         "description": "Nova 存储数据的位置"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "源代码",
@@ -777,7 +712,6 @@
     "close": "关闭",
     "open": "打开",
     "copy": "复制",
-    "clear": "清除",
     "noOptionsFound": "未找到选项",
     "cancel": "取消",
     "remove": "移除",
@@ -1449,11 +1383,6 @@
     "copy": "复制",
     "close": "关闭",
     "copied": "已复制",
-    "experimentTitle": "实验功能",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "在任意应用中选中文字，然后对其执行一次 AI 操作。尚未在所有应用中验证。",
-    "shortcutMissing": "尚未指定快捷键。请在设置中为 Nova Commands 指定一个——只有你自己的应用仍在前台时才能取到所选文字。",
-    "runDiagnostics": "运行诊断",
     "error": {
       "busy": "已有命令在执行。",
       "nonTextClipboard": "剪贴板中不是文字，Nova 无法把它放回去。请先复制到别处。",

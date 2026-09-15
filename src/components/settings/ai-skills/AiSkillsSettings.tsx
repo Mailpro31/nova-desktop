@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { PageHeader } from "../../shell/PageHeader";
-import NovaCommandsExperiment from "./NovaCommandsExperiment";
 import PreviewBadge from "./PreviewBadge";
 import { useSettings } from "../../../hooks/useSettings";
 import { useCampusStatus } from "../../../hooks/useCampusStatus";
@@ -44,7 +43,6 @@ export const AiSkillsSettings: React.FC = () => {
   const { connection } = useCampusStatus();
 
   const campusMode = isOrganizationMode();
-  const debugMode = getSetting("debug_mode") ?? false;
   const offline = campusMode && connection === "local";
 
   return (
@@ -115,7 +113,6 @@ export const AiSkillsSettings: React.FC = () => {
         {offline ? word("aiSkillsPrivacyOffline") : t("aiSkills.privacy")}
       </p>
 
-      {campusMode && debugMode && <NovaCommandsExperiment />}
     </>
   );
 };

@@ -17,7 +17,6 @@
     "personalization": "Personnalisation",
     "history": "Historique",
     "prompts": "Prompts",
-    "debug": "Débogage",
     "about": "À propos",
     "home": "Accueil",
     "configuration": "Configuration",
@@ -597,37 +596,13 @@
       "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai."
     },
     "debug": {
-      "title": "Débogage",
       "logDirectory": {
         "title": "Répertoire des journaux",
         "description": "Emplacement où les fichiers journaux sont stockés"
       },
-      "logLevel": {
-        "title": "Niveau de journalisation",
-        "description": "Définir le niveau de détail de la journalisation"
-      },
-      "liveLogs": {
-        "title": "Journaux en direct",
-        "description": "Affichez les journaux de l'application en temps réel pour diagnostiquer les problèmes sans ouvrir le fichier journal. Seuls les journaux émis pendant que ce panneau est ouvert sont affichés ; respecte le réglage Niveau de journalisation ci-dessus.",
-        "live": "En direct",
-        "paused": "En pause",
-        "pause": "Pause",
-        "resume": "Reprendre",
-        "copied": "Copié",
-        "lineCount": "{{count}} lignes",
-        "empty": "En attente de journaux… Les entrées apparaîtront ici au fur et à mesure que l'application les émet."
-      },
       "updateChecks": {
         "label": "Vérifier les mises à jour",
         "description": "Vérifier automatiquement les nouvelles versions de Nova"
-      },
-      "soundTheme": {
-        "label": "Thème sonore",
-        "description": "Choisir un thème sonore pour les retours de début et de fin d'enregistrement"
-      },
-      "wordCorrectionThreshold": {
-        "title": "Seuil de correction des mots",
-        "description": "Sensibilité pour les corrections de mots personnalisés"
       },
       "historyLimit": {
         "title": "Limite d'historique",
@@ -673,42 +648,6 @@
         "appData": "Données de l'application :",
         "models": "Modèles :",
         "settings": "Paramètres :"
-      },
-      "pasteDelay": {
-        "title": "Délai de collage (avant)",
-        "description": "Délai (en millisecondes) après la copie du texte, avant l'envoi de la touche de collage. Augmentez si rien n'est collé."
-      },
-      "pasteDelayAfter": {
-        "title": "Délai de collage (après)",
-        "description": "Délai (en millisecondes) après la touche de collage, avant la restauration de votre presse-papiers précédent. Augmentez si l'ancien contenu du presse-papiers est collé à la place de la transcription."
-      },
-      "recordingBuffer": {
-        "title": "Tampon d'enregistrement supplémentaire",
-        "description": "Temps supplémentaire (en millisecondes) pour continuer l'enregistrement après avoir relâché la touche, pour capturer l'audio restant. 0 = pas de tampon supplémentaire."
-      },
-      "meetingCapture": {
-        "title": "Test de capture de réunion",
-        "description": "Vérifie si cet ordinateur peut capter les autres participants d'une réunion — le son qui sort de vos haut-parleurs — en plus de votre micro. Cliquez sur le bouton, puis basculez tout de suite sur la fenêtre de votre réunion : le test lit l'application au premier plan 3 secondes après le clic.",
-        "privacy": "Capte environ 2 secondes depuis l'application de réunion au premier plan, uniquement pour mesurer un niveau sonore. Rien n'est enregistré, transcrit ni envoyé où que ce soit.",
-        "run": "Lancer le test",
-        "running": "Basculez sur votre réunion maintenant…",
-        "results": {
-          "working": "Fonctionne. Nova a capté {{seconds}} s depuis {{process}}, niveau crête {{level}} %.",
-          "silent": "Le flux de {{process}} s'est ouvert mais n'a entendu que du silence. Vérifiez que quelqu'un parlait pendant le test.",
-          "no_meeting_app": "Aucune application de réunion au premier plan. Ouvrez votre réunion, laissez sa fenêtre active, puis relancez le test.",
-          "unavailable": "Cet ordinateur ne sait pas capter le son d'une seule application. Windows 10 version 2004 ou plus récent est nécessaire.",
-          "no_audio": "Le flux s'est ouvert mais n'a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
-          "stream_error": "La capture s'est interrompue avant la fin du test.",
-          "internal": "Le test n'a pas pu s'exécuter."
-        },
-        "switchIn": "Basculez sur votre réunion… {{seconds}}"
-      },
-      "whatsNewPreview": {
-        "title": "Aperçu des nouveautés",
-        "description": "Ouvrir la dernière note de version intégrée sans la marquer comme vue",
-        "button": "Aperçu",
-        "noNotes": "Aucune note de version intégrée trouvée",
-        "error": "Impossible d’afficher l’aperçu des notes de version"
       }
     },
     "about": {
@@ -720,10 +659,6 @@
       "appDataDirectory": {
         "title": "Emplacement des données de l'application",
         "description": "Emplacement où Nova stocke ses données"
-      },
-      "debugMode": {
-        "title": "Mode débogage",
-        "description": "Affiche la section Diagnostic dans la barre latérale, avec des outils techniques comme les journaux en direct et des tests de diagnostic. Vous pouvez aussi l'activer à tout moment avec Ctrl+Maj+D."
       },
       "sourceCode": {
         "title": "Site officiel",
@@ -777,7 +712,6 @@
     "close": "Fermer",
     "open": "Ouvrir",
     "copy": "Copier",
-    "clear": "Effacer",
     "noOptionsFound": "Aucune option trouvée",
     "cancel": "Annuler",
     "remove": "Retirer",
@@ -1449,11 +1383,6 @@
     "copy": "Copier",
     "close": "Fermer",
     "copied": "Copié",
-    "experimentTitle": "Expérimental",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "Sélectionnez du texte dans n'importe quelle application, puis appliquez-lui une action IA. Pas encore validé sur toutes les applications.",
-    "shortcutMissing": "Aucun raccourci n'est encore attribué. Ajoutez-en un pour Nova Commands dans les Réglages — la capture ne fonctionne que si votre application reste au premier plan.",
-    "runDiagnostics": "Lancer le diagnostic",
     "error": {
       "busy": "Une commande est déjà en cours.",
       "nonTextClipboard": "Votre presse-papiers contient autre chose que du texte, et Nova ne saurait pas le restituer. Copiez-le ailleurs avant de réessayer.",
