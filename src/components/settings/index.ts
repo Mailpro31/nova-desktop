@@ -1,7 +1,6 @@
 // Settings section components (top-level sidebar sections)
 export { HomeSettings } from "./home/HomeSettings";
 export { ConfigurationSettings } from "./configuration/ConfigurationSettings";
-export { DebugSettings } from "./debug/DebugSettings";
 export { HistorySettings } from "./history/HistorySettings";
 export { AboutSettings } from "./about/AboutSettings";
 export { PostProcessingSettings } from "./post-processing/PostProcessingSettings";

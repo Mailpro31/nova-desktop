@@ -16,7 +16,6 @@
     "meeting": "Meeting",
     "history": "Geschiedenis",
     "prompts": "Prompts",
-    "debug": "Probleemoplossing",
     "about": "Over Nova",
     "personalization": "Personalisatie",
     "home": "Start",
@@ -597,44 +596,13 @@
       "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram."
     },
     "debug": {
-      "title": "Probleemoplossing",
       "logDirectory": {
         "title": "Logboekmap",
         "description": "Locatie waar logbestanden worden opgeslagen"
       },
-      "logLevel": {
-        "title": "Logboekniveau",
-        "description": "Stel de gedetailleerdheid van de logboeken in"
-      },
-      "liveLogs": {
-        "title": "Live logboeken",
-        "description": "Streamt applicatielogs in realtime om problemen te diagnosticeren zonder het logbestand te openen. Alleen logs die worden gegenereerd terwijl dit paneel open is worden getoond; dit respecteert het bovenstaande logboekniveau.",
-        "live": "Live",
-        "paused": "Gepauzeerd",
-        "pause": "Pauzeren",
-        "resume": "Hervatten",
-        "copied": "Gekopieerd",
-        "lineCount": "{{count}} regels",
-        "empty": "Wachten op logboeken... Meldingen verschijnen hier zodra de app ze genereert."
-      },
       "updateChecks": {
         "label": "Controleren op updates",
         "description": "Automatisch controleren op nieuwe versies van Nova"
-      },
-      "whatsNewPreview": {
-        "title": "Voorbeeld van release-notes",
-        "description": "Open de nieuwste meegeleverde release-notes zonder deze als gelezen te markeren",
-        "button": "Voorbeeld",
-        "noNotes": "Geen meegeleverde release-notes gevonden",
-        "error": "Voorbeeld van release-notes laden mislukt"
-      },
-      "soundTheme": {
-        "label": "Geluidsthema",
-        "description": "Kies een geluidsthema voor feedback bij het starten en stoppen van opnames"
-      },
-      "wordCorrectionThreshold": {
-        "title": "Drempelwaarde woordcorrectie",
-        "description": "Gevoeligheid voor eigen woordcorrecties"
       },
       "historyLimit": {
         "title": "Geschiedenislimiet",
@@ -680,35 +648,6 @@
         "appData": "App-data:",
         "models": "Modellen:",
         "settings": "Instellingen:"
-      },
-      "pasteDelay": {
-        "title": "Plakvertraging (voor)",
-        "description": "Vertraging (in milliseconden) na het kopiëren van de tekst, voordat de plak-toetsaanslag wordt verzonden. Verhoog dit als er niets wordt geplakt."
-      },
-      "pasteDelayAfter": {
-        "title": "Plakvertraging (na)",
-        "description": "Vertraging (in milliseconden) na de plak-toetsaanslag, voordat je vorige klembord wordt hersteld. Verhoog dit als de oude klembordinhoud wordt geplakt in plaats van de transcriptie."
-      },
-      "recordingBuffer": {
-        "title": "Extra opnamebuffer",
-        "description": "Extra tijd (in milliseconden) om te blijven opnemen nadat je de toets loslaat, om naloopaudio op te vangen. 0 = geen extra buffer."
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
       }
     },
     "about": {
@@ -724,10 +663,6 @@
       "appDataDirectory": {
         "title": "App-datamap",
         "description": "Locatie waar Nova de gegevens opslaat"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "Broncode",
@@ -783,7 +718,6 @@
     "close": "Sluiten",
     "open": "Openen",
     "copy": "Kopiëren",
-    "clear": "Wissen",
     "noOptionsFound": "Geen opties gevonden",
     "cancel": "Annuleren",
     "remove": "Verwijderen",
@@ -1449,11 +1383,6 @@
     "copy": "Kopiëren",
     "close": "Sluiten",
     "copied": "Gekopieerd",
-    "experimentTitle": "Experimenteel",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "Selecteer tekst in een willekeurige toepassing en voer er een AI-actie op uit. Nog niet in alle toepassingen getoetst.",
-    "shortcutMissing": "Er is nog geen sneltoets toegewezen. Stel er een in voor Nova Commands bij Instellingen — vastleggen lukt alleen zolang uw eigen toepassing op de voorgrond staat.",
-    "runDiagnostics": "Diagnose uitvoeren",
     "error": {
       "busy": "Er loopt al een opdracht.",
       "nonTextClipboard": "Uw klembord bevat iets anders dan tekst, en Nova zou het niet kunnen terugzetten. Kopieer het eerst ergens anders naartoe.",

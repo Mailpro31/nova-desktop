@@ -16,7 +16,6 @@
     "meeting": "Meeting",
     "history": "히스토리",
     "prompts": "프롬프트",
-    "debug": "디버그",
     "about": "정보",
     "personalization": "개인 설정",
     "home": "홈",
@@ -597,37 +596,13 @@
       "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다."
     },
     "debug": {
-      "title": "디버그",
       "logDirectory": {
         "title": "로그 디렉토리",
         "description": "로그 파일이 저장되는 위치"
       },
-      "logLevel": {
-        "title": "로그 레벨",
-        "description": "로깅의 상세도 설정"
-      },
-      "liveLogs": {
-        "title": "실시간 로그",
-        "description": "로그 파일을 열지 않고도 문제를 진단할 수 있도록 애플리케이션 로그를 실시간으로 표시합니다. 이 패널이 열려 있는 동안 발생한 로그만 표시되며, 위의 로그 레벨 설정을 따릅니다.",
-        "live": "실시간",
-        "paused": "일시정지됨",
-        "pause": "일시정지",
-        "resume": "재개",
-        "copied": "복사됨",
-        "lineCount": "{{count}}줄",
-        "empty": "로그 대기 중… 앱이 로그를 출력하면 여기에 표시됩니다."
-      },
       "updateChecks": {
         "label": "업데이트 확인",
         "description": "Nova의 새 버전을 자동으로 확인합니다"
-      },
-      "soundTheme": {
-        "label": "사운드 테마",
-        "description": "녹음 시작 및 정지 피드백을 위한 사운드 테마를 선택하세요"
-      },
-      "wordCorrectionThreshold": {
-        "title": "단어 수정 임계값",
-        "description": "사용자 정의 단어 수정의 민감도"
       },
       "historyLimit": {
         "title": "히스토리 제한",
@@ -669,46 +644,10 @@
         "description": "키보드 단축키 백엔드를 선택하세요.",
         "bindingsReset": "키보드 단축키가 호환되지 않아 기본값으로 재설정되었습니다"
       },
-      "pasteDelay": {
-        "title": "붙여넣기 지연 (이전)",
-        "description": "텍스트를 복사한 후 붙여넣기 키 입력을 보내기 전의 지연 시간(밀리초). 아무것도 붙여넣어지지 않으면 늘리세요."
-      },
-      "pasteDelayAfter": {
-        "title": "붙여넣기 지연 (이후)",
-        "description": "붙여넣기 키 입력을 보낸 후 이전 클립보드를 복원하기 전의 지연 시간(밀리초). 전사된 텍스트 대신 이전 클립보드 내용이 붙여넣어지면 늘리세요."
-      },
-      "recordingBuffer": {
-        "title": "추가 녹음 버퍼",
-        "description": "키를 놓은 후 추가로 녹음을 계속하는 시간(밀리초). 후행 오디오를 캡처하기 위함. 0 = 추가 버퍼 없음."
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
-      },
       "paths": {
         "appData": "앱 데이터:",
         "models": "모델:",
         "settings": "설정:"
-      },
-      "whatsNewPreview": {
-        "title": "새 소식 미리보기",
-        "description": "최신 내장 릴리스 노트를 본 것으로 표시하지 않고 엽니다",
-        "button": "미리보기",
-        "noNotes": "내장 릴리스 노트를 찾을 수 없습니다",
-        "error": "릴리스 노트를 미리 볼 수 없습니다"
       }
     },
     "about": {
@@ -720,10 +659,6 @@
       "appDataDirectory": {
         "title": "앱 데이터 디렉토리",
         "description": "Nova가 데이터를 저장하는 위치"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "소스 코드",
@@ -777,7 +712,6 @@
     "close": "닫기",
     "open": "열기",
     "copy": "복사",
-    "clear": "지우기",
     "noOptionsFound": "옵션을 찾을 수 없습니다",
     "cancel": "취소",
     "remove": "제거",
@@ -1449,11 +1383,6 @@
     "copy": "복사",
     "close": "닫기",
     "copied": "복사했습니다",
-    "experimentTitle": "실험 기능",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "어떤 앱에서든 글을 선택한 뒤 AI 작업을 실행합니다. 아직 모든 앱에서 확인되지는 않았습니다.",
-    "shortcutMissing": "아직 단축키가 없습니다. 설정에서 Nova Commands용 단축키를 지정하세요. 가져오기는 사용 중인 앱이 앞에 있을 때만 작동합니다.",
-    "runDiagnostics": "진단 실행",
     "error": {
       "busy": "이미 명령이 실행 중입니다.",
       "nonTextClipboard": "클립보드에 글이 아닌 것이 들어 있어 Nova가 되돌릴 수 없습니다. 먼저 다른 곳에 옮겨 두세요.",

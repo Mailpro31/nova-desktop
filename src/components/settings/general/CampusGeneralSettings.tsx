@@ -25,7 +25,6 @@ import { CampusFormattingSection } from "./CampusFormattingSection";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
-import { DebugModeToggle } from "../DebugModeToggle";
 import { RestartApp } from "../RestartApp";
 import { type } from "@tauri-apps/plugin-os";
 
@@ -133,7 +132,7 @@ export const CampusPersonalizationSections: React.FC = () => {
 };
 
 /**
- * Diagnostics : version, dossiers, mode debug. Plus technique que le reste,
+ * Diagnostics : version et dossiers. Plus technique que le reste,
  * et assumé comme tel — c'est ce qu'on ouvre quand on cherche un problème.
  *
  * L'identité campus et la déconnexion **n'y sont plus** : elles vivent une
@@ -180,7 +179,6 @@ const AboutSectionCard: React.FC = () => {
         </div>
         <AppDataDirectory descriptionMode="tooltip" grouped={true} />
         <LogDirectory grouped={true} />
-        <DebugModeToggle descriptionMode="tooltip" grouped={true} />
         <RestartApp grouped={true} />
       </div>
     </SectionCard>

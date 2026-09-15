@@ -18,7 +18,6 @@
     "personalization": "Personalization",
     "history": "History",
     "prompts": "Prompts",
-    "debug": "Debug",
     "about": "About",
     "home": "Home",
     "configuration": "Configuration",
@@ -597,44 +596,13 @@
       "transcriptionFailed": "Transcription failed. You can re-transcribe using the retry icon."
     },
     "debug": {
-      "title": "Debug",
       "logDirectory": {
         "title": "Log Directory",
         "description": "Location where log files are stored"
       },
-      "logLevel": {
-        "title": "Log Level",
-        "description": "Set the verbosity of logging"
-      },
-      "liveLogs": {
-        "title": "Live Logs",
-        "description": "Stream application logs in real time to diagnose issues without opening the log file. Only logs emitted while this panel is open are shown; respects the Log Level setting above.",
-        "live": "Live",
-        "paused": "Paused",
-        "pause": "Pause",
-        "resume": "Resume",
-        "copied": "Copied",
-        "lineCount": "{{count}} lines",
-        "empty": "Waiting for logs… Entries appear here as the app emits them."
-      },
       "updateChecks": {
         "label": "Check for Updates",
         "description": "Automatically check for new versions of Nova"
-      },
-      "whatsNewPreview": {
-        "title": "Preview What's New",
-        "description": "Open the latest bundled release note without marking it as seen",
-        "button": "Preview",
-        "noNotes": "No bundled release notes found",
-        "error": "Failed to preview release notes"
-      },
-      "soundTheme": {
-        "label": "Sound Theme",
-        "description": "Choose a sound theme for recording start and stop feedback"
-      },
-      "wordCorrectionThreshold": {
-        "title": "Word Correction Threshold",
-        "description": "Sensitivity for custom word corrections"
       },
       "historyLimit": {
         "title": "History Limit",
@@ -680,35 +648,6 @@
         "appData": "App Data:",
         "models": "Models:",
         "settings": "Settings:"
-      },
-      "pasteDelay": {
-        "title": "Paste Delay (Before)",
-        "description": "Delay (in milliseconds) after copying text, before sending the paste keystroke. Increase if nothing gets pasted."
-      },
-      "pasteDelayAfter": {
-        "title": "Paste Delay (After)",
-        "description": "Delay (in milliseconds) after the paste keystroke, before restoring your previous clipboard. Increase if your old clipboard content is being pasted instead of the transcription."
-      },
-      "recordingBuffer": {
-        "title": "Extra Recording Buffer",
-        "description": "Extra time (in milliseconds) to keep recording after you release the key, to capture trailing audio. 0 = no extra buffer."
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
       }
     },
     "about": {
@@ -724,10 +663,6 @@
       "appDataDirectory": {
         "title": "App Data Directory",
         "description": "Location where Nova stores its data"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "Official website",
@@ -783,7 +718,6 @@
     "close": "Close",
     "open": "Open",
     "copy": "Copy",
-    "clear": "Clear",
     "noOptionsFound": "No options found",
     "cancel": "Cancel",
     "remove": "Remove",
@@ -1449,11 +1383,6 @@
     "copy": "Copy",
     "close": "Close",
     "copied": "Copied",
-    "experimentTitle": "Experimental",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "Select text in any application, then run an AI action on it. Not yet validated across applications.",
-    "shortcutMissing": "No shortcut is assigned yet. Add one for Nova Commands in Settings — capture only works while your own application is in front.",
-    "runDiagnostics": "Run diagnostics",
     "error": {
       "busy": "A command is already running.",
       "nonTextClipboard": "Your clipboard holds something other than text, and Nova could not put it back. Copy it somewhere safe first.",

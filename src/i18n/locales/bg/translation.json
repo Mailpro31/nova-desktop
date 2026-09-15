@@ -16,7 +16,6 @@
     "meeting": "Meeting",
     "history": "История",
     "prompts": "Промптове",
-    "debug": "Отстраняване",
     "about": "За приложението",
     "personalization": "Персонализация",
     "home": "Начало",
@@ -597,37 +596,13 @@
       "transcriptionFailed": "Транскрипцията не бе успешна. Можете да опитате отново с иконата за повторен опит."
     },
     "debug": {
-      "title": "Отстраняване",
       "logDirectory": {
         "title": "Папка с логове",
         "description": "Мястото, където се съхраняват лог файловете"
       },
-      "logLevel": {
-        "title": "Ниво на логване",
-        "description": "Задаване на подробността на логовете"
-      },
-      "liveLogs": {
-        "title": "Логове на живо",
-        "description": "Преглеждайте логовете на приложението в реално време, за да диагностицирате проблеми, без да отваряте лог файла. Показват се само логове, създадени докато този панел е отворен; спазва настройката «Ниво на логване» по-горе.",
-        "live": "На живо",
-        "paused": "На пауза",
-        "pause": "Пауза",
-        "resume": "Възобновяване",
-        "copied": "Копирано",
-        "lineCount": "Редове: {{count}}",
-        "empty": "Изчакване на логове… Записите ще се появят тук, щом приложението ги генерира."
-      },
       "updateChecks": {
         "label": "Проверка за актуализации",
         "description": "Автоматична проверка за нови версии на Nova"
-      },
-      "soundTheme": {
-        "label": "Звукова тема",
-        "description": "Избор на звукова тема за сигнал при старт и край на записа"
-      },
-      "wordCorrectionThreshold": {
-        "title": "Праг за корекция на думи",
-        "description": "Чувствителност при корекция на персонализирани думи"
       },
       "historyLimit": {
         "title": "Лимит на историята",
@@ -673,42 +648,6 @@
         "appData": "Данни на приложението:",
         "models": "Модели:",
         "settings": "Настройки:"
-      },
-      "pasteDelay": {
-        "title": "Забавяне при поставяне (преди)",
-        "description": "Забавяне (в милисекунди) след копиране на текста, преди изпращане на клавиша за поставяне. Увеличете, ако нищо не се поставя."
-      },
-      "pasteDelayAfter": {
-        "title": "Забавяне при поставяне (след)",
-        "description": "Забавяне (в милисекунди) след клавиша за поставяне, преди възстановяване на предишния клипборд. Увеличете, ако вместо транскрипцията се поставя старото съдържание на клипборда."
-      },
-      "recordingBuffer": {
-        "title": "Допълнителен буфер на записа",
-        "description": "Допълнително време (в милисекунди) за запис след пускане на клавиша, за да се улови краят на аудиото. 0 = без допълнителен буфер."
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
-      },
-      "whatsNewPreview": {
-        "title": "Преглед на новостите",
-        "description": "Отваря последните включени бележки към изданието, без да ги маркира като видени",
-        "button": "Преглед",
-        "noNotes": "Не са намерени включени бележки към изданието",
-        "error": "Неуспешен преглед на бележките към изданието"
       }
     },
     "about": {
@@ -720,10 +659,6 @@
       "appDataDirectory": {
         "title": "Папка с данни на приложението",
         "description": "Мястото, където Nova съхранява данните си"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "Изходен код",
@@ -777,7 +712,6 @@
     "close": "Затваряне",
     "open": "Отваряне",
     "copy": "Копиране",
-    "clear": "Изчистване",
     "noOptionsFound": "Няма намерени опции",
     "cancel": "Отказ",
     "remove": "Премахни",
@@ -1449,11 +1383,6 @@
     "copy": "Копирай",
     "close": "Затвори",
     "copied": "Копирано",
-    "experimentTitle": "Експериментално",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "Изберете текст в което и да е приложение и приложете действие с ИИ върху него. Още не е проверено във всички приложения.",
-    "shortcutMissing": "Още няма зададена клавишна комбинация. Задайте такава за Nova Commands в Настройки — прихващането работи само докато вашето приложение е отпред.",
-    "runDiagnostics": "Стартирай диагностика",
     "error": {
       "busy": "Вече се изпълнява команда.",
       "nonTextClipboard": "Клипбордът съдържа нещо различно от текст и Nova не би могла да го върне. Копирайте го първо другаде.",

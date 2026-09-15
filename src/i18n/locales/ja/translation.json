@@ -16,7 +16,6 @@
     "meeting": "Meeting",
     "history": "履歴",
     "prompts": "プロンプト",
-    "debug": "デバッグ",
     "about": "概要",
     "personalization": "パーソナライズ",
     "home": "ホーム",
@@ -597,37 +596,13 @@
       "transcriptionFailed": "文字起こしに失敗しました。リトライアイコンを使用して再文字起こしできます。"
     },
     "debug": {
-      "title": "デバッグ",
       "logDirectory": {
         "title": "ログディレクトリ",
         "description": "ログファイルの保存場所"
       },
-      "logLevel": {
-        "title": "ログレベル",
-        "description": "ログの詳細度を設定"
-      },
-      "liveLogs": {
-        "title": "ライブログ",
-        "description": "ログファイルを開かずに問題を診断できるよう、アプリのログをリアルタイムで表示します。このパネルを開いている間に出力されたログのみが表示され、上記の「ログレベル」設定に従います。",
-        "live": "ライブ",
-        "paused": "一時停止中",
-        "pause": "一時停止",
-        "resume": "再開",
-        "copied": "コピーしました",
-        "lineCount": "{{count}}行",
-        "empty": "ログを待機中… アプリが出力すると、ここにエントリが表示されます。"
-      },
       "updateChecks": {
         "label": "アップデートを確認",
         "description": "Nova の新しいバージョンを自動的にチェック"
-      },
-      "soundTheme": {
-        "label": "サウンドテーマ",
-        "description": "録音開始・停止フィードバックのサウンドテーマを選択"
-      },
-      "wordCorrectionThreshold": {
-        "title": "単語修正しきい値",
-        "description": "カスタム単語修正の感度"
       },
       "historyLimit": {
         "title": "履歴上限",
@@ -673,42 +648,6 @@
         "appData": "アプリデータ:",
         "models": "モデル:",
         "settings": "設定:"
-      },
-      "pasteDelay": {
-        "title": "貼り付け遅延(前)",
-        "description": "テキストをコピーした後、貼り付けキーを送信する前の遅延(ミリ秒)。何も貼り付けられない場合は増やしてください。"
-      },
-      "pasteDelayAfter": {
-        "title": "貼り付け遅延(後)",
-        "description": "貼り付けキーを送信した後、以前のクリップボードを復元する前の遅延(ミリ秒)。文字起こしではなく古いクリップボードの内容が貼り付けられる場合は増やしてください。"
-      },
-      "recordingBuffer": {
-        "title": "追加録音バッファ",
-        "description": "キーを離した後に録音を続ける追加時間(ミリ秒)。末尾の音声を捕捉するため。0 = 追加バッファなし。"
-      },
-      "meetingCapture": {
-        "title": "Meeting capture test",
-        "description": "Checks whether this computer can capture the other participants of a meeting — the sound coming out of your speakers — in addition to your microphone. Click the button, then switch to your meeting window within 3 seconds — the test reads whichever app is in the foreground.",
-        "privacy": "Captures about 2 seconds from the meeting app in the foreground, only to measure a sound level. Nothing is recorded, transcribed or sent anywhere.",
-        "run": "Run the test",
-        "running": "Switch to your meeting now…",
-        "results": {
-          "working": "Works. Nova captured {{seconds}} s from {{process}}, peak level {{level}} %.",
-          "silent": "The stream from {{process}} opened but only heard silence. Make sure someone was speaking during the test.",
-          "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then run the test again.",
-          "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-          "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-          "stream_error": "The capture stopped before the end of the test.",
-          "internal": "The test could not run."
-        },
-        "switchIn": "Switch to your meeting… {{seconds}}"
-      },
-      "whatsNewPreview": {
-        "title": "新機能をプレビュー",
-        "description": "最新の同梱リリースノートを既読にせずに開く",
-        "button": "プレビュー",
-        "noNotes": "同梱リリースノートが見つかりません",
-        "error": "リリースノートのプレビューに失敗しました"
       }
     },
     "about": {
@@ -720,10 +659,6 @@
       "appDataDirectory": {
         "title": "アプリデータディレクトリ",
         "description": "Nova がデータを保存する場所"
-      },
-      "debugMode": {
-        "title": "Debug mode",
-        "description": "Shows the Diagnostics section in the sidebar, with technical tools such as live logs and diagnostic tests. You can also toggle it anytime with Ctrl+Shift+D."
       },
       "sourceCode": {
         "title": "ソースコード",
@@ -777,7 +712,6 @@
     "close": "閉じる",
     "open": "開く",
     "copy": "コピー",
-    "clear": "クリア",
     "noOptionsFound": "オプションが見つかりません",
     "cancel": "キャンセル",
     "remove": "削除",
@@ -1449,11 +1383,6 @@
     "copy": "コピー",
     "close": "閉じる",
     "copied": "コピーしました",
-    "experimentTitle": "実験的機能",
-    "settingLabel": "Nova Commands",
-    "settingDescription": "任意のアプリで文章を選択し、AI の操作を実行します。すべてのアプリで検証済みではありません。",
-    "shortcutMissing": "ショートカットがまだ割り当てられていません。設定で Nova Commands 用に指定してください。取り込みは、お使いのアプリが前面にある間だけ機能します。",
-    "runDiagnostics": "診断を実行",
     "error": {
       "busy": "すでにコマンドを実行中です。",
       "nonTextClipboard": "クリップボードに文章以外のものが入っており、Nova は元に戻せません。先に別の場所へ控えてください。",

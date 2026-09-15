@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CampusAiSkills } from "../campus/CampusAiSkills";
 import { CampusConnection } from "../campus/CampusConnection";
 import { CampusEngineeringNotes } from "../campus/CampusEngineeringNotes";
 import { GeneralSettings } from "../general/GeneralSettings";
@@ -57,10 +56,7 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
 const ORGANIZATION_TOOL_TABS: {
   id: keyof OrganizationSettingsTools;
   labelKey: string;
-}[] = [
-  { id: "aiEssentials", labelKey: "campus.aiCurriculum.title" },
-  { id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" },
-];
+}[] = [{ id: "engineeringNotes", labelKey: "campus.engineeringNotes.title" }];
 
 /**
  * « Configuration » regroupe les anciennes sections Général / Modèles /
@@ -130,7 +126,6 @@ export const ConfigurationSettings: React.FC = () => {
           {campusMode && <CampusPersonalizationSections />}
         </>
       )}
-      {tab === "aiEssentials" && <CampusAiSkills />}
       {tab === "engineeringNotes" && <CampusEngineeringNotes />}
     </div>
   );
