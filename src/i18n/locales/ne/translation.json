@@ -13,7 +13,7 @@
     "models": "प्रदर्शन",
     "advanced": "उन्नत",
     "postProcessing": "पोस्ट प्रोसेस",
-    "meeting": "Meeting",
+    "meeting": "बैठक",
     "history": "हिस्ट्री",
     "prompts": "प्रम्प्टहरू",
     "structuredNotes": "संरचित नोटहरू",
@@ -795,10 +795,10 @@
     "upgrade": "सदस्यता लिनुहोस्"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "टाइपिङ समय ≈ {{count}} मिनेट बचत",
+    "minutes_other": "टाइपिङ समय ≈ {{count}} मिनेट बचत",
+    "words_one": "यो हप्ता {{count}} शब्द डिक्टेट गरियो",
+    "words_other": "यो हप्ता {{count}} शब्द डिक्टेट गरियो"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "आवाज आदेश",
+    "description": "नयाँ अनुच्छेद, नयाँ लाइन, प्रश्नचिह्न, र टिपोट, सूची, बैठक वा हालको डिक्टेसन रद्द गर्ने स्पष्ट Nova आदेशहरू बुझ्छ।",
+    "added": "{{word}} व्यक्तिगत शब्दकोशमा थपियो"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "हटाउनुहोस्",
+    "upgradeToUltra": "Nova Ultra मा अपग्रेड गर्नुहोस्",
+    "requiresTier": "{{tier}} आवश्यक",
     "active": "इजाजतपत्र सक्रिय",
     "trial": {
       "badge": "Pro परीक्षण",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "अनलाइन इन्जिन Nova Pro र Ultra मा सीमित छ — तपाईंको पाठ पुनःप्रणयन बिना टाँसियो।"
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "मेरो शब्दभण्डार सिक",
+    "description": "तपाईंले बारम्बार डिक्टेट गर्ने नाम वा शब्द Nova ले देख्दा, त्यसलाई तपाईंको व्यक्तिगत शब्दकोशमा थप्न सुझाव दिन्छ। तपाईंको पुष्टिविना कहिल्यै केही थपिँदैन।",
+    "suggestionTitle": "तपाईंले “{{term}}” भन्न खोज्नुभएको हो?",
+    "suggestionDescription": "Nova ले त्यसलाई राम्ररी चिनोस् भनेर आफ्नो व्यक्तिगत शब्दकोशमा थप्नुहोस्।",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "बेवास्ता गर्नुहोस्",
+    "added": "“{{term}}” तपाईंको शब्दकोशमा थपियो।"
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "बैठक मोड",
+    "description": "बैठकलाई लिखित प्रतिवेदनमा बदल्नुहोस्। Nova ले तपाईंको माइक्रोफोन र अन्य सहभागीहरूको आवाज समेट्छ, अनि तपाईंले भनेको र उनीहरूले भनेको छुट्याएर सारांश तयार गर्छ।",
+    "start": "बैठक सुरु गर्नुहोस्",
+    "starting": "सुरु हुँदै…",
+    "finish": "अन्त्य गर्नुहोस्",
+    "finishing": "अन्त्य गर्दै…",
+    "capturing": "{{app}} समेटिँदै",
+    "capturingHint": "Nova ले यो बैठक रेकर्ड गर्दैछ। प्रतिवेदन पाउन अन्त्य गर्नुहोस्।",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "अन्य",
+    "reportTitle": "बैठक प्रतिवेदन",
+    "reportMeta": "ट्रान्सक्राइब गरिएका अंश: {{transcribed}}, छोडिएका: {{skipped}}",
+    "reportEmpty": "केही पनि समेटिएन — बैठकभरि कसैको आवाज सुनिएन।",
+    "reportNotTranscribed": "Nova ले आवाज समेट्यो तर ट्रान्सक्राइब गर्न सकेन। तपाईंको मोडेल डाउनलोड भएको छ र वास्तवमै कोही बोलिरहेको थियो भन्ने सुनिश्चित गरेर फेरि प्रयास गर्नुहोस्।",
+    "showTranscript": "कच्चा ट्रान्सक्रिप्ट देखाउनुहोस्",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "सुरु गर्नुअघि",
+      "subtitle": "यो तपाईंको बैठकका अन्य व्यक्तिहरूसँग सम्बन्धित छ।",
+      "body": "सुरु गरेपछि, पत्ता लागेको बैठक एप अगाडि रहेसम्म Nova ले तपाईंको मात्र होइन अन्य सहभागीहरूको आवाज पनि रेकर्ड गर्छ। तपाईं कहाँ हुनुहुन्छ भन्ने आधारमा, कानुनले तपाईंलाई उनीहरूलाई पहिले नै जानकारी दिन आवश्यक पार्न सक्छ। Nova ले तपाईंका लागि यो गर्न सक्दैन।",
+      "checkbox": "हरेक रेकर्ड गरिने बैठकअघि म अन्य सहभागीहरूलाई जानकारी दिनेछु।",
+      "cancel": "रद्द गर्नुहोस्",
+      "confirm": "रेकर्ड सुरु गर्नुहोस्"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "अगाडि कुनै बैठक एप छैन। आफ्नो बैठक खोल्नुहोस्, त्यसको विन्डो सक्रिय राख्नुहोस्, अनि फेरि सुरु गर्नुहोस्।",
+      "already_running": "पहिले नै एउटा बैठक रेकर्ड भइरहेको छ।",
+      "no_active_meeting": "हाल कुनै बैठक रेकर्ड भइरहेको छैन।",
+      "unavailable": "यो कम्प्युटरले एउटा मात्र एपको आवाज समेट्न सक्दैन। Windows 10 संस्करण 2004 वा सोभन्दा नयाँ आवश्यक छ।",
+      "no_audio": "स्ट्रिम खुल्यो तर कुनै आवाज आएन। यो कम्प्युटरमा बैठकको आवाज बजिरहेको छ कि छैन जाँच्नुहोस्।",
+      "stream_error": "रेकर्डिङ अनपेक्षित रूपमा रोकियो।",
+      "requires_ultra": "बैठक मोडका लागि Nova Ultra चाहिन्छ।",
+      "internal": "बैठक सुरु गर्न सकिएन।"
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "कुनै बैठक एप भेटिएन। आफ्नो बैठक (Zoom, Teams, Google Meet…) खोल्नुहोस्, अनि रिफ्रेस गर्नुहोस्।",
+    "pickApp": "कुन बैठक रेकर्ड गर्ने छान्नुहोस्।",
+    "oneApp": "{{app}} समेट्न तयार।",
+    "refresh": "रिफ्रेस गर्नुहोस्",
+    "newMeeting": "नयाँ बैठक"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "आफ्नो संस्थासँग जडान गर्नुहोस्",
+    "subtitle": "तपाईंको संस्थाले दिएको खाता प्रयोग गर्नुहोस्।",
+    "emailAlternative": "बरु इमेल कोड प्रयोग गर्नुहोस्",
+    "server": "संस्थाको सर्भर",
+    "email": "कार्यालयको इमेल",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "संस्थाको इमेल",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "कोड पठाउनुहोस्",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "यो कम्प्युटरमा Nova तयार छ।",
+    "processing": "संस्थाको सेवा",
+    "retry": "फेरि प्रयास गर्नुहोस्",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova ले यो कम्प्युटरको व्यवस्थित सेटअप पढ्न सकेन। आफ्नो IT टोलीलाई सम्पर्क गर्नुहोस्।",
+      "organizationUnavailable": "यो संस्था उपलब्ध छैन। आफ्नो IT टोलीलाई सम्पर्क गर्नुहोस्।",
+      "discovery": "Nova ले तपाईंको संस्थाको सर्भर भेट्टाउन सकेन। जडान जाँचेर फेरि प्रयास गर्नुहोस्।",
+      "authMethodUnavailable": "तपाईंको संस्थाले यो संस्करणले समर्थन नगर्ने साइन-इन विधि माग गर्छ।"
     }
   },
   "organizationWording": {

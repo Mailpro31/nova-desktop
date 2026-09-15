@@ -13,7 +13,7 @@
     "models": "パフォーマンス",
     "advanced": "詳細設定",
     "postProcessing": "後処理",
-    "meeting": "Meeting",
+    "meeting": "会議",
     "history": "履歴",
     "prompts": "プロンプト",
     "structuredNotes": "構造化ノート",
@@ -795,10 +795,10 @@
     "upgrade": "登録する"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "入力時間を約 {{count}} 分節約",
+    "minutes_other": "入力時間を約 {{count}} 分節約",
+    "words_one": "今週の口述：{{count}} 語",
+    "words_other": "今週の口述：{{count}} 語"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "音声コマンド",
+    "description": "「改段落」「改行」「疑問符」のほか、メモ、リスト、会議、現在の口述の取り消しに使う Nova の明示的なコマンドを理解します。",
+    "added": "{{word}} を個人辞書に追加しました"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "削除",
+    "upgradeToUltra": "Nova Ultra にアップグレード",
+    "requiresTier": "{{tier}} が必要",
     "active": "ライセンス有効",
     "trial": {
       "badge": "Pro体験版",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "オンラインエンジンはNova ProとUltra限定のため、リフォーミュレーションなしで貼り付けられました。"
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "よく使う語句を学習",
+    "description": "よく口述する名前や用語に Nova が気づくと、個人辞書への追加を提案します。あなたが確認しない限り、何も追加されません。",
+    "suggestionTitle": "「{{term}}」のことですか？",
+    "suggestionDescription": "個人辞書に追加すると、Nova が正しく認識しやすくなります。",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "無視",
+    "added": "「{{term}}」を辞書に追加しました。"
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "会議モード",
+    "description": "会議を文書のレポートにします。Nova はあなたのマイクとほかの参加者の音声を取り込み、あなたの発言と相手の発言を分けた要約を作成します。",
+    "start": "会議を開始",
+    "starting": "開始しています…",
+    "finish": "終了",
+    "finishing": "終了しています…",
+    "capturing": "{{app}} をキャプチャ中",
+    "capturingHint": "Nova がこの会議を記録しています。終了するとレポートが作成されます。",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "ほかの参加者",
+    "reportTitle": "会議レポート",
+    "reportMeta": "文字起こし済み {{transcribed}} 件、スキップ {{skipped}} 件",
+    "reportEmpty": "何もキャプチャされませんでした。会議中に誰の声も聞こえませんでした。",
+    "reportNotTranscribed": "Nova は音声をキャプチャしましたが、文字起こしできませんでした。モデルがダウンロード済みで、実際に誰かが話していたことを確認してから、もう一度お試しください。",
+    "showTranscript": "元の文字起こしを表示",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "開始する前に",
+      "subtitle": "これは会議のほかの参加者に関わることです。",
+      "body": "開始すると、検出された会議アプリが前面にある間、Nova はあなたの声だけでなくほかの参加者の声も録音します。所在地によっては、事前に参加者へ知らせることが法律で求められる場合があります。Nova がこれを代わりに行うことはできません。",
+      "checkbox": "記録する会議の前に、毎回ほかの参加者に知らせます。",
+      "cancel": "キャンセル",
+      "confirm": "キャプチャを開始"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "前面に会議アプリがありません。会議を開き、そのウィンドウをアクティブにしたまま、もう一度開始してください。",
+      "already_running": "すでに会議をキャプチャしています。",
+      "no_active_meeting": "現在キャプチャ中の会議はありません。",
+      "unavailable": "この PC では単一アプリの音声をキャプチャできません。Windows 10 バージョン 2004 以降が必要です。",
+      "no_audio": "ストリームは開きましたが、音声がありません。この PC で会議の音声が再生されているか確認してください。",
+      "stream_error": "キャプチャが予期せず停止しました。",
+      "requires_ultra": "会議モードには Nova Ultra が必要です。",
+      "internal": "会議を開始できませんでした。"
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "会議アプリが検出されません。会議（Zoom、Teams、Google Meet など）を開いてから更新してください。",
+    "pickApp": "キャプチャする会議を選んでください。",
+    "oneApp": "{{app}} をキャプチャする準備ができました。",
+    "refresh": "更新",
+    "newMeeting": "新しい会議"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "組織に接続",
+    "subtitle": "組織から提供されたアカウントを使用してください。",
+    "emailAlternative": "代わりにメールのコードを使用",
+    "server": "組織のサーバー",
+    "email": "勤務先のメールアドレス",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "組織のメールアドレス",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "コードを送信",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "この PC で Nova を使う準備ができました。",
+    "processing": "組織のサービス",
+    "retry": "もう一度試す",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova はこの PC の管理設定を読み取れませんでした。IT 担当チームにお問い合わせください。",
+      "organizationUnavailable": "この組織は利用できません。IT 担当チームにお問い合わせください。",
+      "discovery": "Nova は組織のサーバーを見つけられませんでした。接続を確認してもう一度お試しください。",
+      "authMethodUnavailable": "組織が求めるサインイン方法に、このバージョンは対応していません。"
     }
   },
   "organizationWording": {

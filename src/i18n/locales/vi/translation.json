@@ -13,7 +13,7 @@
     "models": "Hiệu năng",
     "advanced": "Nâng cao",
     "postProcessing": "Xử lý sau",
-    "meeting": "Meeting",
+    "meeting": "Cuộc họp",
     "history": "Lịch sử",
     "prompts": "Prompt",
     "structuredNotes": "Ghi chú có cấu trúc",
@@ -795,10 +795,10 @@
     "upgrade": "Đăng ký"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "Tiết kiệm ≈ {{count}} phút gõ phím",
+    "minutes_other": "Tiết kiệm ≈ {{count}} phút gõ phím",
+    "words_one": "Đã đọc chính tả {{count}} từ trong tuần này",
+    "words_other": "Đã đọc chính tả {{count}} từ trong tuần này"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Lệnh giọng nói",
+    "description": "Hiểu “đoạn mới”, “dòng mới”, “dấu hỏi” và các lệnh Nova rõ ràng cho ghi chú, danh sách, cuộc họp hoặc hủy lượt đọc chính tả hiện tại.",
+    "added": "Đã thêm {{word}} vào từ điển cá nhân"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Gỡ bỏ",
+    "upgradeToUltra": "Nâng cấp lên Nova Ultra",
+    "requiresTier": "Yêu cầu {{tier}}",
     "active": "Giấy phép đang hoạt động",
     "trial": {
       "badge": "Dùng thử Pro",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "Công cụ trực tuyến dành riêng cho Nova Pro và Ultra — văn bản đã được dán mà không diễn đạt lại."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Học từ vựng của tôi",
+    "description": "Khi Nova nhận thấy một tên hoặc thuật ngữ bạn hay đọc chính tả, Nova sẽ đề xuất thêm nó vào từ điển cá nhân của bạn. Không có gì được thêm vào khi chưa có xác nhận của bạn.",
+    "suggestionTitle": "Có phải bạn muốn nói “{{term}}”?",
+    "suggestionDescription": "Thêm vào từ điển cá nhân để Nova nhận diện tốt hơn.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Bỏ qua",
+    "added": "Đã thêm “{{term}}” vào từ điển của bạn."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Chế độ cuộc họp",
+    "description": "Biến cuộc họp thành báo cáo bằng văn bản. Nova ghi lại micrô của bạn và âm thanh của những người tham gia khác, rồi tạo bản tóm tắt tách riêng những gì bạn nói và những gì họ nói.",
+    "start": "Bắt đầu cuộc họp",
+    "starting": "Đang bắt đầu…",
+    "finish": "Kết thúc",
+    "finishing": "Đang kết thúc…",
+    "capturing": "Đang ghi {{app}}",
+    "capturingHint": "Nova đang ghi lại cuộc họp này. Kết thúc để nhận báo cáo.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Người khác",
+    "reportTitle": "Báo cáo cuộc họp",
+    "reportMeta": "Đã chép lời {{transcribed}} đoạn, bỏ qua {{skipped}} đoạn",
+    "reportEmpty": "Không ghi được gì — không nghe thấy ai trong cuộc họp.",
+    "reportNotTranscribed": "Nova đã ghi được âm thanh nhưng không thể chép lời. Hãy đảm bảo mô hình đã được tải xuống và thực sự có người đang nói, rồi thử lại.",
+    "showTranscript": "Hiện bản chép lời thô",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Trước khi bắt đầu",
+      "subtitle": "Điều này liên quan đến những người khác trong cuộc họp của bạn.",
+      "body": "Sau khi bắt đầu, Nova cũng ghi lại giọng nói của những người tham gia khác — không chỉ của bạn — khi ứng dụng họp được phát hiện đang ở nền trước. Tùy nơi bạn ở, pháp luật có thể yêu cầu bạn thông báo cho họ trước. Nova không thể làm việc này thay bạn.",
+      "checkbox": "Tôi sẽ thông báo cho những người tham gia khác trước mỗi cuộc họp được ghi lại.",
+      "cancel": "Hủy",
+      "confirm": "Bắt đầu ghi"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "Không có ứng dụng họp nào ở nền trước. Hãy mở cuộc họp, giữ cửa sổ của nó hoạt động rồi bắt đầu lại.",
+      "already_running": "Một cuộc họp đang được ghi.",
+      "no_active_meeting": "Hiện không có cuộc họp nào đang được ghi.",
+      "unavailable": "Máy tính này không thể ghi âm thanh của riêng một ứng dụng. Cần Windows 10 phiên bản 2004 trở lên.",
+      "no_audio": "Luồng đã mở nhưng không có âm thanh. Hãy kiểm tra xem cuộc họp có đang phát âm thanh trên máy tính này không.",
+      "stream_error": "Quá trình ghi đã dừng đột ngột.",
+      "requires_ultra": "Chế độ cuộc họp yêu cầu Nova Ultra.",
+      "internal": "Không thể bắt đầu cuộc họp."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Không phát hiện ứng dụng họp. Hãy mở cuộc họp (Zoom, Teams, Google Meet…) rồi làm mới.",
+    "pickApp": "Chọn cuộc họp cần ghi.",
+    "oneApp": "Sẵn sàng ghi {{app}}.",
+    "refresh": "Làm mới",
+    "newMeeting": "Cuộc họp mới"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Kết nối với tổ chức của bạn",
+    "subtitle": "Hãy dùng tài khoản do tổ chức của bạn cung cấp.",
+    "emailAlternative": "Dùng mã qua email thay thế",
+    "server": "Máy chủ của tổ chức",
+    "email": "Email công việc",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "Email của tổ chức",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Gửi mã",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova đã sẵn sàng trên máy tính này.",
+    "processing": "Dịch vụ của tổ chức",
+    "retry": "Thử lại",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova không đọc được cấu hình được quản lý của máy tính này. Hãy liên hệ bộ phận CNTT.",
+      "organizationUnavailable": "Tổ chức này hiện không khả dụng. Hãy liên hệ bộ phận CNTT.",
+      "discovery": "Nova không tìm thấy máy chủ của tổ chức bạn. Hãy kiểm tra kết nối và thử lại.",
+      "authMethodUnavailable": "Tổ chức của bạn yêu cầu phương thức đăng nhập mà phiên bản này chưa hỗ trợ."
     }
   },
   "organizationWording": {

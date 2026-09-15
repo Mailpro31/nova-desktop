@@ -13,7 +13,7 @@
     "models": "ביצועים",
     "advanced": "מתקדם",
     "postProcessing": "עיבוד משלים",
-    "meeting": "Meeting",
+    "meeting": "פגישה",
     "history": "היסטוריה",
     "prompts": "פרומפטים",
     "structuredNotes": "הערות מובנות",
@@ -795,10 +795,10 @@
     "upgrade": "רכישת מנוי"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "זמן הקלדה שנחסך: ≈ {{count}} דק׳",
+    "minutes_other": "זמן הקלדה שנחסך: ≈ {{count}} דק׳",
+    "words_one": "{{count}} מילה הוכתבה השבוע",
+    "words_other": "{{count}} מילים הוכתבו השבוע"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "פקודות קוליות",
+    "description": "מבין „פסקה חדשה”, „שורה חדשה”, „סימן שאלה” ופקודות Nova מפורשות לפתקים, לרשימות, לפגישות או לביטול ההכתבה הנוכחית.",
+    "added": "{{word}} נוסף למילון האישי"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "הסרה",
+    "upgradeToUltra": "שדרוג ל-Nova Ultra",
+    "requiresTier": "דורש {{tier}}",
     "active": "הרישיון פעיל",
     "trial": {
       "badge": "ניסיון Pro",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "המנוע המקוון שמור ל-Nova Pro ו-Ultra — הטקסט הודבק ללא ניסוח מחדש."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "ללמוד את אוצר המילים שלי",
+    "description": "כש-Nova מזהה שם או מונח שאתם מכתיבים לעיתים קרובות, הוא מציע להוסיף אותו למילון האישי שלכם. שום דבר לא נוסף בלי אישור שלכם.",
+    "suggestionTitle": "האם התכוונתם ל„{{term}}”?",
+    "suggestionDescription": "הוסיפו אותו למילון האישי כדי ש-Nova יזהה אותו טוב יותר.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "התעלמות",
+    "added": "„{{term}}” נוסף למילון שלכם."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "מצב פגישה",
+    "description": "הפכו פגישה לדוח כתוב. Nova קולט את המיקרופון שלכם ואת הקול של שאר המשתתפים, ואז מפיק סיכום שמפריד בין מה שאמרתם לבין מה שהם אמרו.",
+    "start": "התחלת פגישה",
+    "starting": "מתחיל…",
+    "finish": "סיום",
+    "finishing": "מסיים…",
+    "capturing": "קולט את {{app}}",
+    "capturingHint": "Nova מקליט את הפגישה. סיימו כדי לקבל את הדוח.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "אחרים",
+    "reportTitle": "דוח פגישה",
+    "reportMeta": "קטעים שתומללו: {{transcribed}}, שדולגו: {{skipped}}",
+    "reportEmpty": "לא נקלט דבר — אף אחד לא נשמע במהלך הפגישה.",
+    "reportNotTranscribed": "Nova קלט קול אבל לא הצליח לתמלל אותו. ודאו שהמודל הורד ושמישהו באמת דיבר, ונסו שוב.",
+    "showTranscript": "הצגת התמלול הגולמי",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "לפני שמתחילים",
+      "subtitle": "זה נוגע לאנשים האחרים בפגישה שלכם.",
+      "body": "לאחר ההתחלה, Nova מקליט גם את הקולות של שאר המשתתפים — לא רק את שלכם — כל עוד אפליקציית הפגישות שזוהתה פתוחה בחזית. בהתאם למקום שבו אתם נמצאים, ייתכן שהחוק מחייב אתכם להודיע להם קודם. Nova לא יכול לעשות זאת במקומכם.",
+      "checkbox": "אודיע לשאר המשתתפים לפני כל פגישה שמוקלטת.",
+      "cancel": "ביטול",
+      "confirm": "התחלת הקלטה"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "אין אפליקציית פגישות בחזית. פתחו את הפגישה, השאירו את החלון שלה פעיל והתחילו שוב.",
+      "already_running": "כבר מתבצעת הקלטה של פגישה.",
+      "no_active_meeting": "אין כרגע פגישה בהקלטה.",
+      "unavailable": "המחשב הזה לא יכול לקלוט קול של אפליקציה בודדת. נדרש Windows 10 גרסה 2004 ואילך.",
+      "no_audio": "הזרם נפתח אך לא הפיק קול. בדקו שהפגישה משמיעה קול במחשב הזה.",
+      "stream_error": "ההקלטה נעצרה באופן בלתי צפוי.",
+      "requires_ultra": "מצב פגישה דורש Nova Ultra.",
+      "internal": "לא ניתן היה להתחיל את הפגישה."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "לא זוהתה אפליקציית פגישות. פתחו את הפגישה (Zoom, Teams, Google Meet…) ואז רעננו.",
+    "pickApp": "בחרו איזו פגישה להקליט.",
+    "oneApp": "מוכן לקלוט את {{app}}.",
+    "refresh": "רענון",
+    "newMeeting": "פגישה חדשה"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "התחברות לארגון שלכם",
+    "subtitle": "השתמשו בחשבון שהארגון שלכם סיפק.",
+    "emailAlternative": "שימוש בקוד באימייל במקום זאת",
+    "server": "שרת הארגון",
+    "email": "אימייל בעבודה",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "דוא\"ל הארגון",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "שליחת הקוד",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova מוכן במחשב הזה.",
+    "processing": "שירות הארגון",
+    "retry": "ניסיון נוסף",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova לא הצליח לקרוא את ההגדרה המנוהלת של המחשב הזה. פנו לצוות ה-IT.",
+      "organizationUnavailable": "הארגון הזה אינו זמין. פנו לצוות ה-IT.",
+      "discovery": "Nova לא הצליח למצוא את השרת של הארגון. בדקו את החיבור ונסו שוב.",
+      "authMethodUnavailable": "הארגון שלכם דורש שיטת כניסה שהגרסה הזו לא תומכת בה."
     }
   },
   "organizationWording": {

@@ -13,7 +13,7 @@
     "models": "Leistung",
     "advanced": "Erweitert",
     "postProcessing": "Nachbearbeitung",
-    "meeting": "Meeting",
+    "meeting": "Besprechung",
     "history": "Verlauf",
     "prompts": "Prompts",
     "structuredNotes": "Strukturierte Notizen",
@@ -795,10 +795,10 @@
     "upgrade": "Abonnieren"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "≈ {{count}} Minute Tippen gespart",
+    "minutes_other": "≈ {{count}} Minuten Tippen gespart",
+    "words_one": "{{count}} Wort diese Woche diktiert",
+    "words_other": "{{count}} Wörter diese Woche diktiert"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "Sprachbefehle",
+    "description": "Versteht „neuer Absatz“, „neue Zeile“, „Fragezeichen“ sowie ausdrückliche Nova-Befehle für Notizen, Listen, Besprechungen oder zum Abbrechen des aktuellen Diktats.",
+    "added": "{{word}} wurde dem persönlichen Wörterbuch hinzugefügt"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "Entfernen",
+    "upgradeToUltra": "Auf Nova Ultra upgraden",
+    "requiresTier": "Erfordert {{tier}}",
     "active": "Lizenz aktiv",
     "trial": {
       "badge": "Pro-Testversion",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "Die Online-Engine ist Nova Pro und Ultra vorbehalten — Ihr Text wurde ohne Umformulierung eingefügt."
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "Meinen Wortschatz lernen",
+    "description": "Wenn Nova einen Namen oder Begriff bemerkt, den Sie oft diktieren, schlägt Nova vor, ihn Ihrem persönlichen Lexikon hinzuzufügen. Ohne Ihre Bestätigung wird nie etwas hinzugefügt.",
+    "suggestionTitle": "Meinten Sie „{{term}}“?",
+    "suggestionDescription": "Fügen Sie ihn Ihrem persönlichen Lexikon hinzu, damit Nova ihn besser erkennt.",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "Ignorieren",
+    "added": "„{{term}}“ wurde Ihrem Lexikon hinzugefügt."
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "Besprechungsmodus",
+    "description": "Machen Sie aus einer Besprechung einen schriftlichen Bericht. Nova nimmt Ihr Mikrofon und den Ton der anderen Teilnehmenden auf und erstellt dann eine Zusammenfassung, die trennt, was Sie gesagt haben und was die anderen gesagt haben.",
+    "start": "Besprechung starten",
+    "starting": "Wird gestartet…",
+    "finish": "Beenden",
+    "finishing": "Wird beendet…",
+    "capturing": "{{app}} wird aufgenommen",
+    "capturingHint": "Nova nimmt diese Besprechung auf. Beenden Sie sie, um den Bericht zu erhalten.",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "Andere",
+    "reportTitle": "Besprechungsbericht",
+    "reportMeta": "{{transcribed}} Abschnitte transkribiert, {{skipped}} übersprungen",
+    "reportEmpty": "Es wurde nichts aufgenommen — während der Besprechung war niemand zu hören.",
+    "reportNotTranscribed": "Nova hat Ton aufgenommen, konnte ihn aber nicht transkribieren. Stellen Sie sicher, dass Ihr Modell heruntergeladen ist und tatsächlich jemand gesprochen hat, und versuchen Sie es dann erneut.",
+    "showTranscript": "Rohtranskript anzeigen",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "Bevor Sie beginnen",
+      "subtitle": "Das betrifft die anderen Personen in Ihrer Besprechung.",
+      "body": "Nach dem Start nimmt Nova auch die Stimmen der anderen Teilnehmenden auf — nicht nur Ihre —, solange die erkannte Besprechungs-App im Vordergrund ist. Je nachdem, wo Sie sich befinden, kann das Gesetz verlangen, dass Sie sie vorher informieren. Nova kann das nicht für Sie übernehmen.",
+      "checkbox": "Ich informiere die anderen Teilnehmenden vor jeder aufgenommenen Besprechung.",
+      "cancel": "Abbrechen",
+      "confirm": "Aufnahme starten"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "Keine Besprechungs-App im Vordergrund. Öffnen Sie Ihre Besprechung, lassen Sie das Fenster aktiv und starten Sie erneut.",
+      "already_running": "Es wird bereits eine Besprechung aufgenommen.",
+      "no_active_meeting": "Derzeit wird keine Besprechung aufgenommen.",
+      "unavailable": "Dieser Computer kann den Ton einer einzelnen App nicht aufnehmen. Erforderlich ist Windows 10 Version 2004 oder neuer.",
+      "no_audio": "Der Stream wurde geöffnet, liefert aber keinen Ton. Prüfen Sie, ob die Besprechung auf diesem Computer Ton wiedergibt.",
+      "stream_error": "Die Aufnahme wurde unerwartet beendet.",
+      "requires_ultra": "Der Besprechungsmodus erfordert Nova Ultra.",
+      "internal": "Die Besprechung konnte nicht gestartet werden."
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "Keine Besprechungs-App erkannt. Öffnen Sie Ihre Besprechung (Zoom, Teams, Google Meet…) und aktualisieren Sie dann.",
+    "pickApp": "Wählen Sie, welche Besprechung aufgenommen werden soll.",
+    "oneApp": "Bereit, {{app}} aufzunehmen.",
+    "refresh": "Aktualisieren",
+    "newMeeting": "Neue Besprechung"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "Mit Ihrer Organisation verbinden",
+    "subtitle": "Verwenden Sie das Konto, das Ihre Organisation bereitstellt.",
+    "emailAlternative": "Stattdessen einen E-Mail-Code verwenden",
+    "server": "Server der Organisation",
+    "email": "Geschäftliche E-Mail-Adresse",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "E-Mail-Adresse Ihrer Organisation",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "Code senden",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova ist auf diesem Computer bereit.",
+    "processing": "Dienst der Organisation",
+    "retry": "Erneut versuchen",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova konnte die verwaltete Einrichtung dieses Computers nicht lesen. Wenden Sie sich an Ihr IT-Team.",
+      "organizationUnavailable": "Diese Organisation ist nicht verfügbar. Wenden Sie sich an Ihr IT-Team.",
+      "discovery": "Nova konnte den Server Ihrer Organisation nicht finden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "authMethodUnavailable": "Ihre Organisation verlangt eine Anmeldemethode, die diese Version nicht unterstützt."
     }
   },
   "organizationWording": {

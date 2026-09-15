@@ -13,7 +13,7 @@
     "models": "效能",
     "advanced": "進階",
     "postProcessing": "後處理",
-    "meeting": "Meeting",
+    "meeting": "會議",
     "history": "歷史紀錄",
     "prompts": "提示詞",
     "structuredNotes": "結構化筆記",
@@ -795,10 +795,10 @@
     "upgrade": "訂閱"
   },
   "weekStat": {
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved",
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week"
+    "minutes_one": "節省約 {{count}} 分鐘打字時間",
+    "minutes_other": "節省約 {{count}} 分鐘打字時間",
+    "words_one": "本週已聽寫 {{count}} 個字詞",
+    "words_other": "本週已聽寫 {{count}} 個字詞"
   },
   "performanceOptimizer": {
     "title": "Automatic optimization",
@@ -824,14 +824,14 @@
     }
   },
   "voiceCommands": {
-    "title": "Voice commands",
-    "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
-    "added": "{{word}} was added to the personal dictionary"
+    "title": "語音指令",
+    "description": "能聽懂「新段落」「換行」「問號」，以及用於筆記、清單、會議或取消目前聽寫的明確 Nova 指令。",
+    "added": "已將 {{word}} 加入個人字典"
   },
   "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
+    "remove": "移除",
+    "upgradeToUltra": "升級到 Nova Ultra",
+    "requiresTier": "需要 {{tier}}",
     "active": "授權已啟用",
     "trial": {
       "badge": "Pro 試用",
@@ -855,53 +855,53 @@
     "onlineEngineLocked": "線上引擎僅限 Nova Pro 和 Ultra——文字未經改寫即被貼上。"
   },
   "lexiconLearning": {
-    "title": "Learn my vocabulary",
-    "description": "When Nova notices a name or term you dictate often, it suggests adding it to your personal lexicon. Nothing is ever added without your confirmation.",
-    "suggestionTitle": "Did you mean “{{term}}”?",
-    "suggestionDescription": "Add it to your personal lexicon to improve how Nova recognises it.",
+    "title": "學習我的詞彙",
+    "description": "當 Nova 發現你經常口述某個名稱或術語時，會建議將它加入你的個人詞庫。未經你確認，絕不會加入任何內容。",
+    "suggestionTitle": "你是想說「{{term}}」嗎？",
+    "suggestionDescription": "將它加入個人詞庫，幫助 Nova 更準確地辨識。",
     "add": "Add",
-    "ignore": "Ignore",
-    "added": "“{{term}}” was added to your lexicon."
+    "ignore": "忽略",
+    "added": "已將「{{term}}」加入你的詞庫。"
   },
   "meeting": {
-    "title": "Meeting mode",
-    "description": "Turn a meeting into a written report. Nova captures your microphone and the other participants' sound, then produces a summary that separates what you said from what they said.",
-    "start": "Start meeting",
-    "starting": "Starting…",
-    "finish": "Finish",
-    "finishing": "Finishing…",
-    "capturing": "Capturing {{app}}",
-    "capturingHint": "Nova is recording this meeting. Finish to get the report.",
+    "title": "會議模式",
+    "description": "把會議變成書面報告。Nova 會錄下你的麥克風和其他與會者的聲音，然後產生一份摘要，把你說的和他們說的分開。",
+    "start": "開始會議",
+    "starting": "正在開始…",
+    "finish": "結束",
+    "finishing": "正在結束…",
+    "capturing": "正在錄製 {{app}}",
+    "capturingHint": "Nova 正在錄製這場會議。結束後即可取得報告。",
     "speakerYou": "You",
-    "speakerOthers": "Others",
-    "reportTitle": "Meeting report",
-    "reportMeta": "{{transcribed}} passages transcribed, {{skipped}} skipped",
-    "reportEmpty": "Nothing was captured — no one was heard during the meeting.",
-    "reportNotTranscribed": "Nova captured sound but couldn't transcribe it. Make sure your intelligence model is downloaded and that someone was actually speaking, then try again.",
-    "showTranscript": "Show raw transcript",
+    "speakerOthers": "其他人",
+    "reportTitle": "會議報告",
+    "reportMeta": "已轉寫 {{transcribed}} 段，略過 {{skipped}} 段",
+    "reportEmpty": "沒有錄到任何內容——會議期間沒有聽到任何人說話。",
+    "reportNotTranscribed": "Nova 錄到了聲音，但無法轉寫。請確認模型已下載，而且確實有人在說話，然後重試。",
+    "showTranscript": "顯示原始轉寫",
     "consent": {
-      "title": "Before you start",
-      "subtitle": "This concerns the other people in your meeting.",
-      "body": "Once started, Nova also records the other participants' voices — not only yours — while the detected meeting app is in the foreground. Depending on where you are, the law may require you to tell them first. Nova cannot do this for you.",
-      "checkbox": "I will let the other participants know before each captured meeting.",
-      "cancel": "Cancel",
-      "confirm": "Start capture"
+      "title": "開始之前",
+      "subtitle": "這關係到會議中的其他人。",
+      "body": "開始後，只要偵測到的會議應用程式位於前景，Nova 不只會錄下你的聲音，也會錄下其他與會者的聲音。依你所在的地區，法律可能要求你事先告知他們。Nova 無法替你完成這件事。",
+      "checkbox": "我會在每次錄製會議前告知其他與會者。",
+      "cancel": "取消",
+      "confirm": "開始錄製"
     },
     "errors": {
-      "no_meeting_app": "No meeting app in the foreground. Open your meeting, keep its window active, then start again.",
-      "already_running": "A meeting is already being captured.",
-      "no_active_meeting": "No meeting is currently being captured.",
-      "unavailable": "This computer cannot capture a single app's sound. Windows 10 version 2004 or newer is required.",
-      "no_audio": "The stream opened but produced no sound. Check that the meeting is playing sound on this computer.",
-      "stream_error": "The capture stopped unexpectedly.",
-      "requires_ultra": "Meeting mode requires Nova Ultra.",
-      "internal": "The meeting could not be started."
+      "no_meeting_app": "前景沒有會議應用程式。請開啟會議並讓其視窗保持在作用中，然後重新開始。",
+      "already_running": "已有會議正在錄製。",
+      "no_active_meeting": "目前沒有正在錄製的會議。",
+      "unavailable": "這台電腦無法單獨錄製某個應用程式的聲音。需要 Windows 10 2004 版或更新版本。",
+      "no_audio": "音訊串流已開啟，但沒有聲音。請檢查會議是否在這台電腦上播放聲音。",
+      "stream_error": "錄製意外停止。",
+      "requires_ultra": "會議模式需要 Nova Ultra。",
+      "internal": "無法開始會議。"
     },
-    "noApp": "No meeting app detected. Open your meeting (Zoom, Teams, Google Meet…), then refresh.",
-    "pickApp": "Choose which meeting to capture.",
-    "oneApp": "Ready to capture {{app}}.",
-    "refresh": "Refresh",
-    "newMeeting": "New meeting"
+    "noApp": "未偵測到會議應用程式。請開啟會議（Zoom、Teams、Google Meet…），然後重新整理。",
+    "pickApp": "選擇要錄製的會議。",
+    "oneApp": "已準備好錄製 {{app}}。",
+    "refresh": "重新整理",
+    "newMeeting": "新會議"
   },
   "campus": {
     "onboarding": {
@@ -1659,23 +1659,23 @@
   },
   "organizationOnboarding": {
     "label": "Nova Organization",
-    "title": "Connect to your organization",
-    "subtitle": "Use the account provided by your organization.",
-    "emailAlternative": "Use an email code instead",
-    "server": "Organization server",
-    "email": "Work email",
+    "title": "連線到你的組織",
+    "subtitle": "請使用你所屬組織提供的帳號。",
+    "emailAlternative": "改用電子郵件驗證碼",
+    "server": "組織伺服器",
+    "email": "工作電子郵件",
     "emailPlaceholder": "name@example.com",
     "organizationEmail": "組織電子郵件",
     "serverPlaceholder": "https://nova.example.com",
     "sendCode": "傳送驗證碼",
-    "readySubtitle": "Nova is ready on this computer.",
-    "processing": "Organization service",
-    "retry": "Try again",
+    "readySubtitle": "Nova 已在這台電腦上準備就緒。",
+    "processing": "組織服務",
+    "retry": "重試",
     "errors": {
-      "managedConfiguration": "Nova could not read this computer's managed setup. Contact your IT team.",
-      "organizationUnavailable": "This organization is not available. Contact your IT team.",
-      "discovery": "Nova could not find your organization's server. Check your connection and try again.",
-      "authMethodUnavailable": "Your organization requires a sign-in method that this version does not support."
+      "managedConfiguration": "Nova 無法讀取這台電腦的受管設定。請聯絡你的 IT 團隊。",
+      "organizationUnavailable": "此組織無法使用。請聯絡你的 IT 團隊。",
+      "discovery": "Nova 找不到你所屬組織的伺服器。請檢查網路後重試。",
+      "authMethodUnavailable": "你的組織要求使用此版本不支援的登入方式。"
     }
   },
   "organizationWording": {
