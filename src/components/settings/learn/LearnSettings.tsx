@@ -5,14 +5,17 @@ import { ChevronRight } from "lucide-react";
 import { PageHeader } from "../../shell/PageHeader";
 import LessonView from "./LessonView";
 import {
+  dueState,
   lessonsIndex,
   overallProgress,
+  pendingRequiredLessons,
   pillarSummaries,
   recommendedLesson,
   statusOf,
   type LearningCatalog,
   type ProgressSnapshot,
 } from "@/lib/learning/model";
+import { formatDate } from "@/utils/dateFormat";
 import { useLearningStore } from "@/stores/learningStore";
 import { catalogLanguageDiffers, languageName } from "@/lib/learning/language";
 
@@ -33,9 +36,18 @@ const LessonRow: React.FC<{
   title: string;
   minutes: number;
   status: string;
+  required?: boolean;
+  dueAt?: number | null;
   onOpen: () => void;
-}> = ({ title, minutes, status, onOpen }) => {
-  const { t } = useTranslation();
+}> = ({ title, minutes, status, required, dueAt, onOpen }) => {
+  const { t, i18n } = useTranslation();
+  const due = status === "completed" ? null : dueState(dueAt);
+  const dueText =
+    due && dueAt
+      ? t(due === "overdue" ? "learn.required.overdue" : "learn.required.due", {
+          date: formatDate(String(dueAt), i18n.language),
+        })
+      : null;
   return (
     <button
       type="button"
@@ -48,6 +60,16 @@ const LessonRow: React.FC<{
           {t("learn.lesson.minutes", { count: minutes })}
           {status === "completed" ? ` · ${t("learn.status.completed")}` : ""}
           {status === "in_progress" ? ` · ${t("learn.status.inProgress")}` : ""}
+          {required ? ` · ${t("learn.required.badge")}` : ""}
+          {dueText && (
+            <span
+              className={
+                due === "overdue" || due === "soon"
+                  ? "font-medium text-text"
+                  : undefined
+              }
+            >{` · ${dueText}`}</span>
+          )}
         </span>
       </span>
       <ChevronRight
@@ -74,6 +96,10 @@ const Home: React.FC<{
     [catalog, progress],
   );
   const index = useMemo(() => lessonsIndex(catalog), [catalog]);
+  const requiredPending = useMemo(
+    () => pendingRequiredLessons(catalog, progress),
+    [catalog, progress],
+  );
   const resuming =
     next !== null && statusOf(progress, next.lesson.id) === "in_progress";
 
@@ -95,6 +121,28 @@ const Home: React.FC<{
           >
             {resuming ? t("learn.resume") : t("learn.start")}
           </button>
+        </section>
+      )}
+
+      {/* Ce que l'organisation attend, avant la découverte : la liste reste
+          absente tant que rien n'est obligatoire. */}
+      {requiredPending.length > 0 && (
+        <section aria-label={t("learn.required.title")} className="space-y-1.5">
+          <h3 className="text-sm font-medium text-text">
+            {t("learn.required.title")}
+          </h3>
+          <div className="divide-y divide-mid-gray/10 rounded-lg border border-accent/30">
+            {requiredPending.map((entry) => (
+              <LessonRow
+                key={entry.lesson.id}
+                title={entry.lesson.title}
+                minutes={entry.lesson.estimated_minutes}
+                status={statusOf(progress, entry.lesson.id)}
+                dueAt={entry.lesson.due_at}
+                onOpen={() => onOpen(entry.lesson.id)}
+              />
+            ))}
+          </div>
         </section>
       )}
 
@@ -157,6 +205,8 @@ const Home: React.FC<{
                   title={lesson.title}
                   minutes={lesson.estimated_minutes}
                   status={statusOf(progress, lesson.id)}
+                  required={lesson.required}
+                  dueAt={lesson.due_at}
                   onOpen={() => onOpen(lesson.id)}
                 />
               ))}

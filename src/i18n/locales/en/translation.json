@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Learn is unavailable right now. Try again in a moment."
+    },
+    "required": {
+      "title": "Required by your organization",
+      "badge": "Required",
+      "due": "Due {{date}}",
+      "overdue": "Overdue since {{date}}"
     }
   },
   "edition": {

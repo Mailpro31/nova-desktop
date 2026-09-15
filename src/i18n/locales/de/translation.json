@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Lernen ist gerade nicht verfügbar. Versuche es gleich noch einmal."
+    },
+    "required": {
+      "title": "Von Ihrer Organisation verlangt",
+      "badge": "Pflicht",
+      "due": "Fällig am {{date}}",
+      "overdue": "Überfällig seit {{date}}"
     }
   },
   "edition": {

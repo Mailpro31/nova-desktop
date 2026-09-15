@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Öğren şu anda kullanılamıyor. Birazdan tekrar deneyin."
+    },
+    "required": {
+      "title": "Kuruluşunuz tarafından zorunlu tutulanlar",
+      "badge": "Zorunlu",
+      "due": "Son tarih: {{date}}",
+      "overdue": "{{date}} tarihinden beri gecikmiş"
     }
   },
   "edition": {

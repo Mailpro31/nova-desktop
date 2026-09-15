@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "Lär dig är inte tillgängligt just nu. Försök igen om en stund."
+    },
+    "required": {
+      "title": "Krävs av din organisation",
+      "badge": "Obligatorisk",
+      "due": "Senast {{date}}",
+      "overdue": "Försenad sedan {{date}}"
     }
   },
   "edition": {

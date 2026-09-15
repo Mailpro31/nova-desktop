@@ -63,6 +63,10 @@ export interface LearningLesson {
   version: number;
   tags: string[];
   blocks: LearningBlock[];
+  /** Rendue obligatoire par l'organisation. Absent d'un serveur plus ancien. */
+  required?: boolean;
+  /** Échéance fixée par l'organisation, en secondes depuis l'époque Unix. */
+  due_at?: number | null;
 }
 
 export interface LearningModule {
@@ -244,14 +248,50 @@ export function overallProgress(
 }
 
 /**
+ * Les leçons que l'organisation exige et qui ne sont pas terminées.
+ *
+ * L'échéance la plus proche d'abord ; sans échéance, après celles qui en ont
+ * une ; à égalité, l'ordre du catalogue.
+ */
+export function pendingRequiredLessons(
+  catalog: LearningCatalog,
+  progress: ProgressSnapshot | null,
+): LessonLocation[] {
+  const due = (entry: LessonLocation) =>
+    entry.lesson.due_at ?? Number.POSITIVE_INFINITY;
+  return [...lessonsIndex(catalog).values()]
+    .filter(
+      (entry) =>
+        entry.lesson.required === true &&
+        statusOf(progress, entry.lesson.id) !== "completed",
+    )
+    .sort((a, b) => due(a) - due(b));
+}
+
+export type DueState = "overdue" | "soon" | "later";
+
+/** Dépassée, dans les sept jours, ou plus tard. `now` en millisecondes. */
+export function dueState(
+  dueAt: number | null | undefined,
+  now: number = Date.now(),
+): DueState | null {
+  if (dueAt === null || dueAt === undefined) return null;
+  const remaining = dueAt * 1000 - now;
+  if (remaining < 0) return "overdue";
+  return remaining <= 7 * 24 * 60 * 60 * 1000 ? "soon" : "later";
+}
+
+/**
  * Ce qu'il faut proposer ensuite.
  *
  * Déterministe et explicable, dans cet ordre :
  *
  * 1. la leçon commencée et non finie — reprendre prime sur découvrir ;
- * 2. sinon, la première leçon non faite du pilier le moins avancé, ce qui
+ * 2. sinon, la leçon obligatoire non faite dont l'échéance est la plus proche :
+ *    l'organisation l'attend, elle passe avant la découverte ;
+ * 3. sinon, la première leçon non faite du pilier le moins avancé, ce qui
  *    évite de laisser un pilier entier de côté ;
- * 3. à égalité, l'ordre du catalogue tranche.
+ * 4. à égalité, l'ordre du catalogue tranche.
  *
  * Aucun modèle n'intervient. Une recommandation qu'on ne sait pas expliquer
  * n'aide personne à s'y fier, et elle coûterait un appel d'inférence à
@@ -270,6 +310,9 @@ export function recommendedLesson(
     (entry) => statusOf(progress, entry.lesson.id) === "in_progress",
   );
   if (inProgress) return inProgress;
+
+  const required = pendingRequiredLessons(catalog, progress);
+  if (required.length > 0) return required[0];
 
   const summaries = pillarSummaries(catalog, progress).filter(
     (summary) => summary.completed < summary.total,

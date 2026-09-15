@@ -1613,6 +1613,12 @@
     },
     "error": {
       "catalog": "学习暂时不可用，请稍后再试。"
+    },
+    "required": {
+      "title": "组织要求完成",
+      "badge": "必修",
+      "due": "截止日期：{{date}}",
+      "overdue": "已于 {{date}} 逾期"
     }
   },
   "edition": {
