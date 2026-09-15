@@ -1,0 +1,17 @@
+{
+  "reason": "Names that stay identical in every language: model names, key combinations, example addresses and Nova product names. The translation review does not count them as left in English. `*` matches one key segment.",
+  "keys": [
+    "onboarding.models.*.name",
+    "settings.advanced.autoSubmit.options.*",
+    "settings.postProcessing.api.baseUrl.placeholder",
+    "campus.onboarding.email.serverPlaceholder",
+    "campus.onboarding.email.emailPlaceholder",
+    "campus.onboarding.lab.productName",
+    "campus.onboarding.label",
+    "home.engine.local",
+    "home.engine.local-fallback",
+    "sidebar.aiSkills",
+    "sidebar.novaCommands",
+    "settings.about.acknowledgments.ggml.title"
+  ]
+}
