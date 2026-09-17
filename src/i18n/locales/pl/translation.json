@@ -1464,7 +1464,9 @@
       "save": "Nie udało się zapisać stylu.",
       "delete": "Nie udało się usunąć stylu."
     },
-    "organizationManaged": "Te style są publikowane przez Twoją organizację. Nie można ich tu edytować."
+    "organizationManaged": "Te style są publikowane przez Twoją organizację. Nie można ich tu edytować.",
+    "disabledByOrganization": "Wyłączony przez Twoją organizację",
+    "disabledByOrganizationHint": "Nova używa innego stylu dla Twoich dyktowań."
   },
   "history": {
     "subtitle": "Wszystko, co podyktowano w Novie.",

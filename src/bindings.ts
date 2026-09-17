@@ -1923,12 +1923,22 @@ limits?: CampusLimits | null;
  * explicitement. Sans ce champ, serde l'écartait et aucune fermeture
  * n'atteignait l'interface.
  */
-closed_capabilities?: string[] | null }
+closed_capabilities?: string[] | null; 
+/**
+ * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
+ * aucun Style n'est alors désactivé.
+ */
+style_policy?: CampusStylePolicy | null }
 export type CampusLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.
  */
 max_dictation_seconds?: number | null }
+export type CampusStylePolicy = { 
+/**
+ * Identifiants des Styles désactivés — intégrés ou d'organisation.
+ */
+disabled_style_ids?: string[] }
 /**
  * Appartenance du membre à l'organisation, telle que le serveur la décide.
  */

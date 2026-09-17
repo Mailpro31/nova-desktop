@@ -1464,7 +1464,9 @@
       "save": "Stilen kunde inte sparas.",
       "delete": "Stilen kunde inte tas bort."
     },
-    "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här."
+    "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här.",
+    "disabledByOrganization": "Inaktiverad av din organisation",
+    "disabledByOrganizationHint": "Nova använder en annan stil för dina dikteringar."
   },
   "history": {
     "subtitle": "Allt du har dikterat med Nova.",

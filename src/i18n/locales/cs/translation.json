@@ -1464,7 +1464,9 @@
       "save": "Styl se nepodařilo uložit.",
       "delete": "Styl se nepodařilo smazat."
     },
-    "organizationManaged": "Tyto styly publikuje vaše organizace. Zde je nelze upravovat."
+    "organizationManaged": "Tyto styly publikuje vaše organizace. Zde je nelze upravovat.",
+    "disabledByOrganization": "Vypnuto vaší organizací",
+    "disabledByOrganizationHint": "Nova pro vaše diktáty používá jiný styl."
   },
   "history": {
     "subtitle": "Vše, co jste s Novou nadiktovali.",

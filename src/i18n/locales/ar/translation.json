@@ -1464,7 +1464,9 @@
       "save": "تعذّر حفظ الأسلوب.",
       "delete": "تعذّر حذف الأسلوب."
     },
-    "organizationManaged": "تنشر مؤسستك هذه الأنماط. لا يمكن تعديلها هنا."
+    "organizationManaged": "تنشر مؤسستك هذه الأنماط. لا يمكن تعديلها هنا.",
+    "disabledByOrganization": "عطّلته مؤسستك",
+    "disabledByOrganizationHint": "يستخدم Nova نمطًا آخر لإملاءاتك."
   },
   "history": {
     "subtitle": "كل ما أمليته باستخدام Nova.",

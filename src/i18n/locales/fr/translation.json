@@ -1464,7 +1464,9 @@
       "save": "Le style n'a pas pu être enregistré.",
       "delete": "Le style n'a pas pu être supprimé."
     },
-    "organizationManaged": "Ces Styles sont publiés par votre organisation. Ils ne peuvent pas être modifiés ici."
+    "organizationManaged": "Ces Styles sont publiés par votre organisation. Ils ne peuvent pas être modifiés ici.",
+    "disabledByOrganization": "Désactivé par votre organisation",
+    "disabledByOrganizationHint": "Nova utilise un autre style pour vos dictées."
   },
   "history": {
     "subtitle": "Tout ce que vous avez dicté avec Nova.",

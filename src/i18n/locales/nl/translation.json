@@ -1464,7 +1464,9 @@
       "save": "De stijl kon niet worden opgeslagen.",
       "delete": "De stijl kon niet worden verwijderd."
     },
-    "organizationManaged": "Deze stijlen worden gepubliceerd door je organisatie. Ze kunnen hier niet worden bewerkt."
+    "organizationManaged": "Deze stijlen worden gepubliceerd door je organisatie. Ze kunnen hier niet worden bewerkt.",
+    "disabledByOrganization": "Uitgeschakeld door je organisatie",
+    "disabledByOrganizationHint": "Nova gebruikt een andere stijl voor je dictaten."
   },
   "history": {
     "subtitle": "Alles wat u met Nova hebt gedicteerd.",

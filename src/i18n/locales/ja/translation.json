@@ -1464,7 +1464,9 @@
       "save": "文体を保存できませんでした。",
       "delete": "文体を削除できませんでした。"
     },
-    "organizationManaged": "これらのスタイルは組織が公開しています。ここでは編集できません。"
+    "organizationManaged": "これらのスタイルは組織が公開しています。ここでは編集できません。",
+    "disabledByOrganization": "組織によって無効化されています",
+    "disabledByOrganizationHint": "Nova はディクテーションに別のスタイルを使用します。"
   },
   "history": {
     "subtitle": "Nova で音声入力したすべて。",

@@ -1106,6 +1106,9 @@ pub(crate) fn resolve_effective_style(
         Some(id) => id.to_string(),
         None => settings.post_process_selected_prompt_id.clone()?,
     };
+    // Un Style désactivé par l'organisation ne s'applique pas, qu'il ait été
+    // choisi ou désigné par le Style automatique.
+    let selected_prompt_id = crate::style_policy::permitted(&selected_prompt_id)?;
 
     effective_style(&settings, &selected_prompt_id, license_key)
 }
@@ -1214,6 +1217,12 @@ async fn post_process_with_provider(
                 return None;
             }
         },
+    };
+    // Un Style désactivé par l'organisation ne s'applique pas : repli sur un
+    // Style intégré encore autorisé, ou dictée brute s'il n'en reste aucun.
+    let Some(selected_prompt_id) = crate::style_policy::permitted(&selected_prompt_id) else {
+        debug!("Post-processing skipped because every fallback Style is disabled");
+        return None;
     };
 
     let prompt = match resolve_style_prompt(&settings, &selected_prompt_id) {
