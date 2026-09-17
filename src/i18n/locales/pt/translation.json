@@ -1464,7 +1464,9 @@
       "save": "Não foi possível guardar o estilo.",
       "delete": "Não foi possível eliminar o estilo."
     },
-    "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui."
+    "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui.",
+    "disabledByOrganization": "Desativado pela sua organização",
+    "disabledByOrganizationHint": "O Nova usa outro estilo para os seus ditados."
   },
   "history": {
     "subtitle": "Tudo o que ditou com a Nova.",

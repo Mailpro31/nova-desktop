@@ -908,6 +908,17 @@ pub struct CampusMeResponse {
     /// n'atteignait l'interface.
     #[serde(default)]
     pub closed_capabilities: Option<Vec<String>>,
+    /// Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
+    /// aucun Style n'est alors désactivé.
+    #[serde(default)]
+    pub style_policy: Option<CampusStylePolicy>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusStylePolicy {
+    /// Identifiants des Styles désactivés — intégrés ou d'organisation.
+    #[serde(default)]
+    pub disabled_style_ids: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -1481,6 +1492,7 @@ pub async fn logout_campus_session(app: AppHandle) -> Result<(), String> {
         let _ = response;
     }
     crate::dictation_limit::set_limit(None);
+    crate::style_policy::set_disabled(None);
     clear_campus_session(app)
 }
 
@@ -1506,6 +1518,11 @@ pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
         me.limits
             .as_ref()
             .and_then(|limits| limits.max_dictation_seconds),
+    );
+    crate::style_policy::set_disabled(
+        me.style_policy
+            .as_ref()
+            .map(|policy| policy.disabled_style_ids.clone()),
     );
     Ok(me)
 }

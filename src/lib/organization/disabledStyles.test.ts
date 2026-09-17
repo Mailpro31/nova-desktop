@@ -67,9 +67,9 @@ describe("Styles désactivés annoncés par /api/me", () => {
 
   test("hors connexion, aucun Style n'est présenté comme désactivé", () => {
     expect(disabledStyleSet(null).size).toBe(0);
-    expect(disabledStyleSet(["nova_style_prompt"]).has("nova_style_prompt")).toBe(
-      true,
-    );
+    expect(
+      disabledStyleSet(["nova_style_prompt"]).has("nova_style_prompt"),
+    ).toBe(true);
   });
 });
 

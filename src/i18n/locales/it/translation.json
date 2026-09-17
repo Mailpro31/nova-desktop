@@ -1464,7 +1464,9 @@
       "save": "Impossibile salvare lo stile.",
       "delete": "Impossibile eliminare lo stile."
     },
-    "organizationManaged": "Questi stili sono pubblicati dalla tua organizzazione. Non possono essere modificati qui."
+    "organizationManaged": "Questi stili sono pubblicati dalla tua organizzazione. Non possono essere modificati qui.",
+    "disabledByOrganization": "Disattivato dalla tua organizzazione",
+    "disabledByOrganizationHint": "Nova usa un altro stile per le tue dettature."
   },
   "history": {
     "subtitle": "Tutto ciò che hai dettato con Nova.",

@@ -1,6 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Check, Lock, MoreVertical, Pencil, Plus, Trash2 } from "lucide-react";
+import {
+  Ban,
+  Check,
+  Lock,
+  MoreVertical,
+  Pencil,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { AutoStyleSettings } from "./AutoStyleSettings";
@@ -14,6 +22,7 @@ import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
 import { BUILTIN_STYLE_IDS, styleLockFeature } from "@/lib/builtinStyles";
 import { isOrganizationMode } from "@/lib/mode";
+import { disabledStyleSet } from "@/lib/organization/disabledStyles";
 
 /** Ordre d'affichage des presets : du plus courant au plus spécialisé. */
 const STYLE_ORDER = [
@@ -45,6 +54,8 @@ interface StyleItem {
   kind: "builtin" | "organization" | "personal";
   /** Fonctionnalité de palier manquante, `null` si le Style est accessible. */
   lockedBy: string | null;
+  /** Désactivé par l'organisation : affiché, jamais choisi ni appliqué. */
+  disabledByOrganization: boolean;
 }
 
 /**
@@ -97,6 +108,12 @@ export const StylesList: React.FC = () => {
   const organizationStyles = useCampusStore(
     (state) => state.organizationCatalog?.styles,
   );
+  // Les Styles que l'organisation a retirés. Le poste ne les applique plus
+  // (`style_policy.rs`) ; la page les montre, barrés d'un bandeau.
+  const disabledIds = useCampusStore(
+    (state) => state.serverIdentity?.disabledStyleIds,
+  );
+  const disabled = useMemo(() => disabledStyleSet(disabledIds), [disabledIds]);
 
   const organization = useMemo<StyleItem[]>(
     () =>
@@ -108,8 +125,9 @@ export const StylesList: React.FC = () => {
         // Jamais verrouillé par un palier : l'autorisation vient de
         // l'appartenance à l'organisation et des policies, pas d'Ultra.
         lockedBy: null,
+        disabledByOrganization: disabled.has(style.id),
       })),
-    [organizationStyles],
+    [organizationStyles, disabled],
   );
 
   const { builtins, personal } = useMemo(() => {
@@ -126,6 +144,7 @@ export const StylesList: React.FC = () => {
           : "",
         kind: isBuiltin ? "builtin" : "personal",
         lockedBy: lockFor(p.id),
+        disabledByOrganization: disabled.has(p.id),
       };
     };
 
@@ -136,7 +155,7 @@ export const StylesList: React.FC = () => {
         .sort((a, b) => STYLE_ORDER.indexOf(a.id) - STYLE_ORDER.indexOf(b.id)),
       personal: items.filter((i) => i.kind === "personal"),
     };
-  }, [prompts, campusMode, lockFor, t]);
+  }, [prompts, campusMode, lockFor, t, disabled]);
 
   // Créer un Style demande Nova Ultra en personnel ; en campus c'est ouvert.
   const canEdit = campusMode || (features?.custom_styles ?? false);
@@ -190,6 +209,7 @@ export const StylesList: React.FC = () => {
           description={t("campus.styles.descriptions.auto", "")}
           active={activeId === "auto"}
           lockedBy={autoLock}
+          disabledByOrganization={false}
           onSelect={() => select("auto")}
         />
         {/* Comportement réel, pas une promesse : Nova lit le nom de la fenêtre
@@ -223,6 +243,7 @@ export const StylesList: React.FC = () => {
                 description={item.description}
                 active={activeId === item.id}
                 lockedBy={item.lockedBy}
+                disabledByOrganization={item.disabledByOrganization}
                 onSelect={() => select(item.id)}
               />
             </li>
@@ -243,6 +264,7 @@ export const StylesList: React.FC = () => {
                   description={item.description}
                   active={activeId === item.id}
                   lockedBy={item.lockedBy}
+                  disabledByOrganization={item.disabledByOrganization}
                   onSelect={() => select(item.id)}
                 />
               </li>
@@ -277,6 +299,7 @@ export const StylesList: React.FC = () => {
                     description={item.description}
                     active={activeId === item.id}
                     lockedBy={item.lockedBy}
+                    disabledByOrganization={item.disabledByOrganization}
                     onSelect={() => select(item.id)}
                     onEdit={
                       canEdit
@@ -424,6 +447,8 @@ interface StyleRowProps {
   description: string;
   active: boolean;
   lockedBy: string | null;
+  /** Désactivé par l'organisation : bandeau rouge, et le choix est refusé. */
+  disabledByOrganization: boolean;
   onSelect: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -438,6 +463,7 @@ const StyleRow: React.FC<StyleRowProps> = ({
   description,
   active,
   lockedBy,
+  disabledByOrganization,
   onSelect,
   onEdit,
   onDelete,
@@ -453,11 +479,15 @@ const StyleRow: React.FC<StyleRowProps> = ({
     >
       <button
         type="button"
-        onClick={lockedBy ? undefined : onSelect}
-        disabled={lockedBy !== null}
+        onClick={lockedBy || disabledByOrganization ? undefined : onSelect}
+        disabled={lockedBy !== null || disabledByOrganization}
         aria-pressed={active}
         className={`flex min-w-0 flex-1 items-start gap-3 px-2 py-2.5 text-start focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-          lockedBy ? "cursor-not-allowed opacity-55" : "cursor-pointer"
+          lockedBy
+            ? "cursor-not-allowed opacity-55"
+            : disabledByOrganization
+              ? "cursor-not-allowed"
+              : "cursor-pointer"
         }`}
       >
         {/* L'état actif ne repose pas sur la couleur seule : une coche le
@@ -496,6 +526,29 @@ const StyleRow: React.FC<StyleRowProps> = ({
           {description && (
             <span className="mt-0.5 block text-xs leading-relaxed text-text-secondary">
               {description}
+            </span>
+          )}
+          {/* Qui a retiré le Style, et ce que devient une dictée : Nova en
+              applique un autre, rien n'est perdu. */}
+          {disabledByOrganization && (
+            <span
+              role="status"
+              className="mt-1.5 flex items-start gap-1.5 rounded-chip border border-danger/35 bg-danger/10 px-2 py-1 text-xs font-medium text-danger"
+            >
+              <Ban
+                size={13}
+                strokeWidth={2}
+                className="mt-px shrink-0"
+                aria-hidden="true"
+              />
+              <span>
+                {t("styles.disabledByOrganization")}
+                {active && (
+                  <span className="block font-normal">
+                    {t("styles.disabledByOrganizationHint")}
+                  </span>
+                )}
+              </span>
             </span>
           )}
         </span>

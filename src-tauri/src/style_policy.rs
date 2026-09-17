@@ -18,19 +18,32 @@ static DISABLED: RwLock<Vec<String>> = RwLock::new(Vec::new());
 
 /// Retient la liste annoncée par le serveur ; `None` l'efface.
 pub fn set_disabled(ids: Option<Vec<String>>) {
-    todo!("{:?}", ids)
+    let mut guard = DISABLED
+        .write()
+        .unwrap_or_else(|poisoned| poisoned.into_inner());
+    *guard = ids.unwrap_or_default();
 }
 
 /// La liste actuellement retenue.
 pub fn disabled() -> Vec<String> {
-    todo!()
+    DISABLED
+        .read()
+        .map(|guard| guard.clone())
+        .unwrap_or_else(|poisoned| poisoned.into_inner().clone())
 }
 
 /// Le Style à appliquer quand `selected` est choisi et que `disabled` est retiré.
 ///
 /// `None` : aucun Style autorisé ne reste, la dictée part sans reformulation.
 pub fn permitted_style(selected: &str, disabled: &[String]) -> Option<String> {
-    todo!("{selected} {:?}", disabled)
+    let allowed = |id: &str| !disabled.iter().any(|value| value == id);
+    if allowed(selected) {
+        return Some(selected.to_string());
+    }
+    FALLBACK_STYLE_IDS
+        .iter()
+        .find(|id| allowed(id))
+        .map(|id| id.to_string())
 }
 
 /// `permitted_style` avec la liste annoncée par le serveur.

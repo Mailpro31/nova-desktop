@@ -58,7 +58,11 @@ test.describe("app categories follow the organization", () => {
       session,
       config: {
         ...school,
-        capabilities: { ...school.capabilities, commands: false, aiSkills: false },
+        capabilities: {
+          ...school.capabilities,
+          commands: false,
+          aiSkills: false,
+        },
       },
       onboardingCompleted: true,
     });
@@ -79,7 +83,11 @@ test.describe("app categories follow the organization", () => {
       session,
       config: {
         ...school,
-        capabilities: { ...school.capabilities, commands: true, aiSkills: true },
+        capabilities: {
+          ...school.capabilities,
+          commands: true,
+          aiSkills: true,
+        },
       },
       onboardingCompleted: true,
     });

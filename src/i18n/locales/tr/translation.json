@@ -1464,7 +1464,9 @@
       "save": "Biçem kaydedilemedi.",
       "delete": "Biçem silinemedi."
     },
-    "organizationManaged": "Bu stiller kuruluşunuz tarafından yayınlanır. Burada düzenlenemez."
+    "organizationManaged": "Bu stiller kuruluşunuz tarafından yayınlanır. Burada düzenlenemez.",
+    "disabledByOrganization": "Kuruluşunuz tarafından devre dışı bırakıldı",
+    "disabledByOrganizationHint": "Nova, dikteleriniz için başka bir stil kullanır."
   },
   "history": {
     "subtitle": "Nova ile dikte ettiğiniz her şey.",

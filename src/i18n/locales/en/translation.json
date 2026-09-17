@@ -1464,7 +1464,9 @@
       "save": "Could not save the style.",
       "delete": "Could not delete the style."
     },
-    "organizationManaged": "These styles are published by your organization. They cannot be edited here."
+    "organizationManaged": "These styles are published by your organization. They cannot be edited here.",
+    "disabledByOrganization": "Disabled by your organization",
+    "disabledByOrganizationHint": "Nova uses another style for your dictations."
   },
   "history": {
     "subtitle": "Everything you have dictated with Nova.",

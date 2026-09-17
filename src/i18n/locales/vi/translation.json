@@ -1464,7 +1464,9 @@
       "save": "Không lưu được lối viết.",
       "delete": "Không xoá được lối viết."
     },
-    "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây."
+    "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây.",
+    "disabledByOrganization": "Đã bị tổ chức của bạn tắt",
+    "disabledByOrganizationHint": "Nova dùng một kiểu khác cho các bản đọc chính tả của bạn."
   },
   "history": {
     "subtitle": "Mọi thứ bạn đã đọc chính tả với Nova.",

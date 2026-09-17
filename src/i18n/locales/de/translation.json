@@ -1464,7 +1464,9 @@
       "save": "Der Stil konnte nicht gespeichert werden.",
       "delete": "Der Stil konnte nicht gelöscht werden."
     },
-    "organizationManaged": "Diese Stile werden von Ihrer Organisation veröffentlicht. Sie können hier nicht bearbeitet werden."
+    "organizationManaged": "Diese Stile werden von Ihrer Organisation veröffentlicht. Sie können hier nicht bearbeitet werden.",
+    "disabledByOrganization": "Von Ihrer Organisation deaktiviert",
+    "disabledByOrganizationHint": "Nova verwendet für Ihre Diktate einen anderen Stil."
   },
   "history": {
     "subtitle": "Alles, was Sie mit Nova diktiert haben.",

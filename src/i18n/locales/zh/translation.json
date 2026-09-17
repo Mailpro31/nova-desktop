@@ -1464,7 +1464,9 @@
       "save": "无法保存该风格。",
       "delete": "无法删除该风格。"
     },
-    "organizationManaged": "这些风格由您的组织发布，无法在此编辑。"
+    "organizationManaged": "这些风格由您的组织发布，无法在此编辑。",
+    "disabledByOrganization": "已被你的组织停用",
+    "disabledByOrganizationHint": "Nova 会为你的听写使用其他风格。"
   },
   "history": {
     "subtitle": "你用 Nova 语音输入的全部内容。",
