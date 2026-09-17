@@ -961,6 +961,7 @@
         "it_admin": "IT administrator"
       },
       "cohort": "Cohort",
+      "groups": "Your groups",
       "logout": "Sign out",
       "logoutConfirmTitle": "Sign out of Nova Campus?",
       "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",

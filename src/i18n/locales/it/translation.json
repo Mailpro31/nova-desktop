@@ -961,6 +961,7 @@
         "it_admin": "Amministratore IT"
       },
       "cohort": "Coorte",
+      "groups": "I tuoi gruppi",
       "logout": "Esci",
       "logoutConfirmTitle": "Uscire da Nova Campus?",
       "logoutConfirmDescription": "Dovrai accedere di nuovo per usare Nova Campus. Sei sicuro?",

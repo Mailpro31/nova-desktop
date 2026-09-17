@@ -961,6 +961,7 @@
         "it_admin": "Quản trị viên CNTT"
       },
       "cohort": "Khóa",
+      "groups": "Nhóm của bạn",
       "logout": "Đăng xuất",
       "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
       "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",

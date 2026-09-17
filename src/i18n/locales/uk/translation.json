@@ -961,6 +961,7 @@
         "it_admin": "ІТ-адміністратор"
       },
       "cohort": "Потік",
+      "groups": "Ваші групи",
       "logout": "Вийти",
       "logoutConfirmTitle": "Вийти з Nova Campus?",
       "logoutConfirmDescription": "Щоб користуватися Nova Campus, доведеться увійти знову. Продовжити?",

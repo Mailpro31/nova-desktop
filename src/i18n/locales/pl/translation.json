@@ -961,6 +961,7 @@
         "it_admin": "Administrator IT"
       },
       "cohort": "Rocznik",
+      "groups": "Twoje grupy",
       "logout": "Wyloguj się",
       "logoutConfirmTitle": "Wylogować się z Nova Campus?",
       "logoutConfirmDescription": "Aby korzystać z Nova Campus, trzeba będzie zalogować się ponownie. Czy na pewno?",

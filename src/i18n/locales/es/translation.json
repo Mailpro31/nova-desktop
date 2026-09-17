@@ -961,6 +961,7 @@
         "it_admin": "Administrador de TI"
       },
       "cohort": "Promoción",
+      "groups": "Tus grupos",
       "logout": "Cerrar sesión",
       "logoutConfirmTitle": "¿Cerrar sesión en Nova Campus?",
       "logoutConfirmDescription": "Tendrás que volver a iniciar sesión para usar Nova Campus. ¿Seguro que quieres continuar?",

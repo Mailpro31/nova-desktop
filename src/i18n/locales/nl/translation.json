@@ -961,6 +961,7 @@
         "it_admin": "IT-beheerder"
       },
       "cohort": "Jaargroep",
+      "groups": "Je groepen",
       "logout": "Afmelden",
       "logoutConfirmTitle": "Afmelden bij Nova Campus?",
       "logoutConfirmDescription": "Je moet je opnieuw aanmelden om Nova Campus te gebruiken. Weet je het zeker?",

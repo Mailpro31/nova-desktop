@@ -961,6 +961,7 @@
         "it_admin": "IT 管理員"
       },
       "cohort": "年級",
+      "groups": "您的群組",
       "logout": "登出",
       "logoutConfirmTitle": "要登出 Nova Campus 嗎？",
       "logoutConfirmDescription": "登出後需要重新登入才能使用 Nova Campus。確定嗎？",

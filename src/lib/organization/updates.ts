@@ -64,9 +64,14 @@ export interface ChangeMarkers {
   policy_revision: number;
   packages_version: string;
   learning_version: string;
+  /**
+   * Ce que `/api/me` montre des groupes du membre. Absent d'un serveur plus
+   * ancien : le profil n'est alors jamais relu sur ce seul repère.
+   */
+  profile_version?: string | null;
 }
 
-export type Reload = "policy" | "packages" | "lessons";
+export type Reload = "policy" | "packages" | "lessons" | "profile";
 
 /**
  * Ce qu'il faut recharger, et rien de plus.
@@ -86,6 +91,13 @@ export function whatToReload(
   }
   if (current.learning_version !== previous.learning_version) {
     reload.push("lessons");
+  }
+  if (
+    previous.profile_version != null &&
+    current.profile_version != null &&
+    current.profile_version !== previous.profile_version
+  ) {
+    reload.push("profile");
   }
   return reload;
 }

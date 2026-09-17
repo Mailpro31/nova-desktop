@@ -961,6 +961,7 @@
         "it_admin": "IT-Administrator"
       },
       "cohort": "Jahrgang",
+      "groups": "Ihre Gruppen",
       "logout": "Abmelden",
       "logoutConfirmTitle": "Von Nova Campus abmelden?",
       "logoutConfirmDescription": "Du musst dich erneut anmelden, um Nova Campus zu verwenden. Bist du sicher?",

@@ -961,6 +961,7 @@
         "it_admin": "Administrateur informatique"
       },
       "cohort": "Cohorte",
+      "groups": "Vos groupes",
       "logout": "Se déconnecter",
       "logoutConfirmTitle": "Se déconnecter de Nova Campus ?",
       "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser Nova Campus. Êtes-vous sûr ?",
