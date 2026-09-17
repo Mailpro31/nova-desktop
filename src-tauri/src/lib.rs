@@ -57,6 +57,7 @@ mod settings;
 mod shortcut;
 mod signal_handle;
 mod structured_notes;
+mod style_policy;
 mod telemetry;
 mod transcription_coordinator;
 mod tray;
