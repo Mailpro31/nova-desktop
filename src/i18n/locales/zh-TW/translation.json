@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "組織存取已暫停",
-      "description": "Nova 會繼續在此電腦上以 Personal 模式運作，並保留您的歷史記錄。請聯絡管理員。",
-      "restored": "組織存取已恢復"
+      "description": "在您的組織恢復存取權之前，Nova 在此電腦上已被鎖定。請聯絡您的管理員。",
+      "restored": "組織存取已恢復",
+      "screenTitle": "您的存取權已被暫停",
+      "screenDescription": "您的組織已暫停您對 Nova 的存取權。請聯絡管理員以恢復。",
+      "screenDescriptionNamed": "{{organization}} 已暫停您對 Nova 的存取權。請聯絡管理員以恢復。",
+      "nothingDeleted": "沒有刪除任何內容。存取權恢復後，Nova 會重新開啟。",
+      "checkAgain": "重新檢查"
     }
   },
   "aiSkills": {

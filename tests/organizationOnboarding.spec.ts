@@ -641,9 +641,7 @@ test.describe("a suspended member has no access at all", () => {
       JSON.parse(localStorage.getItem("nova.test.suspended") ?? "null"),
     );
 
-  test("a 403 from the organization blocks the whole app", async ({
-    page,
-  }) => {
+  test("a 403 from the organization blocks the whole app", async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem("nova.test.meStatus", "403");
     });

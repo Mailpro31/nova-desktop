@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Kuruluş erişimi askıya alındı",
-      "description": "Nova bu bilgisayarda geçmişinizle birlikte Personal modunda çalışmaya devam ediyor. Yöneticinize başvurun.",
-      "restored": "Kuruluş erişimi geri yüklendi"
+      "description": "Kuruluşunuz erişiminizi geri verene kadar Nova bu bilgisayarda engellendi. Yöneticinize başvurun.",
+      "restored": "Kuruluş erişimi geri yüklendi",
+      "screenTitle": "Erişiminiz askıya alındı",
+      "screenDescription": "Kuruluşunuz Nova erişiminizi askıya aldı. Geri almak için yöneticinize başvurun.",
+      "screenDescriptionNamed": "{{organization}} Nova erişiminizi askıya aldı. Geri almak için yöneticinize başvurun.",
+      "nothingDeleted": "Hiçbir şey silinmedi. Erişiminiz geri verildiğinde Nova yeniden açılır.",
+      "checkAgain": "Yeniden kontrol et"
     }
   },
   "aiSkills": {

@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Zugang zur Organisation gesperrt",
-      "description": "Nova funktioniert auf diesem Computer weiter in Personal, mit Ihrem Verlauf. Wenden Sie sich an Ihre Administration.",
-      "restored": "Zugang zur Organisation wiederhergestellt"
+      "description": "Nova ist auf diesem Computer gesperrt, bis Ihre Organisation Ihren Zugang wiederherstellt. Wenden Sie sich an Ihren Administrator.",
+      "restored": "Zugang zur Organisation wiederhergestellt",
+      "screenTitle": "Ihr Zugang wurde gesperrt",
+      "screenDescription": "Ihre Organisation hat Ihren Zugang zu Nova gesperrt. Wenden Sie sich an Ihren Administrator, um ihn wiederherzustellen.",
+      "screenDescriptionNamed": "{{organization}} hat Ihren Zugang zu Nova gesperrt. Wenden Sie sich an Ihren Administrator, um ihn wiederherzustellen.",
+      "nothingDeleted": "Es wurde nichts gelöscht. Nova öffnet sich wieder, sobald Ihr Zugang wiederhergestellt ist.",
+      "checkAgain": "Erneut prüfen"
     }
   },
   "aiSkills": {

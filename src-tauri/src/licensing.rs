@@ -48,10 +48,20 @@ pub fn is_organization_suspended() -> bool {
 
 /// L'organisation sert-elle ce poste — dictées envoyées, palier débloqué ?
 ///
-/// Pas pour un membre suspendu : il retombe en Personal, avec la dictée locale
-/// et le palier de sa licence personnelle.
+/// Pas pour un membre suspendu : voir [`organization_blocks_member`].
 pub fn organization_serves(campus_enabled: bool, suspended: bool) -> bool {
     campus_enabled && !suspended
+}
+
+/// Un membre suspendu n'a plus accès à rien sur un poste Organization : ni
+/// dictée, ni repli Personal. Seul le serveur en décide (`/api/me` répond
+/// 403) ; un serveur injoignable ne suspend personne, la dictée locale continue.
+pub fn organization_blocks_member(campus_enabled: bool, suspended: bool) -> bool {
+    campus_enabled && suspended
+}
+
+pub fn dictation_blocked_by_suspension() -> bool {
+    organization_blocks_member(is_campus_enabled(), is_organization_suspended())
 }
 
 /// Un membre est connecté à l'organisation sur ce poste.

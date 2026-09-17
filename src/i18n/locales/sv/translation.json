@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Åtkomsten till organisationen är avstängd",
-      "description": "Nova fortsätter att fungera i Personal på den här datorn, med din historik. Kontakta administratören.",
-      "restored": "Åtkomsten till organisationen är återställd"
+      "description": "Nova är blockerat på den här datorn tills din organisation återställer din åtkomst. Kontakta din administratör.",
+      "restored": "Åtkomsten till organisationen är återställd",
+      "screenTitle": "Din åtkomst har stängts av",
+      "screenDescription": "Din organisation har stängt av din åtkomst till Nova. Kontakta din administratör för att återställa den.",
+      "screenDescriptionNamed": "{{organization}} har stängt av din åtkomst till Nova. Kontakta din administratör för att återställa den.",
+      "nothingDeleted": "Ingenting har raderats. Nova öppnas igen så snart din åtkomst har återställts.",
+      "checkAgain": "Kontrollera igen"
     }
   },
   "aiSkills": {

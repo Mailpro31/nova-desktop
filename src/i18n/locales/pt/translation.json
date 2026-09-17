@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Acesso à organização suspenso",
-      "description": "O Nova continua a funcionar em Personal neste computador, com o seu histórico. Contacte o administrador.",
-      "restored": "Acesso à organização restabelecido"
+      "description": "O Nova está bloqueado neste computador até que sua organização restaure seu acesso. Entre em contato com seu administrador.",
+      "restored": "Acesso à organização restabelecido",
+      "screenTitle": "Seu acesso foi suspenso",
+      "screenDescription": "Sua organização suspendeu seu acesso ao Nova. Entre em contato com seu administrador para restaurá-lo.",
+      "screenDescriptionNamed": "{{organization}} suspendeu seu acesso ao Nova. Entre em contato com seu administrador para restaurá-lo.",
+      "nothingDeleted": "Nada foi excluído. O Nova abre novamente assim que seu acesso for restaurado.",
+      "checkAgain": "Verificar novamente"
     }
   },
   "aiSkills": {

@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Přístup k organizaci pozastaven",
-      "description": "Nova na tomto počítači dál funguje v režimu Personal i s vaší historií. Obraťte se na správce.",
-      "restored": "Přístup k organizaci obnoven"
+      "description": "Nova je na tomto počítači zablokována, dokud vaše organizace neobnoví váš přístup. Obraťte se na správce.",
+      "restored": "Přístup k organizaci obnoven",
+      "screenTitle": "Váš přístup byl pozastaven",
+      "screenDescription": "Vaše organizace pozastavila váš přístup k Nova. Obraťte se na správce, aby ho obnovil.",
+      "screenDescriptionNamed": "{{organization}} pozastavila váš přístup k Nova. Obraťte se na správce, aby ho obnovil.",
+      "nothingDeleted": "Nic nebylo smazáno. Nova se znovu otevře, jakmile bude přístup obnoven.",
+      "checkAgain": "Zkontrolovat znovu"
     }
   },
   "aiSkills": {
