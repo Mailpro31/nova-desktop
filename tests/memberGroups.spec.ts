@@ -27,12 +27,19 @@ const school = {
 
 const groups = [
   { id: "g1", label: "Aero 2", source: "scim", external_group_id: null },
-  { id: "g2", label: "Robotics club", source: "manual", external_group_id: null },
+  {
+    id: "g2",
+    label: "Robotics club",
+    source: "manual",
+    external_group_id: null,
+  },
 ];
 
 async function openOrganization(page: import("@playwright/test").Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: /Example Engineering School/ }).click();
+  await page
+    .getByRole("button", { name: /Example Engineering School/ })
+    .click();
 }
 
 test.describe("a member sees their groups", () => {
@@ -60,7 +67,11 @@ test.describe("a member sees their groups", () => {
       session,
       config: school,
       onboardingCompleted: true,
-      membership: { security_role: "member", groups_visible: false, groups: [] },
+      membership: {
+        security_role: "member",
+        groups_visible: false,
+        groups: [],
+      },
     });
     await openOrganization(page);
     await expect(page.getByText("Signed in as")).toBeVisible();

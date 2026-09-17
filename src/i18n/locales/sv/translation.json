@@ -961,6 +961,7 @@
         "it_admin": "IT-administratör"
       },
       "cohort": "Årskull",
+      "groups": "Dina grupper",
       "logout": "Logga ut",
       "logoutConfirmTitle": "Logga ut från Nova Campus?",
       "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova Campus. Är du säker?",

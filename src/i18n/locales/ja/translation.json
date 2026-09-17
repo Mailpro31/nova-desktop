@@ -961,6 +961,7 @@
         "it_admin": "IT 管理者"
       },
       "cohort": "学年",
+      "groups": "所属グループ",
       "logout": "ログアウト",
       "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
       "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",

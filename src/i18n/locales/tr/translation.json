@@ -961,6 +961,7 @@
         "it_admin": "BT yöneticisi"
       },
       "cohort": "Dönem",
+      "groups": "Gruplarınız",
       "logout": "Oturumu kapat",
       "logoutConfirmTitle": "Nova Campus oturumu kapatılsın mı?",
       "logoutConfirmDescription": "Nova Campus'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",

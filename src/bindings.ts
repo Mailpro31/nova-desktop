@@ -1942,7 +1942,7 @@ disabled_style_ids?: string[] }
 /**
  * Appartenance du membre à l'organisation, telle que le serveur la décide.
  */
-export type CampusMembership = { member_type?: string | null; security_role?: string | null; groups?: CampusGroup[] | null; status?: string | null }
+export type CampusMembership = { member_type?: string | null; security_role?: string | null; groups?: CampusGroup[] | null; groups_visible?: boolean | null; status?: string | null }
 export type CampusOrganizationConfig = { id: string; name: string; shortName?: string | null; campusName?: string | null; role?: string | null; cohort?: string | null; managed?: boolean; branding?: CampusBrandingConfig | null; support?: CampusSupportConfig | null }
 export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
 export type CampusPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
@@ -2327,7 +2327,7 @@ export type OrganizationCatalogSnapshot = { catalog_version: string; styles: Org
  * L'interface les demande souvent et ne recharge que ce qui a bougé : c'est
  * ce qui fait arriver un changement de la console en moins d'une minute.
  */
-export type OrganizationChanges = { policy_revision: number; packages_version: string; learning_version: string }
+export type OrganizationChanges = { policy_revision: number; packages_version: string; learning_version: string; profile_version?: string | null }
 /**
  * Un AI Skill publié par l'organisation.
  * 

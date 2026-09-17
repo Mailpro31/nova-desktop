@@ -113,6 +113,11 @@ export interface OrganizationMember {
   memberType: MemberType | null;
   securityRole: SecurityRole;
   groups: Group[];
+  /**
+   * Faux quand l'organisation masque au membre ses groupes : `groups` est
+   * alors vide. Vrai quand le serveur ne dit rien, comme un serveur ancien.
+   */
+  groupsVisible: boolean;
   /** `active` tant que le serveur n'annonce pas autre chose. */
   status: AccountStatus;
 }

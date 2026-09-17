@@ -961,6 +961,7 @@
         "it_admin": "Administrador de TI"
       },
       "cohort": "Turma",
+      "groups": "Seus grupos",
       "logout": "Sair",
       "logoutConfirmTitle": "Sair do Nova Campus?",
       "logoutConfirmDescription": "Você precisará entrar novamente para usar o Nova Campus. Tem certeza?",

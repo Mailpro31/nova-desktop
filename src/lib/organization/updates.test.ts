@@ -167,10 +167,10 @@ describe("ce qu'il faut recharger", () => {
 
   test("un serveur sans repère de profil ne recharge jamais le profil", () => {
     expect(
-      whatToReload(
-        changes(1, "p", "2:a"),
-        { ...changes(1, "p", "2:a"), profile_version: "y" },
-      ),
+      whatToReload(changes(1, "p", "2:a"), {
+        ...changes(1, "p", "2:a"),
+        profile_version: "y",
+      }),
     ).toEqual([]);
   });
 

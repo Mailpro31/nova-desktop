@@ -159,6 +159,7 @@ const membershipSchema = z.object({
   member_type: memberTypeSchema.nullish(),
   security_role: securityRoleSchema.nullish(),
   groups: z.array(groupSchema).nullish(),
+  groups_visible: z.boolean().nullish(),
   status: accountStatusSchema.nullish(),
 });
 
@@ -274,6 +275,7 @@ export function parseServerIdentity(raw: unknown): ServerIdentitySnapshot {
         // Le serveur est l'autorité, et son silence vaut `member`.
         securityRole: (membership.security_role ?? "member") as SecurityRole,
         groups: (membership.groups ?? []).map(toGroup),
+        groupsVisible: membership.groups_visible !== false,
         status: (membership.status ?? "active") as AccountStatus,
       }
     : null;

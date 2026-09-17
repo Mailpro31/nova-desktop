@@ -26,7 +26,9 @@ describe("Groupes du membre", () => {
   });
 
   test("l'organisation peut masquer l'affichage", () => {
-    const snapshot = parseServerIdentity(me({ groups: [], groups_visible: false }));
+    const snapshot = parseServerIdentity(
+      me({ groups: [], groups_visible: false }),
+    );
     expect(snapshot.member?.groupsVisible).toBe(false);
     expect(memberGroupLabels(snapshot.member)).toEqual([]);
   });
@@ -36,13 +38,31 @@ describe("Groupes du membre", () => {
       me({
         groups_visible: true,
         groups: [
-          { id: "AERO2", label: "AERO2", source: "legacy_cohort", external_group_id: null },
-          { id: "g1", label: "Aero 2", source: "scim", external_group_id: null },
-          { id: "g2", label: "Club robotique", source: "manual", external_group_id: null },
+          {
+            id: "AERO2",
+            label: "AERO2",
+            source: "legacy_cohort",
+            external_group_id: null,
+          },
+          {
+            id: "g1",
+            label: "Aero 2",
+            source: "scim",
+            external_group_id: null,
+          },
+          {
+            id: "g2",
+            label: "Club robotique",
+            source: "manual",
+            external_group_id: null,
+          },
         ],
       }),
     );
-    expect(memberGroupLabels(snapshot.member)).toEqual(["Aero 2", "Club robotique"]);
+    expect(memberGroupLabels(snapshot.member)).toEqual([
+      "Aero 2",
+      "Club robotique",
+    ]);
   });
 
   test("sans membre, aucun groupe", () => {

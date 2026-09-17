@@ -855,6 +855,9 @@ pub struct CampusMembership {
     pub security_role: Option<String>,
     #[serde(default)]
     pub groups: Option<Vec<CampusGroup>>,
+    /// Faux quand l'organisation masque au membre ses groupes.
+    #[serde(default)]
+    pub groups_visible: Option<bool>,
     #[serde(default)]
     pub status: Option<String>,
 }
@@ -1223,7 +1226,7 @@ pub struct OrganizationCatalogSnapshot {
     pub skills: Vec<crate::organization_packages::OrganizationSkill>,
 }
 
-/// Les trois repères de `/api/organization/changes`, sans aucun contenu.
+/// Les repères de `/api/organization/changes`, sans aucun contenu.
 ///
 /// L'interface les demande souvent et ne recharge que ce qui a bougé : c'est
 /// ce qui fait arriver un changement de la console en moins d'une minute.
@@ -1232,6 +1235,10 @@ pub struct OrganizationChanges {
     pub policy_revision: i64,
     pub packages_version: String,
     pub learning_version: String,
+    /// Ce que `/api/me` montre des groupes du membre. Absent d'un serveur
+    /// plus ancien.
+    #[serde(default)]
+    pub profile_version: Option<String>,
 }
 
 /// Un serveur plus ancien répond 404 : l'erreur remonte, et l'interface garde

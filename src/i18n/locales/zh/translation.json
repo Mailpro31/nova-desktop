@@ -961,6 +961,7 @@
         "it_admin": "IT 管理员"
       },
       "cohort": "年级",
+      "groups": "您的群组",
       "logout": "退出登录",
       "logoutConfirmTitle": "要退出 Nova Campus 吗？",
       "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
