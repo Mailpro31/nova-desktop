@@ -48,10 +48,20 @@ pub fn is_organization_suspended() -> bool {
 
 /// L'organisation sert-elle ce poste — dictées envoyées, palier débloqué ?
 ///
-/// Pas pour un membre suspendu : il retombe en Personal, avec la dictée locale
-/// et le palier de sa licence personnelle.
+/// Pas pour un membre suspendu : voir [`organization_blocks_member`].
 pub fn organization_serves(campus_enabled: bool, suspended: bool) -> bool {
     campus_enabled && !suspended
+}
+
+/// Un membre suspendu n'a plus accès à rien sur un poste Organization : ni
+/// dictée, ni repli Personal. Seul le serveur en décide (`/api/me` répond
+/// 403) ; un serveur injoignable ne suspend personne, la dictée locale continue.
+pub fn organization_blocks_member(campus_enabled: bool, suspended: bool) -> bool {
+    campus_enabled && suspended
+}
+
+pub fn dictation_blocked_by_suspension() -> bool {
+    organization_blocks_member(is_campus_enabled(), is_organization_suspended())
 }
 
 /// Un membre est connecté à l'organisation sur ce poste.
@@ -504,11 +514,26 @@ mod style_gating_tests {
 }
 
 /// Une organisation ne débloque Nova — et ne reçoit les dictées — que tant
-/// que son membre n'est pas suspendu. Suspendu, le poste retombe en Personal :
-/// la dictée locale continue, avec le palier que la licence personnelle donne.
+/// que son membre n'est pas suspendu. Suspendu, le poste ne dicte plus du
+/// tout : aucun repli Personal.
 #[cfg(test)]
 mod organization_suspension_tests {
-    use super::organization_serves;
+    use super::{organization_blocks_member, organization_serves};
+
+    #[test]
+    fn un_membre_suspendu_ne_dicte_plus_du_tout() {
+        assert!(organization_blocks_member(true, true));
+    }
+
+    #[test]
+    fn un_membre_actif_n_est_pas_bloque() {
+        assert!(!organization_blocks_member(true, false));
+    }
+
+    #[test]
+    fn hors_organisation_aucune_suspension_ne_bloque() {
+        assert!(!organization_blocks_member(false, true));
+    }
 
     #[test]
     fn une_organisation_active_sert_son_membre() {

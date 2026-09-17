@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Organization access suspended",
-      "description": "Nova keeps working in Personal on this computer, with your history. Contact your administrator.",
-      "restored": "Organization access restored"
+      "description": "Nova is blocked on this computer until your organization restores your access. Contact your administrator.",
+      "restored": "Organization access restored",
+      "screenTitle": "Your access has been suspended",
+      "screenDescription": "Your organization has suspended your access to Nova. Contact your administrator to restore it.",
+      "screenDescriptionNamed": "{{organization}} has suspended your access to Nova. Contact your administrator to restore it.",
+      "nothingDeleted": "Nothing has been deleted. Nova opens again as soon as your access is restored.",
+      "checkAgain": "Check again"
     }
   },
   "aiSkills": {

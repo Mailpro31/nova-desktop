@@ -619,14 +619,14 @@ test.describe("local dictation stays available without the server", () => {
 });
 
 /**
- * Un membre suspendu continue de dicter, en Personal.
+ * Un membre suspendu n'a plus accès à rien.
  *
- * `/api/me` répond 403 quand l'administrateur suspend un compte. Le poste ne
- * se bloque pas et ne supprime rien : il cesse d'envoyer les dictées à
- * l'organisation, le dit, et revient de lui-même dès que le compte est
- * réactivé.
+ * `/api/me` répond 403 quand l'administrateur — ou l'annuaire, au départ d'une
+ * personne — suspend un compte. Le poste montre alors un écran bloquant, sans
+ * repli Personal ; rien n'est supprimé, et l'accès revient de lui-même dès que
+ * le compte est réactivé. Un serveur injoignable, lui, ne suspend personne.
  */
-test.describe("a suspended member keeps dictating in Personal", () => {
+test.describe("a suspended member has no access at all", () => {
   const signedIn = {
     session: {
       server_url: "https://nova.example.test",
@@ -641,9 +641,7 @@ test.describe("a suspended member keeps dictating in Personal", () => {
       JSON.parse(localStorage.getItem("nova.test.suspended") ?? "null"),
     );
 
-  test("a 403 from the organization switches the workstation to Personal", async ({
-    page,
-  }) => {
+  test("a 403 from the organization blocks the whole app", async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem("nova.test.meStatus", "403");
     });
@@ -652,11 +650,16 @@ test.describe("a suspended member keeps dictating in Personal", () => {
 
     await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: true });
     await expect(
-      page.getByText("Organization access suspended").first(),
+      page.getByRole("heading", { name: "Your access has been suspended" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Nova Local is active" }),
+      page.getByText("Contact your administrator", { exact: false }).first(),
     ).toBeVisible();
+    // Ni tableau de bord, ni repli Personal derrière l'écran.
+    await expect(
+      page.getByRole("heading", { name: "Nova Local is active" }),
+    ).toHaveCount(0);
+    await expect(page.getByRole("navigation")).toHaveCount(0);
   });
 
   test("access comes back by itself once the member is reactivated", async ({
@@ -681,6 +684,9 @@ test.describe("a suspended member keeps dictating in Personal", () => {
     await expect(
       page.getByText("Organization access restored").first(),
     ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Your access has been suspended" }),
+    ).toHaveCount(0);
   });
 
   test("a member the server still recognises is never marked suspended", async ({
@@ -690,9 +696,9 @@ test.describe("a suspended member keeps dictating in Personal", () => {
     await page.goto("/");
 
     await expect.poll(() => suspendedFlag(page)).toEqual({ suspended: false });
-    await expect(page.getByText("Organization access suspended")).toHaveCount(
-      0,
-    );
+    await expect(
+      page.getByRole("heading", { name: "Your access has been suspended" }),
+    ).toHaveCount(0);
   });
 });
 

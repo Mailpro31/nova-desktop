@@ -550,11 +550,15 @@ pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
 /// la connexion attend.
 pub const CAMPUS_SIGN_IN_REQUIRED_EVENT: &str = "campus-sign-in-required";
 
+/// Le poste refuse une dictée : l'organisation a suspendu ce membre.
+/// L'interface ramène la fenêtre, où l'écran de suspension l'explique.
+pub const CAMPUS_ACCESS_SUSPENDED_EVENT: &str = "campus-access-suspended";
+
 /// L'organisation a suspendu ce membre, ou l'a rétabli.
 ///
-/// Suspendu, le poste n'envoie plus ses dictées à l'organisation et perd le
-/// palier qu'elle débloque : il retombe en Personal. La session reste, et
-/// l'édition du poste ne change pas.
+/// Suspendu, le poste ne dicte plus du tout — aucun repli Personal — et
+/// l'interface affiche un écran bloquant. La session reste, rien n'est
+/// supprimé, et l'édition du poste ne change pas.
 #[tauri::command]
 #[specta::specta]
 pub fn set_campus_suspended(suspended: bool) -> Result<(), String> {

@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Quyền truy cập tổ chức đã bị tạm ngưng",
-      "description": "Nova vẫn hoạt động ở chế độ Personal trên máy tính này, cùng lịch sử của bạn. Hãy liên hệ quản trị viên.",
-      "restored": "Quyền truy cập tổ chức đã được khôi phục"
+      "description": "Nova bị chặn trên máy tính này cho đến khi tổ chức của bạn khôi phục quyền truy cập. Hãy liên hệ quản trị viên.",
+      "restored": "Quyền truy cập tổ chức đã được khôi phục",
+      "screenTitle": "Quyền truy cập của bạn đã bị tạm ngưng",
+      "screenDescription": "Tổ chức của bạn đã tạm ngưng quyền truy cập Nova của bạn. Hãy liên hệ quản trị viên để khôi phục.",
+      "screenDescriptionNamed": "{{organization}} đã tạm ngưng quyền truy cập Nova của bạn. Hãy liên hệ quản trị viên để khôi phục.",
+      "nothingDeleted": "Không có gì bị xóa. Nova sẽ mở lại ngay khi quyền truy cập được khôi phục.",
+      "checkAgain": "Kiểm tra lại"
     }
   },
   "aiSkills": {

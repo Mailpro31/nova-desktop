@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Acceso a la organización suspendido",
-      "description": "Nova sigue funcionando en Personal en este ordenador, con tu historial. Contacta con tu administrador.",
-      "restored": "Acceso a la organización restablecido"
+      "description": "Nova está bloqueado en este equipo hasta que tu organización restablezca tu acceso. Contacta con tu administrador.",
+      "restored": "Acceso a la organización restablecido",
+      "screenTitle": "Tu acceso ha sido suspendido",
+      "screenDescription": "Tu organización ha suspendido tu acceso a Nova. Contacta con tu administrador para restablecerlo.",
+      "screenDescriptionNamed": "{{organization}} ha suspendido tu acceso a Nova. Contacta con tu administrador para restablecerlo.",
+      "nothingDeleted": "No se ha eliminado nada. Nova vuelve a abrirse en cuanto se restablece tu acceso.",
+      "checkAgain": "Comprobar de nuevo"
     }
   },
   "aiSkills": {

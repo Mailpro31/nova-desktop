@@ -1873,6 +1873,12 @@ impl ShortcutAction for TranscribeAction {
             let _ = app.emit(campus::CAMPUS_SIGN_IN_REQUIRED_EVENT, ());
             return;
         }
+        // Suspendu par l'organisation : plus aucune dictée, pas même locale.
+        if crate::licensing::dictation_blocked_by_suspension() {
+            warn!("Dictation refused: the organization suspended this member");
+            let _ = app.emit(campus::CAMPUS_ACCESS_SUSPENDED_EVENT, ());
+            return;
+        }
         crate::input::remember_text_target();
 
         // Load model in the background
@@ -2068,7 +2074,8 @@ impl ShortcutAction for TranscribeAction {
         // `start` a refusé la dictée faute de connexion : rien n'a été
         // enregistré, rien n'est à montrer ni à transcrire. Un enregistrement
         // ouvert avant la perte de session, lui, se termine normalement.
-        if crate::licensing::dictation_requires_organization_sign_in()
+        if (crate::licensing::dictation_requires_organization_sign_in()
+            || crate::licensing::dictation_blocked_by_suspension())
             && !app.state::<Arc<AudioRecordingManager>>().is_recording()
         {
             return;

@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "組織へのアクセスが停止されました",
-      "description": "このコンピューターでは履歴を保持したまま Personal として Nova を引き続き使用できます。管理者にお問い合わせください。",
-      "restored": "組織へのアクセスが復元されました"
+      "description": "組織がアクセスを復元するまで、このコンピューターでは Nova がブロックされています。管理者に問い合わせてください。",
+      "restored": "組織へのアクセスが復元されました",
+      "screenTitle": "アクセスが停止されました",
+      "screenDescription": "組織によって Nova へのアクセスが停止されました。復元するには管理者に問い合わせてください。",
+      "screenDescriptionNamed": "{{organization}} によって Nova へのアクセスが停止されました。復元するには管理者に問い合わせてください。",
+      "nothingDeleted": "何も削除されていません。アクセスが復元されると Nova は再び開きます。",
+      "checkAgain": "もう一度確認"
     }
   },
   "aiSkills": {

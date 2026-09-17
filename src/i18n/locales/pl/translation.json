@@ -1307,8 +1307,13 @@
     },
     "suspended": {
       "title": "Dostęp do organizacji zawieszony",
-      "description": "Nova nadal działa na tym komputerze w wersji Personal, z Twoją historią. Skontaktuj się z administratorem.",
-      "restored": "Dostęp do organizacji przywrócony"
+      "description": "Nova jest zablokowana na tym komputerze, dopóki Twoja organizacja nie przywróci dostępu. Skontaktuj się z administratorem.",
+      "restored": "Dostęp do organizacji przywrócony",
+      "screenTitle": "Twój dostęp został zawieszony",
+      "screenDescription": "Twoja organizacja zawiesiła Twój dostęp do Nova. Skontaktuj się z administratorem, aby go przywrócić.",
+      "screenDescriptionNamed": "{{organization}} zawiesiła Twój dostęp do Nova. Skontaktuj się z administratorem, aby go przywrócić.",
+      "nothingDeleted": "Nic nie zostało usunięte. Nova otworzy się ponownie, gdy dostęp zostanie przywrócony.",
+      "checkAgain": "Sprawdź ponownie"
     }
   },
   "aiSkills": {
