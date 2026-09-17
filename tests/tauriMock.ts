@@ -43,6 +43,8 @@ interface MockOptions {
   learningProgress?: Record<string, unknown>;
   /** Catégories que `/api/me` annonce fermées (`closed_capabilities`). */
   closedCapabilities?: string[];
+  /** `membership` de `/api/me` (groupes, `groups_visible`). */
+  membership?: Record<string, unknown>;
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -211,6 +213,9 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
                   contract_version: 2,
                   closed_capabilities: settings.closedCapabilities,
                 }
+              : {}),
+            ...(settings.membership
+              ? { contract_version: 2, membership: settings.membership }
               : {}),
           };
         case "format_campus_structured_notes":
