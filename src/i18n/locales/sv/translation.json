@@ -1078,11 +1078,6 @@
       "local": "Nova Local aktiv",
       "localActive": "Nova Local aktivt"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Slutför inloggningen i webbläsaren. Använd den här koden om Microsoft ber om den.",
       "expired": "Inloggningsbegäran från Microsoft har gått ut. Börja om.",
@@ -1093,9 +1088,6 @@
     "sso": {
       "connect": "Fortsätt med {{provider}}"
     },
-    "aiSkills": {
-      "minutes": "Cirka {{count}} min"
-    },
     "personalization": {
       "description": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
       "orb": "Nova-klot",
@@ -1103,158 +1095,6 @@
       "orbDescription": "Välj accentfärg för Novas docka och inspelningsindikatorn.",
       "alwaysVisible": "Visa alltid bubblan",
       "alwaysVisibleDescription": "Håll Novas kompakta statusindikator synlig. Den tar bara emot klick när muspekaren är över den."
-    },
-    "firstRun": {
-      "skipForNow": "Hoppa över tills vidare",
-      "continueLater": "Fortsätt senare",
-      "useNovaNow": "Använd Nova nu",
-      "requiredByInstitution": "Den här grundkursen krävs av {{organization}}.",
-      "welcome": {
-        "title": "Välkommen till {{organization}}, {{name}}.",
-        "description": "Lär dig att arbeta ansvarsfullt med AI, eller börja använda Nova direkt.",
-        "aiEssentials": "Börja med AI-grunder",
-        "recommended": "Rekommenderas · cirka 6 minuter",
-        "setupNow": "Konfigurera Nova nu"
-      },
-      "setup": {
-        "title": "Konfigurera Nova",
-        "description": "Vi har förberett den rekommenderade konfigurationen åt dig.",
-        "microphone": "Mikrofon",
-        "language": "Språk",
-        "shortcut": "Kortkommando för diktering",
-        "style": "Skrivstil",
-        "processing": "Bearbetning",
-        "ready": "Redo",
-        "checkRequired": "Kontroll krävs",
-        "noMicrophone": "Ingen mikrofon hittades",
-        "autoDetect": "Identifiera automatiskt",
-        "useRecommended": "Använd rekommenderad konfiguration",
-        "customize": "Anpassa",
-        "useRecommendations": "Använd rekommendationerna",
-        "purposeQuestion": "Vad använder du Nova mest till?",
-        "writingQuestion": "Hur ska Nova oftast skriva?",
-        "languageQuestion": "Önskat dikteringsspråk",
-        "purposes": {
-          "classes": "Lektioner och anteckningar",
-          "engineering": "Tekniska projekt",
-          "emails": "Mejl och kommunikation",
-          "coding": "Programmering",
-          "everything": "Lite av varje",
-          "courseNotes": "Kursmaterial",
-          "feedback": "Återkoppling till studenter",
-          "documents": "Dokument"
-        },
-        "writing": {
-          "keep": "Behåll mina ord",
-          "clean": "Snygga till dem",
-          "professional": "Professionellt",
-          "auto": "Automatiskt"
-        }
-      },
-      "try": {
-        "title": "Prova Nova",
-        "description": "Diktera en kort mening. Då kontrolleras mikrofonen och du ser hur Nova fungerar.",
-        "sample": "Säg: ”Skicka projektuppdateringen till Lucas i morgon bitti.”",
-        "start": "Starta diktering",
-        "listening": "Lyssnar...",
-        "successTitle": "Klart.",
-        "successDescription": "Mikrofonen är redo. Nova fungerar överallt där markören finns.",
-        "openNova": "Öppna Nova"
-      }
-    },
-    "aiCurriculum": {
-      "title": "AI-grunder",
-      "modulePosition": "Modul {{current}} av {{total}}",
-      "correct": "Rätt",
-      "considerThis": "Tänk på det här",
-      "nextModule": "Nästa",
-      "next": "Härnäst",
-      "modules": {
-        "working-with-ai": {
-          "title": "Arbeta med AI",
-          "summary": "Förstå vad AI kan och inte kan göra.",
-          "skill": "AI-principer",
-          "idea": "AI kan snabbt ta fram användbara alternativ, men en välformulerad text bevisar inte att svaret är rätt.",
-          "scenario": "En AI-assistent föreslår ett konstruktionsval för ett flyg- och rymdprojekt och presenterar det med stor säkerhet.",
-          "question": "Vilken roll är mest användbar för AI här?",
-          "options": {
-            "a": "Ersätta det tekniska beslutet.",
-            "b": "Ge ett lösningsförslag som en ingenjör bedömer.",
-            "c": "Godkänna valet eftersom förklaringen låter teknisk."
-          },
-          "explanation": "Använd AI för att bredda alternativen du kan granska. Det tekniska omdömet ansvarar fortfarande för antaganden, belägg och det slutliga beslutet."
-        },
-        "ask-better": {
-          "title": "Fråga bättre",
-          "summary": "Ge tillräckligt med sammanhang och bestäm ett användbart resultat.",
-          "skill": "Skriva prompter",
-          "idea": "En användbar förfrågan anger målet, relevant sammanhang, begränsningar och förväntat resultat.",
-          "scenario": "Du behöver hjälp att felsöka en Python-beräkning för ett satellitprojekt drivet av studenter.",
-          "question": "Vilken förfrågan ger den säkraste och mest användbara utgångspunkten?",
-          "options": {
-            "a": "Fixa min kod.",
-            "b": "Förklara felet, behåll SI-enheter, ange antagandena och föreslå en testad korrigering.",
-            "c": "Skriv ett längre svar."
-          },
-          "explanation": "Konkret sammanhang och tydliga kriterier för att lyckas gör resultatet lättare att granska och minskar risken att ett felaktigt antagande döljs."
-        },
-        "verify-output": {
-          "title": "Kontrollera resultatet",
-          "summary": "Granska beräkningar, källor, påståenden och antaganden.",
-          "skill": "Verifiering",
-          "idea": "Verifiering är ett separat tekniskt steg. Att fråga samma modell om den är säker är ingen oberoende kontroll.",
-          "scenario": "En AI ger dig en lastberäkning för en strukturanalys.",
-          "question": "Vad bör du göra innan du använder den?",
-          "options": {
-            "a": "Använda den direkt eftersom enheterna visas.",
-            "b": "Kontrollera antaganden, enheter och beräkningar oberoende av AI:n.",
-            "c": "Fråga AI:n om den är säker."
-          },
-          "explanation": "Kontrollera lastfall, enheter, ekvationer och randvillkor med pålitliga metoder eller källor innan du förlitar dig på resultatet."
-        },
-        "confidential-information": {
-          "title": "Konfidentiell information",
-          "summary": "Vet vad som inte får skickas till ett system som inte är godkänt.",
-          "skill": "Integritet",
-          "idea": "Dela bara data som verktyget och ditt lärosäte har rätt att behandla.",
-          "scenario": "Ett projektdokument innehåller student-id, leverantörsdata och en intern åtkomsttoken.",
-          "question": "Vilket är det ansvarsfulla nästa steget?",
-          "options": {
-            "a": "Klistra in allt eftersom uppgiften är akademisk.",
-            "b": "Ta bort bara studenternas namn.",
-            "c": "Använda ett godkänt system och ta bort hemligheter och onödiga personliga eller konfidentiella uppgifter."
-          },
-          "explanation": "Både behörighet och dataminimering spelar roll. Inloggningsuppgifter får aldrig tas med, och onödigt känsligt sammanhang bör tas bort."
-        },
-        "ai-in-engineering": {
-          "title": "AI inom teknik",
-          "summary": "Använd AI som verktyg, inte som ersättning för eget tänkande.",
-          "skill": "AI för ingenjörer",
-          "idea": "AI gör mest nytta som samarbetspartner för att utforska, skissa och granska, så länge ingenjören behåller ansvaret.",
-          "scenario": "Du jämför två koncept för ett delsystem i en liten satellit.",
-          "question": "Vilket arbetssätt utnyttjar AI bäst?",
-          "options": {
-            "a": "Låta AI:n välja koncept och kopiera dess motivering.",
-            "b": "Använda den för att lyfta fram avvägningar, sedan kontrollera begränsningarna och dokumentera beslutet.",
-            "c": "Låta bli att dokumentera antaganden så att rapporten blir kort."
-          },
-          "explanation": "AI förstärker det tekniska omdömet. Den ersätter inte validering, spårbarhet eller ansvar."
-        },
-        "responsible-use": {
-          "title": "Ansvarsfull användning",
-          "summary": "Känn igen när AI-användning är lämplig, begränsad eller förbjuden.",
-          "skill": "Ansvarsfull praxis",
-          "idea": "Rätt användning beror på uppgiften, kursens regler, verktygets godkännande och hur mycket mänskligt ansvar som krävs.",
-          "scenario": "Reglerna för en betygsatt uppgift är otydliga om hjälp från generativ AI.",
-          "question": "Vad bör du göra?",
-          "options": {
-            "a": "Använda AI i smyg eftersom alla antagligen gör det.",
-            "b": "Låta AI:n skriva slutinlämningen och sedan ändra några ord.",
-            "c": "Läsa kursens regler, fråga om något är oklart och redovisa tillåten hjälp."
-          },
-          "explanation": "Ansvarsfull användning respekterar lärandemålet och de regler som gäller. Om reglerna är oklara, reda ut dem innan du förlitar dig på AI."
-        }
-      }
     },
     "organization": {
       "title": "Organisation",

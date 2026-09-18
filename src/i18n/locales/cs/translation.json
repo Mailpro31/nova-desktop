@@ -1078,11 +1078,6 @@
       "local": "Nova Local je aktivní",
       "localActive": "Nova Local je aktivní"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Dokončete přihlášení v prohlížeči. Pokud o to Microsoft požádá, použijte tento kód.",
       "expired": "Žádost o přihlášení přes Microsoft vypršela. Začněte znovu.",
@@ -1093,9 +1088,6 @@
     "sso": {
       "connect": "Pokračovat přes {{provider}}"
     },
-    "aiSkills": {
-      "minutes": "Asi {{count}} min"
-    },
     "personalization": {
       "description": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
       "orb": "Koule Nova",
@@ -1103,158 +1095,6 @@
       "orbDescription": "Vyberte barvu doku Novy a indikátoru nahrávání.",
       "alwaysVisible": "Vždy zobrazovat bublinu",
       "alwaysVisibleDescription": "Nechte kompaktní stavový indikátor Novy viditelný. Kliknutí zachytává, jen když je nad ním myš."
-    },
-    "firstRun": {
-      "skipForNow": "Prozatím přeskočit",
-      "continueLater": "Pokračovat později",
-      "useNovaNow": "Použít Nova hned",
-      "requiredByInstitution": "Tento základní kurz vyžaduje {{organization}}.",
-      "welcome": {
-        "title": "Vítejte v {{organization}}, {{name}}.",
-        "description": "Naučte se pracovat s AI zodpovědně, nebo začněte Novu používat hned.",
-        "aiEssentials": "Začít se Základy AI",
-        "recommended": "Doporučeno · asi 6 minut",
-        "setupNow": "Nastavit Novu hned"
-      },
-      "setup": {
-        "title": "Nastavení Novy",
-        "description": "Připravili jsme pro vás doporučené nastavení.",
-        "microphone": "Mikrofon",
-        "language": "Jazyk",
-        "shortcut": "Zkratka pro diktování",
-        "style": "Styl psaní",
-        "processing": "Zpracování",
-        "ready": "Připraveno",
-        "checkRequired": "Vyžaduje kontrolu",
-        "noMicrophone": "Nebyl zjištěn žádný mikrofon",
-        "autoDetect": "Automatická detekce",
-        "useRecommended": "Použít doporučené nastavení",
-        "customize": "Přizpůsobit",
-        "useRecommendations": "Použít doporučení",
-        "purposeQuestion": "K čemu Novu používáte nejčastěji?",
-        "writingQuestion": "Jak má Nova obvykle psát?",
-        "languageQuestion": "Preferovaný jazyk diktování",
-        "purposes": {
-          "classes": "Výuka a poznámky",
-          "engineering": "Inženýrské projekty",
-          "emails": "E-maily a komunikace",
-          "coding": "Programování",
-          "everything": "Od všeho trochu",
-          "courseNotes": "Studijní materiály",
-          "feedback": "Zpětná vazba studentům",
-          "documents": "Dokumenty"
-        },
-        "writing": {
-          "keep": "Zachovat moje slova",
-          "clean": "Učesat je",
-          "professional": "Profesionálně",
-          "auto": "Automaticky"
-        }
-      },
-      "try": {
-        "title": "Vyzkoušejte Novu",
-        "description": "Nadiktujte jednu krátkou větu. Ověříte tak mikrofon a uvidíte, jak Nova funguje.",
-        "sample": "Řekněte: „Pošli Lucasovi zítra ráno novinky k projektu.“",
-        "start": "Spustit diktování",
-        "listening": "Poslouchám...",
-        "successTitle": "A je to.",
-        "successDescription": "Mikrofon je připraven. Nova funguje všude, kde máte kurzor.",
-        "openNova": "Otevřít Novu"
-      }
-    },
-    "aiCurriculum": {
-      "title": "Základy AI",
-      "modulePosition": "Modul {{current}} z {{total}}",
-      "correct": "Správně",
-      "considerThis": "Zamyslete se",
-      "nextModule": "Další",
-      "next": "Následuje",
-      "modules": {
-        "working-with-ai": {
-          "title": "Práce s AI",
-          "summary": "Pochopte, co AI dokáže a co ne.",
-          "skill": "Principy AI",
-          "idea": "AI dokáže rychle navrhnout užitečné možnosti, ale plynulý text není důkazem, že je odpověď správná.",
-          "scenario": "Asistent AI navrhne konstrukční řešení pro letecký projekt a sebevědomě ho představí.",
-          "question": "Jaká je zde nejužitečnější role AI?",
-          "options": {
-            "a": "Nahradit inženýrské rozhodnutí.",
-            "b": "Nabídnout kandidátní řešení, které inženýr posoudí.",
-            "c": "Schválit volbu, protože vysvětlení zní technicky."
-          },
-          "explanation": "Používejte AI k rozšíření možností, které můžete posoudit. Za předpoklady, důkazy i konečné rozhodnutí dál odpovídá inženýrský úsudek."
-        },
-        "ask-better": {
-          "title": "Ptejte se lépe",
-          "summary": "Dodejte dostatek kontextu a určete užitečný výsledek.",
-          "skill": "Zadávání požadavků",
-          "idea": "Užitečný požadavek uvádí cíl, relevantní kontext, omezení a očekávaný výstup.",
-          "scenario": "Potřebujete pomoc s laděním výpočtu v Pythonu pro studentský satelitní projekt.",
-          "question": "Který požadavek je nejbezpečnějším a nejužitečnějším výchozím bodem?",
-          "options": {
-            "a": "Oprav mi kód.",
-            "b": "Vysvětli chybu, zachovej jednotky SI, uveď předpoklady a navrhni otestovanou opravu.",
-            "c": "Napiš delší odpověď."
-          },
-          "explanation": "Konkrétní kontext a kritéria úspěchu usnadňují kontrolu výstupu a snižují riziko, že skryje chybný předpoklad."
-        },
-        "verify-output": {
-          "title": "Ověřte výstup",
-          "summary": "Zkontrolujte výpočty, zdroje, tvrzení a předpoklady.",
-          "skill": "Ověřování",
-          "idea": "Ověření je samostatný inženýrský krok. Zeptat se stejného modelu, zda si je jistý, není nezávislá kontrola.",
-          "scenario": "AI vám poskytne výpočet zatížení pro statickou analýzu.",
-          "question": "Co byste měli udělat, než ho použijete?",
-          "options": {
-            "a": "Použít ho přímo, protože jsou uvedeny jednotky.",
-            "b": "Nezávisle ověřit předpoklady, jednotky a výpočty.",
-            "c": "Zeptat se AI, zda si je jistá."
-          },
-          "explanation": "Než se na výsledek spolehnete, zkontrolujte zatěžovací stav, jednotky, rovnice a okrajové podmínky pomocí důvěryhodných metod nebo zdrojů."
-        },
-        "confidential-information": {
-          "title": "Důvěrné informace",
-          "summary": "Vězte, co se nesmí odeslat do neschváleného systému.",
-          "skill": "Ochrana soukromí",
-          "idea": "Sdílejte jen data, která smí nástroj a vaše instituce zpracovávat.",
-          "scenario": "Projektový dokument obsahuje identifikátory studentů, údaje o dodavatelích a interní přístupový token.",
-          "question": "Jaký je odpovědný další krok?",
-          "options": {
-            "a": "Vložit všechno, protože jde o akademický úkol.",
-            "b": "Odstranit jen jména studentů.",
-            "c": "Použít schválený systém a odstranit tajné údaje i zbytečná osobní nebo důvěrná data."
-          },
-          "explanation": "Záleží na oprávnění i na minimalizaci dat. Přihlašovací údaje nesmí být nikdy zahrnuty a zbytečný citlivý kontext je třeba odstranit."
-        },
-        "ai-in-engineering": {
-          "title": "AI v inženýrství",
-          "summary": "Používejte AI jako nástroj, ne jako náhradu uvažování.",
-          "skill": "AI pro inženýry",
-          "idea": "AI je nejsilnější jako spolupracovník při zkoumání, psaní návrhů a kritice, pokud odpovědnost zůstává na inženýrovi.",
-          "scenario": "Porovnáváte dva koncepty subsystému malého satelitu.",
-          "question": "Který postup využívá AI nejlépe?",
-          "options": {
-            "a": "Nechat AI vybrat koncept a zkopírovat její zdůvodnění.",
-            "b": "Použít ji k odhalení kompromisů, poté ověřit omezení a zdokumentovat rozhodnutí.",
-            "c": "Nedokumentovat předpoklady, aby zpráva zůstala krátká."
-          },
-          "explanation": "AI posiluje inženýrský úsudek. Nenahrazuje ověření, sledovatelnost ani odpovědnost."
-        },
-        "responsible-use": {
-          "title": "Odpovědné používání",
-          "summary": "Poznejte, kdy je použití AI vhodné, omezené nebo zakázané.",
-          "skill": "Odpovědná praxe",
-          "idea": "Správné použití závisí na úkolu, pravidlech předmětu, schválení nástroje a potřebné míře lidské odpovědnosti.",
-          "scenario": "Pravidla hodnoceného úkolu nejsou jasná ohledně pomoci generativní AI.",
-          "question": "Co byste měli udělat?",
-          "options": {
-            "a": "Použít AI potichu, protože to nejspíš dělají všichni.",
-            "b": "Nechat AI vytvořit finální odevzdání a pak změnit pár slov.",
-            "c": "Zkontrolovat pravidla předmětu, zeptat se, když nejsou jasná, a přiznat povolenou pomoc."
-          },
-          "explanation": "Odpovědné používání respektuje cíl učení a stanovená pravidla. Když pravidla nejsou jasná, ujasněte si je dřív, než se na AI spolehnete."
-        }
-      }
     },
     "organization": {
       "title": "Organizace",

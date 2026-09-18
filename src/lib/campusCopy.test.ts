@@ -16,7 +16,6 @@ const SOURCE_DIR = "src";
 
 /** Sections couvertes. Chaque PR de traduction ajoute les siennes. */
 const SECTIONS = [
-  "firstRun",
   "onboarding",
   "account",
   "microsoft",
@@ -32,24 +31,17 @@ const SECTIONS = [
   "formatting",
   "files",
   "personalization",
-  "page",
 ];
 
 /** Noms propres, identiques dans toutes les langues. */
 const PRODUCT_NAMES = new Set([
   "campus.onboarding.label",
   "campus.onboarding.lab.productName",
-  "campus.page.processing.localTitle",
 ]);
 
 /** Mots qu'une langue écrit légitimement comme l'anglais. */
 const SAME_AS_ENGLISH: Record<string, string[]> = {
-  fr: [
-    "campus.firstRun.setup.microphone",
-    "campus.firstRun.setup.purposes.documents",
-    "campus.firstRun.setup.writing.auto",
-    "campus.account.access",
-  ],
+  fr: ["campus.account.access"],
   sv: ["campus.account.access"],
 };
 

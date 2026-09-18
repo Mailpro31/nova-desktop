@@ -1078,11 +1078,6 @@
       "local": "Nova Local đang hoạt động",
       "localActive": "Nova Local đang hoạt động"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Hoàn tất đăng nhập trong trình duyệt. Dùng mã này nếu Microsoft yêu cầu.",
       "expired": "Yêu cầu đăng nhập Microsoft đã hết hạn. Hãy bắt đầu lại.",
@@ -1093,9 +1088,6 @@
     "sso": {
       "connect": "Tiếp tục với {{provider}}"
     },
-    "aiSkills": {
-      "minutes": "Khoảng {{count}} phút"
-    },
     "personalization": {
       "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
       "orb": "Quả cầu Nova",
@@ -1103,158 +1095,6 @@
       "orbDescription": "Chọn màu nhấn cho thanh dock Nova và chỉ báo ghi âm.",
       "alwaysVisible": "Luôn hiển thị bong bóng",
       "alwaysVisibleDescription": "Giữ chỉ báo trạng thái thu gọn của Nova luôn hiển thị. Nó chỉ nhận nhấp chuột khi con trỏ nằm trên nó."
-    },
-    "firstRun": {
-      "skipForNow": "Bỏ qua lúc này",
-      "continueLater": "Tiếp tục sau",
-      "useNovaNow": "Dùng Nova ngay",
-      "requiredByInstitution": "{{organization}} yêu cầu hoàn thành lộ trình nền tảng này.",
-      "welcome": {
-        "title": "Chào mừng đến với {{organization}}, {{name}}.",
-        "description": "Học cách làm việc có trách nhiệm với AI, hoặc bắt đầu dùng Nova ngay.",
-        "aiEssentials": "Bắt đầu với Nền tảng AI",
-        "recommended": "Đề xuất · khoảng 6 phút",
-        "setupNow": "Thiết lập Nova ngay"
-      },
-      "setup": {
-        "title": "Thiết lập Nova",
-        "description": "Chúng tôi đã chuẩn bị sẵn thiết lập đề xuất cho bạn.",
-        "microphone": "Micrô",
-        "language": "Ngôn ngữ",
-        "shortcut": "Phím tắt đọc chính tả",
-        "style": "Phong cách viết",
-        "processing": "Xử lý",
-        "ready": "Sẵn sàng",
-        "checkRequired": "Cần kiểm tra",
-        "noMicrophone": "Không phát hiện micrô",
-        "autoDetect": "Tự động nhận diện",
-        "useRecommended": "Dùng thiết lập đề xuất",
-        "customize": "Tùy chỉnh",
-        "useRecommendations": "Dùng các đề xuất",
-        "purposeQuestion": "Bạn dùng Nova chủ yếu để làm gì?",
-        "writingQuestion": "Nova thường nên viết như thế nào?",
-        "languageQuestion": "Ngôn ngữ đọc chính tả ưu tiên",
-        "purposes": {
-          "classes": "Lớp học và ghi chép",
-          "engineering": "Dự án kỹ thuật",
-          "emails": "Email và giao tiếp",
-          "coding": "Lập trình",
-          "everything": "Mỗi thứ một chút",
-          "courseNotes": "Tài liệu môn học",
-          "feedback": "Nhận xét cho sinh viên",
-          "documents": "Tài liệu"
-        },
-        "writing": {
-          "keep": "Giữ nguyên lời tôi",
-          "clean": "Chỉnh gọn",
-          "professional": "Chuyên nghiệp",
-          "auto": "Tự động"
-        }
-      },
-      "try": {
-        "title": "Dùng thử Nova",
-        "description": "Đọc một câu ngắn. Việc này kiểm tra micrô và cho bạn thấy Nova hoạt động thế nào.",
-        "sample": "Hãy nói: “Gửi cho Lucas cập nhật dự án vào sáng mai.”",
-        "start": "Bắt đầu đọc chính tả",
-        "listening": "Đang nghe...",
-        "successTitle": "Xong rồi.",
-        "successDescription": "Micrô của bạn đã sẵn sàng. Nova hoạt động ở bất cứ đâu con trỏ của bạn đang ở.",
-        "openNova": "Mở Nova"
-      }
-    },
-    "aiCurriculum": {
-      "title": "Nền tảng AI",
-      "modulePosition": "Học phần {{current}}/{{total}}",
-      "correct": "Chính xác",
-      "considerThis": "Hãy cân nhắc",
-      "nextModule": "Tiếp",
-      "next": "Tiếp theo",
-      "modules": {
-        "working-with-ai": {
-          "title": "Làm việc cùng AI",
-          "summary": "Hiểu AI làm được gì và không làm được gì.",
-          "skill": "Kiến thức cơ bản về AI",
-          "idea": "AI có thể nhanh chóng đưa ra các phương án hữu ích, nhưng câu chữ trôi chảy không chứng minh câu trả lời là đúng.",
-          "scenario": "Một trợ lý AI đề xuất một lựa chọn thiết kế cho dự án hàng không vũ trụ và trình bày rất tự tin.",
-          "question": "Vai trò hữu ích nhất của AI ở đây là gì?",
-          "options": {
-            "a": "Thay thế quyết định kỹ thuật.",
-            "b": "Đưa ra một giải pháp khả dĩ để kỹ sư đánh giá.",
-            "c": "Chấp thuận lựa chọn vì lời giải thích nghe có vẻ chuyên môn."
-          },
-          "explanation": "Hãy dùng AI để mở rộng các phương án bạn có thể xem xét. Phán đoán kỹ thuật vẫn chịu trách nhiệm về giả định, bằng chứng và quyết định cuối cùng."
-        },
-        "ask-better": {
-          "title": "Hỏi tốt hơn",
-          "summary": "Cung cấp đủ bối cảnh và xác định kết quả hữu ích.",
-          "skill": "Viết câu lệnh",
-          "idea": "Một yêu cầu hữu ích nêu rõ mục tiêu, bối cảnh liên quan, các ràng buộc và kết quả mong đợi.",
-          "scenario": "Bạn cần giúp gỡ lỗi một phép tính Python dùng trong dự án vệ tinh của sinh viên.",
-          "question": "Yêu cầu nào là điểm khởi đầu an toàn và hữu ích nhất?",
-          "options": {
-            "a": "Sửa code của tôi.",
-            "b": "Giải thích lỗi, giữ đơn vị SI, nêu rõ các giả định và đề xuất một bản sửa đã được kiểm thử.",
-            "c": "Viết câu trả lời dài hơn."
-          },
-          "explanation": "Bối cảnh cụ thể và tiêu chí thành công giúp kết quả dễ kiểm tra hơn và ít có khả năng che giấu một giả định sai."
-        },
-        "verify-output": {
-          "title": "Kiểm chứng kết quả",
-          "summary": "Kiểm tra phép tính, nguồn, nhận định và giả định.",
-          "skill": "Kiểm chứng",
-          "idea": "Kiểm chứng là một bước kỹ thuật riêng. Hỏi lại chính mô hình đó xem nó có chắc không thì không phải là kiểm tra độc lập.",
-          "scenario": "Một AI đưa cho bạn phép tính tải trọng cho một phân tích kết cấu.",
-          "question": "Bạn nên làm gì trước khi dùng nó?",
-          "options": {
-            "a": "Dùng ngay vì đã có đơn vị.",
-            "b": "Kiểm chứng độc lập các giả định, đơn vị và phép tính.",
-            "c": "Hỏi AI xem nó có chắc không."
-          },
-          "explanation": "Hãy kiểm tra trường hợp tải, đơn vị, phương trình và điều kiện biên bằng phương pháp hoặc nguồn đáng tin cậy trước khi dựa vào kết quả."
-        },
-        "confidential-information": {
-          "title": "Thông tin bảo mật",
-          "summary": "Biết những gì không được gửi đến hệ thống chưa được phép.",
-          "skill": "Quyền riêng tư",
-          "idea": "Chỉ chia sẻ dữ liệu mà công cụ và cơ sở đào tạo của bạn được phép xử lý.",
-          "scenario": "Một tài liệu dự án chứa mã số sinh viên, dữ liệu nhà cung cấp và một token truy cập nội bộ.",
-          "question": "Bước tiếp theo có trách nhiệm là gì?",
-          "options": {
-            "a": "Dán toàn bộ vì đây là bài tập học thuật.",
-            "b": "Chỉ xóa tên sinh viên.",
-            "c": "Dùng hệ thống đã được phê duyệt và xóa thông tin bí mật cùng dữ liệu cá nhân hoặc bảo mật không cần thiết."
-          },
-          "explanation": "Cả việc được cấp phép lẫn giảm thiểu dữ liệu đều quan trọng. Tuyệt đối không đưa thông tin đăng nhập vào, và cần loại bỏ bối cảnh nhạy cảm không cần thiết."
-        },
-        "ai-in-engineering": {
-          "title": "AI trong kỹ thuật",
-          "summary": "Dùng AI như một công cụ, không thay thế cho tư duy.",
-          "skill": "AI cho kỹ thuật",
-          "idea": "AI phát huy tốt nhất khi là cộng sự để khám phá, soạn nháp và phản biện, trong khi kỹ sư vẫn giữ trách nhiệm.",
-          "scenario": "Bạn đang so sánh hai phương án cho một hệ thống con của vệ tinh cỡ nhỏ.",
-          "question": "Quy trình nào tận dụng AI tốt nhất?",
-          "options": {
-            "a": "Để AI chọn phương án rồi chép lại lập luận của nó.",
-            "b": "Dùng AI để làm rõ các đánh đổi, sau đó kiểm chứng các ràng buộc và ghi lại quyết định.",
-            "c": "Không ghi lại giả định để báo cáo ngắn gọn."
-          },
-          "explanation": "AI khuếch đại phán đoán kỹ thuật. Nó không thay thế việc thẩm định, khả năng truy vết hay trách nhiệm giải trình."
-        },
-        "responsible-use": {
-          "title": "Sử dụng có trách nhiệm",
-          "summary": "Nhận biết khi nào việc dùng AI là phù hợp, bị hạn chế hoặc bị cấm.",
-          "skill": "Thực hành có trách nhiệm",
-          "idea": "Cách dùng đúng phụ thuộc vào nhiệm vụ, quy định của môn học, việc công cụ có được phép hay không và mức độ trách nhiệm của con người cần có.",
-          "scenario": "Quy định của một bài tập được chấm điểm không nói rõ về việc dùng AI tạo sinh hỗ trợ.",
-          "question": "Bạn nên làm gì?",
-          "options": {
-            "a": "Lặng lẽ dùng AI vì có lẽ ai cũng làm vậy.",
-            "b": "Để AI làm bài nộp cuối cùng rồi sửa vài chữ.",
-            "c": "Xem lại quy định của môn học, hỏi khi chưa rõ và khai báo sự hỗ trợ được phép."
-          },
-          "explanation": "Sử dụng có trách nhiệm là tôn trọng mục tiêu học tập và các quy định đã nêu. Khi quy định chưa rõ, hãy làm rõ trước khi dựa vào AI."
-        }
-      }
     },
     "organization": {
       "title": "Tổ chức",

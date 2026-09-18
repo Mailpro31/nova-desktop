@@ -1078,11 +1078,6 @@
       "local": "Nova Local actief",
       "localActive": "Nova Local actief"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Rond het aanmelden af in je browser. Gebruik deze code als Microsoft erom vraagt.",
       "expired": "Het aanmeldverzoek van Microsoft is verlopen. Begin opnieuw.",
@@ -1093,9 +1088,6 @@
     "sso": {
       "connect": "Doorgaan met {{provider}}"
     },
-    "aiSkills": {
-      "minutes": "Ongeveer {{count}} min"
-    },
     "personalization": {
       "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
       "orb": "Nova-bol",
@@ -1103,158 +1095,6 @@
       "orbDescription": "Kies de accentkleur voor het Nova-dock en de opname-indicator.",
       "alwaysVisible": "Bubbel altijd tonen",
       "alwaysVisibleDescription": "Houd de compacte statusindicator van Nova zichtbaar. Hij reageert alleen op klikken als de muis erboven is."
-    },
-    "firstRun": {
-      "skipForNow": "Nu overslaan",
-      "continueLater": "Later verdergaan",
-      "useNovaNow": "Nova nu gebruiken",
-      "requiredByInstitution": "Deze basistraining is verplicht gesteld door {{organization}}.",
-      "welcome": {
-        "title": "Welkom bij {{organization}}, {{name}}.",
-        "description": "Leer verantwoord met AI werken, of begin meteen met Nova.",
-        "aiEssentials": "Beginnen met AI-basis",
-        "recommended": "Aanbevolen · ongeveer 6 minuten",
-        "setupNow": "Nova nu instellen"
-      },
-      "setup": {
-        "title": "Nova instellen",
-        "description": "We hebben de aanbevolen instellingen voor je klaargezet.",
-        "microphone": "Microfoon",
-        "language": "Taal",
-        "shortcut": "Sneltoets voor dicteren",
-        "style": "Schrijfstijl",
-        "processing": "Verwerking",
-        "ready": "Klaar",
-        "checkRequired": "Controle nodig",
-        "noMicrophone": "Geen microfoon gevonden",
-        "autoDetect": "Automatisch herkennen",
-        "useRecommended": "Aanbevolen instellingen gebruiken",
-        "customize": "Aanpassen",
-        "useRecommendations": "Aanbevelingen gebruiken",
-        "purposeQuestion": "Waarvoor gebruik je Nova het meest?",
-        "writingQuestion": "Hoe moet Nova meestal schrijven?",
-        "languageQuestion": "Voorkeurstaal voor dicteren",
-        "purposes": {
-          "classes": "Colleges en aantekeningen",
-          "engineering": "Technische projecten",
-          "emails": "E-mails en communicatie",
-          "coding": "Programmeren",
-          "everything": "Van alles wat",
-          "courseNotes": "Lesmateriaal",
-          "feedback": "Terugkoppeling aan studenten",
-          "documents": "Documenten"
-        },
-        "writing": {
-          "keep": "Mijn woorden behouden",
-          "clean": "Opschonen",
-          "professional": "Professioneel",
-          "auto": "Automatisch"
-        }
-      },
-      "try": {
-        "title": "Probeer Nova",
-        "description": "Dicteer één korte zin. Zo wordt je microfoon gecontroleerd en zie je hoe Nova werkt.",
-        "sample": "Zeg: „Stuur Lucas morgenochtend de projectupdate.”",
-        "start": "Dicteren starten",
-        "listening": "Luisteren...",
-        "successTitle": "Dat was het.",
-        "successDescription": "Je microfoon is klaar. Nova werkt overal waar je cursor staat.",
-        "openNova": "Nova openen"
-      }
-    },
-    "aiCurriculum": {
-      "title": "AI-basis",
-      "modulePosition": "Module {{current}} van {{total}}",
-      "correct": "Juist",
-      "considerThis": "Denk hierover na",
-      "nextModule": "Verder",
-      "next": "Hierna",
-      "modules": {
-        "working-with-ai": {
-          "title": "Werken met AI",
-          "summary": "Begrijp wat AI wel en niet kan.",
-          "skill": "AI-principes",
-          "idea": "AI kan snel bruikbare opties bedenken, maar vlot geschreven tekst bewijst niet dat een antwoord klopt.",
-          "scenario": "Een AI-assistent stelt een ontwerpkeuze voor een lucht- en ruimtevaartproject voor en brengt die vol zelfvertrouwen.",
-          "question": "Wat is hier de nuttigste rol voor AI?",
-          "options": {
-            "a": "De technische beslissing overnemen.",
-            "b": "Een mogelijke oplossing aandragen die een ingenieur beoordeelt.",
-            "c": "De keuze goedkeuren omdat de uitleg technisch klinkt."
-          },
-          "explanation": "Gebruik AI om de opties die je kunt onderzoeken uit te breiden. Het technische oordeel blijft verantwoordelijk voor aannames, onderbouwing en de uiteindelijke beslissing."
-        },
-        "ask-better": {
-          "title": "Beter vragen",
-          "summary": "Geef genoeg context en bepaal een bruikbaar resultaat.",
-          "skill": "Prompts schrijven",
-          "idea": "Een bruikbare vraag noemt het doel, de relevante context, de beperkingen en de verwachte uitkomst.",
-          "scenario": "Je hebt hulp nodig bij het debuggen van een Python-berekening voor een satellietproject van studenten.",
-          "question": "Welke vraag geeft het veiligste en nuttigste vertrekpunt?",
-          "options": {
-            "a": "Repareer mijn code.",
-            "b": "Leg de fout uit, houd SI-eenheden aan, benoem de aannames en stel een geteste correctie voor.",
-            "c": "Schrijf een langer antwoord."
-          },
-          "explanation": "Concrete context en succescriteria maken de uitkomst makkelijker te controleren en verkleinen de kans dat een verkeerde aanname verborgen blijft."
-        },
-        "verify-output": {
-          "title": "De uitkomst controleren",
-          "summary": "Controleer berekeningen, bronnen, beweringen en aannames.",
-          "skill": "Verificatie",
-          "idea": "Verificatie is een aparte technische stap. Hetzelfde model vragen of het zeker is, is geen onafhankelijke controle.",
-          "scenario": "Een AI geeft je een belastingberekening voor een constructieve analyse.",
-          "question": "Wat moet je doen voordat je die gebruikt?",
-          "options": {
-            "a": "Hem direct gebruiken omdat de eenheden erbij staan.",
-            "b": "Aannames, eenheden en berekeningen onafhankelijk controleren.",
-            "c": "De AI vragen of hij het zeker weet."
-          },
-          "explanation": "Controleer het belastinggeval, de eenheden, de vergelijkingen en de randvoorwaarden met betrouwbare methoden of bronnen voordat je op de uitkomst vertrouwt."
-        },
-        "confidential-information": {
-          "title": "Vertrouwelijke informatie",
-          "summary": "Weet wat niet naar een niet-goedgekeurd systeem mag.",
-          "skill": "Gegevensbescherming",
-          "idea": "Deel alleen gegevens die de tool en je onderwijsinstelling mogen verwerken.",
-          "scenario": "Een projectdocument bevat studentnummers, leveranciersgegevens en een intern toegangstoken.",
-          "question": "Wat is de verantwoorde volgende stap?",
-          "options": {
-            "a": "Alles plakken omdat het een studieopdracht is.",
-            "b": "Alleen de namen van studenten verwijderen.",
-            "c": "Een goedgekeurd systeem gebruiken en geheimen en onnodige persoonlijke of vertrouwelijke gegevens verwijderen."
-          },
-          "explanation": "Toestemming en dataminimalisatie tellen allebei. Inloggegevens horen er nooit bij, en onnodige gevoelige context moet eruit."
-        },
-        "ai-in-engineering": {
-          "title": "AI in de techniek",
-          "summary": "Gebruik AI als hulpmiddel, niet als vervanging van nadenken.",
-          "skill": "AI voor ingenieurs",
-          "idea": "AI is het sterkst als partner bij verkennen, opstellen en kritisch bekijken, zolang de ingenieur verantwoordelijk blijft.",
-          "scenario": "Je vergelijkt twee concepten voor een subsysteem van een kleine satelliet.",
-          "question": "Welke werkwijze benut AI het best?",
-          "options": {
-            "a": "De AI het concept laten kiezen en de onderbouwing overnemen.",
-            "b": "AI gebruiken om afwegingen zichtbaar te maken, daarna de randvoorwaarden toetsen en je beslissing vastleggen.",
-            "c": "Aannames niet vastleggen zodat het verslag kort blijft."
-          },
-          "explanation": "AI versterkt het technische oordeel. Het vervangt geen validatie, traceerbaarheid of verantwoordelijkheid."
-        },
-        "responsible-use": {
-          "title": "Verantwoord gebruik",
-          "summary": "Herken wanneer AI-gebruik gepast, beperkt of verboden is.",
-          "skill": "Verantwoorde praktijk",
-          "idea": "Het juiste gebruik hangt af van de taak, de regels van het vak, de goedkeuring van de tool en de vereiste mate van menselijke verantwoordelijkheid.",
-          "scenario": "De regels van een beoordeelde opdracht zijn onduidelijk over hulp van generatieve AI.",
-          "question": "Wat moet je doen?",
-          "options": {
-            "a": "Stilletjes AI gebruiken, want waarschijnlijk doet iedereen het.",
-            "b": "De AI de eindversie laten maken en daarna een paar woorden aanpassen.",
-            "c": "De regels van het vak nalezen, vragen bij onduidelijkheid en toegestane hulp vermelden."
-          },
-          "explanation": "Verantwoord gebruik respecteert het leerdoel en de afgesproken regels. Zijn de regels onduidelijk, vraag dan eerst om uitleg voordat je op AI vertrouwt."
-        }
-      }
     },
     "organization": {
       "title": "Organisatie",

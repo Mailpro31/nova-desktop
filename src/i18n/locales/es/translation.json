@@ -1078,11 +1078,6 @@
       "local": "Nova Local activo",
       "localActive": "Nova Local activo"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Termina de iniciar sesión en tu navegador. Usa este código si Microsoft te lo pide.",
       "expired": "La solicitud de inicio de sesión de Microsoft ha caducado. Vuelve a empezar.",
@@ -1093,9 +1088,6 @@
     "sso": {
       "connect": "Continuar con {{provider}}"
     },
-    "aiSkills": {
-      "minutes": "Unos {{count}} min"
-    },
     "personalization": {
       "description": "Ajusta el aspecto y la interacción de Nova sin cambiar las normas de tu institución.",
       "orb": "Orbe de Nova",
@@ -1103,158 +1095,6 @@
       "orbDescription": "Elige el color de acento del dock de Nova y del indicador de grabación.",
       "alwaysVisible": "Mostrar siempre la burbuja",
       "alwaysVisibleDescription": "Mantén visible el indicador compacto de Nova. Solo capta clics cuando el puntero está encima."
-    },
-    "firstRun": {
-      "skipForNow": "Omitir por ahora",
-      "continueLater": "Continuar más tarde",
-      "useNovaNow": "Usar Nova ahora",
-      "requiredByInstitution": "{{organization}} exige este itinerario básico.",
-      "welcome": {
-        "title": "Bienvenido a {{organization}}, {{name}}.",
-        "description": "Aprende a trabajar con IA de forma responsable o empieza a usar Nova ahora mismo.",
-        "aiEssentials": "Empezar con Fundamentos de IA",
-        "recommended": "Recomendado · unos 6 minutos",
-        "setupNow": "Configurar Nova ahora"
-      },
-      "setup": {
-        "title": "Configurar Nova",
-        "description": "Hemos preparado la configuración recomendada para ti.",
-        "microphone": "Micrófono",
-        "language": "Idioma",
-        "shortcut": "Atajo de dictado",
-        "style": "Estilo de escritura",
-        "processing": "Procesamiento",
-        "ready": "Listo",
-        "checkRequired": "Requiere revisión",
-        "noMicrophone": "No se ha detectado ningún micrófono",
-        "autoDetect": "Detección automática",
-        "useRecommended": "Usar la configuración recomendada",
-        "customize": "Personalizar",
-        "useRecommendations": "Usar las recomendaciones",
-        "purposeQuestion": "¿Para qué usas Nova sobre todo?",
-        "writingQuestion": "¿Cómo debería escribir Nova normalmente?",
-        "languageQuestion": "Idioma de dictado preferido",
-        "purposes": {
-          "classes": "Clases y apuntes",
-          "engineering": "Proyectos de ingeniería",
-          "emails": "Correos y comunicación",
-          "coding": "Programación",
-          "everything": "Un poco de todo",
-          "courseNotes": "Materiales de clase",
-          "feedback": "Comentarios a estudiantes",
-          "documents": "Documentos"
-        },
-        "writing": {
-          "keep": "Mantener mis palabras",
-          "clean": "Pulirlas",
-          "professional": "Profesional",
-          "auto": "Automático"
-        }
-      },
-      "try": {
-        "title": "Prueba Nova",
-        "description": "Haz un dictado breve. Así se comprueba el micrófono y ves cómo funciona Nova.",
-        "sample": "Di: «Envía a Lucas el avance del proyecto mañana por la mañana.»",
-        "start": "Iniciar dictado",
-        "listening": "Escuchando...",
-        "successTitle": "¡Eso es todo!",
-        "successDescription": "Tu micrófono está listo. Nova funciona dondequiera que esté tu cursor.",
-        "openNova": "Abrir Nova"
-      }
-    },
-    "aiCurriculum": {
-      "title": "Fundamentos de IA",
-      "modulePosition": "Módulo {{current}} de {{total}}",
-      "correct": "Correcto",
-      "considerThis": "Ten en cuenta esto",
-      "nextModule": "Siguiente",
-      "next": "A continuación",
-      "modules": {
-        "working-with-ai": {
-          "title": "Trabajar con IA",
-          "summary": "Entiende lo que la IA puede y no puede hacer.",
-          "skill": "Conceptos básicos de IA",
-          "idea": "La IA puede generar opciones útiles rápidamente, pero un texto fluido no demuestra que una respuesta sea correcta.",
-          "scenario": "Un asistente de IA propone una decisión de diseño para un proyecto aeroespacial y la presenta con seguridad.",
-          "question": "¿Cuál es el papel más útil de la IA aquí?",
-          "options": {
-            "a": "Sustituir la decisión de ingeniería.",
-            "b": "Aportar una solución candidata para que la evalúe un ingeniero.",
-            "c": "Aprobar la elección porque la explicación suena técnica."
-          },
-          "explanation": "Usa la IA para ampliar las opciones que puedes examinar. El criterio de ingeniería sigue siendo responsable de las hipótesis, las evidencias y la decisión final."
-        },
-        "ask-better": {
-          "title": "Pregunta mejor",
-          "summary": "Aporta suficiente contexto y define un resultado útil.",
-          "skill": "Redacción de instrucciones",
-          "idea": "Una petición útil indica el objetivo, el contexto relevante, las restricciones y el resultado esperado.",
-          "scenario": "Necesitas ayuda para depurar un cálculo en Python de un proyecto de satélite estudiantil.",
-          "question": "¿Qué petición ofrece el punto de partida más seguro y útil?",
-          "options": {
-            "a": "Arregla mi código.",
-            "b": "Explica el error, mantén las unidades del SI, identifica las hipótesis y propón una corrección probada.",
-            "c": "Escribe una respuesta más larga."
-          },
-          "explanation": "Un contexto concreto y unos criterios de éxito hacen que el resultado sea más fácil de revisar y menos propenso a ocultar una hipótesis errónea."
-        },
-        "verify-output": {
-          "title": "Verifica el resultado",
-          "summary": "Comprueba cálculos, fuentes, afirmaciones e hipótesis.",
-          "skill": "Verificación",
-          "idea": "La verificación es un paso de ingeniería independiente. Preguntar al mismo modelo si está seguro no es una comprobación independiente.",
-          "scenario": "Una IA te da un cálculo de cargas para un análisis estructural.",
-          "question": "¿Qué debes hacer antes de usarlo?",
-          "options": {
-            "a": "Usarlo directamente porque muestra las unidades.",
-            "b": "Verificar de forma independiente las hipótesis, las unidades y los cálculos.",
-            "c": "Preguntar a la IA si está segura."
-          },
-          "explanation": "Comprueba el caso de carga, las unidades, las ecuaciones y las condiciones de contorno con métodos o fuentes fiables antes de confiar en el resultado."
-        },
-        "confidential-information": {
-          "title": "Información confidencial",
-          "summary": "Aprende qué no debe enviarse a un sistema no autorizado.",
-          "skill": "Privacidad",
-          "idea": "Comparte solo los datos que la herramienta y tu institución están autorizadas a tratar.",
-          "scenario": "Un documento del proyecto contiene identificadores de estudiantes, datos de proveedores y un token de acceso interno.",
-          "question": "¿Cuál es el siguiente paso responsable?",
-          "options": {
-            "a": "Pegarlo todo porque la tarea es académica.",
-            "b": "Eliminar solo los nombres de los estudiantes.",
-            "c": "Usar un sistema aprobado y eliminar secretos y datos personales o confidenciales innecesarios."
-          },
-          "explanation": "Tanto la autorización como la minimización de datos importan. Nunca deben incluirse credenciales, y conviene eliminar el contexto sensible innecesario."
-        },
-        "ai-in-engineering": {
-          "title": "La IA en ingeniería",
-          "summary": "Usa la IA como herramienta, no como sustituto del razonamiento.",
-          "skill": "IA para ingeniería",
-          "idea": "La IA rinde mejor como colaboradora para explorar, redactar y criticar cuando un ingeniero sigue siendo responsable.",
-          "scenario": "Estás comparando dos conceptos para un subsistema de un pequeño satélite.",
-          "question": "¿Qué flujo de trabajo aprovecha mejor la IA?",
-          "options": {
-            "a": "Dejar que la IA elija el concepto y copiar su justificación.",
-            "b": "Usarla para identificar compromisos y después validar las restricciones y documentar tu decisión.",
-            "c": "No documentar las hipótesis para que el informe sea breve."
-          },
-          "explanation": "La IA potencia el criterio de ingeniería. No sustituye la validación, la trazabilidad ni la responsabilidad."
-        },
-        "responsible-use": {
-          "title": "Uso responsable",
-          "summary": "Reconoce cuándo el uso de la IA es adecuado, limitado o está prohibido.",
-          "skill": "Práctica responsable",
-          "idea": "El uso adecuado depende de la tarea, las normas de la asignatura, la autorización de la herramienta y el nivel de responsabilidad humana necesario.",
-          "scenario": "Las normas de un trabajo evaluado no aclaran si se permite la ayuda de IA generativa.",
-          "question": "¿Qué debes hacer?",
-          "options": {
-            "a": "Usar la IA sin decirlo porque probablemente todo el mundo lo hace.",
-            "b": "Dejar que la IA haga la entrega final y luego cambiar algunas palabras.",
-            "c": "Consultar la normativa de la asignatura, preguntar si no está clara y declarar la ayuda permitida."
-          },
-          "explanation": "El uso responsable respeta el objetivo de aprendizaje y las normas establecidas. Si la normativa no está clara, acláralo antes de apoyarte en la IA."
-        }
-      }
     },
     "organization": {
       "title": "Organización",
