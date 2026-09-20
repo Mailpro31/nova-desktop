@@ -2450,10 +2450,14 @@ pub async fn reformulate_campus(
     let base_url = normalize_base_url(&session.server_url);
     let client = campus_client(&session.token);
 
+    // Le serveur place la dictée dans le message, pas dans la consigne :
+    // l'emplacement `${output}` n'y a rien à faire, et un modèle qui le lit
+    // complète le gabarit au lieu de reformuler.
+    let instruction = crate::rewrite::prompt::without_transcript_template(style_prompt);
     let body = serde_json::json!({
         "text": text,
         "style_id": style_id,
-        "style_prompt": style_prompt,
+        "style_prompt": instruction,
     });
 
     let request = client
