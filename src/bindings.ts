@@ -708,6 +708,14 @@ async organizationAuthProviders(serverUrl: string) : Promise<Result<Organization
  * > le dire plutôt que prétendre le contraire. Aucun contenu de travail ne
  * > transite en revanche par ce chemin.
  */
+async discoverOrganizationByEmail(email: string, allowInsecureEndpoint: boolean) : Promise<Result<EmailDiscovery, EmailDiscoveryError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("discover_organization_by_email", { email, allowInsecureEndpoint }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async discoverOrganization(discoveryBaseUrl: string, organization: string, allowInsecureEndpoint: boolean) : Promise<Result<OrganizationBootstrap, DiscoveryError>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("discover_organization", { discoveryBaseUrl, organization, allowInsecureEndpoint }) };
@@ -2044,6 +2052,8 @@ error: DictationErrorKind | null }
 /**
  * Motifs d'échec d'une découverte. Codes stables, jamais de détail technique.
  */
+export type EmailDiscovery = { domain: string; organization_name: string; service_endpoint: string }
+export type EmailDiscoveryError = { code: "EmailInvalid" } | { code: "DnsUnavailable" } | { code: "RecordNotFound" } | { code: "EndpointInvalid" } | { code: "EndpointOutsideDomain" } | { code: "ServerUnreachable" } | { code: "DomainNotServed" }
 export type DiscoveryError = 
 /**
  * Le service de découverte n'a pas pu être joint.

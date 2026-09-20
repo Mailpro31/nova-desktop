@@ -13,6 +13,9 @@ mod commands;
 mod deployment;
 mod dictation_limit;
 mod dictation_state;
+/// Découverte d'organisation : trouver son service sans taper une adresse.
+/// Voir `docs/architecture/organization-discovery.md`.
+mod email_discovery;
 mod helpers;
 mod input;
 /// Enrôlement d'un poste dans un Lab local. Ce code est exclu des binaires
@@ -37,8 +40,6 @@ mod nova_commands;
 /// Modèle d'organisation partagé (éditions, membres, groupes). Voir
 /// `docs/architecture/organization-foundation.md`.
 pub mod organization;
-/// Découverte d'organisation : trouver son service sans taper une adresse.
-/// Voir `docs/architecture/organization-discovery.md`.
 mod organization_discovery;
 mod organization_packages;
 /// Connexion Organization par SSO (Authorization Code + PKCE), Microsoft Entra
@@ -684,6 +685,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::campus::set_campus_suspended,
                 organization_sso::sign_in_with_organization,
                 organization_sso::organization_auth_providers,
+                email_discovery::discover_organization_by_email,
                 organization_discovery::discover_organization,
                 deployment::get_deployment_state,
                 commands::campus::load_campus_session,

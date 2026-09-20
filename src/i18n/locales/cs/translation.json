@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Tuto adresu zadejte, jen pokud vám Novu nenastavilo IT oddělení."
+        "serverHelp": "Tuto adresu zadejte, jen pokud vám Novu nenastavilo IT oddělení.",
+        "discoveryLabel": "Váš organizační e-mail",
+        "discoveryPlaceholder": "jmeno@organizace.cz",
+        "discoveryHelp": "Nova najde vaši organizaci podle domény vaší adresy. Nikdy nezadáváte adresu serveru.",
+        "discoveryAction": "Pokračovat",
+        "discoveryBusy": "Hledání vaší organizace…",
+        "advanced": "Pokročilé možnosti",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Zadejte úplnou e-mailovou adresu, například jmeno@organizace.cz.",
+          "DNS_UNAVAILABLE": "Doménu vaší organizace se nepodařilo ověřit. Zkontrolujte připojení k internetu a zkuste to znovu.",
+          "RECORD_NOT_FOUND": "Tato doména zatím nezveřejňuje adresu Nova. Zeptejte se IT oddělení, nebo zadejte adresu serveru v pokročilých možnostech.",
+          "ENDPOINT_INVALID": "Adresu zveřejněnou pro tuto doménu nelze použít. Požádejte IT oddělení o kontrolu.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Adresa zveřejněná pro tuto doménu vede jinam. Nova se tam nepřihlásí.",
+          "SERVER_UNREACHABLE": "Server vaší organizace neodpověděl. Zkuste to za chvíli znovu.",
+          "DOMAIN_NOT_SERVED": "Tento server tuto e-mailovou doménu neobsluhuje. Zeptejte se IT oddělení."
+        }
       },
       "code": {
         "title": "Verification code",

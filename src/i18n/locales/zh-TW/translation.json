@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "只有在 IT 團隊尚未為你設定 Nova 時，才需要輸入此位址。"
+        "serverHelp": "只有在 IT 團隊尚未為你設定 Nova 時，才需要輸入此位址。",
+        "discoveryLabel": "您的組織電子郵件",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova 透過您電子郵件的網域找到您的組織。您不需要輸入伺服器位址。",
+        "discoveryAction": "繼續",
+        "discoveryBusy": "正在尋找您的組織…",
+        "advanced": "進階選項",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "請輸入完整的電子郵件位址，例如 name@organization.com。",
+          "DNS_UNAVAILABLE": "無法檢查您組織的網域。請檢查網路連線後再試一次。",
+          "RECORD_NOT_FOUND": "這個網域尚未發布 Nova 位址。請詢問 IT 部門，或在進階選項中輸入伺服器位址。",
+          "ENDPOINT_INVALID": "這個網域發布的位址無法使用。請讓 IT 部門檢查。",
+          "ENDPOINT_OUTSIDE_DOMAIN": "這個網域發布的位址指向別處。Nova 不會在那裡登入。",
+          "SERVER_UNREACHABLE": "您組織的伺服器沒有回應。請稍後再試一次。",
+          "DOMAIN_NOT_SERVED": "這台伺服器不服務這個電子郵件網域。請詢問 IT 部門。"
+        }
       },
       "code": {
         "title": "Verification code",

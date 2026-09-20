@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "仅当你的 IT 团队尚未为你配置 Nova 时，才需要输入此地址。"
+        "serverHelp": "仅当你的 IT 团队尚未为你配置 Nova 时，才需要输入此地址。",
+        "discoveryLabel": "您的组织邮箱",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova 通过您邮箱的域名找到您的组织。您无需输入服务器地址。",
+        "discoveryAction": "继续",
+        "discoveryBusy": "正在查找您的组织…",
+        "advanced": "高级选项",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "请输入完整的邮箱地址，例如 name@organization.com。",
+          "DNS_UNAVAILABLE": "无法检查您组织的域名。请检查网络连接后重试。",
+          "RECORD_NOT_FOUND": "该域名尚未发布 Nova 地址。请联系 IT 部门，或在高级选项中输入服务器地址。",
+          "ENDPOINT_INVALID": "该域名发布的地址无法使用。请让 IT 部门检查。",
+          "ENDPOINT_OUTSIDE_DOMAIN": "该域名发布的地址指向别处。Nova 不会在那里登录。",
+          "SERVER_UNREACHABLE": "您组织的服务器没有响应。请稍后重试。",
+          "DOMAIN_NOT_SERVED": "该服务器不服务此邮箱域名。请联系 IT 部门。"
+        }
       },
       "code": {
         "title": "Verification code",

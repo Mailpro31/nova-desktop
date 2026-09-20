@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Ange bara den här adressen om din IT-avdelning inte redan har konfigurerat Nova åt dig."
+        "serverHelp": "Ange bara den här adressen om din IT-avdelning inte redan har konfigurerat Nova åt dig.",
+        "discoveryLabel": "Din organisations e-post",
+        "discoveryPlaceholder": "namn@organisation.se",
+        "discoveryHelp": "Nova hittar din organisation via domänen i din adress. Du skriver aldrig in en serveradress.",
+        "discoveryAction": "Fortsätt",
+        "discoveryBusy": "Söker din organisation…",
+        "advanced": "Avancerade alternativ",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Ange en fullständig e-postadress, till exempel namn@organisation.se.",
+          "DNS_UNAVAILABLE": "Din organisations domän kunde inte kontrolleras. Kontrollera din internetanslutning och försök igen.",
+          "RECORD_NOT_FOUND": "Den här domänen publicerar ännu ingen Nova-adress. Fråga din IT-avdelning, eller ange serveradressen under avancerade alternativ.",
+          "ENDPOINT_INVALID": "Adressen som publicerats för den här domänen går inte att använda. Be din IT-avdelning kontrollera den.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Adressen som publicerats för den här domänen leder någon annanstans. Nova loggar inte in där.",
+          "SERVER_UNREACHABLE": "Din organisations server svarade inte. Försök igen om en stund.",
+          "DOMAIN_NOT_SERVED": "Den servern betjänar inte den här e-postdomänen. Fråga din IT-avdelning."
+        }
       },
       "code": {
         "title": "Verification code",

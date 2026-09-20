@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "لا تُدخل هذا العنوان إلا إذا لم يُهيّئ فريق تقنية المعلومات Nova لك."
+        "serverHelp": "لا تُدخل هذا العنوان إلا إذا لم يُهيّئ فريق تقنية المعلومات Nova لك.",
+        "discoveryLabel": "بريد مؤسستك الإلكتروني",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "يعثر Nova على مؤسستك من نطاق عنوانك. لن تكتب عنوان خادم أبداً.",
+        "discoveryAction": "متابعة",
+        "discoveryBusy": "جارٍ البحث عن مؤسستك…",
+        "advanced": "خيارات متقدمة",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "أدخل عنوان بريد إلكتروني كاملاً، مثل name@organization.com.",
+          "DNS_UNAVAILABLE": "تعذّر التحقق من نطاق مؤسستك. تحقق من اتصالك بالإنترنت وحاول مجدداً.",
+          "RECORD_NOT_FOUND": "لا ينشر هذا النطاق عنوان Nova بعد. اسأل فريق تقنية المعلومات، أو أدخل عنوان الخادم في الخيارات المتقدمة.",
+          "ENDPOINT_INVALID": "لا يمكن استخدام العنوان المنشور لهذا النطاق. اطلب من فريق تقنية المعلومات التحقق منه.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "العنوان المنشور لهذا النطاق يؤدي إلى مكان آخر. لن يسجّل Nova الدخول هناك.",
+          "SERVER_UNREACHABLE": "لم يستجب خادم مؤسستك. حاول مجدداً بعد قليل.",
+          "DOMAIN_NOT_SERVED": "هذا الخادم لا يخدم نطاق البريد هذا. اسأل فريق تقنية المعلومات."
+        }
       },
       "code": {
         "title": "Verification code",

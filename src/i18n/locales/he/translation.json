@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "הזינו את הכתובת הזו רק אם צוות ה-IT לא הגדיר עבורכם את Nova."
+        "serverHelp": "הזינו את הכתובת הזו רק אם צוות ה-IT לא הגדיר עבורכם את Nova.",
+        "discoveryLabel": "האימייל הארגוני שלך",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "‏Nova מוצא את הארגון שלך לפי הדומיין של הכתובת. אינך מקליד כתובת שרת אף פעם.",
+        "discoveryAction": "המשך",
+        "discoveryBusy": "מחפש את הארגון שלך…",
+        "advanced": "אפשרויות מתקדמות",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "הזן כתובת אימייל מלאה, למשל name@organization.com.",
+          "DNS_UNAVAILABLE": "לא ניתן היה לבדוק את הדומיין של הארגון. בדוק את חיבור האינטרנט ונסה שוב.",
+          "RECORD_NOT_FOUND": "הדומיין הזה עדיין לא מפרסם כתובת Nova. פנה למחלקת ה-IT, או הזן את כתובת השרת באפשרויות המתקדמות.",
+          "ENDPOINT_INVALID": "לא ניתן להשתמש בכתובת שפורסמה לדומיין הזה. בקש ממחלקת ה-IT לבדוק אותה.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "הכתובת שפורסמה לדומיין הזה מובילה למקום אחר. ‏Nova לא יתחבר שם.",
+          "SERVER_UNREACHABLE": "השרת של הארגון שלך לא השיב. נסה שוב בעוד רגע.",
+          "DOMAIN_NOT_SERVED": "השרת הזה לא משרת את דומיין האימייל הזה. פנה למחלקת ה-IT."
+        }
       },
       "code": {
         "title": "Verification code",

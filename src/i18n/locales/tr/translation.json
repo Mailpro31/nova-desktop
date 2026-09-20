@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Bu adresi yalnızca BT ekibin Nova'yı senin için yapılandırmadıysa gir."
+        "serverHelp": "Bu adresi yalnızca BT ekibin Nova'yı senin için yapılandırmadıysa gir.",
+        "discoveryLabel": "Kurumsal e-posta adresiniz",
+        "discoveryPlaceholder": "ad@kurum.com",
+        "discoveryHelp": "Nova, kuruluşunuzu adresinizin alan adından bulur. Hiçbir zaman sunucu adresi yazmazsınız.",
+        "discoveryAction": "Devam",
+        "discoveryBusy": "Kuruluşunuz aranıyor…",
+        "advanced": "Gelişmiş seçenekler",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Tam bir e-posta adresi girin, örneğin ad@kurum.com.",
+          "DNS_UNAVAILABLE": "Kuruluşunuzun alan adı denetlenemedi. İnternet bağlantınızı denetleyip yeniden deneyin.",
+          "RECORD_NOT_FOUND": "Bu alan adı henüz bir Nova adresi yayımlamıyor. BT ekibinize sorun ya da sunucu adresini gelişmiş seçeneklerde girin.",
+          "ENDPOINT_INVALID": "Bu alan adı için yayımlanan adres kullanılamıyor. BT ekibinizden denetlemesini isteyin.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Bu alan adı için yayımlanan adres başka bir yere gidiyor. Nova orada oturum açmaz.",
+          "SERVER_UNREACHABLE": "Kuruluşunuzun sunucusu yanıt vermedi. Birazdan yeniden deneyin.",
+          "DOMAIN_NOT_SERVED": "Bu sunucu bu e-posta alan adına hizmet vermiyor. BT ekibinize sorun."
+        }
       },
       "code": {
         "title": "Verification code",

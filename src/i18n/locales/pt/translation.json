@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Informe este endereço somente se a sua equipe de TI não tiver configurado o Nova para você."
+        "serverHelp": "Informe este endereço somente se a sua equipe de TI não tiver configurado o Nova para você.",
+        "discoveryLabel": "Seu e-mail da organização",
+        "discoveryPlaceholder": "nome@organizacao.com",
+        "discoveryHelp": "O Nova encontra sua organização pelo domínio do seu endereço. Você nunca digita um endereço de servidor.",
+        "discoveryAction": "Continuar",
+        "discoveryBusy": "Procurando sua organização…",
+        "advanced": "Opções avançadas",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Digite um endereço de e-mail completo, por exemplo nome@organizacao.com.",
+          "DNS_UNAVAILABLE": "Não foi possível verificar o domínio da sua organização. Verifique sua conexão e tente novamente.",
+          "RECORD_NOT_FOUND": "Este domínio ainda não publica um endereço do Nova. Fale com sua equipe de TI, ou digite o endereço do servidor nas opções avançadas.",
+          "ENDPOINT_INVALID": "O endereço publicado para este domínio não pode ser usado. Peça à sua equipe de TI para verificá-lo.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "O endereço publicado para este domínio leva a outro lugar. O Nova não vai entrar por lá.",
+          "SERVER_UNREACHABLE": "O servidor da sua organização não respondeu. Tente novamente em instantes.",
+          "DOMAIN_NOT_SERVED": "Esse servidor não atende este domínio de e-mail. Fale com sua equipe de TI."
+        }
       },
       "code": {
         "title": "Verification code",

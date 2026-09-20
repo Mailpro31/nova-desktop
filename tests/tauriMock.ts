@@ -45,6 +45,12 @@ interface MockOptions {
   closedCapabilities?: string[];
   /** `membership` de `/api/me` (groupes, `groups_visible`). */
   membership?: Record<string, unknown>;
+  /** Reponse de `discover_organization_by_email`. Absente, aucun enregistrement. */
+  emailDiscovery?: {
+    domain: string;
+    organization_name: string;
+    service_endpoint: string;
+  };
 }
 
 export async function mockTauri(page: Page, options: MockOptions = {}) {
@@ -195,6 +201,12 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         case "set_campus_suspended":
           localStorage.setItem("nova.test.suspended", JSON.stringify(args));
           return null;
+        case "discover_organization_by_email": {
+          // Ce que le DNS et le serveur repondraient, sans reseau.
+          const answer = settings.emailDiscovery;
+          if (!answer) throw { code: "RecordNotFound" };
+          return answer;
+        }
         case "get_campus_me":
           // Lu à chaque appel : un test peut suspendre puis réactiver le
           // membre sans recharger la page, comme le ferait l'administrateur.
