@@ -30,6 +30,23 @@ fn built_in_style(style_id: &str) -> Option<&'static str> {
     }
 }
 
+/// La consigne d'un Style, sans l'emplacement de la dictée.
+///
+/// Les Styles sont persistés avec `<transcript>${output}</transcript>` : le
+/// poste y insère la dictée avant d'appeler son moteur local. Partout ailleurs
+/// — le prompt construit ici, et la consigne envoyée au serveur — cet
+/// emplacement n'a aucun sens. Laissé en place, il donne au modèle un gabarit
+/// avec un trou, que le modèle complète au lieu de reformuler : c'est ainsi
+/// qu'un Style entier, exemple compris, s'est retrouvé collé dans un document
+/// à la place de la dictée.
+pub fn without_transcript_template(raw: &str) -> String {
+    raw.replace("<transcript>\n${output}\n</transcript>", "")
+        .replace("<transcript>${output}</transcript>", "")
+        .replace("${output}", "")
+        .trim()
+        .to_string()
+}
+
 fn truncate_chars(value: &str, max: usize) -> String {
     value.chars().take(max).collect()
 }
@@ -55,12 +72,7 @@ pub fn build(
             } else {
                 2_000
             };
-            truncate_chars(
-                &persisted_style_prompt
-                    .replace("<transcript>\n${output}\n</transcript>", "")
-                    .replace("${output}", ""),
-                cap,
-            )
+            truncate_chars(&without_transcript_template(persisted_style_prompt), cap)
         });
     let contract = if is_air { AIR_CONTRACT } else { CONTRACT };
     let correction = if is_air {
@@ -81,7 +93,31 @@ pub fn build(
 
 #[cfg(test)]
 mod tests {
-    use super::{build, PROMPT_VERSION};
+    use super::{build, without_transcript_template, PROMPT_VERSION};
+
+    /// Le gabarit ne doit sortir d'aucun chemin : ni du prompt local, ni de la
+    /// consigne envoyée au serveur.
+    #[test]
+    fn the_transcript_template_is_removed_wherever_it_sits() {
+        for raw in [
+            "Règles.\n<transcript>\n${output}\n</transcript>",
+            "<transcript>${output}</transcript>\nRègles.",
+            "Corrige ceci : ${output}\nRègles.",
+        ] {
+            let cleaned = without_transcript_template(raw);
+            assert!(!cleaned.contains("${output}"), "{raw}");
+            assert!(!cleaned.contains("transcript>"), "{raw}");
+            assert!(cleaned.contains("Règles."), "{raw}");
+        }
+    }
+
+    #[test]
+    fn a_style_without_the_template_is_left_alone() {
+        assert_eq!(
+            without_transcript_template("  Écris un e-mail.  "),
+            "Écris un e-mail."
+        );
+    }
 
     #[test]
     fn local_prompt_disables_thinking_and_blocks_chatbot_behavior() {
