@@ -300,8 +300,9 @@ test("an SSO network error keeps the chosen provider available", async ({
  *
  * Le paquet Organization installé sans `/DEPLOYMENT_ID` ni `/MANAGED_CONFIG`
  * n'a aucune configuration locale à lire. C'est le cas réel d'un premier essai,
- * et il doit rester utilisable : la même interface neutre demande l'adresse du
- * serveur, puis se complète sur place avec ce que ce serveur annonce.
+ * et il doit rester utilisable : la même interface neutre demande une adresse
+ * e-mail — l'adresse du serveur se saisit dans les options avancées — puis se
+ * complète sur place avec ce que ce serveur annonce.
  */
 test.describe("single organization sign-in surface", () => {
   const campusIntent = async (page: import("@playwright/test").Page) => {
@@ -312,7 +313,7 @@ test.describe("single organization sign-in surface", () => {
     });
   };
 
-  test("an unconfigured install asks for its server on the neutral surface", async ({
+  test("an unconfigured install asks for an email on the neutral surface", async ({
     page,
   }) => {
     await campusIntent(page);
@@ -326,13 +327,14 @@ test.describe("single organization sign-in surface", () => {
     await expect(
       page.getByRole("heading", { name: "Connect to your organization" }),
     ).toBeVisible();
+    // La question posée est une adresse : personne ne connaît l'URL de son
+    // organisation.
+    await expect(page.getByLabel(/organization email/i)).toBeVisible();
+    await expect(page.getByLabel("Organization server")).toHaveCount(0);
+    // L'adresse du serveur reste saisissable, une fois demandée.
+    await page.getByRole("button", { name: /advanced options/i }).click();
     await expect(page.getByLabel("Organization server")).toBeVisible();
-    // Pas d'adresse e-mail tant qu'aucun serveur n'a annoncé `email_code`.
-    await expect(page.locator('input[type="email"]')).toHaveCount(0);
-    // Ni clic intermédiaire, ni retour vers un écran d'accueil inutile.
-    await expect(
-      page.getByRole("button", { name: "Continue", exact: true }),
-    ).toHaveCount(0);
+    // Ni retour vers un écran d'accueil inutile.
     await expect(
       page.getByRole("button", { name: "Back", exact: true }),
     ).toHaveCount(0);
@@ -362,6 +364,10 @@ test.describe("single organization sign-in surface", () => {
       },
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
 
     const server = page.getByLabel("Organization server");
     await server.fill("https://nova.example.test");
@@ -394,7 +400,7 @@ test.describe("single organization sign-in surface", () => {
     });
     await page.goto("/");
 
-    await expect(page.locator('input[type="email"]')).toHaveCount(0);
+    await page.getByRole("button", { name: /advanced options/i }).click();
     await page
       .getByLabel("Organization server")
       .fill("https://nova.example.test");
@@ -428,6 +434,10 @@ test.describe("single organization sign-in surface", () => {
       onboardingCompleted: false,
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
 
     await expect(page.locator("body")).not.toContainText("Join your campus");
     await page
@@ -456,6 +466,10 @@ test.describe("single organization sign-in surface", () => {
       onboardingCompleted: false,
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
     await page
       .getByLabel("Organization server")
       .fill("https://nova.example.test");
@@ -495,6 +509,10 @@ test.describe("single organization sign-in surface", () => {
     });
     await page.goto("/");
     await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
+    await page
       .getByLabel("Organization server")
       .fill("https://nova.example.test");
 
@@ -523,6 +541,10 @@ test.describe("single organization sign-in surface", () => {
       },
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
 
     const server = page.getByLabel("Organization server");
     await server.fill("https://wrong.example.test");
@@ -827,6 +849,10 @@ test.describe("the surface follows the server it is talking to", () => {
       },
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
 
     await page
       .getByLabel("Organization server")
@@ -867,6 +893,10 @@ test.describe("the surface follows the server it is talking to", () => {
       serverConfigs: { "https://offline.example.test": null },
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
 
     const server = page.getByLabel("Organization server");
     await server.fill("https://offline.example.test");
@@ -932,6 +962,10 @@ test.describe("the surface follows the server it is talking to", () => {
       },
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
     await page
       .getByLabel("Organization server")
       .fill("https://nova.legacy.test");

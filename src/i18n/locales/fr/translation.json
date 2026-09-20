@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ecole.fr",
         "emailLabel": "Email école",
         "emailPlaceholder": "prenom.nom@ecole.fr",
-        "serverHelp": "Saisissez cette adresse uniquement si votre DSI n'a pas configuré Nova pour vous."
+        "serverHelp": "Saisissez cette adresse uniquement si votre DSI n'a pas configuré Nova pour vous.",
+        "discoveryLabel": "Votre adresse e-mail d'organisation",
+        "discoveryPlaceholder": "prenom.nom@organisation.fr",
+        "discoveryHelp": "Nova trouve votre organisation à partir du domaine de votre adresse. Vous ne saisissez jamais d'adresse de serveur.",
+        "discoveryAction": "Continuer",
+        "discoveryBusy": "Recherche de votre organisation…",
+        "advanced": "Options avancées",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Saisissez une adresse e-mail complète, par exemple prenom.nom@organisation.fr.",
+          "DNS_UNAVAILABLE": "Impossible de vérifier le domaine de votre organisation. Vérifiez votre connexion et réessayez.",
+          "RECORD_NOT_FOUND": "Ce domaine ne publie pas encore d'adresse Nova. Demandez à votre service informatique, ou saisissez l'adresse du serveur dans les options avancées.",
+          "ENDPOINT_INVALID": "L'adresse publiée pour ce domaine n'est pas utilisable. Demandez à votre service informatique de la vérifier.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "L'adresse publiée pour ce domaine mène ailleurs. Nova refuse d'y envoyer votre connexion.",
+          "SERVER_UNREACHABLE": "Le serveur de votre organisation n'a pas répondu. Réessayez dans un instant.",
+          "DOMAIN_NOT_SERVED": "Ce serveur ne sert pas ce domaine d'adresses. Demandez à votre service informatique."
+        }
       },
       "code": {
         "title": "Consultez votre boîte mail",

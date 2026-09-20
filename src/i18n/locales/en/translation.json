@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.school.edu",
         "emailLabel": "School email",
         "emailPlaceholder": "name@school.edu",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Only enter this address if your IT team has not configured Nova for you.",
+        "discoveryLabel": "Your organization email",
+        "discoveryPlaceholder": "name@organization.com",
+        "discoveryHelp": "Nova finds your organization from the domain of your address. You never type a server address.",
+        "discoveryAction": "Continue",
+        "discoveryBusy": "Looking for your organization…",
+        "advanced": "Advanced options",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Enter a complete email address, such as name@organization.com.",
+          "DNS_UNAVAILABLE": "Could not check your organization's domain. Check your internet connection and try again.",
+          "RECORD_NOT_FOUND": "This domain does not publish a Nova address yet. Ask your IT team, or enter the server address under advanced options.",
+          "ENDPOINT_INVALID": "The address published for this domain cannot be used. Ask your IT team to check it.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "The address published for this domain points somewhere else. Nova refuses to sign in there.",
+          "SERVER_UNREACHABLE": "Your organization's server did not answer. Try again in a moment.",
+          "DOMAIN_NOT_SERVED": "That server does not serve this email domain. Ask your IT team."
+        }
       },
       "code": {
         "title": "Check your inbox",

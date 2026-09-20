@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Chỉ nhập địa chỉ này nếu bộ phận CNTT chưa cấu hình Nova cho bạn."
+        "serverHelp": "Chỉ nhập địa chỉ này nếu bộ phận CNTT chưa cấu hình Nova cho bạn.",
+        "discoveryLabel": "Email tổ chức của bạn",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova tìm tổ chức của bạn từ tên miền trong địa chỉ. Bạn không bao giờ phải nhập địa chỉ máy chủ.",
+        "discoveryAction": "Tiếp tục",
+        "discoveryBusy": "Đang tìm tổ chức của bạn…",
+        "advanced": "Tùy chọn nâng cao",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Hãy nhập địa chỉ email đầy đủ, ví dụ ten@tochuc.com.",
+          "DNS_UNAVAILABLE": "Không kiểm tra được tên miền của tổ chức. Hãy kiểm tra kết nối internet rồi thử lại.",
+          "RECORD_NOT_FOUND": "Tên miền này chưa công bố địa chỉ Nova. Hãy hỏi bộ phận CNTT, hoặc nhập địa chỉ máy chủ trong tùy chọn nâng cao.",
+          "ENDPOINT_INVALID": "Địa chỉ được công bố cho tên miền này không dùng được. Hãy nhờ bộ phận CNTT kiểm tra.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Địa chỉ được công bố cho tên miền này dẫn tới nơi khác. Nova sẽ không đăng nhập ở đó.",
+          "SERVER_UNREACHABLE": "Máy chủ của tổ chức không phản hồi. Hãy thử lại sau giây lát.",
+          "DOMAIN_NOT_SERVED": "Máy chủ đó không phục vụ tên miền email này. Hãy hỏi bộ phận CNTT."
+        }
       },
       "code": {
         "title": "Verification code",

@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "तपाईंको IT टोलीले Nova सेटअप नगरेको भए मात्र यो ठेगाना हाल्नुहोस्।"
+        "serverHelp": "तपाईंको IT टोलीले Nova सेटअप नगरेको भए मात्र यो ठेगाना हाल्नुहोस्।",
+        "discoveryLabel": "तपाईंको संस्थाको इमेल",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova ले तपाईंको ठेगानाको डोमेनबाट संस्था पत्ता लगाउँछ। तपाईंले कहिल्यै सर्भरको ठेगाना टाइप गर्नुपर्दैन।",
+        "discoveryAction": "जारी राख्नुहोस्",
+        "discoveryBusy": "तपाईंको संस्था खोज्दै…",
+        "advanced": "उन्नत विकल्पहरू",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "पूरा इमेल ठेगाना लेख्नुहोस्, जस्तै nam@sanstha.com।",
+          "DNS_UNAVAILABLE": "तपाईंको संस्थाको डोमेन जाँच्न सकिएन। इन्टरनेट जडान जाँचेर फेरि प्रयास गर्नुहोस्।",
+          "RECORD_NOT_FOUND": "यो डोमेनले अझै Nova ठेगाना प्रकाशित गरेको छैन। आफ्नो आईटी टोलीलाई सोध्नुहोस्, वा उन्नत विकल्पमा सर्भरको ठेगाना लेख्नुहोस्।",
+          "ENDPOINT_INVALID": "यो डोमेनका लागि प्रकाशित ठेगाना प्रयोग गर्न मिल्दैन। आईटी टोलीलाई जाँच्न अनुरोध गर्नुहोस्।",
+          "ENDPOINT_OUTSIDE_DOMAIN": "यो डोमेनका लागि प्रकाशित ठेगाना अन्यत्र पुग्छ। Nova त्यहाँ साइन इन गर्दैन।",
+          "SERVER_UNREACHABLE": "तपाईंको संस्थाको सर्भरले जवाफ दिएन। केही बेरमा फेरि प्रयास गर्नुहोस्।",
+          "DOMAIN_NOT_SERVED": "त्यो सर्भरले यो इमेल डोमेन सेवा गर्दैन। आफ्नो आईटी टोलीलाई सोध्नुहोस्।"
+        }
       },
       "code": {
         "title": "Verification code",
