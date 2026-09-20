@@ -71,6 +71,10 @@ test.describe("Nova Campus", () => {
       onboardingCompleted: false,
     });
     await page.goto("/");
+    await page
+      .getByRole("button", { name: /advanced options/i })
+      .click()
+      .catch(() => {});
     // Aucune configuration locale : l'adresse est demandée sur cette surface,
     // et le vocabulaire reste neutre tant que ce serveur n'annonce rien.
     await page
