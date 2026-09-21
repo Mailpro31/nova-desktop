@@ -36,6 +36,32 @@ const DOH_ENDPOINT: &str = "https://cloudflare-dns.com/dns-query";
 const RECORD_PREFIX: &str = "_nova.";
 const RECORD_VERSION: &str = "v=nova1";
 
+/// Variable d'environnement qui remplace la lecture DNS, **sur ce poste
+/// seulement**, le temps d'essayer la découverte avant que l'organisation ait
+/// publié son enregistrement.
+///
+/// Forme : `ecole.fr=https://nova.test` — plusieurs domaines séparés par `;`.
+///
+/// ## Pourquoi c'est sans danger
+///
+/// Elle se pose sur la machine elle-même : quiconque peut la poser peut déjà
+/// installer le logiciel de son choix sur ce poste. Aucune réponse réseau ne
+/// l'active. Et le reste des contrôles tient : le serveur désigné doit
+/// toujours confirmer qu'il sert ce domaine. Seule la règle « l'hôte
+/// appartient au domaine » est levée — une adresse de test (`localhost`, un
+/// nom Tailscale) n'est presque jamais sous le domaine de l'école.
+pub const TEST_OVERRIDE_ENV: &str = "NOVA_EMAIL_DISCOVERY_OVERRIDE";
+
+/// L'adresse de test fixée pour un domaine, s'il y en a une.
+pub fn test_override(raw: Option<&str>, domain: &str) -> Option<String> {
+    raw?.split(';').find_map(|entry| {
+        let (key, endpoint) = entry.split_once('=')?;
+        let key = key.trim().trim_end_matches('.').to_ascii_lowercase();
+        let endpoint = endpoint.trim();
+        (key == domain && !endpoint.is_empty()).then(|| endpoint.to_string())
+    })
+}
+
 /// Ce que le poste retient d'une découverte par e-mail.
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
 pub struct EmailDiscovery {
@@ -197,6 +223,17 @@ pub async fn discover_organization_by_email(
         .build()
         .map_err(|_| EmailDiscoveryError::DnsUnavailable)?;
 
+    // Réglage de test posé sur ce poste : il remplace le DNS, et lui seul.
+    let override_value = std::env::var(TEST_OVERRIDE_ENV).ok();
+    if let Some(endpoint) = test_override(override_value.as_deref(), &domain) {
+        log::warn!("Email discovery uses the local test override for {domain}");
+        // Une adresse de test est souvent locale ou en HTTP : c'est permis ici,
+        // et seulement ici, puisque c'est ce poste qui l'a demandé.
+        service_endpoint_is_allowed(&endpoint, true)
+            .map_err(|_| EmailDiscoveryError::EndpointInvalid)?;
+        return confirm(&client, &endpoint, domain).await;
+    }
+
     let response = client
         .get(DOH_ENDPOINT)
         .query(&[("name", record_name(&domain).as_str()), ("type", "TXT")])
@@ -220,6 +257,16 @@ pub async fn discover_organization_by_email(
         return Err(EmailDiscoveryError::EndpointOutsideDomain);
     }
 
+    confirm(&client, &endpoint, domain).await
+}
+
+/// Le serveur désigné confirme-t-il qu'il sert ce domaine ? Dernier des trois
+/// contrôles, et le seul qu'aucun réglage ne lève.
+async fn confirm(
+    client: &reqwest::Client,
+    endpoint: &str,
+    domain: String,
+) -> Result<EmailDiscovery, EmailDiscoveryError> {
     let base = endpoint.trim_end_matches('/');
     let confirmation = client
         .get(format!("{base}/api/discovery/email-domain"))
@@ -251,6 +298,28 @@ pub async fn discover_organization_by_email(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_test_override_is_read_for_its_domain_only() {
+        let raw = Some("ecole.fr=http://127.0.0.1:8080; autre.fr=https://nova.test");
+        assert_eq!(
+            test_override(raw, "ecole.fr").as_deref(),
+            Some("http://127.0.0.1:8080")
+        );
+        assert_eq!(
+            test_override(raw, "autre.fr").as_deref(),
+            Some("https://nova.test")
+        );
+        assert!(test_override(raw, "ailleurs.fr").is_none());
+    }
+
+    #[test]
+    fn no_override_means_dns_as_usual() {
+        assert!(test_override(None, "ecole.fr").is_none());
+        assert!(test_override(Some(""), "ecole.fr").is_none());
+        assert!(test_override(Some("ecole.fr="), "ecole.fr").is_none());
+        assert!(test_override(Some("pas de signe egal"), "ecole.fr").is_none());
+    }
 
     #[test]
     fn an_address_gives_its_domain() {
