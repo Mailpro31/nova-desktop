@@ -8,9 +8,9 @@
 //! ne dépendent d'aucune formulation : une sortie qui les échoue est écartée et
 //! la dictée est collée telle quelle.
 //!
-//! Ils ne visent que les Styles intégrés qui transforment la forme sans changer
-//! la langue ni résumer. « Réunion » résume par nature, et un Style personnel
-//! ou d'organisation peut légitimement traduire : ils en sont exclus.
+//! Ils ne visent que les Styles intégrés. Un Style personnel ou d'organisation
+//! peut légitimement traduire : il en est exclu. « Réunion » résume par nature :
+//! seul le contrôle des nombres groupés s'applique à lui.
 
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -155,17 +155,23 @@ pub fn grouped_number_lost(input: &str, output: &str) -> bool {
 }
 
 /// Les contrôles propres aux Styles intégrés. `Err` porte le motif du refus.
+///
+/// « Réunion » résume, mais ne réécrit pas un nombre : lui seul échappe aux
+/// contrôles de langue et de mots repris, pas à celui des nombres groupés.
 pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static str> {
-    if !GUARDED_STYLES.contains(&style_id) {
+    let guarded = GUARDED_STYLES.contains(&style_id);
+    if !guarded && style_id != "nova_style_meeting" {
         return Ok(());
     }
-    if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
-        if dictated != written {
-            return Err("language-changed");
+    if guarded {
+        if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
+            if dictated != written {
+                return Err("language-changed");
+            }
         }
-    }
-    if kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS) {
-        return Err("dictation-not-kept");
+        if kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS) {
+            return Err("dictation-not-kept");
+        }
     }
     if grouped_number_lost(input, output) {
         return Err("number-format-changed");
@@ -242,6 +248,24 @@ mod tests {
             "Budget : 76 300 €, 60 000 €.",
             "## Budget\n- **76 300 €**\n- **60 000 €**",
             "nova_style_notes"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_meeting_summary_may_shorten_but_not_rewrite_a_number() {
+        assert_eq!(
+            check(
+                "Budget : 76 300 €, 60 000 €.",
+                "Budget: 76,300 €, 60,000 €.",
+                "nova_style_meeting"
+            ),
+            Err("number-format-changed")
+        );
+        assert!(check(
+            "alors on a parlé longuement du budget qui est de 76 300 € et de la suite",
+            "## Résumé\nBudget : 76 300 €.",
+            "nova_style_meeting"
         )
         .is_ok());
     }
