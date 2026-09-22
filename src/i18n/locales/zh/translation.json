@@ -1093,11 +1093,6 @@
       "local": "Nova Local 已启用",
       "localActive": "Nova Local 已启用"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "请在浏览器中完成登录。如果 Microsoft 要求，请使用此代码。",
       "expired": "Microsoft 登录请求已过期，请重新开始。",
@@ -1108,9 +1103,6 @@
     "sso": {
       "connect": "使用 {{provider}} 继续"
     },
-    "aiSkills": {
-      "minutes": "约 {{count}} 分钟"
-    },
     "personalization": {
       "description": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
       "orb": "Nova 光球",
@@ -1118,158 +1110,6 @@
       "orbDescription": "选择 Nova 停靠栏和录音指示器使用的强调色。",
       "alwaysVisible": "始终显示气泡",
       "alwaysVisibleDescription": "让 Nova 的紧凑状态指示器保持可见。只有鼠标悬停在上面时才会接收点击。"
-    },
-    "firstRun": {
-      "skipForNow": "暂时跳过",
-      "continueLater": "稍后继续",
-      "useNovaNow": "立即使用 Nova",
-      "requiredByInstitution": "{{organization}} 要求完成此基础课程。",
-      "welcome": {
-        "title": "欢迎来到 {{organization}}，{{name}}。",
-        "description": "学习如何负责任地使用 AI，或立即开始使用 Nova。",
-        "aiEssentials": "从 AI 基础开始",
-        "recommended": "推荐 · 约 6 分钟",
-        "setupNow": "立即设置 Nova"
-      },
-      "setup": {
-        "title": "设置 Nova",
-        "description": "我们已为你准备好推荐设置。",
-        "microphone": "麦克风",
-        "language": "语言",
-        "shortcut": "听写快捷键",
-        "style": "写作风格",
-        "processing": "处理方式",
-        "ready": "已就绪",
-        "checkRequired": "需要检查",
-        "noMicrophone": "未检测到麦克风",
-        "autoDetect": "自动检测",
-        "useRecommended": "使用推荐设置",
-        "customize": "自定义",
-        "useRecommendations": "采用推荐",
-        "purposeQuestion": "你最常用 Nova 做什么？",
-        "writingQuestion": "Nova 通常应该怎样写？",
-        "languageQuestion": "首选听写语言",
-        "purposes": {
-          "classes": "课堂与笔记",
-          "engineering": "工程项目",
-          "emails": "邮件与沟通",
-          "coding": "编程",
-          "everything": "各方面都用一点",
-          "courseNotes": "课程资料",
-          "feedback": "给学生的反馈",
-          "documents": "文档"
-        },
-        "writing": {
-          "keep": "保留我的原话",
-          "clean": "整理润色",
-          "professional": "正式专业",
-          "auto": "自动"
-        }
-      },
-      "try": {
-        "title": "试用 Nova",
-        "description": "做一次简短的听写。这会检查麦克风，并展示 Nova 的工作方式。",
-        "sample": "请说：“明天早上把项目进展发给卢卡斯。”",
-        "start": "开始听写",
-        "listening": "正在聆听...",
-        "successTitle": "就这么简单。",
-        "successDescription": "麦克风已就绪。光标在哪里，Nova 就能在哪里工作。",
-        "openNova": "打开 Nova"
-      }
-    },
-    "aiCurriculum": {
-      "title": "AI 基础",
-      "modulePosition": "第 {{current}} 单元，共 {{total}} 个",
-      "correct": "正确",
-      "considerThis": "想一想",
-      "nextModule": "下一步",
-      "next": "下一个",
-      "modules": {
-        "working-with-ai": {
-          "title": "与 AI 协作",
-          "summary": "了解 AI 能做什么、不能做什么。",
-          "skill": "AI 基本原理",
-          "idea": "AI 可以快速给出有用的选项，但表述流畅并不能证明答案正确。",
-          "scenario": "一个 AI 助手为航空航天项目提出了一项设计方案，并且说得信心十足。",
-          "question": "在这里，AI 最有用的角色是什么？",
-          "options": {
-            "a": "取代工程决策。",
-            "b": "提供一个候选方案，由工程师来评估。",
-            "c": "因为解释听起来很专业，就批准这个方案。"
-          },
-          "explanation": "用 AI 来拓展你可以考察的选项。对假设、证据和最终决策负责的，仍然是工程判断。"
-        },
-        "ask-better": {
-          "title": "更好地提问",
-          "summary": "提供足够的背景，并明确有用的结果。",
-          "skill": "提示词编写",
-          "idea": "有用的请求会说明目标、相关背景、约束条件和期望的输出。",
-          "scenario": "你需要帮忙调试一个学生卫星项目中使用的 Python 计算程序。",
-          "question": "哪个请求能提供最安全、最有用的起点？",
-          "options": {
-            "a": "帮我修好代码。",
-            "b": "解释错误，保持国际单位制，指出假设，并给出经过测试的修正方案。",
-            "c": "写一个更长的回答。"
-          },
-          "explanation": "具体的背景和成功标准能让输出更容易检查，也更不容易掩盖错误的假设。"
-        },
-        "verify-output": {
-          "title": "核实输出",
-          "summary": "检查计算、来源、论断和假设。",
-          "skill": "核实",
-          "idea": "核实是一个独立的工程步骤。问同一个模型它是否确定，并不是独立的检查。",
-          "scenario": "AI 为一项结构分析给出了载荷计算。",
-          "question": "使用之前你应该怎么做？",
-          "options": {
-            "a": "因为标明了单位，直接使用。",
-            "b": "独立核实假设、单位和计算。",
-            "c": "问 AI 它是否确定。"
-          },
-          "explanation": "在依赖结果之前，用可靠的方法或来源检查载荷工况、单位、方程和边界条件。"
-        },
-        "confidential-information": {
-          "title": "机密信息",
-          "summary": "了解哪些内容不能发送到未经授权的系统。",
-          "skill": "隐私",
-          "idea": "只分享该工具和你所在院校获准处理的数据。",
-          "scenario": "一份项目文档包含学生编号、供应商数据和一个内部访问令牌。",
-          "question": "负责任的下一步是什么？",
-          "options": {
-            "a": "因为是学业任务，全部粘贴进去。",
-            "b": "只删除学生姓名。",
-            "c": "使用经批准的系统，并删除密钥以及不必要的个人或机密数据。"
-          },
-          "explanation": "授权和数据最小化同样重要。绝不能包含登录凭据，不必要的敏感背景也应删除。"
-        },
-        "ai-in-engineering": {
-          "title": "工程中的 AI",
-          "summary": "把 AI 当作工具，而不是思考的替代品。",
-          "skill": "工程 AI",
-          "idea": "当工程师仍然负责时，AI 作为探索、起草和批判的协作者最能发挥作用。",
-          "scenario": "你正在比较一颗小卫星某个子系统的两种方案。",
-          "question": "哪种工作流程最能发挥 AI 的作用？",
-          "options": {
-            "a": "让 AI 选择方案，并照抄它的理由。",
-            "b": "用它梳理权衡取舍，再核实约束条件并记录你的决策。",
-            "c": "为了让报告简短，不记录假设。"
-          },
-          "explanation": "AI 会放大工程判断，但不能取代验证、可追溯性和问责。"
-        },
-        "responsible-use": {
-          "title": "负责任地使用",
-          "summary": "识别何时使用 AI 是合适的、受限的或被禁止的。",
-          "skill": "负责任的实践",
-          "idea": "正确的使用方式取决于任务、课程规定、工具是否获准，以及所需的人类问责程度。",
-          "scenario": "一项计分作业的规定没有说清楚能否借助生成式 AI。",
-          "question": "你应该怎么做？",
-          "options": {
-            "a": "悄悄使用 AI，因为大家可能都在用。",
-            "b": "让 AI 完成最终提交内容，再改几个词。",
-            "c": "查看课程规定，不清楚时提问，并说明获准使用的帮助。"
-          },
-          "explanation": "负责任的使用尊重学习目标和既定规则。规定不明确时，先弄清楚再依赖 AI。"
-        }
-      }
     },
     "organization": {
       "title": "组织",

@@ -1093,11 +1093,6 @@
       "local": "Nova Local 활성",
       "localActive": "Nova Local 활성"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "브라우저에서 로그인을 마치세요. Microsoft가 요청하면 이 코드를 사용하세요.",
       "expired": "Microsoft 로그인 요청이 만료되었습니다. 처음부터 다시 시작하세요.",
@@ -1108,9 +1103,6 @@
     "sso": {
       "connect": "{{provider}} 계정으로 계속"
     },
-    "aiSkills": {
-      "minutes": "약 {{count}}분"
-    },
     "personalization": {
       "description": "기관 정책을 바꾸지 않고 Nova의 모양과 사용 방식을 조정합니다.",
       "orb": "Nova 오브",
@@ -1118,158 +1110,6 @@
       "orbDescription": "Nova 독과 녹음 표시기에 쓰일 강조 색을 고르세요.",
       "alwaysVisible": "버블 항상 표시",
       "alwaysVisibleDescription": "Nova의 작은 상태 표시기를 계속 보이게 합니다. 포인터를 올렸을 때만 클릭을 받습니다."
-    },
-    "firstRun": {
-      "skipForNow": "지금은 건너뛰기",
-      "continueLater": "나중에 계속하기",
-      "useNovaNow": "지금 Nova 사용하기",
-      "requiredByInstitution": "이 기초 과정은 {{organization}}에서 필수입니다.",
-      "welcome": {
-        "title": "{{organization}}에 오신 것을 환영합니다, {{name}}님.",
-        "description": "AI를 책임감 있게 활용하는 법을 배우거나, 바로 Nova를 사용해 보세요.",
-        "aiEssentials": "AI 기초로 시작하기",
-        "recommended": "추천 · 약 6분",
-        "setupNow": "지금 Nova 설정하기"
-      },
-      "setup": {
-        "title": "Nova 설정",
-        "description": "추천 설정을 준비해 두었습니다.",
-        "microphone": "마이크",
-        "language": "언어",
-        "shortcut": "받아쓰기 단축키",
-        "style": "글쓰기 스타일",
-        "processing": "처리",
-        "ready": "준비됨",
-        "checkRequired": "확인 필요",
-        "noMicrophone": "마이크가 감지되지 않음",
-        "autoDetect": "자동 감지",
-        "useRecommended": "추천 설정 사용",
-        "customize": "맞춤 설정",
-        "useRecommendations": "추천 사용",
-        "purposeQuestion": "Nova를 주로 어디에 사용하나요?",
-        "writingQuestion": "Nova가 평소 어떻게 쓰면 좋을까요?",
-        "languageQuestion": "선호하는 받아쓰기 언어",
-        "purposes": {
-          "classes": "수업과 필기",
-          "engineering": "엔지니어링 프로젝트",
-          "emails": "이메일과 커뮤니케이션",
-          "coding": "코딩",
-          "everything": "이것저것 조금씩",
-          "courseNotes": "강의 자료",
-          "feedback": "학생 피드백",
-          "documents": "문서"
-        },
-        "writing": {
-          "keep": "내 말 그대로",
-          "clean": "다듬기",
-          "professional": "전문적으로",
-          "auto": "자동"
-        }
-      },
-      "try": {
-        "title": "Nova 사용해 보기",
-        "description": "짧게 한 번 받아쓰기를 해 보세요. 마이크를 확인하고 Nova의 작동 방식을 보여 드립니다.",
-        "sample": "“내일 아침에 루카스에게 프로젝트 진행 상황을 보내 줘”라고 말해 보세요.",
-        "start": "받아쓰기 시작",
-        "listening": "듣는 중...",
-        "successTitle": "완료되었습니다.",
-        "successDescription": "마이크가 준비되었습니다. Nova는 커서가 있는 곳 어디에서나 작동합니다.",
-        "openNova": "Nova 열기"
-      }
-    },
-    "aiCurriculum": {
-      "title": "AI 기초",
-      "modulePosition": "모듈 {{current}}/{{total}}",
-      "correct": "정답",
-      "considerThis": "생각해 보세요",
-      "nextModule": "다음",
-      "next": "다음 차례",
-      "modules": {
-        "working-with-ai": {
-          "title": "AI와 함께 일하기",
-          "summary": "AI가 할 수 있는 일과 할 수 없는 일을 이해합니다.",
-          "skill": "AI 기본 원리",
-          "idea": "AI는 유용한 선택지를 빠르게 제시할 수 있지만, 매끄러운 문장이 답이 옳다는 증거는 아닙니다.",
-          "scenario": "AI 어시스턴트가 항공우주 프로젝트의 설계안을 확신에 찬 어조로 제시합니다.",
-          "question": "여기서 AI의 가장 유용한 역할은 무엇인가요?",
-          "options": {
-            "a": "엔지니어링 의사결정을 대신한다.",
-            "b": "엔지니어가 평가할 후보 해결책을 제시한다.",
-            "c": "설명이 기술적으로 들리므로 그 선택을 승인한다."
-          },
-          "explanation": "검토할 수 있는 선택지를 넓히는 데 AI를 활용하세요. 가정, 근거, 최종 결정에 대한 책임은 여전히 엔지니어의 판단에 있습니다."
-        },
-        "ask-better": {
-          "title": "더 잘 묻기",
-          "summary": "충분한 맥락을 제공하고 유용한 결과를 정의합니다.",
-          "skill": "프롬프트 작성",
-          "idea": "유용한 요청에는 목표, 관련 맥락, 제약 조건, 기대하는 결과가 담겨 있습니다.",
-          "scenario": "학생 위성 프로젝트에 쓰이는 Python 계산 코드를 디버깅하는 데 도움이 필요합니다.",
-          "question": "가장 안전하고 유용한 출발점이 되는 요청은 무엇인가요?",
-          "options": {
-            "a": "내 코드 고쳐 줘.",
-            "b": "오류를 설명하고, SI 단위를 유지하고, 가정을 밝히고, 테스트한 수정안을 제안해 줘.",
-            "c": "더 길게 답해 줘."
-          },
-          "explanation": "구체적인 맥락과 성공 기준이 있으면 결과를 검토하기 쉬워지고 잘못된 가정이 숨어 있을 가능성도 줄어듭니다."
-        },
-        "verify-output": {
-          "title": "결과 검증하기",
-          "summary": "계산, 출처, 주장, 가정을 확인합니다.",
-          "skill": "검증",
-          "idea": "검증은 별도의 엔지니어링 단계입니다. 같은 모델에게 확실하냐고 묻는 것은 독립적인 확인이 아닙니다.",
-          "scenario": "AI가 구조 해석을 위한 하중 계산을 제시합니다.",
-          "question": "사용하기 전에 무엇을 해야 할까요?",
-          "options": {
-            "a": "단위가 표시되어 있으니 그대로 사용한다.",
-            "b": "가정, 단위, 계산을 독립적으로 검증한다.",
-            "c": "AI에게 확실한지 물어본다."
-          },
-          "explanation": "결과에 의존하기 전에 신뢰할 수 있는 방법이나 출처로 하중 조건, 단위, 방정식, 경계 조건을 확인하세요."
-        },
-        "confidential-information": {
-          "title": "기밀 정보",
-          "summary": "승인되지 않은 시스템에 보내면 안 되는 정보를 알아 둡니다.",
-          "skill": "개인정보 보호",
-          "idea": "해당 도구와 소속 기관이 처리하도록 승인된 데이터만 공유하세요.",
-          "scenario": "프로젝트 문서에 학생 식별 번호, 공급업체 데이터, 내부 액세스 토큰이 들어 있습니다.",
-          "question": "책임 있는 다음 단계는 무엇인가요?",
-          "options": {
-            "a": "학업 과제이므로 전부 붙여 넣는다.",
-            "b": "학생 이름만 삭제한다.",
-            "c": "승인된 시스템을 사용하고, 비밀 정보와 불필요한 개인 정보 또는 기밀 데이터를 삭제한다."
-          },
-          "explanation": "승인과 데이터 최소화가 모두 중요합니다. 인증 정보는 절대 포함하지 말고, 불필요한 민감한 맥락은 제거하세요."
-        },
-        "ai-in-engineering": {
-          "title": "엔지니어링에서의 AI",
-          "summary": "AI를 사고의 대체물이 아닌 도구로 사용합니다.",
-          "skill": "엔지니어링 AI",
-          "idea": "엔지니어가 책임을 유지할 때 AI는 탐색, 초안 작성, 비평을 돕는 협력자로서 가장 큰 힘을 발휘합니다.",
-          "scenario": "소형 위성 서브시스템을 위한 두 가지 콘셉트를 비교하고 있습니다.",
-          "question": "AI를 가장 잘 활용하는 작업 방식은 무엇인가요?",
-          "options": {
-            "a": "AI에게 콘셉트를 고르게 하고 그 근거를 그대로 옮긴다.",
-            "b": "AI로 트레이드오프를 드러낸 뒤 제약 조건을 검증하고 결정을 문서화한다.",
-            "c": "보고서를 짧게 유지하려고 가정을 기록하지 않는다."
-          },
-          "explanation": "AI는 엔지니어링 판단을 강화합니다. 검증, 추적성, 책임을 대신하지는 않습니다."
-        },
-        "responsible-use": {
-          "title": "책임 있는 사용",
-          "summary": "AI 사용이 적절한지, 제한되는지, 금지되는지 구분합니다.",
-          "skill": "책임 있는 실천",
-          "idea": "올바른 사용은 과제, 수업 규칙, 도구 승인 여부, 요구되는 인간의 책임 수준에 따라 달라집니다.",
-          "scenario": "평가 대상 과제의 규칙이 생성형 AI 도움에 대해 명확하지 않습니다.",
-          "question": "어떻게 해야 할까요?",
-          "options": {
-            "a": "다들 쓸 테니 알리지 않고 AI를 사용한다.",
-            "b": "AI가 최종 제출물을 만들게 한 뒤 몇 단어만 바꾼다.",
-            "c": "수업 방침을 확인하고, 불분명하면 질문하고, 허용된 도움을 밝힌다."
-          },
-          "explanation": "책임 있는 사용은 학습 목표와 명시된 규칙을 존중합니다. 방침이 불분명하다면 AI에 의존하기 전에 먼저 확인하세요."
-        }
-      }
     },
     "organization": {
       "title": "조직",

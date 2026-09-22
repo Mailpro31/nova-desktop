@@ -1093,11 +1093,6 @@
       "local": "Nova Local aktywny",
       "localActive": "Nova Local aktywny"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Dokończ logowanie w przeglądarce. Użyj tego kodu, jeśli Microsoft o niego poprosi.",
       "expired": "Żądanie logowania Microsoft wygasło. Zacznij od nowa.",
@@ -1108,9 +1103,6 @@
     "sso": {
       "connect": "Kontynuuj z {{provider}}"
     },
-    "aiSkills": {
-      "minutes": "Około {{count}} min"
-    },
     "personalization": {
       "description": "Dostosuj wygląd i obsługę Novy bez zmieniania zasad swojej instytucji.",
       "orb": "Kula Nova",
@@ -1118,158 +1110,6 @@
       "orbDescription": "Wybierz kolor akcentu doku Novy i wskaźnika nagrywania.",
       "alwaysVisible": "Zawsze pokazuj dymek",
       "alwaysVisibleDescription": "Pozostaw widoczny kompaktowy wskaźnik stanu Novy. Przechwytuje kliknięcia tylko wtedy, gdy kursor jest nad nim."
-    },
-    "firstRun": {
-      "skipForNow": "Pomiń na razie",
-      "continueLater": "Dokończ później",
-      "useNovaNow": "Użyj Nova teraz",
-      "requiredByInstitution": "Ta ścieżka podstawowa jest wymagana przez {{organization}}.",
-      "welcome": {
-        "title": "Witaj w {{organization}}, {{name}}.",
-        "description": "Dowiedz się, jak odpowiedzialnie pracować z AI, albo od razu zacznij korzystać z Novy.",
-        "aiEssentials": "Zacznij od Podstaw AI",
-        "recommended": "Zalecane · około 6 minut",
-        "setupNow": "Skonfiguruj Novę teraz"
-      },
-      "setup": {
-        "title": "Konfiguracja Novy",
-        "description": "Przygotowaliśmy dla Ciebie zalecaną konfigurację.",
-        "microphone": "Mikrofon",
-        "language": "Język",
-        "shortcut": "Skrót dyktowania",
-        "style": "Styl pisania",
-        "processing": "Przetwarzanie",
-        "ready": "Gotowe",
-        "checkRequired": "Wymaga sprawdzenia",
-        "noMicrophone": "Nie wykryto mikrofonu",
-        "autoDetect": "Wykryj automatycznie",
-        "useRecommended": "Użyj zalecanej konfiguracji",
-        "customize": "Dostosuj",
-        "useRecommendations": "Użyj zaleceń",
-        "purposeQuestion": "Do czego najczęściej używasz Novy?",
-        "writingQuestion": "Jak Nova ma zwykle pisać?",
-        "languageQuestion": "Preferowany język dyktowania",
-        "purposes": {
-          "classes": "Zajęcia i notatki",
-          "engineering": "Projekty inżynierskie",
-          "emails": "E-maile i komunikacja",
-          "coding": "Programowanie",
-          "everything": "Wszystkiego po trochu",
-          "courseNotes": "Materiały do zajęć",
-          "feedback": "Informacja zwrotna dla studentów",
-          "documents": "Dokumenty"
-        },
-        "writing": {
-          "keep": "Zachowaj moje słowa",
-          "clean": "Uporządkuj je",
-          "professional": "Profesjonalnie",
-          "auto": "Automatycznie"
-        }
-      },
-      "try": {
-        "title": "Wypróbuj Novę",
-        "description": "Podyktuj jedno krótkie zdanie. Sprawdzi to mikrofon i pokaże, jak działa Nova.",
-        "sample": "Powiedz: „Wyślij Lucasowi jutro rano aktualizację projektu.”",
-        "start": "Rozpocznij dyktowanie",
-        "listening": "Słucham...",
-        "successTitle": "To wszystko.",
-        "successDescription": "Mikrofon jest gotowy. Nova działa wszędzie tam, gdzie jest kursor.",
-        "openNova": "Otwórz Novę"
-      }
-    },
-    "aiCurriculum": {
-      "title": "Podstawy AI",
-      "modulePosition": "Moduł {{current}} z {{total}}",
-      "correct": "Dobrze",
-      "considerThis": "Zastanów się",
-      "nextModule": "Dalej",
-      "next": "Następny",
-      "modules": {
-        "working-with-ai": {
-          "title": "Praca z AI",
-          "summary": "Zrozum, co AI potrafi, a czego nie.",
-          "skill": "Zasady działania AI",
-          "idea": "AI potrafi szybko podsunąć przydatne opcje, ale płynny tekst nie dowodzi, że odpowiedź jest poprawna.",
-          "scenario": "Asystent AI proponuje rozwiązanie konstrukcyjne do projektu lotniczego i przedstawia je z pełnym przekonaniem.",
-          "question": "Jaka jest tu najbardziej przydatna rola AI?",
-          "options": {
-            "a": "Zastąpić decyzję inżynierską.",
-            "b": "Zaproponować rozwiązanie, które oceni inżynier.",
-            "c": "Zatwierdzić wybór, bo wyjaśnienie brzmi technicznie."
-          },
-          "explanation": "Używaj AI, aby poszerzyć zakres opcji, które możesz przeanalizować. Za założenia, dowody i ostateczną decyzję nadal odpowiada osąd inżynierski."
-        },
-        "ask-better": {
-          "title": "Pytaj lepiej",
-          "summary": "Podaj wystarczający kontekst i określ przydatny wynik.",
-          "skill": "Formułowanie poleceń",
-          "idea": "Przydatne polecenie określa cel, istotny kontekst, ograniczenia i oczekiwany wynik.",
-          "scenario": "Potrzebujesz pomocy w debugowaniu obliczeń w Pythonie do studenckiego projektu satelitarnego.",
-          "question": "Które polecenie daje najbezpieczniejszy i najbardziej przydatny punkt wyjścia?",
-          "options": {
-            "a": "Napraw mój kod.",
-            "b": "Wyjaśnij błąd, zachowaj jednostki SI, wskaż założenia i zaproponuj przetestowaną poprawkę.",
-            "c": "Napisz dłuższą odpowiedź."
-          },
-          "explanation": "Konkretny kontekst i kryteria sukcesu ułatwiają sprawdzenie wyniku i zmniejszają ryzyko, że ukryje on błędne założenie."
-        },
-        "verify-output": {
-          "title": "Sprawdź wynik",
-          "summary": "Zweryfikuj obliczenia, źródła, twierdzenia i założenia.",
-          "skill": "Weryfikacja",
-          "idea": "Weryfikacja to osobny etap pracy inżynierskiej. Pytanie tego samego modelu, czy jest pewien, nie jest niezależnym sprawdzeniem.",
-          "scenario": "AI podaje ci obliczenia obciążeń do analizy konstrukcji.",
-          "question": "Co należy zrobić przed ich użyciem?",
-          "options": {
-            "a": "Użyć ich od razu, bo podano jednostki.",
-            "b": "Niezależnie sprawdzić założenia, jednostki i obliczenia.",
-            "c": "Zapytać AI, czy jest pewna."
-          },
-          "explanation": "Zanim oprzesz się na wyniku, sprawdź przypadek obciążenia, jednostki, równania i warunki brzegowe za pomocą wiarygodnych metod lub źródeł."
-        },
-        "confidential-information": {
-          "title": "Informacje poufne",
-          "summary": "Wiedz, czego nie wolno wysyłać do niezatwierdzonego systemu.",
-          "skill": "Prywatność",
-          "idea": "Udostępniaj tylko dane, które narzędzie i twoja uczelnia mogą przetwarzać.",
-          "scenario": "Dokument projektu zawiera identyfikatory studentów, dane dostawców i wewnętrzny token dostępu.",
-          "question": "Jaki jest odpowiedzialny następny krok?",
-          "options": {
-            "a": "Wkleić wszystko, bo to zadanie akademickie.",
-            "b": "Usunąć tylko nazwiska studentów.",
-            "c": "Użyć zatwierdzonego systemu i usunąć sekrety oraz zbędne dane osobowe lub poufne."
-          },
-          "explanation": "Liczy się zarówno uprawnienie, jak i minimalizacja danych. Danych logowania nigdy nie należy dołączać, a zbędny wrażliwy kontekst trzeba usunąć."
-        },
-        "ai-in-engineering": {
-          "title": "AI w inżynierii",
-          "summary": "Traktuj AI jako narzędzie, a nie zamiennik myślenia.",
-          "skill": "AI w pracy inżyniera",
-          "idea": "AI sprawdza się najlepiej jako partner w eksplorowaniu, tworzeniu szkiców i krytyce, gdy odpowiedzialność pozostaje po stronie inżyniera.",
-          "scenario": "Porównujesz dwie koncepcje podsystemu małego satelity.",
-          "question": "Który sposób pracy najlepiej wykorzystuje AI?",
-          "options": {
-            "a": "Pozwolić AI wybrać koncepcję i skopiować jej uzasadnienie.",
-            "b": "Użyć AI do ujawnienia kompromisów, a potem zweryfikować ograniczenia i udokumentować decyzję.",
-            "c": "Nie dokumentować założeń, żeby raport był krótki."
-          },
-          "explanation": "AI wzmacnia osąd inżynierski. Nie zastępuje walidacji, identyfikowalności ani odpowiedzialności."
-        },
-        "responsible-use": {
-          "title": "Odpowiedzialne korzystanie",
-          "summary": "Rozpoznaj, kiedy korzystanie z AI jest właściwe, ograniczone lub zabronione.",
-          "skill": "Odpowiedzialna praktyka",
-          "idea": "Właściwe użycie zależy od zadania, zasad przedmiotu, dopuszczenia narzędzia i wymaganego poziomu ludzkiej odpowiedzialności.",
-          "scenario": "Zasady ocenianego zadania nie mówią jasno, czy można korzystać z pomocy generatywnej AI.",
-          "question": "Co należy zrobić?",
-          "options": {
-            "a": "Użyć AI po cichu, bo pewnie wszyscy tak robią.",
-            "b": "Pozwolić AI przygotować ostateczną pracę, a potem zmienić kilka słów.",
-            "c": "Sprawdzić zasady przedmiotu, zapytać w razie wątpliwości i ujawnić dozwoloną pomoc."
-          },
-          "explanation": "Odpowiedzialne korzystanie szanuje cel nauki i ustalone zasady. Gdy zasady są niejasne, wyjaśnij je, zanim oprzesz się na AI."
-        }
-      }
     },
     "organization": {
       "title": "Organizacja",

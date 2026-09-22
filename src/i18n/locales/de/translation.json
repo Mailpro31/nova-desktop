@@ -1093,11 +1093,6 @@
       "local": "Nova Local aktiv",
       "localActive": "Nova Local aktiv"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Schließe die Anmeldung in deinem Browser ab. Verwende diesen Code, falls Microsoft danach fragt.",
       "expired": "Die Microsoft-Anmeldeanfrage ist abgelaufen. Starte neu.",
@@ -1108,9 +1103,6 @@
     "sso": {
       "connect": "Mit {{provider}} fortfahren"
     },
-    "aiSkills": {
-      "minutes": "Etwa {{count}} Min."
-    },
     "personalization": {
       "description": "Passe Aussehen und Bedienung von Nova an, ohne die Richtlinien deiner Einrichtung zu ändern.",
       "orb": "Nova-Kugel",
@@ -1118,158 +1110,6 @@
       "orbDescription": "Wähle die Akzentfarbe für Novas Dock und die Aufnahmeanzeige.",
       "alwaysVisible": "Blase immer anzeigen",
       "alwaysVisibleDescription": "Lass Novas kompakte Statusanzeige sichtbar. Klicks nimmt sie nur an, wenn der Mauszeiger darauf liegt."
-    },
-    "firstRun": {
-      "skipForNow": "Vorerst überspringen",
-      "continueLater": "Später fortsetzen",
-      "useNovaNow": "Nova jetzt verwenden",
-      "requiredByInstitution": "Dieser Grundlagenkurs ist von {{organization}} vorgeschrieben.",
-      "welcome": {
-        "title": "Willkommen bei {{organization}}, {{name}}.",
-        "description": "Lerne, verantwortungsvoll mit KI zu arbeiten, oder leg direkt mit Nova los.",
-        "aiEssentials": "Mit KI-Grundlagen beginnen",
-        "recommended": "Empfohlen · etwa 6 Minuten",
-        "setupNow": "Nova jetzt einrichten"
-      },
-      "setup": {
-        "title": "Nova einrichten",
-        "description": "Wir haben die empfohlene Einrichtung für dich vorbereitet.",
-        "microphone": "Mikrofon",
-        "language": "Sprache",
-        "shortcut": "Diktier-Tastenkürzel",
-        "style": "Schreibstil",
-        "processing": "Verarbeitung",
-        "ready": "Bereit",
-        "checkRequired": "Prüfung nötig",
-        "noMicrophone": "Kein Mikrofon erkannt",
-        "autoDetect": "Automatisch erkennen",
-        "useRecommended": "Empfohlene Einrichtung verwenden",
-        "customize": "Anpassen",
-        "useRecommendations": "Empfehlungen übernehmen",
-        "purposeQuestion": "Wofür nutzt du Nova am häufigsten?",
-        "writingQuestion": "Wie soll Nova normalerweise schreiben?",
-        "languageQuestion": "Bevorzugte Diktiersprache",
-        "purposes": {
-          "classes": "Vorlesungen & Notizen",
-          "engineering": "Technische Projekte",
-          "emails": "E-Mails & Kommunikation",
-          "coding": "Programmieren",
-          "everything": "Von allem etwas",
-          "courseNotes": "Kursunterlagen",
-          "feedback": "Rückmeldungen an Studierende",
-          "documents": "Dokumente"
-        },
-        "writing": {
-          "keep": "Meine Worte beibehalten",
-          "clean": "Aufräumen",
-          "professional": "Professionell",
-          "auto": "Automatisch"
-        }
-      },
-      "try": {
-        "title": "Nova ausprobieren",
-        "description": "Diktiere einen kurzen Satz. So wird dein Mikrofon geprüft und du siehst, wie Nova funktioniert.",
-        "sample": "Sag: „Schick Lucas morgen früh den Projektstand.“",
-        "start": "Diktat starten",
-        "listening": "Hört zu...",
-        "successTitle": "Das war’s.",
-        "successDescription": "Dein Mikrofon ist bereit. Nova funktioniert überall dort, wo dein Cursor ist.",
-        "openNova": "Nova öffnen"
-      }
-    },
-    "aiCurriculum": {
-      "title": "KI-Grundlagen",
-      "modulePosition": "Modul {{current}} von {{total}}",
-      "correct": "Richtig",
-      "considerThis": "Zum Nachdenken",
-      "nextModule": "Weiter",
-      "next": "Als Nächstes",
-      "modules": {
-        "working-with-ai": {
-          "title": "Mit KI arbeiten",
-          "summary": "Verstehe, was KI kann und was nicht.",
-          "skill": "KI-Grundwissen",
-          "idea": "KI kann schnell nützliche Optionen liefern, aber ein flüssig formulierter Text beweist nicht, dass eine Antwort richtig ist.",
-          "scenario": "Ein KI-Assistent schlägt für ein Luft- und Raumfahrtprojekt eine Konstruktionsentscheidung vor und präsentiert sie selbstsicher.",
-          "question": "Welche Rolle der KI ist hier am nützlichsten?",
-          "options": {
-            "a": "Die ingenieurtechnische Entscheidung ersetzen.",
-            "b": "Einen Lösungsvorschlag liefern, den eine Fachperson aus dem Ingenieurwesen bewertet.",
-            "c": "Die Wahl übernehmen, weil die Erklärung technisch klingt."
-          },
-          "explanation": "Nutze KI, um die Optionen zu erweitern, die du prüfen kannst. Für Annahmen, Belege und die endgültige Entscheidung bleibt das ingenieurtechnische Urteil verantwortlich."
-        },
-        "ask-better": {
-          "title": "Besser fragen",
-          "summary": "Gib genug Kontext und lege ein nützliches Ergebnis fest.",
-          "skill": "Prompts formulieren",
-          "idea": "Eine nützliche Anfrage nennt Ziel, relevanten Kontext, Einschränkungen und das erwartete Ergebnis.",
-          "scenario": "Du brauchst Hilfe beim Debuggen einer Python-Berechnung für ein studentisches Satellitenprojekt.",
-          "question": "Welche Anfrage bietet den sichersten und nützlichsten Ausgangspunkt?",
-          "options": {
-            "a": "Repariere meinen Code.",
-            "b": "Erkläre den Fehler, behalte SI-Einheiten bei, nenne die Annahmen und schlage eine getestete Korrektur vor.",
-            "c": "Schreib eine längere Antwort."
-          },
-          "explanation": "Konkreter Kontext und klare Erfolgskriterien machen das Ergebnis leichter überprüfbar und verringern das Risiko, dass eine falsche Annahme verborgen bleibt."
-        },
-        "verify-output": {
-          "title": "Ergebnis überprüfen",
-          "summary": "Prüfe Berechnungen, Quellen, Aussagen und Annahmen.",
-          "skill": "Verifikation",
-          "idea": "Die Überprüfung ist ein eigener ingenieurtechnischer Schritt. Dasselbe Modell zu fragen, ob es sicher ist, ist keine unabhängige Kontrolle.",
-          "scenario": "Eine KI liefert dir eine Lastberechnung für eine Strukturanalyse.",
-          "question": "Was solltest du tun, bevor du sie verwendest?",
-          "options": {
-            "a": "Sie direkt verwenden, weil die Einheiten angegeben sind.",
-            "b": "Annahmen, Einheiten und Berechnungen unabhängig überprüfen.",
-            "c": "Die KI fragen, ob sie sich sicher ist."
-          },
-          "explanation": "Prüfe Lastfall, Einheiten, Gleichungen und Randbedingungen mit verlässlichen Methoden oder Quellen, bevor du dich auf das Ergebnis verlässt."
-        },
-        "confidential-information": {
-          "title": "Vertrauliche Informationen",
-          "summary": "Wisse, was nicht an ein nicht freigegebenes System gesendet werden darf.",
-          "skill": "Datenschutz",
-          "idea": "Teile nur Daten, die das Tool und deine Bildungseinrichtung verarbeiten dürfen.",
-          "scenario": "Ein Projektdokument enthält Kennungen von Studierenden, Lieferantendaten und ein internes Zugriffstoken.",
-          "question": "Was ist der verantwortungsvolle nächste Schritt?",
-          "options": {
-            "a": "Alles einfügen, weil es eine Studienaufgabe ist.",
-            "b": "Nur die Namen der Studierenden entfernen.",
-            "c": "Ein freigegebenes System verwenden und Geheimnisse sowie unnötige personenbezogene oder vertrauliche Daten entfernen."
-          },
-          "explanation": "Sowohl die Berechtigung als auch die Datenminimierung zählen. Zugangsdaten dürfen nie enthalten sein, und unnötiger sensibler Kontext sollte entfernt werden."
-        },
-        "ai-in-engineering": {
-          "title": "KI im Ingenieurwesen",
-          "summary": "Nutze KI als Werkzeug, nicht als Ersatz für eigenes Denken.",
-          "skill": "KI in der Technik",
-          "idea": "KI ist am stärksten als Partnerin beim Erkunden, Entwerfen und Kritisieren, solange die Verantwortung beim Menschen bleibt.",
-          "scenario": "Du vergleichst zwei Konzepte für ein Subsystem eines Kleinsatelliten.",
-          "question": "Welcher Arbeitsablauf nutzt KI am besten?",
-          "options": {
-            "a": "Die KI das Konzept auswählen lassen und ihre Begründung kopieren.",
-            "b": "Sie nutzen, um Zielkonflikte aufzuzeigen, dann die Randbedingungen prüfen und die Entscheidung dokumentieren.",
-            "c": "Annahmen nicht dokumentieren, damit der Bericht kurz bleibt."
-          },
-          "explanation": "KI verstärkt das ingenieurtechnische Urteil. Sie ersetzt weder Validierung noch Nachvollziehbarkeit noch Verantwortung."
-        },
-        "responsible-use": {
-          "title": "Verantwortungsvoller Einsatz",
-          "summary": "Erkenne, wann KI angemessen, eingeschränkt oder verboten ist.",
-          "skill": "Verantwortungsvolle Praxis",
-          "idea": "Der richtige Einsatz hängt von der Aufgabe, den Kursregeln, der Freigabe des Tools und dem nötigen Maß an menschlicher Verantwortung ab.",
-          "scenario": "Die Regeln einer benoteten Aufgabe sind in Bezug auf Unterstützung durch generative KI unklar.",
-          "question": "Was solltest du tun?",
-          "options": {
-            "a": "KI heimlich nutzen, weil es wahrscheinlich alle tun.",
-            "b": "Die KI die endgültige Abgabe erstellen lassen und dann ein paar Wörter ändern.",
-            "c": "Die Kursrichtlinie prüfen, bei Unklarheit nachfragen und erlaubte Unterstützung offenlegen."
-          },
-          "explanation": "Verantwortungsvoller Einsatz respektiert das Lernziel und die festgelegten Regeln. Ist die Richtlinie unklar, kläre sie, bevor du dich auf KI verlässt."
-        }
-      }
     },
     "organization": {
       "title": "Organisation",

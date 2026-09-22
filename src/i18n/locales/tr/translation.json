@@ -1093,11 +1093,6 @@
       "local": "Nova Local etkin",
       "localActive": "Nova Local etkin"
     },
-    "page": {
-      "processing": {
-        "localTitle": "Nova Local"
-      }
-    },
     "microsoft": {
       "browserHelp": "Tarayıcında oturum açmayı tamamla. Microsoft isterse bu kodu kullan.",
       "expired": "Microsoft oturum açma isteğinin süresi doldu. Baştan başla.",
@@ -1108,9 +1103,6 @@
     "sso": {
       "connect": "{{provider}} ile devam et"
     },
-    "aiSkills": {
-      "minutes": "Yaklaşık {{count}} dk"
-    },
     "personalization": {
       "description": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
       "orb": "Nova küresi",
@@ -1118,158 +1110,6 @@
       "orbDescription": "Nova'nın dock'unda ve kayıt göstergesinde kullanılan vurgu rengini seç.",
       "alwaysVisible": "Baloncuğu her zaman göster",
       "alwaysVisibleDescription": "Nova'nın küçük durum göstergesini görünür tut. Yalnızca imleç üzerindeyken tıklamaları alır."
-    },
-    "firstRun": {
-      "skipForNow": "Şimdilik atla",
-      "continueLater": "Daha sonra devam et",
-      "useNovaNow": "Nova'yı şimdi kullan",
-      "requiredByInstitution": "Bu temel eğitim {{organization}} tarafından zorunlu tutuluyor.",
-      "welcome": {
-        "title": "{{organization}} kuruluşuna hoş geldin, {{name}}.",
-        "description": "Yapay zekâyla sorumlu biçimde çalışmayı öğren ya da Nova'yı hemen kullanmaya başla.",
-        "aiEssentials": "Yapay Zekânın Temelleri ile başla",
-        "recommended": "Önerilen · yaklaşık 6 dakika",
-        "setupNow": "Nova'yı şimdi kur"
-      },
-      "setup": {
-        "title": "Nova'yı kur",
-        "description": "Senin için önerilen kurulumu hazırladık.",
-        "microphone": "Mikrofon",
-        "language": "Dil",
-        "shortcut": "Dikte kısayolu",
-        "style": "Yazım stili",
-        "processing": "İşleme",
-        "ready": "Hazır",
-        "checkRequired": "Kontrol gerekiyor",
-        "noMicrophone": "Mikrofon algılanmadı",
-        "autoDetect": "Otomatik algıla",
-        "useRecommended": "Önerilen kurulumu kullan",
-        "customize": "Özelleştir",
-        "useRecommendations": "Önerileri kullan",
-        "purposeQuestion": "Nova'yı en çok ne için kullanıyorsun?",
-        "writingQuestion": "Nova genellikle nasıl yazmalı?",
-        "languageQuestion": "Tercih edilen dikte dili",
-        "purposes": {
-          "classes": "Dersler ve notlar",
-          "engineering": "Mühendislik projeleri",
-          "emails": "E-postalar ve iletişim",
-          "coding": "Kodlama",
-          "everything": "Her şeyden biraz",
-          "courseNotes": "Ders materyalleri",
-          "feedback": "Öğrencilere geri bildirim",
-          "documents": "Belgeler"
-        },
-        "writing": {
-          "keep": "Sözcüklerimi koru",
-          "clean": "Toparla",
-          "professional": "Profesyonel",
-          "auto": "Otomatik"
-        }
-      },
-      "try": {
-        "title": "Nova'yı dene",
-        "description": "Kısa bir dikte yap. Böylece mikrofonun kontrol edilir ve Nova'nın nasıl çalıştığını görürsün.",
-        "sample": "Şunu söyle: “Yarın sabah Lucas'a proje güncellemesini gönder.”",
-        "start": "Dikteyi başlat",
-        "listening": "Dinleniyor...",
-        "successTitle": "İşte bu kadar.",
-        "successDescription": "Mikrofonun hazır. Nova, imlecin olduğu her yerde çalışır.",
-        "openNova": "Nova'yı aç"
-      }
-    },
-    "aiCurriculum": {
-      "title": "Yapay Zekânın Temelleri",
-      "modulePosition": "Modül {{current}} / {{total}}",
-      "correct": "Doğru",
-      "considerThis": "Bunu düşün",
-      "nextModule": "İleri",
-      "next": "Sıradaki",
-      "modules": {
-        "working-with-ai": {
-          "title": "Yapay zekâ ile çalışmak",
-          "summary": "Yapay zekânın neyi yapıp neyi yapamayacağını anla.",
-          "skill": "Yapay zekâ temelleri",
-          "idea": "Yapay zekâ hızla faydalı seçenekler üretebilir, ancak akıcı bir metin yanıtın doğru olduğunu kanıtlamaz.",
-          "scenario": "Bir yapay zekâ asistanı, bir havacılık ve uzay projesi için bir tasarım seçeneği önerip bunu kendinden emin biçimde sunuyor.",
-          "question": "Burada yapay zekânın en faydalı rolü nedir?",
-          "options": {
-            "a": "Mühendislik kararının yerine geçmek.",
-            "b": "Bir mühendisin değerlendireceği aday bir çözüm sunmak.",
-            "c": "Açıklama teknik göründüğü için seçimi onaylamak."
-          },
-          "explanation": "Yapay zekâyı inceleyebileceğin seçenekleri genişletmek için kullan. Varsayımlar, kanıtlar ve nihai karar için sorumluluk mühendislik muhakemesinde kalır."
-        },
-        "ask-better": {
-          "title": "Daha iyi sor",
-          "summary": "Yeterli bağlam ver ve faydalı bir sonuç tanımla.",
-          "skill": "İstem yazma",
-          "idea": "Faydalı bir istek; hedefi, ilgili bağlamı, kısıtları ve beklenen çıktıyı belirtir.",
-          "scenario": "Bir öğrenci uydu projesinde kullanılan Python hesaplamasındaki hatayı ayıklamak için yardıma ihtiyacın var.",
-          "question": "Hangi istek en güvenli ve en faydalı başlangıç noktasını sunar?",
-          "options": {
-            "a": "Kodumu düzelt.",
-            "b": "Hatayı açıkla, SI birimlerini koru, varsayımları belirt ve test edilmiş bir düzeltme öner.",
-            "c": "Daha uzun bir yanıt yaz."
-          },
-          "explanation": "Belirli bir bağlam ve başarı ölçütleri, çıktının incelenmesini kolaylaştırır ve yanlış bir varsayımın gizlenme olasılığını azaltır."
-        },
-        "verify-output": {
-          "title": "Çıktıyı doğrula",
-          "summary": "Hesaplamaları, kaynakları, iddiaları ve varsayımları kontrol et.",
-          "skill": "Doğrulama",
-          "idea": "Doğrulama ayrı bir mühendislik adımıdır. Aynı modele emin olup olmadığını sormak bağımsız bir kontrol değildir.",
-          "scenario": "Bir yapay zekâ, yapısal analiz için sana bir yük hesabı veriyor.",
-          "question": "Kullanmadan önce ne yapmalısın?",
-          "options": {
-            "a": "Birimler gösterildiği için doğrudan kullanmak.",
-            "b": "Varsayımları, birimleri ve hesaplamaları bağımsız olarak doğrulamak.",
-            "c": "Yapay zekâya emin olup olmadığını sormak."
-          },
-          "explanation": "Sonuca güvenmeden önce yük durumunu, birimleri, denklemleri ve sınır koşullarını güvenilir yöntemler veya kaynaklarla kontrol et."
-        },
-        "confidential-information": {
-          "title": "Gizli bilgiler",
-          "summary": "Yetkisiz bir sisteme nelerin gönderilmemesi gerektiğini bil.",
-          "skill": "Gizlilik",
-          "idea": "Yalnızca aracın ve kurumunun işlemeye yetkili olduğu verileri paylaş.",
-          "scenario": "Bir proje belgesinde öğrenci kimlik numaraları, tedarikçi verileri ve dahili bir erişim belirteci var.",
-          "question": "Sorumlu bir sonraki adım nedir?",
-          "options": {
-            "a": "Görev akademik olduğu için her şeyi yapıştırmak.",
-            "b": "Yalnızca öğrenci adlarını kaldırmak.",
-            "c": "Onaylı bir sistem kullanmak ve gizli anahtarları, gereksiz kişisel veya gizli verileri kaldırmak."
-          },
-          "explanation": "Hem yetki hem de veri azaltımı önemlidir. Kimlik bilgileri asla eklenmemeli, gereksiz hassas bağlam da çıkarılmalıdır."
-        },
-        "ai-in-engineering": {
-          "title": "Mühendislikte yapay zekâ",
-          "summary": "Yapay zekâyı düşünmenin yerine değil, bir araç olarak kullan.",
-          "skill": "Mühendislik için yapay zekâ",
-          "idea": "Yapay zekâ, sorumluluk mühendiste kaldığında keşif, taslak hazırlama ve eleştiri için en güçlü yardımcıdır.",
-          "scenario": "Küçük bir uydunun alt sistemi için iki konsepti karşılaştırıyorsun.",
-          "question": "Hangi çalışma akışı yapay zekâdan en iyi şekilde yararlanır?",
-          "options": {
-            "a": "Konsepti yapay zekânın seçmesine izin vermek ve gerekçesini kopyalamak.",
-            "b": "Ödünleşimleri ortaya çıkarmak için kullanmak, sonra kısıtları doğrulayıp kararı belgelemek.",
-            "c": "Rapor kısa kalsın diye varsayımları belgelememek."
-          },
-          "explanation": "Yapay zekâ mühendislik muhakemesini güçlendirir. Doğrulamanın, izlenebilirliğin ve hesap verebilirliğin yerini tutmaz."
-        },
-        "responsible-use": {
-          "title": "Sorumlu kullanım",
-          "summary": "Yapay zekâ kullanımının ne zaman uygun, sınırlı ya da yasak olduğunu fark et.",
-          "skill": "Sorumlu uygulama",
-          "idea": "Doğru kullanım; göreve, dersin kurallarına, aracın yetkisine ve gereken insan sorumluluğu düzeyine bağlıdır.",
-          "scenario": "Notlandırılan bir ödevin kuralları, üretken yapay zekâ desteği konusunda net değil.",
-          "question": "Ne yapmalısın?",
-          "options": {
-            "a": "Muhtemelen herkes kullanıyor diye yapay zekâyı gizlice kullanmak.",
-            "b": "Son teslimi yapay zekâya hazırlatıp birkaç kelimeyi değiştirmek.",
-            "c": "Ders politikasını kontrol etmek, belirsizse sormak ve izin verilen desteği belirtmek."
-          },
-          "explanation": "Sorumlu kullanım, öğrenme hedefine ve belirlenen kurallara saygı gösterir. Politika belirsizse yapay zekâya güvenmeden önce netleştir."
-        }
-      }
     },
     "organization": {
       "title": "Kuruluş",

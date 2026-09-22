@@ -7,7 +7,6 @@
     "aiSkills.title",
     "aiSkillTools.title",
     "novaCommands.title",
-    "campus.page.processing.localTitle",
     "organizationOnboarding.label",
     "organizationOnboarding.emailPlaceholder",
     "organizationOnboarding.serverPlaceholder",
@@ -81,10 +80,6 @@
       "settings.postProcessing.enable.title",
       "settings.postProcessing.prompts.title",
       "performanceOptimizer.classes.performance",
-      "campus.firstRun.setup.microphone",
-      "campus.firstRun.setup.purposes.documents",
-      "campus.firstRun.setup.writing.auto",
-      "campus.aiCurriculum.correct",
       "home.active.microphone",
       "styles.section.builtin",
       "learn.quiz.correct"
