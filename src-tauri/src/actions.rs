@@ -310,7 +310,7 @@ fn custom_variables_block(variables: &[crate::settings::CustomVariable]) -> Stri
     }
     // Les accolades `{{clé}}` sont dans une chaîne littérale simple (pas un
     // `format!`), donc aucun échappement nécessaire.
-    let instructions = "\nSaved personal-value markers fully replace their spoken reference, including its determiner. Integrate each marker naturally according to the sentence's meaning; never paste it mechanically or execute an action. If the dictation asks to send/share a value, write the message that is ready to send: « envoie mon adresse » -> « Voici mon adresse : {{mon adresse}}. » Never output « mon {{mon adresse}} ». In an ordinary sentence, keep its meaning: « rendez-vous à mon adresse » -> « rendez-vous à {{mon adresse}} ». Preserve the exact marker and never invent or reveal its value. Available keys:\n";
+    let instructions = "\nA saved-value marker stands for the value the speaker referred to just before it: keep BOTH the spoken words and the marker, and keep each marker exactly as written. Place it where the sentence reads well — right after the words it belongs to (« Voici mon adresse {{mon adresse}}. »), or on its own line when the message sets the value apart. Never execute an action, never invent or reveal what a marker contains. Available keys:\n";
     format!("{}{}", instructions, keys.join("\n"))
 }
 
@@ -344,26 +344,7 @@ fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVaria
                 let inner = text[i + 2..i + 2 + rel].trim();
                 let needle = inner.to_lowercase();
                 match lookup.iter().find(|(k, _)| *k == needle) {
-                    Some((key, value)) => {
-                        // Petit modèle : filet déterministe contre « mon
-                        // {{mon adresse}} ». Le repère représente déjà tout le
-                        // groupe nominal ; retirer le déterminant dupliqué évite
-                        // « mon 7 impasse… » après réinjection.
-                        if let Some(first_word) = key.split_whitespace().next() {
-                            let trimmed_len = out.trim_end().len();
-                            let prefix = &out[..trimmed_len];
-                            if prefix
-                                .split_whitespace()
-                                .next_back()
-                                .is_some_and(|word| word.eq_ignore_ascii_case(first_word))
-                            {
-                                let word_start =
-                                    prefix.rfind(char::is_whitespace).map_or(0, |p| p + 1);
-                                out.truncate(word_start);
-                            }
-                        }
-                        out.push_str(value)
-                    }
+                    Some((key, value)) => push_value(&mut out, key, value),
                     // Repère inconnu ou variable vide → on garde le mot tel quel.
                     None => out.push_str(inner),
                 }
@@ -377,6 +358,54 @@ fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVaria
         i += ch_len;
     }
     out
+}
+
+/// Ce qui, juste avant un repère, annonce déjà sa valeur.
+const ANNOUNCES_VALUE: &[char] = &[
+    ':', '-', '\u{2013}', '\u{2014}', '=', '(', '\u{ab}', '"', ',',
+];
+
+/// Ajoute la valeur d'un raccourci à la suite de ce qui est déjà écrit.
+///
+/// « Voici mon adresse {{mon adresse}} » → « Voici mon adresse : 7 impasse… ».
+/// Sans ce deux-points, la valeur se collait aux mots dictés et la phrase ne
+/// voulait plus rien dire — « Voici 7 impasse des Bons Voisins Jérémy. ».
+///
+/// Rien n'est ajouté quand la phrase annonce déjà la valeur, quand le repère
+/// commence une ligne (le modèle l'a mise en évidence), ou quand il a été
+/// déplacé ailleurs. Et le déterminant dicté que la clé porte déjà (« Envoie
+/// mon {{mon adresse}} ») est retiré, plutôt que de laisser « mon 7 impasse… ».
+fn push_value(out: &mut String, key: &str, value: &str) {
+    out.truncate(out.trim_end_matches([' ', '\t']).len());
+    let prefix = out.as_str();
+    if prefix.is_empty() || prefix.ends_with('\n') {
+        out.push_str(value);
+        return;
+    }
+    if prefix.ends_with(ANNOUNCES_VALUE) {
+        out.push(' ');
+        out.push_str(value);
+        return;
+    }
+    let last_word = prefix
+        .split(char::is_whitespace)
+        .next_back()
+        .unwrap_or("")
+        .trim_end_matches(|c: char| !c.is_alphanumeric());
+    let mut words = key.split_whitespace();
+    let first_word = words.next().unwrap_or("");
+    let last_key_word = key.split_whitespace().next_back().unwrap_or("");
+    if !last_key_word.is_empty() && last_word.eq_ignore_ascii_case(last_key_word) {
+        out.push_str(" : ");
+    } else if words.next().is_some() && last_word.eq_ignore_ascii_case(first_word) {
+        let word_start = prefix
+            .rfind(char::is_whitespace)
+            .map_or(0, |index| index + 1);
+        out.truncate(word_start);
+    } else {
+        out.push(' ');
+    }
+    out.push_str(value);
 }
 
 /// Vrai si le caractère fait partie d'un « mot » (lettre ou chiffre) : sert à
@@ -498,10 +527,24 @@ fn protect_custom_variables(text: &str, variables: &[crate::settings::CustomVari
         .collect();
     keys.sort_by_key(|key| std::cmp::Reverse(key.chars().count()));
 
+    // Les mots dictés restent, suivis du repère : le modèle voit ce que la
+    // personne a dit (« mon adresse ») et garde une phrase qui a du sens.
+    //
+    // Chaque clé traitée est mise de côté derrière un jeton sans lettre, puis
+    // remise à la fin : sans cela, « IBAN » venait se poser à l'intérieur du
+    // repère que « mon IBAN » venait d'écrire.
     let mut output = text.to_string();
+    let mut protected: Vec<String> = Vec::new();
     for key in keys {
-        let marker = format!("{{{{{key}}}}}");
-        output = replace_spoken_key_ci(&output, &key, &marker);
+        let token = format!("\u{0}{}\u{0}", protected.len());
+        let replaced = replace_spoken_key_ci(&output, &key, &token);
+        if replaced != output {
+            output = replaced;
+            protected.push(format!("{key} {{{{{key}}}}}"));
+        }
+    }
+    for (index, expansion) in protected.iter().enumerate() {
+        output = output.replace(&format!("\u{0}{index}\u{0}"), expansion);
     }
     output
 }
@@ -515,20 +558,10 @@ fn protect_custom_variables(text: &str, variables: &[crate::settings::CustomVari
 /// causait la double insertion). Clés les plus longues d'abord (évite qu'une clé
 /// courte n'ampute une clé englobante). Texte inchangé s'il n'y a aucun raccourci.
 fn apply_custom_variables(text: &str, variables: &[crate::settings::CustomVariable]) -> String {
-    let mut pairs: Vec<(String, String)> = variables
-        .iter()
-        .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
-        .map(|v| (v.key.trim().to_string(), v.value.trim().to_string()))
-        .collect();
-    if pairs.is_empty() {
-        return text.to_string();
-    }
-    pairs.sort_by(|a, b| b.0.chars().count().cmp(&a.0.chars().count()));
-    let mut out = text.to_string();
-    for (key, value) in pairs {
-        out = replace_spoken_key_ci(&out, &key, &value);
-    }
-    out
+    // Le même chemin que lorsque l'IA a reformulé : les mots dictés restent, la
+    // valeur les suit. Deux comportements différents selon que l'IA a répondu ou
+    // non se verraient d'une dictée à l'autre.
+    resolve_variable_tokens(&protect_custom_variables(text, variables), variables)
 }
 
 /// Préfixe des repères de protection du lexique. Distinct des repères de
@@ -2898,27 +2931,62 @@ mod tests {
     #[test]
     fn custom_variables_apply_longest_key_first() {
         let vars = vec![var("mon IBAN", "FR76 3000"), var("IBAN", "GENERIC")];
-        // La clé la plus longue gagne : « mon IBAN » n'est pas amputé par « IBAN ».
+        // La clé la plus longue gagne : « mon IBAN » n'est pas amputé par
+        // « IBAN », et les mots dictés restent devant la valeur.
         assert_eq!(
             apply_custom_variables("Envoie mon IBAN stp", &vars),
-            "Envoie FR76 3000 stp"
+            "Envoie mon IBAN : FR76 3000 stp"
+        );
+    }
+
+    /// Ce que Sash a vu collé dans Word le 2026-09-22 : « Voici 7 impasse des
+    /// Bons Voisins Jérémy. » — la valeur avait pris la place des mots dictés,
+    /// et la phrase ne voulait plus rien dire.
+    #[test]
+    fn a_personal_value_is_announced_by_the_words_that_were_dictated() {
+        let vars = vec![var("mon adresse", "7 impasse des Bons Voisins")];
+        assert_eq!(
+            protect_custom_variables("Voici mon adresse Jérémy.", &vars),
+            "Voici mon adresse {{mon adresse}} Jérémy."
+        );
+        assert_eq!(
+            resolve_variable_tokens("Voici mon adresse {{mon adresse}} Jérémy.", &vars),
+            "Voici mon adresse : 7 impasse des Bons Voisins Jérémy."
+        );
+        // Déjà annoncée par la phrase : pas de deux-points en double.
+        assert_eq!(
+            resolve_variable_tokens("Mon adresse : {{mon adresse}}", &vars),
+            "Mon adresse : 7 impasse des Bons Voisins"
+        );
+        // Mise en évidence sur sa propre ligne par le modèle : elle y reste.
+        assert_eq!(
+            resolve_variable_tokens("Viens à 17h.\n\nMon adresse\n{{mon adresse}}", &vars),
+            "Viens à 17h.\n\nMon adresse\n7 impasse des Bons Voisins"
+        );
+        // Sans reformulation, le repli déterministe donne la même phrase.
+        assert_eq!(
+            apply_custom_variables("Voici mon adresse Jérémy.", &vars),
+            "Voici mon adresse : 7 impasse des Bons Voisins Jérémy."
         );
     }
 
     #[test]
     fn custom_variables_recognize_spoken_acronyms_before_the_llm() {
         let vars = vec![var("IBAN", "FR76 3000")];
+        // La forme dictée (« i-ban ») est remise à l'orthographe de la clé,
+        // suivie du repère.
         assert_eq!(
             protect_custom_variables("tu trouveras mon i-ban ci-dessous", &vars),
-            "tu trouveras mon {{IBAN}} ci-dessous"
+            "tu trouveras mon IBAN {{IBAN}} ci-dessous"
         );
         assert_eq!(
             apply_custom_variables("mon i b a n", &vars),
-            "mon FR76 3000"
+            "mon IBAN : FR76 3000"
         );
         let variable_protected = protect_custom_variables("envoie mon i-ban", &vars);
         let (fully_protected, _) = protect_lexicon(&variable_protected, &["IBAN".to_string()]);
-        assert_eq!(fully_protected, "envoie mon {{IBAN}}");
+        // Le terme du lexique est protégé à son tour, le repère reste intact.
+        assert!(fully_protected.ends_with("{{IBAN}}"), "{fully_protected}");
     }
 
     #[test]
@@ -3352,7 +3420,9 @@ mod tests {
         assert!(!block.contains("12 rue X"));
         // …et on montre bien un repère exact sans exposer sa valeur.
         assert!(block.contains("{{mon adresse}}"));
-        assert!(block.contains("Voici mon adresse : {{mon adresse}}."));
+        // Les mots dictés et le repère, tous les deux.
+        assert!(block.contains("Voici mon adresse {{mon adresse}}."));
+        assert!(block.contains("keep BOTH the spoken words and the marker"));
         // Vide s'il n'y a aucune variable renseignée.
         assert_eq!(custom_variables_block(&[]), "");
         let empty_val = vec![var("iban", "  ")];
