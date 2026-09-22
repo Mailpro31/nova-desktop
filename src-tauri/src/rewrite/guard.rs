@@ -172,6 +172,12 @@ pub fn grouped_number_reformatted(input: &str, output: &str) -> bool {
         .any(|n| dictated.contains(&digits(n.as_str())))
 }
 
+/// La dictée porte-t-elle un repère `{{clé}}` de « Mes informations » ?
+fn has_personal_value_marker(text: &str) -> bool {
+    static MARKER: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^{}\r\n]+\}\}").unwrap());
+    MARKER.is_match(text)
+}
+
 /// Les contrôles propres aux Styles intégrés. `Err` porte le motif du refus.
 ///
 /// « Réunion » résume : il échappe aux contrôles de langue, de mots repris et
@@ -192,7 +198,14 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
             return Err("language-changed");
         }
     }
-    if kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS) {
+    // Une dictée qui porte un repère de « Mes informations » peut être
+    // réécrite en entier, et c'est voulu : « envoie-lui mon adresse » devient
+    // « Voici mon adresse : {{mon adresse}}. », qui ne reprend qu'un mot sur
+    // trois. Le repère, dont la présence est déjà exigée, relie la sortie à la
+    // dictée bien mieux qu'un compte de mots.
+    if !has_personal_value_marker(input)
+        && kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS)
+    {
         return Err("dictation-not-kept");
     }
     if grouped_number_lost(input, output) {
@@ -297,6 +310,27 @@ mod tests {
             "nova_style_meeting"
         )
         .is_ok());
+    }
+
+    #[test]
+    fn a_personal_value_request_may_be_rewritten_as_a_message() {
+        // Sortie réelle du modèle local, banc d'essai du 2026-09-22 : refusée
+        // par erreur en 1.0.44, la dictée brute était collée à la place.
+        assert!(check(
+            "envoie-lui {{mon adresse}} s'il te plaît",
+            "Voici mon adresse : {{mon adresse}}.",
+            "nova_style_messages"
+        )
+        .is_ok());
+        // Sans repère, une sortie sans rapport reste refusée.
+        assert_eq!(
+            check(
+                "envoie-lui le rapport s'il te plaît",
+                "Voici mon adresse.",
+                "nova_style_messages"
+            ),
+            Err("dictation-not-kept")
+        );
     }
 
     #[test]
