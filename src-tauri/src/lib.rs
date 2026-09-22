@@ -65,6 +65,7 @@ mod tray;
 mod tray_i18n;
 mod utils;
 mod week_stats;
+mod writing_aids;
 
 pub use cli::CliArgs;
 #[cfg(debug_assertions)]

@@ -1793,7 +1793,17 @@ pub(crate) async fn process_transcription_output(
     post_process: bool,
     auto_style_override: Option<String>,
 ) -> ProcessedTranscription {
-    let settings = get_settings(app);
+    let mut settings = get_settings(app);
+    // Les snippets et le vocabulaire de l'organisation, gardés pour le cas où
+    // son serveur ne répond pas : les snippets passent par le mécanisme de
+    // « Mes informations » (leur contenu ne part jamais au modèle), et le
+    // vocabulaire est appliqué au texte final. Quand le serveur a reformulé, il
+    // les a déjà appliqués : les appliquer à nouveau ne change rien.
+    let organization_aids = crate::writing_aids::for_organization(active_organization().as_deref());
+    if let Some(aids) = &organization_aids {
+        settings.custom_variables =
+            crate::writing_aids::with_snippets(&settings.custom_variables, aids);
+    }
     // A transcription is always content. No spoken phrase can cancel the
     // operation, mutate the dictionary, insert punctuation, or select a Style.
     let effective_style_override = auto_style_override;
@@ -1913,6 +1923,14 @@ pub(crate) async fn process_transcription_output(
     if substituted != final_text {
         final_text = substituted;
         post_processed_text = Some(final_text.clone());
+    }
+
+    if let Some(aids) = &organization_aids {
+        let enforced = crate::writing_aids::enforce_vocabulary(&final_text, &aids.vocabulary);
+        if enforced != final_text {
+            final_text = enforced;
+            post_processed_text = Some(final_text.clone());
+        }
     }
 
     ProcessedTranscription {
