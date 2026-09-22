@@ -361,24 +361,21 @@ const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
             "meistertask",
         ],
     ),
+    // Des applications qui affichent le Markdown. Un traitement de texte, un
+    // éditeur de texte brut ou un bloc-notes en texte enrichi (Word, Google
+    // Docs, Pages, Bloc-notes, OneNote, Evernote, Apple Notes…) collent
+    // « ## Titre » et « **gras** » tels quels : ils reçoivent la transcription
+    // améliorée, un texte propre, par défaut.
     (
         "nova_style_notes",
         &[
             "notion",
             "obsidian",
-            "onenote",
-            "one note",
-            "evernote",
             "logseq",
             "joplin",
             "roam research",
             "craft docs",
             "anytype",
-            "apple notes",
-            "google keep",
-            "google docs",
-            "microsoft word",
-            "word online",
             "dropbox paper",
             "coda",
             "confluence",
@@ -386,10 +383,6 @@ const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
             "slite",
             "standard notes",
             "simplenote",
-            "zoho notebook",
-            "samsung notes",
-            "notepad",
-            "notepad++",
             "typora",
             "zettlr",
             "mem.ai",
@@ -401,34 +394,24 @@ const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
             "dynalist",
             "quip",
             "hackmd",
-            "apple pages",
-            "libreoffice writer",
-            "onlyoffice",
-            "zoho writer",
             // FR
-            "bloc-notes",
             "prise de notes",
         ],
         &[
             "notion",
             "obsidian",
-            "onenote",
-            "evernote",
             "logseq",
             "joplin",
             "anytype",
             "craft",
             "standardnotes",
             "simplenote",
-            "notepad",
             "typora",
             "zettlr",
             "tana",
             "capacities",
             "workflowy",
             "quip",
-            "winword",
-            "soffice",
             "marktext",
             "ghostwriter",
         ],
@@ -1154,6 +1137,30 @@ mod tests {
         assert_eq!(
             resolve_auto_style("", "", &no_rules()),
             "default_improve_transcriptions"
+        );
+    }
+
+    #[test]
+    fn apps_that_do_not_render_markdown_get_plain_clean_text() {
+        // « ## Réunion » et « **gras** » collés tels quels dans Word : la
+        // transcription améliorée, sans balises, y est la bonne sortie.
+        for (title, process) in [
+            ("Rapport de stage.docx - Word", "winword.exe"),
+            ("Compte rendu - Google Docs", "chrome.exe"),
+            ("Sans titre - Bloc-notes", "notepad.exe"),
+            ("Cours - OneNote", "onenote.exe"),
+            ("Document1 - LibreOffice Writer", "soffice.bin"),
+        ] {
+            assert_eq!(
+                resolve_auto_style(title, process, &no_rules()),
+                "default_improve_transcriptions",
+                "{title}"
+            );
+        }
+        // Les applications qui affichent le Markdown gardent le Style Notes.
+        assert_eq!(
+            resolve_auto_style("Cours — Obsidian", "obsidian.exe", &no_rules()),
+            "nova_style_notes"
         );
     }
 
