@@ -114,6 +114,17 @@ describe("catalogue", () => {
     }
   });
 
+  test("expliquer et résumer ne se réduisent pas à reformuler", () => {
+    // Banc d'essai du 2026-09-22 : sans ces précisions, un modèle de quelques
+    // milliards de paramètres rendait une paraphrase dans les deux cas.
+    const byId = Object.fromEntries(
+      NOVA_COMMAND_SKILLS.map((s) => [s.id, s.instruction("French")]),
+    );
+    expect(byId.explain).toContain("define each technical term");
+    expect(byId.explain).toContain("Do not simply rephrase it");
+    expect(byId.summarize).toContain("at most a third of its length");
+  });
+
   test("la traduction nomme la langue cible", () => {
     const translate = NOVA_COMMAND_SKILLS.find((s) => s.id === "translate")!;
     expect(translate.instruction("Japanese")).toContain("Japanese");
