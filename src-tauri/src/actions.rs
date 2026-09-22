@@ -39,8 +39,27 @@ const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_secs(8);
 /// En mode automatique, le local garde la priorité mais ne peut pas bloquer le
 /// repli Turbo trop longtemps sur une machine modeste.
 const LOCAL_PRIMARY_TIMEOUT: Duration = Duration::from_secs(6);
+/// Le Style qui produit un compte rendu plutôt qu'une réécriture.
+const MEETING_STYLE: &str = "nova_style_meeting";
+
+/// Ce que le moteur local peut écrire pour ce Style.
+fn output_budget(style_id: &str) -> crate::llm_client::OutputBudget {
+    if style_id == MEETING_STYLE {
+        crate::llm_client::OutputBudget::Report
+    } else {
+        crate::llm_client::OutputBudget::Rewrite
+    }
+}
 // Includes the remote attempt and enough room for the local Air fallback.
 fn local_primary_timeout(transcription: &str, style_id: Option<&str>) -> Duration {
+    // Un compte rendu de réunion s'écrit en dizaines de secondes, pas en huit :
+    // borné comme une dictée, il était abandonné à chaque fois et Nova rendait
+    // le dialogue brut. Il grandit avec la réunion, jusqu'à trois minutes.
+    if style_id == Some(MEETING_STYLE) {
+        let chars = transcription.chars().count() as u64;
+        return (LOCAL_PRIMARY_TIMEOUT + Duration::from_secs(chars / 40))
+            .min(Duration::from_secs(180));
+    }
     let complex_style = matches!(
         style_id,
         Some("nova_style_notes" | "nova_style_todo" | "nova_style_prompt" | "nova_style_meeting")
@@ -773,9 +792,13 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
         return Err("chatbot-answer");
     }
     static DIGITS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b\d+(?:[.,]\d+)?\b").unwrap());
-    for number in DIGITS.find_iter(input) {
-        if !output.contains(number.as_str()) {
-            return Err("explicit-number-lost");
+    // Un compte rendu résume : il ne reprend pas chaque heure ni chaque montant
+    // cité. Exiger tous les nombres le faisait refuser presque à chaque fois.
+    if style_id != MEETING_STYLE {
+        for number in DIGITS.find_iter(input) {
+            if !output.contains(number.as_str()) {
+                return Err("explicit-number-lost");
+            }
         }
     }
 
@@ -821,7 +844,7 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
 /// contrôles qu'un moteur local. Le serveur en fait déjà, mais un serveur plus
 /// ancien, ou un modèle qui les déjoue, ne doit pas pouvoir coller un texte
 /// vide, traduit ou sans rapport à la place de la dictée.
-fn checked_campus_rewrite(
+pub(crate) fn checked_campus_rewrite(
     transcription: &str,
     reformulated: &str,
     style_id: &str,
@@ -1467,6 +1490,7 @@ async fn post_process_with_provider(
             temperature,
             reasoning_effort.clone(),
             reasoning.clone(),
+            output_budget(&effective_style_id),
         )
         .await
         {
@@ -1550,6 +1574,7 @@ async fn post_process_with_provider(
         temperature,
         reasoning_effort.clone(),
         reasoning.clone(),
+        output_budget(&effective_style_id),
     )
     .await;
 
@@ -1619,6 +1644,7 @@ async fn post_process_with_provider(
             temperature,
             reasoning_effort,
             reasoning,
+            output_budget(&effective_style_id),
         )
         .await;
         match retry_result {
@@ -3027,9 +3053,42 @@ mod tests {
             local_primary_timeout("texte court", Some("nova_style_notes")),
             Duration::from_secs(8)
         );
+    }
+
+    #[test]
+    fn a_meeting_report_gets_time_that_grows_with_the_meeting() {
+        // Cinq minutes de réunion : 4 337 caractères. Dix secondes n'y suffisaient
+        // jamais ; le compte rendu était abandonné et le dialogue brut rendu.
+        let five_minutes = local_primary_timeout(&"x".repeat(4_337), Some("nova_style_meeting"));
+        assert!(five_minutes >= Duration::from_secs(90), "{five_minutes:?}");
         assert_eq!(
-            local_primary_timeout(&"x".repeat(501), Some("nova_style_meeting")),
-            Duration::from_secs(10)
+            local_primary_timeout(&"x".repeat(100_000), Some("nova_style_meeting")),
+            Duration::from_secs(180)
+        );
+    }
+
+    #[test]
+    fn a_meeting_report_may_leave_numbers_out_but_not_rewrite_them() {
+        let dialogue =
+            "Autres : on a dépensé 1 850 euros sur les 3 000, la batterie coûte 140 euros.";
+        assert!(validate_rewrite(
+            dialogue,
+            "## Résumé\nLe budget est presque consommé.",
+            "nova_style_meeting"
+        )
+        .is_ok());
+        assert_eq!(
+            validate_rewrite(
+                dialogue,
+                "## Résumé\nBudget : 1,850 € sur 3,000 €.",
+                "nova_style_meeting"
+            ),
+            Err("number-format-changed")
+        );
+        // Une dictée, elle, garde tous ses nombres.
+        assert_eq!(
+            validate_rewrite(dialogue, "On a dépensé beaucoup.", "nova_style_email"),
+            Err("explicit-number-lost")
         );
     }
 

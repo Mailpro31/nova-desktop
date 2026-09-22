@@ -154,24 +154,46 @@ pub fn grouped_number_lost(input: &str, output: &str) -> bool {
         .any(|number| !written.contains(&compact(number.as_str())))
 }
 
+/// Un nombre groupé réécrit avec une virgule ou un point (« 76 300 » →
+/// « 76,300 ») : en français, « 76,300 » se lit 76 virgule 3. Contrairement à
+/// [`grouped_number_lost`], un nombre simplement absent ne compte pas — un
+/// compte rendu résume.
+pub fn grouped_number_reformatted(input: &str, output: &str) -> bool {
+    static GROUPED: Lazy<Regex> =
+        Lazy::new(|| Regex::new(r"\d{1,3}(?:[ \u{00A0}\u{202F}]\d{3})+").unwrap());
+    static PUNCTUATED: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d{1,3}(?:[,.]\d{3})+").unwrap());
+    let digits = |s: &str| s.chars().filter(char::is_ascii_digit).collect::<String>();
+    let dictated: HashSet<String> = GROUPED
+        .find_iter(input)
+        .map(|n| digits(n.as_str()))
+        .collect();
+    PUNCTUATED
+        .find_iter(output)
+        .any(|n| dictated.contains(&digits(n.as_str())))
+}
+
 /// Les contrôles propres aux Styles intégrés. `Err` porte le motif du refus.
 ///
-/// « Réunion » résume, mais ne réécrit pas un nombre : lui seul échappe aux
-/// contrôles de langue et de mots repris, pas à celui des nombres groupés.
+/// « Réunion » résume : il échappe aux contrôles de langue, de mots repris et
+/// de nombres omis, mais pas à celui des nombres réécrits.
 pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static str> {
-    let guarded = GUARDED_STYLES.contains(&style_id);
-    if !guarded && style_id != "nova_style_meeting" {
+    if style_id == "nova_style_meeting" {
+        return if grouped_number_reformatted(input, output) {
+            Err("number-format-changed")
+        } else {
+            Ok(())
+        };
+    }
+    if !GUARDED_STYLES.contains(&style_id) {
         return Ok(());
     }
-    if guarded {
-        if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
-            if dictated != written {
-                return Err("language-changed");
-            }
+    if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
+        if dictated != written {
+            return Err("language-changed");
         }
-        if kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS) {
-            return Err("dictation-not-kept");
-        }
+    }
+    if kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS) {
+        return Err("dictation-not-kept");
     }
     if grouped_number_lost(input, output) {
         return Err("number-format-changed");
@@ -265,6 +287,13 @@ mod tests {
         assert!(check(
             "alors on a parlé longuement du budget qui est de 76 300 € et de la suite",
             "## Résumé\nBudget : 76 300 €.",
+            "nova_style_meeting"
+        )
+        .is_ok());
+        // Un compte rendu résume : un nombre omis n'est pas une erreur.
+        assert!(check(
+            "on a dépensé 1 850 euros sur les 3 000, la batterie coûte 140 euros",
+            "## Résumé\nLe budget est presque consommé.",
             "nova_style_meeting"
         )
         .is_ok());
