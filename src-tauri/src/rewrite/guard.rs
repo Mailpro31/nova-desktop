@@ -173,9 +173,15 @@ pub fn grouped_number_reformatted(input: &str, output: &str) -> bool {
 }
 
 /// La dictée porte-t-elle un repère `{{clé}}` de « Mes informations » ?
+///
+/// Les termes du lexique personnel sont protégés par le même mécanisme
+/// (`{{nvxlexN}}`), mais ils ne justifient aucune réécriture : un mot du
+/// lexique dans la dictée ne doit pas lever le contrôle des mots repris.
 fn has_personal_value_marker(text: &str) -> bool {
-    static MARKER: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^{}\r\n]+\}\}").unwrap());
-    MARKER.is_match(text)
+    static MARKER: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{([^{}\r\n]+)\}\}").unwrap());
+    MARKER
+        .captures_iter(text)
+        .any(|marker| !marker[1].starts_with("nvxlex"))
 }
 
 /// Les contrôles propres aux Styles intégrés. `Err` porte le motif du refus.
@@ -322,6 +328,15 @@ mod tests {
             "nova_style_messages"
         )
         .is_ok());
+        // Un terme du lexique protégé n'est pas une valeur personnelle.
+        assert_eq!(
+            check(
+                "envoie-lui le rapport {{nvxlex0}} s'il te plaît",
+                "Voici mon adresse. {{nvxlex0}}",
+                "nova_style_messages"
+            ),
+            Err("dictation-not-kept")
+        );
         // Sans repère, une sortie sans rapport reste refusée.
         assert_eq!(
             check(
