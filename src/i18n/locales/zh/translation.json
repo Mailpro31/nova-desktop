@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "仅当你的 IT 团队尚未为你配置 Nova 时，才需要输入此地址。"
+        "serverHelp": "仅当你的 IT 团队尚未为你配置 Nova 时，才需要输入此地址。",
+        "discoveryLabel": "您的组织邮箱",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova 通过您邮箱的域名找到您的组织。您无需输入服务器地址。",
+        "discoveryAction": "继续",
+        "discoveryBusy": "正在查找您的组织…",
+        "advanced": "高级选项",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "请输入完整的邮箱地址，例如 name@organization.com。",
+          "DNS_UNAVAILABLE": "无法检查您组织的域名。请检查网络连接后重试。",
+          "RECORD_NOT_FOUND": "该域名尚未发布 Nova 地址。请联系 IT 部门，或在高级选项中输入服务器地址。",
+          "ENDPOINT_INVALID": "该域名发布的地址无法使用。请让 IT 部门检查。",
+          "ENDPOINT_OUTSIDE_DOMAIN": "该域名发布的地址指向别处。Nova 不会在那里登录。",
+          "SERVER_UNREACHABLE": "您组织的服务器没有响应。请稍后重试。",
+          "DOMAIN_NOT_SERVED": "该服务器不服务此邮箱域名。请联系 IT 部门。"
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "IT 管理员"
       },
       "cohort": "年级",
+      "groups": "您的群组",
       "logout": "退出登录",
       "logoutConfirmTitle": "要退出 Nova Campus 吗？",
       "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "组织访问已暂停",
-      "description": "Nova 将继续在此电脑上以 Personal 模式运行，并保留您的历史记录。请联系管理员。",
-      "restored": "组织访问已恢复"
+      "description": "在您的组织恢复访问权限之前，Nova 在此电脑上已被锁定。请联系您的管理员。",
+      "restored": "组织访问已恢复",
+      "screenTitle": "您的访问权限已被暂停",
+      "screenDescription": "您的组织已暂停您对 Nova 的访问权限。请联系管理员以恢复。",
+      "screenDescriptionNamed": "{{organization}} 已暂停您对 Nova 的访问权限。请联系管理员以恢复。",
+      "nothingDeleted": "没有删除任何内容。访问权限恢复后，Nova 会重新打开。",
+      "checkAgain": "重新检查"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "无法保存该风格。",
       "delete": "无法删除该风格。"
     },
-    "organizationManaged": "这些风格由您的组织发布，无法在此编辑。"
+    "organizationManaged": "这些风格由您的组织发布，无法在此编辑。",
+    "disabledByOrganization": "已被你的组织停用",
+    "disabledByOrganizationHint": "Nova 会为你的听写使用其他风格。"
   },
   "history": {
     "subtitle": "你用 Nova 语音输入的全部内容。",

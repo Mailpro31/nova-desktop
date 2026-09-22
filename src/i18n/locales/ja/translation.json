@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "IT 部門が Nova を設定していない場合にのみ、このアドレスを入力してください。"
+        "serverHelp": "IT 部門が Nova を設定していない場合にのみ、このアドレスを入力してください。",
+        "discoveryLabel": "組織のメールアドレス",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova はアドレスのドメインから組織を見つけます。サーバーアドレスを入力する必要はありません。",
+        "discoveryAction": "続ける",
+        "discoveryBusy": "組織を検索しています…",
+        "advanced": "詳細オプション",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "name@organization.com のような完全なメールアドレスを入力してください。",
+          "DNS_UNAVAILABLE": "組織のドメインを確認できませんでした。インターネット接続を確認して、もう一度お試しください。",
+          "RECORD_NOT_FOUND": "このドメインはまだ Nova のアドレスを公開していません。情報システム部門に確認するか、詳細オプションでサーバーアドレスを入力してください。",
+          "ENDPOINT_INVALID": "このドメインに公開されているアドレスは使用できません。情報システム部門に確認を依頼してください。",
+          "ENDPOINT_OUTSIDE_DOMAIN": "このドメインに公開されているアドレスは別の場所を指しています。Nova はそこにサインインしません。",
+          "SERVER_UNREACHABLE": "組織のサーバーが応答しませんでした。しばらくしてからもう一度お試しください。",
+          "DOMAIN_NOT_SERVED": "そのサーバーはこのメールドメインに対応していません。情報システム部門に確認してください。"
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "IT 管理者"
       },
       "cohort": "学年",
+      "groups": "所属グループ",
       "logout": "ログアウト",
       "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
       "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "組織へのアクセスが停止されました",
-      "description": "このコンピューターでは履歴を保持したまま Personal として Nova を引き続き使用できます。管理者にお問い合わせください。",
-      "restored": "組織へのアクセスが復元されました"
+      "description": "組織がアクセスを復元するまで、このコンピューターでは Nova がブロックされています。管理者に問い合わせてください。",
+      "restored": "組織へのアクセスが復元されました",
+      "screenTitle": "アクセスが停止されました",
+      "screenDescription": "組織によって Nova へのアクセスが停止されました。復元するには管理者に問い合わせてください。",
+      "screenDescriptionNamed": "{{organization}} によって Nova へのアクセスが停止されました。復元するには管理者に問い合わせてください。",
+      "nothingDeleted": "何も削除されていません。アクセスが復元されると Nova は再び開きます。",
+      "checkAgain": "もう一度確認"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "文体を保存できませんでした。",
       "delete": "文体を削除できませんでした。"
     },
-    "organizationManaged": "これらのスタイルは組織が公開しています。ここでは編集できません。"
+    "organizationManaged": "これらのスタイルは組織が公開しています。ここでは編集できません。",
+    "disabledByOrganization": "組織によって無効化されています",
+    "disabledByOrganizationHint": "Nova はディクテーションに別のスタイルを使用します。"
   },
   "history": {
     "subtitle": "Nova で音声入力したすべて。",

@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Wpisz ten adres tylko wtedy, gdy dział IT nie skonfigurował Novy za Ciebie."
+        "serverHelp": "Wpisz ten adres tylko wtedy, gdy dział IT nie skonfigurował Novy za Ciebie.",
+        "discoveryLabel": "Twój adres e-mail organizacji",
+        "discoveryPlaceholder": "imie@organizacja.pl",
+        "discoveryHelp": "Nova znajduje Twoją organizację na podstawie domeny adresu. Nigdy nie wpisujesz adresu serwera.",
+        "discoveryAction": "Dalej",
+        "discoveryBusy": "Szukanie Twojej organizacji…",
+        "advanced": "Opcje zaawansowane",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Wpisz pełny adres e-mail, na przykład imie@organizacja.pl.",
+          "DNS_UNAVAILABLE": "Nie udało się sprawdzić domeny Twojej organizacji. Sprawdź połączenie z internetem i spróbuj ponownie.",
+          "RECORD_NOT_FOUND": "Ta domena nie publikuje jeszcze adresu Nova. Zapytaj dział IT albo wpisz adres serwera w opcjach zaawansowanych.",
+          "ENDPOINT_INVALID": "Adres opublikowany dla tej domeny nie nadaje się do użycia. Poproś dział IT o jego sprawdzenie.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Adres opublikowany dla tej domeny prowadzi gdzie indziej. Nova tam się nie zaloguje.",
+          "SERVER_UNREACHABLE": "Serwer Twojej organizacji nie odpowiedział. Spróbuj ponownie za chwilę.",
+          "DOMAIN_NOT_SERVED": "Ten serwer nie obsługuje tej domeny e-mail. Zapytaj dział IT."
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "Administrator IT"
       },
       "cohort": "Rocznik",
+      "groups": "Twoje grupy",
       "logout": "Wyloguj się",
       "logoutConfirmTitle": "Wylogować się z Nova Campus?",
       "logoutConfirmDescription": "Aby korzystać z Nova Campus, trzeba będzie zalogować się ponownie. Czy na pewno?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "Dostęp do organizacji zawieszony",
-      "description": "Nova nadal działa na tym komputerze w wersji Personal, z Twoją historią. Skontaktuj się z administratorem.",
-      "restored": "Dostęp do organizacji przywrócony"
+      "description": "Nova jest zablokowana na tym komputerze, dopóki Twoja organizacja nie przywróci dostępu. Skontaktuj się z administratorem.",
+      "restored": "Dostęp do organizacji przywrócony",
+      "screenTitle": "Twój dostęp został zawieszony",
+      "screenDescription": "Twoja organizacja zawiesiła Twój dostęp do Nova. Skontaktuj się z administratorem, aby go przywrócić.",
+      "screenDescriptionNamed": "{{organization}} zawiesiła Twój dostęp do Nova. Skontaktuj się z administratorem, aby go przywrócić.",
+      "nothingDeleted": "Nic nie zostało usunięte. Nova otworzy się ponownie, gdy dostęp zostanie przywrócony.",
+      "checkAgain": "Sprawdź ponownie"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "Nie udało się zapisać stylu.",
       "delete": "Nie udało się usunąć stylu."
     },
-    "organizationManaged": "Te style są publikowane przez Twoją organizację. Nie można ich tu edytować."
+    "organizationManaged": "Te style są publikowane przez Twoją organizację. Nie można ich tu edytować.",
+    "disabledByOrganization": "Wyłączony przez Twoją organizację",
+    "disabledByOrganizationHint": "Nova używa innego stylu dla Twoich dyktowań."
   },
   "history": {
     "subtitle": "Wszystko, co podyktowano w Novie.",

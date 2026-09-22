@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Informe este endereço somente se a sua equipe de TI não tiver configurado o Nova para você."
+        "serverHelp": "Informe este endereço somente se a sua equipe de TI não tiver configurado o Nova para você.",
+        "discoveryLabel": "Seu e-mail da organização",
+        "discoveryPlaceholder": "nome@organizacao.com",
+        "discoveryHelp": "O Nova encontra sua organização pelo domínio do seu endereço. Você nunca digita um endereço de servidor.",
+        "discoveryAction": "Continuar",
+        "discoveryBusy": "Procurando sua organização…",
+        "advanced": "Opções avançadas",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Digite um endereço de e-mail completo, por exemplo nome@organizacao.com.",
+          "DNS_UNAVAILABLE": "Não foi possível verificar o domínio da sua organização. Verifique sua conexão e tente novamente.",
+          "RECORD_NOT_FOUND": "Este domínio ainda não publica um endereço do Nova. Fale com sua equipe de TI, ou digite o endereço do servidor nas opções avançadas.",
+          "ENDPOINT_INVALID": "O endereço publicado para este domínio não pode ser usado. Peça à sua equipe de TI para verificá-lo.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "O endereço publicado para este domínio leva a outro lugar. O Nova não vai entrar por lá.",
+          "SERVER_UNREACHABLE": "O servidor da sua organização não respondeu. Tente novamente em instantes.",
+          "DOMAIN_NOT_SERVED": "Esse servidor não atende este domínio de e-mail. Fale com sua equipe de TI."
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "Administrador de TI"
       },
       "cohort": "Turma",
+      "groups": "Seus grupos",
       "logout": "Sair",
       "logoutConfirmTitle": "Sair do Nova Campus?",
       "logoutConfirmDescription": "Você precisará entrar novamente para usar o Nova Campus. Tem certeza?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "Acesso à organização suspenso",
-      "description": "O Nova continua a funcionar em Personal neste computador, com o seu histórico. Contacte o administrador.",
-      "restored": "Acesso à organização restabelecido"
+      "description": "O Nova está bloqueado neste computador até que sua organização restaure seu acesso. Entre em contato com seu administrador.",
+      "restored": "Acesso à organização restabelecido",
+      "screenTitle": "Seu acesso foi suspenso",
+      "screenDescription": "Sua organização suspendeu seu acesso ao Nova. Entre em contato com seu administrador para restaurá-lo.",
+      "screenDescriptionNamed": "{{organization}} suspendeu seu acesso ao Nova. Entre em contato com seu administrador para restaurá-lo.",
+      "nothingDeleted": "Nada foi excluído. O Nova abre novamente assim que seu acesso for restaurado.",
+      "checkAgain": "Verificar novamente"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "Não foi possível guardar o estilo.",
       "delete": "Não foi possível eliminar o estilo."
     },
-    "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui."
+    "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui.",
+    "disabledByOrganization": "Desativado pela sua organização",
+    "disabledByOrganizationHint": "O Nova usa outro estilo para os seus ditados."
   },
   "history": {
     "subtitle": "Tudo o que ditou com a Nova.",

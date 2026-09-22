@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "IT 팀이 Nova를 설정해 주지 않은 경우에만 이 주소를 입력하세요."
+        "serverHelp": "IT 팀이 Nova를 설정해 주지 않은 경우에만 이 주소를 입력하세요.",
+        "discoveryLabel": "조직 이메일 주소",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova는 주소의 도메인으로 조직을 찾습니다. 서버 주소를 입력할 필요가 없습니다.",
+        "discoveryAction": "계속",
+        "discoveryBusy": "조직을 찾는 중…",
+        "advanced": "고급 옵션",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "name@organization.com 과 같이 완전한 이메일 주소를 입력하세요.",
+          "DNS_UNAVAILABLE": "조직 도메인을 확인할 수 없습니다. 인터넷 연결을 확인하고 다시 시도하세요.",
+          "RECORD_NOT_FOUND": "이 도메인은 아직 Nova 주소를 게시하지 않았습니다. IT 팀에 문의하거나 고급 옵션에서 서버 주소를 입력하세요.",
+          "ENDPOINT_INVALID": "이 도메인에 게시된 주소는 사용할 수 없습니다. IT 팀에 확인을 요청하세요.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "이 도메인에 게시된 주소가 다른 곳을 가리킵니다. Nova는 그곳에 로그인하지 않습니다.",
+          "SERVER_UNREACHABLE": "조직 서버가 응답하지 않았습니다. 잠시 후 다시 시도하세요.",
+          "DOMAIN_NOT_SERVED": "이 서버는 해당 이메일 도메인을 지원하지 않습니다. IT 팀에 문의하세요."
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "IT 관리자"
       },
       "cohort": "기수",
+      "groups": "내 그룹",
       "logout": "로그아웃",
       "logoutConfirmTitle": "Nova Campus에서 로그아웃할까요?",
       "logoutConfirmDescription": "Nova Campus를 사용하려면 다시 로그인해야 합니다. 계속할까요?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "조직 액세스가 일시 중지됨",
-      "description": "이 컴퓨터에서는 기록을 유지한 채 Personal로 Nova를 계속 사용할 수 있습니다. 관리자에게 문의하세요.",
-      "restored": "조직 액세스가 복원됨"
+      "description": "조직에서 액세스를 복원할 때까지 이 컴퓨터에서 Nova가 차단됩니다. 관리자에게 문의하세요.",
+      "restored": "조직 액세스가 복원됨",
+      "screenTitle": "액세스가 정지되었습니다",
+      "screenDescription": "조직에서 Nova 액세스를 정지했습니다. 복원하려면 관리자에게 문의하세요.",
+      "screenDescriptionNamed": "{{organization}}에서 Nova 액세스를 정지했습니다. 복원하려면 관리자에게 문의하세요.",
+      "nothingDeleted": "삭제된 것은 없습니다. 액세스가 복원되면 Nova가 다시 열립니다.",
+      "checkAgain": "다시 확인"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "스타일을 저장하지 못했습니다.",
       "delete": "스타일을 삭제하지 못했습니다."
     },
-    "organizationManaged": "이 스타일은 조직에서 게시합니다. 여기서는 편집할 수 없습니다."
+    "organizationManaged": "이 스타일은 조직에서 게시합니다. 여기서는 편집할 수 없습니다.",
+    "disabledByOrganization": "조직에서 비활성화함",
+    "disabledByOrganizationHint": "Nova가 받아쓰기에 다른 스타일을 사용합니다."
   },
   "history": {
     "subtitle": "Nova로 받아쓴 모든 내용.",

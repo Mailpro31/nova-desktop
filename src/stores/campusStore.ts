@@ -56,9 +56,9 @@ interface CampusStoreState {
   /**
    * L'organisation a suspendu ce membre : `/api/me` a répondu 403.
    *
-   * Le poste retombe alors en Personal — dictée locale, historique conservé,
-   * session gardée — et revient de lui-même dès que `/api/me` répond de
-   * nouveau. Hors ligne, l'état reste celui que le serveur a donné en dernier :
+   * Le poste se bloque alors — aucune dictée, pas de repli Personal, rien de
+   * supprimé, session gardée — et revient de lui-même dès que `/api/me` répond
+   * de nouveau. Hors ligne, l'état reste celui que le serveur a donné en dernier :
    * une coupure réseau ne suspend ni ne rétablit personne.
    */
   suspended: boolean;

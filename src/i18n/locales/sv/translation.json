@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Ange bara den här adressen om din IT-avdelning inte redan har konfigurerat Nova åt dig."
+        "serverHelp": "Ange bara den här adressen om din IT-avdelning inte redan har konfigurerat Nova åt dig.",
+        "discoveryLabel": "Din organisations e-post",
+        "discoveryPlaceholder": "namn@organisation.se",
+        "discoveryHelp": "Nova hittar din organisation via domänen i din adress. Du skriver aldrig in en serveradress.",
+        "discoveryAction": "Fortsätt",
+        "discoveryBusy": "Söker din organisation…",
+        "advanced": "Avancerade alternativ",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Ange en fullständig e-postadress, till exempel namn@organisation.se.",
+          "DNS_UNAVAILABLE": "Din organisations domän kunde inte kontrolleras. Kontrollera din internetanslutning och försök igen.",
+          "RECORD_NOT_FOUND": "Den här domänen publicerar ännu ingen Nova-adress. Fråga din IT-avdelning, eller ange serveradressen under avancerade alternativ.",
+          "ENDPOINT_INVALID": "Adressen som publicerats för den här domänen går inte att använda. Be din IT-avdelning kontrollera den.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Adressen som publicerats för den här domänen leder någon annanstans. Nova loggar inte in där.",
+          "SERVER_UNREACHABLE": "Din organisations server svarade inte. Försök igen om en stund.",
+          "DOMAIN_NOT_SERVED": "Den servern betjänar inte den här e-postdomänen. Fråga din IT-avdelning."
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "IT-administratör"
       },
       "cohort": "Årskull",
+      "groups": "Dina grupper",
       "logout": "Logga ut",
       "logoutConfirmTitle": "Logga ut från Nova Campus?",
       "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova Campus. Är du säker?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "Åtkomsten till organisationen är avstängd",
-      "description": "Nova fortsätter att fungera i Personal på den här datorn, med din historik. Kontakta administratören.",
-      "restored": "Åtkomsten till organisationen är återställd"
+      "description": "Nova är blockerat på den här datorn tills din organisation återställer din åtkomst. Kontakta din administratör.",
+      "restored": "Åtkomsten till organisationen är återställd",
+      "screenTitle": "Din åtkomst har stängts av",
+      "screenDescription": "Din organisation har stängt av din åtkomst till Nova. Kontakta din administratör för att återställa den.",
+      "screenDescriptionNamed": "{{organization}} har stängt av din åtkomst till Nova. Kontakta din administratör för att återställa den.",
+      "nothingDeleted": "Ingenting har raderats. Nova öppnas igen så snart din åtkomst har återställts.",
+      "checkAgain": "Kontrollera igen"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "Stilen kunde inte sparas.",
       "delete": "Stilen kunde inte tas bort."
     },
-    "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här."
+    "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här.",
+    "disabledByOrganization": "Inaktiverad av din organisation",
+    "disabledByOrganizationHint": "Nova använder en annan stil för dina dikteringar."
   },
   "history": {
     "subtitle": "Allt du har dikterat med Nova.",

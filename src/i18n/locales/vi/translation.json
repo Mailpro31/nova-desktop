@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Chỉ nhập địa chỉ này nếu bộ phận CNTT chưa cấu hình Nova cho bạn."
+        "serverHelp": "Chỉ nhập địa chỉ này nếu bộ phận CNTT chưa cấu hình Nova cho bạn.",
+        "discoveryLabel": "Email tổ chức của bạn",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova tìm tổ chức của bạn từ tên miền trong địa chỉ. Bạn không bao giờ phải nhập địa chỉ máy chủ.",
+        "discoveryAction": "Tiếp tục",
+        "discoveryBusy": "Đang tìm tổ chức của bạn…",
+        "advanced": "Tùy chọn nâng cao",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Hãy nhập địa chỉ email đầy đủ, ví dụ ten@tochuc.com.",
+          "DNS_UNAVAILABLE": "Không kiểm tra được tên miền của tổ chức. Hãy kiểm tra kết nối internet rồi thử lại.",
+          "RECORD_NOT_FOUND": "Tên miền này chưa công bố địa chỉ Nova. Hãy hỏi bộ phận CNTT, hoặc nhập địa chỉ máy chủ trong tùy chọn nâng cao.",
+          "ENDPOINT_INVALID": "Địa chỉ được công bố cho tên miền này không dùng được. Hãy nhờ bộ phận CNTT kiểm tra.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Địa chỉ được công bố cho tên miền này dẫn tới nơi khác. Nova sẽ không đăng nhập ở đó.",
+          "SERVER_UNREACHABLE": "Máy chủ của tổ chức không phản hồi. Hãy thử lại sau giây lát.",
+          "DOMAIN_NOT_SERVED": "Máy chủ đó không phục vụ tên miền email này. Hãy hỏi bộ phận CNTT."
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "Quản trị viên CNTT"
       },
       "cohort": "Khóa",
+      "groups": "Nhóm của bạn",
       "logout": "Đăng xuất",
       "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
       "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "Quyền truy cập tổ chức đã bị tạm ngưng",
-      "description": "Nova vẫn hoạt động ở chế độ Personal trên máy tính này, cùng lịch sử của bạn. Hãy liên hệ quản trị viên.",
-      "restored": "Quyền truy cập tổ chức đã được khôi phục"
+      "description": "Nova bị chặn trên máy tính này cho đến khi tổ chức của bạn khôi phục quyền truy cập. Hãy liên hệ quản trị viên.",
+      "restored": "Quyền truy cập tổ chức đã được khôi phục",
+      "screenTitle": "Quyền truy cập của bạn đã bị tạm ngưng",
+      "screenDescription": "Tổ chức của bạn đã tạm ngưng quyền truy cập Nova của bạn. Hãy liên hệ quản trị viên để khôi phục.",
+      "screenDescriptionNamed": "{{organization}} đã tạm ngưng quyền truy cập Nova của bạn. Hãy liên hệ quản trị viên để khôi phục.",
+      "nothingDeleted": "Không có gì bị xóa. Nova sẽ mở lại ngay khi quyền truy cập được khôi phục.",
+      "checkAgain": "Kiểm tra lại"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "Không lưu được lối viết.",
       "delete": "Không xoá được lối viết."
     },
-    "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây."
+    "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây.",
+    "disabledByOrganization": "Đã bị tổ chức của bạn tắt",
+    "disabledByOrganizationHint": "Nova dùng một kiểu khác cho các bản đọc chính tả của bạn."
   },
   "history": {
     "subtitle": "Mọi thứ bạn đã đọc chính tả với Nova.",

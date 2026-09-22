@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.school.edu",
         "emailLabel": "School email",
         "emailPlaceholder": "name@school.edu",
-        "serverHelp": "Only enter this address if your IT team has not configured Nova for you."
+        "serverHelp": "Only enter this address if your IT team has not configured Nova for you.",
+        "discoveryLabel": "Your organization email",
+        "discoveryPlaceholder": "name@organization.com",
+        "discoveryHelp": "Nova finds your organization from the domain of your address. You never type a server address.",
+        "discoveryAction": "Continue",
+        "discoveryBusy": "Looking for your organization…",
+        "advanced": "Advanced options",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Enter a complete email address, such as name@organization.com.",
+          "DNS_UNAVAILABLE": "Could not check your organization's domain. Check your internet connection and try again.",
+          "RECORD_NOT_FOUND": "This domain does not publish a Nova address yet. Ask your IT team, or enter the server address under advanced options.",
+          "ENDPOINT_INVALID": "The address published for this domain cannot be used. Ask your IT team to check it.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "The address published for this domain points somewhere else. Nova refuses to sign in there.",
+          "SERVER_UNREACHABLE": "Your organization's server did not answer. Try again in a moment.",
+          "DOMAIN_NOT_SERVED": "That server does not serve this email domain. Ask your IT team."
+        }
       },
       "code": {
         "title": "Check your inbox",
@@ -961,6 +976,7 @@
         "it_admin": "IT administrator"
       },
       "cohort": "Cohort",
+      "groups": "Your groups",
       "logout": "Sign out",
       "logoutConfirmTitle": "Sign out of Nova Campus?",
       "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "Organization access suspended",
-      "description": "Nova keeps working in Personal on this computer, with your history. Contact your administrator.",
-      "restored": "Organization access restored"
+      "description": "Nova is blocked on this computer until your organization restores your access. Contact your administrator.",
+      "restored": "Organization access restored",
+      "screenTitle": "Your access has been suspended",
+      "screenDescription": "Your organization has suspended your access to Nova. Contact your administrator to restore it.",
+      "screenDescriptionNamed": "{{organization}} has suspended your access to Nova. Contact your administrator to restore it.",
+      "nothingDeleted": "Nothing has been deleted. Nova opens again as soon as your access is restored.",
+      "checkAgain": "Check again"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "Could not save the style.",
       "delete": "Could not delete the style."
     },
-    "organizationManaged": "These styles are published by your organization. They cannot be edited here."
+    "organizationManaged": "These styles are published by your organization. They cannot be edited here.",
+    "disabledByOrganization": "Disabled by your organization",
+    "disabledByOrganizationHint": "Nova uses another style for your dictations."
   },
   "history": {
     "subtitle": "Everything you have dictated with Nova.",

@@ -51,6 +51,55 @@ test.describe("app categories follow the organization", () => {
     }
   });
 
+  test("Nova Commands and AI Skills leave the sidebar when closed", async ({
+    page,
+  }) => {
+    await mockTauri(page, {
+      session,
+      config: {
+        ...school,
+        capabilities: {
+          ...school.capabilities,
+          commands: false,
+          aiSkills: false,
+        },
+      },
+      onboardingCompleted: true,
+    });
+    await page.goto("/");
+
+    await expect(
+      nav(page).getByRole("button", { name: "Home", exact: true }),
+    ).toBeVisible();
+    for (const name of ["Nova Commands", "AI Skills"]) {
+      await expect(
+        nav(page).getByRole("button", { name, exact: true }),
+      ).toHaveCount(0);
+    }
+  });
+
+  test("Nova Commands and AI Skills stay when open", async ({ page }) => {
+    await mockTauri(page, {
+      session,
+      config: {
+        ...school,
+        capabilities: {
+          ...school.capabilities,
+          commands: true,
+          aiSkills: true,
+        },
+      },
+      onboardingCompleted: true,
+    });
+    await page.goto("/");
+
+    for (const name of ["Nova Commands", "AI Skills"]) {
+      await expect(
+        nav(page).getByRole("button", { name, exact: true }),
+      ).toBeVisible();
+    }
+  });
+
   test("without an announcement every category stays", async ({ page }) => {
     await mockTauri(page, {
       session,

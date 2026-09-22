@@ -550,11 +550,15 @@ pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
 /// la connexion attend.
 pub const CAMPUS_SIGN_IN_REQUIRED_EVENT: &str = "campus-sign-in-required";
 
+/// Le poste refuse une dictée : l'organisation a suspendu ce membre.
+/// L'interface ramène la fenêtre, où l'écran de suspension l'explique.
+pub const CAMPUS_ACCESS_SUSPENDED_EVENT: &str = "campus-access-suspended";
+
 /// L'organisation a suspendu ce membre, ou l'a rétabli.
 ///
-/// Suspendu, le poste n'envoie plus ses dictées à l'organisation et perd le
-/// palier qu'elle débloque : il retombe en Personal. La session reste, et
-/// l'édition du poste ne change pas.
+/// Suspendu, le poste ne dicte plus du tout — aucun repli Personal — et
+/// l'interface affiche un écran bloquant. La session reste, rien n'est
+/// supprimé, et l'édition du poste ne change pas.
 #[tauri::command]
 #[specta::specta]
 pub fn set_campus_suspended(suspended: bool) -> Result<(), String> {
@@ -851,6 +855,9 @@ pub struct CampusMembership {
     pub security_role: Option<String>,
     #[serde(default)]
     pub groups: Option<Vec<CampusGroup>>,
+    /// Faux quand l'organisation masque au membre ses groupes.
+    #[serde(default)]
+    pub groups_visible: Option<bool>,
     #[serde(default)]
     pub status: Option<String>,
 }
@@ -908,6 +915,17 @@ pub struct CampusMeResponse {
     /// n'atteignait l'interface.
     #[serde(default)]
     pub closed_capabilities: Option<Vec<String>>,
+    /// Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
+    /// aucun Style n'est alors désactivé.
+    #[serde(default)]
+    pub style_policy: Option<CampusStylePolicy>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct CampusStylePolicy {
+    /// Identifiants des Styles désactivés — intégrés ou d'organisation.
+    #[serde(default)]
+    pub disabled_style_ids: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -1208,7 +1226,7 @@ pub struct OrganizationCatalogSnapshot {
     pub skills: Vec<crate::organization_packages::OrganizationSkill>,
 }
 
-/// Les trois repères de `/api/organization/changes`, sans aucun contenu.
+/// Les repères de `/api/organization/changes`, sans aucun contenu.
 ///
 /// L'interface les demande souvent et ne recharge que ce qui a bougé : c'est
 /// ce qui fait arriver un changement de la console en moins d'une minute.
@@ -1217,6 +1235,10 @@ pub struct OrganizationChanges {
     pub policy_revision: i64,
     pub packages_version: String,
     pub learning_version: String,
+    /// Ce que `/api/me` montre des groupes du membre. Absent d'un serveur
+    /// plus ancien.
+    #[serde(default)]
+    pub profile_version: Option<String>,
 }
 
 /// Un serveur plus ancien répond 404 : l'erreur remonte, et l'interface garde
@@ -1481,6 +1503,7 @@ pub async fn logout_campus_session(app: AppHandle) -> Result<(), String> {
         let _ = response;
     }
     crate::dictation_limit::set_limit(None);
+    crate::style_policy::set_disabled(None);
     clear_campus_session(app)
 }
 
@@ -1506,6 +1529,11 @@ pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
         me.limits
             .as_ref()
             .and_then(|limits| limits.max_dictation_seconds),
+    );
+    crate::style_policy::set_disabled(
+        me.style_policy
+            .as_ref()
+            .map(|policy| policy.disabled_style_ids.clone()),
     );
     Ok(me)
 }
@@ -2422,10 +2450,14 @@ pub async fn reformulate_campus(
     let base_url = normalize_base_url(&session.server_url);
     let client = campus_client(&session.token);
 
+    // Le serveur place la dictée dans le message, pas dans la consigne :
+    // l'emplacement `${output}` n'y a rien à faire, et un modèle qui le lit
+    // complète le gabarit au lieu de reformuler.
+    let instruction = crate::rewrite::prompt::without_transcript_template(style_prompt);
     let body = serde_json::json!({
         "text": text,
         "style_id": style_id,
-        "style_prompt": style_prompt,
+        "style_prompt": instruction,
     });
 
     let request = client

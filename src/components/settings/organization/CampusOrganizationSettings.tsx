@@ -16,6 +16,8 @@ import {
   type AccountRoleLabels,
 } from "@/lib/organization/accountRoles";
 import type { WordingId } from "@/lib/organization/wording";
+import { memberGroupLabels } from "@/lib/organization/memberGroups";
+import { useCampusStore } from "@/stores/campusStore";
 
 interface Profile {
   roles: AccountRoleLabels;
@@ -56,6 +58,12 @@ export const CampusOrganizationSettings: React.FC = () => {
   const organization = useOrganization();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  // Relu par le store à chaque changement annoncé par le serveur.
+  const member = useCampusStore(
+    (state) => state.serverIdentity?.member ?? null,
+  );
+  const groupLabels = memberGroupLabels(member);
+  const groupsHidden = member !== null && !member.groupsVisible;
 
   useEffect(() => {
     if (!session) {
@@ -131,8 +139,15 @@ export const CampusOrganizationSettings: React.FC = () => {
               value={t(profile.roles.securityRole)}
             />
           )}
-          {profile?.cohort && (
+          {/* Masqués par l'organisation, ni groupes ni cohorte. */}
+          {profile?.cohort && !groupsHidden && (
             <Row label={t("campus.account.cohort")} value={profile.cohort} />
+          )}
+          {groupLabels.length > 0 && (
+            <Row
+              label={t("campus.account.groups")}
+              value={groupLabels.join(", ")}
+            />
           )}
           <Row
             label={t("campus.organization.connection")}

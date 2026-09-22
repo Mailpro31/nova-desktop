@@ -361,12 +361,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const stylesOpen = useCapability("writingStyles");
   const promptsOpen = useCapability("prompts");
   const historyOpen = useCapability("history");
+  // Nova Commands et AI Skills : fermés quand l'organisation ferme la capacité
+  // correspondante. Le serveur refusait déjà de les exécuter ; les laisser dans
+  // la barre promettait une fonction qui ne répondait plus.
+  const commandsOpen = useCapability("commands");
+  const aiSkillsOpen = useCapability("aiSkills");
   const visible = (id: SidebarSection) =>
     (id !== "learn" || learningOpen) &&
     (id !== "notes" || !organizationMode || notesOpen) &&
     (id !== "postprocessing" || !organizationMode || stylesOpen) &&
     (id !== "prompts" || !organizationMode || promptsOpen) &&
-    (id !== "history" || !organizationMode || historyOpen);
+    (id !== "history" || !organizationMode || historyOpen) &&
+    (id !== "aiskills" || !organizationMode || commandsOpen) &&
+    (id !== "aiskilltools" || !organizationMode || aiSkillsOpen);
 
   if (organizationMode) {
     return (

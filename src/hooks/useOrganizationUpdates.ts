@@ -142,7 +142,7 @@ export function useOrganizationUpdates(): void {
       lastChanges.current = changes;
       if (reload.length === 0) return;
 
-      if (reload.includes("policy")) {
+      if (reload.includes("policy") || reload.includes("profile")) {
         // Capacités, catégories et durée maximale de dictée : la configuration
         // est relue, et `/api/me` transmet la limite au moteur de dictée.
         await refreshCampusContext().catch(() => {});

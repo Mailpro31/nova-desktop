@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "只有在 IT 團隊尚未為你設定 Nova 時，才需要輸入此位址。"
+        "serverHelp": "只有在 IT 團隊尚未為你設定 Nova 時，才需要輸入此位址。",
+        "discoveryLabel": "您的組織電子郵件",
+        "discoveryPlaceholder": "first.last@organization.com",
+        "discoveryHelp": "Nova 透過您電子郵件的網域找到您的組織。您不需要輸入伺服器位址。",
+        "discoveryAction": "繼續",
+        "discoveryBusy": "正在尋找您的組織…",
+        "advanced": "進階選項",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "請輸入完整的電子郵件位址，例如 name@organization.com。",
+          "DNS_UNAVAILABLE": "無法檢查您組織的網域。請檢查網路連線後再試一次。",
+          "RECORD_NOT_FOUND": "這個網域尚未發布 Nova 位址。請詢問 IT 部門，或在進階選項中輸入伺服器位址。",
+          "ENDPOINT_INVALID": "這個網域發布的位址無法使用。請讓 IT 部門檢查。",
+          "ENDPOINT_OUTSIDE_DOMAIN": "這個網域發布的位址指向別處。Nova 不會在那裡登入。",
+          "SERVER_UNREACHABLE": "您組織的伺服器沒有回應。請稍後再試一次。",
+          "DOMAIN_NOT_SERVED": "這台伺服器不服務這個電子郵件網域。請詢問 IT 部門。"
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "IT 管理員"
       },
       "cohort": "年級",
+      "groups": "您的群組",
       "logout": "登出",
       "logoutConfirmTitle": "要登出 Nova Campus 嗎？",
       "logoutConfirmDescription": "登出後需要重新登入才能使用 Nova Campus。確定嗎？",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "組織存取已暫停",
-      "description": "Nova 會繼續在此電腦上以 Personal 模式運作，並保留您的歷史記錄。請聯絡管理員。",
-      "restored": "組織存取已恢復"
+      "description": "在您的組織恢復存取權之前，Nova 在此電腦上已被鎖定。請聯絡您的管理員。",
+      "restored": "組織存取已恢復",
+      "screenTitle": "您的存取權已被暫停",
+      "screenDescription": "您的組織已暫停您對 Nova 的存取權。請聯絡管理員以恢復。",
+      "screenDescriptionNamed": "{{organization}} 已暫停您對 Nova 的存取權。請聯絡管理員以恢復。",
+      "nothingDeleted": "沒有刪除任何內容。存取權恢復後，Nova 會重新開啟。",
+      "checkAgain": "重新檢查"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "無法儲存這個風格。",
       "delete": "無法刪除這個風格。"
     },
-    "organizationManaged": "這些風格由您的組織發布，無法在此編輯。"
+    "organizationManaged": "這些風格由您的組織發布，無法在此編輯。",
+    "disabledByOrganization": "已由你的組織停用",
+    "disabledByOrganizationHint": "Nova 會為你的聽寫使用其他風格。"
   },
   "history": {
     "subtitle": "你用 Nova 語音輸入的全部內容。",

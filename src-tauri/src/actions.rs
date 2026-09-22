@@ -227,6 +227,20 @@ fn build_runtime_system_prompt(
     )
 }
 
+/// La langue de la dictée, rappelée au modèle quand elle est nette. Sans elle,
+/// le petit modèle local rendait « écris-moi un poème sur la mer » en anglais :
+/// le contrat, lui, est rédigé en anglais.
+fn with_language_hint(system_prompt: String, transcription: &str) -> String {
+    match crate::rewrite::guard::language_hint(transcription) {
+        Some(hint) => system_prompt.replacen(
+            "\nPrompt-Version:",
+            &format!("\n{hint}\nPrompt-Version:"),
+            1,
+        ),
+        None => system_prompt,
+    }
+}
+
 /// Delimit the untrusted transcript explicitly in the user message. This makes
 /// questions and imperative sentences visibly part of the document to rewrite
 /// instead of looking like instructions addressed to the model.
@@ -798,7 +812,22 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
     if output_len > input_len.saturating_mul(6).saturating_add(160) {
         return Err("output-expanded-excessively");
     }
-    Ok(())
+    // Langue changée, dictée remplacée par autre chose, nombre réécrit : ce que
+    // le prompt ne garantit pas, ces contrôles le vérifient.
+    crate::rewrite::guard::check(input, output, style_id)
+}
+
+/// La reformulation rendue par le serveur de l'organisation, soumise aux mêmes
+/// contrôles qu'un moteur local. Le serveur en fait déjà, mais un serveur plus
+/// ancien, ou un modèle qui les déjoue, ne doit pas pouvoir coller un texte
+/// vide, traduit ou sans rapport à la place de la dictée.
+fn checked_campus_rewrite(
+    transcription: &str,
+    reformulated: &str,
+    style_id: &str,
+) -> Result<String, &'static str> {
+    let cleaned = clean_llm_output(reformulated);
+    validate_rewrite(transcription, &cleaned, style_id).map(|()| cleaned)
 }
 
 fn accept_rewrite(
@@ -1106,6 +1135,9 @@ pub(crate) fn resolve_effective_style(
         Some(id) => id.to_string(),
         None => settings.post_process_selected_prompt_id.clone()?,
     };
+    // Un Style désactivé par l'organisation ne s'applique pas, qu'il ait été
+    // choisi ou désigné par le Style automatique.
+    let selected_prompt_id = crate::style_policy::permitted(&selected_prompt_id)?;
 
     effective_style(&settings, &selected_prompt_id, license_key)
 }
@@ -1214,6 +1246,12 @@ async fn post_process_with_provider(
                 return None;
             }
         },
+    };
+    // Un Style désactivé par l'organisation ne s'applique pas : repli sur un
+    // Style intégré encore autorisé, ou dictée brute s'il n'en reste aucun.
+    let Some(selected_prompt_id) = crate::style_policy::permitted(&selected_prompt_id) else {
+        debug!("Post-processing skipped because every fallback Style is disabled");
+        return None;
     };
 
     let prompt = match resolve_style_prompt(&settings, &selected_prompt_id) {
@@ -1343,13 +1381,16 @@ async fn post_process_with_provider(
     if provider.supports_structured_output {
         debug!("Using structured outputs for provider '{}'", provider.id);
 
-        let system_prompt = build_runtime_system_prompt(
-            &provider.id,
-            &model,
-            &effective_style_id,
-            &prompt,
-            &settings.custom_variables,
-            false,
+        let system_prompt = with_language_hint(
+            build_runtime_system_prompt(
+                &provider.id,
+                &model,
+                &effective_style_id,
+                &prompt,
+                &settings.custom_variables,
+                false,
+            ),
+            transcription,
         );
         let user_content = build_transcript_message(transcription, context.as_deref());
 
@@ -1485,13 +1526,16 @@ async fn post_process_with_provider(
 
     // Même sans JSON Schema, garder les instructions dans un message système
     // stable permet à llama-server de réutiliser le cache KV entre deux dictées.
-    let system_prompt = build_runtime_system_prompt(
-        &provider.id,
-        &model,
-        &effective_style_id,
-        &prompt,
-        &settings.custom_variables,
-        false,
+    let system_prompt = with_language_hint(
+        build_runtime_system_prompt(
+            &provider.id,
+            &model,
+            &effective_style_id,
+            &prompt,
+            &settings.custom_variables,
+            false,
+        ),
+        transcription,
     );
     debug!("System prompt length: {} chars", system_prompt.len());
 
@@ -1552,13 +1596,16 @@ async fn post_process_with_provider(
     // conversationnelle au premier passage. Une unique seconde tentative avec
     // un contrat renforcé corrige ce cas sans boucle ni coût cloud caché.
     if provider.id == crate::local_llm::PROVIDER_ID {
-        let retry_prompt = build_runtime_system_prompt(
-            &provider.id,
-            &model,
-            &effective_style_id,
-            &prompt,
-            &settings.custom_variables,
-            true,
+        let retry_prompt = with_language_hint(
+            build_runtime_system_prompt(
+                &provider.id,
+                &model,
+                &effective_style_id,
+                &prompt,
+                &settings.custom_variables,
+                true,
+            ),
+            transcription,
         );
         debug!("Retrying local rewrite once with reinforced prompt");
         let retry_started = Instant::now();
@@ -1864,6 +1911,12 @@ impl ShortcutAction for TranscribeAction {
             let _ = app.emit(campus::CAMPUS_SIGN_IN_REQUIRED_EVENT, ());
             return;
         }
+        // Suspendu par l'organisation : plus aucune dictée, pas même locale.
+        if crate::licensing::dictation_blocked_by_suspension() {
+            warn!("Dictation refused: the organization suspended this member");
+            let _ = app.emit(campus::CAMPUS_ACCESS_SUSPENDED_EVENT, ());
+            return;
+        }
         crate::input::remember_text_target();
 
         // Load model in the background
@@ -2059,7 +2112,8 @@ impl ShortcutAction for TranscribeAction {
         // `start` a refusé la dictée faute de connexion : rien n'a été
         // enregistré, rien n'est à montrer ni à transcrire. Un enregistrement
         // ouvert avant la perte de session, lui, se termine normalement.
-        if crate::licensing::dictation_requires_organization_sign_in()
+        if (crate::licensing::dictation_requires_organization_sign_in()
+            || crate::licensing::dictation_blocked_by_suspension())
             && !app.state::<Arc<AudioRecordingManager>>().is_recording()
         {
             return;
@@ -2256,7 +2310,22 @@ impl ShortcutAction for TranscribeAction {
                                             )
                                             .await
                                             {
-                                                Ok(reformulated) => Ok(reformulated),
+                                                Ok(reformulated) => match checked_campus_rewrite(
+                                                    &text,
+                                                    &reformulated,
+                                                    &style.id,
+                                                ) {
+                                                    Ok(checked) => Ok(checked),
+                                                    Err(reason) => {
+                                                        warn!(
+                                                            "Rejected unsafe rewrite from the organization server ({})",
+                                                            reason
+                                                        );
+                                                        let _ = ah
+                                                            .emit("post-process-rejected", reason);
+                                                        Ok(text)
+                                                    }
+                                                },
                                                 Err(e) => {
                                                     campus_error = Some(e);
                                                     Ok(text)
@@ -2611,10 +2680,11 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 mod tests {
     use super::{
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
-        clean_llm_output, complete_unless_cancelled, context_looks_like_current_draft,
-        custom_variables_block, effective_style, is_blank_transcription, local_primary_timeout,
-        protect_custom_variables, protect_lexicon, replace_keyword_ci, resolve_variable_tokens,
-        restore_lexicon, should_use_streaming_overlay, temperature_for_style, validate_rewrite,
+        checked_campus_rewrite, clean_llm_output, complete_unless_cancelled,
+        context_looks_like_current_draft, custom_variables_block, effective_style,
+        is_blank_transcription, local_primary_timeout, protect_custom_variables, protect_lexicon,
+        replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
+        temperature_for_style, validate_rewrite, with_language_hint,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -3092,6 +3162,85 @@ mod tests {
             ),
             Err("addressee-changed")
         );
+    }
+
+    // Sorties réelles du modèle local, banc d'essai du 2026-09-21.
+    #[test]
+    fn semantic_guard_rejects_a_translated_or_replaced_dictation() {
+        assert_eq!(
+            validate_rewrite(
+                "écris-moi un poème sur la mer",
+                "Write me a poem about the sea.",
+                "default_improve_transcriptions"
+            ),
+            Err("language-changed")
+        );
+        assert_eq!(
+            validate_rewrite("merci", "Thank you.", "nova_style_voice_to_text"),
+            Err("dictation-not-kept")
+        );
+        assert_eq!(
+            validate_rewrite(
+                "Budget : 76 300 €, 60 000 €.",
+                "Budget: 76,300 €, 60,000 €.",
+                "nova_style_email"
+            ),
+            Err("number-format-changed")
+        );
+    }
+
+    #[test]
+    fn a_campus_rewrite_is_checked_like_a_local_one() {
+        // Le serveur a répondu au lieu de reformuler.
+        assert_eq!(
+            checked_campus_rewrite(
+                "je veux que l'IA m'explique la portance d'une aile en trois paragraphes simples",
+                "L'air qui passe sur l'aile crée une différence de pression. Cette force est appelée la portance.",
+                "nova_style_messages"
+            ),
+            Err("dictation-not-kept")
+        );
+        // Une réponse vide ne doit jamais remplacer la dictée.
+        assert_eq!(
+            checked_campus_rewrite("merci de venir", "   ", "nova_style_email"),
+            Err("empty-output")
+        );
+        // L'IBAN a disparu de la liste.
+        assert_eq!(
+            checked_campus_rewrite(
+                "voici mon IBAN FR76 3000 6000 0112 merci de faire le virement avant vendredi",
+                "- Faire le virement avant vendredi",
+                "nova_style_todo"
+            ),
+            Err("explicit-number-lost")
+        );
+        // Une bonne reformulation passe, nettoyée comme une sortie locale.
+        assert_eq!(
+            checked_campus_rewrite(
+                "on se retrouve mardi non pardon mercredi à 14 heures en salle B204",
+                "« On se retrouve mercredi à 14 heures en salle B204. »",
+                "nova_style_email"
+            )
+            .as_deref(),
+            Ok("On se retrouve mercredi à 14 heures en salle B204.")
+        );
+    }
+
+    #[test]
+    fn the_prompt_names_the_dictated_language_when_it_is_clear() {
+        let base =
+            build_runtime_system_prompt("nova_local", "aura", "nova_style_email", "", &[], false);
+        let hinted = with_language_hint(
+            base.clone(),
+            "on se retrouve mercredi dans la salle de cours",
+        );
+        assert!(hinted.contains("The transcript is in French: write the result in French."));
+        assert!(hinted.ends_with(&format!(
+            "Prompt-Version: {}",
+            crate::rewrite::prompt::PROMPT_VERSION
+        )));
+        // Trop court pour juger : le prompt reste celui d'avant.
+        assert_eq!(with_language_hint(base.clone(), "merci"), base);
     }
 
     #[test]

@@ -924,7 +924,22 @@
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
-        "serverHelp": "Gib diese Adresse nur ein, wenn deine IT Nova nicht bereits für dich eingerichtet hat."
+        "serverHelp": "Gib diese Adresse nur ein, wenn deine IT Nova nicht bereits für dich eingerichtet hat.",
+        "discoveryLabel": "Ihre Organisations-E-Mail",
+        "discoveryPlaceholder": "name@organisation.de",
+        "discoveryHelp": "Nova findet Ihre Organisation anhand der Domain Ihrer Adresse. Sie geben nie eine Serveradresse ein.",
+        "discoveryAction": "Weiter",
+        "discoveryBusy": "Ihre Organisation wird gesucht…",
+        "advanced": "Erweiterte Optionen",
+        "discoveryErrors": {
+          "EMAIL_INVALID": "Geben Sie eine vollständige E-Mail-Adresse ein, zum Beispiel name@organisation.de.",
+          "DNS_UNAVAILABLE": "Die Domain Ihrer Organisation konnte nicht geprüft werden. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+          "RECORD_NOT_FOUND": "Diese Domain veröffentlicht noch keine Nova-Adresse. Fragen Sie Ihre IT-Abteilung, oder geben Sie die Serveradresse unter den erweiterten Optionen ein.",
+          "ENDPOINT_INVALID": "Die für diese Domain veröffentlichte Adresse ist nicht verwendbar. Bitten Sie Ihre IT-Abteilung, sie zu prüfen.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "Die für diese Domain veröffentlichte Adresse führt woandershin. Nova meldet Sie dort nicht an.",
+          "SERVER_UNREACHABLE": "Der Server Ihrer Organisation hat nicht geantwortet. Versuchen Sie es gleich noch einmal.",
+          "DOMAIN_NOT_SERVED": "Dieser Server bedient diese E-Mail-Domain nicht. Fragen Sie Ihre IT-Abteilung."
+        }
       },
       "code": {
         "title": "Verification code",
@@ -961,6 +976,7 @@
         "it_admin": "IT-Administrator"
       },
       "cohort": "Jahrgang",
+      "groups": "Ihre Gruppen",
       "logout": "Abmelden",
       "logoutConfirmTitle": "Von Nova Campus abmelden?",
       "logoutConfirmDescription": "Du musst dich erneut anmelden, um Nova Campus zu verwenden. Bist du sicher?",
@@ -1147,8 +1163,13 @@
     },
     "suspended": {
       "title": "Zugang zur Organisation gesperrt",
-      "description": "Nova funktioniert auf diesem Computer weiter in Personal, mit Ihrem Verlauf. Wenden Sie sich an Ihre Administration.",
-      "restored": "Zugang zur Organisation wiederhergestellt"
+      "description": "Nova ist auf diesem Computer gesperrt, bis Ihre Organisation Ihren Zugang wiederherstellt. Wenden Sie sich an Ihren Administrator.",
+      "restored": "Zugang zur Organisation wiederhergestellt",
+      "screenTitle": "Ihr Zugang wurde gesperrt",
+      "screenDescription": "Ihre Organisation hat Ihren Zugang zu Nova gesperrt. Wenden Sie sich an Ihren Administrator, um ihn wiederherzustellen.",
+      "screenDescriptionNamed": "{{organization}} hat Ihren Zugang zu Nova gesperrt. Wenden Sie sich an Ihren Administrator, um ihn wiederherzustellen.",
+      "nothingDeleted": "Es wurde nichts gelöscht. Nova öffnet sich wieder, sobald Ihr Zugang wiederhergestellt ist.",
+      "checkAgain": "Erneut prüfen"
     }
   },
   "aiSkills": {
@@ -1304,7 +1325,9 @@
       "save": "Der Stil konnte nicht gespeichert werden.",
       "delete": "Der Stil konnte nicht gelöscht werden."
     },
-    "organizationManaged": "Diese Stile werden von Ihrer Organisation veröffentlicht. Sie können hier nicht bearbeitet werden."
+    "organizationManaged": "Diese Stile werden von Ihrer Organisation veröffentlicht. Sie können hier nicht bearbeitet werden.",
+    "disabledByOrganization": "Von Ihrer Organisation deaktiviert",
+    "disabledByOrganizationHint": "Nova verwendet für Ihre Diktate einen anderen Stil."
   },
   "history": {
     "subtitle": "Alles, was Sie mit Nova diktiert haben.",
