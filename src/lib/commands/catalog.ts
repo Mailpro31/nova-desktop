@@ -106,8 +106,12 @@ export const NOVA_COMMAND_SKILLS: NovaCommandSkill[] = [
     descriptionKey: "novaCommands.skill.explain.description",
     icon: MessageCircleQuestion,
     showsOriginal: false,
+    // « Explain clearly » suffisait à un gros modèle ; un modèle de quelques
+    // milliards de paramètres se contentait de reformuler le texte. Dire ce
+    // qu'une explication contient — l'idée, puis les termes techniques — et
+    // qu'une paraphrase n'en est pas une le fait vraiment expliquer.
     instruction: () =>
-      "Explain the following text clearly and concisely. Answer in the same language as the text. Return only the explanation.",
+      "Explain what the following text means to someone who is not a specialist: give its main idea in plain words, then define each technical term it uses. Do not simply rephrase it. Answer in the same language as the text. Return only the explanation.",
   },
   {
     ...COMMON,
@@ -116,8 +120,10 @@ export const NOVA_COMMAND_SKILLS: NovaCommandSkill[] = [
     descriptionKey: "novaCommands.skill.summarize.description",
     icon: ListCollapse,
     showsOriginal: false,
+    // Sans longueur visée, le « résumé » d'un cours de 831 caractères en
+    // faisait 752 : une paraphrase. Au plus un tiers, et il en fait 338.
     instruction: () =>
-      "Summarize the following text. Answer in the same language as the text. Return only the summary.",
+      "Summarize the following text in a few short sentences, at most a third of its length, keeping only the essential points. Answer in the same language as the text. Return only the summary.",
   },
   {
     ...COMMON,
