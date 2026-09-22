@@ -166,6 +166,7 @@ pub async fn format_structured_notes_locally(
             None,
             reasoning_effort,
             reasoning,
+            crate::llm_client::OutputBudget::Report,
         )
         .await
         {
