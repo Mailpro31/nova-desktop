@@ -225,9 +225,14 @@ jobs:
       # exports the same VULKAN_SDK and PATH the ggml-vulkan build reads.
       - name: Install Vulkan SDK (Windows x64)
         if: contains(inputs.platform, 'windows') && !contains(inputs.target, 'aarch64')
+        # `destination` keeps the SDK where the previous action put it. The
+        # cached CMake configuration of transcribe-cpp-sys stores the absolute
+        # Vulkan include path, so installing to the default C:\VulkanSDK would
+        # make every cached build fail on a path that no longer exists.
         uses: jakoch/install-vulkan-sdk-action@v1.6.0
         with:
           vulkan_version: 1.4.309.0
+          destination: ${{ github.workspace }}/VULKAN_SDK
           cache: true
 
       - name: Cache trusted-signing-cli

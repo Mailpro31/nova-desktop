@@ -84,6 +84,7 @@ jobs:
         uses: jakoch/install-vulkan-sdk-action@v1.6.0
         with:
           vulkan_version: 1.4.309.0
+          destination: ${{ github.workspace }}/VULKAN_SDK
           cache: true
 
       - name: Installer les dependances frontend
