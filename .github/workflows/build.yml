@@ -217,11 +217,17 @@ jobs:
       # x86_64 only — Windows-on-ARM links transcribe-cpp statically CPU-only
       # (no `vulkan` feature; see src-tauri/Cargo.toml), so ggml-vulkan is never
       # built there and no Vulkan SDK, headers, or glslc are needed.
+      # Same action as the Ubuntu ARM64 step below. The one used before
+      # (humbletim/install-vulkan-sdk@v1.2) has had no release since its v1.2
+      # tag and pins actions/cache@v4 internally, so the Windows installer
+      # would stop building the day GitHub retires that version, with no
+      # upstream fix to wait for. This one is maintained, runs on node24, and
+      # exports the same VULKAN_SDK and PATH the ggml-vulkan build reads.
       - name: Install Vulkan SDK (Windows x64)
         if: contains(inputs.platform, 'windows') && !contains(inputs.target, 'aarch64')
-        uses: humbletim/install-vulkan-sdk@v1.2
+        uses: jakoch/install-vulkan-sdk-action@v1.6.0
         with:
-          version: 1.4.309.0
+          vulkan_version: 1.4.309.0
           cache: true
 
       - name: Cache trusted-signing-cli
