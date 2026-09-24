@@ -177,7 +177,10 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
-          key: ${{ inputs.platform }}-${{ inputs.target }}
+          # `vulkan2` : le cache garde la configuration CMake de
+          # transcribe-cpp-sys, qui fige le chemin absolu du SDK Vulkan. Changer
+          # d'installeur change ce chemin, donc le cache doit repartir de zero.
+          key: ${{ inputs.platform }}-${{ inputs.target }}-vulkan2
 
       - name: install dependencies (ubuntu 24.04 x64)
         if: contains(inputs.platform, 'ubuntu-24.04') && !contains(inputs.platform, 'arm')

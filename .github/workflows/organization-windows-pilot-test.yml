@@ -76,7 +76,7 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
-          key: organization-pilot-windows-x86_64
+          key: organization-pilot-windows-x86_64-vulkan2
 
       # Meme action que build.yml : celle d'avant n'est plus maintenue et
       # epinglait actions/cache@v4 en interne.
