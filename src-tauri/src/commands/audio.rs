@@ -143,7 +143,7 @@ pub fn open_microphone_privacy_settings() -> Result<(), String> {
             .creation_flags(CREATE_NO_WINDOW)
             .spawn()
             .map_err(|e| format!("Failed to open Windows microphone privacy settings: {}", e))?;
-        return Ok(());
+        Ok(())
     }
 
     #[cfg(not(target_os = "windows"))]
