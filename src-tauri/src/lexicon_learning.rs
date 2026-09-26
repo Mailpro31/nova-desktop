@@ -184,33 +184,39 @@ mod tests {
 
     #[test]
     fn pending_requires_threshold() {
-        let mut s = AppSettings::default();
-        s.lexicon_candidates = vec![
-            candidate("Marseille", PROMOTE_THRESHOLD, false),
-            candidate("Lyon", PROMOTE_THRESHOLD - 1, false),
-        ];
+        let s = AppSettings {
+            lexicon_candidates: vec![
+                candidate("Marseille", PROMOTE_THRESHOLD, false),
+                candidate("Lyon", PROMOTE_THRESHOLD - 1, false),
+            ],
+            ..Default::default()
+        };
         let pending = pending_suggestions(&s);
         assert_eq!(pending, vec!["Marseille".to_string()]);
     }
 
     #[test]
     fn pending_excludes_dismissed_and_existing() {
-        let mut s = AppSettings::default();
-        s.custom_words = vec!["Berlin".to_string()];
-        s.lexicon_candidates = vec![
-            candidate("Berlin", PROMOTE_THRESHOLD + 2, false), // déjà dans le lexique
-            candidate("Nantes", PROMOTE_THRESHOLD, true),      // refusé
-            candidate("Toulouse", PROMOTE_THRESHOLD, false),   // valide
-        ];
+        let s = AppSettings {
+            custom_words: vec!["Berlin".to_string()],
+            lexicon_candidates: vec![
+                candidate("Berlin", PROMOTE_THRESHOLD + 2, false), // déjà dans le lexique
+                candidate("Nantes", PROMOTE_THRESHOLD, true),      // refusé
+                candidate("Toulouse", PROMOTE_THRESHOLD, false),   // valide
+            ],
+            ..Default::default()
+        };
         let pending = pending_suggestions(&s);
         assert_eq!(pending, vec!["Toulouse".to_string()]);
     }
 
     #[test]
     fn pending_empty_when_learning_disabled() {
-        let mut s = AppSettings::default();
-        s.lexicon_learning_enabled = false;
-        s.lexicon_candidates = vec![candidate("Marseille", PROMOTE_THRESHOLD, false)];
+        let s = AppSettings {
+            lexicon_learning_enabled: false,
+            lexicon_candidates: vec![candidate("Marseille", PROMOTE_THRESHOLD, false)],
+            ..Default::default()
+        };
         assert!(pending_suggestions(&s).is_empty());
     }
 

@@ -215,7 +215,12 @@ pub async fn fetch_and_store_free_token(app: &AppHandle) {
     let settings = get_settings(app);
     // Déjà un jeton, ou une licence (inutile, le jeton NOVA1 prime) → rien à faire.
     if !settings.free_token.trim().is_empty()
-        || settings.license_key.as_deref().unwrap_or("").trim().len() > 0
+        || !settings
+            .license_key
+            .as_deref()
+            .unwrap_or("")
+            .trim()
+            .is_empty()
     {
         return;
     }

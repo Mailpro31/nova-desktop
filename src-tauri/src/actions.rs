@@ -598,7 +598,7 @@ fn protect_lexicon(text: &str, terms: &[String]) -> (String, Vec<(String, String
     }
     // Les plus longs d'abord (en caractères) : évite qu'un terme court n'ampute
     // un terme englobant.
-    uniq.sort_by(|a, b| b.chars().count().cmp(&a.chars().count()));
+    uniq.sort_by_key(|term| std::cmp::Reverse(term.chars().count()));
 
     let mut out = text.to_string();
     let mut restores: Vec<(String, String)> = Vec::new();
@@ -1310,7 +1310,7 @@ async fn post_process_with_provider(
         return None;
     };
 
-    let prompt = match resolve_style_prompt(&settings, &selected_prompt_id) {
+    let prompt = match resolve_style_prompt(settings, &selected_prompt_id) {
         Some(prompt) => prompt,
         None => {
             debug!(

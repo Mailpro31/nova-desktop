@@ -250,7 +250,7 @@ mod tests {
         // push suivant sans décaler l'horloge ni perdre d'échantillons.
         let mut seg = UtteranceSegmenter::new(test_config());
         // 15 échantillons parlés : 1 fenêtre complète (10) + 5 en reliquat.
-        assert!(seg.push(&vec![1.0; 15]).is_empty());
+        assert!(seg.push(&[1.0; 15]).is_empty());
         // 5 échantillons parlés (complète la 2e fenêtre) puis silence pour clore.
         let mut rest = vec![1.0; 5];
         rest.extend(windows(0.0, 3, 10));
