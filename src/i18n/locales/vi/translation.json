@@ -903,7 +903,7 @@
     "refresh": "Làm mới",
     "newMeeting": "Cuộc họp mới"
   },
-  "campus": {
+  "organization": {
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
@@ -1417,7 +1417,7 @@
     "error": "Không thể chạy AI Skill này.",
     "signedOut": "Đăng nhập để dùng AI Skills."
   },
-  "campusConnection": {
+  "organizationConnection": {
     "title": "Tổ chức",
     "description": "Kết nối Nova với tổ chức của bạn để dùng nội dung và cài đặt mà tổ chức cung cấp.",
     "connect": "Kết nối tổ chức",

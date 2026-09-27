@@ -78,7 +78,7 @@ export const CampusDictionarySection: React.FC = () => {
       toast.success(t("settings.advanced.customWords.add"));
     } catch (err) {
       console.error("Failed to add dictionary entry:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     } finally {
       setAdding(false);
@@ -95,7 +95,7 @@ export const CampusDictionarySection: React.FC = () => {
       await loadVocabulary();
     } catch (err) {
       console.error("Failed to delete dictionary entry:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     }
   };
@@ -117,7 +117,7 @@ export const CampusDictionarySection: React.FC = () => {
       document.body.removeChild(link);
     } catch (err) {
       console.error("Failed to export dictionary:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     }
   };
@@ -137,11 +137,11 @@ export const CampusDictionarySection: React.FC = () => {
       const res = await api.importDictionary(text);
       await loadVocabulary();
       toast.success(
-        t("campus.dictionary.importSuccess", { count: res.imported }),
+        t("organization.dictionary.importSuccess", { count: res.imported }),
       );
     } catch (err) {
       console.error("Failed to import dictionary:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -179,14 +179,16 @@ export const CampusDictionarySection: React.FC = () => {
       setAnalyzeText("");
       if (res.terms_added > 0) {
         toast.success(
-          t("campus.dictionary.analyzeSuccess", { count: res.terms_added }),
+          t("organization.dictionary.analyzeSuccess", {
+            count: res.terms_added,
+          }),
         );
       } else {
-        toast.info(t("campus.dictionary.analyzeEmpty"));
+        toast.info(t("organization.dictionary.analyzeEmpty"));
       }
     } catch (err) {
       console.error("Failed to analyze document:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     } finally {
       setAnalyzing(false);
@@ -212,7 +214,7 @@ export const CampusDictionarySection: React.FC = () => {
             className="inline-flex items-center gap-1.5"
           >
             <Upload size={14} />
-            {t("campus.dictionary.importCsv")}
+            {t("organization.dictionary.importCsv")}
           </Button>
 
           <Button
@@ -222,7 +224,7 @@ export const CampusDictionarySection: React.FC = () => {
             className="inline-flex items-center gap-1.5"
           >
             <Download size={14} />
-            {t("campus.dictionary.exportCsv")}
+            {t("organization.dictionary.exportCsv")}
           </Button>
         </div>
 
@@ -234,7 +236,7 @@ export const CampusDictionarySection: React.FC = () => {
             className="inline-flex items-center gap-1.5 text-accent"
           >
             <FileSearch size={14} />
-            {t("campus.dictionary.analyzeDoc")}
+            {t("organization.dictionary.analyzeDoc")}
           </Button>
 
           <Button
@@ -242,8 +244,8 @@ export const CampusDictionarySection: React.FC = () => {
             size="sm"
             onClick={loadVocabulary}
             disabled={loading}
-            aria-label={t("campus.account.refresh")}
-            title={t("campus.account.refresh")}
+            aria-label={t("organization.account.refresh")}
+            title={t("organization.account.refresh")}
           >
             <RefreshCw
               size={14}
@@ -265,17 +267,17 @@ export const CampusDictionarySection: React.FC = () => {
               id="campus-document-analysis-title"
               className="text-sm font-semibold text-text"
             >
-              {t("campus.dictionary.analyzeDocTitle")}
+              {t("organization.dictionary.analyzeDocTitle")}
             </h4>
           </div>
           <p className="text-xs text-text-secondary leading-relaxed">
-            {t("campus.dictionary.analyzeDocDescription")}
+            {t("organization.dictionary.analyzeDocDescription")}
           </p>
 
           <Textarea
             value={analyzeText}
             onChange={(e) => setAnalyzeText(e.target.value)}
-            placeholder={t("campus.dictionary.analyzeDocPlaceholder")}
+            placeholder={t("organization.dictionary.analyzeDocPlaceholder")}
             rows={4}
             aria-labelledby="campus-document-analysis-title"
             className="w-full p-2.5 font-mono text-xs"
@@ -295,7 +297,7 @@ export const CampusDictionarySection: React.FC = () => {
               onClick={() => docFileInputRef.current?.click()}
               className="text-xs"
             >
-              {t("campus.files.dropzone")}
+              {t("organization.files.dropzone")}
             </Button>
 
             <div className="flex items-center gap-2">
@@ -320,12 +322,12 @@ export const CampusDictionarySection: React.FC = () => {
                       className="animate-spin motion-reduce:animate-none"
                       aria-hidden="true"
                     />
-                    {t("campus.dictionary.analyzing")}
+                    {t("organization.dictionary.analyzing")}
                   </>
                 ) : (
                   <>
                     <Sparkles size={14} />
-                    {t("campus.dictionary.analyzeDocButton")}
+                    {t("organization.dictionary.analyzeDocButton")}
                   </>
                 )}
               </Button>
@@ -339,19 +341,19 @@ export const CampusDictionarySection: React.FC = () => {
         <div className="flex items-center gap-2">
           <Building size={16} className="text-text-secondary" />
           <h3 className="text-sm font-semibold text-text">
-            {t("campus.dictionary.sharedTitle")}
+            {t("organization.dictionary.sharedTitle")}
           </h3>
           <span className="rounded-full bg-inset px-2 py-0.5 text-[11px] font-medium text-text-secondary">
-            {t("campus.dictionary.sharedBadge")}
+            {t("organization.dictionary.sharedBadge")}
           </span>
         </div>
         <p className="text-xs text-text-secondary">
-          {t("campus.dictionary.sharedDescription")}
+          {t("organization.dictionary.sharedDescription")}
         </p>
 
         {shared.length === 0 ? (
           <p className="py-2 text-xs text-text-secondary">
-            {t("campus.dictionary.sharedEmpty")}
+            {t("organization.dictionary.sharedEmpty")}
           </p>
         ) : (
           <div className="flex flex-wrap gap-2 pt-1">
@@ -380,11 +382,11 @@ export const CampusDictionarySection: React.FC = () => {
         <div className="flex items-center gap-2">
           <User size={16} className="text-text-secondary" />
           <h3 className="text-sm font-semibold text-text">
-            {t("campus.dictionary.personalTitle")}
+            {t("organization.dictionary.personalTitle")}
           </h3>
         </div>
         <p className="text-xs text-text-secondary">
-          {t("campus.dictionary.personalDescription")}
+          {t("organization.dictionary.personalDescription")}
         </p>
 
         {/* Add personal term form */}
@@ -393,26 +395,26 @@ export const CampusDictionarySection: React.FC = () => {
             className="block space-y-1.5 text-xs font-medium text-text"
             htmlFor="campus-dictionary-term"
           >
-            {t("campus.dictionary.termLabel")}
+            {t("organization.dictionary.termLabel")}
             <Input
               id="campus-dictionary-term"
               type="text"
               value={newTerm}
               onChange={(e) => setNewTerm(e.target.value)}
-              placeholder={t("campus.dictionary.termPlaceholder")}
+              placeholder={t("organization.dictionary.termPlaceholder")}
             />
           </label>
           <label
             className="block space-y-1.5 text-xs font-medium text-text"
             htmlFor="campus-dictionary-replacement"
           >
-            {t("campus.dictionary.replacementLabel")}
+            {t("organization.dictionary.replacementLabel")}
             <Input
               id="campus-dictionary-replacement"
               type="text"
               value={newReplacement}
               onChange={(e) => setNewReplacement(e.target.value)}
-              placeholder={t("campus.dictionary.replacementPlaceholder")}
+              placeholder={t("organization.dictionary.replacementPlaceholder")}
             />
           </label>
           <Button
@@ -423,14 +425,14 @@ export const CampusDictionarySection: React.FC = () => {
             className="sm:col-start-2 sm:justify-self-end"
           >
             <Plus size={16} />
-            {t("campus.dictionary.addTerm")}
+            {t("organization.dictionary.addTerm")}
           </Button>
         </form>
 
         {/* Personal terms list */}
         {personal.length === 0 ? (
           <p className="py-2 text-xs text-text-secondary">
-            {t("campus.dictionary.personalEmpty")}
+            {t("organization.dictionary.personalEmpty")}
           </p>
         ) : (
           <div className="divide-y divide-hairline border-y border-hairline">
@@ -450,8 +452,8 @@ export const CampusDictionarySection: React.FC = () => {
                       }`}
                     >
                       {isLearned
-                        ? t("campus.dictionary.learnedBadge")
-                        : t("campus.dictionary.manualBadge")}
+                        ? t("organization.dictionary.learnedBadge")
+                        : t("organization.dictionary.manualBadge")}
                     </span>
                     <span className="text-sm font-medium text-text truncate">
                       {item.term}

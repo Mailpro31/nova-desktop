@@ -903,7 +903,7 @@
     "refresh": "רענון",
     "newMeeting": "פגישה חדשה"
   },
-  "campus": {
+  "organization": {
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
@@ -1417,7 +1417,7 @@
     "error": "לא ניתן להפעיל את ה-AI Skill הזה.",
     "signedOut": "היכנסו כדי להשתמש ב-AI Skills."
   },
-  "campusConnection": {
+  "organizationConnection": {
     "title": "ארגון",
     "description": "חברו את Nova לארגון שלכם כדי להשתמש בתוכן ובהגדרות שהוא מספק.",
     "connect": "חיבור ארגון",

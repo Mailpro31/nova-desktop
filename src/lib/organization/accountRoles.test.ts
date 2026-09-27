@@ -15,11 +15,11 @@ import { accountRoleLabels } from "./accountRoles";
 describe("rôles affichés sur la page Organisation", () => {
   test("le métier est traduit, jamais affiché tel que le serveur l'écrit", () => {
     expect(accountRoleLabels({ role: "student" })).toEqual({
-      memberType: "campus.roles.student",
+      memberType: "organization.roles.student",
       securityRole: null,
     });
     expect(accountRoleLabels({ role: "Teacher " }).memberType).toBe(
-      "campus.roles.teacher",
+      "organization.roles.teacher",
     );
   });
 
@@ -35,15 +35,15 @@ describe("rôles affichés sur la page Organisation", () => {
         membership: { security_role: "organization_admin" },
       }),
     ).toEqual({
-      memberType: "campus.roles.student",
-      securityRole: "campus.account.securityRoles.organization_admin",
+      memberType: "organization.roles.student",
+      securityRole: "organization.account.securityRoles.organization_admin",
     });
     expect(
       accountRoleLabels({
         role: "staff",
         membership: { security_role: "it_admin" },
       }).securityRole,
-    ).toBe("campus.account.securityRoles.it_admin");
+    ).toBe("organization.account.securityRoles.it_admin");
   });
 
   test("un simple membre n'a pas de ligne d'administration", () => {
@@ -65,7 +65,7 @@ describe("rôles affichés sur la page Organisation", () => {
           accountRoleLabels({ role: "", membership: { security_role } })
             .securityRole,
       ),
-      "campus.account.access",
+      "organization.account.access",
     ];
     const locales = readdirSync("src/i18n/locales");
     expect(locales).toHaveLength(22);

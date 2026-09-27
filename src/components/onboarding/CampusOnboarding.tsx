@@ -562,11 +562,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           message.includes("injoignable") ||
           caught.status === 0
         ) {
-          return t("campus.onboarding.errors.network");
+          return t("organization.onboarding.errors.network");
         }
         return caught.message;
       }
-      return t("campus.onboarding.errors.network");
+      return t("organization.onboarding.errors.network");
     },
     [t],
   );
@@ -616,7 +616,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       setServerProvisioned(true);
       setStep("connection");
     } catch {
-      setError(t("campus.onboarding.lab.error"));
+      setError(t("organization.onboarding.lab.error"));
     } finally {
       setIsLoading(false);
     }
@@ -629,7 +629,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     try {
       await api.requestAuth(email.trim(), machineName);
       setCooldown(60);
-      toast.success(t("campus.onboarding.code.resent"));
+      toast.success(t("organization.onboarding.code.resent"));
     } catch (caught) {
       setError(formatError(caught));
     } finally {
@@ -734,7 +734,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         }
         if (result.status === "expired") {
           setMicrosoftFlow(null);
-          setError(t("campus.microsoft.expired"));
+          setError(t("organization.microsoft.expired"));
           return;
         }
         const retrySeconds = result.retry_after ?? microsoftFlow.interval;
@@ -770,7 +770,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       let message = formatError(caught);
       if (caught instanceof CampusApiError) {
         if (caught.status === 400) {
-          message = t("campus.onboarding.code.invalid");
+          message = t("organization.onboarding.code.invalid");
         } else if (caught.status === 403) {
           message = t(wordingKey("codeForbidden", announcedOrganizationType));
         }
@@ -824,7 +824,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         >
           {isLoading
             ? t("common.loading")
-            : t("campus.sso.connect", { provider: provider.display_name })}
+            : t("organization.sso.connect", {
+                provider: provider.display_name,
+              })}
         </Button>
       ))}
       {microsoftFlow && (
@@ -833,7 +835,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           role="status"
         >
           <p className="text-sm text-text-secondary">
-            {t("campus.microsoft.browserHelp")}
+            {t("organization.microsoft.browserHelp")}
           </p>
           <p className="font-mono text-lg font-semibold tracking-[0.12em] text-text">
             {microsoftFlow.user_code}
@@ -903,17 +905,17 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         <div className="max-w-[480px] space-y-3 text-center">
           <p className="text-xs font-medium tracking-wide text-text-secondary">
             {education
-              ? t("campus.onboarding.label")
+              ? t("organization.onboarding.label")
               : t("organizationOnboarding.label")}
           </p>
           <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.025em] text-text">
             {education
-              ? t("campus.onboarding.welcome.title")
+              ? t("organization.onboarding.welcome.title")
               : t("organizationOnboarding.title")}
           </h1>
           <p className="text-sm leading-relaxed text-text-secondary">
             {education
-              ? t("campus.onboarding.welcome.subtitle")
+              ? t("organization.onboarding.welcome.subtitle")
               : t("organizationOnboarding.subtitle")}
           </p>
           {organizationName && (
@@ -935,7 +937,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                   htmlFor="campus-discovery-email"
                   className="block text-sm font-medium text-text"
                 >
-                  {t("campus.onboarding.email.discoveryLabel")}
+                  {t("organization.onboarding.email.discoveryLabel")}
                 </label>
                 <Input
                   id="campus-discovery-email"
@@ -949,11 +951,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                     setError(null);
                   }}
                   placeholder={t(
-                    "campus.onboarding.email.discoveryPlaceholder",
+                    "organization.onboarding.email.discoveryPlaceholder",
                   )}
                 />
                 <p className="text-xs text-text-secondary">
-                  {t("campus.onboarding.email.discoveryHelp")}
+                  {t("organization.onboarding.email.discoveryHelp")}
                 </p>
               </div>
               <Button
@@ -962,15 +964,15 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 disabled={!looksLikeEmail(discoveryEmail) || discovering}
               >
                 {discovering
-                  ? t("campus.onboarding.email.discoveryBusy")
-                  : t("campus.onboarding.email.discoveryAction")}
+                  ? t("organization.onboarding.email.discoveryBusy")
+                  : t("organization.onboarding.email.discoveryAction")}
               </Button>
               <button
                 type="button"
                 className="w-full text-xs text-text-secondary underline-offset-2 hover:underline"
                 onClick={() => setShowServerField(true)}
               >
-                {t("campus.onboarding.email.advanced")}
+                {t("organization.onboarding.email.advanced")}
               </button>
             </form>
           )}
@@ -982,7 +984,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 className="block text-sm font-medium text-text"
               >
                 {education
-                  ? t("campus.onboarding.email.serverLabel")
+                  ? t("organization.onboarding.email.serverLabel")
                   : t("organizationOnboarding.server")}
               </label>
               <Input
@@ -998,12 +1000,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                 }}
                 placeholder={
                   education
-                    ? t("campus.onboarding.email.serverPlaceholder")
+                    ? t("organization.onboarding.email.serverPlaceholder")
                     : t("organizationOnboarding.serverPlaceholder")
                 }
               />
               <p className="text-xs text-text-secondary">
-                {t("campus.onboarding.email.serverHelp")}
+                {t("organization.onboarding.email.serverHelp")}
               </p>
             </div>
           )}
@@ -1024,7 +1026,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                   className="block text-sm font-medium text-text"
                 >
                   {education
-                    ? t("campus.onboarding.email.emailLabel")
+                    ? t("organization.onboarding.email.emailLabel")
                     : business
                       ? t("organizationOnboarding.email")
                       : t("organizationOnboarding.organizationEmail")}
@@ -1043,7 +1045,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
                   }}
                   placeholder={
                     education
-                      ? t("campus.onboarding.email.emailPlaceholder")
+                      ? t("organization.onboarding.email.emailPlaceholder")
                       : t("organizationOnboarding.emailPlaceholder")
                   }
                 />
@@ -1073,7 +1075,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             // d'invitation porte l'adresse et l'empreinte du serveur.
             onClick={() => setStep("lab")}
           >
-            {t("campus.onboarding.lab.open")}
+            {t("organization.onboarding.lab.open")}
           </Button>
         )}
 
@@ -1084,7 +1086,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           signInButtons.length === 0 && (
             <p className="text-sm text-danger" role="alert">
               {education
-                ? t("campus.onboarding.errors.authMethodUnavailable")
+                ? t("organization.onboarding.errors.authMethodUnavailable")
                 : t("organizationOnboarding.errors.authMethodUnavailable")}
             </p>
           )}
@@ -1095,7 +1097,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         ) : (
           serverUnreachable && (
             <p className="text-sm text-danger" role="alert">
-              {t("campus.onboarding.errors.network")}
+              {t("organization.onboarding.errors.network")}
             </p>
           )
         )}
@@ -1121,13 +1123,15 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   if (step === "lab") {
     return (
       <OnboardingStepShell
-        title={t("campus.onboarding.lab.title")}
-        subtitle={t("campus.onboarding.lab.subtitle")}
+        title={t("organization.onboarding.lab.title")}
+        subtitle={t("organization.onboarding.lab.subtitle")}
         stepIndex={0}
         stepCount={3}
         onContinue={() => void handleLabEnrollment()}
         continueLabel={
-          isLoading ? t("common.loading") : t("campus.onboarding.lab.join")
+          isLoading
+            ? t("common.loading")
+            : t("organization.onboarding.lab.join")
         }
         continueDisabled={!labCode.trim() || isLoading}
       >
@@ -1136,7 +1140,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             htmlFor="lab-invitation"
             className="text-sm font-medium text-text"
           >
-            {t("campus.onboarding.lab.codeLabel")}
+            {t("organization.onboarding.lab.codeLabel")}
           </label>
           <Input
             id="lab-invitation"
@@ -1150,7 +1154,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             placeholder="NOVA-LAB1-…"
           />
           <p className="text-xs leading-relaxed text-text-secondary">
-            {t("campus.onboarding.lab.securityNote")}
+            {t("organization.onboarding.lab.securityNote")}
           </p>
           {error && (
             <p className="text-center text-sm text-danger" role="alert">
@@ -1165,8 +1169,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   if (step === "code") {
     return (
       <OnboardingStepShell
-        title={t("campus.onboarding.code.title")}
-        subtitle={t("campus.onboarding.code.subtitle", {
+        title={t("organization.onboarding.code.title")}
+        subtitle={t("organization.onboarding.code.subtitle", {
           email: maskCampusEmail(email),
         })}
         stepIndex={1}
@@ -1179,8 +1183,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         onSkip={cooldown > 0 ? undefined : () => void handleResendCode()}
         skipLabel={
           cooldown > 0
-            ? t("campus.onboarding.code.resendCooldown", { seconds: cooldown })
-            : t("campus.onboarding.code.resend")
+            ? t("organization.onboarding.code.resendCooldown", {
+                seconds: cooldown,
+              })
+            : t("organization.onboarding.code.resend")
         }
       >
         <div className="space-y-6">
@@ -1194,7 +1200,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
             }}
             onComplete={() => void handleVerifyCode()}
             digitLabel={(position) =>
-              t("campus.onboarding.code.digitLabel", { position })
+              t("organization.onboarding.code.digitLabel", { position })
             }
           />
           {error && (
@@ -1211,18 +1217,18 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const organizationName = organization.shortName ?? organization.name;
   return (
     <OnboardingStepShell
-      title={t("campus.onboarding.ready.title", {
+      title={t("organization.onboarding.ready.title", {
         organization: organizationName,
       })}
       subtitle={
         education
-          ? t("campus.onboarding.ready.subtitle")
+          ? t("organization.onboarding.ready.subtitle")
           : t("organizationOnboarding.readySubtitle")
       }
       stepIndex={2}
       stepCount={3}
       onContinue={onComplete}
-      continueLabel={t("campus.onboarding.ready.start")}
+      continueLabel={t("organization.onboarding.ready.start")}
     >
       <div className="space-y-5 py-2">
         <div className="flex justify-center">
@@ -1233,7 +1239,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         <dl className="divide-y divide-hairline border-y border-hairline text-sm">
           <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
-              {t("campus.onboarding.ready.organization")}
+              {t("organization.onboarding.ready.organization")}
             </dt>
             <dd className="font-medium text-text">
               {campusOrganizationLabel(organization)}
@@ -1241,17 +1247,17 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           </div>
           <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
-              {t("campus.onboarding.ready.account")}
+              {t("organization.onboarding.ready.account")}
             </dt>
             <dd className="font-medium text-text">{maskCampusEmail(email)}</dd>
           </div>
           <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
-              {t("campus.onboarding.ready.processing")}
+              {t("organization.onboarding.ready.processing")}
             </dt>
             <dd className="font-medium text-text">
               {education
-                ? t("campus.onboarding.ready.campusInfrastructure")
+                ? t("organization.onboarding.ready.campusInfrastructure")
                 : t("organizationOnboarding.processing")}
             </dd>
           </div>

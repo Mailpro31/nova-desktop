@@ -156,7 +156,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
               aria-hidden="true"
             />
             <span className="flex-1 text-sm text-text">
-              {t("campus.files.actionButton")}
+              {t("organization.files.actionButton")}
             </span>
             <ChevronRight
               size={15}
@@ -232,7 +232,7 @@ const HeroAction: React.FC<{
             {organizationSuspended
               ? // Suspendu, rien n'est en panne : nommer un serveur « hors
                 // ligne » enverrait chercher un problème réseau qui n'existe pas.
-                t("campus.suspended.title")
+                t("organization.suspended.title")
               : t("home.hero.campusLocal.detail", {
                   server:
                     serverName ?? t("home.hero.campusLocal.unknownServer"),

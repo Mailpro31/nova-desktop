@@ -95,10 +95,10 @@ export function useOrganizationUpdates(): void {
 
     const announce = (changes: OrganizationChange[]) => {
       const what = changes
-        .map((c) => t(`campus.updates.${c}`))
-        .join(t("campus.updates.separator"));
-      showAttentionToast("info", t("campus.updates.title"), {
-        description: t("campus.updates.description", { what }),
+        .map((c) => t(`organization.updates.${c}`))
+        .join(t("organization.updates.separator"));
+      showAttentionToast("info", t("organization.updates.title"), {
+        description: t("organization.updates.description", { what }),
       });
     };
 

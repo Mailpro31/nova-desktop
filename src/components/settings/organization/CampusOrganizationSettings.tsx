@@ -105,58 +105,64 @@ export const CampusOrganizationSettings: React.FC = () => {
         title={
           organization?.authoritative
             ? organization.name
-            : t("campus.organization.title")
+            : t("organization.organization.title")
         }
         description={word("organizationSubtitle")}
       />
 
       <section aria-labelledby="campus-identity">
         <SectionTitle id="campus-identity">
-          {t("campus.organization.identityTitle")}
+          {t("organization.organization.identityTitle")}
         </SectionTitle>
         <dl>
           {organization && !organization.authoritative && (
             <Row
-              label={t("campus.account.server")}
+              label={t("organization.account.server")}
               value={serverName ?? organization.name}
             />
           )}
           {session && (
-            <Row label={t("campus.account.email")} value={session.email} />
+            <Row
+              label={t("organization.account.email")}
+              value={session.email}
+            />
           )}
           {/* Rôle et cohorte n'existent que si le serveur les renseigne :
               beaucoup de comptes n'en ont pas. Le métier est traduit, et un
               administrateur de l'organisation est présenté comme tel. */}
           {profile?.roles.memberType && (
             <Row
-              label={t("campus.account.role")}
+              label={t("organization.account.role")}
               value={t(profile.roles.memberType)}
             />
           )}
           {profile?.roles.securityRole && (
             <Row
-              label={t("campus.account.access")}
+              label={t("organization.account.access")}
               value={t(profile.roles.securityRole)}
             />
           )}
           {/* Masqués par l'organisation, ni groupes ni cohorte. */}
           {profile?.cohort && !groupsHidden && (
-            <Row label={t("campus.account.cohort")} value={profile.cohort} />
+            <Row
+              label={t("organization.account.cohort")}
+              value={profile.cohort}
+            />
           )}
           {groupLabels.length > 0 && (
             <Row
-              label={t("campus.account.groups")}
+              label={t("organization.account.groups")}
               value={groupLabels.join(", ")}
             />
           )}
           <Row
-            label={t("campus.organization.connection")}
+            label={t("organization.organization.connection")}
             value={
               connection === "connected"
                 ? word("statusConnected")
                 : connection === "local"
-                  ? t("campus.status.localActive")
-                  : t("campus.account.checking")
+                  ? t("organization.status.localActive")
+                  : t("organization.account.checking")
             }
           />
         </dl>
@@ -197,15 +203,17 @@ export const CampusOrganizationSettings: React.FC = () => {
           surprise le jour où le serveur tombe. */}
       <section className="mt-[32px]" aria-labelledby="campus-offline">
         <SectionTitle id="campus-offline">
-          {t("campus.offline.title")}
+          {t("organization.offline.title")}
         </SectionTitle>
         <p className="text-sm leading-relaxed text-text-secondary">
-          {t("campus.offline.body")}
+          {t("organization.offline.body")}
         </p>
       </section>
 
       <section className="mt-[32px]" aria-labelledby="campus-data">
-        <SectionTitle id="campus-data">{t("campus.data.title")}</SectionTitle>
+        <SectionTitle id="campus-data">
+          {t("organization.data.title")}
+        </SectionTitle>
         <dl>
           {DATA_ROWS.map((row) => (
             <Row
@@ -213,7 +221,7 @@ export const CampusOrganizationSettings: React.FC = () => {
               label={t(row.labelKey)}
               value={
                 row.location === "device"
-                  ? t("campus.data.onDevice")
+                  ? t("organization.data.onDevice")
                   : word("dataOnServer")
               }
             />
@@ -235,7 +243,7 @@ export const CampusOrganizationSettings: React.FC = () => {
               size="sm"
               onClick={() => setConfirmLogout(true)}
             >
-              {t("campus.account.logout")}
+              {t("organization.account.logout")}
             </Button>
           </div>
         </section>
@@ -259,7 +267,7 @@ export const CampusOrganizationSettings: React.FC = () => {
               {t("common.cancel")}
             </Button>
             <Button variant="danger" size="sm" onClick={() => void logout()}>
-              {t("campus.account.logoutConfirmButton")}
+              {t("organization.account.logoutConfirmButton")}
             </Button>
           </div>
         }

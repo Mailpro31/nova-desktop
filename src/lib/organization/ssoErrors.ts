@@ -45,23 +45,23 @@ export function formatSsoError(
     case "AuthCancelled":
       return null;
     case "AuthTimeout":
-      return t("campus.microsoft.expired");
+      return t("organization.microsoft.expired");
     case "NetworkError":
-      return t("campus.onboarding.errors.network");
+      return t("organization.onboarding.errors.network");
     case "AlreadyInProgress":
     case "StateMismatch":
     case "LoopbackUnavailable":
-      return t("campus.microsoft.failed");
+      return t("organization.microsoft.failed");
     case "Server": {
       if (NOT_IN_ORGANIZATION.has(error.detail)) {
         return t(wordingKey("notInOrganization", organizationType));
       }
       if (ACCESS_REVOKED.has(error.detail)) {
-        return t("campus.microsoft.accessRevoked");
+        return t("organization.microsoft.accessRevoked");
       }
-      return t("campus.microsoft.failed");
+      return t("organization.microsoft.failed");
     }
     default:
-      return t("campus.microsoft.failed");
+      return t("organization.microsoft.failed");
   }
 }

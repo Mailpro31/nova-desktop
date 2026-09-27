@@ -51,10 +51,10 @@ export const CampusSnippetsSection: React.FC = () => {
       setTrigger("");
       setContent("");
       await loadSnippets();
-      toast.success(t("campus.snippets.add"));
+      toast.success(t("organization.snippets.add"));
     } catch (err) {
       console.error("Failed to add snippet:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     } finally {
       setAdding(false);
@@ -71,7 +71,7 @@ export const CampusSnippetsSection: React.FC = () => {
       await loadSnippets();
     } catch (err) {
       console.error("Failed to delete snippet:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     }
   };
@@ -82,7 +82,7 @@ export const CampusSnippetsSection: React.FC = () => {
       <div className="flex items-start gap-2.5 border-s-2 border-accent bg-accent/5 px-3 py-2.5">
         <Lightbulb size={16} className="text-accent shrink-0 mt-0.5" />
         <p className="text-xs text-text-secondary leading-relaxed">
-          {t("campus.snippets.tip", { trigger: "mon lien visio" })}
+          {t("organization.snippets.tip", { trigger: "mon lien visio" })}
         </p>
       </div>
 
@@ -94,14 +94,14 @@ export const CampusSnippetsSection: React.FC = () => {
               htmlFor="campus-snippet-trigger"
               className="mb-1.5 block text-xs font-medium text-text"
             >
-              {t("campus.snippets.triggerLabel")}
+              {t("organization.snippets.triggerLabel")}
             </label>
             <Input
               type="text"
               id="campus-snippet-trigger"
               value={trigger}
               onChange={(e) => setTrigger(e.target.value)}
-              placeholder={t("campus.snippets.triggerPlaceholder")}
+              placeholder={t("organization.snippets.triggerPlaceholder")}
               className="text-sm"
             />
           </div>
@@ -110,14 +110,14 @@ export const CampusSnippetsSection: React.FC = () => {
               htmlFor="campus-snippet-content"
               className="mb-1.5 block text-xs font-medium text-text"
             >
-              {t("campus.snippets.contentLabel")}
+              {t("organization.snippets.contentLabel")}
             </label>
             <Input
               type="text"
               id="campus-snippet-content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder={t("campus.snippets.contentPlaceholder")}
+              placeholder={t("organization.snippets.contentPlaceholder")}
               className="text-sm"
             />
           </div>
@@ -132,7 +132,7 @@ export const CampusSnippetsSection: React.FC = () => {
             className="inline-flex items-center gap-1.5"
           >
             <Plus size={14} />
-            {t("campus.snippets.add")}
+            {t("organization.snippets.add")}
           </Button>
         </div>
       </form>
@@ -141,15 +141,15 @@ export const CampusSnippetsSection: React.FC = () => {
       <div className="space-y-2 pt-2 border-t border-hairline">
         <div className="flex items-center justify-between">
           <h4 className="text-xs font-medium text-text-secondary">
-            {t("campus.snippets.title")} ({snippets.length})
+            {t("organization.snippets.title")} ({snippets.length})
           </h4>
           <Button
             variant="secondary"
             size="sm"
             onClick={loadSnippets}
             disabled={loading}
-            aria-label={t("campus.account.refresh")}
-            title={t("campus.account.refresh")}
+            aria-label={t("organization.account.refresh")}
+            title={t("organization.account.refresh")}
             className="h-9 w-9 p-0"
           >
             <RefreshCw
@@ -164,7 +164,7 @@ export const CampusSnippetsSection: React.FC = () => {
 
         {snippets.length === 0 ? (
           <p className="py-2 text-xs text-text-secondary">
-            {t("campus.snippets.empty")}
+            {t("organization.snippets.empty")}
           </p>
         ) : (
           <div className="divide-y divide-hairline border-y border-hairline">

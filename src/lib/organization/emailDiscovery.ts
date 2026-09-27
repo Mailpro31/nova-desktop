@@ -24,7 +24,7 @@ export function emailDiscoveryErrorKey(
   // Un code inconnu — poste plus ancien que son serveur, ou l'inverse — reçoit
   // le message le plus général plutôt qu'une clé de traduction manquante.
   const resolved = known.includes(screaming) ? screaming : "DNS_UNAVAILABLE";
-  return `campus.onboarding.email.discoveryErrors.${resolved}`;
+  return `organization.onboarding.email.discoveryErrors.${resolved}`;
 }
 
 /** Une adresse complète, seule condition pour tenter la découverte. */

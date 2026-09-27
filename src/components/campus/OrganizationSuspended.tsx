@@ -37,17 +37,17 @@ export const OrganizationSuspended: React.FC = () => {
       </div>
       <div className="max-w-[480px] w-full flex flex-col items-center gap-2 text-center">
         <h1 className="text-[26px] font-semibold tracking-[-0.015em] leading-tight">
-          {t("campus.suspended.screenTitle")}
+          {t("organization.suspended.screenTitle")}
         </h1>
         <p className="text-sm text-text-secondary leading-relaxed">
           {organizationName
-            ? t("campus.suspended.screenDescriptionNamed", {
+            ? t("organization.suspended.screenDescriptionNamed", {
                 organization: organizationName,
               })
-            : t("campus.suspended.screenDescription")}
+            : t("organization.suspended.screenDescription")}
         </p>
         <p className="text-xs text-text-secondary leading-relaxed">
-          {t("campus.suspended.nothingDeleted")}
+          {t("organization.suspended.nothingDeleted")}
         </p>
       </div>
       <Button
@@ -55,7 +55,7 @@ export const OrganizationSuspended: React.FC = () => {
         onClick={() => void checkAgain()}
         disabled={checking}
       >
-        {t("campus.suspended.checkAgain")}
+        {t("organization.suspended.checkAgain")}
       </Button>
     </div>
   );

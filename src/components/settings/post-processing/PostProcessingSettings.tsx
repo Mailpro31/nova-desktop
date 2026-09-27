@@ -207,8 +207,8 @@ export const PostProcessingSettings: React.FC = () => {
     // contraignait la colonne deux fois.
     <>
       <PageHeader
-        title={t("campus.styles.title")}
-        description={t("campus.styles.subtitle")}
+        title={t("organization.styles.title")}
+        description={t("organization.styles.subtitle")}
       />
 
       {/* Le choix du Style vient en premier : c'est la question que l'écran

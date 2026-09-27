@@ -347,7 +347,7 @@ function App() {
       clearCampusSession()
         .then(() => {
           refreshCampusStatus();
-          showAttentionToast("error", t("campus.sessionExpiredTitle"), {
+          showAttentionToast("error", t("organization.sessionExpiredTitle"), {
             description,
           });
         })
@@ -365,9 +365,9 @@ function App() {
   // dédupliquée (id fixe) et auto-masquée — pas de badge d'attention.
   useEffect(() => {
     const unlisten = listen("campus-server-unreachable", () => {
-      toast.warning(t("campus.serverUnreachableTitle"), {
+      toast.warning(t("organization.serverUnreachableTitle"), {
         id: "campus-server-unreachable",
-        description: t("campus.serverUnreachable"),
+        description: t("organization.serverUnreachable"),
         duration: 4000,
       });
     });

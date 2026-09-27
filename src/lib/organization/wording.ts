@@ -22,66 +22,76 @@ import type { OrganizationType } from "./model";
  * sait rien.
  */
 
-/** Chaque texte concerné : la clé Campus, et sa clé neutre. */
+/**
+ * Chaque texte concerné : la clé au vocabulaire d'établissement, et sa clé
+ * neutre.
+ *
+ * Le nommage reste bâtard depuis que l'espace `campus.*` s'appelle
+ * `organization.*` : la variante éducation vit sous `organization.*` et la
+ * variante neutre sous `organizationWording.*`. L'état correct est l'inverse
+ * — le neutre par défaut dans `organization.*`, l'éducation en exception
+ * déclarée — mais l'intervertir change quel texte s'affiche par défaut, donc
+ * cela ne se fait pas dans un renommage mécanique.
+ */
 export const ORGANIZATION_WORDING = {
   sessionExpired: {
-    education: "campus.sessionExpired",
+    education: "organization.sessionExpired",
     organization: "organizationWording.sessionExpired",
   },
   logoutConfirmTitle: {
-    education: "campus.account.logoutConfirmTitle",
+    education: "organization.account.logoutConfirmTitle",
     organization: "organizationWording.logoutConfirmTitle",
   },
   logoutConfirmDescription: {
-    education: "campus.account.logoutConfirmDescription",
+    education: "organization.account.logoutConfirmDescription",
     organization: "organizationWording.logoutConfirmDescription",
   },
   aboutSubtitle: {
-    education: "campus.settings.aboutSubtitle",
+    education: "organization.settings.aboutSubtitle",
     organization: "organizationWording.aboutSubtitle",
   },
   personalizationDescription: {
-    education: "campus.personalization.description",
+    education: "organization.personalization.description",
     organization: "organizationWording.personalizationDescription",
   },
   organizationSubtitle: {
-    education: "campus.organization.subtitle",
+    education: "organization.organization.subtitle",
     organization: "organizationWording.organizationSubtitle",
   },
   statusConnected: {
-    education: "campus.status.connected",
+    education: "organization.status.connected",
     organization: "organizationWording.statusConnected",
   },
   providesTitle: {
-    education: "campus.provides.title",
+    education: "organization.provides.title",
     organization: "organizationWording.providesTitle",
   },
   providesPaused: {
-    education: "campus.provides.paused",
+    education: "organization.provides.paused",
     organization: "organizationWording.providesPaused",
   },
   transcriptionDescription: {
-    education: "campus.provides.transcription.description",
+    education: "organization.provides.transcription.description",
     organization: "organizationWording.transcriptionDescription",
   },
   rewritingDescription: {
-    education: "campus.provides.rewriting.description",
+    education: "organization.provides.rewriting.description",
     organization: "organizationWording.rewritingDescription",
   },
   vocabularyDescription: {
-    education: "campus.provides.vocabulary.description",
+    education: "organization.provides.vocabulary.description",
     organization: "organizationWording.vocabularyDescription",
   },
   formattingDescription: {
-    education: "campus.provides.formatting.description",
+    education: "organization.provides.formatting.description",
     organization: "organizationWording.formattingDescription",
   },
   dataOnServer: {
-    education: "campus.data.onCampus",
+    education: "organization.data.onCampus",
     organization: "organizationWording.dataOnServer",
   },
   dataNote: {
-    education: "campus.data.note",
+    education: "organization.data.note",
     organization: "organizationWording.dataNote",
   },
   aiSkillsPrivacyOffline: {
@@ -89,11 +99,11 @@ export const ORGANIZATION_WORDING = {
     organization: "organizationWording.aiSkillsPrivacyOffline",
   },
   notInOrganization: {
-    education: "campus.microsoft.notInOrganization",
+    education: "organization.microsoft.notInOrganization",
     organization: "organizationWording.notInOrganization",
   },
   codeForbidden: {
-    education: "campus.onboarding.code.forbidden",
+    education: "organization.onboarding.code.forbidden",
     organization: "organizationWording.codeForbidden",
   },
 } as const;

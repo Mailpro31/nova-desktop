@@ -66,10 +66,10 @@ export const CampusFileTranscribeModal: React.FC<
       // Copy to clipboard
       await writeText(text).catch(() => {});
 
-      toast.success(t("campus.files.copiedToClipboard"));
+      toast.success(t("organization.files.copiedToClipboard"));
     } catch (err) {
       console.error("File transcription failed:", err);
-      const message = campusErrorText(err, t("campus.files.error"));
+      const message = campusErrorText(err, t("organization.files.error"));
       if (message) toast.error(message);
     } finally {
       setTranscribing(false);
@@ -109,10 +109,10 @@ export const CampusFileTranscribeModal: React.FC<
                 className="animate-spin motion-reduce:animate-none"
                 aria-hidden="true"
               />
-              {t("campus.files.transcribing")}
+              {t("organization.files.transcribing")}
             </>
           ) : (
-            t("campus.files.actionButton")
+            t("organization.files.actionButton")
           )}
         </Button>
       )}
@@ -126,7 +126,7 @@ export const CampusFileTranscribeModal: React.FC<
             setResultText(null);
           }}
         >
-          {t("campus.files.title")}
+          {t("organization.files.title")}
         </Button>
       )}
     </>
@@ -138,8 +138,8 @@ export const CampusFileTranscribeModal: React.FC<
       onOpenChange={(open) => {
         if (!open && !transcribing) onClose();
       }}
-      title={t("campus.files.title")}
-      description={t("campus.files.description")}
+      title={t("organization.files.title")}
+      description={t("organization.files.description")}
       closeLabel={t("common.close")}
       dismissible={!transcribing}
       contentFades={false}
@@ -184,12 +184,12 @@ export const CampusFileTranscribeModal: React.FC<
                 className={`mb-3 ${isDragOver ? "text-accent" : "text-text-secondary"}`}
               />
               <p className="text-sm font-medium text-text">
-                {file ? file.name : t("campus.files.dropzone")}
+                {file ? file.name : t("organization.files.dropzone")}
               </p>
               <p className="mt-1 text-xs text-text-secondary">
                 {file
                   ? `${(file.size / (1024 * 1024)).toFixed(2)} Mo`
-                  : t("campus.files.supportedFormats")}
+                  : t("organization.files.supportedFormats")}
               </p>
             </label>
           </>
@@ -200,7 +200,7 @@ export const CampusFileTranscribeModal: React.FC<
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-xs font-medium text-success">
                 <Check size={14} aria-hidden="true" />
-                {t("campus.files.copiedToClipboard")}
+                {t("organization.files.copiedToClipboard")}
               </span>
               <Button variant="secondary" size="sm" onClick={handleCopyAgain}>
                 {copied ? (

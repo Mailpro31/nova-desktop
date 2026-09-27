@@ -172,6 +172,6 @@ describe("textes", () => {
   });
 
   test("les anciens textes « Notes d'ingénierie » ont disparu", () => {
-    expect(value("en", "campus.engineeringNotes.title")).toBeUndefined();
+    expect(value("en", "organization.engineeringNotes.title")).toBeUndefined();
   });
 });

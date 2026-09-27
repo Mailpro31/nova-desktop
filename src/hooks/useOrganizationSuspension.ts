@@ -42,11 +42,11 @@ export function useOrganizationSuspension(): boolean {
     const unsubscribe = useCampusStore.subscribe((state, previous) => {
       if (state.suspended === previous.suspended) return;
       if (state.suspended) {
-        showAttentionToast("warning", t("campus.suspended.title"), {
-          description: t("campus.suspended.description"),
+        showAttentionToast("warning", t("organization.suspended.title"), {
+          description: t("organization.suspended.description"),
         });
       } else {
-        showAttentionToast("info", t("campus.suspended.restored"));
+        showAttentionToast("info", t("organization.suspended.restored"));
       }
     });
 

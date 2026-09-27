@@ -903,7 +903,7 @@
     "refresh": "Yenile",
     "newMeeting": "Yeni toplantı"
   },
-  "campus": {
+  "organization": {
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
@@ -1417,7 +1417,7 @@
     "error": "Bu AI Skill çalıştırılamadı.",
     "signedOut": "AI Skills kullanmak için oturum açın."
   },
-  "campusConnection": {
+  "organizationConnection": {
     "title": "Kuruluş",
     "description": "Kuruluşunuzun sağladığı içerik ve ayarları kullanmak için Nova'yı bağlayın.",
     "connect": "Kuruluşu bağla",
