@@ -21,7 +21,7 @@ import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
 import { useCampusStatus } from "../hooks/useCampusStatus";
 import { useOrganization } from "../hooks/useOrganization";
-import { isCampusMode, isOrganizationMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
 import { useCapability } from "../hooks/useOrganizationContext";
 
 const HomeSettings = lazy(() =>
@@ -156,12 +156,13 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: BookOpen,
     component: AiSkillsSettings,
-    // Éducation uniquement, et c'est bien `isCampusMode()` ici : le catalogue
-    // intégré que cet écran présente est une piste fournie par l'établissement.
-    // Une entreprise n'en a pas — elle a des AI Skills exécutables, qui sont
-    // l'entrée suivante. Décision Business conservée telle quelle : le
-    // renommage en « Nova Commands » a corrigé le libellé, pas le périmètre.
-    enabled: () => isCampusMode(),
+    // Toute organisation. Le catalogue que cet écran présente n'est pas fourni
+    // par un établissement : ce sont `NOVA_COMMAND_SKILLS` et `ASK_NOVA`,
+    // intégrés à l'application, le même code pour tout le monde. Réserver
+    // l'entrée à l'éducation laissait une entreprise avec des commandes qui
+    // fonctionnent et aucun écran pour les documenter. Ce qui la ferme est la
+    // capacité `commands`, que l'organisation gouverne.
+    enabled: () => isOrganizationMode(),
   },
   aiskilltools: {
     // Les vraies actions IA, exécutables. Distinctes de l'apprentissage :
