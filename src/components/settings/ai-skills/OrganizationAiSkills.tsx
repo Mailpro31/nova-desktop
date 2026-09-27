@@ -5,8 +5,8 @@ import { toast } from "sonner";
 
 import { Button, PageHeader, Textarea } from "@/components/ui";
 import { CampusApi, type OrganizationSkillEntry } from "@/lib/campusApi";
-import { isCampusMode } from "@/lib/mode";
 import { loadCampusSession } from "@/lib/campusSession";
+import { useCapability } from "@/hooks/useOrganizationContext";
 import { useCampusStore } from "@/stores/campusStore";
 
 /**
@@ -38,6 +38,10 @@ import { useCampusStore } from "@/stores/campusStore";
 export const OrganizationAiSkills: React.FC = () => {
   const { t } = useTranslation();
   const skills = useCampusStore((state) => state.organizationCatalog?.skills);
+  // L'entrée Nova Commands existe-t-elle sur ce poste ? C'est la capacité qui
+  // répond, jamais la nature de l'organisation : une entreprise dont la
+  // capacité est ouverte y trouve les mêmes actions intégrées qu'une école.
+  const commandsOpen = useCapability("commands");
   const organizationSkills: OrganizationSkillEntry[] = skills ?? [];
 
   return (
@@ -59,7 +63,7 @@ export const OrganizationAiSkills: React.FC = () => {
             n'y en a pas encore plutôt que d'afficher des modules
             d'apprentissage en les faisant passer pour des outils. */}
         <p className="px-2 py-2 text-sm text-text-secondary">
-          {isCampusMode()
+          {commandsOpen
             ? t("aiSkillTools.builtinInCommands")
             : t("aiSkillTools.noBuiltin")}
         </p>

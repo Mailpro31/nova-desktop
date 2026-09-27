@@ -218,14 +218,25 @@ describe("Organization navigation", () => {
     );
   });
 
-  test("the learning track stays education-only", () => {
-    // Une entreprise n'a pas de programme pédagogique : cette entrée reste la
-    // seule destination de la barre à interroger `isCampusMode()`.
+  test("Nova Commands belongs to every organization too", () => {
+    // Décision révisée. L'entrée était réservée à l'éducation au motif que son
+    // catalogue serait fourni par l'établissement. Ce n'en est pas un :
+    // l'écran liste `NOVA_COMMAND_SKILLS` et `ASK_NOVA`, intégrés à
+    // l'application. Une entreprise avait donc les commandes qui fonctionnent
+    // et aucun écran pour les documenter.
     const source = code(SIDEBAR).replace(/\s+/g, " ");
     expect(source).toContain(
-      "component: AiSkillsSettings, enabled: () => isCampusMode(),",
+      "component: AiSkillsSettings, enabled: () => isOrganizationMode(),",
     );
-    expect(source.match(/isCampusMode\(\)/g)).toHaveLength(1);
+  });
+
+  test("the sidebar no longer asks what kind of organization this is", () => {
+    // Un seul mode organisation : la barre latérale ne consulte plus la nature
+    // du tenant, ni pour une entrée, ni pour un libellé. Ce qui ferme une
+    // destination est la capacité que l'organisation gouverne.
+    const source = code(SIDEBAR);
+    expect(source).not.toContain("isCampusMode");
+    expect(source).not.toContain("isBusinessMode");
   });
 
   test("each destination is filtered by its own enabled predicate", () => {
