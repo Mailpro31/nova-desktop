@@ -887,6 +887,107 @@ mod specta_registration {
             "le paquet Nova ordinaire ne doit pas exposer la surface Lab"
         );
     }
+
+    /// Commandes enregistrees que le fichier livre ne nomme pas encore.
+    ///
+    /// `get_deployment_state` a ete ajoutee apres la derniere generation de
+    /// `src/bindings.ts`, et le frontend s'en est passe : il l'appelle par
+    /// `invoke("get_deployment_state")` brut, avec une interface
+    /// `ManagedDeploymentState` ecrite a la main que rien ne confronte au
+    /// `DeploymentState` de Rust.
+    ///
+    /// Ce qui ferme cet ecart : relancer l'application en developpement, ce qui
+    /// regenere le fichier avec la commande et son type, puis remplacer l'appel
+    /// brut par `commands.getDeploymentState()` et supprimer l'interface
+    /// manuelle. Cela demande une machine ou l'application demarre — pas une
+    /// edition a la main d'un fichier genere.
+    #[cfg(not(feature = "lab"))]
+    const KNOWN_GAPS: [&str; 1] = ["get_deployment_state"];
+
+    /// Les noms de commande d'un fichier de liaisons TypeScript.
+    ///
+    /// `tauri-specta` rend chaque appel sous la forme `TAURI_INVOKE("nom")` :
+    /// c'est la chaine reellement envoyee sur le pont, donc la seule qui
+    /// compte. Pas de dependance a un moteur d'expressions rationnelles pour
+    /// un motif aussi simple.
+    fn invoked_commands(bindings: &str) -> Vec<String> {
+        const NEEDLE: &str = "TAURI_INVOKE(\"";
+        let mut names: Vec<String> = bindings
+            .split(NEEDLE)
+            .skip(1)
+            .filter_map(|rest| rest.split('"').next())
+            .map(str::to_owned)
+            .collect();
+        names.sort();
+        names.dedup();
+        names
+    }
+
+    /// Le fichier livre au frontend doit nommer exactement les commandes
+    /// enregistrees.
+    ///
+    /// ## Le trou que ce test ferme
+    ///
+    /// `src/bindings.ts` est genere par specta au demarrage de l'application,
+    /// puis **commite**. Rien ne verifiait qu'il correspondait encore a la table
+    /// enregistree : renommer une commande cote Rust sans relancer
+    /// l'application laissait le frontend appeler un nom qui n'existe plus, et
+    /// la panne n'apparaissait qu'au premier `invoke`, a l'execution, chez
+    /// l'utilisateur.
+    ///
+    /// Le test ne compare que les **noms**, pas les signatures : c'est le nom
+    /// qui casse silencieusement. Une signature qui change fait echouer la
+    /// compilation du frontend, donc `tsc` s'en charge deja.
+    ///
+    /// Le fichier livre est genere sans la fonctionnalite Lab — il ne contient
+    /// pas `enroll_lab_device` — donc la comparaison ne vaut que pour ce paquet.
+    #[cfg(not(feature = "lab"))]
+    #[test]
+    fn the_committed_bindings_name_the_registered_commands() {
+        let committed = invoked_commands(include_str!("../../src/bindings.ts"));
+        let registered = invoked_commands(&registered_commands());
+
+        // Le sens qui casse la production : le frontend appelle un nom que le
+        // backend n'enregistre plus. C'est exactement ce qu'un renommage cote
+        // Rust produit si le fichier livre ne suit pas.
+        let unregistered: Vec<&String> = committed
+            .iter()
+            .filter(|name| !registered.contains(name))
+            .collect();
+        assert!(
+            unregistered.is_empty(),
+            "src/bindings.ts appelle des commandes que rien n'enregistre : {unregistered:?}. Un renommage cote Rust n'a pas ete reporte."
+        );
+
+        // L'autre sens : une commande enregistree que le fichier livre ignore.
+        // Sans consequence tant que personne ne l'appelle par ce chemin, mais
+        // cela veut dire que l'artefact commite n'est plus celui que le
+        // generateur produirait. Les ecarts connus sont nommes, et seulement
+        // eux.
+        let absent: Vec<&String> = registered
+            .iter()
+            .filter(|name| !committed.contains(name))
+            .collect();
+        let unexpected: Vec<&&String> = absent
+            .iter()
+            .filter(|name| !KNOWN_GAPS.contains(&name.as_str()))
+            .collect();
+        assert!(
+            unexpected.is_empty(),
+            "src/bindings.ts ne nomme pas ces commandes enregistrees : {unexpected:?}. Relancer l'application en developpement regenere le fichier ; il ne s'edite pas a la main."
+        );
+
+        // Et la liste des ecarts connus ne doit pas pourrir : un nom qui n'y a
+        // plus sa place — parce que le fichier a ete regenere — doit sortir.
+        let stale: Vec<&&str> = KNOWN_GAPS
+            .iter()
+            .filter(|name| !absent.iter().any(|missing| missing.as_str() == **name))
+            .collect();
+        assert!(
+            stale.is_empty(),
+            "ces ecarts connus n'existent plus et doivent quitter KNOWN_GAPS : {stale:?}"
+        );
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
