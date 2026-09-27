@@ -19,7 +19,7 @@ import {
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
-import { useCampusStatus } from "../hooks/useCampusStatus";
+import { useOrganizationStatus } from "../hooks/useOrganizationStatus";
 import { useOrganization } from "../hooks/useOrganization";
 import { isOrganizationMode } from "@/lib/mode";
 import { useCapability } from "../hooks/useOrganizationContext";
@@ -94,12 +94,10 @@ const LearnSettings = lazy(() =>
     default: module.LearnSettings,
   })),
 );
-const CampusOrganizationSettings = lazy(() =>
-  import("./settings/organization/CampusOrganizationSettings").then(
-    (module) => ({
-      default: module.CampusOrganizationSettings,
-    }),
-  ),
+const OrganizationSettings = lazy(() =>
+  import("./settings/organization/OrganizationSettings").then((module) => ({
+    default: module.OrganizationSettings,
+  })),
 );
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
@@ -239,7 +237,7 @@ export const SECTIONS_CONFIG = {
     labelKey: "sidebar.organization",
     campusLabelKey: undefined,
     icon: Building2,
-    component: CampusOrganizationSettings,
+    component: OrganizationSettings,
     // Atteinte par le bloc bas de la barre latérale, pas par la liste
     // principale — l'établissement est accessible sans être une destination
     // de premier plan.
@@ -338,7 +336,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // entrée, dans `SECTIONS_CONFIG.enabled`.
   const organizationMode = isOrganizationMode();
   const organization = useOrganization();
-  const { connection } = useCampusStatus();
+  const { connection } = useOrganizationStatus();
   // Learn se masque quand la capacité est fermée. La question posée est « cette
   // capacité est-elle ouverte ? », pas « quelle édition est installée ? » : une
   // organisation qui ferme Learn le ferme pour tout le monde, et Personal le

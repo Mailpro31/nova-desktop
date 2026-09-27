@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CampusConnection } from "../campus/CampusConnection";
+import { OrganizationConnectionSettings } from "../organization/OrganizationConnectionSettings";
 import { GeneralSettings } from "../general/GeneralSettings";
 import {
-  CampusGeneralSettings,
-  CampusPersonalizationSections,
-  CampusAdvancedSections,
-} from "../general/CampusGeneralSettings";
+  OrganizationGeneralSettings,
+  OrganizationPersonalizationSections,
+  OrganizationAdvancedSections,
+} from "../general/OrganizationGeneralSettings";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ThemeSelector } from "../ThemeSelector";
 import { SettingsGroup } from "../../ui/SettingsGroup";
@@ -53,8 +53,8 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
  */
 export const ConfigurationSettings: React.FC = () => {
   const { t } = useTranslation();
-  const campusMode = isOrganizationMode();
-  const tabs = campusMode ? CAMPUS_TABS : ALL_TABS;
+  const organizationMode = isOrganizationMode();
+  const tabs = organizationMode ? CAMPUS_TABS : ALL_TABS;
   const [selectedTab, setTab] = useState<ConfigTab>("general");
   // Une fonction que l'organisation referme pendant qu'on la consulte ne reste
   // pas affichée : on revient sur Général.
@@ -99,15 +99,19 @@ export const ConfigurationSettings: React.FC = () => {
       )}
 
       {tab === "general" &&
-        (campusMode ? <CampusGeneralTab /> : <GeneralSettings />)}
-      {tab === "voice" && <CampusGeneralSettings />}
+        (organizationMode ? <OrganizationGeneralTab /> : <GeneralSettings />)}
+      {tab === "voice" && <OrganizationGeneralSettings />}
       {tab === "performance" && <ModelsSettings />}
       {tab === "advanced" &&
-        (campusMode ? <CampusAdvancedSections /> : <AdvancedSettings />)}
+        (organizationMode ? (
+          <OrganizationAdvancedSections />
+        ) : (
+          <AdvancedSettings />
+        ))}
       {tab === "personalization" && (
         <>
           <PersonalizationSettings />
-          {campusMode && <CampusPersonalizationSections />}
+          {organizationMode && <OrganizationPersonalizationSections />}
         </>
       )}
     </div>
@@ -119,7 +123,7 @@ export const ConfigurationSettings: React.FC = () => {
  * et le thème vivaient dans Personnalisation, aux côtés de l'orbe et des
  * variables — deux registres différents sous un même onglet.
  */
-const CampusGeneralTab: React.FC = () => {
+const OrganizationGeneralTab: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="space-y-5">
@@ -130,7 +134,7 @@ const CampusGeneralTab: React.FC = () => {
       {/* Toujours rendu, lié ou non : c'est la seule surface d'où l'on peut
           rattacher un compte, et la cacher tant qu'aucune organisation
           n'existe la rendait inatteignable au moment où elle sert. */}
-      <CampusConnection />
+      <OrganizationConnectionSettings />
     </div>
   );
 };

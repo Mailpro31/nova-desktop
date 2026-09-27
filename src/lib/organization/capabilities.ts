@@ -68,7 +68,7 @@ export function unknownOrganizationCapabilities(): CapabilityMap {
  *
  * Réponse binaire et sans effet de bord : aucune notion de licence, de session
  * ni de joignabilité serveur n'intervient ici. Ces questions ont leurs propres
- * réponses (`useLicense`, `useCampusStatus`) et les mélanger produirait un
+ * réponses (`useLicense`, `useOrganizationStatus`) et les mélanger produirait un
  * verrou dont personne ne saurait dire d'où il vient.
  */
 export function can(

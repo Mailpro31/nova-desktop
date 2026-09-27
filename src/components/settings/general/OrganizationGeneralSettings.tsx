@@ -19,9 +19,9 @@ import { useSettings } from "../../../hooks/useSettings";
 import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
-import { CampusDictionarySection } from "./CampusDictionarySection";
-import { CampusSnippetsSection } from "./CampusSnippetsSection";
-import { CampusFormattingSection } from "./CampusFormattingSection";
+import { OrganizationDictionarySection } from "./OrganizationDictionarySection";
+import { OrganizationSnippetsSection } from "./OrganizationSnippetsSection";
+import { OrganizationFormattingSection } from "./OrganizationFormattingSection";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
@@ -55,7 +55,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   </div>
 );
 
-export const CampusGeneralSettings: React.FC = () => {
+export const OrganizationGeneralSettings: React.FC = () => {
   const { t } = useTranslation();
   const { audioFeedbackEnabled, getSetting } = useSettings();
   const pushToTalk = getSetting("push_to_talk");
@@ -100,7 +100,7 @@ export const CampusGeneralSettings: React.FC = () => {
  * vocaux, ses règles de formatage. Trois systèmes proches — la page les
  * nomme donc par ce qu'ils font, pas par leur table.
  */
-export const CampusPersonalizationSections: React.FC = () => {
+export const OrganizationPersonalizationSections: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="space-y-5">
@@ -109,7 +109,7 @@ export const CampusPersonalizationSections: React.FC = () => {
         title={t("organization.dictionary.title")}
         description={t("organization.dictionary.description")}
       >
-        <CampusDictionarySection />
+        <OrganizationDictionarySection />
       </SectionCard>
 
       <SectionCard
@@ -117,7 +117,7 @@ export const CampusPersonalizationSections: React.FC = () => {
         title={t("organization.snippets.title")}
         description={t("organization.snippets.description")}
       >
-        <CampusSnippetsSection />
+        <OrganizationSnippetsSection />
       </SectionCard>
 
       <SectionCard
@@ -125,7 +125,7 @@ export const CampusPersonalizationSections: React.FC = () => {
         title={t("organization.formatting.title")}
         description={t("organization.formatting.description")}
       >
-        <CampusFormattingSection />
+        <OrganizationFormattingSection />
       </SectionCard>
     </div>
   );
@@ -138,7 +138,9 @@ export const CampusPersonalizationSections: React.FC = () => {
  * L'identité campus et la déconnexion **n'y sont plus** : elles vivent une
  * seule fois, sur la page Établissement.
  */
-export const CampusAdvancedSections: React.FC = () => <AboutSectionCard />;
+export const OrganizationAdvancedSections: React.FC = () => (
+  <AboutSectionCard />
+);
 
 const AboutSectionCard: React.FC = () => {
   const { t } = useTranslation();
@@ -185,4 +187,4 @@ const AboutSectionCard: React.FC = () => {
   );
 };
 
-export default CampusGeneralSettings;
+export default OrganizationGeneralSettings;

@@ -4,7 +4,7 @@ import type { CampusSession } from "@/bindings";
 
 export type { CampusSession };
 
-export async function loadCampusSession(): Promise<CampusSession | null> {
+export async function loadOrganizationSession(): Promise<CampusSession | null> {
   const result = await commands.loadCampusSession();
   if (result.status === "ok") {
     return result.data;
@@ -13,18 +13,18 @@ export async function loadCampusSession(): Promise<CampusSession | null> {
   return null;
 }
 
-export async function clearCampusSession(): Promise<void> {
+export async function clearOrganizationSession(): Promise<void> {
   await invoke("logout_campus_session");
 }
 
-export async function completeCampusOnboarding(): Promise<void> {
+export async function completeOrganizationOnboarding(): Promise<void> {
   const result = await commands.completeCampusOnboarding();
   if (result.status === "error") {
     throw new Error(result.error);
   }
 }
 
-export async function loadCampusConfig(): Promise<CampusConfig | null> {
+export async function loadOrganizationConfig(): Promise<CampusConfig | null> {
   const result = await commands.getCampusConfig();
   if (result.status === "ok") {
     return result.data;
@@ -33,7 +33,7 @@ export async function loadCampusConfig(): Promise<CampusConfig | null> {
   return null;
 }
 
-export async function loadCampusServerConfig(
+export async function loadOrganizationServerConfig(
   serverUrl: string,
 ): Promise<CampusConfig | null> {
   try {

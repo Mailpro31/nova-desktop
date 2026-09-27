@@ -165,13 +165,15 @@ describe("la racine React ne peut plus rendre une fenêtre blanche", () => {
   });
 
   it("le bouton Lab ne dépend d'aucune configuration Campus locale", () => {
-    const onboarding = read("src/components/onboarding/CampusOnboarding.tsx");
+    const onboarding = read(
+      "src/components/onboarding/OrganizationOnboarding.tsx",
+    );
     const at = onboarding.indexOf('onClick={() => setStep("lab")}');
     expect(at).toBeGreaterThan(-1);
     expect(onboarding.slice(Math.max(0, at - 400), at)).not.toContain(
       "disabled={!configLoaded}",
     );
     // Et la sonde de configuration ne peut plus emporter tout l'écran.
-    expect(onboarding).toContain("loadCampusConfig().catch(() => null)");
+    expect(onboarding).toContain("loadOrganizationConfig().catch(() => null)");
   });
 });

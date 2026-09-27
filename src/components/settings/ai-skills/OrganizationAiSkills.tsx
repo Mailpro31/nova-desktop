@@ -4,10 +4,13 @@ import { Play, Building2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button, PageHeader, Textarea } from "@/components/ui";
-import { CampusApi, type OrganizationSkillEntry } from "@/lib/campusApi";
-import { loadCampusSession } from "@/lib/campusSession";
+import {
+  OrganizationApi,
+  type OrganizationSkillEntry,
+} from "@/lib/organizationApi";
+import { loadOrganizationSession } from "@/lib/organizationSession";
 import { useCapability } from "@/hooks/useOrganizationContext";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
 /**
  * AI Skills — les actions IA réellement exécutables.
@@ -37,7 +40,9 @@ import { useCampusStore } from "@/stores/campusStore";
  */
 export const OrganizationAiSkills: React.FC = () => {
   const { t } = useTranslation();
-  const skills = useCampusStore((state) => state.organizationCatalog?.skills);
+  const skills = useOrganizationStore(
+    (state) => state.organizationCatalog?.skills,
+  );
   // L'entrée Nova Commands existe-t-elle sur ce poste ? C'est la capacité qui
   // répond, jamais la nature de l'organisation : une entreprise dont la
   // capacité est ouverte y trouve les mêmes actions intégrées qu'une école.
@@ -101,7 +106,7 @@ const SkillCard: React.FC<{ skill: OrganizationSkillEntry }> = ({ skill }) => {
   const [busy, setBusy] = useState(false);
 
   async function run() {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) {
       toast.error(t("aiSkillTools.signedOut"));
       return;
@@ -109,7 +114,7 @@ const SkillCard: React.FC<{ skill: OrganizationSkillEntry }> = ({ skill }) => {
     setBusy(true);
     setResult(null);
     try {
-      const response = await new CampusApi(session.server_url).runSkill(
+      const response = await new OrganizationApi(session.server_url).runSkill(
         skill.id,
         text,
       );

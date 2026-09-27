@@ -41,7 +41,7 @@ export interface OnboardingFlow {
 
 interface Options {
   readiness: SystemReadiness;
-  hasCampusSession: boolean;
+  hasOrganizationSession: boolean;
   /**
    * `false` pour quelqu'un qui utilisait déjà Nova : il ne verra que les
    * étapes correctives (permission révoquée, session expirée, modèle absent),
@@ -63,11 +63,11 @@ interface Options {
  */
 export function useOnboardingFlow({
   readiness,
-  hasCampusSession,
+  hasOrganizationSession,
   isFirstRun,
   onFinished,
 }: Options): OnboardingFlow {
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
 
   // La liste est **figée** dès que l'état système est connu. La recalculer en
   // continu ferait disparaître l'écran courant au moment précis où
@@ -88,7 +88,8 @@ export function useOnboardingFlow({
     // Personal : l'imposer ici fermait Nova entière derrière un écran de
     // connexion, dictée locale comprise. L'accueil dit qu'il est déconnecté,
     // et la reconnexion reste dans les réglages.
-    if (campusMode && !hasCampusSession && isFirstRun) pending.push("campus");
+    if (organizationMode && !hasOrganizationSession && isFirstRun)
+      pending.push("campus");
     if (readiness.needsModelDownload) pending.push("model");
 
     // Le reste n'appartient qu'à la première ouverture.
@@ -96,10 +97,10 @@ export function useOnboardingFlow({
 
     // La connexion Organization vient déjà de présenter l'organisation puis
     // de confirmer le compte. Le second accueil ne reste utile qu'en Personal.
-    if (!campusMode) pending.push("welcome");
+    if (!organizationMode) pending.push("welcome");
     pending.push("smartSetup");
 
-    if (campusMode) {
+    if (organizationMode) {
       // Montrer un premier résultat avant les options de style garde le chemin
       // principal court. Les réglages fins viennent une fois la dictée prouvée.
       if (!readiness.hasDictated && !isSkipped("firstDictation")) {
@@ -114,7 +115,7 @@ export function useOnboardingFlow({
     }
 
     return pending;
-  }, [readiness, isFirstRun, campusMode, hasCampusSession]);
+  }, [readiness, isFirstRun, organizationMode, hasOrganizationSession]);
 
   useEffect(() => {
     if (frozen === null && readiness.loaded && isFirstRun !== null) {

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
-import { resolveCampusContext } from "@/lib/campusPolicy";
-import type { CampusConfig } from "@/lib/campusSession";
+import { resolveOrganizationConfig } from "@/lib/organizationConfig";
+import type { CampusConfig } from "@/lib/organizationSession";
 import { isBusinessMode, isCampusMode, isOrganizationMode } from "@/lib/mode";
 import {
   currentEdition,
@@ -146,7 +146,7 @@ describe("Contexte d'organisation résolu", () => {
     const context = resolveOrganizationContext({
       edition: "organization",
       organizationType: "business",
-      campus: resolveCampusContext(config(), {
+      campus: resolveOrganizationConfig(config(), {
         email: "salarie@example.com",
         role: "employee",
         cohort: "",
@@ -167,7 +167,7 @@ describe("Contexte d'organisation résolu", () => {
     const context = resolveOrganizationContext({
       edition: "organization",
       organizationType: "education",
-      campus: resolveCampusContext(config(), {
+      campus: resolveOrganizationConfig(config(), {
         email: "etudiant@example.com",
         role: "student",
         cohort: "AERO2",
@@ -190,7 +190,7 @@ describe("Contexte d'organisation résolu", () => {
       edition: "organization",
       // Ce que le poste supposait…
       organizationType: "education",
-      campus: resolveCampusContext(config()),
+      campus: resolveOrganizationConfig(config()),
       // …et ce que le serveur affirme.
       server: parseServerIdentity({
         email: "salarie@example.com",
@@ -216,7 +216,7 @@ describe("Contexte d'organisation résolu", () => {
     const context = resolveOrganizationContext({
       edition: "organization",
       organizationType: "business",
-      campus: resolveCampusContext(config(), {
+      campus: resolveOrganizationConfig(config(), {
         email: "responsable@example.com",
         role: "manager",
         cohort: "",

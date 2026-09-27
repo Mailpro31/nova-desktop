@@ -15,7 +15,7 @@ import StylesList from "./StylesList";
  * existent bien, sont un autre système et vivent dans Réglages — les
  * transformer en Styles serait une invention.
  */
-export const CampusStylesSettings: React.FC = () => {
+export const OrganizationStylesSettings: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -29,4 +29,4 @@ export const CampusStylesSettings: React.FC = () => {
   );
 };
 
-export default CampusStylesSettings;
+export default OrganizationStylesSettings;

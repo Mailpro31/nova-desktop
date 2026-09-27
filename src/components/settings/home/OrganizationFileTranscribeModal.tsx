@@ -5,17 +5,17 @@ import { toast } from "sonner";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
-import { loadCampusSession } from "@/lib/campusSession";
+import { loadOrganizationSession } from "@/lib/organizationSession";
 import { useOrganizationWording } from "@/hooks/useOrganizationWording";
-import { CampusApi, campusErrorText } from "@/lib/campusApi";
+import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 
-interface CampusFileTranscribeModalProps {
+interface OrganizationFileTranscribeModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const CampusFileTranscribeModal: React.FC<
-  CampusFileTranscribeModalProps
+export const OrganizationFileTranscribeModal: React.FC<
+  OrganizationFileTranscribeModalProps
 > = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
@@ -46,7 +46,7 @@ export const CampusFileTranscribeModal: React.FC<
   const handleTranscribe = async () => {
     if (!file) return;
 
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) {
       toast.error(word("sessionExpired"));
       return;
@@ -58,7 +58,7 @@ export const CampusFileTranscribeModal: React.FC<
     try {
       const buffer = await file.arrayBuffer();
       const bytes = new Uint8Array(buffer);
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const text = await api.transcribeAudioFile(bytes, file.name);
 
       setResultText(text);

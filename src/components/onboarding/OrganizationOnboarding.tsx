@@ -14,30 +14,30 @@ import { Check } from "lucide-react";
 import HandyTextLogo from "../icons/HandyTextLogo";
 import OnboardingStepShell from "./OnboardingStepShell";
 import {
-  CampusApi,
-  CampusApiError,
+  OrganizationApi,
+  OrganizationApiError,
   type CampusEntraStartResponse,
   type CampusProfile,
-} from "@/lib/campusApi";
+} from "@/lib/organizationApi";
 import {
-  loadCampusConfig,
-  loadCampusServerConfig,
+  loadOrganizationConfig,
+  loadOrganizationServerConfig,
   type CampusConfig,
-} from "@/lib/campusSession";
+} from "@/lib/organizationSession";
 import {
-  isValidCampusEmail,
-  isValidCampusServerUrl,
-  maskCampusEmail,
-  normalizeCampusServerUrl,
-  sanitizeCampusCode,
-  shouldShowCampusServerInput,
-} from "@/lib/campusOnboarding";
+  isValidOrganizationEmail,
+  isValidOrganizationServerUrl,
+  maskOrganizationEmail,
+  normalizeOrganizationServerUrl,
+  sanitizeOrganizationCode,
+  shouldShowOrganizationServerInput,
+} from "@/lib/organizationOnboardingState";
 import {
-  campusOrganizationLabel,
-  DEFAULT_CAMPUS_ORGANIZATION,
-  resolveCampusContext,
-} from "@/lib/campusPolicy";
-import { ManagedBy } from "@/components/campus/ManagedBy";
+  organizationLabel,
+  DEFAULT_ORGANIZATION,
+  resolveOrganizationConfig,
+} from "@/lib/organizationConfig";
+import { ManagedBy } from "@/components/organization/ManagedBy";
 import { commands, type SsoProvider } from "@/bindings";
 import { formatSsoError } from "@/lib/organization/ssoErrors";
 import { wordingKey } from "@/lib/organization/wording";
@@ -45,14 +45,14 @@ import {
   organizationSignInButtons,
   type AnnouncedProviders,
 } from "@/lib/organization/ssoProviders";
-import { refreshCampusContext } from "@/stores/campusStore";
+import { refreshOrganizationConfig } from "@/stores/organizationStore";
 import {
   IS_LAB_BUILD,
   labServer,
   markLabEnrolled,
   rememberLabServer,
 } from "@/lib/lab";
-import { useCampusStatus } from "@/hooks/useCampusStatus";
+import { useOrganizationStatus } from "@/hooks/useOrganizationStatus";
 import { Button } from "@/components/ui/Button";
 import {
   emailDiscoveryErrorKey,
@@ -70,7 +70,7 @@ import { Input } from "@/components/ui/Input";
  * dès le premier rendu, puis se complète sur place avec ce que le serveur
  * annonce, sans jamais naviguer.
  */
-type CampusStep = "connection" | "lab" | "code" | "ready";
+type OrganizationStep = "connection" | "lab" | "code" | "ready";
 
 const DEFAULT_DISCOVERY_ORIGIN = "https://api.novaspeak.app";
 
@@ -85,7 +85,7 @@ interface ManagedDeploymentState {
 // surface ne s'affiche que dans l'artefact de test bâti avec la feature Rust
 // `lab` et la variable Vite correspondante — voir `@/lib/lab`.
 
-interface CampusOnboardingProps {
+interface OrganizationOnboardingProps {
   /**
    * Le parcours d'authentification est partagé, mais sa sortie dépend de la
    * surface qui l'a ouvert : le premier lancement présente un récapitulatif,
@@ -120,15 +120,17 @@ const CodeInput: React.FC<CodeInputProps> = ({
   }, []);
 
   const replaceDigit = (index: number, input: string) => {
-    const digit = sanitizeCampusCode(input).slice(-1);
+    const digit = sanitizeOrganizationCode(input).slice(-1);
     if (!digit && input) return;
     const next = `${value.slice(0, index)}${digit}${value.slice(index + 1)}`;
-    onChange(sanitizeCampusCode(next));
+    onChange(sanitizeOrganizationCode(next));
     if (digit && index < 5) inputsRef.current[index + 1]?.focus();
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-    const pasted = sanitizeCampusCode(event.clipboardData.getData("text"));
+    const pasted = sanitizeOrganizationCode(
+      event.clipboardData.getData("text"),
+    );
     if (!pasted) return;
     event.preventDefault();
     onChange(pasted);
@@ -178,13 +180,13 @@ const CodeInput: React.FC<CodeInputProps> = ({
   );
 };
 
-const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
+const OrganizationOnboarding: React.FC<OrganizationOnboardingProps> = ({
   flowContext,
   onComplete,
 }) => {
   const { t } = useTranslation();
-  const { refresh: refreshCampusStatus } = useCampusStatus();
-  const [step, setStep] = useState<CampusStep>("connection");
+  const { refresh: refreshOrganizationStatus } = useOrganizationStatus();
+  const [step, setStep] = useState<OrganizationStep>("connection");
   const [email, setEmail] = useState("");
   const [serverUrl, setServerUrl] = useState("");
   // La découverte par adresse : ce que la personne tape, et ce qu'on en fait.
@@ -250,7 +252,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
 
   useEffect(() => {
     let mounted = true;
-    // `loadCampusConfig()` n'était pas protégée : un rejet emportait le
+    // `loadOrganizationConfig()` n'était pas protégée : un rejet emportait le
     // `Promise.all`, le `.then` ne s'exécutait jamais et `configLoaded`
     // restait faux — c'est-à-dire tous les boutons de cet écran désactivés,
     // définitivement, sans message. Chaque sonde répond désormais pour
@@ -259,7 +261,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     setError(null);
     void Promise.all([
       hostname().catch(() => null),
-      loadCampusConfig().catch(() => null),
+      loadOrganizationConfig().catch(() => null),
       invoke<ManagedDeploymentState>("get_deployment_state").catch(() => null),
     ]).then(async ([name, loadedConfig, deployment]) => {
       if (!mounted) return;
@@ -353,7 +355,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       // Une installation Organization posée sans configuration gérée n'a
       // aucune adresse à lire : elle la demande, sur cette même surface.
       setServerProvisioned(
-        !shouldShowCampusServerInput(loadedConfig) || Boolean(labServer()),
+        !shouldShowOrganizationServerInput(loadedConfig) ||
+          Boolean(labServer()),
       );
       setConfigLoaded(true);
     });
@@ -366,17 +369,17 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     // Une nouvelle adresse n'hérite de rien de la précédente.
     setConfig(bootConfig.current);
     setServerAnswer(null);
-    if (!isValidCampusServerUrl(serverUrl)) {
+    if (!isValidOrganizationServerUrl(serverUrl)) {
       setServerConfigPending(false);
       return;
     }
-    const requestedUrl = normalizeCampusServerUrl(serverUrl);
+    const requestedUrl = normalizeOrganizationServerUrl(serverUrl);
     let active = true;
     // Marqué en attente dès la frappe : sans cela, un clic rapide pouvait
     // demander un code avant même que le serveur ait dit s'il en envoyait.
     setServerConfigPending(true);
     const timer = window.setTimeout(() => {
-      void loadCampusServerConfig(requestedUrl)
+      void loadOrganizationServerConfig(requestedUrl)
         .then((remoteConfig) => {
           if (!active) return;
           setServerAnswer({ url: requestedUrl, config: remoteConfig });
@@ -409,7 +412,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
    */
   useEffect(() => {
     setProvidersLoaded(false);
-    if (!isValidCampusServerUrl(serverUrl)) {
+    if (!isValidOrganizationServerUrl(serverUrl)) {
       setSsoProviders({
         microsoft_entra: false,
         google_workspace: false,
@@ -420,7 +423,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     }
     let active = true;
     void commands
-      .organizationAuthProviders(normalizeCampusServerUrl(serverUrl))
+      .organizationAuthProviders(normalizeOrganizationServerUrl(serverUrl))
       .then((result) => {
         if (!active) return;
         setSsoProviders(
@@ -467,11 +470,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   }, [cooldown]);
 
   const api = useMemo(
-    () => new CampusApi(normalizeCampusServerUrl(serverUrl)),
+    () => new OrganizationApi(normalizeOrganizationServerUrl(serverUrl)),
     [serverUrl],
   );
   const context = useMemo(
-    () => resolveCampusContext(config, profile),
+    () => resolveOrganizationConfig(config, profile),
     [config, profile],
   );
   /**
@@ -482,10 +485,10 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
    * Dire « Campus » à une entreprise, ou l'inverse, avant d'avoir demandé,
    * c'est se tromper avec assurance devant quelqu'un qui découvre le produit.
    */
-  const hasServer = isValidCampusServerUrl(serverUrl);
+  const hasServer = isValidOrganizationServerUrl(serverUrl);
   /** La réponse de `/api/config`, si elle vient du serveur actuellement saisi. */
   const currentAnswer =
-    hasServer && serverAnswer?.url === normalizeCampusServerUrl(serverUrl)
+    hasServer && serverAnswer?.url === normalizeOrganizationServerUrl(serverUrl)
       ? serverAnswer
       : null;
   const answeredType = currentAnswer?.config?.organization_type;
@@ -544,18 +547,21 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
    * Relit les deux projections encore consommées par l'interface Campus.
    *
    * Le store Organization porte le profil et les packages, tandis que la
-   * navigation historique lit encore `useCampusStatus` pour savoir si une
+   * navigation historique lit encore `useOrganizationStatus` pour savoir si une
    * session existe. Rafraîchir seulement le premier chargeait bien `/api/me`
    * et le catalogue, mais laissait Settings et la sidebar visuellement
    * déconnectés jusqu'au redémarrage suivant.
    */
-  const refreshConnectedCampusState = useCallback(async () => {
-    await Promise.all([refreshCampusContext(), refreshCampusStatus()]);
-  }, [refreshCampusStatus]);
+  const refreshConnectedOrganizationState = useCallback(async () => {
+    await Promise.all([
+      refreshOrganizationConfig(),
+      refreshOrganizationStatus(),
+    ]);
+  }, [refreshOrganizationStatus]);
 
   const formatError = useCallback(
     (caught: unknown): string => {
-      if (caught instanceof CampusApiError) {
+      if (caught instanceof OrganizationApiError) {
         const message = caught.message.toLowerCase();
         if (
           message.includes("network error") ||
@@ -575,8 +581,8 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     if (
       !emailCodeAvailable ||
       !serverProbeSettled ||
-      !isValidCampusEmail(email) ||
-      !isValidCampusServerUrl(serverUrl)
+      !isValidOrganizationEmail(email) ||
+      !isValidOrganizationServerUrl(serverUrl)
     )
       return;
     setIsLoading(true);
@@ -608,7 +614,9 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       );
       rememberLabServer(enrolled.service_endpoint);
       markLabEnrolled();
-      const labConfig = await loadCampusServerConfig(enrolled.service_endpoint);
+      const labConfig = await loadOrganizationServerConfig(
+        enrolled.service_endpoint,
+      );
       if (!labConfig) throw new Error("LAB_CONFIGURATION_UNAVAILABLE");
       bootConfig.current = labConfig;
       setServerUrl(enrolled.service_endpoint);
@@ -652,7 +660,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     provider: SsoProvider,
     providerConfigId: string | null = null,
   ) => {
-    if (!isValidCampusServerUrl(serverUrl) || isLoading) return;
+    if (!isValidOrganizationServerUrl(serverUrl) || isLoading) return;
     setIsLoading(true);
     setError(null);
     try {
@@ -673,7 +681,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         const loadedProfile = await api.getMe().catch(() => null);
         setEmail(result.data.email);
         setProfile(loadedProfile);
-        await refreshConnectedCampusState();
+        await refreshConnectedOrganizationState();
         finishFlow();
         return;
       }
@@ -700,15 +708,15 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const pollCallbacks = useRef({
     finishFlow,
     formatError,
-    refreshConnectedCampusState,
+    refreshConnectedOrganizationState,
   });
   useEffect(() => {
     pollCallbacks.current = {
       finishFlow,
       formatError,
-      refreshConnectedCampusState,
+      refreshConnectedOrganizationState,
     };
-  }, [finishFlow, formatError, refreshConnectedCampusState]);
+  }, [finishFlow, formatError, refreshConnectedOrganizationState]);
 
   useEffect(() => {
     if (!microsoftFlow) return;
@@ -724,7 +732,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           if (!active) return;
           setEmail(result.email ?? loadedProfile?.email ?? "");
           setProfile(loadedProfile);
-          await pollCallbacks.current.refreshConnectedCampusState();
+          await pollCallbacks.current.refreshConnectedOrganizationState();
           if (!active) return;
           // Le flux n'est clos qu'une fois la connexion aboutie : le clore
           // avant annulait ce sondage au milieu de sa propre fin.
@@ -764,11 +772,11 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       await api.verifyAuth(email.trim(), code, machineName);
       const loadedProfile = await api.getMe().catch(() => null);
       setProfile(loadedProfile);
-      await refreshConnectedCampusState();
+      await refreshConnectedOrganizationState();
       finishFlow();
     } catch (caught) {
       let message = formatError(caught);
-      if (caught instanceof CampusApiError) {
+      if (caught instanceof OrganizationApiError) {
         if (caught.status === 400) {
           message = t("organization.onboarding.code.invalid");
         } else if (caught.status === 403) {
@@ -787,7 +795,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     formatError,
     isLoading,
     machineName,
-    refreshConnectedCampusState,
+    refreshConnectedOrganizationState,
     announcedOrganizationType,
     t,
   ]);
@@ -809,7 +817,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
           className="w-full"
           disabled={
             !providersLoaded ||
-            !isValidCampusServerUrl(serverUrl) ||
+            !isValidOrganizationServerUrl(serverUrl) ||
             isLoading ||
             Boolean(microsoftFlow)
           }
@@ -885,14 +893,14 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     // rejette retombe dessus, et ce nom ne doit pas s'afficher pour autant.
     const organizationName =
       config?.organization &&
-      context.organization.id !== DEFAULT_CAMPUS_ORGANIZATION.id
-        ? campusOrganizationLabel(context.organization)
+      context.organization.id !== DEFAULT_ORGANIZATION.id
+        ? organizationLabel(context.organization)
         : null;
     const canRequestCode =
       emailCodeAvailable &&
       serverProbeSettled &&
       configLoaded &&
-      isValidCampusEmail(email) &&
+      isValidOrganizationEmail(email) &&
       !isLoading &&
       !microsoftFlow;
     return (
@@ -1171,7 +1179,7 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
       <OnboardingStepShell
         title={t("organization.onboarding.code.title")}
         subtitle={t("organization.onboarding.code.subtitle", {
-          email: maskCampusEmail(email),
+          email: maskOrganizationEmail(email),
         })}
         stepIndex={1}
         stepCount={3}
@@ -1242,14 +1250,16 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
               {t("organization.onboarding.ready.organization")}
             </dt>
             <dd className="font-medium text-text">
-              {campusOrganizationLabel(organization)}
+              {organizationLabel(organization)}
             </dd>
           </div>
           <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
               {t("organization.onboarding.ready.account")}
             </dt>
-            <dd className="font-medium text-text">{maskCampusEmail(email)}</dd>
+            <dd className="font-medium text-text">
+              {maskOrganizationEmail(email)}
+            </dd>
           </div>
           <div className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-3">
             <dt className="text-text-secondary">
@@ -1272,4 +1282,4 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   );
 };
 
-export default CampusOnboarding;
+export default OrganizationOnboarding;

@@ -3,11 +3,11 @@ import type { CampusSession } from "@/bindings";
 /**
  * État de connexion Organization, sans React ni appel réseau.
  *
- * Tiré de `useCampusStatus` pour être vérifiable : c'est ici que se décide ce
+ * Tiré de `useOrganizationStatus` pour être vérifiable : c'est ici que se décide ce
  * que la page Organisation affiche sur la ligne « Connexion ».
  */
 
-export type CampusConnection = "unknown" | "connected" | "local";
+export type OrganizationConnectionState = "unknown" | "connected" | "local";
 
 export interface CampusSnapshot {
   /** Session persistée, `null` hors connexion. */
@@ -37,7 +37,9 @@ export function withSession(
 }
 
 /** Ce que la ligne « Connexion » doit dire. */
-export function connectionOf(snapshot: CampusSnapshot): CampusConnection {
+export function connectionOf(
+  snapshot: CampusSnapshot,
+): OrganizationConnectionState {
   return snapshot.reachable === null
     ? "unknown"
     : snapshot.reachable

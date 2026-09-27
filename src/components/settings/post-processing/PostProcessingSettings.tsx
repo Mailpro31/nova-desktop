@@ -30,7 +30,7 @@ import { PowerProfileSelector } from "../PostProcessingSettingsApi/PowerProfileS
 import { TierBadge } from "../license/TierBadge";
 import { AutoStyleSettings } from "./AutoStyleSettings";
 import { ContextReadingSettings } from "./ContextReadingSettings";
-import { CampusStylesSettings } from "./CampusStylesSettings";
+import { OrganizationStylesSettings } from "./OrganizationStylesSettings";
 import StylesList from "./StylesList";
 import { PageHeader } from "../../shell/PageHeader";
 import { usePostProcessProviderState } from "../PostProcessingSettingsApi/usePostProcessProviderState";
@@ -196,10 +196,10 @@ PostProcessingSettingsApi.displayName = "PostProcessingSettingsApi";
 
 export const PostProcessingSettings: React.FC = () => {
   const { t } = useTranslation();
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
 
-  if (campusMode) {
-    return <CampusStylesSettings />;
+  if (organizationMode) {
+    return <OrganizationStylesSettings />;
   }
 
   return (

@@ -1,5 +1,8 @@
-import type { CampusContext, CampusRole } from "@/lib/campusPolicy";
-import { DEFAULT_CAMPUS_ORGANIZATION } from "@/lib/campusPolicy";
+import type {
+  OrganizationConfig,
+  OrganizationRole,
+} from "@/lib/organizationConfig";
+import { DEFAULT_ORGANIZATION } from "@/lib/organizationConfig";
 import {
   personalCapabilities,
   unknownOrganizationCapabilities,
@@ -40,7 +43,7 @@ import type {
  * équipe n'administre pas Nova. Aucune valeur ne produit de `SecurityRole` :
  * voir `resolveMember`.
  */
-function toMemberType(role: CampusRole | undefined): MemberType | null {
+function toMemberType(role: OrganizationRole | undefined): MemberType | null {
   switch (role) {
     case "student":
       return "student";
@@ -63,30 +66,31 @@ function toMemberType(role: CampusRole | undefined): MemberType | null {
  * L'identifiant d'organisation n'est retenu que s'il vient réellement de la
  * configuration de l'établissement.
  *
- * `DEFAULT_CAMPUS_ORGANIZATION.id` est un bouchon interne au client, présent
+ * `DEFAULT_ORGANIZATION.id` est un bouchon interne au client, présent
  * quand aucune configuration n'a été lue : le retenir reviendrait à faire
  * passer un défaut de l'application pour l'identité d'un tenant. Le nom
  * d'affichage n'est jamais transformé en identifiant non plus — « IPSA Paris »
  * est un libellé, pas une clé.
  */
-function resolveOrganizationId(campus: CampusContext | null): string | null {
+function resolveOrganizationId(
+  campus: OrganizationConfig | null,
+): string | null {
   const id = campus?.organization.id?.trim();
   if (!id) return null;
-  if (id === DEFAULT_CAMPUS_ORGANIZATION.id) return null;
+  if (id === DEFAULT_ORGANIZATION.id) return null;
   return id;
 }
 
 function resolveIdentity(
   organizationType: OrganizationType,
-  campus: CampusContext | null,
+  campus: OrganizationConfig | null,
 ): OrganizationIdentity {
   const organization = campus?.organization;
   const displayName = organization?.name?.trim() || null;
   return {
     type: organizationType,
     id: resolveOrganizationId(campus),
-    displayName:
-      displayName === DEFAULT_CAMPUS_ORGANIZATION.name ? null : displayName,
+    displayName: displayName === DEFAULT_ORGANIZATION.name ? null : displayName,
     shortName: organization?.shortName?.trim() || null,
     managed: organization?.managed ?? true,
   };
@@ -101,7 +105,7 @@ function resolveIdentity(
  * lui sans que l'un se fasse passer pour l'autre. La cohorte reste par ailleurs
  * exploitable telle quelle dans le code Campus existant.
  */
-function resolveGroups(campus: CampusContext | null): Group[] {
+function resolveGroups(campus: OrganizationConfig | null): Group[] {
   const cohort = campus?.organization.cohort?.trim();
   if (!cohort) return [];
   return [
@@ -122,7 +126,7 @@ function resolveGroups(campus: CampusContext | null): Group[] {
  * jamais désignées.
  */
 function resolveMember(
-  campus: CampusContext | null,
+  campus: OrganizationConfig | null,
   server: ServerIdentitySnapshot | null,
 ): OrganizationMember {
   // Quand le serveur annonce le membre, c'est lui l'autorité : le client ne
@@ -187,7 +191,7 @@ function applyServerCapabilities(
  * déjà (mode examen, par exemple, ferme la reformulation et les Styles) ; les
  * surfaces qu'aucun serveur ne distribue restent fermées plutôt que promises.
  */
-function resolveCapabilities(campus: CampusContext | null): CapabilityMap {
+function resolveCapabilities(campus: OrganizationConfig | null): CapabilityMap {
   if (!campus) return unknownOrganizationCapabilities();
   const capabilities = campus.capabilities;
   return Object.freeze({
@@ -261,7 +265,7 @@ export interface ResolveOrganizationContextInput {
   /** Requis en édition `organization`, ignoré sinon. */
   organizationType?: OrganizationType | null;
   /** Politique Campus déjà résolue, `null` tant qu'elle n'est pas connue. */
-  campus?: CampusContext | null;
+  campus?: OrganizationConfig | null;
   /**
    * Ce que `/api/me` a annoncé, quand le serveur porte le contrat étendu.
    * Absent avec un serveur plus ancien : le contexte se résout alors

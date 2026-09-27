@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PageHeader } from "../../shell/PageHeader";
 import PreviewBadge from "./PreviewBadge";
 import { useSettings } from "../../../hooks/useSettings";
-import { useCampusStatus } from "../../../hooks/useCampusStatus";
+import { useOrganizationStatus } from "../../../hooks/useOrganizationStatus";
 import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { isOrganizationMode } from "@/lib/mode";
 import {
@@ -40,10 +40,10 @@ export const AiSkillsSettings: React.FC = () => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
   const { getSetting } = useSettings();
-  const { connection } = useCampusStatus();
+  const { connection } = useOrganizationStatus();
 
-  const campusMode = isOrganizationMode();
-  const offline = campusMode && connection === "local";
+  const organizationMode = isOrganizationMode();
+  const offline = organizationMode && connection === "local";
 
   return (
     <>

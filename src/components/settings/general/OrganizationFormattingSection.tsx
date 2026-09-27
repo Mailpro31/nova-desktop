@@ -11,11 +11,11 @@ import {
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
-import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi, campusErrorText } from "@/lib/campusApi";
-import type { CampusRuleEntry } from "@/lib/campusApi";
+import { loadOrganizationSession } from "@/lib/organizationSession";
+import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
+import type { CampusRuleEntry } from "@/lib/organizationApi";
 
-export const CampusFormattingSection: React.FC = () => {
+export const OrganizationFormattingSection: React.FC = () => {
   const { t } = useTranslation();
   const [sharedRules, setSharedRules] = useState<CampusRuleEntry[]>([]);
   const [personalRules, setPersonalRules] = useState<CampusRuleEntry[]>([]);
@@ -26,11 +26,11 @@ export const CampusFormattingSection: React.FC = () => {
   const [adding, setAdding] = useState(false);
 
   const loadRules = useCallback(async () => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
     setLoading(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const data = await api.getFormattingRules();
       setSharedRules(data.shared || []);
       setPersonalRules(data.personal || []);
@@ -49,12 +49,12 @@ export const CampusFormattingSection: React.FC = () => {
     e.preventDefault();
     if (!newRule.trim()) return;
 
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     setAdding(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       await api.addFormattingRule(newRule.trim());
       setNewRule("");
       await loadRules();
@@ -69,11 +69,11 @@ export const CampusFormattingSection: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       await api.deleteFormattingRule(id);
       await loadRules();
     } catch (err) {

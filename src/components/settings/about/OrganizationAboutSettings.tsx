@@ -37,7 +37,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   </section>
 );
 
-export const CampusAboutSettings: React.FC = () => {
+export const OrganizationAboutSettings: React.FC = () => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
   const [version, setVersion] = useState("");
@@ -110,4 +110,4 @@ export const CampusAboutSettings: React.FC = () => {
   );
 };
 
-export default CampusAboutSettings;
+export default OrganizationAboutSettings;

@@ -1,25 +1,28 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { isServerReachable } from "@/lib/campusApi";
+import { isServerReachable } from "@/lib/organizationApi";
 import {
   connectionOf,
   withSession,
-  type CampusConnection,
+  type OrganizationConnectionState,
   type CampusSnapshot,
-} from "@/lib/campusConnectionState";
-import { loadCampusSession, type CampusSession } from "@/lib/campusSession";
+} from "@/lib/organizationConnectionState";
+import {
+  loadOrganizationSession,
+  type CampusSession,
+} from "@/lib/organizationSession";
 import { isOrganizationMode } from "@/lib/mode";
 
 /** Intervalle de re-vérification de la joignabilité du serveur. */
 const POLL_MS = 30_000;
 
-export type { CampusConnection };
+export type { OrganizationConnectionState };
 
-export interface CampusStatus {
+export interface OrganizationStatus {
   /** Session campus persistée, `null` en mode personnel ou avant chargement. */
   session: CampusSession | null;
   /** `unknown` tant que la première vérification n'a pas répondu. */
-  connection: CampusConnection;
+  connection: OrganizationConnectionState;
   /** Hôte du serveur de l'établissement, prêt à afficher. */
   serverName: string | null;
   /** Relit la session : à appeler après une déconnexion ou une expiration. */
@@ -53,7 +56,7 @@ function publish(next: Snapshot) {
 }
 
 async function loadSession() {
-  const session = await loadCampusSession();
+  const session = await loadOrganizationSession();
   publish(withSession(snapshot, session));
 }
 
@@ -90,7 +93,7 @@ function stop() {
  * et une seule minuterie : le nombre de composants montés ne change pas le
  * trafic réseau.
  */
-export function useCampusStatus(): CampusStatus {
+export function useOrganizationStatus(): OrganizationStatus {
   const [local, setLocal] = useState<Snapshot>(snapshot);
 
   useEffect(() => {
@@ -126,7 +129,7 @@ export function useCampusStatus(): CampusStatus {
       })()
     : null;
 
-  const connection: CampusConnection = connectionOf(local);
+  const connection: OrganizationConnectionState = connectionOf(local);
 
   return { session: local.session, connection, serverName, refresh };
 }

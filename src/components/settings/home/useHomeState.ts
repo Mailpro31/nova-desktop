@@ -8,7 +8,7 @@ import {
 } from "@/bindings";
 import { isOrganizationMode } from "@/lib/mode";
 import { hasMilestone } from "@/lib/milestones";
-import { useCampusStatus } from "../../../hooks/useCampusStatus";
+import { useOrganizationStatus } from "../../../hooks/useOrganizationStatus";
 import { useDictationState } from "../../../hooks/useDictationState";
 import { useSettings } from "../../../hooks/useSettings";
 import { useSystemReadiness } from "../../../hooks/useSystemReadiness";
@@ -79,8 +79,8 @@ export function useHomeState(): HomeState {
   const readiness = useSystemReadiness();
   const dictation = useDictationState();
   const { getSetting } = useSettings();
-  const { session, connection, serverName } = useCampusStatus();
-  const campusMode = isOrganizationMode();
+  const { session, connection, serverName } = useOrganizationStatus();
+  const organizationMode = isOrganizationMode();
 
   // L'horodatage est réactualisé par les événements d'historique plutôt que
   // par un sondage : l'accueil est affiché souvent et longtemps.
@@ -111,7 +111,7 @@ export function useHomeState(): HomeState {
   // Nova Commands doit être réellement utilisable pour figurer dans la liste :
   // sinon on proposerait à un étudiant une étape qu'il ne peut pas franchir.
   const commandsAvailable =
-    campusMode && (getSetting("nova_commands_enabled") ?? false);
+    organizationMode && (getSetting("nova_commands_enabled") ?? false);
 
   const situation = deriveSituation({
     dictation: dictation.state,
@@ -124,12 +124,13 @@ export function useHomeState(): HomeState {
     // Suspendu ou hors ligne, la dictée passe par Nova Local : dégradé, jamais
     // bloquant.
     campusLocal:
-      campusMode && (connection === "local" || readiness.organizationSuspended),
+      organizationMode &&
+      (connection === "local" || readiness.organizationSuspended),
     campusSignedOut: readiness.organizationSignedOut,
   });
 
   const checklist: ChecklistItem[] = [];
-  if (campusMode) {
+  if (organizationMode) {
     checklist.push({
       id: "campus_connected",
       labelKey: "home.checklist.campus",

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import { resolveCampusContext } from "@/lib/campusPolicy";
-import type { CampusConfig } from "@/lib/campusSession";
+import { resolveOrganizationConfig } from "@/lib/organizationConfig";
+import type { CampusConfig } from "@/lib/organizationSession";
 import {
   can,
   CORE_CAPABILITIES,
@@ -13,7 +13,7 @@ import {
 /**
  * Ces tests portent sur ce que **l'application voit**, pas sur le détail des
  * fonctions internes : le contexte Campus est toujours construit par le chemin
- * réel (`resolveCampusContext` sur une configuration d'établissement), jamais
+ * réel (`resolveOrganizationConfig` sur une configuration d'établissement), jamais
  * assemblé à la main. Une régression du côté Campus ferait donc échouer ces
  * tests même si le code Organization restait intact — c'est le but.
  */
@@ -40,7 +40,7 @@ function campusOrganizationContext(
   return resolveOrganizationContext({
     edition: "organization",
     organizationType: "education",
-    campus: resolveCampusContext(config, profile),
+    campus: resolveOrganizationConfig(config, profile),
   });
 }
 

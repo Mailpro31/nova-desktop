@@ -17,7 +17,7 @@ import { Dialog } from "../../ui/Dialog";
 import { Input } from "../../ui/Input";
 import { Textarea } from "../../ui/Textarea";
 import { getStatus, TIER_FOR_FEATURE } from "../license/TierBadge";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
 import { BUILTIN_STYLE_IDS, styleLockFeature } from "@/lib/builtinStyles";
@@ -75,7 +75,7 @@ interface StyleItem {
 export const StylesList: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, refreshSettings } = useSettings();
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
 
   const [features, setFeatures] = useState<Record<string, boolean> | null>(
     null,
@@ -95,22 +95,22 @@ export const StylesList: React.FC = () => {
   // En campus, l'établissement fournit l'accès : aucun palier ne s'applique.
   const lockFor = useMemo(
     () => (id: string) => {
-      if (campusMode || features === null) return null;
+      if (organizationMode || features === null) return null;
       const feature = styleLockFeature(id);
       return feature && !features[feature] ? feature : null;
     },
-    [campusMode, features],
+    [organizationMode, features],
   );
 
   // Publiés par l'organisation, et distincts des réglages de l'utilisateur :
   // ils ne s'y écrivent pas, ne s'y modifient pas, et disparaissent avec la
   // session. Voir `organization_packages.rs`.
-  const organizationStyles = useCampusStore(
+  const organizationStyles = useOrganizationStore(
     (state) => state.organizationCatalog?.styles,
   );
   // Les Styles que l'organisation a retirés. Le poste ne les applique plus
   // (`style_policy.rs`) ; la page les montre, barrés d'un bandeau.
-  const disabledIds = useCampusStore(
+  const disabledIds = useOrganizationStore(
     (state) => state.serverIdentity?.disabledStyleIds,
   );
   const disabled = useMemo(() => disabledStyleSet(disabledIds), [disabledIds]);
@@ -132,7 +132,7 @@ export const StylesList: React.FC = () => {
 
   const { builtins, personal } = useMemo(() => {
     const visible = prompts.filter(
-      (p) => !(campusMode && CAMPUS_HIDDEN.has(p.id)),
+      (p) => !(organizationMode && CAMPUS_HIDDEN.has(p.id)),
     );
     const toItem = (p: LLMPrompt): StyleItem => {
       const isBuiltin = BUILTIN_STYLE_IDS.includes(p.id);
@@ -155,10 +155,10 @@ export const StylesList: React.FC = () => {
         .sort((a, b) => STYLE_ORDER.indexOf(a.id) - STYLE_ORDER.indexOf(b.id)),
       personal: items.filter((i) => i.kind === "personal"),
     };
-  }, [prompts, campusMode, lockFor, t, disabled]);
+  }, [prompts, organizationMode, lockFor, t, disabled]);
 
   // Créer un Style demande Nova Ultra en personnel ; en campus c'est ouvert.
-  const canEdit = campusMode || (features?.custom_styles ?? false);
+  const canEdit = organizationMode || (features?.custom_styles ?? false);
   const autoLock = lockFor("auto");
 
   const select = (id: string) => {

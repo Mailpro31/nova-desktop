@@ -4,11 +4,11 @@ import { Sparkles, Plus, Trash2, RefreshCw, Lightbulb } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
-import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi, campusErrorText } from "@/lib/campusApi";
-import type { CampusSnippetEntry } from "@/lib/campusApi";
+import { loadOrganizationSession } from "@/lib/organizationSession";
+import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
+import type { CampusSnippetEntry } from "@/lib/organizationApi";
 
-export const CampusSnippetsSection: React.FC = () => {
+export const OrganizationSnippetsSection: React.FC = () => {
   const { t } = useTranslation();
   const [snippets, setSnippets] = useState<CampusSnippetEntry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -19,11 +19,11 @@ export const CampusSnippetsSection: React.FC = () => {
   const [adding, setAdding] = useState(false);
 
   const loadSnippets = useCallback(async () => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
     setLoading(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const data = await api.getVocabulary();
       setSnippets(data.snippets || []);
     } catch (err) {
@@ -41,12 +41,12 @@ export const CampusSnippetsSection: React.FC = () => {
     e.preventDefault();
     if (!trigger.trim() || !content.trim()) return;
 
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     setAdding(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       await api.addSnippet(trigger.trim(), content.trim());
       setTrigger("");
       setContent("");
@@ -62,11 +62,11 @@ export const CampusSnippetsSection: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       await api.deleteSnippet(id);
       await loadSnippets();
     } catch (err) {

@@ -46,7 +46,7 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
 }) => {
   const { t } = useTranslation();
   const osType = useOsType();
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
   const businessMode = isBusinessMode();
 
   const rows: Row[] = [
@@ -58,7 +58,7 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
     },
     {
       label: t("onboarding.smartSetup.row.engine"),
-      value: engineLabel(readiness, campusMode, businessMode, t),
+      value: engineLabel(readiness, organizationMode, businessMode, t),
       // « En cours de vérification » n'est pas un avertissement : tant que la
       // sonde n'a pas répondu, on n'annonce ni succès ni repli.
       tone: readiness.engine === "degraded" ? "warn" : "ok",
@@ -130,11 +130,11 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
 
 function engineLabel(
   readiness: SystemReadiness,
-  campusMode: boolean,
+  organizationMode: boolean,
   businessMode: boolean,
   t: (key: string) => string,
 ): string {
-  if (campusMode) {
+  if (organizationMode) {
     if (readiness.engineLabel === "campus") {
       return businessMode
         ? t("organizationConnection.connected")

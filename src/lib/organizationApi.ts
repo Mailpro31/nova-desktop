@@ -19,13 +19,13 @@ export type HealthResponse = z.infer<typeof HealthResponseSchema>;
 export type AuthRequestResponse = z.infer<typeof AuthRequestResponseSchema>;
 export type AuthVerifyResponse = z.infer<typeof AuthVerifyResponseSchema>;
 
-export class CampusApiError extends Error {
+export class OrganizationApiError extends Error {
   status: number;
 
   constructor(message: string, status: number) {
     super(message);
     this.status = status;
-    this.name = "CampusApiError";
+    this.name = "OrganizationApiError";
   }
 }
 
@@ -33,8 +33,8 @@ function normalizeBaseUrl(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
-function parseCommandError(err: unknown): CampusApiError {
-  if (err instanceof CampusApiError) return err;
+function parseCommandError(err: unknown): OrganizationApiError {
+  if (err instanceof OrganizationApiError) return err;
 
   let message = "Unknown error";
   let status = 0;
@@ -64,7 +64,7 @@ function parseCommandError(err: unknown): CampusApiError {
     message = httpMatch[2] || message;
   }
 
-  return new CampusApiError(message, status);
+  return new OrganizationApiError(message, status);
 }
 
 /**
@@ -74,7 +74,7 @@ function parseCommandError(err: unknown): CampusApiError {
  * l'onboarding avec son propre toast, donc aucune erreur locale à afficher.
  */
 export function campusErrorText(err: unknown, fallback: string): string | null {
-  if (err instanceof CampusApiError) {
+  if (err instanceof OrganizationApiError) {
     if (err.status === 401) return null;
     return err.message || fallback;
   }
@@ -104,7 +104,7 @@ export interface OrganizationCatalogSnapshot {
   skills: OrganizationSkillEntry[];
 }
 
-export class CampusApi {
+export class OrganizationApi {
   private baseUrl: string;
 
   constructor(baseUrl: string) {
@@ -119,7 +119,7 @@ export class CampusApi {
       },
     );
     if (!reachable) {
-      throw new CampusApiError("Server unreachable", 0);
+      throw new OrganizationApiError("Server unreachable", 0);
     }
     return { status: "ok", domains: [] };
   }

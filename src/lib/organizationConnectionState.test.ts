@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
 import type { CampusSession } from "@/bindings";
-import { connectionOf, withSession } from "./campusConnectionState";
+import { connectionOf, withSession } from "./organizationConnectionState";
 
 /**
  * Mesuré dans Nova, organisation IPSA : après « Se déconnecter », la page
