@@ -118,7 +118,6 @@ interface SectionConfig {
   icon: React.ComponentType<IconProps>;
   component: React.ComponentType;
   enabled: (settings: any) => boolean;
-  campusVisible: boolean;
 }
 
 /**
@@ -135,7 +134,6 @@ export const SECTIONS_CONFIG = {
     icon: House,
     component: HomeSettings,
     enabled: always,
-    campusVisible: true,
   },
   learn: {
     // Learn — les trois piliers, les micro-leçons, la progression.
@@ -148,7 +146,6 @@ export const SECTIONS_CONFIG = {
     icon: GraduationCap,
     component: LearnSettings,
     enabled: always,
-    campusVisible: true,
   },
   aiskills: {
     // La palette Nova Commands et le catalogue de skills intégrés. Cet écran
@@ -165,7 +162,6 @@ export const SECTIONS_CONFIG = {
     // l'entrée suivante. Décision Business conservée telle quelle : le
     // renommage en « Nova Commands » a corrigé le libellé, pas le périmètre.
     enabled: () => isCampusMode(),
-    campusVisible: true,
   },
   aiskilltools: {
     // Les vraies actions IA, exécutables. Distinctes de l'apprentissage :
@@ -178,7 +174,6 @@ export const SECTIONS_CONFIG = {
     // Toute organisation : le catalogue vient des Organization Packages, qu'une
     // école et une entreprise publient de la même façon.
     enabled: () => isOrganizationMode(),
-    campusVisible: true,
   },
   configuration: {
     labelKey: "sidebar.configuration",
@@ -186,7 +181,6 @@ export const SECTIONS_CONFIG = {
     icon: Cog,
     component: ConfigurationSettings,
     enabled: always,
-    campusVisible: true,
   },
   postprocessing: {
     labelKey: "sidebar.postProcessing",
@@ -194,7 +188,6 @@ export const SECTIONS_CONFIG = {
     icon: Sparkles,
     component: PostProcessingSettings,
     enabled: always,
-    campusVisible: true,
   },
   prompts: {
     // Les prompts écrits par le Style prompt, retrouvés sans fouiller
@@ -204,7 +197,6 @@ export const SECTIONS_CONFIG = {
     icon: MessageSquareText,
     component: PromptsSettings,
     enabled: always,
-    campusVisible: true,
   },
   notes: {
     // Notes structurées : des notes brutes rangées selon leur type. Juste
@@ -214,15 +206,17 @@ export const SECTIONS_CONFIG = {
     icon: NotebookPen,
     component: StructuredNotesSettings,
     enabled: always,
-    campusVisible: true,
   },
   meeting: {
+    // Mode réunion : capture des autres participants, puis compte rendu.
+    // Débloqué pour toute organisation côté Rust — `organization_unlocks()`
+    // rend `true` avant tout contrôle de palier. L'entrée manquait pourtant
+    // dans la liste ci-dessous, si bien qu'aucun écran ne menait au moteur.
     labelKey: "sidebar.meeting",
     campusLabelKey: undefined,
     icon: Users,
     component: MeetingSettings,
     enabled: always,
-    campusVisible: false,
   },
   personalization: {
     labelKey: "sidebar.personalization",
@@ -232,7 +226,6 @@ export const SECTIONS_CONFIG = {
     enabled: always,
     // En campus, la personnalisation vit dans Réglages (onglet dédié) :
     // la navigation principale reste à quatre destinations.
-    campusVisible: false,
   },
   account: {
     labelKey: "sidebar.account",
@@ -240,7 +233,6 @@ export const SECTIONS_CONFIG = {
     icon: CreditCard,
     component: AccountSettings,
     enabled: always,
-    campusVisible: false,
   },
   organization: {
     labelKey: "sidebar.organization",
@@ -251,7 +243,6 @@ export const SECTIONS_CONFIG = {
     // principale — l'établissement est accessible sans être une destination
     // de premier plan.
     enabled: () => false,
-    campusVisible: true,
   },
   history: {
     labelKey: "sidebar.history",
@@ -259,7 +250,6 @@ export const SECTIONS_CONFIG = {
     icon: History,
     component: HistorySettings,
     enabled: always,
-    campusVisible: true,
   },
   about: {
     labelKey: "sidebar.about",
@@ -267,7 +257,6 @@ export const SECTIONS_CONFIG = {
     icon: Info,
     component: AboutSettings,
     enabled: always,
-    campusVisible: false,
   },
 } as const satisfies Record<string, SectionConfig>;
 
@@ -292,6 +281,7 @@ const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "postprocessing",
   "prompts",
   "notes",
+  "meeting",
   "history",
 ];
 
@@ -361,8 +351,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const stylesOpen = useCapability("writingStyles");
   const promptsOpen = useCapability("prompts");
   const historyOpen = useCapability("history");
+  // Mode réunion : même règle. Une organisation qui n'en veut pas le ferme ;
+  // Nova Personal le garde, et le palier de licence y répond seul.
+  const meetingOpen = useCapability("meeting");
   const visible = (id: SidebarSection) =>
     (id !== "learn" || learningOpen) &&
+    (id !== "meeting" || !organizationMode || meetingOpen) &&
     (id !== "notes" || !organizationMode || notesOpen) &&
     (id !== "postprocessing" || !organizationMode || stylesOpen) &&
     (id !== "prompts" || !organizationMode || promptsOpen) &&
