@@ -335,8 +335,10 @@ poste     { titleKey, promptKey, options[], correctOptionId }  clés i18n + quiz
 ```
 
 `getAiSkills()` et sa commande Rust existent — et **rien ne les appelle**.
-L'écran consomme `AI_ESSENTIALS_TRACK`, une piste d'apprentissage locale avec
-questions à choix multiples.
+L'écran consommait `AI_ESSENTIALS_TRACK`, une piste d'apprentissage locale avec
+questions à choix multiples. Ses six modules ont depuis rejoint le catalogue
+serveur d'Apprendre, et la piste locale a été retirée avec son ancien premier
+lancement.
 
 Distribuer un AI Skill d'organisation demanderait donc un second chemin de
 rendu pour du texte simple, ou de rapprocher les deux modèles. Ce n'est pas du

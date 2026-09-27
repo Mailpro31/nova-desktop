@@ -132,6 +132,7 @@ function resolveMember(
     memberType: toMemberType(campus?.organization.role),
     securityRole: "member",
     groups: resolveGroups(campus),
+    groupsVisible: true,
     status: "active",
   };
 }

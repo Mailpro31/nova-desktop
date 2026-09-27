@@ -39,8 +39,27 @@ const REMOTE_PRIMARY_TIMEOUT: Duration = Duration::from_secs(8);
 /// En mode automatique, le local garde la priorité mais ne peut pas bloquer le
 /// repli Turbo trop longtemps sur une machine modeste.
 const LOCAL_PRIMARY_TIMEOUT: Duration = Duration::from_secs(6);
+/// Le Style qui produit un compte rendu plutôt qu'une réécriture.
+const MEETING_STYLE: &str = "nova_style_meeting";
+
+/// Ce que le moteur local peut écrire pour ce Style.
+fn output_budget(style_id: &str) -> crate::llm_client::OutputBudget {
+    if style_id == MEETING_STYLE {
+        crate::llm_client::OutputBudget::Report
+    } else {
+        crate::llm_client::OutputBudget::Rewrite
+    }
+}
 // Includes the remote attempt and enough room for the local Air fallback.
 fn local_primary_timeout(transcription: &str, style_id: Option<&str>) -> Duration {
+    // Un compte rendu de réunion s'écrit en dizaines de secondes, pas en huit :
+    // borné comme une dictée, il était abandonné à chaque fois et Nova rendait
+    // le dialogue brut. Il grandit avec la réunion, jusqu'à trois minutes.
+    if style_id == Some(MEETING_STYLE) {
+        let chars = transcription.chars().count() as u64;
+        return (LOCAL_PRIMARY_TIMEOUT + Duration::from_secs(chars / 40))
+            .min(Duration::from_secs(180));
+    }
     let complex_style = matches!(
         style_id,
         Some("nova_style_notes" | "nova_style_todo" | "nova_style_prompt" | "nova_style_meeting")
@@ -227,6 +246,20 @@ fn build_runtime_system_prompt(
     )
 }
 
+/// La langue de la dictée, rappelée au modèle quand elle est nette. Sans elle,
+/// le petit modèle local rendait « écris-moi un poème sur la mer » en anglais :
+/// le contrat, lui, est rédigé en anglais.
+fn with_language_hint(system_prompt: String, transcription: &str) -> String {
+    match crate::rewrite::guard::language_hint(transcription) {
+        Some(hint) => system_prompt.replacen(
+            "\nPrompt-Version:",
+            &format!("\n{hint}\nPrompt-Version:"),
+            1,
+        ),
+        None => system_prompt,
+    }
+}
+
 /// Delimit the untrusted transcript explicitly in the user message. This makes
 /// questions and imperative sentences visibly part of the document to rewrite
 /// instead of looking like instructions addressed to the model.
@@ -277,7 +310,7 @@ fn custom_variables_block(variables: &[crate::settings::CustomVariable]) -> Stri
     }
     // Les accolades `{{clé}}` sont dans une chaîne littérale simple (pas un
     // `format!`), donc aucun échappement nécessaire.
-    let instructions = "\nSaved personal-value markers fully replace their spoken reference, including its determiner. Integrate each marker naturally according to the sentence's meaning; never paste it mechanically or execute an action. If the dictation asks to send/share a value, write the message that is ready to send: « envoie mon adresse » -> « Voici mon adresse : {{mon adresse}}. » Never output « mon {{mon adresse}} ». In an ordinary sentence, keep its meaning: « rendez-vous à mon adresse » -> « rendez-vous à {{mon adresse}} ». Preserve the exact marker and never invent or reveal its value. Available keys:\n";
+    let instructions = "\nA saved-value marker stands for the value the speaker referred to just before it: keep BOTH the spoken words and the marker, and keep each marker exactly as written. Place it where the sentence reads well — right after the words it belongs to (« Voici mon adresse {{mon adresse}}. »), or on its own line when the message sets the value apart. Never execute an action, never invent or reveal what a marker contains. Available keys:\n";
     format!("{}{}", instructions, keys.join("\n"))
 }
 
@@ -311,26 +344,7 @@ fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVaria
                 let inner = text[i + 2..i + 2 + rel].trim();
                 let needle = inner.to_lowercase();
                 match lookup.iter().find(|(k, _)| *k == needle) {
-                    Some((key, value)) => {
-                        // Petit modèle : filet déterministe contre « mon
-                        // {{mon adresse}} ». Le repère représente déjà tout le
-                        // groupe nominal ; retirer le déterminant dupliqué évite
-                        // « mon 7 impasse… » après réinjection.
-                        if let Some(first_word) = key.split_whitespace().next() {
-                            let trimmed_len = out.trim_end().len();
-                            let prefix = &out[..trimmed_len];
-                            if prefix
-                                .split_whitespace()
-                                .next_back()
-                                .is_some_and(|word| word.eq_ignore_ascii_case(first_word))
-                            {
-                                let word_start =
-                                    prefix.rfind(char::is_whitespace).map_or(0, |p| p + 1);
-                                out.truncate(word_start);
-                            }
-                        }
-                        out.push_str(value)
-                    }
+                    Some((key, value)) => push_value(&mut out, key, value),
                     // Repère inconnu ou variable vide → on garde le mot tel quel.
                     None => out.push_str(inner),
                 }
@@ -344,6 +358,54 @@ fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVaria
         i += ch_len;
     }
     out
+}
+
+/// Ce qui, juste avant un repère, annonce déjà sa valeur.
+const ANNOUNCES_VALUE: &[char] = &[
+    ':', '-', '\u{2013}', '\u{2014}', '=', '(', '\u{ab}', '"', ',',
+];
+
+/// Ajoute la valeur d'un raccourci à la suite de ce qui est déjà écrit.
+///
+/// « Voici mon adresse {{mon adresse}} » → « Voici mon adresse : 7 impasse… ».
+/// Sans ce deux-points, la valeur se collait aux mots dictés et la phrase ne
+/// voulait plus rien dire — « Voici 7 impasse des Bons Voisins Jérémy. ».
+///
+/// Rien n'est ajouté quand la phrase annonce déjà la valeur, quand le repère
+/// commence une ligne (le modèle l'a mise en évidence), ou quand il a été
+/// déplacé ailleurs. Et le déterminant dicté que la clé porte déjà (« Envoie
+/// mon {{mon adresse}} ») est retiré, plutôt que de laisser « mon 7 impasse… ».
+fn push_value(out: &mut String, key: &str, value: &str) {
+    out.truncate(out.trim_end_matches([' ', '\t']).len());
+    let prefix = out.as_str();
+    if prefix.is_empty() || prefix.ends_with('\n') {
+        out.push_str(value);
+        return;
+    }
+    if prefix.ends_with(ANNOUNCES_VALUE) {
+        out.push(' ');
+        out.push_str(value);
+        return;
+    }
+    let last_word = prefix
+        .split(char::is_whitespace)
+        .next_back()
+        .unwrap_or("")
+        .trim_end_matches(|c: char| !c.is_alphanumeric());
+    let mut words = key.split_whitespace();
+    let first_word = words.next().unwrap_or("");
+    let last_key_word = key.split_whitespace().next_back().unwrap_or("");
+    if !last_key_word.is_empty() && last_word.eq_ignore_ascii_case(last_key_word) {
+        out.push_str(" : ");
+    } else if words.next().is_some() && last_word.eq_ignore_ascii_case(first_word) {
+        let word_start = prefix
+            .rfind(char::is_whitespace)
+            .map_or(0, |index| index + 1);
+        out.truncate(word_start);
+    } else {
+        out.push(' ');
+    }
+    out.push_str(value);
 }
 
 /// Vrai si le caractère fait partie d'un « mot » (lettre ou chiffre) : sert à
@@ -465,10 +527,24 @@ fn protect_custom_variables(text: &str, variables: &[crate::settings::CustomVari
         .collect();
     keys.sort_by_key(|key| std::cmp::Reverse(key.chars().count()));
 
+    // Les mots dictés restent, suivis du repère : le modèle voit ce que la
+    // personne a dit (« mon adresse ») et garde une phrase qui a du sens.
+    //
+    // Chaque clé traitée est mise de côté derrière un jeton sans lettre, puis
+    // remise à la fin : sans cela, « IBAN » venait se poser à l'intérieur du
+    // repère que « mon IBAN » venait d'écrire.
     let mut output = text.to_string();
+    let mut protected: Vec<String> = Vec::new();
     for key in keys {
-        let marker = format!("{{{{{key}}}}}");
-        output = replace_spoken_key_ci(&output, &key, &marker);
+        let token = format!("\u{0}{}\u{0}", protected.len());
+        let replaced = replace_spoken_key_ci(&output, &key, &token);
+        if replaced != output {
+            output = replaced;
+            protected.push(format!("{key} {{{{{key}}}}}"));
+        }
+    }
+    for (index, expansion) in protected.iter().enumerate() {
+        output = output.replace(&format!("\u{0}{index}\u{0}"), expansion);
     }
     output
 }
@@ -482,20 +558,10 @@ fn protect_custom_variables(text: &str, variables: &[crate::settings::CustomVari
 /// causait la double insertion). Clés les plus longues d'abord (évite qu'une clé
 /// courte n'ampute une clé englobante). Texte inchangé s'il n'y a aucun raccourci.
 fn apply_custom_variables(text: &str, variables: &[crate::settings::CustomVariable]) -> String {
-    let mut pairs: Vec<(String, String)> = variables
-        .iter()
-        .filter(|v| !v.key.trim().is_empty() && !v.value.trim().is_empty())
-        .map(|v| (v.key.trim().to_string(), v.value.trim().to_string()))
-        .collect();
-    if pairs.is_empty() {
-        return text.to_string();
-    }
-    pairs.sort_by(|a, b| b.0.chars().count().cmp(&a.0.chars().count()));
-    let mut out = text.to_string();
-    for (key, value) in pairs {
-        out = replace_spoken_key_ci(&out, &key, &value);
-    }
-    out
+    // Le même chemin que lorsque l'IA a reformulé : les mots dictés restent, la
+    // valeur les suit. Deux comportements différents selon que l'IA a répondu ou
+    // non se verraient d'une dictée à l'autre.
+    resolve_variable_tokens(&protect_custom_variables(text, variables), variables)
 }
 
 /// Préfixe des repères de protection du lexique. Distinct des repères de
@@ -532,7 +598,7 @@ fn protect_lexicon(text: &str, terms: &[String]) -> (String, Vec<(String, String
     }
     // Les plus longs d'abord (en caractères) : évite qu'un terme court n'ampute
     // un terme englobant.
-    uniq.sort_by(|a, b| b.chars().count().cmp(&a.chars().count()));
+    uniq.sort_by_key(|term| std::cmp::Reverse(term.chars().count()));
 
     let mut out = text.to_string();
     let mut restores: Vec<(String, String)> = Vec::new();
@@ -759,9 +825,13 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
         return Err("chatbot-answer");
     }
     static DIGITS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b\d+(?:[.,]\d+)?\b").unwrap());
-    for number in DIGITS.find_iter(input) {
-        if !output.contains(number.as_str()) {
-            return Err("explicit-number-lost");
+    // Un compte rendu résume : il ne reprend pas chaque heure ni chaque montant
+    // cité. Exiger tous les nombres le faisait refuser presque à chaque fois.
+    if style_id != MEETING_STYLE {
+        for number in DIGITS.find_iter(input) {
+            if !output.contains(number.as_str()) {
+                return Err("explicit-number-lost");
+            }
         }
     }
 
@@ -798,7 +868,22 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
     if output_len > input_len.saturating_mul(6).saturating_add(160) {
         return Err("output-expanded-excessively");
     }
-    Ok(())
+    // Langue changée, dictée remplacée par autre chose, nombre réécrit : ce que
+    // le prompt ne garantit pas, ces contrôles le vérifient.
+    crate::rewrite::guard::check(input, output, style_id)
+}
+
+/// La reformulation rendue par le serveur de l'organisation, soumise aux mêmes
+/// contrôles qu'un moteur local. Le serveur en fait déjà, mais un serveur plus
+/// ancien, ou un modèle qui les déjoue, ne doit pas pouvoir coller un texte
+/// vide, traduit ou sans rapport à la place de la dictée.
+pub(crate) fn checked_campus_rewrite(
+    transcription: &str,
+    reformulated: &str,
+    style_id: &str,
+) -> Result<String, &'static str> {
+    let cleaned = clean_llm_output(reformulated);
+    validate_rewrite(transcription, &cleaned, style_id).map(|()| cleaned)
 }
 
 fn accept_rewrite(
@@ -1106,6 +1191,9 @@ pub(crate) fn resolve_effective_style(
         Some(id) => id.to_string(),
         None => settings.post_process_selected_prompt_id.clone()?,
     };
+    // Un Style désactivé par l'organisation ne s'applique pas, qu'il ait été
+    // choisi ou désigné par le Style automatique.
+    let selected_prompt_id = crate::style_policy::permitted(&selected_prompt_id)?;
 
     effective_style(&settings, &selected_prompt_id, license_key)
 }
@@ -1215,8 +1303,14 @@ async fn post_process_with_provider(
             }
         },
     };
+    // Un Style désactivé par l'organisation ne s'applique pas : repli sur un
+    // Style intégré encore autorisé, ou dictée brute s'il n'en reste aucun.
+    let Some(selected_prompt_id) = crate::style_policy::permitted(&selected_prompt_id) else {
+        debug!("Post-processing skipped because every fallback Style is disabled");
+        return None;
+    };
 
-    let prompt = match resolve_style_prompt(&settings, &selected_prompt_id) {
+    let prompt = match resolve_style_prompt(settings, &selected_prompt_id) {
         Some(prompt) => prompt,
         None => {
             debug!(
@@ -1343,13 +1437,16 @@ async fn post_process_with_provider(
     if provider.supports_structured_output {
         debug!("Using structured outputs for provider '{}'", provider.id);
 
-        let system_prompt = build_runtime_system_prompt(
-            &provider.id,
-            &model,
-            &effective_style_id,
-            &prompt,
-            &settings.custom_variables,
-            false,
+        let system_prompt = with_language_hint(
+            build_runtime_system_prompt(
+                &provider.id,
+                &model,
+                &effective_style_id,
+                &prompt,
+                &settings.custom_variables,
+                false,
+            ),
+            transcription,
         );
         let user_content = build_transcript_message(transcription, context.as_deref());
 
@@ -1426,6 +1523,7 @@ async fn post_process_with_provider(
             temperature,
             reasoning_effort.clone(),
             reasoning.clone(),
+            output_budget(&effective_style_id),
         )
         .await
         {
@@ -1485,13 +1583,16 @@ async fn post_process_with_provider(
 
     // Même sans JSON Schema, garder les instructions dans un message système
     // stable permet à llama-server de réutiliser le cache KV entre deux dictées.
-    let system_prompt = build_runtime_system_prompt(
-        &provider.id,
-        &model,
-        &effective_style_id,
-        &prompt,
-        &settings.custom_variables,
-        false,
+    let system_prompt = with_language_hint(
+        build_runtime_system_prompt(
+            &provider.id,
+            &model,
+            &effective_style_id,
+            &prompt,
+            &settings.custom_variables,
+            false,
+        ),
+        transcription,
     );
     debug!("System prompt length: {} chars", system_prompt.len());
 
@@ -1506,6 +1607,7 @@ async fn post_process_with_provider(
         temperature,
         reasoning_effort.clone(),
         reasoning.clone(),
+        output_budget(&effective_style_id),
     )
     .await;
 
@@ -1552,13 +1654,16 @@ async fn post_process_with_provider(
     // conversationnelle au premier passage. Une unique seconde tentative avec
     // un contrat renforcé corrige ce cas sans boucle ni coût cloud caché.
     if provider.id == crate::local_llm::PROVIDER_ID {
-        let retry_prompt = build_runtime_system_prompt(
-            &provider.id,
-            &model,
-            &effective_style_id,
-            &prompt,
-            &settings.custom_variables,
-            true,
+        let retry_prompt = with_language_hint(
+            build_runtime_system_prompt(
+                &provider.id,
+                &model,
+                &effective_style_id,
+                &prompt,
+                &settings.custom_variables,
+                true,
+            ),
+            transcription,
         );
         debug!("Retrying local rewrite once with reinforced prompt");
         let retry_started = Instant::now();
@@ -1572,6 +1677,7 @@ async fn post_process_with_provider(
             temperature,
             reasoning_effort,
             reasoning,
+            output_budget(&effective_style_id),
         )
         .await;
         match retry_result {
@@ -1720,7 +1826,17 @@ pub(crate) async fn process_transcription_output(
     post_process: bool,
     auto_style_override: Option<String>,
 ) -> ProcessedTranscription {
-    let settings = get_settings(app);
+    let mut settings = get_settings(app);
+    // Les snippets et le vocabulaire de l'organisation, gardés pour le cas où
+    // son serveur ne répond pas : les snippets passent par le mécanisme de
+    // « Mes informations » (leur contenu ne part jamais au modèle), et le
+    // vocabulaire est appliqué au texte final. Quand le serveur a reformulé, il
+    // les a déjà appliqués : les appliquer à nouveau ne change rien.
+    let organization_aids = crate::writing_aids::for_organization(active_organization().as_deref());
+    if let Some(aids) = &organization_aids {
+        settings.custom_variables =
+            crate::writing_aids::with_snippets(&settings.custom_variables, aids);
+    }
     // A transcription is always content. No spoken phrase can cancel the
     // operation, mutate the dictionary, insert punctuation, or select a Style.
     let effective_style_override = auto_style_override;
@@ -1842,6 +1958,14 @@ pub(crate) async fn process_transcription_output(
         post_processed_text = Some(final_text.clone());
     }
 
+    if let Some(aids) = &organization_aids {
+        let enforced = crate::writing_aids::enforce_vocabulary(&final_text, &aids.vocabulary);
+        if enforced != final_text {
+            final_text = enforced;
+            post_processed_text = Some(final_text.clone());
+        }
+    }
+
     ProcessedTranscription {
         final_text,
         post_processed_text,
@@ -1862,6 +1986,12 @@ impl ShortcutAction for TranscribeAction {
         if crate::licensing::dictation_requires_organization_sign_in() {
             warn!("Dictation refused: organization sign-in required by machine policy");
             let _ = app.emit(campus::CAMPUS_SIGN_IN_REQUIRED_EVENT, ());
+            return;
+        }
+        // Suspendu par l'organisation : plus aucune dictée, pas même locale.
+        if crate::licensing::dictation_blocked_by_suspension() {
+            warn!("Dictation refused: the organization suspended this member");
+            let _ = app.emit(campus::CAMPUS_ACCESS_SUSPENDED_EVENT, ());
             return;
         }
         crate::input::remember_text_target();
@@ -2059,7 +2189,8 @@ impl ShortcutAction for TranscribeAction {
         // `start` a refusé la dictée faute de connexion : rien n'a été
         // enregistré, rien n'est à montrer ni à transcrire. Un enregistrement
         // ouvert avant la perte de session, lui, se termine normalement.
-        if crate::licensing::dictation_requires_organization_sign_in()
+        if (crate::licensing::dictation_requires_organization_sign_in()
+            || crate::licensing::dictation_blocked_by_suspension())
             && !app.state::<Arc<AudioRecordingManager>>().is_recording()
         {
             return;
@@ -2256,7 +2387,22 @@ impl ShortcutAction for TranscribeAction {
                                             )
                                             .await
                                             {
-                                                Ok(reformulated) => Ok(reformulated),
+                                                Ok(reformulated) => match checked_campus_rewrite(
+                                                    &text,
+                                                    &reformulated,
+                                                    &style.id,
+                                                ) {
+                                                    Ok(checked) => Ok(checked),
+                                                    Err(reason) => {
+                                                        warn!(
+                                                            "Rejected unsafe rewrite from the organization server ({})",
+                                                            reason
+                                                        );
+                                                        let _ = ah
+                                                            .emit("post-process-rejected", reason);
+                                                        Ok(text)
+                                                    }
+                                                },
                                                 Err(e) => {
                                                     campus_error = Some(e);
                                                     Ok(text)
@@ -2611,10 +2757,11 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 mod tests {
     use super::{
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
-        clean_llm_output, complete_unless_cancelled, context_looks_like_current_draft,
-        custom_variables_block, effective_style, is_blank_transcription, local_primary_timeout,
-        protect_custom_variables, protect_lexicon, replace_keyword_ci, resolve_variable_tokens,
-        restore_lexicon, should_use_streaming_overlay, temperature_for_style, validate_rewrite,
+        checked_campus_rewrite, clean_llm_output, complete_unless_cancelled,
+        context_looks_like_current_draft, custom_variables_block, effective_style,
+        is_blank_transcription, local_primary_timeout, protect_custom_variables, protect_lexicon,
+        replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
+        temperature_for_style, validate_rewrite, with_language_hint,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -2784,27 +2931,62 @@ mod tests {
     #[test]
     fn custom_variables_apply_longest_key_first() {
         let vars = vec![var("mon IBAN", "FR76 3000"), var("IBAN", "GENERIC")];
-        // La clé la plus longue gagne : « mon IBAN » n'est pas amputé par « IBAN ».
+        // La clé la plus longue gagne : « mon IBAN » n'est pas amputé par
+        // « IBAN », et les mots dictés restent devant la valeur.
         assert_eq!(
             apply_custom_variables("Envoie mon IBAN stp", &vars),
-            "Envoie FR76 3000 stp"
+            "Envoie mon IBAN : FR76 3000 stp"
+        );
+    }
+
+    /// Ce que Sash a vu collé dans Word le 2026-09-22 : « Voici 7 impasse des
+    /// Bons Voisins Jérémy. » — la valeur avait pris la place des mots dictés,
+    /// et la phrase ne voulait plus rien dire.
+    #[test]
+    fn a_personal_value_is_announced_by_the_words_that_were_dictated() {
+        let vars = vec![var("mon adresse", "7 impasse des Bons Voisins")];
+        assert_eq!(
+            protect_custom_variables("Voici mon adresse Jérémy.", &vars),
+            "Voici mon adresse {{mon adresse}} Jérémy."
+        );
+        assert_eq!(
+            resolve_variable_tokens("Voici mon adresse {{mon adresse}} Jérémy.", &vars),
+            "Voici mon adresse : 7 impasse des Bons Voisins Jérémy."
+        );
+        // Déjà annoncée par la phrase : pas de deux-points en double.
+        assert_eq!(
+            resolve_variable_tokens("Mon adresse : {{mon adresse}}", &vars),
+            "Mon adresse : 7 impasse des Bons Voisins"
+        );
+        // Mise en évidence sur sa propre ligne par le modèle : elle y reste.
+        assert_eq!(
+            resolve_variable_tokens("Viens à 17h.\n\nMon adresse\n{{mon adresse}}", &vars),
+            "Viens à 17h.\n\nMon adresse\n7 impasse des Bons Voisins"
+        );
+        // Sans reformulation, le repli déterministe donne la même phrase.
+        assert_eq!(
+            apply_custom_variables("Voici mon adresse Jérémy.", &vars),
+            "Voici mon adresse : 7 impasse des Bons Voisins Jérémy."
         );
     }
 
     #[test]
     fn custom_variables_recognize_spoken_acronyms_before_the_llm() {
         let vars = vec![var("IBAN", "FR76 3000")];
+        // La forme dictée (« i-ban ») est remise à l'orthographe de la clé,
+        // suivie du repère.
         assert_eq!(
             protect_custom_variables("tu trouveras mon i-ban ci-dessous", &vars),
-            "tu trouveras mon {{IBAN}} ci-dessous"
+            "tu trouveras mon IBAN {{IBAN}} ci-dessous"
         );
         assert_eq!(
             apply_custom_variables("mon i b a n", &vars),
-            "mon FR76 3000"
+            "mon IBAN : FR76 3000"
         );
         let variable_protected = protect_custom_variables("envoie mon i-ban", &vars);
         let (fully_protected, _) = protect_lexicon(&variable_protected, &["IBAN".to_string()]);
-        assert_eq!(fully_protected, "envoie mon {{IBAN}}");
+        // Le terme du lexique est protégé à son tour, le repère reste intact.
+        assert!(fully_protected.ends_with("{{IBAN}}"), "{fully_protected}");
     }
 
     #[test]
@@ -2957,9 +3139,42 @@ mod tests {
             local_primary_timeout("texte court", Some("nova_style_notes")),
             Duration::from_secs(8)
         );
+    }
+
+    #[test]
+    fn a_meeting_report_gets_time_that_grows_with_the_meeting() {
+        // Cinq minutes de réunion : 4 337 caractères. Dix secondes n'y suffisaient
+        // jamais ; le compte rendu était abandonné et le dialogue brut rendu.
+        let five_minutes = local_primary_timeout(&"x".repeat(4_337), Some("nova_style_meeting"));
+        assert!(five_minutes >= Duration::from_secs(90), "{five_minutes:?}");
         assert_eq!(
-            local_primary_timeout(&"x".repeat(501), Some("nova_style_meeting")),
-            Duration::from_secs(10)
+            local_primary_timeout(&"x".repeat(100_000), Some("nova_style_meeting")),
+            Duration::from_secs(180)
+        );
+    }
+
+    #[test]
+    fn a_meeting_report_may_leave_numbers_out_but_not_rewrite_them() {
+        let dialogue =
+            "Autres : on a dépensé 1 850 euros sur les 3 000, la batterie coûte 140 euros.";
+        assert!(validate_rewrite(
+            dialogue,
+            "## Résumé\nLe budget est presque consommé.",
+            "nova_style_meeting"
+        )
+        .is_ok());
+        assert_eq!(
+            validate_rewrite(
+                dialogue,
+                "## Résumé\nBudget : 1,850 € sur 3,000 €.",
+                "nova_style_meeting"
+            ),
+            Err("number-format-changed")
+        );
+        // Une dictée, elle, garde tous ses nombres.
+        assert_eq!(
+            validate_rewrite(dialogue, "On a dépensé beaucoup.", "nova_style_email"),
+            Err("explicit-number-lost")
         );
     }
 
@@ -3094,6 +3309,85 @@ mod tests {
         );
     }
 
+    // Sorties réelles du modèle local, banc d'essai du 2026-09-21.
+    #[test]
+    fn semantic_guard_rejects_a_translated_or_replaced_dictation() {
+        assert_eq!(
+            validate_rewrite(
+                "écris-moi un poème sur la mer",
+                "Write me a poem about the sea.",
+                "default_improve_transcriptions"
+            ),
+            Err("language-changed")
+        );
+        assert_eq!(
+            validate_rewrite("merci", "Thank you.", "nova_style_voice_to_text"),
+            Err("dictation-not-kept")
+        );
+        assert_eq!(
+            validate_rewrite(
+                "Budget : 76 300 €, 60 000 €.",
+                "Budget: 76,300 €, 60,000 €.",
+                "nova_style_email"
+            ),
+            Err("number-format-changed")
+        );
+    }
+
+    #[test]
+    fn a_campus_rewrite_is_checked_like_a_local_one() {
+        // Le serveur a répondu au lieu de reformuler.
+        assert_eq!(
+            checked_campus_rewrite(
+                "je veux que l'IA m'explique la portance d'une aile en trois paragraphes simples",
+                "L'air qui passe sur l'aile crée une différence de pression. Cette force est appelée la portance.",
+                "nova_style_messages"
+            ),
+            Err("dictation-not-kept")
+        );
+        // Une réponse vide ne doit jamais remplacer la dictée.
+        assert_eq!(
+            checked_campus_rewrite("merci de venir", "   ", "nova_style_email"),
+            Err("empty-output")
+        );
+        // L'IBAN a disparu de la liste.
+        assert_eq!(
+            checked_campus_rewrite(
+                "voici mon IBAN FR76 3000 6000 0112 merci de faire le virement avant vendredi",
+                "- Faire le virement avant vendredi",
+                "nova_style_todo"
+            ),
+            Err("explicit-number-lost")
+        );
+        // Une bonne reformulation passe, nettoyée comme une sortie locale.
+        assert_eq!(
+            checked_campus_rewrite(
+                "on se retrouve mardi non pardon mercredi à 14 heures en salle B204",
+                "« On se retrouve mercredi à 14 heures en salle B204. »",
+                "nova_style_email"
+            )
+            .as_deref(),
+            Ok("On se retrouve mercredi à 14 heures en salle B204.")
+        );
+    }
+
+    #[test]
+    fn the_prompt_names_the_dictated_language_when_it_is_clear() {
+        let base =
+            build_runtime_system_prompt("nova_local", "aura", "nova_style_email", "", &[], false);
+        let hinted = with_language_hint(
+            base.clone(),
+            "on se retrouve mercredi dans la salle de cours",
+        );
+        assert!(hinted.contains("The transcript is in French: write the result in French."));
+        assert!(hinted.ends_with(&format!(
+            "Prompt-Version: {}",
+            crate::rewrite::prompt::PROMPT_VERSION
+        )));
+        // Trop court pour juger : le prompt reste celui d'avant.
+        assert_eq!(with_language_hint(base.clone(), "merci"), base);
+    }
+
     #[test]
     fn semantic_guard_accepts_a_faithful_email() {
         assert!(validate_rewrite(
@@ -3126,7 +3420,9 @@ mod tests {
         assert!(!block.contains("12 rue X"));
         // …et on montre bien un repère exact sans exposer sa valeur.
         assert!(block.contains("{{mon adresse}}"));
-        assert!(block.contains("Voici mon adresse : {{mon adresse}}."));
+        // Les mots dictés et le repère, tous les deux.
+        assert!(block.contains("Voici mon adresse {{mon adresse}}."));
+        assert!(block.contains("keep BOTH the spoken words and the marker"));
         // Vide s'il n'y a aucune variable renseignée.
         assert_eq!(custom_variables_block(&[]), "");
         let empty_val = vec![var("iban", "  ")];

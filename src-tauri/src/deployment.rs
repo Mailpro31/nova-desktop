@@ -711,10 +711,10 @@ mod tests {
         std::fs::create_dir_all(&dir).unwrap();
         let _ = std::fs::remove_file(dir.join("device.json"));
         assert_eq!(read_device_id(&dir), None);
-        std::fs::write(&dir.join("device.json"), r#"{"device_id":"a1b2c3d4e5f6"}"#).unwrap();
+        std::fs::write(dir.join("device.json"), r#"{"device_id":"a1b2c3d4e5f6"}"#).unwrap();
         assert_eq!(read_device_id(&dir).as_deref(), Some("a1b2c3d4e5f6"));
         // Une valeur hostile n'est pas reprise telle quelle.
-        std::fs::write(&dir.join("device.json"), r#"{"device_id":"../../etc"}"#).unwrap();
+        std::fs::write(dir.join("device.json"), r#"{"device_id":"../../etc"}"#).unwrap();
         assert_eq!(read_device_id(&dir), None);
         let _ = std::fs::remove_dir_all(&dir);
     }

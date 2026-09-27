@@ -54,6 +54,10 @@ import {
 } from "@/lib/lab";
 import { useCampusStatus } from "@/hooks/useCampusStatus";
 import { Button } from "@/components/ui/Button";
+import {
+  emailDiscoveryErrorKey,
+  looksLikeEmail,
+} from "@/lib/organization/emailDiscovery";
 import { Input } from "@/components/ui/Input";
 
 /**
@@ -183,6 +187,12 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
   const [step, setStep] = useState<CampusStep>("connection");
   const [email, setEmail] = useState("");
   const [serverUrl, setServerUrl] = useState("");
+  // La découverte par adresse : ce que la personne tape, et ce qu'on en fait.
+  const [discoveryEmail, setDiscoveryEmail] = useState("");
+  const [discovering, setDiscovering] = useState(false);
+  // L'adresse du serveur reste saisissable, mais elle n'est plus la question
+  // posée en premier : presque personne ne la connaît.
+  const [showServerField, setShowServerField] = useState(false);
   const [config, setConfig] = useState<CampusConfig | null>(null);
   const [configLoaded, setConfigLoaded] = useState(false);
   const [managedBootstrap, setManagedBootstrap] = useState(false);
@@ -841,6 +851,30 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
     </div>
   );
 
+  const runEmailDiscovery = async () => {
+    if (!looksLikeEmail(discoveryEmail) || discovering) return;
+    setDiscovering(true);
+    setError(null);
+    try {
+      const result = await commands.discoverOrganizationByEmail(
+        discoveryEmail.trim(),
+        false,
+      );
+      if (result.status === "ok") {
+        // Le reste du parcours part de l'adresse trouvée, exactement comme si
+        // elle avait été saisie : un seul chemin de connexion, pas deux.
+        setServerUrl(result.data.service_endpoint);
+        setEmail(discoveryEmail.trim());
+      } else {
+        setError(t(emailDiscoveryErrorKey(result.error)));
+      }
+    } catch {
+      setError(t(emailDiscoveryErrorKey(null)));
+    } finally {
+      setDiscovering(false);
+    }
+  };
+
   if (step === "connection") {
     // Un seul écran, qui se complète : le nom de l'organisation n'apparaît que
     // si le serveur l'a donné — jamais le `Nova Campus` de repli, qui laissait
@@ -888,7 +922,60 @@ const CampusOnboarding: React.FC<CampusOnboardingProps> = ({
         </div>
 
         <div className="w-full max-w-[480px] space-y-5">
-          {!serverProvisioned && (
+          {!serverProvisioned && !hasServer && !showServerField && (
+            <form
+              className="space-y-3"
+              onSubmit={(event) => {
+                event.preventDefault();
+                void runEmailDiscovery();
+              }}
+            >
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="campus-discovery-email"
+                  className="block text-sm font-medium text-text"
+                >
+                  {t("campus.onboarding.email.discoveryLabel")}
+                </label>
+                <Input
+                  id="campus-discovery-email"
+                  type="email"
+                  className="w-full"
+                  autoFocus
+                  value={discoveryEmail}
+                  disabled={discovering}
+                  onChange={(event) => {
+                    setDiscoveryEmail(event.target.value);
+                    setError(null);
+                  }}
+                  placeholder={t(
+                    "campus.onboarding.email.discoveryPlaceholder",
+                  )}
+                />
+                <p className="text-xs text-text-secondary">
+                  {t("campus.onboarding.email.discoveryHelp")}
+                </p>
+              </div>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!looksLikeEmail(discoveryEmail) || discovering}
+              >
+                {discovering
+                  ? t("campus.onboarding.email.discoveryBusy")
+                  : t("campus.onboarding.email.discoveryAction")}
+              </Button>
+              <button
+                type="button"
+                className="w-full text-xs text-text-secondary underline-offset-2 hover:underline"
+                onClick={() => setShowServerField(true)}
+              >
+                {t("campus.onboarding.email.advanced")}
+              </button>
+            </form>
+          )}
+
+          {!serverProvisioned && (hasServer || showServerField) && (
             <div className="space-y-1.5">
               <label
                 htmlFor="campus-server"

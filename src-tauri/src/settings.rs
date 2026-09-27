@@ -1271,7 +1271,7 @@ fn refresh_outdated_builtin_prompts(settings: &mut AppSettings) -> bool {
         {
             if stored.prompt != def.prompt {
                 if let Some(olds) = previous.get(def.id.as_str()) {
-                    if olds.iter().any(|old| *old == stored.prompt) {
+                    if olds.contains(&stored.prompt) {
                         stored.prompt = def.prompt.clone();
                         changed = true;
                     }

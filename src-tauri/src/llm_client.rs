@@ -81,9 +81,25 @@ struct ChatMessageResponse {
     content: Option<String>,
 }
 
-fn local_max_tokens(user_content: &str) -> u32 {
+/// Ce que le modèle local a le droit d'écrire.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum OutputBudget {
+    /// Une réécriture : à peu près la longueur de la dictée. Un budget serré
+    /// est aussi une protection — une réponse hors sujet est coupée, et la
+    /// dictée collée à sa place.
+    Rewrite,
+    /// Un compte rendu ou des notes structurées : des titres et des listes. Au
+    /// budget d'une réécriture, un compte rendu de cinq minutes de réunion était
+    /// coupé à 384 jetons, et Nova rendait le dialogue brut.
+    Report,
+}
+
+fn local_max_tokens(user_content: &str, budget: OutputBudget) -> u32 {
     let estimated_input_tokens = user_content.chars().count().div_ceil(3) as u32;
-    (estimated_input_tokens + 24).clamp(48, 384)
+    match budget {
+        OutputBudget::Rewrite => (estimated_input_tokens + 24).clamp(48, 384),
+        OutputBudget::Report => (estimated_input_tokens * 4 / 5 + 256).clamp(512, 1_280),
+    }
 }
 
 /// Build headers for API requests based on provider type
@@ -146,6 +162,7 @@ pub async fn send_chat_completion_with_schema(
     temperature: Option<f32>,
     reasoning_effort: Option<String>,
     reasoning: Option<ReasoningConfig>,
+    budget: OutputBudget,
 ) -> Result<Option<String>, String> {
     let base_url = provider.base_url.trim_end_matches('/');
     let url = format!("{}/chat/completions", base_url);
@@ -158,7 +175,7 @@ pub async fn send_chat_completion_with_schema(
     // Determine this while the request text is still available. It is moved
     // into the user message below, so calculating it in the request literal
     // would borrow a moved String.
-    let max_tokens = is_local.then(|| local_max_tokens(&user_content));
+    let max_tokens = is_local.then(|| local_max_tokens(&user_content, budget));
 
     // Build messages vector
     let mut messages = Vec::new();
@@ -233,14 +250,28 @@ pub async fn send_chat_completion_with_schema(
 
 #[cfg(test)]
 mod tests {
-    use super::local_max_tokens;
+    use super::{local_max_tokens, OutputBudget};
 
     #[test]
     fn local_output_budget_is_bounded_and_scales_with_input() {
-        assert_eq!(local_max_tokens(""), 48);
-        assert_eq!(local_max_tokens(&"a".repeat(300)), 124);
-        assert_eq!(local_max_tokens(&"a".repeat(1_000)), 358);
-        assert_eq!(local_max_tokens(&"a".repeat(2_000)), 384);
+        let rewrite = |text: &str| local_max_tokens(text, OutputBudget::Rewrite);
+        assert_eq!(rewrite(""), 48);
+        assert_eq!(rewrite(&"a".repeat(300)), 124);
+        assert_eq!(rewrite(&"a".repeat(1_000)), 358);
+        assert_eq!(rewrite(&"a".repeat(2_000)), 384);
+    }
+
+    #[test]
+    fn a_report_gets_room_for_its_headings_and_lists() {
+        // Cinq minutes de réunion : 4 337 caractères, coupés à 384 jetons avant.
+        let report = local_max_tokens(&"a".repeat(4_337), OutputBudget::Report);
+        assert!(report > 384 * 2, "{report}");
+        assert_eq!(local_max_tokens("", OutputBudget::Report), 512);
+        // Borné : il doit tenir, avec la dictée, dans le contexte du moteur.
+        assert_eq!(
+            local_max_tokens(&"a".repeat(50_000), OutputBudget::Report),
+            1_280
+        );
     }
 }
 

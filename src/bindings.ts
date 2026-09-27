@@ -708,6 +708,14 @@ async organizationAuthProviders(serverUrl: string) : Promise<Result<Organization
  * > le dire plutôt que prétendre le contraire. Aucun contenu de travail ne
  * > transite en revanche par ce chemin.
  */
+async discoverOrganizationByEmail(email: string, allowInsecureEndpoint: boolean) : Promise<Result<EmailDiscovery, EmailDiscoveryError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("discover_organization_by_email", { email, allowInsecureEndpoint }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async discoverOrganization(discoveryBaseUrl: string, organization: string, allowInsecureEndpoint: boolean) : Promise<Result<OrganizationBootstrap, DiscoveryError>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("discover_organization", { discoveryBaseUrl, organization, allowInsecureEndpoint }) };
@@ -1923,16 +1931,26 @@ limits?: CampusLimits | null;
  * explicitement. Sans ce champ, serde l'écartait et aucune fermeture
  * n'atteignait l'interface.
  */
-closed_capabilities?: string[] | null }
+closed_capabilities?: string[] | null; 
+/**
+ * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
+ * aucun Style n'est alors désactivé.
+ */
+style_policy?: CampusStylePolicy | null }
 export type CampusLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.
  */
 max_dictation_seconds?: number | null }
+export type CampusStylePolicy = { 
+/**
+ * Identifiants des Styles désactivés — intégrés ou d'organisation.
+ */
+disabled_style_ids?: string[] }
 /**
  * Appartenance du membre à l'organisation, telle que le serveur la décide.
  */
-export type CampusMembership = { member_type?: string | null; security_role?: string | null; groups?: CampusGroup[] | null; status?: string | null }
+export type CampusMembership = { member_type?: string | null; security_role?: string | null; groups?: CampusGroup[] | null; groups_visible?: boolean | null; status?: string | null }
 export type CampusOrganizationConfig = { id: string; name: string; shortName?: string | null; campusName?: string | null; role?: string | null; cohort?: string | null; managed?: boolean; branding?: CampusBrandingConfig | null; support?: CampusSupportConfig | null }
 export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
 export type CampusPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
@@ -2034,6 +2052,8 @@ error: DictationErrorKind | null }
 /**
  * Motifs d'échec d'une découverte. Codes stables, jamais de détail technique.
  */
+export type EmailDiscovery = { domain: string; organization_name: string; service_endpoint: string }
+export type EmailDiscoveryError = { code: "EmailInvalid" } | { code: "DnsUnavailable" } | { code: "RecordNotFound" } | { code: "EndpointInvalid" } | { code: "EndpointOutsideDomain" } | { code: "ServerUnreachable" } | { code: "DomainNotServed" }
 export type DiscoveryError = 
 /**
  * Le service de découverte n'a pas pu être joint.
@@ -2317,7 +2337,7 @@ export type OrganizationCatalogSnapshot = { catalog_version: string; styles: Org
  * L'interface les demande souvent et ne recharge que ce qui a bougé : c'est
  * ce qui fait arriver un changement de la console en moins d'une minute.
  */
-export type OrganizationChanges = { policy_revision: number; packages_version: string; learning_version: string }
+export type OrganizationChanges = { policy_revision: number; packages_version: string; learning_version: string; profile_version?: string | null }
 /**
  * Un AI Skill publié par l'organisation.
  * 

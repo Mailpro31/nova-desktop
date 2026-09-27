@@ -156,6 +156,24 @@ describe("ce qu'il faut recharger", () => {
     ).toEqual(["lessons"]);
   });
 
+  test("des groupes changés ou masqués relisent le profil", () => {
+    expect(
+      whatToReload(
+        { ...changes(1, "p", "2:a"), profile_version: "x" },
+        { ...changes(1, "p", "2:a"), profile_version: "y" },
+      ),
+    ).toEqual(["profile"]);
+  });
+
+  test("un serveur sans repère de profil ne recharge jamais le profil", () => {
+    expect(
+      whatToReload(changes(1, "p", "2:a"), {
+        ...changes(1, "p", "2:a"),
+        profile_version: "y",
+      }),
+    ).toEqual([]);
+  });
+
   test("plusieurs changements à la fois rechargent chacun", () => {
     expect(
       whatToReload(changes(1, "p", "2:a"), changes(3, "q", "2:b")),

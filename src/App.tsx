@@ -52,6 +52,7 @@ import {
 import { isOrganizationMode } from "@/lib/mode";
 import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
 import { useOrganizationSuspension } from "@/hooks/useOrganizationSuspension";
+import { OrganizationSuspended } from "@/components/campus/OrganizationSuspended";
 import { useOrganizationSignInRequired } from "@/hooks/useOrganizationSignInRequired";
 import {
   forgetLabEnrollment,
@@ -202,9 +203,9 @@ function App() {
   // pendant que Nova tournait n'arrivait qu'au redemarrage suivant, sans que
   // rien ne l'annonce. Le guichet ci-dessous reprend la main ensuite.
   useOrganizationUpdates();
-  // Un membre suspendu continue de dicter en Personal ; il le sait, et il le
-  // sait aussi quand l'organisation le rétablit.
-  useOrganizationSuspension();
+  // Un membre suspendu n'a plus accès à rien ; il le sait, et il le sait aussi
+  // quand l'organisation le rétablit.
+  const organizationSuspended = useOrganizationSuspension();
   // La DSI peut interdire le repli Personal : sans session, la connexion
   // s'impose alors de nouveau.
   const organizationSignInRequired = useOrganizationSignInRequired();
@@ -700,6 +701,10 @@ function App() {
         onDone={flow.next}
       />
     );
+  } else if (organizationSuspended) {
+    // L'organisation a suspendu ce membre : écran bloquant, sans repli
+    // Personal. Il se lève de lui-même quand `/api/me` répond de nouveau.
+    content = <OrganizationSuspended />;
   } else if (organizationSignInRequired) {
     // La DSI interdit le repli Personal et ce poste n'a plus de session : la
     // connexion s'impose, au lancement comme en cours de session. Le parcours

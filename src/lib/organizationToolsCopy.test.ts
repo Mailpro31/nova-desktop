@@ -4,19 +4,15 @@ import { readdirSync, readFileSync } from "node:fs";
 /**
  * Les textes visibles autour des outils d'organisation sont traduits.
  *
- * Vérifiés à l'écran en allemand, népalais, vietnamien, russe et arabe : le
- * bouton « Continue later » d'un module AI Essentials et l'onglet
- * « Personalization » de Réglages restaient
- * en anglais dans vingt langues.
+ * Vérifiés à l'écran en allemand, népalais, vietnamien, russe et arabe :
+ * l'onglet « Personalization » de Réglages restait en anglais dans vingt
+ * langues. Les boutons « Continue later » et « Use Nova now » de l'ancien
+ * premier lancement AI Essentials ont été retirés avec cet écran.
  */
 
 const LOCALES_DIR = "src/i18n/locales";
 
-const KEYS = [
-  "sidebar.personalization",
-  "campus.firstRun.continueLater",
-  "campus.firstRun.useNovaNow",
-];
+const KEYS = ["sidebar.personalization"];
 
 function translation(locale: string): unknown {
   return JSON.parse(

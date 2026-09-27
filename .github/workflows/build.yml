@@ -177,7 +177,10 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
-          key: ${{ inputs.platform }}-${{ inputs.target }}
+          # `vulkan2` : le cache garde la configuration CMake de
+          # transcribe-cpp-sys, qui fige le chemin absolu du SDK Vulkan. Changer
+          # d'installeur change ce chemin, donc le cache doit repartir de zero.
+          key: ${{ inputs.platform }}-${{ inputs.target }}-vulkan2
 
       - name: install dependencies (ubuntu 24.04 x64)
         if: contains(inputs.platform, 'ubuntu-24.04') && !contains(inputs.platform, 'arm')
@@ -217,11 +220,22 @@ jobs:
       # x86_64 only — Windows-on-ARM links transcribe-cpp statically CPU-only
       # (no `vulkan` feature; see src-tauri/Cargo.toml), so ggml-vulkan is never
       # built there and no Vulkan SDK, headers, or glslc are needed.
+      # Same action as the Ubuntu ARM64 step below. The one used before
+      # (humbletim/install-vulkan-sdk@v1.2) has had no release since its v1.2
+      # tag and pins actions/cache@v4 internally, so the Windows installer
+      # would stop building the day GitHub retires that version, with no
+      # upstream fix to wait for. This one is maintained, runs on node24, and
+      # exports the same VULKAN_SDK and PATH the ggml-vulkan build reads.
       - name: Install Vulkan SDK (Windows x64)
         if: contains(inputs.platform, 'windows') && !contains(inputs.target, 'aarch64')
-        uses: humbletim/install-vulkan-sdk@v1.2
+        # `destination` keeps the SDK where the previous action put it. The
+        # cached CMake configuration of transcribe-cpp-sys stores the absolute
+        # Vulkan include path, so installing to the default C:\VulkanSDK would
+        # make every cached build fail on a path that no longer exists.
+        uses: jakoch/install-vulkan-sdk-action@v1.6.0
         with:
-          version: 1.4.309.0
+          vulkan_version: 1.4.309.0
+          destination: ${{ github.workspace }}/VULKAN_SDK
           cache: true
 
       - name: Cache trusted-signing-cli

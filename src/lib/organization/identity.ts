@@ -159,6 +159,7 @@ const membershipSchema = z.object({
   member_type: memberTypeSchema.nullish(),
   security_role: securityRoleSchema.nullish(),
   groups: z.array(groupSchema).nullish(),
+  groups_visible: z.boolean().nullish(),
   status: accountStatusSchema.nullish(),
 });
 
@@ -193,6 +194,12 @@ const meV2Schema = z.object({
   identity: identitySchema.nullish(),
   capabilities: z.array(z.string()).nullish(),
   closed_capabilities: z.array(z.string()).nullish(),
+  // Illisible, le bloc est ignoré sans faire rejeter le reste de la réponse :
+  // un Style qu'on ne sait pas lire comme désactivé reste affiché.
+  style_policy: z
+    .object({ disabled_style_ids: z.array(z.string()).nullish() })
+    .nullish()
+    .catch(undefined),
 });
 
 /** Ce que le serveur a réellement annoncé sur le membre connecté. */
@@ -216,6 +223,11 @@ export interface ServerIdentitySnapshot {
    * ancien : l'absence ne ferme rien.
    */
   closedCapabilities: readonly string[];
+  /**
+   * Styles désactivés par l'organisation. Vide quand le serveur n'en annonce
+   * aucun — y compris un serveur plus ancien.
+   */
+  disabledStyleIds: readonly string[];
 }
 
 function toGroup(raw: z.infer<typeof groupSchema>): Group {
@@ -251,6 +263,7 @@ export function parseServerIdentity(raw: unknown): ServerIdentitySnapshot {
       member: null,
       capabilities: null,
       closedCapabilities: [],
+      disabledStyleIds: [],
     };
   }
 
@@ -262,6 +275,7 @@ export function parseServerIdentity(raw: unknown): ServerIdentitySnapshot {
         // Le serveur est l'autorité, et son silence vaut `member`.
         securityRole: (membership.security_role ?? "member") as SecurityRole,
         groups: (membership.groups ?? []).map(toGroup),
+        groupsVisible: membership.groups_visible !== false,
         status: (membership.status ?? "active") as AccountStatus,
       }
     : null;
@@ -275,5 +289,6 @@ export function parseServerIdentity(raw: unknown): ServerIdentitySnapshot {
     member,
     capabilities: data.capabilities ?? null,
     closedCapabilities: data.closed_capabilities ?? [],
+    disabledStyleIds: data.style_policy?.disabled_style_ids ?? [],
   };
 }

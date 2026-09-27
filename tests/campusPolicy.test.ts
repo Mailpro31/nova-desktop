@@ -10,7 +10,6 @@ import {
   sanitizeCampusCode,
   shouldShowCampusServerInput,
 } from "../src/lib/campusOnboarding";
-import { AI_ESSENTIALS_TRACK } from "../src/lib/aiSkills";
 
 describe("Campus policy", () => {
   test("uses production-safe capability defaults", () => {
@@ -87,18 +86,6 @@ describe("Campus policy", () => {
       required: false,
       trackProgress: true,
     });
-  });
-});
-
-describe("AI Skills architecture", () => {
-  test("ships a short extensible engineering foundation track", () => {
-    expect(AI_ESSENTIALS_TRACK.level).toBe("foundation");
-    expect(AI_ESSENTIALS_TRACK.modules).toHaveLength(6);
-    for (const module of AI_ESSENTIALS_TRACK.modules) {
-      expect(module.durationMinutes).toBeGreaterThanOrEqual(2);
-      expect(module.durationMinutes).toBeLessThanOrEqual(5);
-      expect(module.lessons[0].question.options).toHaveLength(3);
-    }
   });
 });
 

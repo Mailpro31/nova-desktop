@@ -95,14 +95,35 @@
             buildAndTestSubdir = "src-tauri";
             tauriBundleType = "deb";
 
-            cargoLock = {
-              lockFile = ./src-tauri/Cargo.lock;
-              # Automatically fetch git dependencies using builtins.fetchGit.
-              # This eliminates the need for manual outputHashes that had to be
-              # updated every time a git dependency changed in Cargo.lock.
-              # Safe for standalone flakes (not allowed in nixpkgs, it is needed something like crate2nix).
-              allowBuiltinFetchGit = true;
-            };
+            # Crates are downloaded from static.crates.io, the CDN, instead of
+            # crates.io/api: the API now answers 403 to curl user agents, which
+            # is what fetchurl sends, and the build failed on every run.
+            # Upstream nixpkgs made the same switch; the pinned nixpkgs predates
+            # it. Same files, same checksums: only the download URL changes.
+            # See https://github.com/rust-lang/crates.io/issues/13482
+            cargoDeps =
+              let
+                fetchCrateFromCdn =
+                  args:
+                  pkgs.fetchurl (
+                    args
+                    // {
+                      url =
+                        builtins.replaceStrings
+                          [ "https://crates.io/api/v1/crates/" ]
+                          [ "https://static.crates.io/crates/" ]
+                          args.url;
+                    }
+                  );
+              in
+              (pkgs.rustPlatform.importCargoLock.override { fetchurl = fetchCrateFromCdn; }) {
+                lockFile = ./src-tauri/Cargo.lock;
+                # Automatically fetch git dependencies using builtins.fetchGit.
+                # This eliminates the need for manual outputHashes that had to be
+                # updated every time a git dependency changed in Cargo.lock.
+                # Safe for standalone flakes (not allowed in nixpkgs, it is needed something like crate2nix).
+                allowBuiltinFetchGit = true;
+              };
 
             postPatch = ''
               ${pkgs.jq}/bin/jq '.bundle.createUpdaterArtifacts = false' \

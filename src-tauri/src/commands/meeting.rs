@@ -26,6 +26,216 @@ use crate::meeting_transcript::SpeakerLabels;
 /// Id du Style « Réunion » appliqué au dialogue pour produire le compte rendu.
 const MEETING_STYLE_ID: &str = "nova_style_meeting";
 
+/// Au-delà, le serveur de l'organisation refuse le texte (`MAX_INFERENCE_TEXT_CHARS`).
+const ORGANIZATION_MAX_CHARS: usize = 50_000;
+
+/// Le compte rendu par le serveur de l'organisation, quand le membre en a un.
+///
+/// Même chemin que la dictée : un modèle plus gros et un contexte plus large
+/// que le moteur local, et la politique de l'organisation sur les Styles. La
+/// réponse passe les mêmes contrôles qu'une sortie locale.
+async fn organization_report(app: &AppHandle, dialogue: &str) -> Option<String> {
+    if dialogue.chars().count() > ORGANIZATION_MAX_CHARS {
+        return None;
+    }
+    let session = crate::commands::campus::should_use_campus(app).await?;
+    let style = crate::actions::resolve_effective_style(app, Some(MEETING_STYLE_ID))?;
+    match crate::commands::campus::reformulate_campus(dialogue, &style.id, &style.prompt, &session)
+        .await
+    {
+        Ok(text) => match crate::actions::checked_campus_rewrite(dialogue, &text, &style.id) {
+            // Un serveur qui refuse sa propre sortie rend le dialogue tel quel :
+            // ce n'est pas un compte rendu, le moteur local peut encore essayer.
+            Ok(report) if report.trim() != dialogue.trim() => Some(report),
+            Ok(_) => None,
+            Err(reason) => {
+                log::warn!("meeting: compte rendu du serveur refusé ({reason})");
+                None
+            }
+        },
+        Err(error) => {
+            log::warn!("meeting: serveur de l'organisation indisponible ({error})");
+            None
+        }
+    }
+}
+
+/// Ce que le moteur local lit d'un coup. Air a un contexte de 3 072 jetons,
+/// Aura et Apex de 4 096 ; il faut y loger la consigne et le compte rendu.
+fn local_chunk_chars(settings: &crate::settings::AppSettings) -> usize {
+    match settings
+        .post_process_models
+        .get(crate::local_llm::PROVIDER_ID)
+        .map(String::as_str)
+    {
+        Some("air") => 3_000,
+        _ => 5_000,
+    }
+}
+
+/// Le compte rendu par le moteur local (ou Turbo).
+///
+/// Une réunion de plus de quelques minutes dépasse le contexte du moteur
+/// local : elle est résumée par morceaux. Les résumés sont fondus en un seul
+/// compte rendu quand ils tiennent ensemble dans le contexte ; sinon ils sont
+/// rendus à la suite. Les résumer à leur tour ne les raccourcissait pas (le
+/// modèle réécrit des notes aussi longues que leur source), pour des minutes de
+/// calcul en plus. Un morceau qui échoue reste en dialogue brut : rien ne se perd.
+async fn local_report(
+    app: &AppHandle,
+    settings: &crate::settings::AppSettings,
+    dialogue: &str,
+) -> Option<String> {
+    let chunk_chars = local_chunk_chars(settings);
+    if dialogue.chars().count() <= chunk_chars {
+        return crate::actions::post_process_transcription(
+            app,
+            settings,
+            dialogue,
+            Some(MEETING_STYLE_ID),
+        )
+        .await;
+    }
+    let joined = summarize_by_chunks(app, settings, dialogue, chunk_chars).await?;
+    if joined.chars().count() <= chunk_chars {
+        if let Some(merged) = crate::actions::post_process_transcription(
+            app,
+            settings,
+            &joined,
+            Some(MEETING_STYLE_ID),
+        )
+        .await
+        {
+            return Some(merged);
+        }
+    }
+    Some(joined)
+}
+
+/// Chaque morceau résumé, les résumés mis bout à bout.
+/// `None` si aucun morceau n'a pu être résumé.
+async fn summarize_by_chunks(
+    app: &AppHandle,
+    settings: &crate::settings::AppSettings,
+    text: &str,
+    chunk_chars: usize,
+) -> Option<String> {
+    let chunks = meeting_chunks(text, chunk_chars);
+
+    let mut parts = Vec::with_capacity(chunks.len());
+    let mut summarized = 0;
+    for chunk in &chunks {
+        match crate::actions::post_process_transcription(
+            app,
+            settings,
+            chunk,
+            Some(MEETING_STYLE_ID),
+        )
+        .await
+        {
+            Some(part) => {
+                summarized += 1;
+                parts.push(part);
+            }
+            None => parts.push(chunk.clone()),
+        }
+    }
+    log::info!(
+        "meeting: {} morceau(x), {} résumé(s)",
+        chunks.len(),
+        summarized
+    );
+    (summarized > 0).then(|| parts.join("\n\n"))
+}
+
+/// Le dialogue en morceaux d'au plus `max_chars` caractères, coupés entre deux
+/// prises de parole. Une prise plus longue que la limite est coupée sur un
+/// espace, jamais au milieu d'un mot.
+pub(crate) fn meeting_chunks(dialogue: &str, max_chars: usize) -> Vec<String> {
+    let mut chunks = Vec::new();
+    let mut current = String::new();
+    for line in dialogue.lines().filter(|line| !line.trim().is_empty()) {
+        let mut rest = line;
+        while rest.chars().count() > max_chars {
+            let cut = cut_before(rest, max_chars);
+            push_line(&mut chunks, &mut current, rest[..cut].trim_end(), max_chars);
+            rest = rest[cut..].trim_start();
+        }
+        if !rest.is_empty() {
+            push_line(&mut chunks, &mut current, rest, max_chars);
+        }
+    }
+    if !current.is_empty() {
+        chunks.push(current);
+    }
+    chunks
+}
+
+fn push_line(chunks: &mut Vec<String>, current: &mut String, line: &str, max_chars: usize) {
+    let needed = line.chars().count() + usize::from(!current.is_empty());
+    if !current.is_empty() && current.chars().count() + needed > max_chars {
+        chunks.push(std::mem::take(current));
+    }
+    if !current.is_empty() {
+        current.push('\n');
+    }
+    current.push_str(line);
+}
+
+/// L'indice (en octets) où couper `text` pour garder au plus `max_chars`
+/// caractères : au dernier espace avant la limite, ou à la limite s'il n'y en a pas.
+fn cut_before(text: &str, max_chars: usize) -> usize {
+    let limit = text
+        .char_indices()
+        .nth(max_chars)
+        .map_or(text.len(), |(index, _)| index);
+    match text[..limit].rfind(char::is_whitespace) {
+        Some(space) if space > 0 => space,
+        _ => limit,
+    }
+}
+
+#[cfg(test)]
+mod chunk_tests {
+    use super::meeting_chunks;
+
+    #[test]
+    fn a_short_meeting_is_a_single_chunk() {
+        let dialogue = "Vous : bonjour\nAutres : bonjour à tous";
+        assert_eq!(meeting_chunks(dialogue, 5_000), vec![dialogue.to_string()]);
+    }
+
+    #[test]
+    fn a_long_meeting_is_cut_between_turns_and_loses_nothing() {
+        let turn = "Autres : la batterie tient 18 minutes, il en faut 25.";
+        let dialogue = vec![turn; 200].join("\n");
+        let chunks = meeting_chunks(&dialogue, 1_000);
+        assert!(chunks.len() > 1);
+        for chunk in &chunks {
+            assert!(chunk.chars().count() <= 1_000, "{}", chunk.len());
+            // Coupé entre deux prises : chaque ligne est une prise entière.
+            assert!(chunk.lines().all(|line| line == turn));
+        }
+        assert_eq!(chunks.join("\n"), dialogue);
+    }
+
+    #[test]
+    fn an_overlong_turn_is_cut_on_a_space() {
+        let turn = format!("Vous : {}", "mot ".repeat(400));
+        let chunks = meeting_chunks(turn.trim_end(), 300);
+        assert!(chunks.len() > 1);
+        for chunk in &chunks {
+            assert!(chunk.chars().count() <= 300);
+            assert!(!chunk.ends_with("mo") && !chunk.starts_with("t "));
+        }
+        let rebuilt = chunks.join(" ");
+        assert_eq!(
+            rebuilt.split_whitespace().count(),
+            turn.split_whitespace().count()
+        );
+    }
+}
+
 /// Session de réunion en cours (au plus une). État Tauri partagé.
 #[derive(Default)]
 pub struct MeetingSessionState(pub Mutex<Option<MeetingSession>>);
@@ -187,18 +397,16 @@ pub async fn stop_meeting(
         assembly.skipped
     );
 
-    // Le dialogue brut passe au Style « Réunion » (même chemin que la dictée :
-    // moteur local/Turbo, repli). Si le moteur échoue, on rend au moins le
-    // dialogue brut — jamais rien perdu.
+    // Le dialogue brut passe au Style « Réunion » : le serveur de
+    // l'organisation d'abord, comme la dictée, puis le moteur local/Turbo. Si
+    // tout échoue, on rend au moins le dialogue brut — jamais rien perdu.
     let settings = crate::settings::get_settings(&app);
-    let report = crate::actions::post_process_transcription(
-        &app,
-        &settings,
-        &assembly.dialogue,
-        Some(MEETING_STYLE_ID),
-    )
-    .await
-    .unwrap_or_else(|| assembly.dialogue.clone());
+    let report = match organization_report(&app, &assembly.dialogue).await {
+        Some(report) => report,
+        None => local_report(&app, &settings, &assembly.dialogue)
+            .await
+            .unwrap_or_else(|| assembly.dialogue.clone()),
+    };
 
     Ok(MeetingReport {
         report,
