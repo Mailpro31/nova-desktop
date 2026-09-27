@@ -12,7 +12,7 @@ export const ManagedBy: React.FC<ManagedByProps> = ({ organizationName }) => {
   return (
     <span className="inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary">
       <Building2 size={13} aria-hidden="true" />
-      {t("campus.managedBy", { organization: organizationName })}
+      {t("organization.managedBy", { organization: organizationName })}
     </span>
   );
 };

@@ -21,8 +21,8 @@ export const CampusStylesSettings: React.FC = () => {
   return (
     <>
       <PageHeader
-        title={t("campus.styles.title")}
-        description={t("campus.styles.subtitle")}
+        title={t("organization.styles.title")}
+        description={t("organization.styles.subtitle")}
       />
       <StylesList />
     </>

@@ -112,8 +112,8 @@ export const PersonalizationSettings: React.FC = () => {
 
       <SettingsGroup title={t("personalization.orb")}>
         <SettingContainer
-          title={t("campus.personalization.orbColor")}
-          description={t("campus.personalization.orbDescription")}
+          title={t("organization.personalization.orbColor")}
+          description={t("organization.personalization.orbDescription")}
           layout="stacked"
           grouped={true}
         >
@@ -153,8 +153,10 @@ export const PersonalizationSettings: React.FC = () => {
         <ToggleSwitch
           checked={persistentOverlay}
           onChange={togglePersistentOverlay}
-          label={t("campus.personalization.alwaysVisible")}
-          description={t("campus.personalization.alwaysVisibleDescription")}
+          label={t("organization.personalization.alwaysVisible")}
+          description={t(
+            "organization.personalization.alwaysVisibleDescription",
+          )}
           descriptionMode="inline"
           grouped={true}
         />

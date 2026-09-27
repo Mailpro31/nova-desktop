@@ -66,8 +66,8 @@ export const CampusGeneralSettings: React.FC = () => {
     <div className="space-y-5">
       <SectionCard
         icon={Volume2}
-        title={t("campus.settings.sound.title")}
-        description={t("campus.settings.sound.description")}
+        title={t("organization.settings.sound.title")}
+        description={t("organization.settings.sound.description")}
       >
         <MicrophoneSelector descriptionMode="tooltip" grouped={true} />
         <MuteWhileRecording descriptionMode="tooltip" grouped={true} />
@@ -82,8 +82,8 @@ export const CampusGeneralSettings: React.FC = () => {
 
       <SectionCard
         icon={Keyboard}
-        title={t("campus.settings.shortcuts.title")}
-        description={t("campus.settings.shortcuts.description")}
+        title={t("organization.settings.shortcuts.title")}
+        description={t("organization.settings.shortcuts.description")}
       >
         <ShortcutInput shortcutId="transcribe" grouped={true} />
         <PushToTalk descriptionMode="tooltip" grouped={true} />
@@ -106,24 +106,24 @@ export const CampusPersonalizationSections: React.FC = () => {
     <div className="space-y-5">
       <SectionCard
         icon={BookA}
-        title={t("campus.dictionary.title")}
-        description={t("campus.dictionary.description")}
+        title={t("organization.dictionary.title")}
+        description={t("organization.dictionary.description")}
       >
         <CampusDictionarySection />
       </SectionCard>
 
       <SectionCard
         icon={MessageSquare}
-        title={t("campus.snippets.title")}
-        description={t("campus.snippets.description")}
+        title={t("organization.snippets.title")}
+        description={t("organization.snippets.description")}
       >
         <CampusSnippetsSection />
       </SectionCard>
 
       <SectionCard
         icon={ListFilter}
-        title={t("campus.formatting.title")}
-        description={t("campus.formatting.description")}
+        title={t("organization.formatting.title")}
+        description={t("organization.formatting.description")}
       >
         <CampusFormattingSection />
       </SectionCard>

@@ -29,19 +29,19 @@ describe("Découverte par adresse", () => {
 
   test("chaque refus a sa phrase", () => {
     expect(emailDiscoveryErrorKey({ code: "RecordNotFound" })).toBe(
-      "campus.onboarding.email.discoveryErrors.RECORD_NOT_FOUND",
+      "organization.onboarding.email.discoveryErrors.RECORD_NOT_FOUND",
     );
     expect(emailDiscoveryErrorKey({ code: "EndpointOutsideDomain" })).toBe(
-      "campus.onboarding.email.discoveryErrors.ENDPOINT_OUTSIDE_DOMAIN",
+      "organization.onboarding.email.discoveryErrors.ENDPOINT_OUTSIDE_DOMAIN",
     );
   });
 
   test("un code inconnu ne produit jamais une clé manquante", () => {
     expect(emailDiscoveryErrorKey({ code: "Inventé" } as never)).toBe(
-      "campus.onboarding.email.discoveryErrors.DNS_UNAVAILABLE",
+      "organization.onboarding.email.discoveryErrors.DNS_UNAVAILABLE",
     );
     expect(emailDiscoveryErrorKey(null)).toBe(
-      "campus.onboarding.email.discoveryErrors.DNS_UNAVAILABLE",
+      "organization.onboarding.email.discoveryErrors.DNS_UNAVAILABLE",
     );
   });
 });

@@ -58,10 +58,10 @@ export const CampusFormattingSection: React.FC = () => {
       await api.addFormattingRule(newRule.trim());
       setNewRule("");
       await loadRules();
-      toast.success(t("campus.formatting.addRule"));
+      toast.success(t("organization.formatting.addRule"));
     } catch (err) {
       console.error("Failed to add formatting rule:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     } finally {
       setAdding(false);
@@ -78,7 +78,7 @@ export const CampusFormattingSection: React.FC = () => {
       await loadRules();
     } catch (err) {
       console.error("Failed to delete formatting rule:", err);
-      const msg = campusErrorText(err, t("campus.errors.network"));
+      const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     }
   };
@@ -90,19 +90,19 @@ export const CampusFormattingSection: React.FC = () => {
         <div className="flex items-center gap-2">
           <Building size={16} className="text-text-secondary" />
           <h3 className="text-sm font-semibold text-text">
-            {t("campus.formatting.sharedTitle")}
+            {t("organization.formatting.sharedTitle")}
           </h3>
           <span className="rounded-full bg-inset px-2 py-0.5 text-[11px] font-medium text-text-secondary">
-            {t("campus.dictionary.sharedBadge")}
+            {t("organization.dictionary.sharedBadge")}
           </span>
         </div>
         <p className="text-xs text-text-secondary">
-          {t("campus.formatting.sharedDescription")}
+          {t("organization.formatting.sharedDescription")}
         </p>
 
         {sharedRules.length === 0 ? (
           <p className="py-2 text-xs text-text-secondary">
-            {t("campus.formatting.sharedEmpty")}
+            {t("organization.formatting.sharedEmpty")}
           </p>
         ) : (
           <div className="divide-y divide-hairline border-y border-hairline">
@@ -125,7 +125,7 @@ export const CampusFormattingSection: React.FC = () => {
           <div className="flex items-center gap-2">
             <User size={16} className="text-text-secondary" />
             <h3 className="text-sm font-semibold text-text">
-              {t("campus.formatting.personalTitle")}
+              {t("organization.formatting.personalTitle")}
             </h3>
           </div>
           <Button
@@ -133,8 +133,8 @@ export const CampusFormattingSection: React.FC = () => {
             size="sm"
             onClick={loadRules}
             disabled={loading}
-            aria-label={t("campus.account.refresh")}
-            title={t("campus.account.refresh")}
+            aria-label={t("organization.account.refresh")}
+            title={t("organization.account.refresh")}
             className="h-9 w-9 p-0"
           >
             <RefreshCw
@@ -147,7 +147,7 @@ export const CampusFormattingSection: React.FC = () => {
           </Button>
         </div>
         <p className="text-xs text-text-secondary">
-          {t("campus.formatting.personalDescription")}
+          {t("organization.formatting.personalDescription")}
         </p>
 
         {/* Add personal rule form */}
@@ -159,13 +159,13 @@ export const CampusFormattingSection: React.FC = () => {
             htmlFor="campus-formatting-rule"
             className="flex flex-1 flex-col gap-1.5 text-xs font-medium text-text"
           >
-            {t("campus.formatting.addRule")}
+            {t("organization.formatting.addRule")}
             <Input
               id="campus-formatting-rule"
               type="text"
               value={newRule}
               onChange={(e) => setNewRule(e.target.value)}
-              placeholder={t("campus.formatting.rulePlaceholder")}
+              placeholder={t("organization.formatting.rulePlaceholder")}
             />
           </label>
           <Button
@@ -176,14 +176,14 @@ export const CampusFormattingSection: React.FC = () => {
             className="inline-flex items-center justify-center gap-1.5 shrink-0"
           >
             <Plus size={16} />
-            {t("campus.formatting.addRule")}
+            {t("organization.formatting.addRule")}
           </Button>
         </form>
 
         {/* Personal rules list */}
         {personalRules.length === 0 ? (
           <p className="py-2 text-xs text-text-secondary">
-            {t("campus.formatting.personalEmpty")}
+            {t("organization.formatting.personalEmpty")}
           </p>
         ) : (
           <div className="divide-y divide-hairline border-y border-hairline">

@@ -53,7 +53,7 @@ export const CampusConnection: React.FC = () => {
   return (
     <section className="space-y-3" aria-labelledby="campus-connection">
       <h2 id="campus-connection" className="text-base font-semibold text-text">
-        {t("campusConnection.title")}
+        {t("organizationConnection.title")}
       </h2>
 
       {linked ? (
@@ -70,20 +70,20 @@ export const CampusConnection: React.FC = () => {
             </p>
             <p className="mt-0.5 text-sm text-text-secondary">
               {connection === "connected"
-                ? t("campusConnection.connected")
+                ? t("organizationConnection.connected")
                 : connection === "local"
-                  ? t("campusConnection.local")
-                  : t("campusConnection.signedOut")}
+                  ? t("organizationConnection.local")
+                  : t("organizationConnection.signedOut")}
             </p>
           </div>
         </div>
       ) : (
         <>
           <p className="text-sm text-text-secondary">
-            {t("campusConnection.description")}
+            {t("organizationConnection.description")}
           </p>
           <Button onClick={() => setConnecting(true)}>
-            {t("campusConnection.connect")}
+            {t("organizationConnection.connect")}
           </Button>
         </>
       )}

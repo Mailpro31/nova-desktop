@@ -140,7 +140,7 @@ export const StylesList: React.FC = () => {
         id: p.id,
         name: p.name,
         description: isBuiltin
-          ? t(`campus.styles.descriptions.${p.id}`, "")
+          ? t(`organization.styles.descriptions.${p.id}`, "")
           : "",
         kind: isBuiltin ? "builtin" : "personal",
         lockedBy: lockFor(p.id),
@@ -206,7 +206,7 @@ export const StylesList: React.FC = () => {
         </SectionTitle>
         <StyleRow
           name={t("settings.postProcessing.autoStyle.option")}
-          description={t("campus.styles.descriptions.auto", "")}
+          description={t("organization.styles.descriptions.auto", "")}
           active={activeId === "auto"}
           lockedBy={autoLock}
           disabledByOrganization={false}

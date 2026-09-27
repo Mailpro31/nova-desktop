@@ -130,7 +130,7 @@ describe("One flow, not two", () => {
 
   test("Settings never owns or renders the onboarding completion screen", () => {
     const source = code(CONNECTION);
-    expect(source).not.toContain("campus.onboarding.ready");
+    expect(source).not.toContain("organization.onboarding.ready");
     expect(source).not.toContain('setStep("ready")');
   });
 });
@@ -152,13 +152,13 @@ describe("Already linked", () => {
     const source = code(CONNECTION);
     expect(source).toContain("const linked = Boolean(session)");
     // L'action de connexion vit dans la branche non liée.
-    expect(source).toContain('t("campusConnection.connect")');
+    expect(source).toContain('t("organizationConnection.connect")');
   });
 
   test("the connection status is stated, not guessed", async () => {
     const { default: fr } = await import("../i18n/locales/en/translation.json");
     const connection = (fr as Record<string, Record<string, string>>)
-      .campusConnection;
+      .organizationConnection;
     expect(connection.connected).toBeTruthy();
     expect(connection.local.toLowerCase()).toContain("offline");
     expect(connection.signedOut).toBeTruthy();

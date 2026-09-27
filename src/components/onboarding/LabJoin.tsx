@@ -70,7 +70,7 @@ export const LabJoin: React.FC<LabJoinProps> = ({ onEnrolled }) => {
       // Le détail vient du serveur et n'aide pas l'utilisateur (« code
       // invalide » et « certificat non conforme » appellent le même geste :
       // redemander une invitation fraîche).
-      setError(t("campus.onboarding.lab.error"));
+      setError(t("organization.onboarding.lab.error"));
     } finally {
       setIsJoining(false);
     }
@@ -80,13 +80,13 @@ export const LabJoin: React.FC<LabJoinProps> = ({ onEnrolled }) => {
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
       <div className="max-w-[480px] space-y-3 text-center">
         <p className="text-xs font-medium tracking-wide text-text-secondary">
-          {t("campus.onboarding.lab.productName")}
+          {t("organization.onboarding.lab.productName")}
         </p>
         <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.025em] text-text">
-          {t("campus.onboarding.lab.title")}
+          {t("organization.onboarding.lab.title")}
         </h1>
         <p className="text-sm leading-relaxed text-text-secondary">
-          {t("campus.onboarding.lab.subtitle")}
+          {t("organization.onboarding.lab.subtitle")}
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export const LabJoin: React.FC<LabJoinProps> = ({ onEnrolled }) => {
           htmlFor="lab-invitation"
           className="block text-sm font-medium text-text"
         >
-          {t("campus.onboarding.lab.codeLabel")}
+          {t("organization.onboarding.lab.codeLabel")}
         </label>
         <Input
           id="lab-invitation"
@@ -112,7 +112,7 @@ export const LabJoin: React.FC<LabJoinProps> = ({ onEnrolled }) => {
           }}
         />
         <p className="text-xs leading-relaxed text-text-secondary">
-          {t("campus.onboarding.lab.securityNote")}
+          {t("organization.onboarding.lab.securityNote")}
         </p>
         {error ? (
           <p className="text-center text-sm text-danger" role="alert">
@@ -129,7 +129,9 @@ export const LabJoin: React.FC<LabJoinProps> = ({ onEnrolled }) => {
         disabled={!code.trim() || isJoining}
         onClick={() => void join()}
       >
-        {isJoining ? t("common.loading") : t("campus.onboarding.lab.open")}
+        {isJoining
+          ? t("common.loading")
+          : t("organization.onboarding.lab.open")}
       </Button>
     </div>
   );

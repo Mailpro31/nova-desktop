@@ -38,26 +38,26 @@ export interface CampusCapability {
 export const CAMPUS_CAPABILITIES: CampusCapability[] = [
   {
     id: "transcription",
-    titleKey: "campus.provides.transcription.title",
-    descriptionKey: "campus.provides.transcription.description",
+    titleKey: "organization.provides.transcription.title",
+    descriptionKey: "organization.provides.transcription.description",
     requiresServer: true,
   },
   {
     id: "rewriting",
-    titleKey: "campus.provides.rewriting.title",
-    descriptionKey: "campus.provides.rewriting.description",
+    titleKey: "organization.provides.rewriting.title",
+    descriptionKey: "organization.provides.rewriting.description",
     requiresServer: true,
   },
   {
     id: "vocabulary",
-    titleKey: "campus.provides.vocabulary.title",
-    descriptionKey: "campus.provides.vocabulary.description",
+    titleKey: "organization.provides.vocabulary.title",
+    descriptionKey: "organization.provides.vocabulary.description",
     requiresServer: true,
   },
   {
     id: "formatting",
-    titleKey: "campus.provides.formatting.title",
-    descriptionKey: "campus.provides.formatting.description",
+    titleKey: "organization.provides.formatting.title",
+    descriptionKey: "organization.provides.formatting.description",
     requiresServer: true,
   },
 ];
@@ -76,10 +76,18 @@ export interface DataRow {
  * n'est pas en position de l'affirmer.
  */
 export const DATA_ROWS: DataRow[] = [
-  { id: "audio", labelKey: "campus.data.audio", location: "campus" },
-  { id: "text", labelKey: "campus.data.text", location: "campus" },
-  { id: "vocabulary", labelKey: "campus.data.vocabulary", location: "campus" },
-  { id: "history", labelKey: "campus.data.history", location: "device" },
-  { id: "recordings", labelKey: "campus.data.recordings", location: "device" },
-  { id: "appName", labelKey: "campus.data.appName", location: "device" },
+  { id: "audio", labelKey: "organization.data.audio", location: "campus" },
+  { id: "text", labelKey: "organization.data.text", location: "campus" },
+  {
+    id: "vocabulary",
+    labelKey: "organization.data.vocabulary",
+    location: "campus",
+  },
+  { id: "history", labelKey: "organization.data.history", location: "device" },
+  {
+    id: "recordings",
+    labelKey: "organization.data.recordings",
+    location: "device",
+  },
+  { id: "appName", labelKey: "organization.data.appName", location: "device" },
 ];

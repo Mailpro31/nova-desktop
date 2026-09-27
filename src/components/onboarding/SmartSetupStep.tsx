@@ -137,17 +137,17 @@ function engineLabel(
   if (campusMode) {
     if (readiness.engineLabel === "campus") {
       return businessMode
-        ? t("campusConnection.connected")
-        : t("campus.status.connected");
+        ? t("organizationConnection.connected")
+        : t("organization.status.connected");
     }
     if (readiness.engineLabel === "local-fallback") {
       return businessMode
-        ? t("campusConnection.local")
-        : t("campus.status.localActive");
+        ? t("organizationConnection.local")
+        : t("organization.status.localActive");
     }
     // Sonde encore en cours, ou session absente : on le dit plutôt que de
     // laisser croire à un repli local qui n'a pas eu lieu.
-    return t("campus.account.checking");
+    return t("organization.account.checking");
   }
   return readiness.engine === "ready"
     ? t("onboarding.smartSetup.value.localEngine")

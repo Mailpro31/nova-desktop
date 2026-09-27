@@ -903,7 +903,7 @@
     "refresh": "Aktualisieren",
     "newMeeting": "Neue Besprechung"
   },
-  "campus": {
+  "organization": {
     "onboarding": {
       "welcome": {
         "title": "Welcome to Nova Campus",
@@ -1417,7 +1417,7 @@
     "error": "Diese AI Skill konnte nicht ausgeführt werden.",
     "signedOut": "Melden Sie sich an, um AI Skills zu nutzen."
   },
-  "campusConnection": {
+  "organizationConnection": {
     "title": "Organisation",
     "description": "Verbinden Sie Nova mit Ihrer Organisation, um deren Inhalte und Einstellungen zu nutzen.",
     "connect": "Organisation verbinden",

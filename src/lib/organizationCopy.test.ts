@@ -5,7 +5,7 @@ import { join } from "node:path";
 /**
  * Les textes Organization affichés par l'application sont traduits.
  *
- * Mesuré sur toutes les langues : les textes `campus.*` du premier lancement,
+ * Mesuré sur toutes les langues : les textes `organization.*` du premier lancement,
  * de la connexion et du compte restaient en anglais dans vingt langues. Le test
  * ne regarde que les clés **que le code affiche réellement** — une clé que plus
  * aucun écran n'utilise n'a pas à être traduite pour être correcte.
@@ -35,14 +35,14 @@ const SECTIONS = [
 
 /** Noms propres, identiques dans toutes les langues. */
 const PRODUCT_NAMES = new Set([
-  "campus.onboarding.label",
-  "campus.onboarding.lab.productName",
+  "organization.onboarding.label",
+  "organization.onboarding.lab.productName",
 ]);
 
 /** Mots qu'une langue écrit légitimement comme l'anglais. */
 const SAME_AS_ENGLISH: Record<string, string[]> = {
-  fr: ["campus.account.access"],
-  sv: ["campus.account.access"],
+  fr: ["organization.account.access"],
+  sv: ["organization.account.access"],
 };
 
 type Tree = { [key: string]: string | Tree };
@@ -80,10 +80,12 @@ function sourceFiles(dir: string): string[] {
 const SOURCE = sourceFiles(SOURCE_DIR)
   .map((path) => readFileSync(path, "utf8"))
   .join("\n");
-const LITERAL_KEYS = new Set(SOURCE.match(/campus\.[A-Za-z0-9_.-]+/g) ?? []);
+const LITERAL_KEYS = new Set(
+  SOURCE.match(/organization\.[A-Za-z0-9_.-]+/g) ?? [],
+);
 const DYNAMIC_PREFIXES = [
   ...new Set(
-    (SOURCE.match(/campus\.[A-Za-z0-9_.-]*\$\{/g) ?? []).map((match) =>
+    (SOURCE.match(/organization\.[A-Za-z0-9_.-]*\$\{/g) ?? []).map((match) =>
       match.slice(0, -2),
     ),
   ),
@@ -108,12 +110,12 @@ const ENGLISH = translation("en");
 const KEYS = Object.keys(ENGLISH).filter(
   (key) =>
     SECTIONS.includes(key.split(".")[1] ?? "") &&
-    key.startsWith("campus.") &&
+    key.startsWith("organization.") &&
     displayed(key),
 );
 const LOCALES = readdirSync(LOCALES_DIR);
 
-describe("campus copy", () => {
+describe("textes d'organisation", () => {
   test("les sections couvertes ont des textes affichés", () => {
     expect(LOCALES).toHaveLength(22);
     expect(KEYS.length).toBeGreaterThan(70);

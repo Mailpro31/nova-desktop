@@ -449,8 +449,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </span>
                 <span className="block truncate text-[11px] text-text-secondary mt-0.5">
                   {connection === "local"
-                    ? t("campus.status.localActive")
-                    : t("campus.organization.managedBy", {
+                    ? t("organization.status.localActive")
+                    : t("organization.organization.managedBy", {
                         organization: organization.shortName,
                       })}
                 </span>

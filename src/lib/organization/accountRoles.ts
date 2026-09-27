@@ -38,12 +38,12 @@ export function accountRoleLabels(me: AccountRolesSource): AccountRoleLabels {
   const securityRole = me.membership?.security_role?.trim().toLowerCase() ?? "";
   return {
     memberType: (MEMBER_TYPES as readonly string[]).includes(role)
-      ? `campus.roles.${role}`
+      ? `organization.roles.${role}`
       : null,
     securityRole: (ADMIN_SECURITY_ROLES as readonly string[]).includes(
       securityRole,
     )
-      ? `campus.account.securityRoles.${securityRole}`
+      ? `organization.account.securityRoles.${securityRole}`
       : null,
   };
 }
