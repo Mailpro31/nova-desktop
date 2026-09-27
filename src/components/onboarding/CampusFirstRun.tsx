@@ -20,7 +20,10 @@ import { AiSkillModulePlayer } from "@/components/campus/AiSkillModulePlayer";
 import HandyTextLogo from "@/components/icons/HandyTextLogo";
 import { Button, Kbd } from "@/components/ui";
 import { useAiSkillsProgress } from "@/hooks/useAiSkillsProgress";
-import { useCapability } from "@/hooks/useOrganizationContext";
+import {
+  useCapability,
+  useOrganizationContext,
+} from "@/hooks/useOrganizationContext";
 import { useSettings } from "@/hooks/useSettings";
 import {
   AI_ESSENTIALS_TRACK,
@@ -30,6 +33,7 @@ import {
   type CampusFirstRunStage,
 } from "@/lib/aiSkills";
 import { campusOrganizationLabel } from "@/lib/campusPolicy";
+import { purposeOptionsFor } from "@/lib/onboarding/purposes";
 import {
   getLanguageLabel,
   SELECTABLE_LANGUAGES,
@@ -84,6 +88,11 @@ export const CampusFirstRun: React.FC<CampusFirstRunProps> = ({
   // l'autorité quand il les annonce, la configuration Campus sinon.
   const canUseAiSkills = useCapability("aiSkills");
   const canRewrite = useCapability("rewrite");
+  // Le métier du membre : `/api/me` fait autorité, la configuration déposée
+  // sur le poste ne sert que de repli. C'est ce qui permet à un salarié d'une
+  // entreprise de recevoir les options administratives plutôt que celles d'un
+  // étudiant.
+  const { member } = useOrganizationContext();
   const aiSkillsEnabled = canUseAiSkills && context.aiSkillsPolicy.enabled;
   const aiSkillsRequired = aiSkillsEnabled && context.aiSkillsPolicy.required;
   const storageKey = useMemo(
@@ -164,28 +173,9 @@ export const CampusFirstRun: React.FC<CampusFirstRunProps> = ({
 
   const prompts = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
   const availablePromptIds = new Set(prompts.map((prompt) => prompt.id));
-  const rolePurposeOptions =
-    context.organization.role === "teacher"
-      ? [
-          { id: "courseNotes", promptId: "nova_style_notes" },
-          { id: "feedback", promptId: "default_improve_transcriptions" },
-          { id: "emails", promptId: "nova_style_email" },
-          { id: "everything", promptId: "auto" },
-        ]
-      : context.organization.role === "staff"
-        ? [
-            { id: "emails", promptId: "nova_style_email" },
-            { id: "documents", promptId: "default_improve_transcriptions" },
-            { id: "everything", promptId: "auto" },
-          ]
-        : [
-            { id: "classes", promptId: "nova_style_notes" },
-            { id: "engineering", promptId: "auto" },
-            { id: "emails", promptId: "nova_style_email" },
-            { id: "coding", promptId: "nova_style_prompt" },
-            { id: "everything", promptId: "auto" },
-          ];
-  const purposeOptions = rolePurposeOptions.filter(
+  const purposeOptions = purposeOptionsFor(
+    member?.memberType ?? context.organization.role,
+  ).filter(
     (option) =>
       option.promptId === "auto" || availablePromptIds.has(option.promptId),
   );
