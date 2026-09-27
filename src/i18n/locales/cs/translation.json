@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} pozastavila váš přístup k Nova. Obraťte se na správce, aby ho obnovil.",
       "nothingDeleted": "Nic nebylo smazáno. Nova se znovu otevře, jakmile bude přístup obnoven.",
       "checkAgain": "Zkontrolovat znovu"
+    },
+    "diagnostic": {
+      "title": "Diagnostická zpráva",
+      "description": "Soubor, který předáte svému správci. Popisuje verzi, počítač, spojení se serverem a naměřené časy. Neobsahuje žádné diktování, žádnou historii, žádné osobní hodnoty ani token relační.",
+      "save": "Uložit zprávu",
+      "saved": "Zpráva uložena.",
+      "failed": "Zprávu se nepodařilo uložit."
     }
   },
   "aiSkills": {

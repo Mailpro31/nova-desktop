@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} đã tạm ngưng quyền truy cập Nova của bạn. Hãy liên hệ quản trị viên để khôi phục.",
       "nothingDeleted": "Không có gì bị xóa. Nova sẽ mở lại ngay khi quyền truy cập được khôi phục.",
       "checkAgain": "Kiểm tra lại"
+    },
+    "diagnostic": {
+      "title": "Báo cáo chẩn đoán",
+      "description": "Một tệp để giao cho quản trị viên của bạn. Nó mô tả phiên bản, máy tính, kết nối tới máy chủ và các thời gian đo được. Nó không chứa bất kỳ nội dung đọc chính tả, lịch sử, giá trị cá nhân hay mã phiên nào.",
+      "save": "Lưu báo cáo",
+      "saved": "Đã lưu báo cáo.",
+      "failed": "Không thể lưu báo cáo."
     }
   },
   "aiSkills": {

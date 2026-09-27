@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} 已暂停您对 Nova 的访问权限。请联系管理员以恢复。",
       "nothingDeleted": "没有删除任何内容。访问权限恢复后，Nova 会重新打开。",
       "checkAgain": "重新检查"
+    },
+    "diagnostic": {
+      "title": "诊断报告",
+      "description": "一份交给管理员的文件。它说明版本、设备、与服务器的连接以及实测耗时。其中不包含任何听写内容、历史记录、个人信息或会话令牌。",
+      "save": "保存报告",
+      "saved": "报告已保存。",
+      "failed": "无法保存报告。"
     }
   },
   "aiSkills": {

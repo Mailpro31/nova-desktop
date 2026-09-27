@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { emit } from "@tauri-apps/api/event";
 
 import { PageHeader } from "../../shell/PageHeader";
+import { DiagnosticReport } from "./DiagnosticReport";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
 import { CAMPUS_CAPABILITIES, DATA_ROWS } from "./campusCapabilities";
@@ -233,6 +234,16 @@ export const CampusOrganizationSettings: React.FC = () => {
         <p className="mt-3 text-xs leading-relaxed text-text-secondary">
           {word("dataNote")}
         </p>
+      </section>
+
+      {/* Le rapport de diagnostic vient après les données : on vient de dire
+          ce qui reste sur le poste, c'est le moment de dire ce qu'un fichier
+          de diagnostic emporte, et ce qu’il n’emporte pas. */}
+      <section className="mt-[32px]" aria-labelledby="organization-diagnostic">
+        <SectionTitle id="organization-diagnostic">
+          {t("organization.diagnostic.title")}
+        </SectionTitle>
+        <DiagnosticReport />
       </section>
 
       {session && (

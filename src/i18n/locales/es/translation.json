@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} ha suspendido tu acceso a Nova. Contacta con tu administrador para restablecerlo.",
       "nothingDeleted": "No se ha eliminado nada. Nova vuelve a abrirse en cuanto se restablece tu acceso.",
       "checkAgain": "Comprobar de nuevo"
+    },
+    "diagnostic": {
+      "title": "Informe de diagnóstico",
+      "description": "Un archivo para entregar a su administrador. Describe la versión, el equipo, la conexión con el servidor y los tiempos medidos. No contiene ningún dictado, ningún historial, ningún valor personal ni ningún token de sesión.",
+      "save": "Guardar el informe",
+      "saved": "Informe guardado.",
+      "failed": "No se ha podido guardar el informe."
     }
   },
   "aiSkills": {

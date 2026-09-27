@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}}에서 Nova 액세스를 정지했습니다. 복원하려면 관리자에게 문의하세요.",
       "nothingDeleted": "삭제된 것은 없습니다. 액세스가 복원되면 Nova가 다시 열립니다.",
       "checkAgain": "다시 확인"
+    },
+    "diagnostic": {
+      "title": "진단 보고서",
+      "description": "관리자에게 전달할 파일입니다. 버전, 기기, 서버 연결, 측정된 시간을 설명합니다. 받아쓴 내용, 기록, 개인 정보, 세션 토큰은 전햘 포함되지 않습니다.",
+      "save": "보고서 저장",
+      "saved": "보고서를 저장했습니다.",
+      "failed": "보고서를 저장하지 못했습니다."
     }
   },
   "aiSkills": {

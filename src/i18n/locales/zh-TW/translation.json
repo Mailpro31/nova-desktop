@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} 已暫停您對 Nova 的存取權。請聯絡管理員以恢復。",
       "nothingDeleted": "沒有刪除任何內容。存取權恢復後，Nova 會重新開啟。",
       "checkAgain": "重新檢查"
+    },
+    "diagnostic": {
+      "title": "診斷報告",
+      "description": "一份交給管理員的檔案。它說明版本、設備、與伺服器的連線以及實測耗時。其中不包含任何聽寫內容、歷史紀錄、個人資訊或實對令牌。",
+      "save": "儲存報告",
+      "saved": "報告已儲存。",
+      "failed": "無法儲存報告。"
     }
   },
   "aiSkills": {

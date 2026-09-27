@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} hat Ihren Zugang zu Nova gesperrt. Wenden Sie sich an Ihren Administrator, um ihn wiederherzustellen.",
       "nothingDeleted": "Es wurde nichts gelöscht. Nova öffnet sich wieder, sobald Ihr Zugang wiederhergestellt ist.",
       "checkAgain": "Erneut prüfen"
+    },
+    "diagnostic": {
+      "title": "Diagnosebericht",
+      "description": "Eine Datei für Ihre Administration. Sie beschreibt die Version, den Rechner, die Verbindung zum Server und die gemessenen Zeiten. Sie enthält kein Diktat, keinen Verlauf, keine persönlichen Werte und kein Sitzungstoken.",
+      "save": "Bericht speichern",
+      "saved": "Bericht gespeichert.",
+      "failed": "Der Bericht konnte nicht gespeichert werden."
     }
   },
   "aiSkills": {

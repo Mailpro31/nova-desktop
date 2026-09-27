@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} has suspended your access to Nova. Contact your administrator to restore it.",
       "nothingDeleted": "Nothing has been deleted. Nova opens again as soon as your access is restored.",
       "checkAgain": "Check again"
+    },
+    "diagnostic": {
+      "title": "Diagnostic report",
+      "description": "A file to hand to your administrator. It describes the version, the machine, the link to the server and the measured times. It contains no dictation, no history, no personal value and no session token.",
+      "save": "Save the report",
+      "saved": "Report saved.",
+      "failed": "The report could not be saved."
     }
   },
   "aiSkills": {

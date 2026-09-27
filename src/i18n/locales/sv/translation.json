@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} har stängt av din åtkomst till Nova. Kontakta din administratör för att återställa den.",
       "nothingDeleted": "Ingenting har raderats. Nova öppnas igen så snart din åtkomst har återställts.",
       "checkAgain": "Kontrollera igen"
+    },
+    "diagnostic": {
+      "title": "Diagnosrapport",
+      "description": "En fil att lämna till din administratör. Den beskriver versionen, datorn, anslutningen till servern och de uppmätta tiderna. Den innehåller ingen diktering, ingen historik, inga personliga värden och ingen sessionstoken.",
+      "save": "Spara rapporten",
+      "saved": "Rapporten sparades.",
+      "failed": "Rapporten kunde inte sparas."
     }
   },
   "aiSkills": {
