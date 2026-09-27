@@ -140,14 +140,14 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         case "get_app_settings":
         case "get_default_settings":
           return appSettings;
-        case "load_campus_session":
+        case "load_organization_session":
           return currentSession;
-        case "clear_campus_session":
+        case "clear_organization_session":
           currentSession = null;
           return null;
-        case "get_campus_config":
+        case "get_organization_config":
           return settings.config ?? null;
-        case "fetch_campus_server_config": {
+        case "fetch_organization_server_config": {
           const fetches = Number(
             localStorage.getItem("nova.test.serverConfigFetches") ?? "0",
           );
@@ -165,19 +165,19 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             ? settings.serverConfig
             : (settings.config ?? null);
         }
-        case "check_campus_server_reachability":
+        case "check_organization_server_reachability":
           return settings.reachable ?? true;
-        case "request_campus_auth":
+        case "request_organization_auth":
           localStorage.setItem("nova.test.emailRequested", "true");
           return { sent: true };
-        case "verify_campus_auth":
+        case "verify_organization_auth":
           if (args.code === "000000") throw "HTTP 400: Code incorrect";
           currentSession = {
             server_url: String(args.serverUrl),
             email: String(args.email),
           };
           return currentSession;
-        case "start_campus_entra_auth":
+        case "start_organization_entra_auth":
           return {
             flow_id: "microsoft-flow",
             user_code: "ABCD-EFGH",
@@ -188,7 +188,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             interval: 1,
             message: "Sign in",
           };
-        case "poll_campus_entra_auth":
+        case "poll_organization_entra_auth":
           currentSession = {
             server_url: String(args.serverUrl),
             email: "student@example.edu",
@@ -198,7 +198,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             email: currentSession.email,
             retry_after: null,
           };
-        case "set_campus_suspended":
+        case "set_organization_suspended":
           localStorage.setItem("nova.test.suspended", JSON.stringify(args));
           return null;
         case "discover_organization_by_email": {
@@ -207,7 +207,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           if (!answer) throw { code: "RecordNotFound" };
           return answer;
         }
-        case "get_campus_me":
+        case "get_organization_me":
           // Lu à chaque appel : un test peut suspendre puis réactiver le
           // membre sans recharger la page, comme le ferait l'administrateur.
           if (localStorage.getItem("nova.test.meStatus") === "403") {
@@ -230,7 +230,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
               ? { contract_version: 2, membership: settings.membership }
               : {}),
           };
-        case "format_campus_structured_notes":
+        case "format_organization_structured_notes":
           localStorage.setItem(
             "nova.test.structuredNotes",
             JSON.stringify(args),
@@ -238,7 +238,7 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
           return {
             text: `Structured ${String(args.noteType)}: ${String(args.text)}`,
           };
-        case "format_campus_engineering_notes":
+        case "format_organization_engineering_notes":
           localStorage.setItem(
             "nova.test.engineeringNotes",
             JSON.stringify(args),
@@ -316,8 +316,8 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         }
         case "initialize_enigo":
         case "initialize_shortcuts":
-        case "complete_campus_onboarding":
-        case "set_campus_mode":
+        case "complete_organization_onboarding":
+        case "set_organization_mode":
           return null;
         default:
           return null;

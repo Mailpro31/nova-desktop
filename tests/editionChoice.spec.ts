@@ -78,16 +78,16 @@ test("choisir Personnel ne contacte aucun serveur d'organisation", async ({
   await page.addInitScript(() => {
     (window as unknown as { __novaReached: string[] }).__novaReached = [];
     const reaching = [
-      "fetch_campus_server_config",
-      "check_campus_server_reachability",
-      "request_campus_auth",
-      "verify_campus_auth",
-      "start_campus_entra_auth",
-      "poll_campus_entra_auth",
+      "fetch_organization_server_config",
+      "check_organization_server_reachability",
+      "request_organization_auth",
+      "verify_organization_auth",
+      "start_organization_entra_auth",
+      "poll_organization_entra_auth",
       "sign_in_with_organization",
       "organization_auth_providers",
       "discover_organization",
-      "get_campus_me",
+      "get_organization_me",
     ];
     const install = () => {
       const internals = (
