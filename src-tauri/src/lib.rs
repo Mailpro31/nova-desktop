@@ -887,6 +887,64 @@ mod specta_registration {
             "le paquet Nova ordinaire ne doit pas exposer la surface Lab"
         );
     }
+
+    /// Les noms de commande d'un fichier de liaisons TypeScript.
+    ///
+    /// `tauri-specta` rend chaque appel sous la forme `TAURI_INVOKE("nom")` :
+    /// c'est la chaine reellement envoyee sur le pont, donc la seule qui
+    /// compte. Pas de dependance a un moteur d'expressions rationnelles pour
+    /// un motif aussi simple.
+    fn invoked_commands(bindings: &str) -> Vec<String> {
+        const NEEDLE: &str = "TAURI_INVOKE(\"";
+        let mut names: Vec<String> = bindings
+            .split(NEEDLE)
+            .skip(1)
+            .filter_map(|rest| rest.split('"').next())
+            .map(str::to_owned)
+            .collect();
+        names.sort();
+        names.dedup();
+        names
+    }
+
+    /// Le fichier livre au frontend doit nommer exactement les commandes
+    /// enregistrees.
+    ///
+    /// ## Le trou que ce test ferme
+    ///
+    /// `src/bindings.ts` est genere par specta au demarrage de l'application,
+    /// puis **commite**. Rien ne verifiait qu'il correspondait encore a la table
+    /// enregistree : renommer une commande cote Rust sans relancer
+    /// l'application laissait le frontend appeler un nom qui n'existe plus, et
+    /// la panne n'apparaissait qu'au premier `invoke`, a l'execution, chez
+    /// l'utilisateur.
+    ///
+    /// Le test ne compare que les **noms**, pas les signatures : c'est le nom
+    /// qui casse silencieusement. Une signature qui change fait echouer la
+    /// compilation du frontend, donc `tsc` s'en charge deja.
+    ///
+    /// Le fichier livre est genere sans la fonctionnalite Lab — il ne contient
+    /// pas `enroll_lab_device` — donc la comparaison ne vaut que pour ce paquet.
+    #[cfg(not(feature = "lab"))]
+    #[test]
+    fn the_committed_bindings_name_the_registered_commands() {
+        let committed = invoked_commands(include_str!("../../src/bindings.ts"));
+        let registered = invoked_commands(&registered_commands());
+
+        let missing: Vec<&String> = registered
+            .iter()
+            .filter(|name| !committed.contains(name))
+            .collect();
+        let extra: Vec<&String> = committed
+            .iter()
+            .filter(|name| !registered.contains(name))
+            .collect();
+
+        assert!(
+            missing.is_empty() && extra.is_empty(),
+            "src/bindings.ts ne correspond plus aux commandes enregistrees. Absentes du fichier livre : {missing:?}. Presentes en trop : {extra:?}. Relancer l'application en developpement regenere le fichier ; il ne s'edite pas a la main."
+        );
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
