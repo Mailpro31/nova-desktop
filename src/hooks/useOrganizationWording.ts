@@ -7,9 +7,9 @@ import {
   wordingKey,
   type WordingId,
 } from "@/lib/organization/wording";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
-type CampusState = ReturnType<typeof useCampusStore.getState>;
+type CampusState = ReturnType<typeof useOrganizationStore.getState>;
 
 /** Nature annoncée : `/api/me` d'abord, `/api/config` ensuite, sinon rien. */
 function announcedType(state: CampusState): OrganizationType | null {
@@ -27,7 +27,7 @@ function announcedType(state: CampusState): OrganizationType | null {
  * de l'organisation ne soit effacé.
  */
 export function currentOrganizationWordingKey(id: WordingId): string {
-  return wordingKey(id, announcedType(useCampusStore.getState()));
+  return wordingKey(id, announcedType(useOrganizationStore.getState()));
 }
 
 /**
@@ -39,7 +39,7 @@ export function currentOrganizationWordingKey(id: WordingId): string {
  */
 export function useOrganizationWording(): (id: WordingId) => string {
   const { t } = useTranslation();
-  const organizationType = useCampusStore(announcedType);
+  const organizationType = useOrganizationStore(announcedType);
   return useCallback(
     (id: WordingId) => t(wordingKey(id, organizationType)),
     [t, organizationType],

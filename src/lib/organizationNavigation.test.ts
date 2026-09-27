@@ -15,7 +15,7 @@ import { readFileSync } from "node:fs";
  */
 
 const CONNECTION = readFileSync(
-  "src/components/settings/campus/CampusConnection.tsx",
+  "src/components/settings/organization/OrganizationConnectionSettings.tsx",
   "utf8",
 );
 const CONFIGURATION = readFileSync(
@@ -25,10 +25,13 @@ const CONFIGURATION = readFileSync(
 const SIDEBAR = readFileSync("src/components/Sidebar.tsx", "utf8");
 const APP = readFileSync("src/App.tsx", "utf8");
 const ONBOARDING = readFileSync(
-  "src/components/onboarding/CampusOnboarding.tsx",
+  "src/components/onboarding/OrganizationOnboarding.tsx",
   "utf8",
 );
-const CAMPUS_STATUS = readFileSync("src/hooks/useCampusStatus.ts", "utf8");
+const CAMPUS_STATUS = readFileSync(
+  "src/hooks/useOrganizationStatus.ts",
+  "utf8",
+);
 const CAMPUS_BACKEND = readFileSync("src-tauri/src/commands/campus.rs", "utf8");
 
 /** Le code, commentaires retirés : un mot dans un commentaire ne prouve rien. */
@@ -44,14 +47,18 @@ describe("Reachable without replaying onboarding", () => {
   test("the surface lives in Settings, which is always accessible", () => {
     // Réglages est rendu inconditionnellement dans la barre Campus ; y placer
     // la connexion garantit qu'elle est atteignable avant toute organisation.
-    expect(code(CONFIGURATION)).toContain("<CampusConnection />");
+    expect(code(CONFIGURATION)).toContain("<OrganizationConnectionSettings />");
   });
 
   test("it is not gated on an existing organization", () => {
     // La faute d'origine : conditionner l'accès à ce qu'on cherche à créer.
     const rendered = code(CONFIGURATION);
-    expect(rendered).not.toContain("organization && <CampusConnection");
-    expect(rendered).not.toContain("{organization && <CampusConnection />}");
+    expect(rendered).not.toContain(
+      "organization && <OrganizationConnectionSettings",
+    );
+    expect(rendered).not.toContain(
+      "{organization && <OrganizationConnectionSettings />}",
+    );
   });
 
   test("nothing touches the onboarding flag", () => {
@@ -83,9 +90,9 @@ describe("One flow, not two", () => {
   test("connecting mounts the existing onboarding component", () => {
     // Un second chemin d'authentification aurait été la faute la plus coûteuse
     // à réparer plus tard, et la plus facile à commettre ici.
-    expect(code(CONNECTION)).toContain("<CampusOnboarding");
+    expect(code(CONNECTION)).toContain("<OrganizationOnboarding");
     expect(code(CONNECTION)).toContain(
-      'import CampusOnboarding from "@/components/onboarding/CampusOnboarding"',
+      'import OrganizationOnboarding from "@/components/onboarding/OrganizationOnboarding"',
     );
   });
 
@@ -116,10 +123,10 @@ describe("One flow, not two", () => {
   test("authentication refreshes every visible Campus projection before exiting", () => {
     const source = code(ONBOARDING);
     expect(source.replace(/\s+/g, " ")).toContain(
-      "await Promise.all([refreshCampusContext(), refreshCampusStatus()]);",
+      "await Promise.all([ refreshOrganizationConfig(), refreshOrganizationStatus(), ]);",
     );
-    expect(source).toContain("await refreshConnectedCampusState();");
-    expect(source).toContain("useCampusStatus()");
+    expect(source).toContain("await refreshConnectedOrganizationState();");
+    expect(source).toContain("useOrganizationStatus()");
     expect(code(CAMPUS_STATUS).replace(/\s+/g, " ")).toContain(
       "refresh: () => Promise<void>",
     );
@@ -139,12 +146,12 @@ describe("Already linked", () => {
   test("an existing Organization session refreshes its context at startup", () => {
     const source = code(APP);
     expect(source).toContain(
-      'import { refreshCampusContext } from "./stores/campusStore"',
+      'import { refreshOrganizationConfig } from "./stores/organizationStore"',
     );
     // `isOrganizationMode()` et non `isCampusMode()` : l'amorçage du contexte
     // vaut pour toute organisation, entreprise comprise.
     expect(source.replace(/\s+/g, " ")).toContain(
-      "if (!isOrganizationMode()) return; void refreshCampusContext();",
+      "if (!isOrganizationMode()) return; void refreshOrganizationConfig();",
     );
   });
 
@@ -167,7 +174,7 @@ describe("Already linked", () => {
   test("reconnecting after a sign-out needs no onboarding replay", () => {
     // `linked` suit la session : elle disparaît à la déconnexion, et l'action
     // de connexion revient d'elle-même.
-    expect(code(CONNECTION)).toContain("useCampusStatus()");
+    expect(code(CONNECTION)).toContain("useOrganizationStatus()");
     expect(code(CONNECTION)).toContain("setConnecting(true)");
   });
 });
@@ -175,11 +182,13 @@ describe("Already linked", () => {
 describe("Personal is untouched", () => {
   test("the surface is only rendered in the Campus tab", () => {
     const source = code(CONFIGURATION);
-    const campusTab = source.slice(source.indexOf("const CampusGeneralTab"));
-    expect(campusTab).toContain("<CampusConnection />");
+    const organizationTab = source.slice(
+      source.indexOf("const OrganizationGeneralTab"),
+    );
+    expect(organizationTab).toContain("<OrganizationConnectionSettings />");
     // La branche personnelle rend `GeneralSettings`, qui ne la connaît pas.
     expect(source).toContain(
-      "campusMode ? <CampusGeneralTab /> : <GeneralSettings />",
+      "organizationMode ? <OrganizationGeneralTab /> : <GeneralSettings />",
     );
   });
 });

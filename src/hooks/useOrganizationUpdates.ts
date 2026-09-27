@@ -14,7 +14,10 @@ import {
   type ChangeMarkers,
   type OrganizationChange,
 } from "@/lib/organization/updates";
-import { refreshCampusContext, useCampusStore } from "@/stores/campusStore";
+import {
+  refreshOrganizationConfig,
+  useOrganizationStore,
+} from "@/stores/organizationStore";
 import { useLearningStore } from "@/stores/learningStore";
 
 /**
@@ -51,10 +54,11 @@ async function readChanges(): Promise<ChangeMarkers | null> {
  * seul bouge quand l'organisation archive une leçon ou la rend obligatoire.
  */
 async function probe(learningVersion: string | null): Promise<CatalogMarkers> {
-  const packages = await refreshCampusContext()
+  const packages = await refreshOrganizationConfig()
     .then(
       () =>
-        useCampusStore.getState().organizationCatalog?.catalog_version ?? null,
+        useOrganizationStore.getState().organizationCatalog?.catalog_version ??
+        null,
     )
     .catch(() => null);
 
@@ -108,7 +112,7 @@ export function useOrganizationUpdates(): void {
     // l'état du tout premier passage, celui qui rattrape ce qui a été publié
     // pendant que l'application était fermée.
     const signedOut = () => {
-      const campus = useCampusStore.getState();
+      const campus = useOrganizationStore.getState();
       return campus.initialized && campus.session === null;
     };
 
@@ -145,7 +149,7 @@ export function useOrganizationUpdates(): void {
       if (reload.includes("policy") || reload.includes("profile")) {
         // Capacités, catégories et durée maximale de dictée : la configuration
         // est relue, et `/api/me` transmet la limite au moteur de dictée.
-        await refreshCampusContext().catch(() => {});
+        await refreshOrganizationConfig().catch(() => {});
         await commands.getCampusMe().catch(() => null);
       }
       if (

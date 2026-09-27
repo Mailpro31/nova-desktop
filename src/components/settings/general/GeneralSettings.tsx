@@ -11,7 +11,7 @@ import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
-import { CampusGeneralSettings } from "./CampusGeneralSettings";
+import { OrganizationGeneralSettings } from "./OrganizationGeneralSettings";
 import { isOrganizationMode } from "@/lib/mode";
 
 export const GeneralSettings: React.FC = () => {
@@ -21,7 +21,7 @@ export const GeneralSettings: React.FC = () => {
   const isLinux = type() === "linux";
 
   if (isOrganizationMode()) {
-    return <CampusGeneralSettings />;
+    return <OrganizationGeneralSettings />;
   }
 
   return (

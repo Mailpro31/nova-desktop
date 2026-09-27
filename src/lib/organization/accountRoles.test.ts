@@ -86,7 +86,7 @@ describe("rôles affichés sur la page Organisation", () => {
 
   test("la page n'affiche plus la valeur brute du serveur", () => {
     const page = readFileSync(
-      "src/components/settings/organization/CampusOrganizationSettings.tsx",
+      "src/components/settings/organization/OrganizationSettings.tsx",
       "utf8",
     );
     expect(page).not.toContain("value={profile.role}");

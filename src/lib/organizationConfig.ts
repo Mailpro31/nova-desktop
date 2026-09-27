@@ -1,6 +1,6 @@
 import { z } from "zod";
-import type { CampusConfig } from "@/lib/campusSession";
-import type { CampusProfile } from "@/lib/campusApi";
+import type { CampusConfig } from "@/lib/organizationSession";
+import type { CampusProfile } from "@/lib/organizationApi";
 
 /**
  * `users.role` du serveur : un **métier**, jamais un droit.
@@ -10,7 +10,7 @@ import type { CampusProfile } from "@/lib/campusApi";
  * membre à part, elle emploie d'autres métiers. Le nom du type reste `Campus*`
  * comme le reste de ce module, dont le vocabulaire est historique.
  */
-export type CampusRole =
+export type OrganizationRole =
   | "student"
   | "teacher"
   | "staff"
@@ -20,12 +20,12 @@ export type CampusRole =
 export type CampusAuthMethod = "email_code" | "entra" | "oidc";
 export type CampusEducationMode = "normal" | "classroom" | "assessment";
 
-export interface CampusOrganization {
+export interface ConfiguredOrganization {
   id: string;
   name: string;
   shortName?: string;
   campusName?: string;
-  role?: CampusRole;
+  role?: OrganizationRole;
   cohort?: string;
   managed: boolean;
   branding?: {
@@ -62,8 +62,8 @@ export interface CampusPrivacyPolicy {
   infrastructure: "campus" | "cloud" | "hybrid" | "unknown";
 }
 
-export interface CampusContext {
-  organization: CampusOrganization;
+export interface OrganizationConfig {
+  organization: ConfiguredOrganization;
   capabilities: CampusCapabilities;
   educationMode: CampusEducationMode;
   authMethods: CampusAuthMethod[];
@@ -146,7 +146,7 @@ const aiSkillsPolicySchema = z
   })
   .strict();
 
-export const DEFAULT_CAMPUS_ORGANIZATION: CampusOrganization = {
+export const DEFAULT_ORGANIZATION: ConfiguredOrganization = {
   id: "nova-campus",
   name: "Nova Campus",
   managed: true,
@@ -178,7 +178,7 @@ const ASSESSMENT_CAPABILITIES: CampusCapabilities = {
   fileTranscription: false,
 };
 
-export const DEFAULT_CAMPUS_PRIVACY: CampusPrivacyPolicy = {
+export const DEFAULT_ORGANIZATION_PRIVACY: CampusPrivacyPolicy = {
   verified: false,
   contentRetention: "unknown",
   usageCounters: "unknown",
@@ -191,7 +191,7 @@ export const DEFAULT_CAMPUS_PRIVACY: CampusPrivacyPolicy = {
  * `null` et `undefined`, mais aussi la **chaîne vide** : un serveur Nova réel
  * répond `campusName: ""` pour une organisation sans site nommé. Le schéma
  * exige `min(1)` sur ce champ facultatif, donc la validation de l'objet entier
- * échouait et le repli `DEFAULT_CAMPUS_ORGANIZATION` prenait la place du nom
+ * échouait et le repli `DEFAULT_ORGANIZATION` prenait la place du nom
  * réel — un poste d'entreprise affichait « Nova Campus » sous le nom de son
  * organisation. Un champ vide veut dire « non renseigné », pas « invalide » ;
  * l'absence est ce qu'un schéma sait déjà traiter.
@@ -213,22 +213,22 @@ function parseEducationMode(value: unknown): CampusEducationMode {
   return parsed.success ? parsed.data : "normal";
 }
 
-function parseRole(value: unknown): CampusRole | undefined {
+function parseRole(value: unknown): OrganizationRole | undefined {
   const parsed = roleSchema.safeParse(value);
   return parsed.success ? parsed.data : undefined;
 }
 
-export function resolveCampusContext(
+export function resolveOrganizationConfig(
   config: CampusConfig | null,
   profile?: CampusProfile | null,
-): CampusContext {
+): OrganizationConfig {
   const educationMode = parseEducationMode(config?.education_mode);
   const parsedOrganization = organizationSchema.safeParse(
     compactConfigValue(config?.organization),
   );
-  const organization: CampusOrganization = parsedOrganization.success
+  const organization: ConfiguredOrganization = parsedOrganization.success
     ? parsedOrganization.data
-    : DEFAULT_CAMPUS_ORGANIZATION;
+    : DEFAULT_ORGANIZATION;
 
   const profileRole = parseRole(profile?.role);
   const capabilities = capabilitiesSchema.safeParse(
@@ -260,7 +260,7 @@ export function resolveCampusContext(
         ? authMethods.data
         : ["email_code"],
     privacy: {
-      ...DEFAULT_CAMPUS_PRIVACY,
+      ...DEFAULT_ORGANIZATION_PRIVACY,
       ...(privacy.success ? privacy.data : {}),
     },
     aiSkillsPolicy: {
@@ -274,8 +274,8 @@ export function resolveCampusContext(
   };
 }
 
-export function campusOrganizationLabel(
-  organization: CampusOrganization,
+export function organizationLabel(
+  organization: ConfiguredOrganization,
 ): string {
   return [organization.shortName ?? organization.name, organization.campusName]
     .filter(Boolean)

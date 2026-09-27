@@ -9,8 +9,8 @@ import { commands } from "@/bindings";
 import { isOrganizationMode } from "@/lib/mode";
 import { useSettings } from "./useSettings";
 import { useSettingsStore } from "@/stores/settingsStore";
-import { useCampusStatus } from "./useCampusStatus";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStatus } from "./useOrganizationStatus";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
 export type ReadinessState =
   | "checking"
@@ -64,7 +64,7 @@ export function useSystemReadiness(): SystemReadiness {
   const { settings, getSetting } = useSettings();
   const audioDevices = useSettingsStore((s) => s.audioDevices);
   const refreshAudioDevices = useSettingsStore((s) => s.refreshAudioDevices);
-  const { connection, session } = useCampusStatus();
+  const { connection, session } = useOrganizationStatus();
 
   const [permissions, setPermissions] = useState<ReadinessState>("checking");
   const [hasDictated, setHasDictated] = useState(false);
@@ -168,28 +168,28 @@ export function useSystemReadiness(): SystemReadiness {
     };
   }, [tick]);
 
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
   const selectedMicrophone = getSetting("selected_microphone") ?? null;
   const microphoneName = selectedMicrophone ?? audioDevices[0]?.name ?? null;
 
   const hasDownloadedModel = (models ?? []).some((m) => m.is_downloaded);
   const needsModelDownload =
-    !campusMode && models !== null && !hasDownloadedModel;
+    !organizationMode && models !== null && !hasDownloadedModel;
 
   // Suspendu, le serveur répond encore mais ne sert plus ce membre : la dictée
   // passe par Nova Local, exactement comme hors ligne.
-  const suspended = useCampusStore((state) => state.suspended);
-  const organizationSuspended = campusMode && suspended;
+  const suspended = useOrganizationStore((state) => state.suspended);
+  const organizationSuspended = organizationMode && suspended;
   // Tranché par le store une fois la session relue, jamais avant : au premier
   // rendu, l'absence de session ne prouve encore rien.
-  const signedOut = useCampusStore(
+  const signedOut = useOrganizationStore(
     (state) => state.connectionStatus === "signed_out",
   );
-  const organizationSignedOut = campusMode && signedOut;
+  const organizationSignedOut = organizationMode && signedOut;
   const servedByOrganization =
     connection === "connected" && !organizationSuspended;
 
-  const engine: ReadinessState = campusMode
+  const engine: ReadinessState = organizationMode
     ? servedByOrganization
       ? "ready"
       : connection === "local" || organizationSuspended
@@ -201,7 +201,7 @@ export function useSystemReadiness(): SystemReadiness {
         ? "ready"
         : "action-needed";
 
-  const engineLabel = campusMode
+  const engineLabel = organizationMode
     ? session
       ? servedByOrganization
         ? "campus"

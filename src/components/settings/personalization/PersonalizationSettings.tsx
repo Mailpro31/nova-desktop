@@ -52,14 +52,14 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
 export const PersonalizationSettings: React.FC = () => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
   const [selected, setSelected] = useState<string>(getOrbThemeId());
   const [canCustomize, setCanCustomize] = useState(true);
   const { settings, refreshSettings } = useSettings();
   const [persistentOverlay, setPersistentOverlay] = useState(true);
 
   useEffect(() => {
-    if (campusMode) {
+    if (organizationMode) {
       setCanCustomize(true);
       return;
     }
@@ -68,7 +68,7 @@ export const PersonalizationSettings: React.FC = () => {
         setCanCustomize(status.features?.orb_customization ?? true),
       )
       .catch(() => setCanCustomize(true));
-  }, [campusMode]);
+  }, [organizationMode]);
 
   useEffect(() => {
     const value = (
@@ -103,7 +103,7 @@ export const PersonalizationSettings: React.FC = () => {
 
       {/* En campus, langue et thème vivent dans « Général » : les répéter ici
           donnerait deux emplacements pour un même réglage. */}
-      {!campusMode && (
+      {!organizationMode && (
         <SettingsGroup title={t("personalization.appearance")}>
           <ThemeSelector descriptionMode="tooltip" grouped={true} />
           <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
@@ -118,7 +118,7 @@ export const PersonalizationSettings: React.FC = () => {
           grouped={true}
         >
           <div className="space-y-3">
-            {!campusMode && <TierBadge feature="orb_customization" />}
+            {!organizationMode && <TierBadge feature="orb_customization" />}
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {ORB_THEMES.map((theme) => {
                 const active = selected === theme.id;
@@ -163,7 +163,7 @@ export const PersonalizationSettings: React.FC = () => {
         <ShowOverlay descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
 
-      {!campusMode && <CustomVariablesSettings />}
+      {!organizationMode && <CustomVariablesSettings />}
     </div>
   );
 };

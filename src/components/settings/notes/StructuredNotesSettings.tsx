@@ -13,7 +13,7 @@ import {
   structuredNotesEngine,
   type NoteType,
 } from "@/lib/structuredNotes";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
 /**
  * Notes structurées — on colle ou dicte du brut, Nova le range selon le type.
@@ -23,7 +23,7 @@ import { useCampusStore } from "@/stores/campusStore";
  */
 export const StructuredNotesSettings: React.FC = () => {
   const { t } = useTranslation();
-  const session = useCampusStore((state) => state.session);
+  const session = useOrganizationStore((state) => state.session);
   const capabilityOpen = useCapability("engineeringNotes");
   const engine = structuredNotesEngine({
     organizationMode: isOrganizationMode(),

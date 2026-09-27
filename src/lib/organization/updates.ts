@@ -2,7 +2,7 @@
  * Ce que l'organisation a publié depuis la dernière fois qu'on a regardé.
  *
  * Le poste ne recevait le contenu de l'organisation **qu'au lancement** :
- * `App.tsx` appelait `refreshCampusContext()` une fois, dans un effet sans
+ * `App.tsx` appelait `refreshOrganizationConfig()` une fois, dans un effet sans
  * dépendances. Un vocabulaire, un Style ou un AI Skill publié pendant que
  * l'application tournait n'arrivait donc jamais — il fallait la redémarrer,
  * sans que rien ne le laisse deviner.

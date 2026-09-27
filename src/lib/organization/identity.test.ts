@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { resolveCampusContext } from "@/lib/campusPolicy";
+import { resolveOrganizationConfig } from "@/lib/organizationConfig";
 import {
   can,
   CORE_CAPABILITIES,
@@ -257,7 +257,7 @@ describe("Lecture de /api/me", () => {
     return resolveOrganizationContext({
       edition: "organization",
       organizationType: "education",
-      campus: resolveCampusContext(
+      campus: resolveOrganizationConfig(
         {
           server_url: "https://nova.exemple.fr",
           organization: {

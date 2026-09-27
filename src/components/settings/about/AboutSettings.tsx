@@ -9,7 +9,7 @@ import { AppDataDirectory } from "../AppDataDirectory";
 import { ShowWhatsNewOnUpdate } from "../ShowWhatsNewOnUpdate";
 import { LogDirectory } from "../debug";
 import { RestartApp } from "../RestartApp";
-import { CampusAboutSettings } from "./CampusAboutSettings";
+import { OrganizationAboutSettings } from "./OrganizationAboutSettings";
 import { isOrganizationMode } from "@/lib/mode";
 
 export const AboutSettings: React.FC = () => {
@@ -31,7 +31,7 @@ export const AboutSettings: React.FC = () => {
   }, []);
 
   if (isOrganizationMode()) {
-    return <CampusAboutSettings />;
+    return <OrganizationAboutSettings />;
   }
 
   return (

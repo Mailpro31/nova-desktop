@@ -6,19 +6,19 @@ import { PageHeader } from "../../shell/PageHeader";
 import { DiagnosticReport } from "./DiagnosticReport";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
-import { CAMPUS_CAPABILITIES, DATA_ROWS } from "./campusCapabilities";
-import { useCampusStatus } from "../../../hooks/useCampusStatus";
+import { CAMPUS_CAPABILITIES, DATA_ROWS } from "./organizationCapabilities";
+import { useOrganizationStatus } from "../../../hooks/useOrganizationStatus";
 import { useOrganization } from "../../../hooks/useOrganization";
 import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import { commands } from "@/bindings";
-import { clearCampusSession } from "@/lib/campusSession";
+import { clearOrganizationSession } from "@/lib/organizationSession";
 import {
   accountRoleLabels,
   type AccountRoleLabels,
 } from "@/lib/organization/accountRoles";
 import type { WordingId } from "@/lib/organization/wording";
 import { memberGroupLabels } from "@/lib/organization/memberGroups";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
 interface Profile {
   roles: AccountRoleLabels;
@@ -52,15 +52,15 @@ const CAPABILITY_WORDING: Record<string, WordingId> = {
  * vocabulaire suit la nature annoncée par le serveur — seule une école lit
  * « établissement » et « Campus ».
  */
-export const CampusOrganizationSettings: React.FC = () => {
+export const OrganizationSettings: React.FC = () => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
-  const { session, connection, serverName, refresh } = useCampusStatus();
+  const { session, connection, serverName, refresh } = useOrganizationStatus();
   const organization = useOrganization();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [confirmLogout, setConfirmLogout] = useState(false);
   // Relu par le store à chaque changement annoncé par le serveur.
-  const member = useCampusStore(
+  const member = useOrganizationStore(
     (state) => state.serverIdentity?.member ?? null,
   );
   const groupLabels = memberGroupLabels(member);
@@ -92,7 +92,7 @@ export const CampusOrganizationSettings: React.FC = () => {
 
   const logout = async () => {
     setConfirmLogout(false);
-    await clearCampusSession();
+    await clearOrganizationSession();
     await emit("campus-session-changed");
     refresh();
   };
@@ -308,4 +308,4 @@ const Row: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   </div>
 );
 
-export default CampusOrganizationSettings;
+export default OrganizationSettings;

@@ -5,7 +5,10 @@ import { listen } from "@tauri-apps/api/event";
 import { commands } from "@/bindings";
 import { showAttentionToast } from "@/lib/attentionNotifications";
 import { isOrganizationMode } from "@/lib/mode";
-import { refreshCampusContext, useCampusStore } from "@/stores/campusStore";
+import {
+  refreshOrganizationConfig,
+  useOrganizationStore,
+} from "@/stores/organizationStore";
 
 /** Émis par le backend quand l'organisation refuse une dictée (403). */
 const ACCESS_FORBIDDEN_EVENT = "campus-access-forbidden";
@@ -25,13 +28,13 @@ const ACCESS_SUSPENDED_EVENT = "campus-access-suspended";
  */
 export function useOrganizationSuspension(): boolean {
   const { t } = useTranslation();
-  const suspended = useCampusStore((state) => state.suspended);
+  const suspended = useOrganizationStore((state) => state.suspended);
 
   useEffect(() => {
     if (!isOrganizationMode()) return;
 
     const unlisten = listen(ACCESS_FORBIDDEN_EVENT, () => {
-      void refreshCampusContext();
+      void refreshOrganizationConfig();
     });
     // Une dictée refusée depuis la barre des tâches : la fenêtre revient là où
     // l'écran de suspension l'explique.
@@ -39,7 +42,7 @@ export function useOrganizationSuspension(): boolean {
       void commands.showMainWindowCommand();
     });
 
-    const unsubscribe = useCampusStore.subscribe((state, previous) => {
+    const unsubscribe = useOrganizationStore.subscribe((state, previous) => {
       if (state.suspended === previous.suspended) return;
       if (state.suspended) {
         showAttentionToast("warning", t("organization.suspended.title"), {

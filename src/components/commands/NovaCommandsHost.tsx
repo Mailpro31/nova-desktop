@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import NovaCommandPalette from "./NovaCommandPalette";
-import { useCampusStatus } from "../../hooks/useCampusStatus";
+import { useOrganizationStatus } from "../../hooks/useOrganizationStatus";
 import { useSettings } from "../../hooks/useSettings";
 import { events, type SelectionCapture } from "@/bindings";
 import { isOrganizationMode } from "@/lib/mode";
@@ -34,7 +34,7 @@ interface PaletteState {
  */
 export const NovaCommandsHost: React.FC = () => {
   const { getSetting } = useSettings();
-  const { session, connection } = useCampusStatus();
+  const { session, connection } = useOrganizationStatus();
   const [state, setState] = useState<PaletteState | null>(null);
 
   const enabled =

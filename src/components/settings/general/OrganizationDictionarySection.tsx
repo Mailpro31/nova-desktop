@@ -16,14 +16,14 @@ import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { Textarea } from "../../ui/Textarea";
-import { loadCampusSession } from "@/lib/campusSession";
-import { CampusApi, campusErrorText } from "@/lib/campusApi";
+import { loadOrganizationSession } from "@/lib/organizationSession";
+import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 import type {
   CampusSharedDictEntry,
   CampusPersonalDictEntry,
-} from "@/lib/campusApi";
+} from "@/lib/organizationApi";
 
-export const CampusDictionarySection: React.FC = () => {
+export const OrganizationDictionarySection: React.FC = () => {
   const { t } = useTranslation();
   const [shared, setShared] = useState<CampusSharedDictEntry[]>([]);
   const [personal, setPersonal] = useState<CampusPersonalDictEntry[]>([]);
@@ -42,11 +42,11 @@ export const CampusDictionarySection: React.FC = () => {
   const docFileInputRef = useRef<HTMLInputElement>(null);
 
   const loadVocabulary = useCallback(async () => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
     setLoading(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const data = await api.getVocabulary();
       setShared(data.shared || []);
       setPersonal(data.personal || []);
@@ -65,12 +65,12 @@ export const CampusDictionarySection: React.FC = () => {
     e.preventDefault();
     if (!newTerm.trim()) return;
 
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     setAdding(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       await api.addDictionaryEntry(newTerm.trim(), newReplacement.trim());
       setNewTerm("");
       setNewReplacement("");
@@ -86,11 +86,11 @@ export const CampusDictionarySection: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       await api.deleteDictionaryEntry(id);
       await loadVocabulary();
     } catch (err) {
@@ -101,11 +101,11 @@ export const CampusDictionarySection: React.FC = () => {
   };
 
   const handleExportCsv = async () => {
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const csv = await api.exportDictionary();
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
@@ -128,12 +128,12 @@ export const CampusDictionarySection: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     try {
       const text = await file.text();
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const res = await api.importDictionary(text);
       await loadVocabulary();
       toast.success(
@@ -167,12 +167,12 @@ export const CampusDictionarySection: React.FC = () => {
   const handleAnalyze = async () => {
     if (!analyzeText.trim()) return;
 
-    const session = await loadCampusSession();
+    const session = await loadOrganizationSession();
     if (!session) return;
 
     setAnalyzing(true);
     try {
-      const api = new CampusApi(session.server_url);
+      const api = new OrganizationApi(session.server_url);
       const res = await api.analyzeDocument(analyzeText.trim());
       await loadVocabulary();
       setShowAnalyze(false);

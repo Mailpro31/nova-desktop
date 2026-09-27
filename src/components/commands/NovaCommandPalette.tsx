@@ -7,8 +7,8 @@ import CommandPaletteSurface from "./CommandPaletteSurface";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { commands, type SelectionCapture } from "@/bindings";
-import { CampusApi } from "@/lib/campusApi";
-import type { CampusSession } from "@/lib/campusSession";
+import { OrganizationApi } from "@/lib/organizationApi";
+import type { CampusSession } from "@/lib/organizationSession";
 import {
   ASK_NOVA,
   NOVA_COMMAND_SKILLS,
@@ -78,10 +78,9 @@ export const NovaCommandPalette: React.FC<NovaCommandPaletteProps> = ({
 
       try {
         // Le jeton n'est plus exposé au frontend : il est joint côté Rust.
-        const response = await new CampusApi(session.server_url).executeCommand(
-          instruction,
-          capture.text,
-        );
+        const response = await new OrganizationApi(
+          session.server_url,
+        ).executeCommand(instruction, capture.text);
         const result = response.text?.trim() ?? "";
         if (!result) {
           setPhase({

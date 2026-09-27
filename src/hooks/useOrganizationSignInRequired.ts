@@ -4,7 +4,7 @@ import { listen } from "@tauri-apps/api/event";
 
 import { commands } from "@/bindings";
 import { isOrganizationMode } from "@/lib/mode";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
 /** Émis par le backend quand il refuse une dictée faute de connexion. */
 const SIGN_IN_REQUIRED_EVENT = "campus-sign-in-required";
@@ -28,7 +28,7 @@ interface DeploymentPolicy {
  */
 export function useOrganizationSignInRequired(): boolean {
   const [fallbackAllowed, setFallbackAllowed] = useState(true);
-  const signedOut = useCampusStore(
+  const signedOut = useOrganizationStore(
     (state) => state.connectionStatus === "signed_out",
   );
 

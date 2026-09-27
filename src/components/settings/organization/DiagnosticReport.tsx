@@ -12,7 +12,7 @@ import { commands, type ShortcutBinding } from "@/bindings";
 import { Button } from "@/components/ui/Button";
 import { useSettings } from "@/hooks/useSettings";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
-import { useCampusStatus } from "@/hooks/useCampusStatus";
+import { useOrganizationStatus } from "@/hooks/useOrganizationStatus";
 import { currentEdition } from "@/lib/organization";
 import {
   buildDiagnosticReport,
@@ -20,7 +20,7 @@ import {
   formatDiagnosticReport,
   type DiagnosticInput,
 } from "@/lib/diagnostics/report";
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 
 /**
  * Le rapport de diagnostic, côté écran.
@@ -75,9 +75,11 @@ export const DiagnosticReport: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, audioDevices } = useSettings();
   const context = useOrganizationContext();
-  const { connection } = useCampusStatus();
-  const session = useCampusStore((state) => state.session);
-  const organization = useCampusStore((state) => state.context.organization);
+  const { connection } = useOrganizationStatus();
+  const session = useOrganizationStore((state) => state.session);
+  const organization = useOrganizationStore(
+    (state) => state.context.organization,
+  );
   const [busy, setBusy] = useState(false);
 
   const collect = async (): Promise<DiagnosticInput> => {

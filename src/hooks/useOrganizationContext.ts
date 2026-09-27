@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useCampusStore } from "@/stores/campusStore";
+import { useOrganizationStore } from "@/stores/organizationStore";
 import {
   currentEdition,
   currentOrganizationType,
@@ -21,9 +21,9 @@ import {
  * personnel, sans organisation.
  */
 export function useOrganizationContext(): OrganizationContext {
-  const campus = useCampusStore((state) => state.context);
-  const serverIdentity = useCampusStore((state) => state.serverIdentity);
-  const initialized = useCampusStore((state) => state.initialized);
+  const campus = useOrganizationStore((state) => state.context);
+  const serverIdentity = useOrganizationStore((state) => state.serverIdentity);
+  const initialized = useOrganizationStore((state) => state.initialized);
   const edition = currentEdition();
   const organizationType = currentOrganizationType();
 

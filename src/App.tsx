@@ -25,7 +25,7 @@ import Onboarding, {
   AccessibilityOnboarding,
   EditionChoice,
   WritingStylesIntroStep,
-  CampusOnboarding,
+  OrganizationOnboarding,
   CustomizeStep,
   SmartSetupStep,
   TutorialOnboarding,
@@ -35,13 +35,13 @@ import { SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
 import { LexiconSuggestions } from "./components/LexiconSuggestions";
 import { useSettings } from "./hooks/useSettings";
-import { useCampusStatus } from "./hooks/useCampusStatus";
+import { useOrganizationStatus } from "./hooks/useOrganizationStatus";
 import { useSystemReadiness } from "./hooks/useSystemReadiness";
 import { useOnboardingFlow } from "./hooks/useOnboardingFlow";
 import { useOrganizationUpdates } from "./hooks/useOrganizationUpdates";
 import { reconcileWithLegacySetting } from "./lib/onboarding/progress";
 import { useSettingsStore } from "./stores/settingsStore";
-import { refreshCampusContext } from "./stores/campusStore";
+import { refreshOrganizationConfig } from "./stores/organizationStore";
 import { currentOrganizationWordingKey } from "./hooks/useOrganizationWording";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
@@ -52,7 +52,7 @@ import {
 import { isOrganizationMode } from "@/lib/mode";
 import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
 import { useOrganizationSuspension } from "@/hooks/useOrganizationSuspension";
-import { OrganizationSuspended } from "@/components/campus/OrganizationSuspended";
+import { OrganizationSuspended } from "@/components/organization/OrganizationSuspended";
 import { useOrganizationSignInRequired } from "@/hooks/useOrganizationSignInRequired";
 import {
   forgetLabEnrollment,
@@ -67,7 +67,7 @@ import {
   StartupStalled,
 } from "./components/startup/StartupScreen";
 import { chosenEdition, declaresEdition } from "@/lib/organization";
-import { clearCampusSession } from "@/lib/campusSession";
+import { clearOrganizationSession } from "@/lib/organizationSession";
 
 // Le parcours de première ouverture n'est plus une suite figée : il est
 // calculé depuis l'état réel du système (voir `useOnboardingFlow`). App.tsx
@@ -99,8 +99,8 @@ function App() {
 
   const { settings, updateSetting } = useSettings();
   const readiness = useSystemReadiness();
-  const { session: campusSessionState, refresh: refreshCampusStatus } =
-    useCampusStatus();
+  const { session: campusSessionState, refresh: refreshOrganizationStatus } =
+    useOrganizationStatus();
   // Le repli local d'une organisation a besoin d'un modèle sur le disque. Il
   // se prépare dès qu'un membre est connecté, dans sa langue de dictée.
   useOrganizationLocalFallback({
@@ -132,7 +132,7 @@ function App() {
 
   const flow = useOnboardingFlow({
     readiness,
-    hasCampusSession: campusSessionState !== null,
+    hasOrganizationSession: campusSessionState !== null,
     isFirstRun,
     onFinished: () => {
       updateSetting("onboarding_completed", true).catch((e) => {
@@ -196,7 +196,7 @@ function App() {
   // amorcer l'identité, les policies et le catalogue de packages partagés.
   useEffect(() => {
     if (!isOrganizationMode()) return;
-    void refreshCampusContext();
+    void refreshOrganizationConfig();
   }, []);
 
   // Ce premier appel ne se rejouait jamais : ce que l'organisation publiait
@@ -339,21 +339,21 @@ function App() {
   // Session campus révoquée (401) : retour à l'onboarding.
   useEffect(() => {
     const unlisten = listen("campus-session-invalid", () => {
-      // La session disparue, `useCampusStatus` la relit et le parcours
+      // La session disparue, `useOrganizationStatus` la relit et le parcours
       // réintroduit de lui-même l'étape de connexion.
       // Les mots sont choisis avant d'effacer la session : c'est tant que le
       // contexte existe encore qu'on sait si l'on parle à une école.
       const description = t(currentOrganizationWordingKey("sessionExpired"));
-      clearCampusSession()
+      clearOrganizationSession()
         .then(() => {
-          refreshCampusStatus();
+          refreshOrganizationStatus();
           showAttentionToast("error", t("organization.sessionExpiredTitle"), {
             description,
           });
         })
         .catch((e) => {
           console.error("Failed to clear campus session:", e);
-          refreshCampusStatus();
+          refreshOrganizationStatus();
         });
     });
     return () => {
@@ -379,12 +379,12 @@ function App() {
   // Déconnexion demandée depuis la section Compte : retour à l'onboarding.
   useEffect(() => {
     const unlisten = listen("campus-logout-requested", () => {
-      refreshCampusStatus();
+      refreshOrganizationStatus();
     });
     return () => {
       unlisten.then((fn) => fn());
     };
-  }, [refreshCampusStatus]);
+  }, [refreshOrganizationStatus]);
 
   useEffect(() => {
     const unlisten = listen("notification-attention-seen", () => {
@@ -588,7 +588,7 @@ function App() {
         <LabJoin
           onEnrolled={() => {
             setLabEnrolled(true);
-            refreshCampusStatus();
+            refreshOrganizationStatus();
           }}
         />
       </>
@@ -643,10 +643,10 @@ function App() {
     content = <AccessibilityOnboarding onComplete={flow.next} />;
   } else if (flow.current === "campus") {
     content = (
-      <CampusOnboarding
+      <OrganizationOnboarding
         flowContext="onboarding"
         onComplete={() => {
-          refreshCampusStatus();
+          refreshOrganizationStatus();
           flow.next();
         }}
       />
@@ -710,10 +710,10 @@ function App() {
     // connexion s'impose, au lancement comme en cours de session. Le parcours
     // relit le contexte en aboutissant, ce qui lève cet écran de lui-même.
     content = (
-      <CampusOnboarding
+      <OrganizationOnboarding
         flowContext="settings"
         onComplete={() => {
-          refreshCampusStatus();
+          refreshOrganizationStatus();
         }}
       />
     );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { commands } from "@/bindings";
-import { useCampusStatus } from "./useCampusStatus";
+import { useOrganizationStatus } from "./useOrganizationStatus";
 
 export interface Organization {
   /** Nom affiché de l'établissement. */
@@ -24,7 +24,7 @@ export interface Organization {
  * sur un libellé dérivé de l'hôte, marqué comme non faisant autorité.
  */
 export function useOrganization(): Organization | null {
-  const { serverName, session } = useCampusStatus();
+  const { serverName, session } = useOrganizationStatus();
   const [fromServer, setFromServer] = useState<string | null>(null);
 
   useEffect(() => {

@@ -3,8 +3,11 @@ import { useTranslation } from "react-i18next";
 import { Ban } from "lucide-react";
 
 import { Button } from "@/components/ui";
-import { campusOrganizationLabel } from "@/lib/campusPolicy";
-import { refreshCampusContext, useCampusStore } from "@/stores/campusStore";
+import { organizationLabel } from "@/lib/organizationConfig";
+import {
+  refreshOrganizationConfig,
+  useOrganizationStore,
+} from "@/stores/organizationStore";
 
 /**
  * Écran bloquant d'un membre suspendu.
@@ -16,15 +19,15 @@ import { refreshCampusContext, useCampusStore } from "@/stores/campusStore";
  */
 export const OrganizationSuspended: React.FC = () => {
   const { t } = useTranslation();
-  const organizationName = useCampusStore((state) =>
-    state.config ? campusOrganizationLabel(state.context.organization) : null,
+  const organizationName = useOrganizationStore((state) =>
+    state.config ? organizationLabel(state.context.organization) : null,
   );
   const [checking, setChecking] = useState(false);
 
   const checkAgain = async () => {
     setChecking(true);
     try {
-      await refreshCampusContext();
+      await refreshOrganizationConfig();
     } finally {
       setChecking(false);
     }

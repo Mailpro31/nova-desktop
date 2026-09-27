@@ -4,7 +4,7 @@ import { Check, ChevronRight, FileAudio } from "lucide-react";
 
 import NovaOrb from "./NovaOrb";
 import { useHomeState, type HeroSituation } from "./useHomeState";
-import { CampusFileTranscribeModal } from "./CampusFileTranscribeModal";
+import { OrganizationFileTranscribeModal } from "./OrganizationFileTranscribeModal";
 import { Button } from "../../ui/Button";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { isOrganizationMode } from "@/lib/mode";
@@ -36,7 +36,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
   const { t, i18n } = useTranslation();
   const home = useHomeState();
   const [fileModalOpen, setFileModalOpen] = useState(false);
-  const campusMode = isOrganizationMode();
+  const organizationMode = isOrganizationMode();
 
   const compact = !home.isNewUser;
 
@@ -142,7 +142,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
       {/* Transcription de fichier : seule porte d'entrée de cette capacité
           dans tout le produit, donc elle reste ici — ce n'est pas un raccourci
           redondant vers une destination de la barre latérale. */}
-      {campusMode && (
+      {organizationMode && (
         <section className="mt-[32px] border-t border-hairline pt-[20px]">
           <button
             type="button"
@@ -168,7 +168,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
         </section>
       )}
 
-      <CampusFileTranscribeModal
+      <OrganizationFileTranscribeModal
         isOpen={fileModalOpen}
         onClose={() => setFileModalOpen(false)}
       />
