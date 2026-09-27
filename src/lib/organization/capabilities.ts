@@ -37,10 +37,11 @@ const PERSONAL_CAPABILITIES: CapabilityMap = Object.freeze({
   // Learn est du Nova Core : il vaut pour Personal comme pour une
   // organisation. C'est la capacite qui decide, jamais l'edition.
   learning: true,
-  // Prompts et Historique : du Core, ouverts partout. Seule une organisation
-  // qui les ferme explicitement les retire.
+  // Prompts, Historique et le mode réunion : du Core, ouverts partout. Seule
+  // une organisation qui les ferme explicitement les retire.
   prompts: true,
   history: true,
+  meeting: true,
 });
 
 /**

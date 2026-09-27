@@ -215,10 +215,13 @@ function resolveCapabilities(campus: CampusContext | null): CapabilityMap {
     // par le serveur. Ce n'est pas une surface d'organisation : c'est du Core
     // qu'une policy peut fermer.
     learning: capabilities.learning,
-    // Prompts et Historique vivent sur le poste : ouverts, sauf fermeture
-    // annoncée explicitement par le serveur.
+    // Prompts, Historique et le mode réunion vivent sur le poste : ouverts,
+    // sauf fermeture annoncée explicitement par le serveur. Le mode réunion est
+    // débloqué pour toute organisation côté Rust (`organization_unlocks()`) ;
+    // seule une fermeture nommée le retire.
     prompts: true,
     history: true,
+    meeting: true,
   });
 }
 
@@ -237,6 +240,7 @@ const CLOSABLE_CORE_CAPABILITIES: Readonly<Record<string, CapabilityId>> =
     styles: "writingStyles",
     prompts: "prompts",
     history: "history",
+    meeting: "meeting",
   });
 
 function applyClosedCapabilities(

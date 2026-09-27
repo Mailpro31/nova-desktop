@@ -154,7 +154,8 @@ export type CapabilityId =
   // — Catégories du Core qu'une organisation peut fermer, sur annonce
   //   explicite du serveur (`closed_capabilities`) —
   | "prompts"
-  | "history";
+  | "history"
+  | "meeting";
 
 export type CapabilityMap = Readonly<Record<CapabilityId, boolean>>;
 
