@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} suspendeu seu acesso ao Nova. Entre em contato com seu administrador para restaurá-lo.",
       "nothingDeleted": "Nada foi excluído. O Nova abre novamente assim que seu acesso for restaurado.",
       "checkAgain": "Verificar novamente"
+    },
+    "diagnostic": {
+      "title": "Relatório de diagnóstico",
+      "description": "Um ficheiro para entregar ao seu administrador. Descreve a versão, a máquina, a ligação ao servidor e os tempos medidos. Não contém qualquer ditado, histórico, valor pessoal nem token de sessão.",
+      "save": "Guardar o relatório",
+      "saved": "Relatório guardado.",
+      "failed": "Não foi possível guardar o relatório."
     }
   },
   "aiSkills": {

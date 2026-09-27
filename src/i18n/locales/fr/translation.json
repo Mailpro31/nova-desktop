@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} a suspendu votre accès à Nova. Contactez votre administrateur pour le rétablir.",
       "nothingDeleted": "Rien n’a été supprimé. Nova se rouvre dès que votre accès est rétabli.",
       "checkAgain": "Vérifier à nouveau"
+    },
+    "diagnostic": {
+      "title": "Rapport de diagnostic",
+      "description": "Un fichier à remettre à votre administrateur. Il décrit la version, la machine, la liaison au serveur et les temps mesurés. Il ne contient aucune dictée, aucun historique, aucune valeur personnelle et aucun jeton de session.",
+      "save": "Enregistrer le rapport",
+      "saved": "Rapport enregistré.",
+      "failed": "Le rapport n'a pas pu être enregistré."
     }
   },
   "aiSkills": {

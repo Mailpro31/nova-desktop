@@ -89,11 +89,15 @@ describe("espace de noms des clés d'organisation", () => {
   });
 
   test("le renommage n'a perdu aucune clé", () => {
-    // 197 clés sous `campus`, 6 sous `campusConnection`, relevées avant le
-    // renommage. Les valeurs n'ont pas bougé : seul le préfixe change.
+    // 197 clés sous `campus` et 6 sous `campusConnection`, relevées avant le
+    // renommage : un plancher, pas un compte. Ajouter une clé est normal ;
+    // repasser sous ce nombre voudrait dire que le renommage, ou une reprise
+    // ultérieure, en a perdu.
     const tree = english();
-    expect(keys(tree.organization as Tree)).toHaveLength(197);
-    expect(keys(tree.organizationConnection as Tree)).toHaveLength(6);
+    expect(keys(tree.organization as Tree).length).toBeGreaterThanOrEqual(197);
+    expect(
+      keys(tree.organizationConnection as Tree).length,
+    ).toBeGreaterThanOrEqual(6);
   });
 });
 

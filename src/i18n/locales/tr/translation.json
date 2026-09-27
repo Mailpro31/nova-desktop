@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} Nova erişiminizi askıya aldı. Geri almak için yöneticinize başvurun.",
       "nothingDeleted": "Hiçbir şey silinmedi. Erişiminiz geri verildiğinde Nova yeniden açılır.",
       "checkAgain": "Yeniden kontrol et"
+    },
+    "diagnostic": {
+      "title": "Tanılama raporu",
+      "description": "Yöneticinize vereceğiniz bir dosya. Sürümü, bilgisayarı, sunucu bağlantısını ve ölçülen süreleri anlatır. Hiçbir dikte, geçmiş, kişisel değer veya oturum belirteci içermez.",
+      "save": "Raporu kaydet",
+      "saved": "Rapor kaydedildi.",
+      "failed": "Rapor kaydedilemedi."
     }
   },
   "aiSkills": {

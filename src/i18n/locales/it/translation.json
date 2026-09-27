@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} ha sospeso il tuo accesso a Nova. Contatta il tuo amministratore per ripristinarlo.",
       "nothingDeleted": "Non è stato eliminato nulla. Nova si riapre non appena il tuo accesso viene ripristinato.",
       "checkAgain": "Verifica di nuovo"
+    },
+    "diagnostic": {
+      "title": "Rapporto di diagnostica",
+      "description": "Un file da consegnare al proprio amministratore. Descrive la versione, la macchina, il collegamento al server e i tempi misurati. Non contiene alcuna dettatura, nessuna cronologia, nessun valore personale e nessun token di sessione.",
+      "save": "Salva il rapporto",
+      "saved": "Rapporto salvato.",
+      "failed": "Non è stato possibile salvare il rapporto."
     }
   },
   "aiSkills": {

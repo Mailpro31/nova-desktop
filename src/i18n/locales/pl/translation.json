@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} zawiesiła Twój dostęp do Nova. Skontaktuj się z administratorem, aby go przywrócić.",
       "nothingDeleted": "Nic nie zostało usunięte. Nova otworzy się ponownie, gdy dostęp zostanie przywrócony.",
       "checkAgain": "Sprawdź ponownie"
+    },
+    "diagnostic": {
+      "title": "Raport diagnostyczny",
+      "description": "Plik do przekazania administratorowi. Opisuje wersję, komputer, połączenie z serwerem i zmierzone czasy. Nie zawiera żadnego dyktowania, historii, wartości osobistych ani tokenu sesji.",
+      "save": "Zapisz raport",
+      "saved": "Raport zapisany.",
+      "failed": "Nie udało się zapisać raportu."
     }
   },
   "aiSkills": {

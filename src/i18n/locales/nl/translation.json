@@ -1170,6 +1170,13 @@
       "screenDescriptionNamed": "{{organization}} heeft je toegang tot Nova opgeschort. Neem contact op met je beheerder om deze te herstellen.",
       "nothingDeleted": "Er is niets verwijderd. Nova opent weer zodra je toegang is hersteld.",
       "checkAgain": "Opnieuw controleren"
+    },
+    "diagnostic": {
+      "title": "Diagnoserapport",
+      "description": "Een bestand om aan uw beheerder te geven. Het beschrijft de versie, de machine, de verbinding met de server en de gemeten tijden. Het bevat geen dictaat, geen geschiedenis, geen persoonlijke waarden en geen sessietoken.",
+      "save": "Rapport opslaan",
+      "saved": "Rapport opgeslagen.",
+      "failed": "Het rapport kon niet worden opgeslagen."
     }
   },
   "aiSkills": {
