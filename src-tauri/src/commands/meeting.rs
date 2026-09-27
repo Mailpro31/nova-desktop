@@ -38,21 +38,28 @@ async fn organization_report(app: &AppHandle, dialogue: &str) -> Option<String> 
     if dialogue.chars().count() > ORGANIZATION_MAX_CHARS {
         return None;
     }
-    let session = crate::commands::campus::should_use_campus(app).await?;
+    let session = crate::commands::organization::should_use_organization(app).await?;
     let style = crate::actions::resolve_effective_style(app, Some(MEETING_STYLE_ID))?;
-    match crate::commands::campus::reformulate_campus(dialogue, &style.id, &style.prompt, &session)
-        .await
+    match crate::commands::organization::reformulate_organization(
+        dialogue,
+        &style.id,
+        &style.prompt,
+        &session,
+    )
+    .await
     {
-        Ok(text) => match crate::actions::checked_campus_rewrite(dialogue, &text, &style.id) {
-            // Un serveur qui refuse sa propre sortie rend le dialogue tel quel :
-            // ce n'est pas un compte rendu, le moteur local peut encore essayer.
-            Ok(report) if report.trim() != dialogue.trim() => Some(report),
-            Ok(_) => None,
-            Err(reason) => {
-                log::warn!("meeting: compte rendu du serveur refusé ({reason})");
-                None
+        Ok(text) => {
+            match crate::actions::checked_organization_rewrite(dialogue, &text, &style.id) {
+                // Un serveur qui refuse sa propre sortie rend le dialogue tel quel :
+                // ce n'est pas un compte rendu, le moteur local peut encore essayer.
+                Ok(report) if report.trim() != dialogue.trim() => Some(report),
+                Ok(_) => None,
+                Err(reason) => {
+                    log::warn!("meeting: compte rendu du serveur refusé ({reason})");
+                    None
+                }
             }
-        },
+        }
         Err(error) => {
             log::warn!("meeting: serveur de l'organisation indisponible ({error})");
             None

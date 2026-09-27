@@ -1,10 +1,10 @@
 pub mod audio;
-pub mod campus;
 pub mod history;
 pub mod license;
 pub mod local_llm;
 pub mod meeting;
 pub mod models;
+pub mod organization;
 pub mod transcription;
 
 use crate::settings::{get_settings, write_settings, AppSettings, LogLevel};

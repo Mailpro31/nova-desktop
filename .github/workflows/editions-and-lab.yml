@@ -223,7 +223,7 @@ jobs:
       - name: Campus responses must be read as objects
         working-directory: src-tauri
         timeout-minutes: 5
-        run: cargo test campus_response -- --nocapture
+        run: cargo test organization_response -- --nocapture
 
       # La trace de diagnostic ne doit jamais pouvoir ecrire un secret. Le test
       # pose de vrais en-tetes sensibles sur la requete et verifie qu'aucun
@@ -231,7 +231,7 @@ jobs:
       - name: The diagnostic trace must never leak a secret
         working-directory: src-tauri
         timeout-minutes: 5
-        run: cargo test campus_trace -- --nocapture
+        run: cargo test organization_trace -- --nocapture
 
       # Et elle doit être absente par défaut. `cargo tree -e features` liste ce
       # que la construction par défaut active réellement, ce qui est plus solide

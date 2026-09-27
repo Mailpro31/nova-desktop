@@ -213,7 +213,7 @@ function App() {
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
     if (isOrganizationMode()) {
-      commands.setCampusMode(true).catch((e) => {
+      commands.setOrganizationMode(true).catch((e) => {
         console.warn("Failed to set campus mode:", e);
       });
     }

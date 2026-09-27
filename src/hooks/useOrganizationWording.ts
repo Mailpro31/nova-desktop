@@ -9,10 +9,10 @@ import {
 } from "@/lib/organization/wording";
 import { useOrganizationStore } from "@/stores/organizationStore";
 
-type CampusState = ReturnType<typeof useOrganizationStore.getState>;
+type OrganizationState = ReturnType<typeof useOrganizationStore.getState>;
 
 /** Nature annoncée : `/api/me` d'abord, `/api/config` ensuite, sinon rien. */
-function announcedType(state: CampusState): OrganizationType | null {
+function announcedType(state: OrganizationState): OrganizationType | null {
   return announcedTypeFrom(
     state.serverIdentity?.organizationType,
     state.config?.organization_type,

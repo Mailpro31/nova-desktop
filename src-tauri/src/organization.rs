@@ -285,8 +285,8 @@ pub fn resolve_organization_for_tenant<'a>(
 /// Campus n'est pas une édition à part : c'est une organisation de type
 /// éducation, et Business une organisation de type entreprise. Le drapeau ne
 /// répond qu'à « ce poste est-il géré par une organisation ? ».
-pub fn edition_for(campus_enabled: bool) -> Edition {
-    if campus_enabled {
+pub fn edition_for(organization_enabled: bool) -> Edition {
+    if organization_enabled {
         Edition::Organization
     } else {
         Edition::Personal
@@ -334,7 +334,7 @@ pub fn organization_type_from_server(value: &str) -> Option<OrganizationType> {
 /// `partner` est la catégorie fourre-tout du serveur : elle ne désigne aucun
 /// métier, d'où `Other`. Une valeur inconnue ne produit rien plutôt qu'un
 /// métier arbitraire.
-pub fn member_type_from_campus_role(role: &str) -> Option<MemberType> {
+pub fn member_type_from_organization_role(role: &str) -> Option<MemberType> {
     match role.trim().to_ascii_lowercase().as_str() {
         "student" => Some(MemberType::Student),
         "teacher" => Some(MemberType::Teacher),
@@ -355,7 +355,7 @@ pub fn member_type_from_campus_role(role: &str) -> Option<MemberType> {
 ///
 /// Le rôle de sécurité réel est décidé par le serveur et annoncé par `/api/me` ;
 /// le poste le lit, il ne le calcule jamais.
-pub fn security_role_from_campus_role(_role: &str) -> SecurityRole {
+pub fn security_role_from_organization_role(_role: &str) -> SecurityRole {
     SecurityRole::Member
 }
 
@@ -363,7 +363,7 @@ pub fn security_role_from_campus_role(_role: &str) -> SecurityRole {
 ///
 /// Même notion des deux côtés : un champ libre qui segmente sans conférer de
 /// droit. Une cohorte vide ne produit pas de groupe vide.
-pub fn group_from_campus_cohort(cohort: &str) -> Option<Group> {
+pub fn group_from_organization_cohort(cohort: &str) -> Option<Group> {
     let label = cohort.trim();
     if label.is_empty() {
         return None;
@@ -378,11 +378,11 @@ pub fn group_from_campus_cohort(cohort: &str) -> Option<Group> {
 }
 
 /// Membre reconstruit depuis une réponse `/api/me` du serveur Campus.
-pub fn member_from_campus_profile(role: &str, cohort: &str) -> OrganizationMember {
+pub fn member_from_organization_profile(role: &str, cohort: &str) -> OrganizationMember {
     OrganizationMember {
-        member_type: member_type_from_campus_role(role),
-        security_role: security_role_from_campus_role(role),
-        groups: group_from_campus_cohort(cohort).into_iter().collect(),
+        member_type: member_type_from_organization_role(role),
+        security_role: security_role_from_organization_role(role),
+        groups: group_from_organization_cohort(cohort).into_iter().collect(),
     }
 }
 
@@ -447,15 +447,18 @@ mod tests {
     #[test]
     fn a_business_metier_is_a_metier_and_nothing_more() {
         assert_eq!(
-            member_type_from_campus_role("employee"),
+            member_type_from_organization_role("employee"),
             Some(MemberType::Employee)
         );
         assert_eq!(
-            member_type_from_campus_role("manager"),
+            member_type_from_organization_role("manager"),
             Some(MemberType::Manager)
         );
         for role in ["employee", "manager"] {
-            assert_eq!(security_role_from_campus_role(role), SecurityRole::Member);
+            assert_eq!(
+                security_role_from_organization_role(role),
+                SecurityRole::Member
+            );
         }
     }
 
@@ -465,7 +468,7 @@ mod tests {
         // des droits d'administration parce qu'il « a l'air » responsable.
         for role in ["student", "teacher", "staff", "partner", "unknown", ""] {
             assert_eq!(
-                security_role_from_campus_role(role),
+                security_role_from_organization_role(role),
                 SecurityRole::Member,
                 "« {role} » ne doit conférer aucun droit d'administration"
             );
@@ -473,37 +476,37 @@ mod tests {
     }
 
     #[test]
-    fn campus_roles_map_to_member_types() {
+    fn organization_roles_map_to_member_types() {
         assert_eq!(
-            member_type_from_campus_role("student"),
+            member_type_from_organization_role("student"),
             Some(MemberType::Student)
         );
         assert_eq!(
-            member_type_from_campus_role("Teacher"),
+            member_type_from_organization_role("Teacher"),
             Some(MemberType::Teacher)
         );
         assert_eq!(
-            member_type_from_campus_role("staff"),
+            member_type_from_organization_role("staff"),
             Some(MemberType::Staff)
         );
         // `partner` n'est pas un métier : le fourre-tout reste un fourre-tout.
         assert_eq!(
-            member_type_from_campus_role("partner"),
+            member_type_from_organization_role("partner"),
             Some(MemberType::Other)
         );
         // Plutôt rien qu'un métier inventé.
-        assert_eq!(member_type_from_campus_role("doyen"), None);
-        assert_eq!(member_type_from_campus_role(""), None);
+        assert_eq!(member_type_from_organization_role("doyen"), None);
+        assert_eq!(member_type_from_organization_role(""), None);
     }
 
     #[test]
     fn cohort_becomes_a_compatibility_group() {
-        let group = group_from_campus_cohort(" AERO2 ").expect("cohorte non vide");
+        let group = group_from_organization_cohort(" AERO2 ").expect("cohorte non vide");
         assert_eq!(group.id, "AERO2");
         assert_eq!(group.label, "AERO2");
         assert_eq!(group.source, GroupSource::LegacyCohort);
         assert_eq!(group.external_group_id, None);
-        assert!(group_from_campus_cohort("   ").is_none());
+        assert!(group_from_organization_cohort("   ").is_none());
     }
 
     // ── Identité ─────────────────────────────────────────────────────────
@@ -647,7 +650,7 @@ mod tests {
 
     #[test]
     fn profile_without_cohort_has_no_group() {
-        let member = member_from_campus_profile("student", "");
+        let member = member_from_organization_profile("student", "");
         assert_eq!(member.member_type, Some(MemberType::Student));
         assert_eq!(member.security_role, SecurityRole::Member);
         assert!(member.groups.is_empty());

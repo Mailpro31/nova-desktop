@@ -6,11 +6,11 @@ import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
-import type { CampusSnippetEntry } from "@/lib/organizationApi";
+import type { OrganizationSnippetEntry } from "@/lib/organizationApi";
 
 export const OrganizationSnippetsSection: React.FC = () => {
   const { t } = useTranslation();
-  const [snippets, setSnippets] = useState<CampusSnippetEntry[]>([]);
+  const [snippets, setSnippets] = useState<OrganizationSnippetEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Form

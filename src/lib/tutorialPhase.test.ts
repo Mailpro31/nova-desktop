@@ -123,7 +123,10 @@ describe("carte du tutoriel", () => {
  * qu'on empeche de revenir.
  */
 describe("joignabilite du serveur", () => {
-  const campusRs = readFileSync("src-tauri/src/commands/campus.rs", "utf-8");
+  const campusRs = readFileSync(
+    "src-tauri/src/commands/organization.rs",
+    "utf-8",
+  );
 
   it("ne sonde /api/health que depuis un seul endroit", () => {
     const probes = campusRs.match(/"\{\}\/api\/health"/g) ?? [];

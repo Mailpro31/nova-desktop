@@ -4,8 +4,6 @@ mod apple_intelligence;
 mod audio_feedback;
 pub mod audio_toolkit;
 mod auto_style;
-/// Trace de diagnostic des requetes Campus/Lab, expurgee par construction.
-mod campus_trace;
 mod catalog;
 pub mod cli;
 mod clipboard;
@@ -46,6 +44,8 @@ mod organization_packages;
 /// et Google Workspace. Voir `docs/architecture/microsoft-entra-sso.md` et
 /// `docs/architecture/google-workspace-sso.md`.
 mod organization_sso;
+/// Trace de diagnostic des requetes Campus/Lab, expurgee par construction.
+mod organization_trace;
 mod overlay;
 mod performance;
 pub mod portable;
@@ -244,7 +244,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(tray::CurrentTrayIconState::new());
     app_handle.manage(local_llm::LocalLlmProcess::default());
     app_handle.manage(commands::meeting::MeetingSessionState::default());
-    app_handle.manage(commands::campus::CampusState::default());
+    app_handle.manage(commands::organization::OrganizationState::default());
 
     // Note: Shortcuts are NOT initialized here.
     // The frontend is responsible for calling the `initialize_shortcuts` command
@@ -680,50 +680,50 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 nova_commands::nova_command_capture_selection,
                 nova_commands::nova_command_replace,
                 nova_commands::nova_command_diagnostics,
-                commands::campus::get_campus_config,
-                commands::campus::fetch_campus_server_config,
-                commands::campus::set_campus_mode,
-                commands::campus::set_campus_suspended,
+                commands::organization::get_organization_config,
+                commands::organization::fetch_organization_server_config,
+                commands::organization::set_organization_mode,
+                commands::organization::set_organization_suspended,
                 organization_sso::sign_in_with_organization,
                 organization_sso::organization_auth_providers,
                 email_discovery::discover_organization_by_email,
                 organization_discovery::discover_organization,
                 deployment::get_deployment_state,
-                commands::campus::load_campus_session,
-                commands::campus::clear_campus_session,
-                commands::campus::logout_campus_session,
-                commands::campus::complete_campus_onboarding,
-                commands::campus::check_campus_server_reachability,
-                commands::campus::request_campus_auth,
-                commands::campus::verify_campus_auth,
-                commands::campus::start_campus_entra_auth,
-                commands::campus::poll_campus_entra_auth,
-                commands::campus::get_campus_me,
-                commands::campus::get_campus_vocabulary,
-                commands::campus::add_campus_dictionary_entry,
-                commands::campus::delete_campus_dictionary_entry,
-                commands::campus::learn_campus_dictionary,
-                commands::campus::export_campus_dictionary,
-                commands::campus::import_campus_dictionary,
-                commands::campus::analyze_campus_document,
-                commands::campus::add_campus_snippet,
-                commands::campus::delete_campus_snippet,
-                commands::campus::get_campus_formatting_rules,
-                commands::campus::add_campus_formatting_rule,
-                commands::campus::delete_campus_formatting_rule,
-                commands::campus::execute_campus_command,
-                commands::campus::get_campus_ai_skills,
-                commands::campus::refresh_organization_packages,
-                commands::campus::fetch_organization_changes,
-                commands::campus::fetch_learning_catalog,
-                commands::campus::fetch_learning_progress,
-                commands::campus::update_learning_progress,
-                commands::campus::request_learning_feedback,
-                commands::campus::clear_organization_packages,
-                commands::campus::run_organization_skill,
-                commands::campus::format_campus_structured_notes,
+                commands::organization::load_organization_session,
+                commands::organization::clear_organization_session,
+                commands::organization::logout_organization_session,
+                commands::organization::complete_organization_onboarding,
+                commands::organization::check_organization_server_reachability,
+                commands::organization::request_organization_auth,
+                commands::organization::verify_organization_auth,
+                commands::organization::start_organization_entra_auth,
+                commands::organization::poll_organization_entra_auth,
+                commands::organization::get_organization_me,
+                commands::organization::get_organization_vocabulary,
+                commands::organization::add_organization_dictionary_entry,
+                commands::organization::delete_organization_dictionary_entry,
+                commands::organization::learn_organization_dictionary,
+                commands::organization::export_organization_dictionary,
+                commands::organization::import_organization_dictionary,
+                commands::organization::analyze_organization_document,
+                commands::organization::add_organization_snippet,
+                commands::organization::delete_organization_snippet,
+                commands::organization::get_organization_formatting_rules,
+                commands::organization::add_organization_formatting_rule,
+                commands::organization::delete_organization_formatting_rule,
+                commands::organization::execute_organization_command,
+                commands::organization::get_organization_ai_skills,
+                commands::organization::refresh_organization_packages,
+                commands::organization::fetch_organization_changes,
+                commands::organization::fetch_learning_catalog,
+                commands::organization::fetch_learning_progress,
+                commands::organization::update_learning_progress,
+                commands::organization::request_learning_feedback,
+                commands::organization::clear_organization_packages,
+                commands::organization::run_organization_skill,
+                commands::organization::format_organization_structured_notes,
                 structured_notes::format_structured_notes_locally,
-                commands::campus::transcribe_campus_audio_file,
+                commands::organization::transcribe_organization_audio_file,
                 commands::get_lexicon_suggestions,
                 commands::accept_lexicon_suggestion,
                 commands::dismiss_lexicon_suggestion,
@@ -809,7 +809,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
     #[cfg(feature = "lab")]
     let commands = nova_command_registry!(
         lab_enrollment::enroll_lab_device,
-        commands::campus::lab_connection_active
+        commands::organization::lab_connection_active
     );
 
     Builder::<tauri::Wry>::new()
@@ -846,7 +846,7 @@ mod specta_registration {
     const ESSENTIAL: [&str; 4] = [
         "get_app_settings",
         "get_available_models",
-        "load_campus_session",
+        "load_organization_session",
         "get_history_entries",
     ];
 
@@ -1306,7 +1306,7 @@ pub fn run(cli_args: CliArgs) {
             // lancement suivant, et Nova Lab retombait en mode local en
             // paraissant l'avoir choisi.
             #[cfg(feature = "lab")]
-            match crate::commands::campus::restore_lab_connection(&app_handle) {
+            match crate::commands::organization::restore_lab_connection(&app_handle) {
                 Ok(true) => log::info!("Enrolement Lab restaure depuis le trousseau du systeme"),
                 Ok(false) => log::debug!("Aucun enrolement Lab a restaurer"),
                 Err(error) => log::warn!("Enrolement Lab non restaure : {error}"),

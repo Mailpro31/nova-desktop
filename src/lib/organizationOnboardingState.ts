@@ -1,4 +1,4 @@
-import type { CampusConfig } from "@/lib/organizationSession";
+import type { OrganizationConfig } from "@/lib/organizationSession";
 
 export function isValidOrganizationEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -32,7 +32,7 @@ export function maskOrganizationEmail(email: string): string {
 }
 
 export function shouldShowOrganizationServerInput(
-  config: CampusConfig | null,
+  config: OrganizationConfig | null,
 ): boolean {
   return !config?.server_url;
 }

@@ -63,15 +63,15 @@ describe("Réglages sans « Fondamentaux IA »", () => {
       "src/components/settings/configuration/ConfigurationSettings.tsx",
     );
     expect(settings).not.toContain("aiEssentials");
-    expect(settings).not.toContain("CampusAiSkills");
+    expect(settings).not.toContain("OrganizationAiSkills");
   });
 
   test("ses modules sont des leçons du catalogue, pas un second cours dans Apprendre", () => {
     expect(
       read("src/components/settings/learn/LearnSettings.tsx"),
-    ).not.toContain("CampusAiSkills");
+    ).not.toContain("OrganizationAiSkills");
     expect(
-      existsSync("src/components/settings/campus/CampusAiSkills.tsx"),
+      existsSync("src/components/settings/campus/OrganizationAiSkills.tsx"),
     ).toBe(false);
   });
 });

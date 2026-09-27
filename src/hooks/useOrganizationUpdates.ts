@@ -150,7 +150,7 @@ export function useOrganizationUpdates(): void {
         // Capacités, catégories et durée maximale de dictée : la configuration
         // est relue, et `/api/me` transmet la limite au moteur de dictée.
         await refreshOrganizationConfig().catch(() => {});
-        await commands.getCampusMe().catch(() => null);
+        await commands.getOrganizationMe().catch(() => null);
       }
       if (
         reload.includes("lessons") &&

@@ -5,11 +5,11 @@ import {
   connectionOf,
   withSession,
   type OrganizationConnectionState,
-  type CampusSnapshot,
+  type OrganizationSnapshot,
 } from "@/lib/organizationConnectionState";
 import {
   loadOrganizationSession,
-  type CampusSession,
+  type OrganizationSession,
 } from "@/lib/organizationSession";
 import { isOrganizationMode } from "@/lib/mode";
 
@@ -20,7 +20,7 @@ export type { OrganizationConnectionState };
 
 export interface OrganizationStatus {
   /** Session campus persistée, `null` en mode personnel ou avant chargement. */
-  session: CampusSession | null;
+  session: OrganizationSession | null;
   /** `unknown` tant que la première vérification n'a pas répondu. */
   connection: OrganizationConnectionState;
   /** Hôte du serveur de l'établissement, prêt à afficher. */
@@ -29,7 +29,7 @@ export interface OrganizationStatus {
   refresh: () => Promise<void>;
 }
 
-type Snapshot = CampusSnapshot;
+type Snapshot = OrganizationSnapshot;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sondage unique, partagé

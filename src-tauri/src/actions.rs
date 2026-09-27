@@ -2,7 +2,7 @@
 use crate::apple_intelligence;
 use crate::audio_feedback::{play_feedback_sound, play_feedback_sound_blocking, SoundType};
 use crate::audio_toolkit::{is_microphone_access_denied, is_no_input_device_error, VadPolicy};
-use crate::commands::campus::{self, CampusError};
+use crate::commands::organization::{self, OrganizationError};
 use crate::managers::audio::AudioRecordingManager;
 use crate::managers::history::HistoryManager;
 use crate::managers::model::ModelManager;
@@ -877,7 +877,7 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
 /// contrôles qu'un moteur local. Le serveur en fait déjà, mais un serveur plus
 /// ancien, ou un modèle qui les déjoue, ne doit pas pouvoir coller un texte
 /// vide, traduit ou sans rapport à la place de la dictée.
-pub(crate) fn checked_campus_rewrite(
+pub(crate) fn checked_organization_rewrite(
     transcription: &str,
     reformulated: &str,
     style_id: &str,
@@ -1985,13 +1985,13 @@ impl ShortcutAction for TranscribeAction {
         // raccourcis globaux restant actifs derrière lui.
         if crate::licensing::dictation_requires_organization_sign_in() {
             warn!("Dictation refused: organization sign-in required by machine policy");
-            let _ = app.emit(campus::CAMPUS_SIGN_IN_REQUIRED_EVENT, ());
+            let _ = app.emit(organization::ORGANIZATION_SIGN_IN_REQUIRED_EVENT, ());
             return;
         }
         // Suspendu par l'organisation : plus aucune dictée, pas même locale.
         if crate::licensing::dictation_blocked_by_suspension() {
             warn!("Dictation refused: the organization suspended this member");
-            let _ = app.emit(campus::CAMPUS_ACCESS_SUSPENDED_EVENT, ());
+            let _ = app.emit(organization::ORGANIZATION_ACCESS_SUSPENDED_EVENT, ());
             return;
         }
         crate::input::remember_text_target();
@@ -2235,7 +2235,7 @@ impl ShortcutAction for TranscribeAction {
                                                  // « Reformulation toujours active »), indépendamment du toggle.
         let post_process = self.post_process
             || get_settings(app).post_process_enabled
-            || crate::licensing::is_campus_enabled();
+            || crate::licensing::is_organization_enabled();
         let cancel_generation = rm.cancel_generation();
 
         // Style « Automatique » : on lit la fenêtre au premier plan MAINTENANT
@@ -2363,15 +2363,20 @@ impl ShortcutAction for TranscribeAction {
                     // a déjà été finalisé ; son texte sert de secours si le serveur
                     // est injoignable ou renvoie une erreur non-fatale.
                     let transcription_time = Instant::now();
-                    let mut campus_used = false;
-                    let mut campus_error: Option<CampusError> = None;
+                    let mut organization_used = false;
+                    let mut organization_error: Option<OrganizationError> = None;
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
-                        if let Some(session) = campus::should_use_campus(&ah).await {
-                            match campus::transcribe_campus(&wav_path_for_verify, &session).await {
+                        if let Some(session) = organization::should_use_organization(&ah).await {
+                            match organization::transcribe_organization(
+                                &wav_path_for_verify,
+                                &session,
+                            )
+                            .await
+                            {
                                 Ok(text) => {
-                                    campus_used = true;
-                                    campus::invalidate_server_reachability_cache(
+                                    organization_used = true;
+                                    organization::invalidate_server_reachability_cache(
                                         &session.server_url,
                                     );
                                     if post_process {
@@ -2379,7 +2384,7 @@ impl ShortcutAction for TranscribeAction {
                                             &ah,
                                             auto_style_override.as_deref(),
                                         ) {
-                                            match campus::reformulate_campus(
+                                            match organization::reformulate_organization(
                                                 &text,
                                                 &style.id,
                                                 &style.prompt,
@@ -2387,24 +2392,28 @@ impl ShortcutAction for TranscribeAction {
                                             )
                                             .await
                                             {
-                                                Ok(reformulated) => match checked_campus_rewrite(
-                                                    &text,
-                                                    &reformulated,
-                                                    &style.id,
-                                                ) {
-                                                    Ok(checked) => Ok(checked),
-                                                    Err(reason) => {
-                                                        warn!(
+                                                Ok(reformulated) => {
+                                                    match checked_organization_rewrite(
+                                                        &text,
+                                                        &reformulated,
+                                                        &style.id,
+                                                    ) {
+                                                        Ok(checked) => Ok(checked),
+                                                        Err(reason) => {
+                                                            warn!(
                                                             "Rejected unsafe rewrite from the organization server ({})",
                                                             reason
                                                         );
-                                                        let _ = ah
-                                                            .emit("post-process-rejected", reason);
-                                                        Ok(text)
+                                                            let _ = ah.emit(
+                                                                "post-process-rejected",
+                                                                reason,
+                                                            );
+                                                            Ok(text)
+                                                        }
                                                     }
-                                                },
+                                                }
                                                 Err(e) => {
-                                                    campus_error = Some(e);
+                                                    organization_error = Some(e);
                                                     Ok(text)
                                                 }
                                             }
@@ -2416,7 +2425,7 @@ impl ShortcutAction for TranscribeAction {
                                     }
                                 }
                                 Err(e) => {
-                                    campus_error = Some(e);
+                                    organization_error = Some(e);
                                     match stream_result {
                                         Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
                                         Ok(_) => tm.transcribe(samples),
@@ -2430,11 +2439,12 @@ impl ShortcutAction for TranscribeAction {
                             // notification discrète, jamais de perte.
                             // Un membre suspendu n'est pas hors ligne : le lui
                             // dire à chaque dictée l'enverrait chercher une panne.
-                            if campus::is_campus_enabled(&ah)
+                            if organization::is_organization_enabled(&ah)
                                 && !crate::licensing::is_organization_suspended()
-                                && campus::has_campus_session(&ah)
+                                && organization::has_organization_session(&ah)
                             {
-                                let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                                let _ = ah
+                                    .emit(organization::ORGANIZATION_SERVER_UNREACHABLE_EVENT, ());
                             }
                             match stream_result {
                                 Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
@@ -2452,21 +2462,23 @@ impl ShortcutAction for TranscribeAction {
 
                     // Gestion des erreurs campus : 401 -> déconnexion ;
                     // autre erreur + pas de secours local -> notification.
-                    if let Some(err) = campus_error {
+                    if let Some(err) = organization_error {
                         match err {
-                            CampusError::Unauthorized => {
-                                campus::clear_campus_session_and_notify(&ah);
+                            OrganizationError::Unauthorized => {
+                                organization::clear_organization_session_and_notify(&ah);
                             }
-                            CampusError::Network(_) => {
+                            OrganizationError::Network(_) => {
                                 warn!("Campus server request failed: {}", err);
-                                let _ = ah.emit(campus::CAMPUS_SERVER_UNREACHABLE_EVENT, ());
+                                let _ = ah
+                                    .emit(organization::ORGANIZATION_SERVER_UNREACHABLE_EVENT, ());
                             }
                             // Refusée par l'organisation : peut-être une
                             // suspension. La dictée est déjà sauvée en local ;
                             // l'interface vérifie `/api/me`, seule autorité.
-                            CampusError::Forbidden(_) => {
+                            OrganizationError::Forbidden(_) => {
                                 warn!("Campus server refused the request: {}", err);
-                                let _ = ah.emit(campus::CAMPUS_ACCESS_FORBIDDEN_EVENT, ());
+                                let _ =
+                                    ah.emit(organization::ORGANIZATION_ACCESS_FORBIDDEN_EVENT, ());
                             }
                             // Le serveur a repondu, mais mal (400, 500...).
                             // Annoncer « serveur injoignable » envoie alors
@@ -2512,8 +2524,11 @@ impl ShortcutAction for TranscribeAction {
                             let output_processing_time = Instant::now();
                             // Si le serveur campus a déjà reformulé, on désactive la
                             // reformulation locale pour éviter un double traitement.
-                            let effective_post_process =
-                                if campus_used { false } else { post_process };
+                            let effective_post_process = if organization_used {
+                                false
+                            } else {
+                                post_process
+                            };
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
                                     &ah,
@@ -2757,7 +2772,7 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
 mod tests {
     use super::{
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
-        checked_campus_rewrite, clean_llm_output, complete_unless_cancelled,
+        checked_organization_rewrite, clean_llm_output, complete_unless_cancelled,
         context_looks_like_current_draft, custom_variables_block, effective_style,
         is_blank_transcription, local_primary_timeout, protect_custom_variables, protect_lexicon,
         replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
@@ -3335,10 +3350,10 @@ mod tests {
     }
 
     #[test]
-    fn a_campus_rewrite_is_checked_like_a_local_one() {
+    fn a_organization_rewrite_is_checked_like_a_local_one() {
         // Le serveur a répondu au lieu de reformuler.
         assert_eq!(
-            checked_campus_rewrite(
+            checked_organization_rewrite(
                 "je veux que l'IA m'explique la portance d'une aile en trois paragraphes simples",
                 "L'air qui passe sur l'aile crée une différence de pression. Cette force est appelée la portance.",
                 "nova_style_messages"
@@ -3347,12 +3362,12 @@ mod tests {
         );
         // Une réponse vide ne doit jamais remplacer la dictée.
         assert_eq!(
-            checked_campus_rewrite("merci de venir", "   ", "nova_style_email"),
+            checked_organization_rewrite("merci de venir", "   ", "nova_style_email"),
             Err("empty-output")
         );
         // L'IBAN a disparu de la liste.
         assert_eq!(
-            checked_campus_rewrite(
+            checked_organization_rewrite(
                 "voici mon IBAN FR76 3000 6000 0112 merci de faire le virement avant vendredi",
                 "- Faire le virement avant vendredi",
                 "nova_style_todo"
@@ -3361,7 +3376,7 @@ mod tests {
         );
         // Une bonne reformulation passe, nettoyée comme une sortie locale.
         assert_eq!(
-            checked_campus_rewrite(
+            checked_organization_rewrite(
                 "on se retrouve mardi non pardon mercredi à 14 heures en salle B204",
                 "« On se retrouve mercredi à 14 heures en salle B204. »",
                 "nova_style_email"

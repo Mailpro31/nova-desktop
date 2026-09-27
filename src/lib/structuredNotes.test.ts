@@ -110,7 +110,7 @@ describe("navigation", () => {
       "src/components/settings/configuration/ConfigurationSettings.tsx",
     );
     expect(settings).not.toContain("engineeringNotes");
-    expect(settings).not.toContain("CampusEngineeringNotes");
+    expect(settings).not.toContain("OrganizationEngineeringNotes");
   });
 
   test("l'exemple avant/après est toujours affiché", () => {

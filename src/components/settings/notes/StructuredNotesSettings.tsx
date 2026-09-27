@@ -42,7 +42,7 @@ export const StructuredNotesSettings: React.FC = () => {
     setLoading(true);
     try {
       if (engine === "organization") {
-        const response = await commands.formatCampusStructuredNotes(
+        const response = await commands.formatOrganizationStructuredNotes(
           text,
           noteType,
           instruction,

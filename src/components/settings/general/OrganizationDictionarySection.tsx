@@ -19,14 +19,14 @@ import { Textarea } from "../../ui/Textarea";
 import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 import type {
-  CampusSharedDictEntry,
-  CampusPersonalDictEntry,
+  OrganizationSharedDictEntry,
+  OrganizationPersonalDictEntry,
 } from "@/lib/organizationApi";
 
 export const OrganizationDictionarySection: React.FC = () => {
   const { t } = useTranslation();
-  const [shared, setShared] = useState<CampusSharedDictEntry[]>([]);
-  const [personal, setPersonal] = useState<CampusPersonalDictEntry[]>([]);
+  const [shared, setShared] = useState<OrganizationSharedDictEntry[]>([]);
+  const [personal, setPersonal] = useState<OrganizationPersonalDictEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
   // New entry form

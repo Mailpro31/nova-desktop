@@ -19,21 +19,21 @@ use specta::Type;
 use std::sync::atomic::{AtomicBool, Ordering};
 
 /// Mode campus : toutes les fonctionnalités sont débloquées par l'établissement.
-static CAMPUS_ENABLED: AtomicBool = AtomicBool::new(false);
+static ORGANIZATION_ENABLED: AtomicBool = AtomicBool::new(false);
 
 /// Active/désactive le bypass de palier pour le mode campus.
-pub fn set_campus_enabled(enabled: bool) {
-    CAMPUS_ENABLED.store(enabled, Ordering::Relaxed);
+pub fn set_organization_enabled(enabled: bool) {
+    ORGANIZATION_ENABLED.store(enabled, Ordering::Relaxed);
 }
 
 /// Le mode campus est-il actif côté backend ?
-pub fn is_campus_enabled() -> bool {
-    CAMPUS_ENABLED.load(Ordering::Relaxed)
+pub fn is_organization_enabled() -> bool {
+    ORGANIZATION_ENABLED.load(Ordering::Relaxed)
 }
 
 /// L'organisation a suspendu le membre connecté (`/api/me` répond 403).
 ///
-/// Distinct de [`is_campus_enabled`], qui dit l'**édition** du poste — lue
+/// Distinct de [`is_organization_enabled`], qui dit l'**édition** du poste — lue
 /// notamment par `get_deployment_state`. Une suspension ne change pas
 /// l'édition : elle retire seulement ce que l'organisation fournit.
 static ORGANIZATION_SUSPENDED: AtomicBool = AtomicBool::new(false);
@@ -49,24 +49,24 @@ pub fn is_organization_suspended() -> bool {
 /// L'organisation sert-elle ce poste — dictées envoyées, palier débloqué ?
 ///
 /// Pas pour un membre suspendu : voir [`organization_blocks_member`].
-pub fn organization_serves(campus_enabled: bool, suspended: bool) -> bool {
-    campus_enabled && !suspended
+pub fn organization_serves(organization_enabled: bool, suspended: bool) -> bool {
+    organization_enabled && !suspended
 }
 
 /// Un membre suspendu n'a plus accès à rien sur un poste Organization : ni
 /// dictée, ni repli Personal. Seul le serveur en décide (`/api/me` répond
 /// 403) ; un serveur injoignable ne suspend personne, la dictée locale continue.
-pub fn organization_blocks_member(campus_enabled: bool, suspended: bool) -> bool {
-    campus_enabled && suspended
+pub fn organization_blocks_member(organization_enabled: bool, suspended: bool) -> bool {
+    organization_enabled && suspended
 }
 
 pub fn dictation_blocked_by_suspension() -> bool {
-    organization_blocks_member(is_campus_enabled(), is_organization_suspended())
+    organization_blocks_member(is_organization_enabled(), is_organization_suspended())
 }
 
 /// Un membre est connecté à l'organisation sur ce poste.
 ///
-/// Tenu par la session elle-même (`commands::campus`) : enregistrée, relue ou
+/// Tenu par la session elle-même (`commands::organization`) : enregistrée, relue ou
 /// effacée. **Vrai par défaut** : au lancement, avant que la session soit
 /// relue, un membre connecté ne doit jamais voir une offre payante s'afficher
 /// un instant ; un poste déconnecté, lui, peut rester débloqué le temps de
@@ -80,13 +80,17 @@ pub fn set_organization_signed_in(signed_in: bool) {
 /// L'organisation débloque-t-elle le palier ? Seulement pour un membre servi
 /// **et** connecté : une session révoquée ou expirée retombe en Personal, comme
 /// une suspension.
-pub fn organization_unlocks_tier(campus_enabled: bool, suspended: bool, signed_in: bool) -> bool {
-    organization_serves(campus_enabled, suspended) && signed_in
+pub fn organization_unlocks_tier(
+    organization_enabled: bool,
+    suspended: bool,
+    signed_in: bool,
+) -> bool {
+    organization_serves(organization_enabled, suspended) && signed_in
 }
 
 fn organization_unlocks() -> bool {
     organization_unlocks_tier(
-        is_campus_enabled(),
+        is_organization_enabled(),
         is_organization_suspended(),
         ORGANIZATION_SIGNED_IN.load(Ordering::Relaxed),
     )
@@ -105,16 +109,16 @@ pub fn set_personal_fallback_allowed(allowed: bool) {
 /// Faut-il se reconnecter avant de dicter ? Seulement sur un poste
 /// Organization, sans session, dont la DSI interdit le repli Personal.
 pub fn organization_requires_sign_in(
-    campus_enabled: bool,
+    organization_enabled: bool,
     signed_in: bool,
     fallback_allowed: bool,
 ) -> bool {
-    campus_enabled && !signed_in && !fallback_allowed
+    organization_enabled && !signed_in && !fallback_allowed
 }
 
 pub fn dictation_requires_organization_sign_in() -> bool {
     organization_requires_sign_in(
-        is_campus_enabled(),
+        is_organization_enabled(),
         ORGANIZATION_SIGNED_IN.load(Ordering::Relaxed),
         PERSONAL_FALLBACK_ALLOWED.load(Ordering::Relaxed),
     )
@@ -378,26 +382,26 @@ pub(crate) const UI_GATED_FEATURES: &[&str] = &[
 /// palier de telle sorte qu'un badge d'achat redevienne possible en campus,
 /// quelle que soit la manière dont le changement est écrit.
 #[cfg(test)]
-mod campus_boundary_tests {
+mod organization_boundary_tests {
     use super::*;
 
     /// Le mode campus est un état global : chaque test le pose et le rend.
-    struct CampusMode;
-    impl CampusMode {
+    struct OrganizationMode;
+    impl OrganizationMode {
         fn on() -> Self {
-            set_campus_enabled(true);
-            CampusMode
+            set_organization_enabled(true);
+            OrganizationMode
         }
     }
-    impl Drop for CampusMode {
+    impl Drop for OrganizationMode {
         fn drop(&mut self) {
-            set_campus_enabled(false);
+            set_organization_enabled(false);
         }
     }
 
     #[test]
-    fn campus_can_never_show_an_upsell() {
-        let _campus = CampusMode::on();
+    fn organization_can_never_show_an_upsell() {
+        let _organization = OrganizationMode::on();
         // Sans clé de licence : le cas exact d'un poste étudiant.
         for feature in UI_GATED_FEATURES {
             assert!(
@@ -408,17 +412,17 @@ mod campus_boundary_tests {
     }
 
     #[test]
-    fn campus_unlocks_every_writing_style() {
-        let _campus = CampusMode::on();
+    fn organization_unlocks_every_writing_style() {
+        let _organization = OrganizationMode::on();
         // La liste des Styles se construit sur ces deux clés côté interface.
         assert!(has("all_styles", "", 0));
         assert!(has("custom_styles", "", 0));
     }
 
     #[test]
-    fn campus_mode_is_released_and_restrictions_return() {
+    fn organization_mode_is_released_and_restrictions_return() {
         {
-            let _campus = CampusMode::on();
+            let _organization = OrganizationMode::on();
             assert!(has("meeting_mode", "", 0));
         }
         // Sans le rétablissement, un build personnel hériterait des droits

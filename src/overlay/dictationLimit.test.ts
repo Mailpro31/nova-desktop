@@ -30,8 +30,8 @@ describe("durée maximale d'une dictée", () => {
   });
 
   test("la limite vient de /api/me et disparaît à la déconnexion", () => {
-    const campus = read("src-tauri/src/commands/campus.rs");
-    expect(campus).toContain("pub limits: Option<CampusLimits>");
+    const campus = read("src-tauri/src/commands/organization.rs");
+    expect(campus).toContain("pub limits: Option<OrganizationLimits>");
     expect(campus).toContain("crate::dictation_limit::set_limit(None)");
     expect(campus).toContain("limits.max_dictation_seconds");
   });

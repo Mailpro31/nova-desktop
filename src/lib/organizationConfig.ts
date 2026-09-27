@@ -1,6 +1,6 @@
 import { z } from "zod";
-import type { CampusConfig } from "@/lib/organizationSession";
-import type { CampusProfile } from "@/lib/organizationApi";
+import type { OrganizationConfig } from "@/lib/organizationSession";
+import type { OrganizationProfile } from "@/lib/organizationApi";
 
 /**
  * `users.role` du serveur : un **métier**, jamais un droit.
@@ -17,8 +17,8 @@ export type OrganizationRole =
   | "employee"
   | "manager"
   | "partner";
-export type CampusAuthMethod = "email_code" | "entra" | "oidc";
-export type CampusEducationMode = "normal" | "classroom" | "assessment";
+export type OrganizationAuthMethod = "email_code" | "entra" | "oidc";
+export type OrganizationEducationMode = "normal" | "classroom" | "assessment";
 
 export interface ConfiguredOrganization {
   id: string;
@@ -38,7 +38,7 @@ export interface ConfiguredOrganization {
   };
 }
 
-export interface CampusCapabilities {
+export interface OrganizationCapabilities {
   dictation: boolean;
   rewrite: boolean;
   styles: boolean;
@@ -55,19 +55,19 @@ export interface CampusCapabilities {
   personalization: boolean;
 }
 
-export interface CampusPrivacyPolicy {
+export interface OrganizationPrivacyPolicy {
   verified: boolean;
   contentRetention: "not_stored" | "institution_policy" | "unknown";
   usageCounters: "counts_only" | "none" | "unknown";
   infrastructure: "campus" | "cloud" | "hybrid" | "unknown";
 }
 
-export interface OrganizationConfig {
+export interface ResolvedOrganization {
   organization: ConfiguredOrganization;
-  capabilities: CampusCapabilities;
-  educationMode: CampusEducationMode;
-  authMethods: CampusAuthMethod[];
-  privacy: CampusPrivacyPolicy;
+  capabilities: OrganizationCapabilities;
+  educationMode: OrganizationEducationMode;
+  authMethods: OrganizationAuthMethod[];
+  privacy: OrganizationPrivacyPolicy;
   aiSkillsPolicy: {
     enabled: boolean;
     required: boolean;
@@ -152,7 +152,7 @@ export const DEFAULT_ORGANIZATION: ConfiguredOrganization = {
   managed: true,
 };
 
-const NORMAL_CAPABILITIES: CampusCapabilities = {
+const NORMAL_CAPABILITIES: OrganizationCapabilities = {
   dictation: true,
   rewrite: true,
   styles: true,
@@ -171,14 +171,14 @@ const NORMAL_CAPABILITIES: CampusCapabilities = {
   personalization: true,
 };
 
-const ASSESSMENT_CAPABILITIES: CampusCapabilities = {
+const ASSESSMENT_CAPABILITIES: OrganizationCapabilities = {
   ...NORMAL_CAPABILITIES,
   rewrite: false,
   styles: false,
   fileTranscription: false,
 };
 
-export const DEFAULT_ORGANIZATION_PRIVACY: CampusPrivacyPolicy = {
+export const DEFAULT_ORGANIZATION_PRIVACY: OrganizationPrivacyPolicy = {
   verified: false,
   contentRetention: "unknown",
   usageCounters: "unknown",
@@ -208,7 +208,7 @@ function compactConfigValue(value: unknown): unknown {
   );
 }
 
-function parseEducationMode(value: unknown): CampusEducationMode {
+function parseEducationMode(value: unknown): OrganizationEducationMode {
   const parsed = educationModeSchema.safeParse(value);
   return parsed.success ? parsed.data : "normal";
 }
@@ -219,9 +219,9 @@ function parseRole(value: unknown): OrganizationRole | undefined {
 }
 
 export function resolveOrganizationConfig(
-  config: CampusConfig | null,
-  profile?: CampusProfile | null,
-): OrganizationConfig {
+  config: OrganizationConfig | null,
+  profile?: OrganizationProfile | null,
+): ResolvedOrganization {
   const educationMode = parseEducationMode(config?.education_mode);
   const parsedOrganization = organizationSchema.safeParse(
     compactConfigValue(config?.organization),

@@ -544,7 +544,7 @@ async cancelOperation() : Promise<void> {
 },
 /**
  * Déclenche une dictée comme si le raccourci correspondant avait été pressé
- * (par exemple depuis un bouton de l'écran d'accueil campus).
+ * (par exemple depuis un bouton de l'écran d'accueil d'organisation).
  */
 async triggerTranscription(bindingId: string) : Promise<void> {
     await TAURI_INVOKE("trigger_transcription", { bindingId });
@@ -622,30 +622,30 @@ async novaCommandDiagnostics() : Promise<CommandsDiagnostics> {
     return await TAURI_INVOKE("nova_command_diagnostics");
 },
 /**
- * Lit la configuration Campus déposée par l'IT. Voir `resolve_campus_config_path`.
+ * Lit la configuration Organization déposée par l'IT. Voir `resolve_organization_config_path`.
  */
-async getCampusConfig() : Promise<Result<CampusConfig | null, string>> {
+async getOrganizationConfig() : Promise<Result<OrganizationConfig | null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_config") };
+    return { status: "ok", data: await TAURI_INVOKE("get_organization_config") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async fetchCampusServerConfig(serverUrl: string) : Promise<Result<CampusConfig, string>> {
+async fetchOrganizationServerConfig(serverUrl: string) : Promise<Result<OrganizationConfig, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("fetch_campus_server_config", { serverUrl }) };
+    return { status: "ok", data: await TAURI_INVOKE("fetch_organization_server_config", { serverUrl }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
 /**
- * Active ou désactive la logique campus côté backend.
+ * Active ou désactive la logique d'organisation côté backend.
  */
-async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
+async setOrganizationMode(enabled: boolean) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("set_campus_mode", { enabled }) };
+    return { status: "ok", data: await TAURI_INVOKE("set_organization_mode", { enabled }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -658,9 +658,9 @@ async setCampusMode(enabled: boolean) : Promise<Result<null, string>> {
  * palier qu'elle débloque : il retombe en Personal. L'édition du poste, elle,
  * ne change pas.
  */
-async setCampusSuspended(suspended: boolean) : Promise<Result<null, string>> {
+async setOrganizationSuspended(suspended: boolean) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("set_campus_suspended", { suspended }) };
+    return { status: "ok", data: await TAURI_INVOKE("set_organization_suspended", { suspended }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -673,7 +673,7 @@ async setCampusSuspended(suspended: boolean) : Promise<Result<null, string>> {
  * délai dépassé, il n'est ni écrit sur disque, ni journalisé, ni transmis
  * ailleurs qu'au serveur de l'établissement au moment de l'échange.
  */
-async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string, providerConfigId: string | null, organizationCode: string | null) : Promise<Result<CampusSession, SsoError>> {
+async signInWithOrganization(provider: SsoProvider, serverUrl: string, machine: string, providerConfigId: string | null, organizationCode: string | null) : Promise<Result<OrganizationSession, SsoError>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("sign_in_with_organization", { provider, serverUrl, machine, providerConfigId, organizationCode }) };
 } catch (e) {
@@ -724,196 +724,196 @@ async discoverOrganization(discoveryBaseUrl: string, organization: string, allow
     else return { status: "error", error: e  as any };
 }
 },
-async loadCampusSession() : Promise<Result<CampusSession | null, string>> {
+async loadOrganizationSession() : Promise<Result<OrganizationSession | null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("load_campus_session") };
+    return { status: "ok", data: await TAURI_INVOKE("load_organization_session") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async clearCampusSession() : Promise<Result<null, string>> {
+async clearOrganizationSession() : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("clear_campus_session") };
+    return { status: "ok", data: await TAURI_INVOKE("clear_organization_session") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async logoutCampusSession() : Promise<Result<null, string>> {
+async logoutOrganizationSession() : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("logout_campus_session") };
+    return { status: "ok", data: await TAURI_INVOKE("logout_organization_session") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
 /**
- * Marque l'onboarding comme terminé sans toucher à la session campus.
+ * Marque l'onboarding comme terminé sans toucher à la session d'organisation.
  */
-async completeCampusOnboarding() : Promise<Result<null, string>> {
+async completeOrganizationOnboarding() : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("complete_campus_onboarding") };
+    return { status: "ok", data: await TAURI_INVOKE("complete_organization_onboarding") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async checkCampusServerReachability(serverUrl: string) : Promise<Result<boolean, string>> {
+async checkOrganizationServerReachability(serverUrl: string) : Promise<Result<boolean, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("check_campus_server_reachability", { serverUrl }) };
+    return { status: "ok", data: await TAURI_INVOKE("check_organization_server_reachability", { serverUrl }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async requestCampusAuth(serverUrl: string, email: string, machine: string) : Promise<Result<CampusAuthRequestResponse, string>> {
+async requestOrganizationAuth(serverUrl: string, email: string, machine: string) : Promise<Result<OrganizationAuthRequestResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("request_campus_auth", { serverUrl, email, machine }) };
+    return { status: "ok", data: await TAURI_INVOKE("request_organization_auth", { serverUrl, email, machine }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async verifyCampusAuth(serverUrl: string, email: string, code: string, machine: string) : Promise<Result<CampusSession, string>> {
+async verifyOrganizationAuth(serverUrl: string, email: string, code: string, machine: string) : Promise<Result<OrganizationSession, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("verify_campus_auth", { serverUrl, email, code, machine }) };
+    return { status: "ok", data: await TAURI_INVOKE("verify_organization_auth", { serverUrl, email, code, machine }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async startCampusEntraAuth(serverUrl: string, machine: string) : Promise<Result<CampusEntraStartResponse, string>> {
+async startOrganizationEntraAuth(serverUrl: string, machine: string) : Promise<Result<OrganizationEntraStartResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("start_campus_entra_auth", { serverUrl, machine }) };
+    return { status: "ok", data: await TAURI_INVOKE("start_organization_entra_auth", { serverUrl, machine }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async pollCampusEntraAuth(serverUrl: string, flowId: string) : Promise<Result<CampusEntraPollResponse, string>> {
+async pollOrganizationEntraAuth(serverUrl: string, flowId: string) : Promise<Result<OrganizationEntraPollResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("poll_campus_entra_auth", { serverUrl, flowId }) };
+    return { status: "ok", data: await TAURI_INVOKE("poll_organization_entra_auth", { serverUrl, flowId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusMe() : Promise<Result<CampusMeResponse, string>> {
+async getOrganizationMe() : Promise<Result<OrganizationMeResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_me") };
+    return { status: "ok", data: await TAURI_INVOKE("get_organization_me") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusVocabulary() : Promise<Result<CampusVocabularyResponse, string>> {
+async getOrganizationVocabulary() : Promise<Result<OrganizationVocabularyResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_vocabulary") };
+    return { status: "ok", data: await TAURI_INVOKE("get_organization_vocabulary") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async addCampusDictionaryEntry(term: string, replacement: string) : Promise<Result<CampusIdResponse, string>> {
+async addOrganizationDictionaryEntry(term: string, replacement: string) : Promise<Result<OrganizationIdResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("add_campus_dictionary_entry", { term, replacement }) };
+    return { status: "ok", data: await TAURI_INVOKE("add_organization_dictionary_entry", { term, replacement }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async deleteCampusDictionaryEntry(entryId: number) : Promise<Result<null, string>> {
+async deleteOrganizationDictionaryEntry(entryId: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("delete_campus_dictionary_entry", { entryId }) };
+    return { status: "ok", data: await TAURI_INVOKE("delete_organization_dictionary_entry", { entryId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async learnCampusDictionary(heard: string, corrected: string) : Promise<Result<CampusLearnResponse, string>> {
+async learnOrganizationDictionary(heard: string, corrected: string) : Promise<Result<OrganizationLearnResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("learn_campus_dictionary", { heard, corrected }) };
+    return { status: "ok", data: await TAURI_INVOKE("learn_organization_dictionary", { heard, corrected }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async exportCampusDictionary() : Promise<Result<string, string>> {
+async exportOrganizationDictionary() : Promise<Result<string, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("export_campus_dictionary") };
+    return { status: "ok", data: await TAURI_INVOKE("export_organization_dictionary") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async importCampusDictionary(csvContent: string) : Promise<Result<CampusImportResponse, string>> {
+async importOrganizationDictionary(csvContent: string) : Promise<Result<OrganizationImportResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("import_campus_dictionary", { csvContent }) };
+    return { status: "ok", data: await TAURI_INVOKE("import_organization_dictionary", { csvContent }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async analyzeCampusDocument(textContent: string, filename: string | null) : Promise<Result<CampusAnalyzeResponse, string>> {
+async analyzeOrganizationDocument(textContent: string, filename: string | null) : Promise<Result<OrganizationAnalyzeResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("analyze_campus_document", { textContent, filename }) };
+    return { status: "ok", data: await TAURI_INVOKE("analyze_organization_document", { textContent, filename }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async addCampusSnippet(trigger: string, content: string) : Promise<Result<CampusIdResponse, string>> {
+async addOrganizationSnippet(trigger: string, content: string) : Promise<Result<OrganizationIdResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("add_campus_snippet", { trigger, content }) };
+    return { status: "ok", data: await TAURI_INVOKE("add_organization_snippet", { trigger, content }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async deleteCampusSnippet(snippetId: number) : Promise<Result<null, string>> {
+async deleteOrganizationSnippet(snippetId: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("delete_campus_snippet", { snippetId }) };
+    return { status: "ok", data: await TAURI_INVOKE("delete_organization_snippet", { snippetId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusFormattingRules() : Promise<Result<CampusFormattingRulesResponse, string>> {
+async getOrganizationFormattingRules() : Promise<Result<OrganizationFormattingRulesResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_formatting_rules") };
+    return { status: "ok", data: await TAURI_INVOKE("get_organization_formatting_rules") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async addCampusFormattingRule(rule: string) : Promise<Result<CampusIdResponse, string>> {
+async addOrganizationFormattingRule(rule: string) : Promise<Result<OrganizationIdResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("add_campus_formatting_rule", { rule }) };
+    return { status: "ok", data: await TAURI_INVOKE("add_organization_formatting_rule", { rule }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async deleteCampusFormattingRule(ruleId: number) : Promise<Result<null, string>> {
+async deleteOrganizationFormattingRule(ruleId: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("delete_campus_formatting_rule", { ruleId }) };
+    return { status: "ok", data: await TAURI_INVOKE("delete_organization_formatting_rule", { ruleId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async executeCampusCommand(instruction: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
+async executeOrganizationCommand(instruction: string, text: string) : Promise<Result<OrganizationCommandResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("execute_campus_command", { instruction, text }) };
+    return { status: "ok", data: await TAURI_INVOKE("execute_organization_command", { instruction, text }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getCampusAiSkills() : Promise<Result<CampusAiSkillsResponse, string>> {
+async getOrganizationAiSkills() : Promise<Result<OrganizationAiSkillsResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_campus_ai_skills") };
+    return { status: "ok", data: await TAURI_INVOKE("get_organization_ai_skills") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1012,7 +1012,7 @@ async clearOrganizationPackages() : Promise<void> {
  * réclamant d'un Skill, et le catalogue publié ne serait plus qu'une
  * suggestion.
  */
-async runOrganizationSkill(skillId: string, text: string) : Promise<Result<CampusCommandResponse, string>> {
+async runOrganizationSkill(skillId: string, text: string) : Promise<Result<OrganizationCommandResponse, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("run_organization_skill", { skillId, text }) };
 } catch (e) {
@@ -1023,9 +1023,9 @@ async runOrganizationSkill(skillId: string, text: string) : Promise<Result<Campu
 /**
  * Notes structurées rangées par le serveur de l'organisation.
  */
-async formatCampusStructuredNotes(text: string, noteType: string, instruction: string) : Promise<Result<CampusCommandResponse, string>> {
+async formatOrganizationStructuredNotes(text: string, noteType: string, instruction: string) : Promise<Result<OrganizationCommandResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("format_campus_structured_notes", { text, noteType, instruction }) };
+    return { status: "ok", data: await TAURI_INVOKE("format_organization_structured_notes", { text, noteType, instruction }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1042,9 +1042,9 @@ async formatStructuredNotesLocally(text: string, noteType: string, instruction: 
     else return { status: "error", error: e  as any };
 }
 },
-async transcribeCampusAudioFile(fileBytes: number[], filename: string) : Promise<Result<string, string>> {
+async transcribeOrganizationAudioFile(fileBytes: number[], filename: string) : Promise<Result<string, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("transcribe_campus_audio_file", { fileBytes, filename }) };
+    return { status: "ok", data: await TAURI_INVOKE("transcribe_organization_audio_file", { fileBytes, filename }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1846,15 +1846,15 @@ export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
 export type AvailableAccelerators = { transcribe: string[]; ort: string[]; gpu_devices: GpuDeviceOption[] }
 export type BindingResponse = { success: boolean; binding: ShortcutBinding | null; error: string | null }
-export type CampusAiSkill = { id: string; title: string; summary: string; practice: string; duration_minutes: number }
-export type CampusAiSkillsPolicyConfig = { enabled?: boolean | null; required?: boolean | null; trackProgress?: boolean | null }
-export type CampusAiSkillsResponse = { skills: CampusAiSkill[] }
-export type CampusAnalyzeResponse = { terms_added: number }
-export type CampusAuthRequestResponse = { sent: boolean }
-export type CampusBrandingConfig = { logoUrl?: string | null; accentColor?: string | null }
-export type CampusCapabilitiesConfig = { dictation?: boolean | null; rewrite?: boolean | null; styles?: boolean | null; fileTranscription?: boolean | null; commands?: boolean | null; dictionary?: boolean | null; snippets?: boolean | null; formattingRules?: boolean | null; screenContext?: boolean | null; cloudInference?: boolean | null; engineeringNotes?: boolean | null; aiSkills?: boolean | null; personalization?: boolean | null }
-export type CampusCommandResponse = { text: string }
-export type CampusConfig = { 
+export type OrganizationAiSkill = { id: string; title: string; summary: string; practice: string; duration_minutes: number }
+export type OrganizationAiSkillsPolicyConfig = { enabled?: boolean | null; required?: boolean | null; trackProgress?: boolean | null }
+export type OrganizationAiSkillsResponse = { skills: OrganizationAiSkill[] }
+export type OrganizationAnalyzeResponse = { terms_added: number }
+export type OrganizationAuthRequestResponse = { sent: boolean }
+export type OrganizationBrandingConfig = { logoUrl?: string | null; accentColor?: string | null }
+export type OrganizationCapabilitiesConfig = { dictation?: boolean | null; rewrite?: boolean | null; styles?: boolean | null; fileTranscription?: boolean | null; commands?: boolean | null; dictionary?: boolean | null; snippets?: boolean | null; formattingRules?: boolean | null; screenContext?: boolean | null; cloudInference?: boolean | null; engineeringNotes?: boolean | null; aiSkills?: boolean | null; personalization?: boolean | null }
+export type OrganizationCommandResponse = { text: string }
+export type OrganizationConfig = { 
 /**
  * Adresse du serveur — schéma historique. Vide quand la DSI déclare
  * plutôt une organisation à découvrir.
@@ -1877,22 +1877,22 @@ bootstrap_mode?: string | null;
  * fois le membre connecté. Absent d'un serveur plus ancien, et le repli
  * historique `education` s'applique alors côté poste.
  */
-organization_type?: string | null; organization?: CampusOrganizationConfig | null; capabilities?: CampusCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: CampusAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: CampusPrivacyConfig | null }
-export type CampusEntraPollResponse = { status: string; email: string | null; retry_after: number | null }
-export type CampusEntraStartResponse = { flow_id: string; user_code: string; verification_uri: string; verification_uri_complete: string | null; expires_in: number; interval: number; message: string }
-export type CampusFormattingRulesResponse = { shared: CampusRuleEntry[]; personal: CampusRuleEntry[] }
+organization_type?: string | null; organization?: ConfiguredOrganization | null; capabilities?: OrganizationCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: OrganizationAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: OrganizationPrivacyConfig | null }
+export type OrganizationEntraPollResponse = { status: string; email: string | null; retry_after: number | null }
+export type OrganizationEntraStartResponse = { flow_id: string; user_code: string; verification_uri: string; verification_uri_complete: string | null; expires_in: number; interval: number; message: string }
+export type OrganizationFormattingRulesResponse = { shared: OrganizationRuleEntry[]; personal: OrganizationRuleEntry[] }
 /**
  * Groupe annoncé par le serveur (promo, filière, équipe, service).
  */
-export type CampusGroup = { id: string; label: string; source: string; external_group_id?: string | null }
-export type CampusIdResponse = { id: number }
+export type OrganizationGroup = { id: string; label: string; source: string; external_group_id?: string | null }
+export type OrganizationIdResponse = { id: number }
 /**
  * Mode d'authentification employé. Le sujet externe n'est pas transmis au
  * poste : il n'en a aucun usage.
  */
-export type CampusIdentityInfo = { provider?: string | null; has_external_identity?: boolean | null }
-export type CampusImportResponse = { imported: number }
-export type CampusLearnResponse = { learned: boolean }
+export type OrganizationIdentityInfo = { provider?: string | null; has_external_identity?: boolean | null }
+export type OrganizationImportResponse = { imported: number }
+export type OrganizationLearnResponse = { learned: boolean }
 /**
  * Réponse de `GET /api/me`.
  * 
@@ -1901,7 +1901,7 @@ export type CampusLearnResponse = { learned: boolean }
  * est un cas normal. `organization` reste une **chaîne** — le nom d'affichage :
  * en faire un objet casserait chaque poste déjà déployé.
  */
-export type CampusMeResponse = { email: string; role: string; cohort: string; 
+export type OrganizationMeResponse = { email: string; role: string; cohort: string; 
 /**
  * Nom de l'établissement, déduit côté serveur du domaine de l'adresse.
  * Absent des anciennes réponses : `default` évite de casser la
@@ -1915,7 +1915,7 @@ contract_version?: number | null; user_id?: string | null;
 /**
  * Identifiant de tenant immuable, attribué par le serveur.
  */
-organization_id?: string | null; organization_type?: string | null; membership?: CampusMembership | null; identity?: CampusIdentityInfo | null; 
+organization_id?: string | null; organization_type?: string | null; membership?: OrganizationMembership | null; identity?: OrganizationIdentityInfo | null; 
 /**
  * Capacités déclarées par l'organisation. Ne peut jamais fermer une
  * capacité du Nova Core — voir `src/lib/organization/resolve.ts`.
@@ -1925,7 +1925,7 @@ capabilities?: string[] | null;
  * Bornes fixées par l'organisation. Absentes d'un serveur plus ancien :
  * aucune limite ne s'applique alors.
  */
-limits?: CampusLimits | null;
+limits?: OrganizationLimits | null;
 /**
  * Catégories du Nova Core que l'organisation a fermées, nommées
  * explicitement. Sans ce champ, serde l'écartait et aucune fermeture
@@ -1936,13 +1936,13 @@ closed_capabilities?: string[] | null;
  * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
  * aucun Style n'est alors désactivé.
  */
-style_policy?: CampusStylePolicy | null }
-export type CampusLimits = {
+style_policy?: OrganizationStylePolicy | null }
+export type OrganizationLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.
  */
 max_dictation_seconds?: number | null }
-export type CampusStylePolicy = { 
+export type OrganizationStylePolicy = { 
 /**
  * Identifiants des Styles désactivés — intégrés ou d'organisation.
  */
@@ -1950,12 +1950,12 @@ disabled_style_ids?: string[] }
 /**
  * Appartenance du membre à l'organisation, telle que le serveur la décide.
  */
-export type CampusMembership = { member_type?: string | null; security_role?: string | null; groups?: CampusGroup[] | null; groups_visible?: boolean | null; status?: string | null }
-export type CampusOrganizationConfig = { id: string; name: string; shortName?: string | null; campusName?: string | null; role?: string | null; cohort?: string | null; managed?: boolean; branding?: CampusBrandingConfig | null; support?: CampusSupportConfig | null }
-export type CampusPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
-export type CampusPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
-export type CampusRuleEntry = { id: number; rule: string }
-export type CampusSession = { server_url: string; email: string; 
+export type OrganizationMembership = { member_type?: string | null; security_role?: string | null; groups?: OrganizationGroup[] | null; groups_visible?: boolean | null; status?: string | null }
+export type ConfiguredOrganization = { id: string; name: string; shortName?: string | null; campusName?: string | null; role?: string | null; cohort?: string | null; managed?: boolean; branding?: OrganizationBrandingConfig | null; support?: OrganizationSupportConfig | null }
+export type OrganizationPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
+export type OrganizationPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
+export type OrganizationRuleEntry = { id: number; rule: string }
+export type OrganizationSession = { server_url: string; email: string; 
 /**
  * Identifiant d'organisation, quand il est connu.
  * 
@@ -1963,10 +1963,10 @@ export type CampusSession = { server_url: string; email: string;
  * Absent des sessions créées avant la découverte, d'où l'`Option`.
  */
 organization?: string | null }
-export type CampusSharedDictEntry = { id: number; term: string; replacement: string }
-export type CampusSnippetEntry = { id: number; trigger: string; content: string }
-export type CampusSupportConfig = { email?: string | null; website?: string | null }
-export type CampusVocabularyResponse = { shared: CampusSharedDictEntry[]; personal: CampusPersonalDictEntry[]; snippets: CampusSnippetEntry[] }
+export type OrganizationSharedDictEntry = { id: number; term: string; replacement: string }
+export type OrganizationSnippetEntry = { id: number; trigger: string; content: string }
+export type OrganizationSupportConfig = { email?: string | null; website?: string | null }
+export type OrganizationVocabularyResponse = { shared: OrganizationSharedDictEntry[]; personal: OrganizationPersonalDictEntry[]; snippets: OrganizationSnippetEntry[] }
 export type ClipboardHandling = "dont_modify" | "copy_to_clipboard"
 export type CommandError = 
 /**

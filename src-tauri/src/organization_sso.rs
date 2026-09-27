@@ -44,7 +44,9 @@ use std::time::{Duration, Instant};
 use tauri::AppHandle;
 use tauri_plugin_opener::OpenerExt;
 
-use crate::commands::campus::{normalize_base_url, save_campus_credentials, CampusSession};
+use crate::commands::organization::{
+    normalize_base_url, save_organization_credentials, OrganizationSession,
+};
 
 /// Au-delà, la tentative est abandonnée et le port refermé. Large parce qu'une
 /// authentification multifacteur prend du temps ; borné parce qu'un port qui
@@ -439,7 +441,7 @@ struct AvailabilityResponse {
 }
 
 fn sso_client() -> reqwest::Client {
-    crate::commands::campus::campus_request_client(None)
+    crate::commands::organization::organization_request_client(None)
 }
 
 /// Traduit une réponse d'erreur du serveur en code, sans jamais recopier un
@@ -540,7 +542,7 @@ pub async fn sign_in_with_organization(
     // dans son organisation active.
     provider_config_id: Option<String>,
     organization_code: Option<String>,
-) -> Result<CampusSession, SsoError> {
+) -> Result<OrganizationSession, SsoError> {
     // Journalisation de sécurité : fournisseur, issue et **code de raison**.
     // Jamais le vérificateur, le code d'autorisation, le `state`, le `nonce`,
     // le jeton de session ni l'adresse complète.
@@ -576,7 +578,7 @@ async fn run_organization_sign_in(
     machine: String,
     provider_config_id: Option<String>,
     organization_code: Option<String>,
-) -> Result<CampusSession, SsoError> {
+) -> Result<OrganizationSession, SsoError> {
     let _guard = SignInGuard::acquire()?;
     let base_url = normalize_base_url(&server_url);
 
@@ -647,7 +649,7 @@ async fn run_organization_sign_in(
         .await
         .map_err(|_| SsoError::NetworkError)?;
 
-    let session = CampusSession {
+    let session = OrganizationSession {
         server_url: base_url,
         email: exchange.email.to_lowercase(),
         // Renseignée quand le poste a découvert son organisation : le
@@ -657,7 +659,7 @@ async fn run_organization_sign_in(
     };
     // Seule la session Nova est conservée durablement, dans le trousseau du
     // système. Aucun jeton Microsoft n'a transité par ce poste.
-    save_campus_credentials(&app, session.clone(), exchange.token)
+    save_organization_credentials(&app, session.clone(), exchange.token)
         .map_err(|detail| SsoError::Server { detail })?;
     Ok(session)
 }
@@ -718,7 +720,7 @@ mod tests {
     }
 
     fn providers_from(detailed: Option<&'static str>) -> OrganizationAuthProviders {
-        let _exclusive = crate::commands::campus::wire_test_support::exclusive();
+        let _exclusive = crate::commands::organization::wire_test_support::exclusive();
         let listener = std::net::TcpListener::bind("127.0.0.1:0").expect("port local");
         let port = listener.local_addr().expect("adresse").port();
         std::thread::spawn(move || serve_provider_routes(listener, detailed));

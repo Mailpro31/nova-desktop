@@ -6,7 +6,7 @@
 //! part à ce stade. Les octets reçus sont comparés à l'empreinte du code avant
 //! d'être installés comme unique racine de confiance pour l'appel d'enrôlement.
 
-use crate::commands::campus::{save_lab_connection, LabConnection};
+use crate::commands::organization::{save_lab_connection, LabConnection};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use specta::Type;

@@ -15,13 +15,13 @@ use once_cell::sync::Lazy;
 use crate::portable;
 use crate::settings::{get_settings, write_settings};
 
-const CAMPUS_CONFIG_FILENAME: &str = "campus-config.json";
-const CAMPUS_SESSION_STORE: &str = "campus_session.json";
-const CAMPUS_SESSION_KEY: &str = "campus_session";
+const ORGANIZATION_CONFIG_FILENAME: &str = "campus-config.json";
+const ORGANIZATION_SESSION_STORE: &str = "organization_session.json";
+const ORGANIZATION_SESSION_KEY: &str = "organization_session";
 #[cfg(not(feature = "lab"))]
-const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.campus";
+const ORGANIZATION_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.campus";
 #[cfg(feature = "lab")]
-const CAMPUS_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.campus";
+const ORGANIZATION_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.campus";
 
 /// Metadonnees de l'enrolement Lab. **Aucun secret ici** — voir
 /// `LAB_DEVICE_CREDENTIAL_SERVICE`.
@@ -38,14 +38,14 @@ const LAB_CONNECTION_KEY: &str = "lab_connection";
 #[cfg(feature = "lab")]
 const LAB_DEVICE_CREDENTIAL_SERVICE: &str = "app.novaspeak.desktop.lab.device";
 
-pub const CAMPUS_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
-pub const CAMPUS_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
+pub const ORGANIZATION_SESSION_INVALID_EVENT: &str = "campus-session-invalid";
+pub const ORGANIZATION_SERVER_UNREACHABLE_EVENT: &str = "campus-server-unreachable";
 /// L'organisation a refusé une requête (403). L'interface vérifie sur
 /// `/api/me` s'il s'agit d'une suspension : le poste ne conclut pas seul.
-pub const CAMPUS_ACCESS_FORBIDDEN_EVENT: &str = "campus-access-forbidden";
+pub const ORGANIZATION_ACCESS_FORBIDDEN_EVENT: &str = "campus-access-forbidden";
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusConfig {
+pub struct OrganizationConfig {
     /// Adresse du serveur — schéma historique. Vide quand la DSI déclare
     /// plutôt une organisation à découvrir.
     #[serde(default)]
@@ -66,22 +66,22 @@ pub struct CampusConfig {
     #[serde(default)]
     pub organization_type: Option<String>,
     #[serde(default)]
-    pub organization: Option<CampusOrganizationConfig>,
+    pub organization: Option<ConfiguredOrganization>,
     #[serde(default)]
-    pub capabilities: Option<CampusCapabilitiesConfig>,
+    pub capabilities: Option<OrganizationCapabilitiesConfig>,
     #[serde(default)]
     pub education_mode: Option<String>,
     #[serde(default)]
-    pub ai_skills: Option<CampusAiSkillsPolicyConfig>,
+    pub ai_skills: Option<OrganizationAiSkillsPolicyConfig>,
     #[serde(default)]
     pub auth_methods: Option<Vec<String>>,
     #[serde(default)]
-    pub privacy: Option<CampusPrivacyConfig>,
+    pub privacy: Option<OrganizationPrivacyConfig>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct CampusAiSkillsPolicyConfig {
+pub struct OrganizationAiSkillsPolicyConfig {
     #[serde(default)]
     pub enabled: Option<bool>,
     #[serde(default)]
@@ -92,13 +92,13 @@ pub struct CampusAiSkillsPolicyConfig {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct CampusOrganizationConfig {
+pub struct ConfiguredOrganization {
     pub id: String,
     pub name: String,
     #[serde(default)]
     pub short_name: Option<String>,
     #[serde(default)]
-    pub campus_name: Option<String>,
+    pub organization_name: Option<String>,
     #[serde(default)]
     pub role: Option<String>,
     #[serde(default)]
@@ -106,9 +106,9 @@ pub struct CampusOrganizationConfig {
     #[serde(default = "default_managed")]
     pub managed: bool,
     #[serde(default)]
-    pub branding: Option<CampusBrandingConfig>,
+    pub branding: Option<OrganizationBrandingConfig>,
     #[serde(default)]
-    pub support: Option<CampusSupportConfig>,
+    pub support: Option<OrganizationSupportConfig>,
 }
 
 fn default_managed() -> bool {
@@ -117,7 +117,7 @@ fn default_managed() -> bool {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct CampusBrandingConfig {
+pub struct OrganizationBrandingConfig {
     #[serde(default)]
     pub logo_url: Option<String>,
     #[serde(default)]
@@ -125,7 +125,7 @@ pub struct CampusBrandingConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusSupportConfig {
+pub struct OrganizationSupportConfig {
     #[serde(default)]
     pub email: Option<String>,
     #[serde(default)]
@@ -134,7 +134,7 @@ pub struct CampusSupportConfig {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct CampusCapabilitiesConfig {
+pub struct OrganizationCapabilitiesConfig {
     #[serde(default)]
     pub dictation: Option<bool>,
     #[serde(default)]
@@ -165,7 +165,7 @@ pub struct CampusCapabilitiesConfig {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct CampusPrivacyConfig {
+pub struct OrganizationPrivacyConfig {
     #[serde(default)]
     pub verified: Option<bool>,
     #[serde(default)]
@@ -177,7 +177,7 @@ pub struct CampusPrivacyConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusSession {
+pub struct OrganizationSession {
     pub server_url: String,
     pub email: String,
     /// Identifiant d'organisation, quand il est connu.
@@ -189,7 +189,7 @@ pub struct CampusSession {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-struct StoredCampusSession {
+struct StoredOrganizationSession {
     server_url: String,
     email: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -200,13 +200,13 @@ struct StoredCampusSession {
 }
 
 #[derive(Debug, Clone)]
-pub struct CampusCredentials {
-    pub session: CampusSession,
+pub struct OrganizationCredentials {
+    pub session: OrganizationSession,
     token: String,
 }
 
-impl std::ops::Deref for CampusCredentials {
-    type Target = CampusSession;
+impl std::ops::Deref for OrganizationCredentials {
+    type Target = OrganizationSession;
 
     fn deref(&self) -> &Self::Target {
         &self.session
@@ -215,7 +215,7 @@ impl std::ops::Deref for CampusCredentials {
 
 /// État runtime indiquant si le frontend a été buildé en mode campus.
 #[derive(Default)]
-pub struct CampusState {
+pub struct OrganizationState {
     pub enabled: AtomicBool,
 }
 
@@ -279,7 +279,7 @@ static LAB_CONNECTION: Lazy<Mutex<Option<LabConnection>>> = Lazy::new(|| Mutex::
 #[cfg(feature = "lab")]
 pub(crate) fn set_lab_connection(connection: LabConnection) -> Result<(), String> {
     // Derniere porte avant l'etat du poste : ce qui passe ici est ce que
-    // `campus_request_client_with_timeout` utilisera sans plus rien verifier.
+    // `organization_request_client_with_timeout` utilisera sans plus rien verifier.
     validate_device_token(&connection.device_token)?;
     let mut stored = LAB_CONNECTION
         .lock()
@@ -532,11 +532,11 @@ pub(crate) fn forget_lab_connection(app: &AppHandle) -> Result<(), String> {
 /// Active ou désactive la logique campus côté backend.
 #[tauri::command]
 #[specta::specta]
-pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
-    if let Some(state) = app.try_state::<CampusState>() {
+pub fn set_organization_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
+    if let Some(state) = app.try_state::<OrganizationState>() {
         state.enabled.store(enabled, Ordering::Relaxed);
     }
-    crate::licensing::set_campus_enabled(enabled);
+    crate::licensing::set_organization_enabled(enabled);
     // La stratégie machine est lue ici, au passage en mode Organization : la
     // DSI peut interdire le repli Personal d'un poste sans session.
     crate::licensing::set_personal_fallback_allowed(crate::deployment::personal_fallback_allowed(
@@ -548,11 +548,11 @@ pub fn set_campus_mode(enabled: bool, app: AppHandle) -> Result<(), String> {
 /// Le poste refuse une dictée faute de connexion : la DSI interdit le repli
 /// Personal et aucune session n'est ouverte. L'interface ramène la fenêtre, où
 /// la connexion attend.
-pub const CAMPUS_SIGN_IN_REQUIRED_EVENT: &str = "campus-sign-in-required";
+pub const ORGANIZATION_SIGN_IN_REQUIRED_EVENT: &str = "campus-sign-in-required";
 
 /// Le poste refuse une dictée : l'organisation a suspendu ce membre.
 /// L'interface ramène la fenêtre, où l'écran de suspension l'explique.
-pub const CAMPUS_ACCESS_SUSPENDED_EVENT: &str = "campus-access-suspended";
+pub const ORGANIZATION_ACCESS_SUSPENDED_EVENT: &str = "campus-access-suspended";
 
 /// L'organisation a suspendu ce membre, ou l'a rétabli.
 ///
@@ -561,13 +561,13 @@ pub const CAMPUS_ACCESS_SUSPENDED_EVENT: &str = "campus-access-suspended";
 /// supprimé, et l'édition du poste ne change pas.
 #[tauri::command]
 #[specta::specta]
-pub fn set_campus_suspended(suspended: bool) -> Result<(), String> {
+pub fn set_organization_suspended(suspended: bool) -> Result<(), String> {
     crate::licensing::set_organization_suspended(suspended);
     Ok(())
 }
 
-pub fn is_campus_enabled(app: &AppHandle) -> bool {
-    app.try_state::<CampusState>()
+pub fn is_organization_enabled(app: &AppHandle) -> bool {
+    app.try_state::<OrganizationState>()
         .map(|state| state.enabled.load(Ordering::Relaxed))
         .unwrap_or(false)
 }
@@ -605,39 +605,40 @@ fn machine_config_dir() -> Option<PathBuf> {
 ///
 /// Aucune adresse n'est codée en dur : sans fichier, Nova ne connaît aucun
 /// établissement.
-fn resolve_campus_config_path(machine_dir: Option<&Path>, exe_dir: &Path) -> Option<PathBuf> {
-    let managed = machine_dir.map(|dir| dir.join(CAMPUS_CONFIG_FILENAME));
+fn resolve_organization_config_path(machine_dir: Option<&Path>, exe_dir: &Path) -> Option<PathBuf> {
+    let managed = machine_dir.map(|dir| dir.join(ORGANIZATION_CONFIG_FILENAME));
     if let Some(path) = managed.filter(|path| path.is_file()) {
         return Some(path);
     }
 
-    let beside_executable = exe_dir.join(CAMPUS_CONFIG_FILENAME);
+    let beside_executable = exe_dir.join(ORGANIZATION_CONFIG_FILENAME);
     beside_executable.is_file().then_some(beside_executable)
 }
 
-/// Lit la configuration Campus déposée par l'IT. Voir `resolve_campus_config_path`.
+/// Lit la configuration Campus déposée par l'IT. Voir `resolve_organization_config_path`.
 #[tauri::command]
 #[specta::specta]
-pub fn get_campus_config() -> Result<Option<CampusConfig>, String> {
+pub fn get_organization_config() -> Result<Option<OrganizationConfig>, String> {
     let exe_path = std::env::current_exe().map_err(|e| e.to_string())?;
     let exe_dir = exe_path
         .parent()
         .ok_or("Could not determine executable directory")?;
 
     let machine_dir = machine_config_dir();
-    let Some(config_path) = resolve_campus_config_path(machine_dir.as_deref(), exe_dir) else {
+    let Some(config_path) = resolve_organization_config_path(machine_dir.as_deref(), exe_dir)
+    else {
         return Ok(None);
     };
 
     let content = std::fs::read_to_string(&config_path).map_err(|e| e.to_string())?;
-    let config: CampusConfig = serde_json::from_str(&content).map_err(|e| e.to_string())?;
+    let config: OrganizationConfig = serde_json::from_str(&content).map_err(|e| e.to_string())?;
     Ok(Some(config))
 }
 
-fn campus_session_store(
+fn organization_session_store(
     app: &AppHandle,
 ) -> Result<std::sync::Arc<tauri_plugin_store::Store<tauri::Wry>>, String> {
-    app.store(portable::store_path(CAMPUS_SESSION_STORE))
+    app.store(portable::store_path(ORGANIZATION_SESSION_STORE))
         .map_err(|e| e.to_string())
 }
 
@@ -659,7 +660,7 @@ fn campus_session_store(
 /// Les sessions créées avant la découverte n'ont pas d'organisation : elles
 /// gardent la clé dérivée de l'adresse, et continuent de fonctionner. Aucune
 /// migration forcée, aucune reconnexion imposée.
-fn credential_username(session: &CampusSession) -> String {
+fn credential_username(session: &OrganizationSession) -> String {
     let scope = match session.organization.as_deref().map(str::trim) {
         Some(organization) if !organization.is_empty() => organization.to_string(),
         _ => normalize_base_url(&session.server_url),
@@ -668,29 +669,32 @@ fn credential_username(session: &CampusSession) -> String {
     format!("{:x}", Sha256::digest(identity.as_bytes()))
 }
 
-fn credential_entry(session: &CampusSession) -> Result<keyring::Entry, String> {
-    keyring::Entry::new(CAMPUS_CREDENTIAL_SERVICE, &credential_username(session))
-        .map_err(|e| format!("secure credential store unavailable: {e}"))
+fn credential_entry(session: &OrganizationSession) -> Result<keyring::Entry, String> {
+    keyring::Entry::new(
+        ORGANIZATION_CREDENTIAL_SERVICE,
+        &credential_username(session),
+    )
+    .map_err(|e| format!("secure credential store unavailable: {e}"))
 }
 
-fn persist_session_metadata(app: &AppHandle, session: &CampusSession) -> Result<(), String> {
-    let store = campus_session_store(app)?;
-    let stored = StoredCampusSession {
+fn persist_session_metadata(app: &AppHandle, session: &OrganizationSession) -> Result<(), String> {
+    let store = organization_session_store(app)?;
+    let stored = StoredOrganizationSession {
         server_url: session.server_url.clone(),
         email: session.email.clone(),
         organization: session.organization.clone(),
         token: None,
     };
     store.set(
-        CAMPUS_SESSION_KEY,
+        ORGANIZATION_SESSION_KEY,
         serde_json::to_value(stored).map_err(|e| e.to_string())?,
     );
     store.save().map_err(|e| e.to_string())
 }
 
-pub(crate) fn save_campus_credentials(
+pub(crate) fn save_organization_credentials(
     app: &AppHandle,
-    session: CampusSession,
+    session: OrganizationSession,
     token: String,
 ) -> Result<(), String> {
     let entry = credential_entry(&session)?;
@@ -706,17 +710,20 @@ pub(crate) fn save_campus_credentials(
     Ok(())
 }
 
-fn load_campus_credentials(app: &AppHandle) -> Result<Option<CampusCredentials>, String> {
-    let store = campus_session_store(app)?;
-    let Some(value) = store.get(CAMPUS_SESSION_KEY) else {
+fn load_organization_credentials(
+    app: &AppHandle,
+) -> Result<Option<OrganizationCredentials>, String> {
+    let store = organization_session_store(app)?;
+    let Some(value) = store.get(ORGANIZATION_SESSION_KEY) else {
         return Ok(None);
     };
     if value.is_null() {
         return Ok(None);
     }
 
-    let stored: StoredCampusSession = serde_json::from_value(value).map_err(|e| e.to_string())?;
-    let session = CampusSession {
+    let stored: StoredOrganizationSession =
+        serde_json::from_value(value).map_err(|e| e.to_string())?;
+    let session = OrganizationSession {
         server_url: stored.server_url,
         email: stored.email,
         organization: stored.organization,
@@ -737,13 +744,13 @@ fn load_campus_credentials(app: &AppHandle) -> Result<Option<CampusCredentials>,
         })?
     };
 
-    Ok(Some(CampusCredentials { session, token }))
+    Ok(Some(OrganizationCredentials { session, token }))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn load_campus_session(app: AppHandle) -> Result<Option<CampusSession>, String> {
-    let session = load_campus_credentials(&app)?.map(|credentials| credentials.session);
+pub fn load_organization_session(app: AppHandle) -> Result<Option<OrganizationSession>, String> {
+    let session = load_organization_credentials(&app)?.map(|credentials| credentials.session);
     // Relue au lancement : c'est ici que le poste apprend s'il est encore
     // connecté. Une erreur de trousseau, elle, ne tranche rien — elle ne doit
     // pas faire apparaître une offre payante à un membre connecté.
@@ -753,12 +760,12 @@ pub fn load_campus_session(app: AppHandle) -> Result<Option<CampusSession>, Stri
 
 #[tauri::command]
 #[specta::specta]
-pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
-    let store = campus_session_store(&app)?;
-    if let Some(value) = store.get(CAMPUS_SESSION_KEY) {
+pub fn clear_organization_session(app: AppHandle) -> Result<(), String> {
+    let store = organization_session_store(&app)?;
+    if let Some(value) = store.get(ORGANIZATION_SESSION_KEY) {
         if !value.is_null() {
-            if let Ok(stored) = serde_json::from_value::<StoredCampusSession>(value) {
-                let session = CampusSession {
+            if let Ok(stored) = serde_json::from_value::<StoredOrganizationSession>(value) {
+                let session = OrganizationSession {
                     server_url: stored.server_url,
                     email: stored.email,
                     organization: stored.organization,
@@ -773,7 +780,7 @@ pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
             }
         }
     }
-    store.delete(CAMPUS_SESSION_KEY);
+    store.delete(ORGANIZATION_SESSION_KEY);
     // Sans session, l'organisation ne débloque plus rien : Personal.
     crate::licensing::set_organization_signed_in(false);
     store.save().map_err(|e| e.to_string())?;
@@ -783,7 +790,7 @@ pub fn clear_campus_session(app: AppHandle) -> Result<(), String> {
 /// Marque l'onboarding comme terminé sans toucher à la session campus.
 #[tauri::command]
 #[specta::specta]
-pub fn complete_campus_onboarding(app: AppHandle) -> Result<(), String> {
+pub fn complete_organization_onboarding(app: AppHandle) -> Result<(), String> {
     let mut settings = get_settings(&app);
     settings.onboarding_completed = true;
     write_settings(&app, settings);
@@ -791,22 +798,22 @@ pub fn complete_campus_onboarding(app: AppHandle) -> Result<(), String> {
 }
 
 /// Efface la session et notifie le frontend qu'il faut retourner à l'onboarding.
-pub fn clear_campus_session_and_notify(app: &AppHandle) {
-    let _ = clear_campus_session(app.clone());
+pub fn clear_organization_session_and_notify(app: &AppHandle) {
+    let _ = clear_organization_session(app.clone());
     // Le serveur a rejete cette identite : garder le jeton du peripherique
     // laisserait un secret que plus rien ne peut utiliser.
     #[cfg(feature = "lab")]
     let _ = forget_lab_connection(app);
-    let _ = app.emit(CAMPUS_SESSION_INVALID_EVENT, ());
+    let _ = app.emit(ORGANIZATION_SESSION_INVALID_EVENT, ());
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusAuthRequestResponse {
+pub struct OrganizationAuthRequestResponse {
     pub sent: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusEntraStartResponse {
+pub struct OrganizationEntraStartResponse {
     pub flow_id: String,
     pub user_code: String,
     pub verification_uri: String,
@@ -817,14 +824,14 @@ pub struct CampusEntraStartResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusEntraPollResponse {
+pub struct OrganizationEntraPollResponse {
     pub status: String,
     pub email: Option<String>,
     pub retry_after: Option<i64>,
 }
 
 #[derive(Deserialize)]
-struct CampusEntraPollServerResponse {
+struct OrganizationEntraPollServerResponse {
     status: String,
     email: Option<String>,
     token: Option<String>,
@@ -832,13 +839,13 @@ struct CampusEntraPollServerResponse {
 }
 
 #[derive(Deserialize)]
-struct CampusTokenResponse {
+struct OrganizationTokenResponse {
     token: String,
 }
 
 /// Groupe annoncé par le serveur (promo, filière, équipe, service).
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusGroup {
+pub struct OrganizationGroup {
     pub id: String,
     pub label: String,
     pub source: String,
@@ -848,13 +855,13 @@ pub struct CampusGroup {
 
 /// Appartenance du membre à l'organisation, telle que le serveur la décide.
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusMembership {
+pub struct OrganizationMembership {
     #[serde(default)]
     pub member_type: Option<String>,
     #[serde(default)]
     pub security_role: Option<String>,
     #[serde(default)]
-    pub groups: Option<Vec<CampusGroup>>,
+    pub groups: Option<Vec<OrganizationGroup>>,
     /// Faux quand l'organisation masque au membre ses groupes.
     #[serde(default)]
     pub groups_visible: Option<bool>,
@@ -865,7 +872,7 @@ pub struct CampusMembership {
 /// Mode d'authentification employé. Le sujet externe n'est pas transmis au
 /// poste : il n'en a aucun usage.
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusIdentityInfo {
+pub struct OrganizationIdentityInfo {
     #[serde(default)]
     pub provider: Option<String>,
     #[serde(default)]
@@ -879,7 +886,7 @@ pub struct CampusIdentityInfo {
 /// est un cas normal. `organization` reste une **chaîne** — le nom d'affichage :
 /// en faire un objet casserait chaque poste déjà déployé.
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusMeResponse {
+pub struct OrganizationMeResponse {
     pub email: String,
     pub role: String,
     pub cohort: String,
@@ -899,9 +906,9 @@ pub struct CampusMeResponse {
     #[serde(default)]
     pub organization_type: Option<String>,
     #[serde(default)]
-    pub membership: Option<CampusMembership>,
+    pub membership: Option<OrganizationMembership>,
     #[serde(default)]
-    pub identity: Option<CampusIdentityInfo>,
+    pub identity: Option<OrganizationIdentityInfo>,
     /// Capacités déclarées par l'organisation. Ne peut jamais fermer une
     /// capacité du Nova Core — voir `src/lib/organization/resolve.ts`.
     #[serde(default)]
@@ -909,7 +916,7 @@ pub struct CampusMeResponse {
     /// Bornes fixées par l'organisation. Absentes d'un serveur plus ancien :
     /// aucune limite ne s'applique alors.
     #[serde(default)]
-    pub limits: Option<CampusLimits>,
+    pub limits: Option<OrganizationLimits>,
     /// Catégories du Nova Core que l'organisation a fermées, nommées
     /// explicitement. Sans ce champ, serde l'écartait et aucune fermeture
     /// n'atteignait l'interface.
@@ -918,25 +925,25 @@ pub struct CampusMeResponse {
     /// Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
     /// aucun Style n'est alors désactivé.
     #[serde(default)]
-    pub style_policy: Option<CampusStylePolicy>,
+    pub style_policy: Option<OrganizationStylePolicy>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusStylePolicy {
+pub struct OrganizationStylePolicy {
     /// Identifiants des Styles désactivés — intégrés ou d'organisation.
     #[serde(default)]
     pub disabled_style_ids: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusLimits {
+pub struct OrganizationLimits {
     /// Durée maximale d'une dictée, en secondes.
     #[serde(default)]
     pub max_dictation_seconds: Option<u32>,
 }
 
-fn campus_client_no_auth() -> reqwest::Client {
-    campus_request_client(None)
+fn organization_client_no_auth() -> reqwest::Client {
+    organization_request_client(None)
 }
 
 async fn parse_error_text(response: reqwest::Response) -> String {
@@ -961,7 +968,7 @@ async fn handle_authed_response(
     response: reqwest::Response,
 ) -> Result<reqwest::Response, String> {
     if response.status() == reqwest::StatusCode::UNAUTHORIZED {
-        clear_campus_session_and_notify(app);
+        clear_organization_session_and_notify(app);
         return Err(parse_error_text(response).await);
     }
     if !response.status().is_success() {
@@ -979,15 +986,17 @@ async fn handle_authed_response(
 /// de « joignable » valaient une de trop ; il n'en reste qu'une.
 #[tauri::command]
 #[specta::specta]
-pub async fn check_campus_server_reachability(server_url: String) -> Result<bool, String> {
+pub async fn check_organization_server_reachability(server_url: String) -> Result<bool, String> {
     Ok(check_server_reachability(&normalize_base_url(&server_url)).await)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn fetch_campus_server_config(server_url: String) -> Result<CampusConfig, String> {
+pub async fn fetch_organization_server_config(
+    server_url: String,
+) -> Result<OrganizationConfig, String> {
     let base_url = normalize_base_url(&server_url);
-    let client = campus_client_no_auth();
+    let client = organization_client_no_auth();
     let response = client
         .get(format!("{}/api/config", base_url))
         .send()
@@ -1006,13 +1015,13 @@ pub async fn fetch_campus_server_config(server_url: String) -> Result<CampusConf
 
 #[tauri::command]
 #[specta::specta]
-pub async fn request_campus_auth(
+pub async fn request_organization_auth(
     server_url: String,
     email: String,
     machine: String,
-) -> Result<CampusAuthRequestResponse, String> {
+) -> Result<OrganizationAuthRequestResponse, String> {
     let base_url = normalize_base_url(&server_url);
-    let client = campus_client_no_auth();
+    let client = organization_client_no_auth();
     let response = client
         .post(format!("{}/api/auth/request", base_url))
         .json(&serde_json::json!({ "email": email, "machine": machine }))
@@ -1025,19 +1034,19 @@ pub async fn request_campus_auth(
     }
 
     response
-        .json::<CampusAuthRequestResponse>()
+        .json::<OrganizationAuthRequestResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn start_campus_entra_auth(
+pub async fn start_organization_entra_auth(
     server_url: String,
     machine: String,
-) -> Result<CampusEntraStartResponse, String> {
+) -> Result<OrganizationEntraStartResponse, String> {
     let base_url = normalize_base_url(&server_url);
-    let response = campus_client_no_auth()
+    let response = organization_client_no_auth()
         .post(format!("{}/api/auth/entra/start", base_url))
         .json(&serde_json::json!({ "machine": machine }))
         .send()
@@ -1047,20 +1056,20 @@ pub async fn start_campus_entra_auth(
         return Err(parse_error_text(response).await);
     }
     response
-        .json::<CampusEntraStartResponse>()
+        .json::<OrganizationEntraStartResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn poll_campus_entra_auth(
+pub async fn poll_organization_entra_auth(
     app: AppHandle,
     server_url: String,
     flow_id: String,
-) -> Result<CampusEntraPollResponse, String> {
+) -> Result<OrganizationEntraPollResponse, String> {
     let base_url = normalize_base_url(&server_url);
-    let response = campus_client_no_auth()
+    let response = organization_client_no_auth()
         .post(format!("{}/api/auth/entra/poll", base_url))
         .json(&serde_json::json!({ "flow_id": flow_id }))
         .send()
@@ -1070,7 +1079,7 @@ pub async fn poll_campus_entra_auth(
         return Err(parse_error_text(response).await);
     }
     let response = response
-        .json::<CampusEntraPollServerResponse>()
+        .json::<OrganizationEntraPollServerResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))?;
     if response.status == "complete" {
@@ -1081,9 +1090,9 @@ pub async fn poll_campus_entra_auth(
         let token = response
             .token
             .ok_or_else(|| "Microsoft response is missing token".to_string())?;
-        save_campus_credentials(
+        save_organization_credentials(
             &app,
-            CampusSession {
+            OrganizationSession {
                 server_url: base_url,
                 email,
                 organization: None,
@@ -1091,7 +1100,7 @@ pub async fn poll_campus_entra_auth(
             token,
         )?;
     }
-    Ok(CampusEntraPollResponse {
+    Ok(OrganizationEntraPollResponse {
         status: response.status,
         email: response.email,
         retry_after: response.retry_after,
@@ -1100,15 +1109,15 @@ pub async fn poll_campus_entra_auth(
 
 #[tauri::command]
 #[specta::specta]
-pub async fn verify_campus_auth(
+pub async fn verify_organization_auth(
     app: AppHandle,
     server_url: String,
     email: String,
     code: String,
     machine: String,
-) -> Result<CampusSession, String> {
+) -> Result<OrganizationSession, String> {
     let base_url = normalize_base_url(&server_url);
-    let client = campus_client_no_auth();
+    let client = organization_client_no_auth();
     let response = client
         .post(format!("{}/api/auth/verify", base_url))
         .json(&serde_json::json!({ "email": email, "code": code, "machine": machine }))
@@ -1121,35 +1130,38 @@ pub async fn verify_campus_auth(
     }
 
     let response = response
-        .json::<CampusTokenResponse>()
+        .json::<OrganizationTokenResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))?;
-    let session = CampusSession {
+    let session = OrganizationSession {
         server_url: base_url,
         email: email.to_lowercase(),
         organization: None,
     };
-    save_campus_credentials(&app, session.clone(), response.token)?;
+    save_organization_credentials(&app, session.clone(), response.token)?;
     Ok(session)
 }
 
-fn campus_client_with_token(token: &str) -> reqwest::Client {
-    campus_request_client(Some(token))
+fn organization_client_with_token(token: &str) -> reqwest::Client {
+    organization_request_client(Some(token))
 }
 
 /// Un seul constructeur de client pour le chemin Campus. En build Lab, après
 /// enrôlement, il accepte exclusivement le certificat épinglé par le code et
 /// envoie le jeton de périphérique à chaque requête. Les builds ordinaires
 /// gardent exactement le transport historique.
-pub(crate) fn campus_request_client(token: Option<&str>) -> reqwest::Client {
-    campus_request_client_with_timeout(token, Duration::from_secs(30))
+pub(crate) fn organization_request_client(token: Option<&str>) -> reqwest::Client {
+    organization_request_client_with_timeout(token, Duration::from_secs(30))
 }
 
 /// Variante conservant le transport Lab pour les opérations qui ont besoin
 /// d'un délai différent (document long, audio ou simple sonde de disponibilité).
 /// Aucun appel Campus ne doit reconstruire un client à côté de ce chemin : il
 /// perdrait sinon le certificat épinglé et le jeton du périphérique Lab.
-fn campus_request_client_with_timeout(token: Option<&str>, timeout: Duration) -> reqwest::Client {
+fn organization_request_client_with_timeout(
+    token: Option<&str>,
+    timeout: Duration,
+) -> reqwest::Client {
     let mut headers = reqwest::header::HeaderMap::new();
     if let Some(token) = token {
         let auth_value = format!("Bearer {}", token)
@@ -1484,19 +1496,19 @@ pub async fn request_learning_feedback(
 }
 
 fn authenticated_client(app: &AppHandle) -> Result<(String, reqwest::Client), String> {
-    let credentials =
-        load_campus_credentials(app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let credentials = load_organization_credentials(app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client = campus_client_with_token(&credentials.token);
+    let client = organization_client_with_token(&credentials.token);
     Ok((base_url, client))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn logout_campus_session(app: AppHandle) -> Result<(), String> {
-    if let Some(credentials) = load_campus_credentials(&app)? {
+pub async fn logout_organization_session(app: AppHandle) -> Result<(), String> {
+    if let Some(credentials) = load_organization_credentials(&app)? {
         let base_url = normalize_base_url(&credentials.session.server_url);
-        let response = campus_client_with_token(&credentials.token)
+        let response = organization_client_with_token(&credentials.token)
             .post(format!("{}/api/auth/logout", base_url))
             .send()
             .await;
@@ -1504,16 +1516,16 @@ pub async fn logout_campus_session(app: AppHandle) -> Result<(), String> {
     }
     crate::dictation_limit::set_limit(None);
     crate::style_policy::set_disabled(None);
-    clear_campus_session(app)
+    clear_organization_session(app)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
-    let credentials =
-        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+pub async fn get_organization_me(app: AppHandle) -> Result<OrganizationMeResponse, String> {
+    let credentials = load_organization_credentials(&app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client = campus_client_with_token(&credentials.token);
+    let client = organization_client_with_token(&credentials.token);
     let response = client
         .get(format!("{}/api/me", base_url))
         .send()
@@ -1522,7 +1534,7 @@ pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
     let response = handle_authed_response(&app, response).await?;
 
     let me = response
-        .json::<CampusMeResponse>()
+        .json::<OrganizationMeResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))?;
     crate::dictation_limit::set_limit(
@@ -1539,14 +1551,14 @@ pub async fn get_campus_me(app: AppHandle) -> Result<CampusMeResponse, String> {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusSharedDictEntry {
+pub struct OrganizationSharedDictEntry {
     pub id: i64,
     pub term: String,
     pub replacement: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusPersonalDictEntry {
+pub struct OrganizationPersonalDictEntry {
     pub id: i64,
     pub term: String,
     pub replacement: String,
@@ -1554,58 +1566,58 @@ pub struct CampusPersonalDictEntry {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusSnippetEntry {
+pub struct OrganizationSnippetEntry {
     pub id: i64,
     pub trigger: String,
     pub content: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusVocabularyResponse {
-    pub shared: Vec<CampusSharedDictEntry>,
-    pub personal: Vec<CampusPersonalDictEntry>,
-    pub snippets: Vec<CampusSnippetEntry>,
+pub struct OrganizationVocabularyResponse {
+    pub shared: Vec<OrganizationSharedDictEntry>,
+    pub personal: Vec<OrganizationPersonalDictEntry>,
+    pub snippets: Vec<OrganizationSnippetEntry>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusIdResponse {
+pub struct OrganizationIdResponse {
     pub id: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusLearnResponse {
+pub struct OrganizationLearnResponse {
     pub learned: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusImportResponse {
+pub struct OrganizationImportResponse {
     pub imported: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusAnalyzeResponse {
+pub struct OrganizationAnalyzeResponse {
     pub terms_added: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusRuleEntry {
+pub struct OrganizationRuleEntry {
     pub id: i64,
     pub rule: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusFormattingRulesResponse {
-    pub shared: Vec<CampusRuleEntry>,
-    pub personal: Vec<CampusRuleEntry>,
+pub struct OrganizationFormattingRulesResponse {
+    pub shared: Vec<OrganizationRuleEntry>,
+    pub personal: Vec<OrganizationRuleEntry>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusCommandResponse {
+pub struct OrganizationCommandResponse {
     pub text: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusAiSkill {
+pub struct OrganizationAiSkill {
     pub id: String,
     pub title: String,
     pub summary: String,
@@ -1614,13 +1626,15 @@ pub struct CampusAiSkill {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
-pub struct CampusAiSkillsResponse {
-    pub skills: Vec<CampusAiSkill>,
+pub struct OrganizationAiSkillsResponse {
+    pub skills: Vec<OrganizationAiSkill>,
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_campus_vocabulary(app: AppHandle) -> Result<CampusVocabularyResponse, String> {
+pub async fn get_organization_vocabulary(
+    app: AppHandle,
+) -> Result<OrganizationVocabularyResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/vocabulary", base_url))
@@ -1630,7 +1644,7 @@ pub async fn get_campus_vocabulary(app: AppHandle) -> Result<CampusVocabularyRes
     let response = handle_authed_response(&app, response).await?;
 
     let vocabulary = response
-        .json::<CampusVocabularyResponse>()
+        .json::<OrganizationVocabularyResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))?;
     keep_writing_aids(current_organization_id(&app).await, &vocabulary);
@@ -1638,7 +1652,7 @@ pub async fn get_campus_vocabulary(app: AppHandle) -> Result<CampusVocabularyRes
 }
 
 /// Garde les snippets et le vocabulaire pour dicter sans le serveur.
-fn keep_writing_aids(organization_id: Option<String>, vocabulary: &CampusVocabularyResponse) {
+fn keep_writing_aids(organization_id: Option<String>, vocabulary: &OrganizationVocabularyResponse) {
     crate::writing_aids::set(crate::writing_aids::WritingAids {
         organization_id,
         vocabulary: vocabulary
@@ -1662,11 +1676,11 @@ fn keep_writing_aids(organization_id: Option<String>, vocabulary: &CampusVocabul
 
 #[tauri::command]
 #[specta::specta]
-pub async fn add_campus_dictionary_entry(
+pub async fn add_organization_dictionary_entry(
     app: AppHandle,
     term: String,
     replacement: String,
-) -> Result<CampusIdResponse, String> {
+) -> Result<OrganizationIdResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/dictionary", base_url))
@@ -1677,14 +1691,17 @@ pub async fn add_campus_dictionary_entry(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusIdResponse>()
+        .json::<OrganizationIdResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_campus_dictionary_entry(app: AppHandle, entry_id: i64) -> Result<(), String> {
+pub async fn delete_organization_dictionary_entry(
+    app: AppHandle,
+    entry_id: i64,
+) -> Result<(), String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .delete(format!("{}/api/dictionary/{}", base_url, entry_id))
@@ -1698,11 +1715,11 @@ pub async fn delete_campus_dictionary_entry(app: AppHandle, entry_id: i64) -> Re
 
 #[tauri::command]
 #[specta::specta]
-pub async fn learn_campus_dictionary(
+pub async fn learn_organization_dictionary(
     app: AppHandle,
     heard: String,
     corrected: String,
-) -> Result<CampusLearnResponse, String> {
+) -> Result<OrganizationLearnResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/dictionary/learn", base_url))
@@ -1713,14 +1730,14 @@ pub async fn learn_campus_dictionary(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusLearnResponse>()
+        .json::<OrganizationLearnResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn export_campus_dictionary(app: AppHandle) -> Result<String, String> {
+pub async fn export_organization_dictionary(app: AppHandle) -> Result<String, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/dictionary/export", base_url))
@@ -1737,10 +1754,10 @@ pub async fn export_campus_dictionary(app: AppHandle) -> Result<String, String> 
 
 #[tauri::command]
 #[specta::specta]
-pub async fn import_campus_dictionary(
+pub async fn import_organization_dictionary(
     app: AppHandle,
     csv_content: String,
-) -> Result<CampusImportResponse, String> {
+) -> Result<OrganizationImportResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
 
     let part = reqwest::multipart::Part::bytes(csv_content.into_bytes())
@@ -1759,23 +1776,25 @@ pub async fn import_campus_dictionary(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusImportResponse>()
+        .json::<OrganizationImportResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn analyze_campus_document(
+pub async fn analyze_organization_document(
     app: AppHandle,
     text_content: String,
     filename: Option<String>,
-) -> Result<CampusAnalyzeResponse, String> {
-    let credentials =
-        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+) -> Result<OrganizationAnalyzeResponse, String> {
+    let credentials = load_organization_credentials(&app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client =
-        campus_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(120));
+    let client = organization_request_client_with_timeout(
+        Some(&credentials.token),
+        Duration::from_secs(120),
+    );
 
     let fname = filename.unwrap_or_else(|| "document.txt".to_string());
     let part = reqwest::multipart::Part::bytes(text_content.into_bytes())
@@ -1794,18 +1813,18 @@ pub async fn analyze_campus_document(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusAnalyzeResponse>()
+        .json::<OrganizationAnalyzeResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn add_campus_snippet(
+pub async fn add_organization_snippet(
     app: AppHandle,
     trigger: String,
     content: String,
-) -> Result<CampusIdResponse, String> {
+) -> Result<OrganizationIdResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/snippets", base_url))
@@ -1816,14 +1835,14 @@ pub async fn add_campus_snippet(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusIdResponse>()
+        .json::<OrganizationIdResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_campus_snippet(app: AppHandle, snippet_id: i64) -> Result<(), String> {
+pub async fn delete_organization_snippet(app: AppHandle, snippet_id: i64) -> Result<(), String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .delete(format!("{}/api/snippets/{}", base_url, snippet_id))
@@ -1837,9 +1856,9 @@ pub async fn delete_campus_snippet(app: AppHandle, snippet_id: i64) -> Result<()
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_campus_formatting_rules(
+pub async fn get_organization_formatting_rules(
     app: AppHandle,
-) -> Result<CampusFormattingRulesResponse, String> {
+) -> Result<OrganizationFormattingRulesResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/formatting-rules", base_url))
@@ -1849,17 +1868,17 @@ pub async fn get_campus_formatting_rules(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusFormattingRulesResponse>()
+        .json::<OrganizationFormattingRulesResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn add_campus_formatting_rule(
+pub async fn add_organization_formatting_rule(
     app: AppHandle,
     rule: String,
-) -> Result<CampusIdResponse, String> {
+) -> Result<OrganizationIdResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/formatting-rules", base_url))
@@ -1870,14 +1889,17 @@ pub async fn add_campus_formatting_rule(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusIdResponse>()
+        .json::<OrganizationIdResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_campus_formatting_rule(app: AppHandle, rule_id: i64) -> Result<(), String> {
+pub async fn delete_organization_formatting_rule(
+    app: AppHandle,
+    rule_id: i64,
+) -> Result<(), String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .delete(format!("{}/api/formatting-rules/{}", base_url, rule_id))
@@ -1891,16 +1913,18 @@ pub async fn delete_campus_formatting_rule(app: AppHandle, rule_id: i64) -> Resu
 
 #[tauri::command]
 #[specta::specta]
-pub async fn execute_campus_command(
+pub async fn execute_organization_command(
     app: AppHandle,
     instruction: String,
     text: String,
-) -> Result<CampusCommandResponse, String> {
-    let credentials =
-        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+) -> Result<OrganizationCommandResponse, String> {
+    let credentials = load_organization_credentials(&app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client =
-        campus_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(120));
+    let client = organization_request_client_with_timeout(
+        Some(&credentials.token),
+        Duration::from_secs(120),
+    );
 
     let response = client
         .post(format!("{}/api/command", base_url))
@@ -1911,7 +1935,7 @@ pub async fn execute_campus_command(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusCommandResponse>()
+        .json::<OrganizationCommandResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
@@ -2014,7 +2038,7 @@ pub async fn refresh_organization_packages(
         .await
     {
         if response.status().is_success() {
-            if let Ok(vocabulary) = response.json::<CampusVocabularyResponse>().await {
+            if let Ok(vocabulary) = response.json::<OrganizationVocabularyResponse>().await {
                 keep_writing_aids(catalog.organization_id.clone(), &vocabulary);
             }
         }
@@ -2040,7 +2064,7 @@ pub async fn run_organization_skill(
     app: AppHandle,
     skill_id: String,
     text: String,
-) -> Result<CampusCommandResponse, String> {
+) -> Result<OrganizationCommandResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/skills/run", base_url))
@@ -2050,7 +2074,7 @@ pub async fn run_organization_skill(
         .map_err(|e| format!("network error: {}", e))?;
     let response = handle_authed_response(&app, response).await?;
     response
-        .json::<CampusCommandResponse>()
+        .json::<OrganizationCommandResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
@@ -2087,7 +2111,9 @@ async fn current_organization_id(app: &AppHandle) -> Option<String> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_campus_ai_skills(app: AppHandle) -> Result<CampusAiSkillsResponse, String> {
+pub async fn get_organization_ai_skills(
+    app: AppHandle,
+) -> Result<OrganizationAiSkillsResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .get(format!("{}/api/ai-skills", base_url))
@@ -2097,7 +2123,7 @@ pub async fn get_campus_ai_skills(app: AppHandle) -> Result<CampusAiSkillsRespon
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusAiSkillsResponse>()
+        .json::<OrganizationAiSkillsResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
@@ -2109,12 +2135,12 @@ pub async fn get_campus_ai_skills(app: AppHandle) -> Result<CampusAiSkillsRespon
 /// consigne, plutôt que d'échouer tant que le serveur n'est pas à jour.
 #[tauri::command]
 #[specta::specta]
-pub async fn format_campus_structured_notes(
+pub async fn format_organization_structured_notes(
     app: AppHandle,
     text: String,
     note_type: String,
     instruction: String,
-) -> Result<CampusCommandResponse, String> {
+) -> Result<OrganizationCommandResponse, String> {
     let (base_url, client) = authenticated_client(&app)?;
     let response = client
         .post(format!("{}/api/structured-notes", base_url))
@@ -2141,23 +2167,25 @@ pub async fn format_campus_structured_notes(
     let response = handle_authed_response(&app, response).await?;
 
     response
-        .json::<CampusCommandResponse>()
+        .json::<OrganizationCommandResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn transcribe_campus_audio_file(
+pub async fn transcribe_organization_audio_file(
     app: AppHandle,
     file_bytes: Vec<u8>,
     filename: String,
 ) -> Result<String, String> {
-    let credentials =
-        load_campus_credentials(&app)?.ok_or_else(|| "campus session is missing".to_string())?;
+    let credentials = load_organization_credentials(&app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
-    let client =
-        campus_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(300));
+    let client = organization_request_client_with_timeout(
+        Some(&credentials.token),
+        Duration::from_secs(300),
+    );
 
     let mime = if filename.ends_with(".mp3") {
         "audio/mpeg"
@@ -2191,7 +2219,7 @@ pub async fn transcribe_campus_audio_file(
 }
 
 #[derive(Debug)]
-pub enum CampusError {
+pub enum OrganizationError {
     Unauthorized,
     Forbidden(String),
     BadGateway(String),
@@ -2199,26 +2227,26 @@ pub enum CampusError {
     Other(String),
 }
 
-impl std::fmt::Display for CampusError {
+impl std::fmt::Display for OrganizationError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            CampusError::Unauthorized => write!(f, "Session campus expirée"),
-            CampusError::Forbidden(msg) => write!(f, "Compte suspendu : {msg}"),
-            CampusError::BadGateway(msg) => write!(f, "Moteur IA indisponible : {msg}"),
-            CampusError::Network(msg) => write!(f, "Serveur injoignable : {msg}"),
-            CampusError::Other(msg) => write!(f, "Erreur campus : {msg}"),
+            OrganizationError::Unauthorized => write!(f, "Session campus expirée"),
+            OrganizationError::Forbidden(msg) => write!(f, "Compte suspendu : {msg}"),
+            OrganizationError::BadGateway(msg) => write!(f, "Moteur IA indisponible : {msg}"),
+            OrganizationError::Network(msg) => write!(f, "Serveur injoignable : {msg}"),
+            OrganizationError::Other(msg) => write!(f, "Erreur campus : {msg}"),
         }
     }
 }
 
-impl std::error::Error for CampusError {}
+impl std::error::Error for OrganizationError {}
 
 pub(crate) fn normalize_base_url(url: &str) -> String {
     url.trim_end_matches('/').to_string()
 }
 
-fn campus_client(token: &str) -> reqwest::Client {
-    campus_request_client(Some(token))
+fn organization_client(token: &str) -> reqwest::Client {
+    organization_request_client(Some(token))
 }
 
 /// Ce que `/api/transcribe` repond : `{ "text": "..." }`.
@@ -2418,16 +2446,16 @@ pub(crate) fn build_audio_multipart(
 /// reconstitution. Un test qui rejoue une construction voisine ne prouve rien
 /// sur ce qui part reellement — c'est precisement l'erreur qui a laisse passer
 /// les octets excedentaires.
-pub async fn transcribe_campus(
+pub async fn transcribe_organization(
     wav_path: &Path,
-    session: &CampusCredentials,
-) -> Result<String, CampusError> {
+    session: &OrganizationCredentials,
+) -> Result<String, OrganizationError> {
     let base_url = normalize_base_url(&session.server_url);
-    let client = campus_client(&session.token);
+    let client = organization_client(&session.token);
 
     let file_bytes = tokio::fs::read(wav_path)
         .await
-        .map_err(|e| CampusError::Other(format!("failed to read wav: {}", e)))?;
+        .map_err(|e| OrganizationError::Other(format!("failed to read wav: {}", e)))?;
 
     let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes);
     let audio_bytes = multipart.audio_bytes as u64;
@@ -2449,7 +2477,7 @@ pub async fn transcribe_campus(
         .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
         .body(body)
         .build()
-        .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
+        .map_err(|e| OrganizationError::Other(format!("invalid request: {}", e)))?;
     let response = send_traced(&client, request, Some(audio_bytes)).await;
 
     // La mesure vaut aussi — et surtout — quand la requete echoue.
@@ -2472,7 +2500,7 @@ pub async fn transcribe_campus(
     let response = response?;
 
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
-    let parsed: TranscribeResponse = handle_campus_response(response).await?;
+    let parsed: TranscribeResponse = handle_organization_response(response).await?;
     Ok(parsed.text)
 }
 
@@ -2484,14 +2512,14 @@ pub async fn transcribe_campus(
 /// porte un préfixe réservé et le serveur retrouve lui-même la consigne dans
 /// le package actif : le poste n'y fait pas autorité, et un Style dépublié
 /// cesse d'être exécutable même si le catalogue local est en retard.
-pub async fn reformulate_campus(
+pub async fn reformulate_organization(
     text: &str,
     style_id: &str,
     style_prompt: &str,
-    session: &CampusCredentials,
-) -> Result<String, CampusError> {
+    session: &OrganizationCredentials,
+) -> Result<String, OrganizationError> {
     let base_url = normalize_base_url(&session.server_url);
-    let client = campus_client(&session.token);
+    let client = organization_client(&session.token);
 
     // Le serveur place la dictée dans le message, pas dans la consigne :
     // l'emplacement `${output}` n'y a rien à faire, et un modèle qui le lit
@@ -2507,10 +2535,10 @@ pub async fn reformulate_campus(
         .post(format!("{}/api/reformulate", base_url))
         .json(&body)
         .build()
-        .map_err(|e| CampusError::Other(format!("invalid request: {}", e)))?;
+        .map_err(|e| OrganizationError::Other(format!("invalid request: {}", e)))?;
     let response = send_traced(&client, request, None).await?;
 
-    let parsed: ReformulateResponse = handle_campus_response(response).await?;
+    let parsed: ReformulateResponse = handle_organization_response(response).await?;
     Ok(parsed.text)
 }
 
@@ -2519,7 +2547,7 @@ pub async fn reformulate_campus(
 /// La trace decrit la **forme** de la requete — methode, chemin, version, la
 /// presence de `Content-Length` / `Transfer-Encoding` / `Expect`, le type MIME
 /// et la taille du corps — puis son issue. Rien d'autre : voir
-/// `crate::campus_trace`, ou aucune valeur d'en-tete sensible n'est meme lue.
+/// `crate::organization_trace`, ou aucune valeur d'en-tete sensible n'est meme lue.
 ///
 /// C'est ce qui manquait devant `HTTP 400 Bad Request: Invalid HTTP request
 /// received.` : le message ne disait pas comment le corps etait annonce, et
@@ -2528,55 +2556,58 @@ async fn send_traced(
     client: &reqwest::Client,
     request: reqwest::Request,
     audio_bytes: Option<u64>,
-) -> Result<reqwest::Response, CampusError> {
-    crate::campus_trace::log_request(
-        &crate::campus_trace::RequestShape::observe(&request).with_audio_bytes(audio_bytes),
+) -> Result<reqwest::Response, OrganizationError> {
+    crate::organization_trace::log_request(
+        &crate::organization_trace::RequestShape::observe(&request).with_audio_bytes(audio_bytes),
     );
 
     match client.execute(request).await {
         Ok(response) => {
-            crate::campus_trace::log_outcome(&crate::campus_trace::RequestOutcome::Status(
-                response.status().as_u16(),
-            ));
+            crate::organization_trace::log_outcome(
+                &crate::organization_trace::RequestOutcome::Status(response.status().as_u16()),
+            );
             Ok(response)
         }
         Err(error) => {
-            crate::campus_trace::log_outcome(&crate::campus_trace::RequestOutcome::from_error(
-                &error,
-            ));
+            crate::organization_trace::log_outcome(
+                &crate::organization_trace::RequestOutcome::from_error(&error),
+            );
             if error.is_connect() || error.is_timeout() || error.is_request() {
-                Err(CampusError::Network(error.to_string()))
+                Err(OrganizationError::Network(error.to_string()))
             } else {
-                Err(CampusError::Other(error.to_string()))
+                Err(OrganizationError::Other(error.to_string()))
             }
         }
     }
 }
 
-async fn handle_campus_response<T: serde::de::DeserializeOwned>(
+async fn handle_organization_response<T: serde::de::DeserializeOwned>(
     response: reqwest::Response,
-) -> Result<T, CampusError> {
+) -> Result<T, OrganizationError> {
     let status = response.status();
     if status == reqwest::StatusCode::UNAUTHORIZED {
-        return Err(CampusError::Unauthorized);
+        return Err(OrganizationError::Unauthorized);
     }
     if status == reqwest::StatusCode::FORBIDDEN {
         let text = response.text().await.unwrap_or_default();
-        return Err(CampusError::Forbidden(parse_error_detail(&text)));
+        return Err(OrganizationError::Forbidden(parse_error_detail(&text)));
     }
     if status == reqwest::StatusCode::BAD_GATEWAY {
         let text = response.text().await.unwrap_or_default();
-        return Err(CampusError::BadGateway(parse_error_detail(&text)));
+        return Err(OrganizationError::BadGateway(parse_error_detail(&text)));
     }
     if !status.is_success() {
         let text = response.text().await.unwrap_or_default();
-        return Err(CampusError::Other(format!("HTTP {}: {}", status, text)));
+        return Err(OrganizationError::Other(format!(
+            "HTTP {}: {}",
+            status, text
+        )));
     }
 
     response
         .json::<T>()
         .await
-        .map_err(|e| CampusError::Other(format!("invalid response: {}", e)))
+        .map_err(|e| OrganizationError::Other(format!("invalid response: {}", e)))
 }
 
 fn parse_error_detail(text: &str) -> String {
@@ -2640,7 +2671,7 @@ async fn update_reachability_cache(base_url: &str) -> bool {
 /// depasse — signifie que le serveur est hors d'atteinte. Toute reponse HTTP,
 /// quel que soit son code, prouve le contraire.
 async fn check_server_reachability(base_url: &str) -> bool {
-    let client = campus_request_client_with_timeout(None, Duration::from_secs(2));
+    let client = organization_request_client_with_timeout(None, Duration::from_secs(2));
     client
         .get(format!("{}/api/health", base_url))
         .send()
@@ -2650,21 +2681,24 @@ async fn check_server_reachability(base_url: &str) -> bool {
 
 /// Retourne vrai si une session campus est présente — utile pour distinguer
 /// « serveur injoignable » (session présente mais reachability à faux) de
-/// « aucun mode campus » quand `should_use_campus` renvoie None.
-pub fn has_campus_session(app: &AppHandle) -> bool {
-    load_campus_session(app.clone()).ok().flatten().is_some()
+/// « aucun mode campus » quand `should_use_organization` renvoie None.
+pub fn has_organization_session(app: &AppHandle) -> bool {
+    load_organization_session(app.clone())
+        .ok()
+        .flatten()
+        .is_some()
 }
 
-pub async fn should_use_campus(app: &AppHandle) -> Option<CampusCredentials> {
+pub async fn should_use_organization(app: &AppHandle) -> Option<OrganizationCredentials> {
     // Suspendu, le membre dicte en local : l'organisation ne reçoit plus rien
     // jusqu'à ce que `/api/me` le rétablisse.
     if !crate::licensing::organization_serves(
-        is_campus_enabled(app),
+        is_organization_enabled(app),
         crate::licensing::is_organization_suspended(),
     ) {
         return None;
     }
-    let session = load_campus_credentials(app).ok().flatten()?;
+    let session = load_organization_credentials(app).ok().flatten()?;
     match is_server_reachable_cached(&session.server_url) {
         Some(true) => Some(session),
         Some(false) => None,
@@ -2700,7 +2734,7 @@ mod tests {
 
     #[test]
     fn closed_categories_announced_by_the_server_reach_the_interface() {
-        let me: CampusMeResponse = serde_json::from_str(
+        let me: OrganizationMeResponse = serde_json::from_str(
             r#"{"email":"a@example.edu","role":"student","cohort":"",
                 "closed_capabilities":["history","styles"]}"#,
         )
@@ -2771,7 +2805,7 @@ mod tests {
 
     #[test]
     fn session_metadata_never_serializes_a_token() {
-        let stored = StoredCampusSession {
+        let stored = StoredOrganizationSession {
             server_url: "https://campus.example.edu".to_string(),
             email: "student@example.edu".to_string(),
             organization: None,
@@ -2791,14 +2825,14 @@ mod tests {
             "token": "legacy-secret",
         });
 
-        let stored: StoredCampusSession =
+        let stored: StoredOrganizationSession =
             serde_json::from_value(value).expect("legacy session deserializes");
         assert_eq!(stored.token.as_deref(), Some("legacy-secret"));
     }
 
     #[test]
     fn credential_username_does_not_expose_account_identity() {
-        let session = CampusSession {
+        let session = OrganizationSession {
             server_url: "https://campus.example.edu".to_string(),
             email: "student@example.edu".to_string(),
             organization: None,
@@ -2814,12 +2848,12 @@ mod tests {
     fn a_session_survives_a_change_of_server_address() {
         // Le défaut que la découverte rendait inévitable : une organisation qui
         // déménage perdait sa session, sans que personne comprenne pourquoi.
-        let before = CampusSession {
+        let before = OrganizationSession {
             server_url: "https://avant.example.edu".to_string(),
             email: "etudiant@example.edu".to_string(),
             organization: Some("ecole".to_string()),
         };
-        let after = CampusSession {
+        let after = OrganizationSession {
             server_url: "https://apres.example.edu".to_string(),
             ..before.clone()
         };
@@ -2828,12 +2862,12 @@ mod tests {
 
     #[test]
     fn two_organizations_never_share_a_keyring_entry() {
-        let first = CampusSession {
+        let first = OrganizationSession {
             server_url: "https://nova.example.edu".to_string(),
             email: "personne@example.edu".to_string(),
             organization: Some("ecole-a".to_string()),
         };
-        let second = CampusSession {
+        let second = OrganizationSession {
             organization: Some("ecole-b".to_string()),
             ..first.clone()
         };
@@ -2844,7 +2878,7 @@ mod tests {
     fn a_session_without_an_organization_keeps_its_legacy_entry() {
         // Les sessions créées avant la découverte continuent de fonctionner :
         // aucune migration forcée, aucune reconnexion imposée.
-        let legacy = CampusSession {
+        let legacy = OrganizationSession {
             server_url: "https://campus.example.edu".to_string(),
             email: "student@example.edu".to_string(),
             organization: None,
@@ -2861,7 +2895,7 @@ mod tests {
     fn write_config(dir: &Path) {
         std::fs::create_dir_all(dir).expect("config directory is created");
         std::fs::write(
-            dir.join(CAMPUS_CONFIG_FILENAME),
+            dir.join(ORGANIZATION_CONFIG_FILENAME),
             r#"{"server_url":"https://campus.example.edu"}"#,
         )
         .expect("config is written");
@@ -2874,8 +2908,8 @@ mod tests {
         write_config(machine.path());
 
         assert_eq!(
-            resolve_campus_config_path(Some(machine.path()), exe.path()),
-            Some(machine.path().join(CAMPUS_CONFIG_FILENAME))
+            resolve_organization_config_path(Some(machine.path()), exe.path()),
+            Some(machine.path().join(ORGANIZATION_CONFIG_FILENAME))
         );
     }
 
@@ -2888,8 +2922,8 @@ mod tests {
         write_config(exe.path());
 
         assert_eq!(
-            resolve_campus_config_path(Some(machine.path()), exe.path()),
-            Some(exe.path().join(CAMPUS_CONFIG_FILENAME))
+            resolve_organization_config_path(Some(machine.path()), exe.path()),
+            Some(exe.path().join(ORGANIZATION_CONFIG_FILENAME))
         );
     }
 
@@ -2903,8 +2937,8 @@ mod tests {
         write_config(exe.path());
 
         assert_eq!(
-            resolve_campus_config_path(Some(machine.path()), exe.path()),
-            Some(machine.path().join(CAMPUS_CONFIG_FILENAME))
+            resolve_organization_config_path(Some(machine.path()), exe.path()),
+            Some(machine.path().join(ORGANIZATION_CONFIG_FILENAME))
         );
     }
 
@@ -2915,10 +2949,10 @@ mod tests {
         let exe = tempfile::tempdir().expect("executable directory");
 
         assert_eq!(
-            resolve_campus_config_path(Some(machine.path()), exe.path()),
+            resolve_organization_config_path(Some(machine.path()), exe.path()),
             None
         );
-        assert_eq!(resolve_campus_config_path(None, exe.path()), None);
+        assert_eq!(resolve_organization_config_path(None, exe.path()), None);
     }
 
     #[test]
@@ -2928,8 +2962,8 @@ mod tests {
         let absent = exe.path().join("no-such-directory");
 
         assert_eq!(
-            resolve_campus_config_path(Some(&absent), exe.path()),
-            Some(exe.path().join(CAMPUS_CONFIG_FILENAME))
+            resolve_organization_config_path(Some(&absent), exe.path()),
+            Some(exe.path().join(ORGANIZATION_CONFIG_FILENAME))
         );
     }
 
@@ -2952,7 +2986,7 @@ mod tests {
         // configuration déployée, ou de l'utilisateur. Le marqueur est
         // reconstruit pour que cette chaîne ne se coupe pas elle-même.
         let marker = format!("#[cfg({})]", "test");
-        let production = include_str!("campus.rs")
+        let production = include_str!("organization.rs")
             .split(&marker)
             .next()
             .expect("the file has a production section");
@@ -3064,7 +3098,7 @@ mod tests {
     }
 
     #[test]
-    fn campus_installs_for_the_whole_machine() {
+    fn organization_installs_for_the_whole_machine() {
         let config: serde_json::Value =
             serde_json::from_str(include_str!("../../tauri.campus.conf.json"))
                 .expect("tauri.campus.conf.json parses");
@@ -3266,7 +3300,7 @@ mod lab_persistence_tests {
             });
             assert!(refus.is_err(), "jeton installe malgre tout ({pourquoi})");
             // Et c'est la propriete qui compte : le poste se declare non
-            // enrole, donc `campus_request_client_with_timeout` ne prendra pas
+            // enrole, donc `organization_request_client_with_timeout` ne prendra pas
             // la branche Lab et aucune requete authentifiee ne partira.
             assert!(
                 !lab_connection_active(),
@@ -3303,23 +3337,26 @@ mod lab_persistence_tests {
     }
 
     #[test]
-    fn le_trousseau_du_lab_est_distinct_de_celui_du_campus() {
+    fn le_trousseau_du_lab_est_distinct_de_celui_du_organization() {
         // Se deconnecter de son organisation ne doit pas desenroler la machine.
-        assert_ne!(LAB_DEVICE_CREDENTIAL_SERVICE, CAMPUS_CREDENTIAL_SERVICE);
+        assert_ne!(
+            LAB_DEVICE_CREDENTIAL_SERVICE,
+            ORGANIZATION_CREDENTIAL_SERVICE
+        );
     }
 }
 
 /// Ce que le serveur repond, et ce que le poste accepte de lire.
 ///
 /// Le defaut corrige ici etait invisible a la compilation :
-/// `handle_campus_response` est generique, et `Result<String, _>` faisait
+/// `handle_organization_response` est generique, et `Result<String, _>` faisait
 /// choisir `T = String` par inference. `serde` demandait alors une **chaine
 /// JSON nue** la ou le serveur envoie un objet, et l'echec ressortait en
 /// « invalid response » — un message qui ne designe pas sa cause. Les
 /// structures existaient pourtant deja, utilisees par le seul chemin de
 /// transcription de fichier.
 #[cfg(test)]
-mod campus_response_tests {
+mod organization_response_tests {
     use super::*;
 
     const SERVER_PAYLOAD: &str = r#"{"text":"Bonjour, ceci est un essai de dictee."}"#;
@@ -3346,7 +3383,7 @@ mod campus_response_tests {
         let as_bare_string = serde_json::from_str::<String>(SERVER_PAYLOAD);
         assert!(
             as_bare_string.is_err(),
-            "un objet JSON ne se lit pas comme une chaine ;              c'est ce que faisaient transcribe_campus et reformulate_campus"
+            "un objet JSON ne se lit pas comme une chaine ;              c'est ce que faisaient transcribe_organization et reformulate_organization"
         );
     }
 
@@ -3532,9 +3569,9 @@ mod multipart_wire_tests {
         file
     }
 
-    /// Le test central : **le vrai `transcribe_campus`**, pas une reconstitution.
+    /// Le test central : **le vrai `transcribe_organization`**, pas une reconstitution.
     #[test]
-    fn transcribe_campus_nenvoie_rien_apres_le_corps_declare() {
+    fn transcribe_organization_nenvoie_rien_apres_le_corps_declare() {
         // Etat Lab remis a zero : ce test veut le client HTTP ordinaire.
         let _exclusive = super::wire_test_support::exclusive();
 
@@ -3550,8 +3587,8 @@ mod multipart_wire_tests {
         });
 
         let wav = write_sample_wav(AUDIO_BYTES);
-        let session = CampusCredentials {
-            session: CampusSession {
+        let session = OrganizationCredentials {
+            session: OrganizationSession {
                 server_url: format!("http://127.0.0.1:{port}"),
                 email: "essai@example.test".to_string(),
                 organization: None,
@@ -3563,7 +3600,7 @@ mod multipart_wire_tests {
             .enable_all()
             .build()
             .expect("runtime");
-        let transcription = runtime.block_on(transcribe_campus(wav.path(), &session));
+        let transcription = runtime.block_on(transcribe_organization(wav.path(), &session));
 
         let wire = observed
             .recv_timeout(TEST_DEADLINE)
@@ -3648,7 +3685,7 @@ mod multipart_wire_tests {
 /// pas le transport ne peut pas voir cela : la difference etait le transport.
 ///
 /// Ce test monte donc un vrai serveur TLS local, epingle son certificat comme
-/// le fait un Lab, et appelle `transcribe_campus` — donc `campus_client`, donc
+/// le fait un Lab, et appelle `transcribe_organization` — donc `organization_client`, donc
 /// le client construit avec `https_only`, `tls_built_in_root_certs(false)` et
 /// `add_root_certificate`. Puis il compte les octets **dechiffres**.
 #[cfg(all(test, feature = "lab"))]
@@ -3832,7 +3869,7 @@ mod multipart_tls_wire_tests {
             let port = listener.local_addr().expect("adresse").port();
             let server = tokio::spawn(observe_tls(listener));
 
-            // Le poste epingle ce certificat : `campus_client` construira donc
+            // Le poste epingle ce certificat : `organization_client` construira donc
             // le meme client TLS qu'en production.
             set_lab_connection(LabConnection {
                 endpoint: format!("https://127.0.0.1:{port}"),
@@ -3842,8 +3879,8 @@ mod multipart_tls_wire_tests {
             .expect("connexion Lab installee");
 
             let wav = write_sample_wav(AUDIO_BYTES);
-            let session = CampusCredentials {
-                session: CampusSession {
+            let session = OrganizationCredentials {
+                session: OrganizationSession {
                     server_url: format!("https://127.0.0.1:{port}"),
                     email: "essai@example.test".to_string(),
                     organization: None,
@@ -3851,7 +3888,7 @@ mod multipart_tls_wire_tests {
                 token: "jeton-de-session-factice".to_string(),
             };
 
-            let transcription = transcribe_campus(wav.path(), &session).await;
+            let transcription = transcribe_organization(wav.path(), &session).await;
             let observation = tokio::time::timeout(TEST_DEADLINE, server)
                 .await
                 .expect("le serveur de test n'a pas rendu la main dans le delai imparti")

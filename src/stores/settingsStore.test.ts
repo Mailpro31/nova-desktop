@@ -25,8 +25,8 @@ mock.module("@/bindings", () => ({
   ...realBindings,
   commands: {
     ...realBindings.commands,
-    completeCampusOnboarding: async () => {
-      calls.push("completeCampusOnboarding");
+    completeOrganizationOnboarding: async () => {
+      calls.push("completeOrganizationOnboarding");
       return onboardingResult;
     },
   },
@@ -48,7 +48,7 @@ describe("la fin du parcours de premiere ouverture", () => {
       .getState()
       .updateSetting("onboarding_completed", true);
 
-    expect(calls).toEqual(["completeCampusOnboarding"]);
+    expect(calls).toEqual(["completeOrganizationOnboarding"]);
     expect(useSettingsStore.getState().settings?.onboarding_completed).toBe(
       true,
     );
