@@ -80,7 +80,7 @@ jobs:
           bun-version: latest
       - run: bun install --frozen-lockfile
       - name: Organization unit tests
-        run: bun test src/lib/organization tests/campusPolicy.test.ts
+        run: bun test src/lib/organization tests/organizationConfig.test.ts
 
       # Le premier lancement de Nova Lab affichait une fenetre blanche. Ces
       # deux fichiers tiennent les invariants qui l'empechent de revenir : la

@@ -1,19 +1,19 @@
 import { describe, expect, test } from "bun:test";
 import {
-  campusOrganizationLabel,
-  resolveCampusContext,
-} from "../src/lib/campusPolicy";
+  organizationLabel,
+  resolveOrganizationConfig,
+} from "../src/lib/organizationConfig";
 import {
-  isValidCampusEmail,
-  isValidCampusServerUrl,
-  maskCampusEmail,
-  sanitizeCampusCode,
-  shouldShowCampusServerInput,
-} from "../src/lib/campusOnboarding";
+  isValidOrganizationEmail,
+  isValidOrganizationServerUrl,
+  maskOrganizationEmail,
+  sanitizeOrganizationCode,
+  shouldShowOrganizationServerInput,
+} from "../src/lib/organizationOnboardingState";
 
-describe("Campus policy", () => {
+describe("configuration d'organisation", () => {
   test("uses production-safe capability defaults", () => {
-    const context = resolveCampusContext(null);
+    const context = resolveOrganizationConfig(null);
 
     expect(context.capabilities.dictation).toBe(true);
     expect(context.capabilities.rewrite).toBe(true);
@@ -29,7 +29,7 @@ describe("Campus policy", () => {
   });
 
   test("starts Assessment mode conservatively", () => {
-    const context = resolveCampusContext({
+    const context = resolveOrganizationConfig({
       server_url: "https://campus.example.edu",
       education_mode: "assessment",
     });
@@ -42,7 +42,7 @@ describe("Campus policy", () => {
   });
 
   test("merges institution identity with the authenticated profile", () => {
-    const context = resolveCampusContext(
+    const context = resolveOrganizationConfig(
       {
         server_url: "https://campus.example.edu",
         organization: {
@@ -58,7 +58,7 @@ describe("Campus policy", () => {
       { email: "student@example.edu", role: "student", cohort: "AERO 2" },
     );
 
-    expect(campusOrganizationLabel(context.organization)).toBe("EES · Paris");
+    expect(organizationLabel(context.organization)).toBe("EES · Paris");
     expect(context.organization.role).toBe("student");
     expect(context.organization.cohort).toBe("AERO 2");
     expect(context.capabilities.dictionary).toBe(true);
@@ -66,7 +66,7 @@ describe("Campus policy", () => {
   });
 
   test("does not present an unverified privacy claim", () => {
-    const context = resolveCampusContext({
+    const context = resolveOrganizationConfig({
       server_url: "https://campus.example.edu",
       privacy: { contentRetention: "not_stored" },
     });
@@ -75,7 +75,7 @@ describe("Campus policy", () => {
   });
 
   test("accepts institution AI Skills policy without making it mandatory by default", () => {
-    const context = resolveCampusContext({
+    const context = resolveOrganizationConfig({
       server_url: "https://campus.example.edu",
       capabilities: { aiSkills: true },
       ai_skills: { enabled: true, required: false, trackProgress: true },
@@ -92,11 +92,11 @@ describe("Campus policy", () => {
 describe("Campus onboarding inputs", () => {
   test("hides the server field when IT configuration is present", () => {
     expect(
-      shouldShowCampusServerInput({
+      shouldShowOrganizationServerInput({
         server_url: "https://campus.example.edu",
       }),
     ).toBe(false);
-    expect(shouldShowCampusServerInput(null)).toBe(true);
+    expect(shouldShowOrganizationServerInput(null)).toBe(true);
   });
 
   /**
@@ -109,7 +109,7 @@ describe("Campus onboarding inputs", () => {
    * « Nova Campus » sous le nom de son organisation.
    */
   test("keeps a server organization whose optional fields are empty", () => {
-    const context = resolveCampusContext({
+    const context = resolveOrganizationConfig({
       organization: {
         id: "ipsa",
         name: "IPSA",
@@ -124,21 +124,25 @@ describe("Campus onboarding inputs", () => {
     expect(context.organization.id).toBe("ipsa");
     expect(context.organization.name).toBe("IPSA");
     expect(context.organization.campusName).toBeUndefined();
-    expect(campusOrganizationLabel(context.organization)).toBe("IPSA");
+    expect(organizationLabel(context.organization)).toBe("IPSA");
   });
 
   test("validates school email and secure server addresses", () => {
-    expect(isValidCampusEmail("student@example.edu")).toBe(true);
-    expect(isValidCampusEmail("not-an-email")).toBe(false);
-    expect(isValidCampusServerUrl("https://campus.example.edu")).toBe(true);
-    expect(isValidCampusServerUrl("http://campus.example.edu")).toBe(false);
-    expect(isValidCampusServerUrl("http://localhost:8080")).toBe(true);
+    expect(isValidOrganizationEmail("student@example.edu")).toBe(true);
+    expect(isValidOrganizationEmail("not-an-email")).toBe(false);
+    expect(isValidOrganizationServerUrl("https://campus.example.edu")).toBe(
+      true,
+    );
+    expect(isValidOrganizationServerUrl("http://campus.example.edu")).toBe(
+      false,
+    );
+    expect(isValidOrganizationServerUrl("http://localhost:8080")).toBe(true);
   });
 
   test("accepts a complete pasted code and masks the account", () => {
-    expect(sanitizeCampusCode("12 34-56")).toBe("123456");
-    expect(sanitizeCampusCode("123456789")).toBe("123456");
-    expect(maskCampusEmail("student@eleves.example.edu")).toBe(
+    expect(sanitizeOrganizationCode("12 34-56")).toBe("123456");
+    expect(sanitizeOrganizationCode("123456789")).toBe("123456");
+    expect(maskOrganizationEmail("student@eleves.example.edu")).toBe(
       "s••••••@eleves.example.edu",
     );
   });
