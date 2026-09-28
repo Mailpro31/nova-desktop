@@ -948,7 +948,7 @@
         "resent": "הקוד נשלח שוב",
         "resendCooldown": "שליחה חוזרת בעוד {{seconds}} שנ׳",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "הגישה אינה זמינה. פנה למנהל המערכת.",
         "digitLabel": "ספרה {{position}} בקוד"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "מחזור",
       "groups": "הקבוצות שלך",
       "logout": "התנתקות",
-      "logoutConfirmTitle": "להתנתק מ-Nova Campus?",
-      "logoutConfirmDescription": "תצטרכו להתחבר שוב כדי להשתמש ב-Nova Campus. להמשיך?",
+      "logoutConfirmTitle": "להתנתק מהארגון שלך?",
+      "logoutConfirmDescription": "יהיה צורך להתחבר שוב כדי להשתמש במה שהארגון שלך מספק. להמשיך?",
       "logoutConfirmButton": "התנתקות",
       "refresh": "רענון",
       "checking": "בודק את החיבור…"
@@ -988,7 +988,7 @@
       "network": "לא ניתן להתחבר לשרת. בדקו את הכתובת ואת החיבור שלכם."
     },
     "settings": {
-      "aboutSubtitle": "מידע וכלי אבחון עבור Nova Campus.",
+      "aboutSubtitle": "מידע וכלי אבחון עבור Nova.",
       "shortcuts": {
         "title": "קיצורי מקלדת",
         "description": "הגדירו איך מפעילים הכתבה"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "תמלול קובץ",
-      "description": "גררו קובץ שמע כדי לתמלל אותו באמצעות שרת Nova Campus.",
+      "description": "גררו לכאן קובץ שמע כדי לתמלל אותו בעזרת השרת של הארגון שלך.",
       "actionButton": "תמלול קובץ",
       "dropzone": "גררו לכאן הקלטת שמע או לחצו כדי לבחור",
       "supportedFormats": "פורמטים נתמכים: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "תמלול קובץ השמע נכשל."
     },
     "sessionExpiredTitle": "תוקף החיבור פג",
-    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש ב-Nova Campus.",
+    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש במה שהארגון שלך מספק.",
     "serverUnreachableTitle": "השרת אינו זמין",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "השרת של הארגון שלך אינו זמין זמנית. Nova ממשיך בעיבוד מקומי.",
     "managedBy": "מנוהל על ידי {{organization}}",
     "roles": {
       "student": "סטודנט",
@@ -1089,7 +1089,7 @@
       "manager": "מנהל"
     },
     "status": {
-      "connected": "הקמפוס מחובר",
+      "connected": "הארגון מחובר",
       "local": "Nova Local פעיל",
       "localActive": "Nova Local פעיל"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "סיימו את ההתחברות בדפדפן. השתמשו בקוד הזה אם Microsoft מבקשת אותו.",
       "expired": "תוקף בקשת ההתחברות של Microsoft פג. התחילו מחדש.",
       "failed": "ההתחברות לא הושלמה. נסה שוב.",
-      "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
+      "notInOrganization": "חשבון Microsoft זה אינו שייך לארגון שלך.",
       "accessRevoked": "הגישה שלך אינה זמינה עוד. פנה למנהל המערכת."
     },
     "sso": {
       "connect": "המשך עם {{provider}}"
     },
     "personalization": {
-      "description": "התאימו את המראה והאינטראקציה של Nova בלי לשנות את המדיניות של המוסד שלכם.",
+      "description": "התאם את המראה והאינטראקציה של Nova בלי לשנות את מדיניות הארגון שלך.",
       "orb": "כדור Nova",
       "orbColor": "צבע הכדור",
       "orbDescription": "בחרו את צבע ההדגשה של סרגל Nova ושל מחוון ההקלטה.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "ארגון",
-      "subtitle": "המוסד שלכם, מה הוא מספק, ולאן הולכים הנתונים שלכם.",
+      "subtitle": "הארגון שלך, מה הוא מספק ולאן הנתונים שלך הולכים.",
       "connection": "חיבור",
       "managedBy": "מנוהל על ידי {{organization}}",
       "identityTitle": "זהות"
     },
     "provides": {
-      "title": "מה המוסד שלכם מספק",
+      "title": "מה הארגון שלך מספק",
       "transcription": {
         "title": "זיהוי דיבור",
-        "description": "ההקלטה נשלחת לשרת המוסד, שהופך אותה לטקסט."
+        "description": "ההקלטה נשלחת לשרת של הארגון שלך, שממיר אותה לטקסט."
       },
       "rewriting": {
         "title": "סגנונות כתיבה",
-        "description": "הטקסט והסגנון שנבחר נשלחים לשרת המוסד, שכותב אותו מחדש."
+        "description": "הטקסט והסגנון שנבחר נשלחים לשרת של הארגון שלך, שמנסח אותו מחדש."
       },
       "vocabulary": {
         "title": "אוצר מילים משותף",
-        "description": "מונחים של המוסד ושלכם עוזרים לאיית אותם נכון."
+        "description": "מונחים שהארגון שלך הוסיף, יחד עם שלך, עוזרים לזיהוי ולניסוח מחדש לכתוב אותם נכון."
       },
       "formatting": {
         "title": "כללי עיצוב",
-        "description": "כללי המוסד ושלכם מוחלים בכל כתיבה מחדש."
+        "description": "כללים שהארגון שלך קבע, יחד עם שלך, מוחלים על כל ניסוח מחדש."
       },
-      "paused": "מושהה כרגע — שרת המוסד אינו זמין."
+      "paused": "מושהה כעת — אין גישה לשרת של הארגון שלך."
     },
     "offline": {
       "title": "כשהשרת אינו זמין",
@@ -1151,8 +1151,8 @@
       "recordings": "הקלטות",
       "appName": "שם היישום שבחזית",
       "onDevice": "המכשיר הזה",
-      "onCampus": "שרת המוסד",
-      "note": "שרת המוסד סופר כמה תמלולים וכתיבות מחדש אתם מבצעים בכל יום. הוא אינו שומר את התוכן."
+      "note": "השרת של הארגון שלך סופר כמה תמלולים וניסוחים מחדש אתה מבצע בכל יום. הוא לא שומר את התוכן שלהם.",
+      "onServer": "שרת הארגון"
     },
     "updates": {
       "title": "חדש מהארגון שלך",
@@ -1192,8 +1192,8 @@
       "choose": "בחרו פקודה",
       "review": "קראו את התוצאה לפני שמשהו משתנה"
     },
-    "privacy": "מעובד דרך חיבור ה־Campus שלכם.",
-    "privacyOffline": "‏Nova Commands פועלות על שרת המוסד שלכם, שאינו זמין כרגע."
+    "privacy": "מעובד דרך החיבור לארגון שלך.",
+    "privacyOffline": "Nova Commands פועלים בשרת של הארגון שלך, שאינו זמין כרגע."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "סמנו טקסט לפני פתיחת Nova.",
       "unsupported": "בשלב זה Nova Commands זמינה ב־Windows בלבד.",
       "targetChanged": "היישום המקורי כבר אינו פעיל. העתיקו את התוצאה במקום זאת.",
-      "offline": "‏AI Skills מחייבים חיבור ל־Campus.",
+      "offline": "Nova Commands דורשות חיבור לארגון שלך.",
       "failed": "‏Nova לא הצליחה לטפל בבקשה הזו.",
       "emptyResult": "‏Nova החזירה תוצאה ריקה.",
       "busyTitle": "כבר פועל",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "לא סומן טקסט",
       "unsupportedTitle": "לא זמין כאן",
       "targetChangedTitle": "החלון השתנה",
-      "offlineTitle": "‏Campus אינו זמין",
+      "offlineTitle": "הארגון אינו זמין",
       "failedTitle": "הפקודה נכשלה",
       "emptyResultTitle": "אין מה להציג"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "‏Nova מוכנה."
-      },
-      "campusLocal": {
-        "title": "‏Nova Local פעיל",
-        "detail": "‏{{server}} לא מגיב — ההכתבה ממשיכה מקומית, ותכונות ה-AI מושהות.",
-        "unknownServer": "שרת הארגון"
       },
       "permissionsNeeded": {
         "title": "נדרשת גישה למיקרופון",
@@ -1288,7 +1283,12 @@
         "title": "ההדבקה נכשלה",
         "detail": "ההכתבה שלכם בלוח הגזירים."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "‏Nova Local פעיל",
+        "detail": "‏{{server}} לא מגיב — ההכתבה ממשיכה מקומית, ותכונות ה-AI מושהות.",
+        "unknownServer": "שרת הארגון"
+      },
+      "organizationSignedOut": {
         "title": "התנתקת מהארגון שלך",
         "detail": "Nova ממשיך לפעול במחשב זה במצב Personal. חבר מחדש את הארגון מההגדרות."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "ההכתבה האחרונה"
     },
     "engine": {
-      "campus": "השרת של המוסד שלכם",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "השרת של הארגון שלך"
     },
     "checklist": {
       "title": "צעדים ראשונים",
-      "campus": "חשבון Campus מקושר",
       "voice": "הקול מוכן",
       "firstDictation": "הכתבה ראשונה",
       "style": "לנסות סגנון כתיבה",
       "aiSkill": "להשתמש ב־AI Skill הראשון",
       "done": "בוצע",
-      "todo": "נותר"
+      "todo": "נותר",
+      "organization": "חשבון הארגון מקושר"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "הארגון שלכם דורש שיטת כניסה שהגרסה הזו לא תומכת בה."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש במה שהארגון שלך מספק.",
-    "logoutConfirmTitle": "להתנתק מהארגון שלך?",
-    "logoutConfirmDescription": "יהיה צורך להתחבר שוב כדי להשתמש במה שהארגון שלך מספק. להמשיך?",
-    "aboutSubtitle": "מידע וכלי אבחון עבור Nova.",
-    "personalizationDescription": "התאם את המראה והאינטראקציה של Nova בלי לשנות את מדיניות הארגון שלך.",
-    "organizationSubtitle": "הארגון שלך, מה הוא מספק ולאן הנתונים שלך הולכים.",
-    "statusConnected": "הארגון מחובר",
-    "providesTitle": "מה הארגון שלך מספק",
-    "providesPaused": "מושהה כעת — אין גישה לשרת של הארגון שלך.",
-    "transcriptionDescription": "ההקלטה נשלחת לשרת של הארגון שלך, שממיר אותה לטקסט.",
-    "rewritingDescription": "הטקסט והסגנון שנבחר נשלחים לשרת של הארגון שלך, שמנסח אותו מחדש.",
-    "vocabularyDescription": "מונחים שהארגון שלך הוסיף, יחד עם שלך, עוזרים לזיהוי ולניסוח מחדש לכתוב אותם נכון.",
-    "formattingDescription": "כללים שהארגון שלך קבע, יחד עם שלך, מוחלים על כל ניסוח מחדש.",
-    "dataOnServer": "שרת הארגון",
-    "dataNote": "השרת של הארגון שלך סופר כמה תמלולים וניסוחים מחדש אתה מבצע בכל יום. הוא לא שומר את התוכן שלהם.",
-    "aiSkillsPrivacyOffline": "AI Skills פועלים בשרת של הארגון שלך, שאינו זמין כרגע.",
-    "notInOrganization": "חשבון Microsoft זה אינו שייך לארגון שלך.",
-    "codeForbidden": "הגישה אינה זמינה. פנה למנהל המערכת."
+  "educationWording": {
+    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש ב-Nova Campus.",
+    "logoutConfirmTitle": "להתנתק מ-Nova Campus?",
+    "logoutConfirmDescription": "תצטרכו להתחבר שוב כדי להשתמש ב-Nova Campus. להמשיך?",
+    "aboutSubtitle": "מידע וכלי אבחון עבור Nova Campus.",
+    "personalizationDescription": "התאימו את המראה והאינטראקציה של Nova בלי לשנות את המדיניות של המוסד שלכם.",
+    "organizationSubtitle": "המוסד שלכם, מה הוא מספק, ולאן הולכים הנתונים שלכם.",
+    "statusConnected": "הקמפוס מחובר",
+    "providesTitle": "מה המוסד שלכם מספק",
+    "providesPaused": "מושהה כרגע — שרת המוסד אינו זמין.",
+    "transcriptionDescription": "ההקלטה נשלחת לשרת המוסד, שהופך אותה לטקסט.",
+    "rewritingDescription": "הטקסט והסגנון שנבחר נשלחים לשרת המוסד, שכותב אותו מחדש.",
+    "vocabularyDescription": "מונחים של המוסד ושלכם עוזרים לאיית אותם נכון.",
+    "formattingDescription": "כללי המוסד ושלכם מוחלים בכל כתיבה מחדש.",
+    "dataOnServer": "שרת המוסד",
+    "dataNote": "שרת המוסד סופר כמה תמלולים וכתיבות מחדש אתם מבצעים בכל יום. הוא אינו שומר את התוכן.",
+    "aiSkillsPrivacyOffline": "‏Nova Commands פועלות על שרת המוסד שלכם, שאינו זמין כרגע.",
+    "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

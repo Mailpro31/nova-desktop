@@ -948,7 +948,7 @@
         "resent": "Đã gửi lại mã",
         "resendCooldown": "Gửi lại sau {{seconds}} giây",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "Không thể truy cập. Hãy liên hệ quản trị viên.",
         "digitLabel": "Chữ số thứ {{position}} của mã"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "Khóa",
       "groups": "Nhóm của bạn",
       "logout": "Đăng xuất",
-      "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
-      "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",
+      "logoutConfirmTitle": "Đăng xuất khỏi tổ chức của bạn?",
+      "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng những gì tổ chức của bạn cung cấp. Bạn chắc chứ?",
       "logoutConfirmButton": "Đăng xuất",
       "refresh": "Làm mới",
       "checking": "Đang kiểm tra kết nối…"
@@ -988,7 +988,7 @@
       "network": "Không thể kết nối tới máy chủ. Hãy kiểm tra địa chỉ và kết nối của bạn."
     },
     "settings": {
-      "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova Campus.",
+      "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova.",
       "shortcuts": {
         "title": "Phím tắt",
         "description": "Thiết lập cách bạn bắt đầu đọc chính tả"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "Chép lời một tệp",
-      "description": "Thả tệp âm thanh để chép lời bằng máy chủ Nova Campus.",
+      "description": "Thả một tệp âm thanh để chép lời bằng máy chủ của tổ chức bạn.",
       "actionButton": "Chép lời một tệp",
       "dropzone": "Thả bản ghi âm vào đây hoặc nhấp để chọn",
       "supportedFormats": "Định dạng hỗ trợ: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "Không thể chép lời tệp âm thanh."
     },
     "sessionExpiredTitle": "Phiên đã hết hạn",
-    "sessionExpired": "Vui lòng đăng nhập lại để tiếp tục dùng Nova Campus.",
+    "sessionExpired": "Hãy đăng nhập lại để tiếp tục dùng những gì tổ chức của bạn cung cấp.",
     "serverUnreachableTitle": "Không thể kết nối máy chủ",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "Máy chủ của tổ chức bạn tạm thời không kết nối được. Nova tiếp tục xử lý cục bộ.",
     "managedBy": "Do {{organization}} quản lý",
     "roles": {
       "student": "Sinh viên",
@@ -1089,7 +1089,7 @@
       "manager": "Quản lý"
     },
     "status": {
-      "connected": "Đã kết nối Campus",
+      "connected": "Đã kết nối tổ chức",
       "local": "Nova Local đang hoạt động",
       "localActive": "Nova Local đang hoạt động"
     },
@@ -1104,7 +1104,7 @@
       "connect": "Tiếp tục với {{provider}}"
     },
     "personalization": {
-      "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
+      "description": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của tổ chức.",
       "orb": "Quả cầu Nova",
       "orbColor": "Màu quả cầu",
       "orbDescription": "Chọn màu nhấn cho thanh dock Nova và chỉ báo ghi âm.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "Tổ chức",
-      "subtitle": "Trường của bạn, những gì trường cung cấp, và dữ liệu đi đâu.",
+      "subtitle": "Tổ chức của bạn, những gì tổ chức cung cấp và dữ liệu của bạn đi đâu.",
       "connection": "Kết nối",
       "managedBy": "Được quản lý bởi {{organization}}",
       "identityTitle": "Danh tính"
     },
     "provides": {
-      "title": "Những gì trường của bạn cung cấp",
+      "title": "Những gì tổ chức của bạn cung cấp",
       "transcription": {
         "title": "Nhận dạng giọng nói",
-        "description": "Bản ghi được gửi tới máy chủ của trường để chuyển thành văn bản."
+        "description": "Bản ghi âm được gửi đến máy chủ của tổ chức để chuyển thành văn bản."
       },
       "rewriting": {
         "title": "Lối viết",
-        "description": "Văn bản và lối viết đã chọn được gửi tới máy chủ của trường để viết lại."
+        "description": "Văn bản và kiểu đã chọn được gửi đến máy chủ của tổ chức để viết lại."
       },
       "vocabulary": {
         "title": "Từ vựng dùng chung",
-        "description": "Thuật ngữ của trường và của bạn giúp viết đúng khi nhận dạng và khi viết lại."
+        "description": "Các thuật ngữ do tổ chức thêm vào, cùng với của bạn, giúp nhận dạng và viết lại chính xác."
       },
       "formatting": {
         "title": "Quy tắc trình bày",
-        "description": "Quy tắc của trường và của bạn được áp dụng mỗi lần viết lại."
+        "description": "Các quy tắc do tổ chức đặt ra, cùng với của bạn, được áp dụng cho mỗi lần viết lại."
       },
-      "paused": "Đang tạm dừng — không kết nối được máy chủ của trường."
+      "paused": "Đang tạm dừng — không thể kết nối máy chủ của tổ chức."
     },
     "offline": {
       "title": "Khi không kết nối được máy chủ",
@@ -1151,8 +1151,8 @@
       "recordings": "Bản ghi",
       "appName": "Tên ứng dụng đang ở phía trước",
       "onDevice": "Máy này",
-      "onCampus": "Máy chủ của trường",
-      "note": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung."
+      "note": "Máy chủ của tổ chức đếm số lần phiên âm và viết lại bạn thực hiện mỗi ngày. Máy chủ không lưu nội dung.",
+      "onServer": "Máy chủ của tổ chức"
     },
     "updates": {
       "title": "Nội dung mới từ tổ chức của bạn",
@@ -1192,8 +1192,8 @@
       "choose": "Chọn một lệnh",
       "review": "Đọc kết quả trước khi có gì thay đổi"
     },
-    "privacy": "Được xử lý qua kết nối Campus của bạn.",
-    "privacyOffline": "Nova Commands chạy trên máy chủ của trường bạn, hiện không kết nối được."
+    "privacy": "Được xử lý qua kết nối tới tổ chức của bạn.",
+    "privacyOffline": "Nova Commands chạy trên máy chủ của tổ chức, hiện không thể kết nối."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Hãy chọn văn bản trước khi mở Nova.",
       "unsupported": "Hiện Nova Commands chỉ có trên Windows.",
       "targetChanged": "Ứng dụng ban đầu không còn ở phía trước. Hãy sao chép kết quả thay vì thế.",
-      "offline": "AI Skills cần kết nối Campus.",
+      "offline": "Nova Commands cần một kết nối tới tổ chức của bạn.",
       "failed": "Nova không xử lý được yêu cầu này.",
       "emptyResult": "Nova trả về kết quả rỗng.",
       "busyTitle": "Đang chạy rồi",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "Chưa chọn văn bản",
       "unsupportedTitle": "Không dùng được ở đây",
       "targetChangedTitle": "Cửa sổ đã đổi",
-      "offlineTitle": "Không kết nối được Campus",
+      "offlineTitle": "Không kết nối được tổ chức",
       "failedTitle": "Lệnh thất bại",
       "emptyResultTitle": "Không có gì để hiện"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova đã sẵn sàng."
-      },
-      "campusLocal": {
-        "title": "Nova Local đang hoạt động",
-        "detail": "{{server}} không phản hồi — việc đọc chính tả tiếp tục cục bộ, các tính năng AI tạm dừng.",
-        "unknownServer": "máy chủ của tổ chức"
       },
       "permissionsNeeded": {
         "title": "Cần quyền dùng micrô",
@@ -1288,7 +1283,12 @@
         "title": "Không dán được",
         "detail": "Nội dung bạn đọc đang ở trong bảng nháp."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local đang hoạt động",
+        "detail": "{{server}} không phản hồi — việc đọc chính tả tiếp tục cục bộ, các tính năng AI tạm dừng.",
+        "unknownServer": "máy chủ của tổ chức"
+      },
+      "organizationSignedOut": {
         "title": "Đã đăng xuất khỏi tổ chức",
         "detail": "Nova vẫn hoạt động ở chế độ Personal trên máy tính này. Hãy kết nối lại tổ chức trong phần cài đặt."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "Lần đọc gần nhất"
     },
     "engine": {
-      "campus": "Máy chủ của trường bạn",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "Máy chủ của tổ chức bạn"
     },
     "checklist": {
       "title": "Bắt đầu",
-      "campus": "Đã liên kết tài khoản Campus",
       "voice": "Giọng nói sẵn sàng",
       "firstDictation": "Lần đọc đầu tiên",
       "style": "Thử một lối viết",
       "aiSkill": "Dùng AI Skill đầu tiên",
       "done": "Xong",
-      "todo": "Còn lại"
+      "todo": "Còn lại",
+      "organization": "Đã liên kết tài khoản tổ chức"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "Tổ chức của bạn yêu cầu phương thức đăng nhập mà phiên bản này chưa hỗ trợ."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "Hãy đăng nhập lại để tiếp tục dùng những gì tổ chức của bạn cung cấp.",
-    "logoutConfirmTitle": "Đăng xuất khỏi tổ chức của bạn?",
-    "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng những gì tổ chức của bạn cung cấp. Bạn chắc chứ?",
-    "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova.",
-    "personalizationDescription": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của tổ chức.",
-    "organizationSubtitle": "Tổ chức của bạn, những gì tổ chức cung cấp và dữ liệu của bạn đi đâu.",
-    "statusConnected": "Đã kết nối tổ chức",
-    "providesTitle": "Những gì tổ chức của bạn cung cấp",
-    "providesPaused": "Đang tạm dừng — không thể kết nối máy chủ của tổ chức.",
-    "transcriptionDescription": "Bản ghi âm được gửi đến máy chủ của tổ chức để chuyển thành văn bản.",
-    "rewritingDescription": "Văn bản và kiểu đã chọn được gửi đến máy chủ của tổ chức để viết lại.",
-    "vocabularyDescription": "Các thuật ngữ do tổ chức thêm vào, cùng với của bạn, giúp nhận dạng và viết lại chính xác.",
-    "formattingDescription": "Các quy tắc do tổ chức đặt ra, cùng với của bạn, được áp dụng cho mỗi lần viết lại.",
-    "dataOnServer": "Máy chủ của tổ chức",
-    "dataNote": "Máy chủ của tổ chức đếm số lần phiên âm và viết lại bạn thực hiện mỗi ngày. Máy chủ không lưu nội dung.",
-    "aiSkillsPrivacyOffline": "AI Skills chạy trên máy chủ của tổ chức, hiện không thể kết nối.",
+  "educationWording": {
+    "sessionExpired": "Vui lòng đăng nhập lại để tiếp tục dùng Nova Campus.",
+    "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
+    "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",
+    "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova Campus.",
+    "personalizationDescription": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
+    "organizationSubtitle": "Trường của bạn, những gì trường cung cấp, và dữ liệu đi đâu.",
+    "statusConnected": "Đã kết nối Campus",
+    "providesTitle": "Những gì trường của bạn cung cấp",
+    "providesPaused": "Đang tạm dừng — không kết nối được máy chủ của trường.",
+    "transcriptionDescription": "Bản ghi được gửi tới máy chủ của trường để chuyển thành văn bản.",
+    "rewritingDescription": "Văn bản và lối viết đã chọn được gửi tới máy chủ của trường để viết lại.",
+    "vocabularyDescription": "Thuật ngữ của trường và của bạn giúp viết đúng khi nhận dạng và khi viết lại.",
+    "formattingDescription": "Quy tắc của trường và của bạn được áp dụng mỗi lần viết lại.",
+    "dataOnServer": "Máy chủ của trường",
+    "dataNote": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung.",
+    "aiSkillsPrivacyOffline": "Nova Commands chạy trên máy chủ của trường bạn, hiện không kết nối được.",
     "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
-    "codeForbidden": "Không thể truy cập. Hãy liên hệ quản trị viên."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

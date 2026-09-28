@@ -35,76 +35,76 @@ import type { OrganizationType } from "./model";
  */
 export const ORGANIZATION_WORDING = {
   sessionExpired: {
-    education: "organization.sessionExpired",
-    organization: "organizationWording.sessionExpired",
+    education: "educationWording.sessionExpired",
+    organization: "organization.sessionExpired",
   },
   logoutConfirmTitle: {
-    education: "organization.account.logoutConfirmTitle",
-    organization: "organizationWording.logoutConfirmTitle",
+    education: "educationWording.logoutConfirmTitle",
+    organization: "organization.account.logoutConfirmTitle",
   },
   logoutConfirmDescription: {
-    education: "organization.account.logoutConfirmDescription",
-    organization: "organizationWording.logoutConfirmDescription",
+    education: "educationWording.logoutConfirmDescription",
+    organization: "organization.account.logoutConfirmDescription",
   },
   aboutSubtitle: {
-    education: "organization.settings.aboutSubtitle",
-    organization: "organizationWording.aboutSubtitle",
+    education: "educationWording.aboutSubtitle",
+    organization: "organization.settings.aboutSubtitle",
   },
   personalizationDescription: {
-    education: "organization.personalization.description",
-    organization: "organizationWording.personalizationDescription",
+    education: "educationWording.personalizationDescription",
+    organization: "organization.personalization.description",
   },
   organizationSubtitle: {
-    education: "organization.organization.subtitle",
-    organization: "organizationWording.organizationSubtitle",
+    education: "educationWording.organizationSubtitle",
+    organization: "organization.organization.subtitle",
   },
   statusConnected: {
-    education: "organization.status.connected",
-    organization: "organizationWording.statusConnected",
+    education: "educationWording.statusConnected",
+    organization: "organization.status.connected",
   },
   providesTitle: {
-    education: "organization.provides.title",
-    organization: "organizationWording.providesTitle",
+    education: "educationWording.providesTitle",
+    organization: "organization.provides.title",
   },
   providesPaused: {
-    education: "organization.provides.paused",
-    organization: "organizationWording.providesPaused",
+    education: "educationWording.providesPaused",
+    organization: "organization.provides.paused",
   },
   transcriptionDescription: {
-    education: "organization.provides.transcription.description",
-    organization: "organizationWording.transcriptionDescription",
+    education: "educationWording.transcriptionDescription",
+    organization: "organization.provides.transcription.description",
   },
   rewritingDescription: {
-    education: "organization.provides.rewriting.description",
-    organization: "organizationWording.rewritingDescription",
+    education: "educationWording.rewritingDescription",
+    organization: "organization.provides.rewriting.description",
   },
   vocabularyDescription: {
-    education: "organization.provides.vocabulary.description",
-    organization: "organizationWording.vocabularyDescription",
+    education: "educationWording.vocabularyDescription",
+    organization: "organization.provides.vocabulary.description",
   },
   formattingDescription: {
-    education: "organization.provides.formatting.description",
-    organization: "organizationWording.formattingDescription",
+    education: "educationWording.formattingDescription",
+    organization: "organization.provides.formatting.description",
   },
   dataOnServer: {
-    education: "organization.data.onCampus",
-    organization: "organizationWording.dataOnServer",
+    education: "educationWording.dataOnServer",
+    organization: "organization.data.onServer",
   },
   dataNote: {
-    education: "organization.data.note",
-    organization: "organizationWording.dataNote",
+    education: "educationWording.dataNote",
+    organization: "organization.data.note",
   },
   aiSkillsPrivacyOffline: {
-    education: "aiSkills.privacyOffline",
-    organization: "organizationWording.aiSkillsPrivacyOffline",
+    education: "educationWording.aiSkillsPrivacyOffline",
+    organization: "aiSkills.privacyOffline",
   },
   notInOrganization: {
-    education: "organization.microsoft.notInOrganization",
-    organization: "organizationWording.notInOrganization",
+    education: "educationWording.notInOrganization",
+    organization: "organization.microsoft.notInOrganization",
   },
   codeForbidden: {
-    education: "organization.onboarding.code.forbidden",
-    organization: "organizationWording.codeForbidden",
+    education: "educationWording.codeForbidden",
+    organization: "organization.onboarding.code.forbidden",
   },
 } as const;
 

@@ -948,7 +948,7 @@
         "resent": "验证码已重新发送",
         "resendCooldown": "{{seconds}} 秒后重新发送",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "无法访问。请联系管理员。",
         "digitLabel": "验证码第 {{position}} 位"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "年级",
       "groups": "您的群组",
       "logout": "退出登录",
-      "logoutConfirmTitle": "要退出 Nova Campus 吗？",
-      "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
+      "logoutConfirmTitle": "要从组织注销吗？",
+      "logoutConfirmDescription": "你需要重新登录才能使用组织提供的功能。确定吗？",
       "logoutConfirmButton": "退出登录",
       "refresh": "刷新",
       "checking": "正在检查连接…"
@@ -988,7 +988,7 @@
       "network": "无法连接到服务器。请检查地址和网络连接。"
     },
     "settings": {
-      "aboutSubtitle": "Nova Campus 的信息与故障排查工具。",
+      "aboutSubtitle": "Nova 的信息和故障排除工具。",
       "shortcuts": {
         "title": "键盘快捷键",
         "description": "设置如何开始听写"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "转写文件",
-      "description": "拖入音频文件，通过 Nova Campus 服务器进行转写。",
+      "description": "拖入音频文件，使用您所在组织的服务器进行转写。",
       "actionButton": "转写文件",
       "dropzone": "将录音拖到这里，或点击选择文件",
       "supportedFormats": "支持的格式：WAV、MP3、M4A、OGG",
@@ -1076,9 +1076,9 @@
       "error": "音频文件转写失败。"
     },
     "sessionExpiredTitle": "会话已过期",
-    "sessionExpired": "请重新登录以继续使用 Nova Campus。",
+    "sessionExpired": "请重新登录，以继续使用组织提供的功能。",
     "serverUnreachableTitle": "无法连接服务器",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "您所在组织的服务器暂时不可用，Nova 继续以本地方式处理。",
     "managedBy": "由 {{organization}} 管理",
     "roles": {
       "student": "学生",
@@ -1089,7 +1089,7 @@
       "manager": "经理"
     },
     "status": {
-      "connected": "校园已连接",
+      "connected": "已连接组织",
       "local": "Nova Local 已启用",
       "localActive": "Nova Local 已启用"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "请在浏览器中完成登录。如果 Microsoft 要求，请使用此代码。",
       "expired": "Microsoft 登录请求已过期，请重新开始。",
       "failed": "登录未完成，请重试。",
-      "notInOrganization": "此 Microsoft 账户不属于您的机构。",
+      "notInOrganization": "此 Microsoft 帐户不属于你的组织。",
       "accessRevoked": "您的访问权限已不可用，请联系管理员。"
     },
     "sso": {
       "connect": "使用 {{provider}} 继续"
     },
     "personalization": {
-      "description": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
+      "description": "在不更改组织政策的情况下，调整 Nova 的外观和交互。",
       "orb": "Nova 光球",
       "orbColor": "光球颜色",
       "orbDescription": "选择 Nova 停靠栏和录音指示器使用的强调色。",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "组织",
-      "subtitle": "你所在的机构、它提供什么，以及你的数据去了哪里。",
+      "subtitle": "你的组织、它提供的内容，以及你的数据去向。",
       "connection": "连接",
       "managedBy": "由 {{organization}} 管理",
       "identityTitle": "身份"
     },
     "provides": {
-      "title": "你所在机构提供的能力",
+      "title": "你的组织提供的内容",
       "transcription": {
         "title": "语音识别",
-        "description": "你的录音发送到机构服务器，由它转成文字。"
+        "description": "你的录音会发送到组织服务器，由其转换为文字。"
       },
       "rewriting": {
         "title": "写作风格",
-        "description": "你的文字和所选风格发送到机构服务器，由它改写。"
+        "description": "你的文字和所选风格会发送到组织服务器，由其改写。"
       },
       "vocabulary": {
         "title": "共享词库",
-        "description": "机构添加的术语和你自己的术语，帮助识别和改写时正确书写。"
+        "description": "组织添加的术语与你自己的术语，有助于识别和改写时正确拼写。"
       },
       "formatting": {
         "title": "格式规则",
-        "description": "机构的规则和你自己的规则，会在每次改写时应用。"
+        "description": "组织设定的规则与你自己的规则，会应用于每次改写。"
       },
-      "paused": "当前暂停 — 无法连接机构服务器。"
+      "paused": "当前已暂停 — 无法访问组织服务器。"
     },
     "offline": {
       "title": "服务器无法连接时",
@@ -1151,8 +1151,8 @@
       "recordings": "录音文件",
       "appName": "前台应用的名称",
       "onDevice": "本机",
-      "onCampus": "机构服务器",
-      "note": "机构服务器会统计你每天进行了多少次转写和改写，但不保存内容。"
+      "note": "组织服务器会统计你每天进行的转写和改写次数，但不保存其内容。",
+      "onServer": "组织服务器"
     },
     "updates": {
       "title": "来自你的组织的新内容",
@@ -1192,8 +1192,8 @@
       "choose": "选择一个命令",
       "review": "在任何内容改动前先看结果"
     },
-    "privacy": "通过你的 Campus 连接处理。",
-    "privacyOffline": "Nova Commands 运行在你所在机构的服务器上，目前无法连接。"
+    "privacy": "通过与您所在组织的连接进行处理。",
+    "privacyOffline": "Nova Commands 在组织服务器上运行，但目前无法访问。"
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "请先选中文字，再打开 Nova。",
       "unsupported": "Nova Commands 目前仅支持 Windows。",
       "targetChanged": "原来的应用已不在前台。请改用复制。",
-      "offline": "AI Skills 需要连接 Campus。",
+      "offline": "Nova Commands 需要连接到您所在的组织。",
       "failed": "Nova 无法处理这个请求。",
       "emptyResult": "Nova 返回了空结果。",
       "busyTitle": "已有命令在执行",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "没有选中文字",
       "unsupportedTitle": "此处不可用",
       "targetChangedTitle": "窗口已切换",
-      "offlineTitle": "Campus 无法连接",
+      "offlineTitle": "组织不可用",
       "failedTitle": "命令失败",
       "emptyResultTitle": "没有可显示的内容"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova 已就绪。"
-      },
-      "campusLocal": {
-        "title": "Nova Local 正在运行",
-        "detail": "{{server}} 没有响应——听写继续在本地进行，AI 功能已暂停。",
-        "unknownServer": "组织服务器"
       },
       "permissionsNeeded": {
         "title": "需要麦克风权限",
@@ -1288,7 +1283,12 @@
         "title": "无法粘贴",
         "detail": "你的语音输入已放入剪贴板。"
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local 正在运行",
+        "detail": "{{server}} 没有响应——听写继续在本地进行，AI 功能已暂停。",
+        "unknownServer": "组织服务器"
+      },
+      "organizationSignedOut": {
         "title": "已从组织注销",
         "detail": "Nova 将继续在此电脑上以 Personal 模式运行。请在设置中重新连接您的组织。"
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "最近一次语音输入"
     },
     "engine": {
-      "campus": "你所在机构的服务器",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "您所在组织的服务器"
     },
     "checklist": {
       "title": "开始使用",
-      "campus": "已关联 Campus 账号",
       "voice": "语音就绪",
       "firstDictation": "第一次语音输入",
       "style": "试用一种写作风格",
       "aiSkill": "使用第一个 AI Skill",
       "done": "已完成",
-      "todo": "待完成"
+      "todo": "待完成",
+      "organization": "已关联组织账户"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "你的组织要求使用此版本不支持的登录方式。"
     }
   },
-  "organizationWording": {
-    "sessionExpired": "请重新登录，以继续使用组织提供的功能。",
-    "logoutConfirmTitle": "要从组织注销吗？",
-    "logoutConfirmDescription": "你需要重新登录才能使用组织提供的功能。确定吗？",
-    "aboutSubtitle": "Nova 的信息和故障排除工具。",
-    "personalizationDescription": "在不更改组织政策的情况下，调整 Nova 的外观和交互。",
-    "organizationSubtitle": "你的组织、它提供的内容，以及你的数据去向。",
-    "statusConnected": "已连接组织",
-    "providesTitle": "你的组织提供的内容",
-    "providesPaused": "当前已暂停 — 无法访问组织服务器。",
-    "transcriptionDescription": "你的录音会发送到组织服务器，由其转换为文字。",
-    "rewritingDescription": "你的文字和所选风格会发送到组织服务器，由其改写。",
-    "vocabularyDescription": "组织添加的术语与你自己的术语，有助于识别和改写时正确拼写。",
-    "formattingDescription": "组织设定的规则与你自己的规则，会应用于每次改写。",
-    "dataOnServer": "组织服务器",
-    "dataNote": "组织服务器会统计你每天进行的转写和改写次数，但不保存其内容。",
-    "aiSkillsPrivacyOffline": "AI Skills 在组织服务器上运行，但目前无法访问。",
-    "notInOrganization": "此 Microsoft 帐户不属于你的组织。",
-    "codeForbidden": "无法访问。请联系管理员。"
+  "educationWording": {
+    "sessionExpired": "请重新登录以继续使用 Nova Campus。",
+    "logoutConfirmTitle": "要退出 Nova Campus 吗？",
+    "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
+    "aboutSubtitle": "Nova Campus 的信息与故障排查工具。",
+    "personalizationDescription": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
+    "organizationSubtitle": "你所在的机构、它提供什么，以及你的数据去了哪里。",
+    "statusConnected": "校园已连接",
+    "providesTitle": "你所在机构提供的能力",
+    "providesPaused": "当前暂停 — 无法连接机构服务器。",
+    "transcriptionDescription": "你的录音发送到机构服务器，由它转成文字。",
+    "rewritingDescription": "你的文字和所选风格发送到机构服务器，由它改写。",
+    "vocabularyDescription": "机构添加的术语和你自己的术语，帮助识别和改写时正确书写。",
+    "formattingDescription": "机构的规则和你自己的规则，会在每次改写时应用。",
+    "dataOnServer": "机构服务器",
+    "dataNote": "机构服务器会统计你每天进行了多少次转写和改写，但不保存内容。",
+    "aiSkillsPrivacyOffline": "Nova Commands 运行在你所在机构的服务器上，目前无法连接。",
+    "notInOrganization": "此 Microsoft 账户不属于您的机构。",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

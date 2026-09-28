@@ -948,7 +948,7 @@
         "resent": "Code opnieuw verstuurd",
         "resendCooldown": "Opnieuw versturen over {{seconds}} s",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "Toegang is niet beschikbaar. Neem contact op met je beheerder.",
         "digitLabel": "Cijfer {{position}} van de code"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "Jaargroep",
       "groups": "Je groepen",
       "logout": "Afmelden",
-      "logoutConfirmTitle": "Afmelden bij Nova Campus?",
-      "logoutConfirmDescription": "Je moet je opnieuw aanmelden om Nova Campus te gebruiken. Weet je het zeker?",
+      "logoutConfirmTitle": "Afmelden bij je organisatie?",
+      "logoutConfirmDescription": "Je moet je opnieuw aanmelden om te gebruiken wat je organisatie aanbiedt. Weet je het zeker?",
       "logoutConfirmButton": "Afmelden",
       "refresh": "Vernieuwen",
       "checking": "Verbinding controleren…"
@@ -988,7 +988,7 @@
       "network": "De server is niet bereikbaar. Controleer het adres en je verbinding."
     },
     "settings": {
-      "aboutSubtitle": "Informatie en hulpmiddelen voor probleemoplossing voor Nova Campus.",
+      "aboutSubtitle": "Informatie en diagnosehulpmiddelen voor Nova.",
       "shortcuts": {
         "title": "Sneltoetsen",
         "description": "Stel in hoe je het dicteren start"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "Een bestand transcriberen",
-      "description": "Sleep een audiobestand hierheen om het via de Nova Campus-server te transcriberen.",
+      "description": "Sleep een audiobestand hierheen om het met de server van uw organisatie te transcriberen.",
       "actionButton": "Een bestand transcriberen",
       "dropzone": "Sleep hier een audio-opname naartoe of klik om te bladeren",
       "supportedFormats": "Ondersteunde formaten: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "Het audiobestand kon niet worden getranscribeerd."
     },
     "sessionExpiredTitle": "Sessie verlopen",
-    "sessionExpired": "Meld je opnieuw aan om Nova Campus te blijven gebruiken.",
+    "sessionExpired": "Meld je opnieuw aan om te blijven gebruiken wat je organisatie aanbiedt.",
     "serverUnreachableTitle": "Server niet bereikbaar",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "De server van uw organisatie is tijdelijk niet bereikbaar. Nova gaat lokaal verder.",
     "managedBy": "Beheerd door {{organization}}",
     "roles": {
       "student": "Student",
@@ -1089,7 +1089,7 @@
       "manager": "Manager"
     },
     "status": {
-      "connected": "Campus verbonden",
+      "connected": "Organisatie verbonden",
       "local": "Nova Local actief",
       "localActive": "Nova Local actief"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "Rond het aanmelden af in je browser. Gebruik deze code als Microsoft erom vraagt.",
       "expired": "Het aanmeldverzoek van Microsoft is verlopen. Begin opnieuw.",
       "failed": "Aanmelden is niet voltooid. Probeer het opnieuw.",
-      "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
+      "notInOrganization": "Dit Microsoft-account hoort niet bij je organisatie.",
       "accessRevoked": "Uw toegang is niet meer beschikbaar. Neem contact op met uw beheerder."
     },
     "sso": {
       "connect": "Doorgaan met {{provider}}"
     },
     "personalization": {
-      "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
+      "description": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je organisatie te wijzigen.",
       "orb": "Nova-bol",
       "orbColor": "Kleur van de bol",
       "orbDescription": "Kies de accentkleur voor het Nova-dock en de opname-indicator.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "Organisatie",
-      "subtitle": "Uw instelling, wat zij levert en waar uw gegevens heen gaan.",
+      "subtitle": "Je organisatie, wat ze aanbiedt en waar je gegevens heen gaan.",
       "connection": "Verbinding",
       "managedBy": "Beheerd door {{organization}}",
       "identityTitle": "Identiteit"
     },
     "provides": {
-      "title": "Wat uw instelling levert",
+      "title": "Wat je organisatie aanbiedt",
       "transcription": {
         "title": "Spraakherkenning",
-        "description": "Uw opname gaat naar de server van uw instelling, die er tekst van maakt."
+        "description": "Je opname wordt naar de server van je organisatie gestuurd, die er tekst van maakt."
       },
       "rewriting": {
         "title": "Schrijfstijlen",
-        "description": "Uw tekst en de gekozen stijl gaan naar de server van uw instelling, die de tekst herschrijft."
+        "description": "Je tekst en de gekozen stijl worden naar de server van je organisatie gestuurd, die de tekst herschrijft."
       },
       "vocabulary": {
         "title": "Gedeelde woordenlijst",
-        "description": "Termen van uw instelling en van uzelf helpen herkenning en herschrijving ze correct te spellen."
+        "description": "Termen die je organisatie toevoegt, samen met je eigen termen, helpen herkenning en herschrijven ze correct te spellen."
       },
       "formatting": {
         "title": "Opmaakregels",
-        "description": "Regels van uw instelling en van uzelf worden bij elke herschrijving toegepast."
+        "description": "Regels van je organisatie, samen met je eigen regels, worden op elke herschrijving toegepast."
       },
-      "paused": "Tijdelijk gepauzeerd — de server van uw instelling is onbereikbaar."
+      "paused": "Momenteel gepauzeerd — de server van je organisatie is onbereikbaar."
     },
     "offline": {
       "title": "Als de server onbereikbaar is",
@@ -1151,8 +1151,8 @@
       "recordings": "Opnamen",
       "appName": "Naam van de toepassing op de voorgrond",
       "onDevice": "Dit apparaat",
-      "onCampus": "Server van de instelling",
-      "note": "De server van uw instelling telt hoeveel transcripties en herschrijvingen u per dag uitvoert. De inhoud wordt niet bewaard."
+      "note": "De server van je organisatie telt hoeveel transcripties en herschrijvingen je per dag uitvoert. De inhoud wordt niet bewaard.",
+      "onServer": "Server van de organisatie"
     },
     "updates": {
       "title": "Nieuw van uw organisatie",
@@ -1192,8 +1192,8 @@
       "choose": "Kies een opdracht",
       "review": "Bekijk het resultaat voordat er iets verandert"
     },
-    "privacy": "Verwerkt via uw Campus-verbinding.",
-    "privacyOffline": "Nova Commands draaien op de server van uw instelling, die nu onbereikbaar is."
+    "privacy": "Verwerkt via de verbinding met uw organisatie.",
+    "privacyOffline": "Nova Commands draaien op de server van je organisatie, die nu onbereikbaar is."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Selecteer tekst voordat u Nova opent.",
       "unsupported": "Nova Commands is voorlopig alleen op Windows beschikbaar.",
       "targetChanged": "De oorspronkelijke toepassing is niet meer actief. Kopieer het resultaat in plaats daarvan.",
-      "offline": "AI Skills vereisen een Campus-verbinding.",
+      "offline": "Nova Commands vereisen een verbinding met uw organisatie.",
       "failed": "Nova kon dit verzoek niet verwerken.",
       "emptyResult": "Nova gaf een leeg resultaat terug.",
       "busyTitle": "Al bezig",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "Geen tekst geselecteerd",
       "unsupportedTitle": "Hier niet beschikbaar",
       "targetChangedTitle": "Venster gewisseld",
-      "offlineTitle": "Campus onbereikbaar",
+      "offlineTitle": "Organisatie niet bereikbaar",
       "failedTitle": "Opdracht mislukt",
       "emptyResultTitle": "Niets te tonen"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova is klaar."
-      },
-      "campusLocal": {
-        "title": "Nova Local is actief",
-        "detail": "{{server}} reageert niet — dicteren gaat lokaal door, AI-functies staan op pauze.",
-        "unknownServer": "de organisatieserver"
       },
       "permissionsNeeded": {
         "title": "Microfoontoegang vereist",
@@ -1288,7 +1283,12 @@
         "title": "Plakken lukte niet",
         "detail": "Uw dictaat staat op het klembord."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local is actief",
+        "detail": "{{server}} reageert niet — dicteren gaat lokaal door, AI-functies staan op pauze.",
+        "unknownServer": "de organisatieserver"
+      },
+      "organizationSignedOut": {
         "title": "Afgemeld bij je organisatie",
         "detail": "Nova blijft op deze computer werken in Personal. Verbind je organisatie opnieuw via de instellingen."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "Laatste dictaat"
     },
     "engine": {
-      "campus": "Server van uw instelling",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "De server van uw organisatie"
     },
     "checklist": {
       "title": "Aan de slag",
-      "campus": "Campus-account gekoppeld",
       "voice": "Stem gereed",
       "firstDictation": "Eerste dictaat",
       "style": "Een schrijfstijl proberen",
       "aiSkill": "Uw eerste AI Skill gebruiken",
       "done": "Klaar",
-      "todo": "Te doen"
+      "todo": "Te doen",
+      "organization": "Organisatieaccount gekoppeld"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "Uw organisatie vereist een aanmeldmethode die deze versie niet ondersteunt."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "Meld je opnieuw aan om te blijven gebruiken wat je organisatie aanbiedt.",
-    "logoutConfirmTitle": "Afmelden bij je organisatie?",
-    "logoutConfirmDescription": "Je moet je opnieuw aanmelden om te gebruiken wat je organisatie aanbiedt. Weet je het zeker?",
-    "aboutSubtitle": "Informatie en diagnosehulpmiddelen voor Nova.",
-    "personalizationDescription": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je organisatie te wijzigen.",
-    "organizationSubtitle": "Je organisatie, wat ze aanbiedt en waar je gegevens heen gaan.",
-    "statusConnected": "Organisatie verbonden",
-    "providesTitle": "Wat je organisatie aanbiedt",
-    "providesPaused": "Momenteel gepauzeerd — de server van je organisatie is onbereikbaar.",
-    "transcriptionDescription": "Je opname wordt naar de server van je organisatie gestuurd, die er tekst van maakt.",
-    "rewritingDescription": "Je tekst en de gekozen stijl worden naar de server van je organisatie gestuurd, die de tekst herschrijft.",
-    "vocabularyDescription": "Termen die je organisatie toevoegt, samen met je eigen termen, helpen herkenning en herschrijven ze correct te spellen.",
-    "formattingDescription": "Regels van je organisatie, samen met je eigen regels, worden op elke herschrijving toegepast.",
-    "dataOnServer": "Server van de organisatie",
-    "dataNote": "De server van je organisatie telt hoeveel transcripties en herschrijvingen je per dag uitvoert. De inhoud wordt niet bewaard.",
-    "aiSkillsPrivacyOffline": "AI Skills draaien op de server van je organisatie, die nu onbereikbaar is.",
-    "notInOrganization": "Dit Microsoft-account hoort niet bij je organisatie.",
-    "codeForbidden": "Toegang is niet beschikbaar. Neem contact op met je beheerder."
+  "educationWording": {
+    "sessionExpired": "Meld je opnieuw aan om Nova Campus te blijven gebruiken.",
+    "logoutConfirmTitle": "Afmelden bij Nova Campus?",
+    "logoutConfirmDescription": "Je moet je opnieuw aanmelden om Nova Campus te gebruiken. Weet je het zeker?",
+    "aboutSubtitle": "Informatie en hulpmiddelen voor probleemoplossing voor Nova Campus.",
+    "personalizationDescription": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
+    "organizationSubtitle": "Uw instelling, wat zij levert en waar uw gegevens heen gaan.",
+    "statusConnected": "Campus verbonden",
+    "providesTitle": "Wat uw instelling levert",
+    "providesPaused": "Tijdelijk gepauzeerd — de server van uw instelling is onbereikbaar.",
+    "transcriptionDescription": "Uw opname gaat naar de server van uw instelling, die er tekst van maakt.",
+    "rewritingDescription": "Uw tekst en de gekozen stijl gaan naar de server van uw instelling, die de tekst herschrijft.",
+    "vocabularyDescription": "Termen van uw instelling en van uzelf helpen herkenning en herschrijving ze correct te spellen.",
+    "formattingDescription": "Regels van uw instelling en van uzelf worden bij elke herschrijving toegepast.",
+    "dataOnServer": "Server van de instelling",
+    "dataNote": "De server van uw instelling telt hoeveel transcripties en herschrijvingen u per dag uitvoert. De inhoud wordt niet bewaard.",
+    "aiSkillsPrivacyOffline": "Nova Commands draaien op de server van uw instelling, die nu onbereikbaar is.",
+    "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

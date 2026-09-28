@@ -948,7 +948,7 @@
         "resent": "Kod wysłany ponownie",
         "resendCooldown": "Wyślij ponownie za {{seconds}} s",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "Dostęp jest niedostępny. Skontaktuj się z administratorem.",
         "digitLabel": "Cyfra {{position}} kodu"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "Rocznik",
       "groups": "Twoje grupy",
       "logout": "Wyloguj się",
-      "logoutConfirmTitle": "Wylogować się z Nova Campus?",
-      "logoutConfirmDescription": "Aby korzystać z Nova Campus, trzeba będzie zalogować się ponownie. Czy na pewno?",
+      "logoutConfirmTitle": "Wylogować się z organizacji?",
+      "logoutConfirmDescription": "Aby korzystać z tego, co zapewnia Twoja organizacja, trzeba będzie zalogować się ponownie. Czy na pewno?",
       "logoutConfirmButton": "Wyloguj się",
       "refresh": "Odśwież",
       "checking": "Sprawdzanie połączenia…"
@@ -988,7 +988,7 @@
       "network": "Nie można połączyć się z serwerem. Sprawdź adres i połączenie."
     },
     "settings": {
-      "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova Campus.",
+      "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova.",
       "shortcuts": {
         "title": "Skróty klawiszowe",
         "description": "Skonfiguruj, jak uruchamiasz dyktowanie"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "Transkrybuj plik",
-      "description": "Upuść plik audio, aby przepisać go za pomocą serwera Nova Campus.",
+      "description": "Upuść plik audio, aby przepisać go za pomocą serwera Twojej organizacji.",
       "actionButton": "Transkrybuj plik",
       "dropzone": "Upuść tutaj nagranie audio lub kliknij, aby wybrać",
       "supportedFormats": "Obsługiwane formaty: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "Nie udało się przepisać pliku audio."
     },
     "sessionExpiredTitle": "Sesja wygasła",
-    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z Nova Campus.",
+    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z tego, co zapewnia Twoja organizacja.",
     "serverUnreachableTitle": "Serwer niedostępny",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "Serwer Twojej organizacji jest chwilowo niedostępny. Nova kontynuuje przetwarzanie lokalne.",
     "managedBy": "Zarządzane przez {{organization}}",
     "roles": {
       "student": "Student",
@@ -1089,7 +1089,7 @@
       "manager": "Kierownik"
     },
     "status": {
-      "connected": "Kampus połączony",
+      "connected": "Organizacja połączona",
       "local": "Nova Local aktywny",
       "localActive": "Nova Local aktywny"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "Dokończ logowanie w przeglądarce. Użyj tego kodu, jeśli Microsoft o niego poprosi.",
       "expired": "Żądanie logowania Microsoft wygasło. Zacznij od nowa.",
       "failed": "Logowanie nie zostało ukończone. Spróbuj ponownie.",
-      "notInOrganization": "To konto Microsoft nie należy do Twojej instytucji.",
+      "notInOrganization": "To konto Microsoft nie należy do Twojej organizacji.",
       "accessRevoked": "Twój dostęp nie jest już dostępny. Skontaktuj się z administratorem."
     },
     "sso": {
       "connect": "Kontynuuj z {{provider}}"
     },
     "personalization": {
-      "description": "Dostosuj wygląd i obsługę Novy bez zmieniania zasad swojej instytucji.",
+      "description": "Dostosuj wygląd i obsługę Nova bez zmieniania zasad organizacji.",
       "orb": "Kula Nova",
       "orbColor": "Kolor kuli",
       "orbDescription": "Wybierz kolor akcentu doku Novy i wskaźnika nagrywania.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "Organizacja",
-      "subtitle": "Twoja uczelnia, co zapewnia i dokąd trafiają Twoje dane.",
+      "subtitle": "Twoja organizacja, co zapewnia i dokąd trafiają Twoje dane.",
       "connection": "Połączenie",
       "managedBy": "Zarządzane przez {{organization}}",
       "identityTitle": "Tożsamość"
     },
     "provides": {
-      "title": "Co zapewnia Twoja uczelnia",
+      "title": "Co zapewnia Twoja organizacja",
       "transcription": {
         "title": "Rozpoznawanie mowy",
-        "description": "Nagranie trafia na serwer uczelni, który zamienia je w tekst."
+        "description": "Nagranie jest wysyłane na serwer organizacji, który zamienia je na tekst."
       },
       "rewriting": {
         "title": "Style pisania",
-        "description": "Tekst i wybrany styl trafiają na serwer uczelni, który go przepisuje."
+        "description": "Tekst i wybrany styl są wysyłane na serwer organizacji, który go przeredagowuje."
       },
       "vocabulary": {
         "title": "Wspólny słownik",
-        "description": "Terminy uczelni i Twoje własne pomagają poprawnie je zapisać przy rozpoznawaniu i przepisywaniu."
+        "description": "Terminy dodane przez organizację, razem z Twoimi, pomagają poprawnie je rozpoznawać i zapisywać."
       },
       "formatting": {
         "title": "Reguły formatowania",
-        "description": "Reguły uczelni i Twoje własne są stosowane przy każdym przepisaniu."
+        "description": "Reguły ustalone przez organizację, razem z Twoimi, są stosowane przy każdym przeredagowaniu."
       },
-      "paused": "Wstrzymane — serwer uczelni jest nieosiągalny."
+      "paused": "Wstrzymano — serwer organizacji jest niedostępny."
     },
     "offline": {
       "title": "Gdy serwer jest nieosiągalny",
@@ -1151,8 +1151,8 @@
       "recordings": "Nagrania",
       "appName": "Nazwa aplikacji na pierwszym planie",
       "onDevice": "To urządzenie",
-      "onCampus": "Serwer uczelni",
-      "note": "Serwer uczelni liczy, ile transkrypcji i przepisań wykonujesz każdego dnia. Nie przechowuje ich treści."
+      "note": "Serwer organizacji zlicza, ile transkrypcji i przeredagowań wykonujesz dziennie. Nie przechowuje ich treści.",
+      "onServer": "Serwer organizacji"
     },
     "updates": {
       "title": "Nowości od Twojej organizacji",
@@ -1192,8 +1192,8 @@
       "choose": "Wybierz polecenie",
       "review": "Przejrzyj wynik, zanim cokolwiek się zmieni"
     },
-    "privacy": "Przetwarzane przez Twoje połączenie z Campusem.",
-    "privacyOffline": "Nova Commands działają na serwerze Twojej uczelni, teraz nieosiągalnym."
+    "privacy": "Przetwarzane przez połączenie z Twoją organizacją.",
+    "privacyOffline": "Nova Commands działają na serwerze organizacji, który jest teraz niedostępny."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Zaznacz tekst, zanim otworzysz Novę.",
       "unsupported": "Nova Commands działa na razie tylko w systemie Windows.",
       "targetChanged": "Pierwotna aplikacja nie jest już aktywna. Skopiuj wynik zamiast tego.",
-      "offline": "AI Skills wymagają połączenia z Campusem.",
+      "offline": "Nova Commands wymagają połączenia z Twoją organizacją.",
       "failed": "Nova nie zdołała przetworzyć tego żądania.",
       "emptyResult": "Nova zwróciła pusty wynik.",
       "busyTitle": "Już w toku",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "Nie zaznaczono tekstu",
       "unsupportedTitle": "Niedostępne tutaj",
       "targetChangedTitle": "Okno się zmieniło",
-      "offlineTitle": "Campus niedostępny",
+      "offlineTitle": "Organizacja niedostępna",
       "failedTitle": "Polecenie nie powiodło się",
       "emptyResultTitle": "Nie ma co pokazać"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova jest gotowa."
-      },
-      "campusLocal": {
-        "title": "Nova Local działa",
-        "detail": "{{server}} nie odpowiada — dyktowanie działa lokalnie, funkcje AI są wstrzymane.",
-        "unknownServer": "serwer organizacji"
       },
       "permissionsNeeded": {
         "title": "Wymagany dostęp do mikrofonu",
@@ -1288,7 +1283,12 @@
         "title": "Nie udało się wkleić",
         "detail": "Twoje dyktowanie jest w schowku."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local działa",
+        "detail": "{{server}} nie odpowiada — dyktowanie działa lokalnie, funkcje AI są wstrzymane.",
+        "unknownServer": "serwer organizacji"
+      },
+      "organizationSignedOut": {
         "title": "Wylogowano z organizacji",
         "detail": "Nova nadal działa na tym komputerze w wersji Personal. Połącz ponownie organizację w ustawieniach."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "Ostatnie dyktowanie"
     },
     "engine": {
-      "campus": "Serwer Twojej uczelni",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "Serwer Twojej organizacji"
     },
     "checklist": {
       "title": "Na początek",
-      "campus": "Konto Campus połączone",
       "voice": "Głos gotowy",
       "firstDictation": "Pierwsze dyktowanie",
       "style": "Wypróbuj styl pisania",
       "aiSkill": "Użyj pierwszego AI Skill",
       "done": "Zrobione",
-      "todo": "Do zrobienia"
+      "todo": "Do zrobienia",
+      "organization": "Konto organizacji połączone"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "Twoja organizacja wymaga metody logowania, której ta wersja nie obsługuje."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z tego, co zapewnia Twoja organizacja.",
-    "logoutConfirmTitle": "Wylogować się z organizacji?",
-    "logoutConfirmDescription": "Aby korzystać z tego, co zapewnia Twoja organizacja, trzeba będzie zalogować się ponownie. Czy na pewno?",
-    "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova.",
-    "personalizationDescription": "Dostosuj wygląd i obsługę Nova bez zmieniania zasad organizacji.",
-    "organizationSubtitle": "Twoja organizacja, co zapewnia i dokąd trafiają Twoje dane.",
-    "statusConnected": "Organizacja połączona",
-    "providesTitle": "Co zapewnia Twoja organizacja",
-    "providesPaused": "Wstrzymano — serwer organizacji jest niedostępny.",
-    "transcriptionDescription": "Nagranie jest wysyłane na serwer organizacji, który zamienia je na tekst.",
-    "rewritingDescription": "Tekst i wybrany styl są wysyłane na serwer organizacji, który go przeredagowuje.",
-    "vocabularyDescription": "Terminy dodane przez organizację, razem z Twoimi, pomagają poprawnie je rozpoznawać i zapisywać.",
-    "formattingDescription": "Reguły ustalone przez organizację, razem z Twoimi, są stosowane przy każdym przeredagowaniu.",
-    "dataOnServer": "Serwer organizacji",
-    "dataNote": "Serwer organizacji zlicza, ile transkrypcji i przeredagowań wykonujesz dziennie. Nie przechowuje ich treści.",
-    "aiSkillsPrivacyOffline": "AI Skills działają na serwerze organizacji, który jest teraz niedostępny.",
-    "notInOrganization": "To konto Microsoft nie należy do Twojej organizacji.",
-    "codeForbidden": "Dostęp jest niedostępny. Skontaktuj się z administratorem."
+  "educationWording": {
+    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z Nova Campus.",
+    "logoutConfirmTitle": "Wylogować się z Nova Campus?",
+    "logoutConfirmDescription": "Aby korzystać z Nova Campus, trzeba będzie zalogować się ponownie. Czy na pewno?",
+    "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova Campus.",
+    "personalizationDescription": "Dostosuj wygląd i obsługę Novy bez zmieniania zasad swojej instytucji.",
+    "organizationSubtitle": "Twoja uczelnia, co zapewnia i dokąd trafiają Twoje dane.",
+    "statusConnected": "Kampus połączony",
+    "providesTitle": "Co zapewnia Twoja uczelnia",
+    "providesPaused": "Wstrzymane — serwer uczelni jest nieosiągalny.",
+    "transcriptionDescription": "Nagranie trafia na serwer uczelni, który zamienia je w tekst.",
+    "rewritingDescription": "Tekst i wybrany styl trafiają na serwer uczelni, który go przepisuje.",
+    "vocabularyDescription": "Terminy uczelni i Twoje własne pomagają poprawnie je zapisać przy rozpoznawaniu i przepisywaniu.",
+    "formattingDescription": "Reguły uczelni i Twoje własne są stosowane przy każdym przepisaniu.",
+    "dataOnServer": "Serwer uczelni",
+    "dataNote": "Serwer uczelni liczy, ile transkrypcji i przepisań wykonujesz każdego dnia. Nie przechowuje ich treści.",
+    "aiSkillsPrivacyOffline": "Nova Commands działają na serwerze Twojej uczelni, teraz nieosiągalnym.",
+    "notInOrganization": "To konto Microsoft nie należy do Twojej instytucji.",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

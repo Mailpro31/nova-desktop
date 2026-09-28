@@ -948,7 +948,7 @@
         "resent": "कोड फेरि पठाइयो",
         "resendCooldown": "{{seconds}} सेकेन्डमा फेरि पठाउनुहोस्",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "पहुँच उपलब्ध छैन। प्रशासकलाई सम्पर्क गर्नुहोस्।",
         "digitLabel": "कोडको अङ्क {{position}}"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "समूह",
       "groups": "तपाईंका समूहहरू",
       "logout": "साइन आउट",
-      "logoutConfirmTitle": "Nova Campus बाट साइन आउट गर्ने?",
-      "logoutConfirmDescription": "Nova Campus प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
+      "logoutConfirmTitle": "संस्थाबाट साइन आउट गर्ने?",
+      "logoutConfirmDescription": "तपाईंको संस्थाले दिने सुविधा प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
       "logoutConfirmButton": "साइन आउट",
       "refresh": "रिफ्रेस",
       "checking": "जडान जाँच गर्दै…"
@@ -988,7 +988,7 @@
       "network": "सर्भरमा पुग्न सकिएन। ठेगाना र जडान जाँच गर्नुहोस्।"
     },
     "settings": {
-      "aboutSubtitle": "Nova Campus का लागि जानकारी र समस्या समाधान उपकरण।",
+      "aboutSubtitle": "Nova का लागि जानकारी र समस्या समाधान उपकरण।",
       "shortcuts": {
         "title": "किबोर्ड सर्टकट",
         "description": "डिक्टेसन कसरी सुरु गर्ने, मिलाउनुहोस्"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "फाइल ट्रान्सक्राइब गर्नुहोस्",
-      "description": "Nova Campus सर्भरबाट ट्रान्सक्राइब गर्न अडियो फाइल छोड्नुहोस्।",
+      "description": "अडियो फाइल छोड्नुहोस् र तपाईंको संस्थाको सर्भरले यसलाई लेखिदिनेछ।",
       "actionButton": "फाइल ट्रान्सक्राइब गर्नुहोस्",
       "dropzone": "अडियो रेकर्डिङ यहाँ छोड्नुहोस् वा छान्न क्लिक गर्नुहोस्",
       "supportedFormats": "समर्थित ढाँचा: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "अडियो फाइल ट्रान्सक्राइब गर्न सकिएन।"
     },
     "sessionExpiredTitle": "सत्र सकियो",
-    "sessionExpired": "Nova Campus प्रयोग जारी राख्न कृपया फेरि साइन इन गर्नुहोस्।",
+    "sessionExpired": "तपाईंको संस्थाले दिने सुविधा प्रयोग गरिरहन फेरि साइन इन गर्नुहोस्।",
     "serverUnreachableTitle": "सर्भरमा पुग्न सकिएन",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "तपाईंको संस्थाको सर्भर अस्थायी रूपमा उपलब्ध छैन। Nova स्थानीय प्रशोधन जारी राख्छ।",
     "managedBy": "{{organization}} द्वारा व्यवस्थित",
     "roles": {
       "student": "विद्यार्थी",
@@ -1089,7 +1089,7 @@
       "manager": "प्रबन्धक"
     },
     "status": {
-      "connected": "क्याम्पस जोडिएको",
+      "connected": "संस्था जोडिएको छ",
       "local": "Nova Local सक्रिय",
       "localActive": "Nova Local सक्रिय"
     },
@@ -1104,7 +1104,7 @@
       "connect": "{{provider}} मार्फत जारी राख्नुहोस्"
     },
     "personalization": {
-      "description": "तपाईंको संस्थाका नीति नबदली Nova को रूप र प्रयोग मिलाउनुहोस्।",
+      "description": "संस्थाका नियम नबदली Nova को रूप र अन्तर्क्रिया मिलाउनुहोस्।",
       "orb": "Nova गोला",
       "orbColor": "गोलोको रङ",
       "orbDescription": "Nova को डक र रेकर्डिङ सूचकमा प्रयोग हुने रङ छान्नुहोस्।",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "संगठन",
-      "subtitle": "तपाईंको संस्था, यसले दिने कुरा, र तपाईंको डेटा कहाँ जान्छ।",
+      "subtitle": "तपाईंको संस्था, त्यसले के दिन्छ, र तपाईंको डेटा कहाँ जान्छ।",
       "connection": "जडान",
       "managedBy": "{{organization}} द्वारा व्यवस्थित",
       "identityTitle": "परिचय"
     },
     "provides": {
-      "title": "तपाईंको संस्थाले दिने कुरा",
+      "title": "तपाईंको संस्थाले के दिन्छ",
       "transcription": {
         "title": "वाणी पहिचान",
-        "description": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा जान्छ, जसले त्यसलाई पाठ बनाउँछ।"
+        "description": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा पठाइन्छ, जसले त्यसलाई पाठमा बदल्छ।"
       },
       "rewriting": {
         "title": "लेखन शैली",
-        "description": "तपाईंको पाठ र छानिएको शैली संस्थाको सर्भरमा जान्छ, जसले पुनर्लेखन गर्छ।"
+        "description": "तपाईंको पाठ र छानिएको शैली संस्थाको सर्भरमा पठाइन्छ, जसले पाठ पुनर्लेखन गर्छ।"
       },
       "vocabulary": {
         "title": "साझा शब्दभण्डार",
-        "description": "संस्थाका र तपाईंका शब्दहरूले सही हिज्जे लेख्न मद्दत गर्छन्।"
+        "description": "संस्थाले थपेका शब्द र तपाईंका आफ्नै शब्दले पहिचान र पुनर्लेखनमा ती सही लेख्न मद्दत गर्छन्।"
       },
       "formatting": {
         "title": "ढाँचा नियम",
-        "description": "संस्थाका र तपाईंका नियम हरेक पुनर्लेखनमा लागू हुन्छन्।"
+        "description": "संस्थाले तोकेका नियम र तपाईंका आफ्नै नियम हरेक पुनर्लेखनमा लागू हुन्छन्।"
       },
-      "paused": "हाल रोकिएको — संस्थाको सर्भर पुग्न सकिँदैन।"
+      "paused": "हाल रोकिएको — संस्थाको सर्भरमा पुग्न सकिएन।"
     },
     "offline": {
       "title": "सर्भर पुग्न नसकिँदा",
@@ -1151,8 +1151,8 @@
       "recordings": "रेकर्डिङहरू",
       "appName": "अगाडिको अनुप्रयोगको नाम",
       "onDevice": "यो यन्त्र",
-      "onCampus": "संस्थाको सर्भर",
-      "note": "संस्थाको सर्भरले दैनिक कति श्रुतिलेखन र पुनर्लेखन गर्नुभयो भनेर गन्छ। सामग्री राख्दैन।"
+      "note": "संस्थाको सर्भरले तपाईंले दिनहुँ गर्ने ट्रान्सक्रिप्सन र पुनर्लेखनको सङ्ख्या गन्छ। त्यसले सामग्री राख्दैन।",
+      "onServer": "संस्थाको सर्भर"
     },
     "updates": {
       "title": "तपाईंको संस्थाबाट नयाँ",
@@ -1192,8 +1192,8 @@
       "choose": "एउटा आदेश छान्नुहोस्",
       "review": "केही बदलिनुअघि नतिजा हेर्नुहोस्"
     },
-    "privacy": "तपाईंको Campus जडानमार्फत प्रशोधन हुन्छ।",
-    "privacyOffline": "Nova Commands तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।"
+    "privacy": "तपाईंको संस्थासँगको जडानमार्फत प्रशोधन गरिएको।",
+    "privacyOffline": "Nova Commands संस्थाको सर्भरमा चल्छन्, जुन अहिले पहुँचयोग्य छैन।"
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Nova खोल्नुअघि पाठ छान्नुहोस्।",
       "unsupported": "अहिलेलाई Nova Commands Windows मा मात्र उपलब्ध छ।",
       "targetChanged": "मूल अनुप्रयोग अब सक्रिय छैन। बरु नतिजा प्रतिलिपि गर्नुहोस्।",
-      "offline": "AI Skills लाई Campus जडान चाहिन्छ।",
+      "offline": "Nova Commands लाई तपाईंको संस्थासँग जडान चाहिन्छ।",
       "failed": "Nova ले यो अनुरोध प्रशोधन गर्न सकेन।",
       "emptyResult": "Nova ले खाली नतिजा फर्कायो।",
       "busyTitle": "पहिल्यै चलिरहेको",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "कुनै पाठ छानिएको छैन",
       "unsupportedTitle": "यहाँ उपलब्ध छैन",
       "targetChangedTitle": "सञ्झ्याल बदलियो",
-      "offlineTitle": "Campus पुग्न सकिँदैन",
+      "offlineTitle": "संस्था उपलब्ध छैन",
       "failedTitle": "आदेश असफल",
       "emptyResultTitle": "देखाउने केही छैन"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova तयार छ।"
-      },
-      "campusLocal": {
-        "title": "Nova Local सक्रिय छ",
-        "detail": "{{server}} ले जवाफ दिइरहेको छैन — श्रुतिलेखन स्थानीय रूपमा जारी छ, AI सुविधाहरू रोकिएका छन्।",
-        "unknownServer": "संस्थाको सर्भर"
       },
       "permissionsNeeded": {
         "title": "माइक्रोफोन अनुमति चाहियो",
@@ -1288,7 +1283,12 @@
         "title": "टाँस्न सकिएन",
         "detail": "तपाईंको श्रुतिलेखन क्लिपबोर्डमा छ।"
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local सक्रिय छ",
+        "detail": "{{server}} ले जवाफ दिइरहेको छैन — श्रुतिलेखन स्थानीय रूपमा जारी छ, AI सुविधाहरू रोकिएका छन्।",
+        "unknownServer": "संस्थाको सर्भर"
+      },
+      "organizationSignedOut": {
         "title": "तपाईं संस्थाबाट साइन आउट हुनुभयो",
         "detail": "Nova ले यो कम्प्युटरमा Personal मा काम गरिरहन्छ। सेटिङबाट आफ्नो संस्था फेरि जोड्नुहोस्।"
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "पछिल्लो श्रुतिलेखन"
     },
     "engine": {
-      "campus": "तपाईंको संस्थाको सर्भर",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "तपाईंको संस्थाको सर्भर"
     },
     "checklist": {
       "title": "सुरुवात",
-      "campus": "Campus खाता जोडियो",
       "voice": "आवाज तयार",
       "firstDictation": "पहिलो श्रुतिलेखन",
       "style": "लेखन शैली प्रयोग गर्नुहोस्",
       "aiSkill": "पहिलो AI Skill प्रयोग गर्नुहोस्",
       "done": "भयो",
-      "todo": "बाँकी"
+      "todo": "बाँकी",
+      "organization": "संस्थाको खाता जोडियो"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "तपाईंको संस्थाले यो संस्करणले समर्थन नगर्ने साइन-इन विधि माग गर्छ।"
     }
   },
-  "organizationWording": {
-    "sessionExpired": "तपाईंको संस्थाले दिने सुविधा प्रयोग गरिरहन फेरि साइन इन गर्नुहोस्।",
-    "logoutConfirmTitle": "संस्थाबाट साइन आउट गर्ने?",
-    "logoutConfirmDescription": "तपाईंको संस्थाले दिने सुविधा प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
-    "aboutSubtitle": "Nova का लागि जानकारी र समस्या समाधान उपकरण।",
-    "personalizationDescription": "संस्थाका नियम नबदली Nova को रूप र अन्तर्क्रिया मिलाउनुहोस्।",
-    "organizationSubtitle": "तपाईंको संस्था, त्यसले के दिन्छ, र तपाईंको डेटा कहाँ जान्छ।",
-    "statusConnected": "संस्था जोडिएको छ",
-    "providesTitle": "तपाईंको संस्थाले के दिन्छ",
-    "providesPaused": "हाल रोकिएको — संस्थाको सर्भरमा पुग्न सकिएन।",
-    "transcriptionDescription": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा पठाइन्छ, जसले त्यसलाई पाठमा बदल्छ।",
-    "rewritingDescription": "तपाईंको पाठ र छानिएको शैली संस्थाको सर्भरमा पठाइन्छ, जसले पाठ पुनर्लेखन गर्छ।",
-    "vocabularyDescription": "संस्थाले थपेका शब्द र तपाईंका आफ्नै शब्दले पहिचान र पुनर्लेखनमा ती सही लेख्न मद्दत गर्छन्।",
-    "formattingDescription": "संस्थाले तोकेका नियम र तपाईंका आफ्नै नियम हरेक पुनर्लेखनमा लागू हुन्छन्।",
+  "educationWording": {
+    "sessionExpired": "Nova Campus प्रयोग जारी राख्न कृपया फेरि साइन इन गर्नुहोस्।",
+    "logoutConfirmTitle": "Nova Campus बाट साइन आउट गर्ने?",
+    "logoutConfirmDescription": "Nova Campus प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
+    "aboutSubtitle": "Nova Campus का लागि जानकारी र समस्या समाधान उपकरण।",
+    "personalizationDescription": "तपाईंको संस्थाका नीति नबदली Nova को रूप र प्रयोग मिलाउनुहोस्।",
+    "organizationSubtitle": "तपाईंको संस्था, यसले दिने कुरा, र तपाईंको डेटा कहाँ जान्छ।",
+    "statusConnected": "क्याम्पस जोडिएको",
+    "providesTitle": "तपाईंको संस्थाले दिने कुरा",
+    "providesPaused": "हाल रोकिएको — संस्थाको सर्भर पुग्न सकिँदैन।",
+    "transcriptionDescription": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा जान्छ, जसले त्यसलाई पाठ बनाउँछ।",
+    "rewritingDescription": "तपाईंको पाठ र छानिएको शैली संस्थाको सर्भरमा जान्छ, जसले पुनर्लेखन गर्छ।",
+    "vocabularyDescription": "संस्थाका र तपाईंका शब्दहरूले सही हिज्जे लेख्न मद्दत गर्छन्।",
+    "formattingDescription": "संस्थाका र तपाईंका नियम हरेक पुनर्लेखनमा लागू हुन्छन्।",
     "dataOnServer": "संस्थाको सर्भर",
-    "dataNote": "संस्थाको सर्भरले तपाईंले दिनहुँ गर्ने ट्रान्सक्रिप्सन र पुनर्लेखनको सङ्ख्या गन्छ। त्यसले सामग्री राख्दैन।",
-    "aiSkillsPrivacyOffline": "AI Skills संस्थाको सर्भरमा चल्छन्, जुन अहिले पहुँचयोग्य छैन।",
+    "dataNote": "संस्थाको सर्भरले दैनिक कति श्रुतिलेखन र पुनर्लेखन गर्नुभयो भनेर गन्छ। सामग्री राख्दैन।",
+    "aiSkillsPrivacyOffline": "Nova Commands तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।",
     "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
-    "codeForbidden": "पहुँच उपलब्ध छैन। प्रशासकलाई सम्पर्क गर्नुहोस्।"
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

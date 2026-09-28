@@ -948,7 +948,7 @@
         "resent": "Koden har skickats igen",
         "resendCooldown": "Skicka igen om {{seconds}} s",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "Åtkomst är inte tillgänglig. Kontakta administratören.",
         "digitLabel": "Siffra {{position}} i koden"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "Årskull",
       "groups": "Dina grupper",
       "logout": "Logga ut",
-      "logoutConfirmTitle": "Logga ut från Nova Campus?",
-      "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova Campus. Är du säker?",
+      "logoutConfirmTitle": "Logga ut från din organisation?",
+      "logoutConfirmDescription": "Du behöver logga in igen för att använda det din organisation tillhandahåller. Är du säker?",
       "logoutConfirmButton": "Logga ut",
       "refresh": "Uppdatera",
       "checking": "Kontrollerar anslutningen…"
@@ -988,7 +988,7 @@
       "network": "Det gick inte att nå servern. Kontrollera adressen och din anslutning."
     },
     "settings": {
-      "aboutSubtitle": "Information och felsökningsverktyg för Nova Campus.",
+      "aboutSubtitle": "Information och felsökningsverktyg för Nova.",
       "shortcuts": {
         "title": "Kortkommandon",
         "description": "Ställ in hur du startar dikteringen"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "Transkribera en fil",
-      "description": "Släpp en ljudfil för att transkribera den via Nova Campus-servern.",
+      "description": "Släpp en ljudfil här för att transkribera den med din organisations server.",
       "actionButton": "Transkribera en fil",
       "dropzone": "Släpp en ljudinspelning här eller klicka för att bläddra",
       "supportedFormats": "Format som stöds: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "Det gick inte att transkribera ljudfilen."
     },
     "sessionExpiredTitle": "Sessionen har gått ut",
-    "sessionExpired": "Logga in igen för att fortsätta använda Nova Campus.",
+    "sessionExpired": "Logga in igen för att fortsätta använda det din organisation tillhandahåller.",
     "serverUnreachableTitle": "Servern kan inte nås",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "Din organisations server är tillfälligt onåbar. Nova fortsätter med lokal bearbetning.",
     "managedBy": "Hanteras av {{organization}}",
     "roles": {
       "student": "Student",
@@ -1089,7 +1089,7 @@
       "manager": "Chef"
     },
     "status": {
-      "connected": "Campus anslutet",
+      "connected": "Organisation ansluten",
       "local": "Nova Local aktiv",
       "localActive": "Nova Local aktivt"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "Slutför inloggningen i webbläsaren. Använd den här koden om Microsoft ber om den.",
       "expired": "Inloggningsbegäran från Microsoft har gått ut. Börja om.",
       "failed": "Inloggningen slutfördes inte. Försök igen.",
-      "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
+      "notInOrganization": "Det här Microsoft-kontot tillhör inte din organisation.",
       "accessRevoked": "Din åtkomst är inte längre tillgänglig. Kontakta administratören."
     },
     "sso": {
       "connect": "Fortsätt med {{provider}}"
     },
     "personalization": {
-      "description": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
+      "description": "Anpassa Novas utseende och interaktion utan att ändra din organisations regler.",
       "orb": "Nova-klot",
       "orbColor": "Klotets färg",
       "orbDescription": "Välj accentfärg för Novas docka och inspelningsindikatorn.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "Organisation",
-      "subtitle": "Ditt lärosäte, vad det tillhandahåller och vart dina data går.",
+      "subtitle": "Din organisation, vad den tillhandahåller och vart dina data tar vägen.",
       "connection": "Anslutning",
       "managedBy": "Hanteras av {{organization}}",
       "identityTitle": "Identitet"
     },
     "provides": {
-      "title": "Vad ditt lärosäte tillhandahåller",
+      "title": "Det här tillhandahåller din organisation",
       "transcription": {
         "title": "Taligenkänning",
-        "description": "Din inspelning skickas till lärosätets server, som gör text av den."
+        "description": "Din inspelning skickas till din organisations server, som omvandlar den till text."
       },
       "rewriting": {
         "title": "Skrivstilar",
-        "description": "Din text och vald stil skickas till lärosätets server, som skriver om den."
+        "description": "Din text och den valda stilen skickas till din organisations server, som omformulerar texten."
       },
       "vocabulary": {
         "title": "Gemensam ordlista",
-        "description": "Termer från lärosätet och dina egna hjälper både igenkänning och omskrivning att stava rätt."
+        "description": "Termer som din organisation lagt till, tillsammans med dina egna, hjälper igenkänning och omformulering att stava dem rätt."
       },
       "formatting": {
         "title": "Formateringsregler",
-        "description": "Lärosätets regler och dina egna tillämpas vid varje omskrivning."
+        "description": "Regler som din organisation satt upp, tillsammans med dina egna, tillämpas vid varje omformulering."
       },
-      "paused": "Pausat just nu — lärosätets server går inte att nå."
+      "paused": "Pausat just nu – din organisations server går inte att nå."
     },
     "offline": {
       "title": "När servern inte går att nå",
@@ -1151,8 +1151,8 @@
       "recordings": "Inspelningar",
       "appName": "Namnet på programmet i förgrunden",
       "onDevice": "Den här enheten",
-      "onCampus": "Lärosätets server",
-      "note": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte."
+      "note": "Din organisations server räknar hur många transkriberingar och omformuleringar du gör per dag. Innehållet sparas inte.",
+      "onServer": "Organisationens server"
     },
     "updates": {
       "title": "Nytt från din organisation",
@@ -1192,8 +1192,8 @@
       "choose": "Välj ett kommando",
       "review": "Läs resultatet innan något ändras"
     },
-    "privacy": "Behandlas via din Campus-anslutning.",
-    "privacyOffline": "Nova Commands körs på din lärosätesserver, som just nu inte går att nå."
+    "privacy": "Behandlas via anslutningen till din organisation.",
+    "privacyOffline": "Nova Commands körs på din organisations server, som inte går att nå just nu."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Markera text innan du öppnar Nova.",
       "unsupported": "Nova Commands finns tills vidare bara på Windows.",
       "targetChanged": "Ursprungsprogrammet är inte längre aktivt. Kopiera resultatet i stället.",
-      "offline": "AI Skills kräver en Campus-anslutning.",
+      "offline": "Nova Commands kräver en anslutning till din organisation.",
       "failed": "Nova kunde inte behandla begäran.",
       "emptyResult": "Nova returnerade ett tomt resultat.",
       "busyTitle": "Pågår redan",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "Ingen text markerad",
       "unsupportedTitle": "Inte tillgängligt här",
       "targetChangedTitle": "Fönstret har bytts",
-      "offlineTitle": "Campus onåbart",
+      "offlineTitle": "Organisationen är inte nåbar",
       "failedTitle": "Kommandot misslyckades",
       "emptyResultTitle": "Inget att visa"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova är redo."
-      },
-      "campusLocal": {
-        "title": "Nova Local är aktivt",
-        "detail": "{{server}} svarar inte — diktering fortsätter lokalt, AI-funktioner är pausade.",
-        "unknownServer": "organisationens server"
       },
       "permissionsNeeded": {
         "title": "Mikrofonåtkomst krävs",
@@ -1288,7 +1283,12 @@
         "title": "Kunde inte klistra in",
         "detail": "Din diktering finns i urklipp."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local är aktivt",
+        "detail": "{{server}} svarar inte — diktering fortsätter lokalt, AI-funktioner är pausade.",
+        "unknownServer": "organisationens server"
+      },
+      "organizationSignedOut": {
         "title": "Utloggad från din organisation",
         "detail": "Nova fortsätter att fungera i Personal på den här datorn. Anslut din organisation igen i inställningarna."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "Senaste diktering"
     },
     "engine": {
-      "campus": "Ditt lärosätes server",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "Din organisations server"
     },
     "checklist": {
       "title": "Kom igång",
-      "campus": "Campus-konto kopplat",
       "voice": "Rösten redo",
       "firstDictation": "Första dikteringen",
       "style": "Prova en skrivstil",
       "aiSkill": "Använd din första AI Skill",
       "done": "Klart",
-      "todo": "Kvar"
+      "todo": "Kvar",
+      "organization": "Organisationskonto länkat"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "Din organisation kräver en inloggningsmetod som den här versionen inte stöder."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "Logga in igen för att fortsätta använda det din organisation tillhandahåller.",
-    "logoutConfirmTitle": "Logga ut från din organisation?",
-    "logoutConfirmDescription": "Du behöver logga in igen för att använda det din organisation tillhandahåller. Är du säker?",
-    "aboutSubtitle": "Information och felsökningsverktyg för Nova.",
-    "personalizationDescription": "Anpassa Novas utseende och interaktion utan att ändra din organisations regler.",
-    "organizationSubtitle": "Din organisation, vad den tillhandahåller och vart dina data tar vägen.",
-    "statusConnected": "Organisation ansluten",
-    "providesTitle": "Det här tillhandahåller din organisation",
-    "providesPaused": "Pausat just nu – din organisations server går inte att nå.",
-    "transcriptionDescription": "Din inspelning skickas till din organisations server, som omvandlar den till text.",
-    "rewritingDescription": "Din text och den valda stilen skickas till din organisations server, som omformulerar texten.",
-    "vocabularyDescription": "Termer som din organisation lagt till, tillsammans med dina egna, hjälper igenkänning och omformulering att stava dem rätt.",
-    "formattingDescription": "Regler som din organisation satt upp, tillsammans med dina egna, tillämpas vid varje omformulering.",
-    "dataOnServer": "Organisationens server",
-    "dataNote": "Din organisations server räknar hur många transkriberingar och omformuleringar du gör per dag. Innehållet sparas inte.",
-    "aiSkillsPrivacyOffline": "AI Skills körs på din organisations server, som inte går att nå just nu.",
-    "notInOrganization": "Det här Microsoft-kontot tillhör inte din organisation.",
-    "codeForbidden": "Åtkomst är inte tillgänglig. Kontakta administratören."
+  "educationWording": {
+    "sessionExpired": "Logga in igen för att fortsätta använda Nova Campus.",
+    "logoutConfirmTitle": "Logga ut från Nova Campus?",
+    "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova Campus. Är du säker?",
+    "aboutSubtitle": "Information och felsökningsverktyg för Nova Campus.",
+    "personalizationDescription": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
+    "organizationSubtitle": "Ditt lärosäte, vad det tillhandahåller och vart dina data går.",
+    "statusConnected": "Campus anslutet",
+    "providesTitle": "Vad ditt lärosäte tillhandahåller",
+    "providesPaused": "Pausat just nu — lärosätets server går inte att nå.",
+    "transcriptionDescription": "Din inspelning skickas till lärosätets server, som gör text av den.",
+    "rewritingDescription": "Din text och vald stil skickas till lärosätets server, som skriver om den.",
+    "vocabularyDescription": "Termer från lärosätet och dina egna hjälper både igenkänning och omskrivning att stava rätt.",
+    "formattingDescription": "Lärosätets regler och dina egna tillämpas vid varje omskrivning.",
+    "dataOnServer": "Lärosätets server",
+    "dataNote": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte.",
+    "aiSkillsPrivacyOffline": "Nova Commands körs på din lärosätesserver, som just nu inte går att nå.",
+    "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

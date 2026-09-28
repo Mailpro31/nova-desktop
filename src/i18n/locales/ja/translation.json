@@ -948,7 +948,7 @@
         "resent": "コードを再送信しました",
         "resendCooldown": "{{seconds}} 秒後に再送信",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "アクセスできません。管理者にお問い合わせください。",
         "digitLabel": "コードの {{position}} 桁目"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "学年",
       "groups": "所属グループ",
       "logout": "ログアウト",
-      "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
-      "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",
+      "logoutConfirmTitle": "組織からサインアウトしますか？",
+      "logoutConfirmDescription": "組織が提供する機能を使うには、もう一度サインインする必要があります。よろしいですか？",
       "logoutConfirmButton": "ログアウト",
       "refresh": "更新",
       "checking": "接続を確認しています…"
@@ -988,7 +988,7 @@
       "network": "サーバーに接続できませんでした。アドレスと接続を確認してください。"
     },
     "settings": {
-      "aboutSubtitle": "Nova Campus の情報とトラブルシューティング用ツール。",
+      "aboutSubtitle": "Nova の情報とトラブルシューティング ツール。",
       "shortcuts": {
         "title": "キーボードショートカット",
         "description": "音声入力を始める方法を設定します"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "ファイルを文字起こし",
-      "description": "音声ファイルをドロップすると、Nova Campus サーバーで文字起こしします。",
+      "description": "音声ファイルをドロップすると、組織のサーバーで文字起こしします。",
       "actionButton": "ファイルを文字起こし",
       "dropzone": "録音ファイルをここにドロップするか、クリックして選択",
       "supportedFormats": "対応形式：WAV、MP3、M4A、OGG",
@@ -1076,9 +1076,9 @@
       "error": "音声ファイルを文字起こしできませんでした。"
     },
     "sessionExpiredTitle": "セッションの有効期限切れ",
-    "sessionExpired": "Nova Campus を引き続き使うには、もう一度ログインしてください。",
+    "sessionExpired": "組織が提供する機能を引き続き使うには、もう一度サインインしてください。",
     "serverUnreachableTitle": "サーバーに接続できません",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "組織のサーバーに一時的に接続できません。Nova はローカル処理を続けます。",
     "managedBy": "{{organization}} が管理",
     "roles": {
       "student": "学生",
@@ -1089,7 +1089,7 @@
       "manager": "マネージャー"
     },
     "status": {
-      "connected": "キャンパスに接続済み",
+      "connected": "組織に接続済み",
       "local": "Nova Local 有効",
       "localActive": "Nova Local 動作中"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "ブラウザーでログインを完了してください。Microsoft から求められたら、このコードを使ってください。",
       "expired": "Microsoft のログイン要求の有効期限が切れました。最初からやり直してください。",
       "failed": "サインインが完了しませんでした。もう一度お試しください。",
-      "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
+      "notInOrganization": "この Microsoft アカウントは組織に属していません。",
       "accessRevoked": "アクセスは利用できなくなりました。管理者にお問い合わせください。"
     },
     "sso": {
       "connect": "{{provider}} で続行"
     },
     "personalization": {
-      "description": "所属機関のポリシーを変えずに、Nova の見た目と操作を調整します。",
+      "description": "組織のポリシーを変えずに、Nova の外観と操作を調整できます。",
       "orb": "Nova オーブ",
       "orbColor": "オーブの色",
       "orbDescription": "Nova のドックと録音インジケーターのアクセントカラーを選びます。",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "組織",
-      "subtitle": "所属機関、その提供内容、そしてデータの行き先。",
+      "subtitle": "組織について、提供される機能、データの行き先。",
       "connection": "接続",
       "managedBy": "{{organization}} が管理",
       "identityTitle": "本人情報"
     },
     "provides": {
-      "title": "所属機関が提供するもの",
+      "title": "組織が提供するもの",
       "transcription": {
         "title": "音声認識",
-        "description": "録音は所属機関のサーバーへ送られ、文字になります。"
+        "description": "録音は組織のサーバーに送信され、テキストに変換されます。"
       },
       "rewriting": {
         "title": "文体",
-        "description": "文章と選んだ文体が所属機関のサーバーへ送られ、書き直されます。"
+        "description": "テキストと選択したスタイルは組織のサーバーに送信され、書き直されます。"
       },
       "vocabulary": {
         "title": "共有語彙",
-        "description": "機関が登録した用語とあなたの用語が、認識と書き直しの表記を助けます。"
+        "description": "組織が追加した用語とあなた自身の用語は、認識と書き直しで正しく表記するのに役立ちます。"
       },
       "formatting": {
         "title": "整形ルール",
-        "description": "機関のルールとあなたのルールが、書き直しのたびに適用されます。"
+        "description": "組織が設定したルールとあなた自身のルールが、すべての書き直しに適用されます。"
       },
-      "paused": "現在停止中 — 所属機関のサーバーに接続できません。"
+      "paused": "一時停止中 — 組織のサーバーに接続できません。"
     },
     "offline": {
       "title": "サーバーに接続できないとき",
@@ -1151,8 +1151,8 @@
       "recordings": "録音ファイル",
       "appName": "前面のアプリ名",
       "onDevice": "この端末",
-      "onCampus": "所属機関のサーバー",
-      "note": "所属機関のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。"
+      "note": "組織のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。",
+      "onServer": "組織のサーバー"
     },
     "updates": {
       "title": "組織からの新着",
@@ -1192,8 +1192,8 @@
       "choose": "コマンドを選ぶ",
       "review": "何かが変わる前に結果を確認する"
     },
-    "privacy": "Campus 接続を通じて処理されます。",
-    "privacyOffline": "Nova Commands は所属機関のサーバーで動作しますが、現在つながりません。"
+    "privacy": "組織への接続を通じて処理されます。",
+    "privacyOffline": "Nova Commands は組織のサーバーで動作しますが、現在は接続できません。"
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Nova を開く前に文章を選択してください。",
       "unsupported": "Nova Commands は現時点では Windows のみで利用できます。",
       "targetChanged": "元のアプリはもう前面にありません。代わりに結果をコピーしてください。",
-      "offline": "AI Skills には Campus への接続が必要です。",
+      "offline": "Nova Commands には組織への接続が必要です。",
       "failed": "Nova はこの依頼を処理できませんでした。",
       "emptyResult": "Nova からの応答が空でした。",
       "busyTitle": "すでに実行中",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "文章が選択されていません",
       "unsupportedTitle": "ここでは使えません",
       "targetChangedTitle": "ウィンドウが変わりました",
-      "offlineTitle": "Campus に接続できません",
+      "offlineTitle": "組織に接続できません",
       "failedTitle": "コマンドが失敗しました",
       "emptyResultTitle": "表示するものがありません"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova の準備ができました。"
-      },
-      "campusLocal": {
-        "title": "Nova Local が動作中です",
-        "detail": "{{server}} が応答していません。音声入力はローカルで続行し、AI 機能は一時停止しています。",
-        "unknownServer": "組織のサーバー"
       },
       "permissionsNeeded": {
         "title": "マイクへのアクセスが必要です",
@@ -1288,7 +1283,12 @@
         "title": "貼り付けできませんでした",
         "detail": "音声入力した文章はクリップボードにあります。"
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local が動作中です",
+        "detail": "{{server}} が応答していません。音声入力はローカルで続行し、AI 機能は一時停止しています。",
+        "unknownServer": "組織のサーバー"
+      },
+      "organizationSignedOut": {
         "title": "組織からサインアウトしました",
         "detail": "このコンピューターでは Personal として Nova を引き続き使用できます。設定から組織に再接続してください。"
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "直近の音声入力"
     },
     "engine": {
-      "campus": "所属機関のサーバー",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "組織のサーバー"
     },
     "checklist": {
       "title": "はじめに",
-      "campus": "Campus アカウントを連携済み",
       "voice": "音声の準備完了",
       "firstDictation": "はじめての音声入力",
       "style": "文体を試す",
       "aiSkill": "はじめての AI Skill を使う",
       "done": "完了",
-      "todo": "未完了"
+      "todo": "未完了",
+      "organization": "組織アカウントを連携しました"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "組織が求めるサインイン方法に、このバージョンは対応していません。"
     }
   },
-  "organizationWording": {
-    "sessionExpired": "組織が提供する機能を引き続き使うには、もう一度サインインしてください。",
-    "logoutConfirmTitle": "組織からサインアウトしますか？",
-    "logoutConfirmDescription": "組織が提供する機能を使うには、もう一度サインインする必要があります。よろしいですか？",
-    "aboutSubtitle": "Nova の情報とトラブルシューティング ツール。",
-    "personalizationDescription": "組織のポリシーを変えずに、Nova の外観と操作を調整できます。",
-    "organizationSubtitle": "組織について、提供される機能、データの行き先。",
-    "statusConnected": "組織に接続済み",
-    "providesTitle": "組織が提供するもの",
-    "providesPaused": "一時停止中 — 組織のサーバーに接続できません。",
-    "transcriptionDescription": "録音は組織のサーバーに送信され、テキストに変換されます。",
-    "rewritingDescription": "テキストと選択したスタイルは組織のサーバーに送信され、書き直されます。",
-    "vocabularyDescription": "組織が追加した用語とあなた自身の用語は、認識と書き直しで正しく表記するのに役立ちます。",
-    "formattingDescription": "組織が設定したルールとあなた自身のルールが、すべての書き直しに適用されます。",
-    "dataOnServer": "組織のサーバー",
-    "dataNote": "組織のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。",
-    "aiSkillsPrivacyOffline": "AI Skills は組織のサーバーで動作しますが、現在は接続できません。",
-    "notInOrganization": "この Microsoft アカウントは組織に属していません。",
-    "codeForbidden": "アクセスできません。管理者にお問い合わせください。"
+  "educationWording": {
+    "sessionExpired": "Nova Campus を引き続き使うには、もう一度ログインしてください。",
+    "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
+    "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",
+    "aboutSubtitle": "Nova Campus の情報とトラブルシューティング用ツール。",
+    "personalizationDescription": "所属機関のポリシーを変えずに、Nova の見た目と操作を調整します。",
+    "organizationSubtitle": "所属機関、その提供内容、そしてデータの行き先。",
+    "statusConnected": "キャンパスに接続済み",
+    "providesTitle": "所属機関が提供するもの",
+    "providesPaused": "現在停止中 — 所属機関のサーバーに接続できません。",
+    "transcriptionDescription": "録音は所属機関のサーバーへ送られ、文字になります。",
+    "rewritingDescription": "文章と選んだ文体が所属機関のサーバーへ送られ、書き直されます。",
+    "vocabularyDescription": "機関が登録した用語とあなたの用語が、認識と書き直しの表記を助けます。",
+    "formattingDescription": "機関のルールとあなたのルールが、書き直しのたびに適用されます。",
+    "dataOnServer": "所属機関のサーバー",
+    "dataNote": "所属機関のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。",
+    "aiSkillsPrivacyOffline": "Nova Commands は所属機関のサーバーで動作しますが、現在つながりません。",
+    "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

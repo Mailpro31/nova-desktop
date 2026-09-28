@@ -948,7 +948,7 @@
         "resent": "Kód odeslán znovu",
         "resendCooldown": "Znovu odeslat za {{seconds}} s",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "Přístup není dostupný. Obraťte se na správce.",
         "digitLabel": "Číslice {{position}} kódu"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "Ročník",
       "groups": "Vaše skupiny",
       "logout": "Odhlásit se",
-      "logoutConfirmTitle": "Odhlásit se z Nova Campus?",
-      "logoutConfirmDescription": "Pro používání Nova Campus se budete muset znovu přihlásit. Opravdu chcete pokračovat?",
+      "logoutConfirmTitle": "Odhlásit se z organizace?",
+      "logoutConfirmDescription": "Abyste mohli používat to, co vaše organizace poskytuje, budete se muset znovu přihlásit. Opravdu?",
       "logoutConfirmButton": "Odhlásit se",
       "refresh": "Obnovit",
       "checking": "Kontrola připojení…"
@@ -988,7 +988,7 @@
       "network": "Server se nepodařilo kontaktovat. Zkontrolujte adresu a připojení."
     },
     "settings": {
-      "aboutSubtitle": "Informace a diagnostické nástroje pro Nova Campus.",
+      "aboutSubtitle": "Informace a diagnostické nástroje pro Nova.",
       "shortcuts": {
         "title": "Klávesové zkratky",
         "description": "Nastavte, jak spouštíte diktování"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "Přepsat soubor",
-      "description": "Přetáhněte zvukový soubor a přepište ho pomocí serveru Nova Campus.",
+      "description": "Přetáhněte sem zvukový soubor a přepište jej serverem vaší organizace.",
       "actionButton": "Přepsat soubor",
       "dropzone": "Přetáhněte sem zvukovou nahrávku nebo klikněte a vyberte ji",
       "supportedFormats": "Podporované formáty: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "Zvukový soubor se nepodařilo přepsat."
     },
     "sessionExpiredTitle": "Relace vypršela",
-    "sessionExpired": "Pro další používání Nova Campus se prosím znovu přihlaste.",
+    "sessionExpired": "Znovu se přihlaste, abyste mohli dál používat to, co vaše organizace poskytuje.",
     "serverUnreachableTitle": "Server je nedostupný",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "Server vaší organizace je dočasně nedostupný. Nova pokračuje s místním zpracováním.",
     "managedBy": "Spravuje {{organization}}",
     "roles": {
       "student": "Student",
@@ -1089,7 +1089,7 @@
       "manager": "Manažer"
     },
     "status": {
-      "connected": "Kampus připojen",
+      "connected": "Organizace připojena",
       "local": "Nova Local je aktivní",
       "localActive": "Nova Local je aktivní"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "Dokončete přihlášení v prohlížeči. Pokud o to Microsoft požádá, použijte tento kód.",
       "expired": "Žádost o přihlášení přes Microsoft vypršela. Začněte znovu.",
       "failed": "Přihlášení nebylo dokončeno. Zkuste to znovu.",
-      "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
+      "notInOrganization": "Tento účet Microsoft nepatří do vaší organizace.",
       "accessRevoked": "Váš přístup již není dostupný. Obraťte se na správce."
     },
     "sso": {
       "connect": "Pokračovat přes {{provider}}"
     },
     "personalization": {
-      "description": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
+      "description": "Upravte vzhled a ovládání Nova, aniž byste měnili pravidla vaší organizace.",
       "orb": "Koule Nova",
       "orbColor": "Barva koule",
       "orbDescription": "Vyberte barvu doku Novy a indikátoru nahrávání.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "Organizace",
-      "subtitle": "Vaše instituce, co poskytuje a kam míří vaše data.",
+      "subtitle": "Vaše organizace, co poskytuje a kam putují vaše data.",
       "connection": "Připojení",
       "managedBy": "Spravuje {{organization}}",
       "identityTitle": "Identita"
     },
     "provides": {
-      "title": "Co poskytuje vaše instituce",
+      "title": "Co vaše organizace poskytuje",
       "transcription": {
         "title": "Rozpoznávání řeči",
-        "description": "Nahrávka putuje na server vaší instituce, který z ní udělá text."
+        "description": "Nahrávka se odešle na server vaší organizace, který ji převede na text."
       },
       "rewriting": {
         "title": "Styly psaní",
-        "description": "Text a zvolený styl putují na server vaší instituce, který text přepíše."
+        "description": "Text a vybraný styl se odešlou na server vaší organizace, který text přeformuluje."
       },
       "vocabulary": {
         "title": "Sdílený slovník",
-        "description": "Termíny instituce i vaše vlastní pomáhají rozpoznávání i přepisu psát je správně."
+        "description": "Termíny přidané vaší organizací spolu s vašimi pomáhají rozpoznávání i přeformulování psát je správně."
       },
       "formatting": {
         "title": "Pravidla formátování",
-        "description": "Pravidla instituce i vaše vlastní se uplatní při každém přepisu."
+        "description": "Pravidla nastavená vaší organizací spolu s vašimi se použijí při každém přeformulování."
       },
-      "paused": "Nyní pozastaveno — server instituce je nedostupný."
+      "paused": "Pozastaveno — server vaší organizace je nedostupný."
     },
     "offline": {
       "title": "Když je server nedostupný",
@@ -1151,8 +1151,8 @@
       "recordings": "Nahrávky",
       "appName": "Název aplikace v popředí",
       "onDevice": "Toto zařízení",
-      "onCampus": "Server instituce",
-      "note": "Server vaší instituce počítá, kolik přepisů a úprav denně provedete. Jejich obsah neuchovává."
+      "note": "Server vaší organizace počítá, kolik přepisů a přeformulování denně provedete. Jejich obsah neukládá.",
+      "onServer": "Server organizace"
     },
     "updates": {
       "title": "Novinky od vaší organizace",
@@ -1192,8 +1192,8 @@
       "choose": "Vyberte příkaz",
       "review": "Přečtěte si výsledek, než se cokoli změní"
     },
-    "privacy": "Zpracováno přes vaše připojení ke Campusu.",
-    "privacyOffline": "Nova Commands běží na serveru vaší instituce, který je nyní nedostupný."
+    "privacy": "Zpracováno přes připojení k vaší organizaci.",
+    "privacyOffline": "Nova Commands běží na serveru vaší organizace, který je právě nedostupný."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Než otevřete Novu, označte text.",
       "unsupported": "Nova Commands je zatím dostupná jen ve Windows.",
       "targetChanged": "Původní aplikace už není aktivní. Zkopírujte výsledek místo toho.",
-      "offline": "AI Skills vyžadují připojení ke Campusu.",
+      "offline": "Nova Commands vyžadují připojení k vaší organizaci.",
       "failed": "Nova nedokázala tento požadavek zpracovat.",
       "emptyResult": "Nova vrátila prázdný výsledek.",
       "busyTitle": "Již probíhá",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "Není označen žádný text",
       "unsupportedTitle": "Zde nedostupné",
       "targetChangedTitle": "Okno se změnilo",
-      "offlineTitle": "Campus nedostupný",
+      "offlineTitle": "Organizace není dostupná",
       "failedTitle": "Příkaz selhal",
       "emptyResultTitle": "Není co zobrazit"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova je připravena."
-      },
-      "campusLocal": {
-        "title": "Nova Local je aktivní",
-        "detail": "{{server}} neodpovídá — diktování pokračuje lokálně, funkce AI jsou pozastaveny.",
-        "unknownServer": "server organizace"
       },
       "permissionsNeeded": {
         "title": "Je potřeba přístup k mikrofonu",
@@ -1288,7 +1283,12 @@
         "title": "Vložení se nezdařilo",
         "detail": "Váš diktát je ve schránce."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local je aktivní",
+        "detail": "{{server}} neodpovídá — diktování pokračuje lokálně, funkce AI jsou pozastaveny.",
+        "unknownServer": "server organizace"
+      },
+      "organizationSignedOut": {
         "title": "Odhlášeno z organizace",
         "detail": "Nova na tomto počítači dál funguje v režimu Personal. Organizaci znovu připojte v nastavení."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "Poslední diktování"
     },
     "engine": {
-      "campus": "Server vaší instituce",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "Server vaší organizace"
     },
     "checklist": {
       "title": "Začínáme",
-      "campus": "Účet Campus propojen",
       "voice": "Hlas připraven",
       "firstDictation": "První diktování",
       "style": "Vyzkoušet styl psaní",
       "aiSkill": "Použít první AI Skill",
       "done": "Hotovo",
-      "todo": "Zbývá"
+      "todo": "Zbývá",
+      "organization": "Účet organizace propojen"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "Vaše organizace vyžaduje způsob přihlášení, který tato verze nepodporuje."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "Znovu se přihlaste, abyste mohli dál používat to, co vaše organizace poskytuje.",
-    "logoutConfirmTitle": "Odhlásit se z organizace?",
-    "logoutConfirmDescription": "Abyste mohli používat to, co vaše organizace poskytuje, budete se muset znovu přihlásit. Opravdu?",
-    "aboutSubtitle": "Informace a diagnostické nástroje pro Nova.",
-    "personalizationDescription": "Upravte vzhled a ovládání Nova, aniž byste měnili pravidla vaší organizace.",
-    "organizationSubtitle": "Vaše organizace, co poskytuje a kam putují vaše data.",
-    "statusConnected": "Organizace připojena",
-    "providesTitle": "Co vaše organizace poskytuje",
-    "providesPaused": "Pozastaveno — server vaší organizace je nedostupný.",
-    "transcriptionDescription": "Nahrávka se odešle na server vaší organizace, který ji převede na text.",
-    "rewritingDescription": "Text a vybraný styl se odešlou na server vaší organizace, který text přeformuluje.",
-    "vocabularyDescription": "Termíny přidané vaší organizací spolu s vašimi pomáhají rozpoznávání i přeformulování psát je správně.",
-    "formattingDescription": "Pravidla nastavená vaší organizací spolu s vašimi se použijí při každém přeformulování.",
-    "dataOnServer": "Server organizace",
-    "dataNote": "Server vaší organizace počítá, kolik přepisů a přeformulování denně provedete. Jejich obsah neukládá.",
-    "aiSkillsPrivacyOffline": "AI Skills běží na serveru vaší organizace, který je právě nedostupný.",
-    "notInOrganization": "Tento účet Microsoft nepatří do vaší organizace.",
-    "codeForbidden": "Přístup není dostupný. Obraťte se na správce."
+  "educationWording": {
+    "sessionExpired": "Pro další používání Nova Campus se prosím znovu přihlaste.",
+    "logoutConfirmTitle": "Odhlásit se z Nova Campus?",
+    "logoutConfirmDescription": "Pro používání Nova Campus se budete muset znovu přihlásit. Opravdu chcete pokračovat?",
+    "aboutSubtitle": "Informace a diagnostické nástroje pro Nova Campus.",
+    "personalizationDescription": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
+    "organizationSubtitle": "Vaše instituce, co poskytuje a kam míří vaše data.",
+    "statusConnected": "Kampus připojen",
+    "providesTitle": "Co poskytuje vaše instituce",
+    "providesPaused": "Nyní pozastaveno — server instituce je nedostupný.",
+    "transcriptionDescription": "Nahrávka putuje na server vaší instituce, který z ní udělá text.",
+    "rewritingDescription": "Text a zvolený styl putují na server vaší instituce, který text přepíše.",
+    "vocabularyDescription": "Termíny instituce i vaše vlastní pomáhají rozpoznávání i přepisu psát je správně.",
+    "formattingDescription": "Pravidla instituce i vaše vlastní se uplatní při každém přepisu.",
+    "dataOnServer": "Server instituce",
+    "dataNote": "Server vaší instituce počítá, kolik přepisů a úprav denně provedete. Jejich obsah neuchovává.",
+    "aiSkillsPrivacyOffline": "Nova Commands běží na serveru vaší instituce, který je nyní nedostupný.",
+    "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

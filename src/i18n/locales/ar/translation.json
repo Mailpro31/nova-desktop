@@ -948,7 +948,7 @@
         "resent": "أُعيد إرسال الرمز",
         "resendCooldown": "إعادة الإرسال بعد {{seconds}} ث",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "الوصول غير متاح. تواصل مع المسؤول.",
         "digitLabel": "الرقم {{position}} من الرمز"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "الدفعة",
       "groups": "مجموعاتك",
       "logout": "تسجيل الخروج",
-      "logoutConfirmTitle": "تسجيل الخروج من Nova Campus؟",
-      "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام Nova Campus. هل أنت متأكد؟",
+      "logoutConfirmTitle": "تسجيل الخروج من مؤسستك؟",
+      "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام ما توفره مؤسستك. هل أنت متأكد؟",
       "logoutConfirmButton": "تسجيل الخروج",
       "refresh": "تحديث",
       "checking": "جارٍ التحقق من الاتصال…"
@@ -988,7 +988,7 @@
       "network": "تعذّر الوصول إلى الخادم. تحقق من العنوان ومن اتصالك."
     },
     "settings": {
-      "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova Campus.",
+      "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova.",
       "shortcuts": {
         "title": "اختصارات لوحة المفاتيح",
         "description": "اضبط طريقة بدء الإملاء"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "نسخ ملف صوتي",
-      "description": "أفلت ملفًا صوتيًا لنسخه عبر خادم Nova Campus.",
+      "description": "أفلت ملفًا صوتيًا لتفريغه عبر خادم مؤسستك.",
       "actionButton": "نسخ ملف صوتي",
       "dropzone": "أفلت تسجيلًا صوتيًا هنا أو انقر للاستعراض",
       "supportedFormats": "الصيغ المدعومة: WAV وMP3 وM4A وOGG",
@@ -1076,9 +1076,9 @@
       "error": "تعذّر نسخ الملف الصوتي."
     },
     "sessionExpiredTitle": "انتهت الجلسة",
-    "sessionExpired": "يُرجى تسجيل الدخول مجددًا لمواصلة استخدام Nova Campus.",
+    "sessionExpired": "سجّل الدخول مجددًا لمواصلة استخدام ما توفره مؤسستك.",
     "serverUnreachableTitle": "تعذّر الوصول إلى الخادم",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "خادم مؤسستك غير متاح مؤقتًا. يواصل Nova المعالجة محليًا.",
     "managedBy": "تُديره {{organization}}",
     "roles": {
       "student": "طالب",
@@ -1089,7 +1089,7 @@
       "manager": "مدير"
     },
     "status": {
-      "connected": "الحرم متصل",
+      "connected": "المؤسسة متصلة",
       "local": "Nova Local نشط",
       "localActive": "Nova Local نشط"
     },
@@ -1113,28 +1113,28 @@
     },
     "organization": {
       "title": "المؤسسة",
-      "subtitle": "مؤسستك، وما تقدّمه، وإلى أين تذهب بياناتك.",
+      "subtitle": "مؤسستك، وما توفره، وإلى أين تذهب بياناتك.",
       "connection": "الاتصال",
       "managedBy": "تُدار بواسطة {{organization}}",
       "identityTitle": "الهوية"
     },
     "provides": {
-      "title": "ما تقدّمه مؤسستك",
+      "title": "ما توفره مؤسستك",
       "transcription": {
         "title": "التعرّف على الكلام",
         "description": "يُرسل تسجيلك إلى خادم مؤسستك الذي يحوّله إلى نص."
       },
       "rewriting": {
         "title": "أساليب الكتابة",
-        "description": "يُرسل نصك والأسلوب المختار إلى خادم مؤسستك الذي يعيد صياغته."
+        "description": "يُرسل نصك والنمط المحدد إلى خادم مؤسستك الذي يعيد صياغته."
       },
       "vocabulary": {
         "title": "مفردات مشتركة",
-        "description": "المصطلحات التي تضيفها مؤسستك ومصطلحاتك تساعد على كتابتها بشكل صحيح."
+        "description": "تساعد المصطلحات التي تضيفها مؤسستك، إلى جانب مصطلحاتك، على التعرّف عليها وإعادة صياغتها بشكل صحيح."
       },
       "formatting": {
         "title": "قواعد التنسيق",
-        "description": "تُطبَّق قواعد مؤسستك وقواعدك في كل إعادة صياغة."
+        "description": "تُطبَّق القواعد التي تحددها مؤسستك، إلى جانب قواعدك، على كل إعادة صياغة."
       },
       "paused": "متوقف مؤقتًا — تعذّر الوصول إلى خادم مؤسستك."
     },
@@ -1151,8 +1151,8 @@
       "recordings": "التسجيلات",
       "appName": "اسم التطبيق في المقدمة",
       "onDevice": "هذا الجهاز",
-      "onCampus": "خادم المؤسسة",
-      "note": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة يوميًا. ولا يحتفظ بمحتواها."
+      "note": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة التي تجريها يوميًا، ولا يحتفظ بمحتواها.",
+      "onServer": "خادم المؤسسة"
     },
     "updates": {
       "title": "جديد من مؤسستك",
@@ -1192,8 +1192,8 @@
       "choose": "اختر أمرًا",
       "review": "راجع النتيجة قبل أن يتغيّر أي شيء"
     },
-    "privacy": "تتم المعالجة عبر اتصالك بـ Campus.",
-    "privacyOffline": "تعمل Nova Commands على خادم مؤسستك، وهو غير متاح الآن."
+    "privacy": "تمت المعالجة عبر الاتصال بمؤسستك.",
+    "privacyOffline": "تعمل Nova Commands على خادم مؤسستك، وهو غير متاح حاليًا."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "حدّد نصًا قبل فتح Nova.",
       "unsupported": "‏Nova Commands متاحة على Windows فقط في الوقت الحالي.",
       "targetChanged": "لم يعد التطبيق الأصلي نشطًا. انسخ النتيجة بدلًا من ذلك.",
-      "offline": "تتطلب AI Skills اتصالًا بـ Campus.",
+      "offline": "تتطلب Nova Commands اتصالاً بمؤسستك.",
       "failed": "لم تتمكن Nova من معالجة هذا الطلب.",
       "emptyResult": "أعادت Nova نتيجة فارغة.",
       "busyTitle": "قيد التنفيذ بالفعل",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "لا يوجد نص محدّد",
       "unsupportedTitle": "غير متاح هنا",
       "targetChangedTitle": "تغيّرت النافذة",
-      "offlineTitle": "‏Campus غير متاح",
+      "offlineTitle": "المؤسسة غير متاحة",
       "failedTitle": "فشل الأمر",
       "emptyResultTitle": "لا شيء لعرضه"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "‏Nova جاهزة."
-      },
-      "campusLocal": {
-        "title": "‏Nova Local نشط",
-        "detail": "{{server}} لا يستجيب — يستمر الإملاء محليًا، وميزات الذكاء الاصطناعي متوقفة مؤقتًا.",
-        "unknownServer": "خادم المؤسسة"
       },
       "permissionsNeeded": {
         "title": "مطلوب الوصول إلى الميكروفون",
@@ -1288,7 +1283,12 @@
         "title": "تعذّر اللصق",
         "detail": "إملاؤك موجود في الحافظة."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "‏Nova Local نشط",
+        "detail": "{{server}} لا يستجيب — يستمر الإملاء محليًا، وميزات الذكاء الاصطناعي متوقفة مؤقتًا.",
+        "unknownServer": "خادم المؤسسة"
+      },
+      "organizationSignedOut": {
         "title": "تم تسجيل خروجك من مؤسستك",
         "detail": "يواصل Nova العمل على هذا الكمبيوتر في وضع Personal. أعد ربط مؤسستك من الإعدادات."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "آخر إملاء"
     },
     "engine": {
-      "campus": "خادم مؤسستك",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "خادم مؤسستك"
     },
     "checklist": {
       "title": "البداية",
-      "campus": "تم ربط حساب Campus",
       "voice": "الصوت جاهز",
       "firstDictation": "أول إملاء",
       "style": "جرّب أسلوب كتابة",
       "aiSkill": "استخدم أول AI Skill",
       "done": "تم",
-      "todo": "متبقٍ"
+      "todo": "متبقٍ",
+      "organization": "تم ربط حساب المؤسسة"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "تتطلب مؤسستك طريقة تسجيل دخول لا يدعمها هذا الإصدار."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "سجّل الدخول مجددًا لمواصلة استخدام ما توفره مؤسستك.",
-    "logoutConfirmTitle": "تسجيل الخروج من مؤسستك؟",
-    "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام ما توفره مؤسستك. هل أنت متأكد؟",
-    "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova.",
+  "educationWording": {
+    "sessionExpired": "يُرجى تسجيل الدخول مجددًا لمواصلة استخدام Nova Campus.",
+    "logoutConfirmTitle": "تسجيل الخروج من Nova Campus؟",
+    "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام Nova Campus. هل أنت متأكد؟",
+    "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova Campus.",
     "personalizationDescription": "اضبط مظهر Nova وطريقة التفاعل معه دون تغيير سياسات مؤسستك.",
-    "organizationSubtitle": "مؤسستك، وما توفره، وإلى أين تذهب بياناتك.",
-    "statusConnected": "المؤسسة متصلة",
-    "providesTitle": "ما توفره مؤسستك",
+    "organizationSubtitle": "مؤسستك، وما تقدّمه، وإلى أين تذهب بياناتك.",
+    "statusConnected": "الحرم متصل",
+    "providesTitle": "ما تقدّمه مؤسستك",
     "providesPaused": "متوقف مؤقتًا — تعذّر الوصول إلى خادم مؤسستك.",
     "transcriptionDescription": "يُرسل تسجيلك إلى خادم مؤسستك الذي يحوّله إلى نص.",
-    "rewritingDescription": "يُرسل نصك والنمط المحدد إلى خادم مؤسستك الذي يعيد صياغته.",
-    "vocabularyDescription": "تساعد المصطلحات التي تضيفها مؤسستك، إلى جانب مصطلحاتك، على التعرّف عليها وإعادة صياغتها بشكل صحيح.",
-    "formattingDescription": "تُطبَّق القواعد التي تحددها مؤسستك، إلى جانب قواعدك، على كل إعادة صياغة.",
+    "rewritingDescription": "يُرسل نصك والأسلوب المختار إلى خادم مؤسستك الذي يعيد صياغته.",
+    "vocabularyDescription": "المصطلحات التي تضيفها مؤسستك ومصطلحاتك تساعد على كتابتها بشكل صحيح.",
+    "formattingDescription": "تُطبَّق قواعد مؤسستك وقواعدك في كل إعادة صياغة.",
     "dataOnServer": "خادم المؤسسة",
-    "dataNote": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة التي تجريها يوميًا، ولا يحتفظ بمحتواها.",
-    "aiSkillsPrivacyOffline": "تعمل AI Skills على خادم مؤسستك، وهو غير متاح حاليًا.",
+    "dataNote": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة يوميًا. ولا يحتفظ بمحتواها.",
+    "aiSkillsPrivacyOffline": "تعمل Nova Commands على خادم مؤسستك، وهو غير متاح الآن.",
     "notInOrganization": "حساب Microsoft هذا لا ينتمي إلى مؤسستك.",
-    "codeForbidden": "الوصول غير متاح. تواصل مع المسؤول."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }
