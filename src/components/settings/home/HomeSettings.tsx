@@ -215,12 +215,12 @@ const HeroAction: React.FC<{
     );
   }
 
-  if (situation === "ready" || situation === "campusLocal") {
+  if (situation === "ready" || situation === "organizationLocal") {
     return (
       <p className="mt-3 flex flex-wrap items-center justify-center gap-2 text-sm text-text-secondary">
         {shortcut && <KeyboardShortcut binding={shortcut} />}
         <span>{t("home.hero.dictateHint")}</span>
-        {situation === "campusLocal" && (
+        {situation === "organizationLocal" && (
           // Un repli muet se lit comme un choix. Le poste est enrôlé : il doit
           // dire quel serveur ne répond pas, sinon personne ne sait qu'il y a
           // quelque chose à réparer.
@@ -233,9 +233,10 @@ const HeroAction: React.FC<{
               ? // Suspendu, rien n'est en panne : nommer un serveur « hors
                 // ligne » enverrait chercher un problème réseau qui n'existe pas.
                 t("organization.suspended.title")
-              : t("home.hero.campusLocal.detail", {
+              : t("home.hero.organizationLocal.detail", {
                   server:
-                    serverName ?? t("home.hero.campusLocal.unknownServer"),
+                    serverName ??
+                    t("home.hero.organizationLocal.unknownServer"),
                 })}
           </span>
         )}

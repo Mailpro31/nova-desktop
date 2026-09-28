@@ -11,8 +11,8 @@ const HEALTHY = {
   microphoneName: "Built-in Microphone",
   needsModelDownload: false,
   shortcut: "Ctrl+Space",
-  campusLocal: false,
-  campusSignedOut: false,
+  organizationLocal: false,
+  organizationSignedOut: false,
 };
 
 const ALL_SITUATIONS: HeroSituation[] = [
@@ -24,8 +24,8 @@ const ALL_SITUATIONS: HeroSituation[] = [
   "microphoneMissing",
   "modelMissing",
   "shortcutMissing",
-  "campusSignedOut",
-  "campusLocal",
+  "organizationSignedOut",
+  "organizationLocal",
   "ready",
 ];
 
@@ -68,8 +68,8 @@ describe("situation du héros", () => {
   test("campus hors ligne dégrade sans bloquer", () => {
     // La dictée fonctionne toujours en local : ce n'est pas un empêchement,
     // donc jamais un écran d'erreur.
-    expect(deriveSituation({ ...HEALTHY, campusLocal: true })).toBe(
-      "campusLocal",
+    expect(deriveSituation({ ...HEALTHY, organizationLocal: true })).toBe(
+      "organizationLocal",
     );
   });
 
@@ -78,7 +78,7 @@ describe("situation du héros", () => {
     expect(
       deriveSituation({
         ...HEALTHY,
-        campusLocal: true,
+        organizationLocal: true,
         microphoneName: null,
       }),
     ).toBe("microphoneMissing");
@@ -157,8 +157,8 @@ describe("libellés du héros", () => {
 
 describe("déconnecté de l'organisation", () => {
   test("dégrade sans bloquer : la dictée continue en Personal", () => {
-    expect(deriveSituation({ ...HEALTHY, campusSignedOut: true })).toBe(
-      "campusSignedOut",
+    expect(deriveSituation({ ...HEALTHY, organizationSignedOut: true })).toBe(
+      "organizationSignedOut",
     );
   });
 
@@ -166,7 +166,7 @@ describe("déconnecté de l'organisation", () => {
     expect(
       deriveSituation({
         ...HEALTHY,
-        campusSignedOut: true,
+        organizationSignedOut: true,
         microphoneName: null,
       }),
     ).toBe("microphoneMissing");

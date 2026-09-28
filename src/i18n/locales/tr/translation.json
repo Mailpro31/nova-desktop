@@ -948,7 +948,7 @@
         "resent": "Kod yeniden gönderildi",
         "resendCooldown": "{{seconds}} sn sonra yeniden gönder",
         "invalid": "Incorrect or expired code.",
-        "forbidden": "Seats or devices exhausted. Contact your institution administrator.",
+        "forbidden": "Erişim kullanılamıyor. Yöneticinize başvurun.",
         "digitLabel": "Kodun {{position}}. hanesi"
       },
       "ready": {
@@ -978,8 +978,8 @@
       "cohort": "Dönem",
       "groups": "Gruplarınız",
       "logout": "Oturumu kapat",
-      "logoutConfirmTitle": "Nova Campus oturumu kapatılsın mı?",
-      "logoutConfirmDescription": "Nova Campus'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",
+      "logoutConfirmTitle": "Kuruluşunuzdan çıkış yapılsın mı?",
+      "logoutConfirmDescription": "Kuruluşunuzun sunduklarını kullanmak için yeniden oturum açmanız gerekecek. Emin misiniz?",
       "logoutConfirmButton": "Oturumu kapat",
       "refresh": "Yenile",
       "checking": "Bağlantı kontrol ediliyor…"
@@ -988,7 +988,7 @@
       "network": "Sunucuya ulaşılamadı. Adresi ve bağlantını kontrol et."
     },
     "settings": {
-      "aboutSubtitle": "Nova Campus için bilgiler ve sorun giderme araçları.",
+      "aboutSubtitle": "Nova için bilgiler ve sorun giderme araçları.",
       "shortcuts": {
         "title": "Klavye kısayolları",
         "description": "Dikteyi nasıl başlatacağını ayarla"
@@ -1067,7 +1067,7 @@
     },
     "files": {
       "title": "Bir dosyayı dök",
-      "description": "Nova Campus sunucusuyla metne dökmek için bir ses dosyası bırak.",
+      "description": "Kuruluşunuzun sunucusuyla yazıya dökmek için bir ses dosyası bırakın.",
       "actionButton": "Bir dosyayı dök",
       "dropzone": "Ses kaydını buraya bırak ya da göz atmak için tıkla",
       "supportedFormats": "Desteklenen biçimler: WAV, MP3, M4A, OGG",
@@ -1076,9 +1076,9 @@
       "error": "Ses dosyası metne dökülemedi."
     },
     "sessionExpiredTitle": "Oturumun süresi doldu",
-    "sessionExpired": "Nova Campus'ı kullanmaya devam etmek için lütfen yeniden oturum aç.",
+    "sessionExpired": "Kuruluşunuzun sunduklarını kullanmaya devam etmek için yeniden oturum açın.",
     "serverUnreachableTitle": "Sunucuya ulaşılamıyor",
-    "serverUnreachable": "The Nova Campus server is unavailable and no local fallback was available.",
+    "serverUnreachable": "Kuruluşunuzun sunucusuna geçici olarak ulaşılamıyor. Nova yerel işlemeye devam ediyor.",
     "managedBy": "{{organization}} tarafından yönetiliyor",
     "roles": {
       "student": "Öğrenci",
@@ -1089,7 +1089,7 @@
       "manager": "Yönetici"
     },
     "status": {
-      "connected": "Kampüs bağlı",
+      "connected": "Kuruluş bağlı",
       "local": "Nova Local etkin",
       "localActive": "Nova Local etkin"
     },
@@ -1097,14 +1097,14 @@
       "browserHelp": "Tarayıcında oturum açmayı tamamla. Microsoft isterse bu kodu kullan.",
       "expired": "Microsoft oturum açma isteğinin süresi doldu. Baştan başla.",
       "failed": "Oturum açma tamamlanmadı. Lütfen tekrar deneyin.",
-      "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
+      "notInOrganization": "Bu Microsoft hesabı kuruluşunuza ait değil.",
       "accessRevoked": "Erişiminiz artık kullanılamıyor. Yöneticinizle iletişime geçin."
     },
     "sso": {
       "connect": "{{provider}} ile devam et"
     },
     "personalization": {
-      "description": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
+      "description": "Kuruluşunuzun kurallarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarlayın.",
       "orb": "Nova küresi",
       "orbColor": "Küre rengi",
       "orbDescription": "Nova'nın dock'unda ve kayıt göstergesinde kullanılan vurgu rengini seç.",
@@ -1113,30 +1113,30 @@
     },
     "organization": {
       "title": "Kuruluş",
-      "subtitle": "Kurumunuz, sağladıkları ve verilerinizin gittiği yer.",
+      "subtitle": "Kuruluşunuz, sundukları ve verilerinizin nereye gittiği.",
       "connection": "Bağlantı",
       "managedBy": "{{organization}} tarafından yönetiliyor",
       "identityTitle": "Kimlik"
     },
     "provides": {
-      "title": "Kurumunuzun sağladıkları",
+      "title": "Kuruluşunuzun sundukları",
       "transcription": {
         "title": "Konuşma tanıma",
-        "description": "Kaydınız kurumunuzun sunucusuna gider ve metne dönüştürülür."
+        "description": "Kaydınız, onu metne dönüştüren kuruluş sunucunuza gönderilir."
       },
       "rewriting": {
         "title": "Yazım biçemleri",
-        "description": "Metniniz ve seçtiğiniz biçem kurumunuzun sunucusuna gider ve yeniden yazılır."
+        "description": "Metniniz ve seçilen stil, metni yeniden yazan kuruluş sunucunuza gönderilir."
       },
       "vocabulary": {
         "title": "Ortak sözlük",
-        "description": "Kurumunuzun ve sizin eklediğiniz terimler, doğru yazılmalarına yardımcı olur."
+        "description": "Kuruluşunuzun eklediği terimler, sizinkilerle birlikte, tanıma ve yeniden yazmanın bunları doğru yazmasına yardımcı olur."
       },
       "formatting": {
         "title": "Biçimlendirme kuralları",
-        "description": "Kurumunuzun ve sizin kurallarınız her yeniden yazımda uygulanır."
+        "description": "Kuruluşunuzun belirlediği kurallar, sizinkilerle birlikte, her yeniden yazmada uygulanır."
       },
-      "paused": "Şu anda duraklatıldı — kurum sunucusuna ulaşılamıyor."
+      "paused": "Şu anda duraklatıldı — kuruluşunuzun sunucusuna ulaşılamıyor."
     },
     "offline": {
       "title": "Sunucuya ulaşılamadığında",
@@ -1151,8 +1151,8 @@
       "recordings": "Kayıtlar",
       "appName": "Öndeki uygulamanın adı",
       "onDevice": "Bu aygıt",
-      "onCampus": "Kurum sunucusu",
-      "note": "Kurumunuzun sunucusu her gün kaç dikte ve yeniden yazım yaptığınızı sayar. İçeriklerini saklamaz."
+      "note": "Kuruluşunuzun sunucusu günde kaç transkripsiyon ve yeniden yazma yaptığınızı sayar. İçeriklerini saklamaz.",
+      "onServer": "Kuruluş sunucusu"
     },
     "updates": {
       "title": "Kurumunuzdan yenilikler",
@@ -1192,8 +1192,8 @@
       "choose": "Bir komut seçin",
       "review": "Bir şey değişmeden önce sonucu gözden geçirin"
     },
-    "privacy": "Campus bağlantınız üzerinden işlenir.",
-    "privacyOffline": "Nova Commands kurumunuzun sunucusunda çalışır; şu anda erişilemiyor."
+    "privacy": "Kuruluşunuzla olan bağlantı üzerinden işlendi.",
+    "privacyOffline": "Nova Commands, şu anda ulaşılamayan kuruluş sunucunuzda çalışır."
   },
   "novaCommands": {
     "title": "Nova Commands",
@@ -1233,7 +1233,7 @@
       "noSelection": "Nova'yı açmadan önce biraz metin seçin.",
       "unsupported": "Nova Commands şimdilik yalnızca Windows'ta kullanılabilir.",
       "targetChanged": "Özgün uygulama artık etkin değil. Bunun yerine sonucu kopyalayın.",
-      "offline": "AI Skills için Campus bağlantısı gerekir.",
+      "offline": "Nova Commands, kuruluşunuzla bir bağlantı gerektirir.",
       "failed": "Nova bu isteği işleyemedi.",
       "emptyResult": "Nova boş bir sonuç döndürdü.",
       "busyTitle": "Zaten çalışıyor",
@@ -1241,7 +1241,7 @@
       "noSelectionTitle": "Metin seçilmedi",
       "unsupportedTitle": "Burada kullanılamaz",
       "targetChangedTitle": "Pencere değişti",
-      "offlineTitle": "Campus erişilemiyor",
+      "offlineTitle": "Kuruluşa ulaşılamıyor",
       "failedTitle": "Komut başarısız",
       "emptyResultTitle": "Gösterilecek bir şey yok"
     },
@@ -1254,11 +1254,6 @@
       },
       "ready": {
         "title": "Nova hazır."
-      },
-      "campusLocal": {
-        "title": "Nova Local etkin",
-        "detail": "{{server}} yanıt vermiyor — dikte yerel olarak sürüyor, yapay zekâ özellikleri duraklatıldı.",
-        "unknownServer": "kuruluş sunucusu"
       },
       "permissionsNeeded": {
         "title": "Mikrofon erişimi gerekli",
@@ -1288,7 +1283,12 @@
         "title": "Yapıştırılamadı",
         "detail": "Dikteniz panoda."
       },
-      "campusSignedOut": {
+      "organizationLocal": {
+        "title": "Nova Local etkin",
+        "detail": "{{server}} yanıt vermiyor — dikte yerel olarak sürüyor, yapay zekâ özellikleri duraklatıldı.",
+        "unknownServer": "kuruluş sunucusu"
+      },
+      "organizationSignedOut": {
         "title": "Kuruluşunuzdan çıkış yapıldı",
         "detail": "Nova bu bilgisayarda Personal modunda çalışmaya devam ediyor. Kuruluşunuzu ayarlardan yeniden bağlayın."
       }
@@ -1302,19 +1302,19 @@
       "lastDictation": "Son dikte"
     },
     "engine": {
-      "campus": "Kurumunuzun sunucusu",
       "local-fallback": "Nova Local",
-      "local": "Nova Local"
+      "local": "Nova Local",
+      "organization": "Kuruluşunuzun sunucusu"
     },
     "checklist": {
       "title": "Başlarken",
-      "campus": "Campus hesabı bağlandı",
       "voice": "Ses hazır",
       "firstDictation": "İlk dikte",
       "style": "Bir yazım biçemi deneyin",
       "aiSkill": "İlk AI Skill'inizi kullanın",
       "done": "Tamam",
-      "todo": "Yapılacak"
+      "todo": "Yapılacak",
+      "organization": "Kuruluş hesabı bağlandı"
     }
   },
   "styles": {
@@ -1548,24 +1548,24 @@
       "authMethodUnavailable": "Kuruluşunuz, bu sürümün desteklemediği bir oturum açma yöntemi gerektiriyor."
     }
   },
-  "organizationWording": {
-    "sessionExpired": "Kuruluşunuzun sunduklarını kullanmaya devam etmek için yeniden oturum açın.",
-    "logoutConfirmTitle": "Kuruluşunuzdan çıkış yapılsın mı?",
-    "logoutConfirmDescription": "Kuruluşunuzun sunduklarını kullanmak için yeniden oturum açmanız gerekecek. Emin misiniz?",
-    "aboutSubtitle": "Nova için bilgiler ve sorun giderme araçları.",
-    "personalizationDescription": "Kuruluşunuzun kurallarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarlayın.",
-    "organizationSubtitle": "Kuruluşunuz, sundukları ve verilerinizin nereye gittiği.",
-    "statusConnected": "Kuruluş bağlı",
-    "providesTitle": "Kuruluşunuzun sundukları",
-    "providesPaused": "Şu anda duraklatıldı — kuruluşunuzun sunucusuna ulaşılamıyor.",
-    "transcriptionDescription": "Kaydınız, onu metne dönüştüren kuruluş sunucunuza gönderilir.",
-    "rewritingDescription": "Metniniz ve seçilen stil, metni yeniden yazan kuruluş sunucunuza gönderilir.",
-    "vocabularyDescription": "Kuruluşunuzun eklediği terimler, sizinkilerle birlikte, tanıma ve yeniden yazmanın bunları doğru yazmasına yardımcı olur.",
-    "formattingDescription": "Kuruluşunuzun belirlediği kurallar, sizinkilerle birlikte, her yeniden yazmada uygulanır.",
-    "dataOnServer": "Kuruluş sunucusu",
-    "dataNote": "Kuruluşunuzun sunucusu günde kaç transkripsiyon ve yeniden yazma yaptığınızı sayar. İçeriklerini saklamaz.",
-    "aiSkillsPrivacyOffline": "AI Skills, şu anda ulaşılamayan kuruluş sunucunuzda çalışır.",
-    "notInOrganization": "Bu Microsoft hesabı kuruluşunuza ait değil.",
-    "codeForbidden": "Erişim kullanılamıyor. Yöneticinize başvurun."
+  "educationWording": {
+    "sessionExpired": "Nova Campus'ı kullanmaya devam etmek için lütfen yeniden oturum aç.",
+    "logoutConfirmTitle": "Nova Campus oturumu kapatılsın mı?",
+    "logoutConfirmDescription": "Nova Campus'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",
+    "aboutSubtitle": "Nova Campus için bilgiler ve sorun giderme araçları.",
+    "personalizationDescription": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
+    "organizationSubtitle": "Kurumunuz, sağladıkları ve verilerinizin gittiği yer.",
+    "statusConnected": "Kampüs bağlı",
+    "providesTitle": "Kurumunuzun sağladıkları",
+    "providesPaused": "Şu anda duraklatıldı — kurum sunucusuna ulaşılamıyor.",
+    "transcriptionDescription": "Kaydınız kurumunuzun sunucusuna gider ve metne dönüştürülür.",
+    "rewritingDescription": "Metniniz ve seçtiğiniz biçem kurumunuzun sunucusuna gider ve yeniden yazılır.",
+    "vocabularyDescription": "Kurumunuzun ve sizin eklediğiniz terimler, doğru yazılmalarına yardımcı olur.",
+    "formattingDescription": "Kurumunuzun ve sizin kurallarınız her yeniden yazımda uygulanır.",
+    "dataOnServer": "Kurum sunucusu",
+    "dataNote": "Kurumunuzun sunucusu her gün kaç dikte ve yeniden yazım yaptığınızı sayar. İçeriklerini saklamaz.",
+    "aiSkillsPrivacyOffline": "Nova Commands kurumunuzun sunucusunda çalışır; şu anda erişilemiyor.",
+    "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
   }
 }

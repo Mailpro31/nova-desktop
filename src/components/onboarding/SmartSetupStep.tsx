@@ -5,7 +5,10 @@ import { AlertTriangle, Check } from "lucide-react";
 import OnboardingStepShell from "./OnboardingStepShell";
 import { formatKeyCombination } from "../../lib/utils/keyboard";
 import { useOsType } from "../../hooks/useOsType";
-import { isBusinessMode, isOrganizationMode } from "@/lib/mode";
+import { isOrganizationMode } from "@/lib/mode";
+import { useOrganizationContext } from "@/hooks/useOrganizationContext";
+import type { OrganizationType } from "@/lib/organization/model";
+import { wordingKey } from "@/lib/organization/wording";
 import type { SystemReadiness } from "../../hooks/useSystemReadiness";
 
 interface SmartSetupStepProps {
@@ -47,7 +50,10 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
   const { t } = useTranslation();
   const osType = useOsType();
   const organizationMode = isOrganizationMode();
-  const businessMode = isBusinessMode();
+  // Les mots suivent ce que le serveur a annoncé, jamais l'édition :
+  // `isBusinessMode` répond faux tant que rien n'est annoncé, et s'en
+  // servir donnait le registre école à un tenant dont on ne savait rien.
+  const { organization } = useOrganizationContext();
 
   const rows: Row[] = [
     {
@@ -58,7 +64,12 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
     },
     {
       label: t("onboarding.smartSetup.row.engine"),
-      value: engineLabel(readiness, organizationMode, businessMode, t),
+      value: engineLabel(
+        readiness,
+        organizationMode,
+        organization?.type ?? null,
+        t,
+      ),
       // « En cours de vérification » n'est pas un avertissement : tant que la
       // sonde n'a pas répondu, on n'annonce ni succès ni repli.
       tone: readiness.engine === "degraded" ? "warn" : "ok",
@@ -131,19 +142,17 @@ export const SmartSetupStep: React.FC<SmartSetupStepProps> = ({
 function engineLabel(
   readiness: SystemReadiness,
   organizationMode: boolean,
-  businessMode: boolean,
+  organizationType: OrganizationType | null,
   t: (key: string) => string,
 ): string {
   if (organizationMode) {
     if (readiness.engineLabel === "campus") {
-      return businessMode
-        ? t("organizationConnection.connected")
-        : t("organization.status.connected");
+      return t(wordingKey("statusConnected", organizationType));
     }
     if (readiness.engineLabel === "local-fallback") {
-      return businessMode
-        ? t("organizationConnection.local")
-        : t("organization.status.localActive");
+      // Le repli local se dit pareil partout : c'est Nova qui tourne
+      // sur le poste, pas une propriété de l'organisation.
+      return t("organization.status.localActive");
     }
     // Sonde encore en cours, ou session absente : on le dit plutôt que de
     // laisser croire à un repli local qui n'a pas eu lieu.

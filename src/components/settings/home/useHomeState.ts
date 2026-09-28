@@ -37,8 +37,8 @@ export type HeroSituation =
   | "microphoneMissing"
   | "modelMissing"
   | "shortcutMissing"
-  | "campusSignedOut"
-  | "campusLocal"
+  | "organizationSignedOut"
+  | "organizationLocal"
   | "ready";
 
 export interface ChecklistItem {
@@ -123,17 +123,17 @@ export function useHomeState(): HomeState {
     shortcut: readiness.shortcut,
     // Suspendu ou hors ligne, la dictée passe par Nova Local : dégradé, jamais
     // bloquant.
-    campusLocal:
+    organizationLocal:
       organizationMode &&
       (connection === "local" || readiness.organizationSuspended),
-    campusSignedOut: readiness.organizationSignedOut,
+    organizationSignedOut: readiness.organizationSignedOut,
   });
 
   const checklist: ChecklistItem[] = [];
   if (organizationMode) {
     checklist.push({
       id: "campus_connected",
-      labelKey: "home.checklist.campus",
+      labelKey: "home.checklist.organization",
       done: session !== null,
     });
   }
@@ -208,9 +208,9 @@ interface SituationInput {
   microphoneName: string | null;
   needsModelDownload: boolean;
   shortcut: string | null;
-  campusLocal: boolean;
+  organizationLocal: boolean;
   /** Poste Organization sans session : la dictée continue en Personal. */
-  campusSignedOut: boolean;
+  organizationSignedOut: boolean;
 }
 
 /** Exporté pour être testable sans monter React ni la couche Tauri. */
@@ -231,9 +231,9 @@ export function deriveSituation(input: SituationInput): HeroSituation {
   if (!input.shortcut) return "shortcutMissing";
   // Déconnecté de l'organisation : Nova fonctionne en Personal, et il y a une
   // action à proposer — se reconnecter. Dégradé, jamais bloquant.
-  if (input.campusSignedOut) return "campusSignedOut";
+  if (input.organizationSignedOut) return "organizationSignedOut";
   // Dégradé, pas bloquant : la dictée fonctionne toujours en local.
-  if (input.campusLocal) return "campusLocal";
+  if (input.organizationLocal) return "organizationLocal";
   return "ready";
 }
 
@@ -246,7 +246,7 @@ const ORB_BY_SITUATION: Record<HeroSituation, OrbState> = {
   microphoneMissing: "attention",
   modelMissing: "attention",
   shortcutMissing: "attention",
-  campusSignedOut: "degraded",
-  campusLocal: "degraded",
+  organizationSignedOut: "degraded",
+  organizationLocal: "degraded",
   ready: "ready",
 };
