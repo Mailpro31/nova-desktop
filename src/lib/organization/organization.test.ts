@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
 import { resolveOrganizationConfig } from "@/lib/organizationConfig";
-import type { CampusConfig } from "@/lib/organizationSession";
+import type { OrganizationConfig } from "@/lib/organizationSession";
 import {
   can,
   CORE_CAPABILITIES,
@@ -18,7 +18,9 @@ import {
  * tests même si le code Organization restait intact — c'est le but.
  */
 
-function campusConfig(overrides: Partial<CampusConfig> = {}): CampusConfig {
+function campusConfig(
+  overrides: Partial<OrganizationConfig> = {},
+): OrganizationConfig {
   return {
     server_url: "https://nova.exemple.fr",
     organization: {
@@ -34,7 +36,7 @@ function campusConfig(overrides: Partial<CampusConfig> = {}): CampusConfig {
 
 /** Poste Campus tel qu'il tourne aujourd'hui : config d'établissement + profil. */
 function campusOrganizationContext(
-  config: CampusConfig | null = campusConfig(),
+  config: OrganizationConfig | null = campusConfig(),
   profile: { email: string; role: string; cohort: string } | null = null,
 ): OrganizationContext {
   return resolveOrganizationContext({

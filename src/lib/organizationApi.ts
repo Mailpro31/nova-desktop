@@ -113,7 +113,7 @@ export class OrganizationApi {
 
   async health(): Promise<HealthResponse> {
     const reachable = await invoke<boolean>(
-      "check_campus_server_reachability",
+      "check_organization_server_reachability",
       {
         serverUrl: this.baseUrl,
       },
@@ -129,7 +129,7 @@ export class OrganizationApi {
     machine: string,
   ): Promise<AuthRequestResponse> {
     try {
-      return await invoke<AuthRequestResponse>("request_campus_auth", {
+      return await invoke<AuthRequestResponse>("request_organization_auth", {
         serverUrl: this.baseUrl,
         email,
         machine,
@@ -145,7 +145,7 @@ export class OrganizationApi {
     machine: string,
   ): Promise<AuthVerifyResponse> {
     try {
-      return await invoke<AuthVerifyResponse>("verify_campus_auth", {
+      return await invoke<AuthVerifyResponse>("verify_organization_auth", {
         serverUrl: this.baseUrl,
         email,
         code,
@@ -156,39 +156,51 @@ export class OrganizationApi {
     }
   }
 
-  async startMicrosoftAuth(machine: string): Promise<CampusEntraStartResponse> {
+  async startMicrosoftAuth(
+    machine: string,
+  ): Promise<OrganizationEntraStartResponse> {
     try {
-      return await invoke<CampusEntraStartResponse>("start_campus_entra_auth", {
-        serverUrl: this.baseUrl,
-        machine,
-      });
+      return await invoke<OrganizationEntraStartResponse>(
+        "start_organization_entra_auth",
+        {
+          serverUrl: this.baseUrl,
+          machine,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async pollMicrosoftAuth(flowId: string): Promise<CampusEntraPollResponse> {
+  async pollMicrosoftAuth(
+    flowId: string,
+  ): Promise<OrganizationEntraPollResponse> {
     try {
-      return await invoke<CampusEntraPollResponse>("poll_campus_entra_auth", {
-        serverUrl: this.baseUrl,
-        flowId,
-      });
+      return await invoke<OrganizationEntraPollResponse>(
+        "poll_organization_entra_auth",
+        {
+          serverUrl: this.baseUrl,
+          flowId,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async getMe(): Promise<CampusProfile> {
+  async getMe(): Promise<OrganizationProfile> {
     try {
-      return await invoke<CampusProfile>("get_campus_me");
+      return await invoke<OrganizationProfile>("get_organization_me");
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async getVocabulary(): Promise<CampusVocabularyResponse> {
+  async getVocabulary(): Promise<OrganizationVocabularyResponse> {
     try {
-      return await invoke<CampusVocabularyResponse>("get_campus_vocabulary");
+      return await invoke<OrganizationVocabularyResponse>(
+        "get_organization_vocabulary",
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -197,12 +209,15 @@ export class OrganizationApi {
   async addDictionaryEntry(
     term: string,
     replacement: string,
-  ): Promise<CampusIdResponse> {
+  ): Promise<OrganizationIdResponse> {
     try {
-      return await invoke<CampusIdResponse>("add_campus_dictionary_entry", {
-        term,
-        replacement,
-      });
+      return await invoke<OrganizationIdResponse>(
+        "add_organization_dictionary_entry",
+        {
+          term,
+          replacement,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -210,7 +225,7 @@ export class OrganizationApi {
 
   async deleteDictionaryEntry(entryId: number): Promise<void> {
     try {
-      await invoke("delete_campus_dictionary_entry", {
+      await invoke("delete_organization_dictionary_entry", {
         entryId,
       });
     } catch (err) {
@@ -221,12 +236,15 @@ export class OrganizationApi {
   async learnDictionary(
     heard: string,
     corrected: string,
-  ): Promise<CampusLearnResponse> {
+  ): Promise<OrganizationLearnResponse> {
     try {
-      return await invoke<CampusLearnResponse>("learn_campus_dictionary", {
-        heard,
-        corrected,
-      });
+      return await invoke<OrganizationLearnResponse>(
+        "learn_organization_dictionary",
+        {
+          heard,
+          corrected,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -234,17 +252,22 @@ export class OrganizationApi {
 
   async exportDictionary(): Promise<string> {
     try {
-      return await invoke<string>("export_campus_dictionary");
+      return await invoke<string>("export_organization_dictionary");
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async importDictionary(csvContent: string): Promise<CampusImportResponse> {
+  async importDictionary(
+    csvContent: string,
+  ): Promise<OrganizationImportResponse> {
     try {
-      return await invoke<CampusImportResponse>("import_campus_dictionary", {
-        csvContent,
-      });
+      return await invoke<OrganizationImportResponse>(
+        "import_organization_dictionary",
+        {
+          csvContent,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -253,12 +276,15 @@ export class OrganizationApi {
   async analyzeDocument(
     textContent: string,
     filename?: string,
-  ): Promise<CampusAnalyzeResponse> {
+  ): Promise<OrganizationAnalyzeResponse> {
     try {
-      return await invoke<CampusAnalyzeResponse>("analyze_campus_document", {
-        textContent,
-        filename,
-      });
+      return await invoke<OrganizationAnalyzeResponse>(
+        "analyze_organization_document",
+        {
+          textContent,
+          filename,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -267,9 +293,9 @@ export class OrganizationApi {
   async addSnippet(
     trigger: string,
     content: string,
-  ): Promise<CampusIdResponse> {
+  ): Promise<OrganizationIdResponse> {
     try {
-      return await invoke<CampusIdResponse>("add_campus_snippet", {
+      return await invoke<OrganizationIdResponse>("add_organization_snippet", {
         trigger,
         content,
       });
@@ -280,7 +306,7 @@ export class OrganizationApi {
 
   async deleteSnippet(snippetId: number): Promise<void> {
     try {
-      await invoke("delete_campus_snippet", {
+      await invoke("delete_organization_snippet", {
         snippetId,
       });
     } catch (err) {
@@ -288,21 +314,24 @@ export class OrganizationApi {
     }
   }
 
-  async getFormattingRules(): Promise<CampusFormattingRulesResponse> {
+  async getFormattingRules(): Promise<OrganizationFormattingRulesResponse> {
     try {
-      return await invoke<CampusFormattingRulesResponse>(
-        "get_campus_formatting_rules",
+      return await invoke<OrganizationFormattingRulesResponse>(
+        "get_organization_formatting_rules",
       );
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async addFormattingRule(rule: string): Promise<CampusIdResponse> {
+  async addFormattingRule(rule: string): Promise<OrganizationIdResponse> {
     try {
-      return await invoke<CampusIdResponse>("add_campus_formatting_rule", {
-        rule,
-      });
+      return await invoke<OrganizationIdResponse>(
+        "add_organization_formatting_rule",
+        {
+          rule,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -310,7 +339,7 @@ export class OrganizationApi {
 
   async deleteFormattingRule(ruleId: number): Promise<void> {
     try {
-      await invoke("delete_campus_formatting_rule", {
+      await invoke("delete_organization_formatting_rule", {
         ruleId,
       });
     } catch (err) {
@@ -321,12 +350,15 @@ export class OrganizationApi {
   async executeCommand(
     instruction: string,
     text: string,
-  ): Promise<CampusCommandResponse> {
+  ): Promise<OrganizationCommandResponse> {
     try {
-      return await invoke<CampusCommandResponse>("execute_campus_command", {
-        instruction,
-        text,
-      });
+      return await invoke<OrganizationCommandResponse>(
+        "execute_organization_command",
+        {
+          instruction,
+          text,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -357,20 +389,25 @@ export class OrganizationApi {
   async runSkill(
     skillId: string,
     text: string,
-  ): Promise<CampusCommandResponse> {
+  ): Promise<OrganizationCommandResponse> {
     try {
-      return await invoke<CampusCommandResponse>("run_organization_skill", {
-        skillId,
-        text,
-      });
+      return await invoke<OrganizationCommandResponse>(
+        "run_organization_skill",
+        {
+          skillId,
+          text,
+        },
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
   }
 
-  async getAiSkills(): Promise<CampusAiSkillsResponse> {
+  async getAiSkills(): Promise<OrganizationAiSkillsResponse> {
     try {
-      return await invoke<CampusAiSkillsResponse>("get_campus_ai_skills");
+      return await invoke<OrganizationAiSkillsResponse>(
+        "get_organization_ai_skills",
+      );
     } catch (err) {
       throw parseCommandError(err);
     }
@@ -382,7 +419,7 @@ export class OrganizationApi {
   ): Promise<string> {
     try {
       const bytes = Array.from(fileBytes);
-      return await invoke<string>("transcribe_campus_audio_file", {
+      return await invoke<string>("transcribe_organization_audio_file", {
         fileBytes: bytes,
         filename,
       });
@@ -392,62 +429,62 @@ export class OrganizationApi {
   }
 }
 
-export interface CampusSharedDictEntry {
+export interface OrganizationSharedDictEntry {
   id: number;
   term: string;
   replacement: string;
 }
 
-export interface CampusPersonalDictEntry {
+export interface OrganizationPersonalDictEntry {
   id: number;
   term: string;
   replacement: string;
   source: string;
 }
 
-export interface CampusSnippetEntry {
+export interface OrganizationSnippetEntry {
   id: number;
   trigger: string;
   content: string;
 }
 
-export interface CampusVocabularyResponse {
-  shared: CampusSharedDictEntry[];
-  personal: CampusPersonalDictEntry[];
-  snippets: CampusSnippetEntry[];
+export interface OrganizationVocabularyResponse {
+  shared: OrganizationSharedDictEntry[];
+  personal: OrganizationPersonalDictEntry[];
+  snippets: OrganizationSnippetEntry[];
 }
 
-export interface CampusIdResponse {
+export interface OrganizationIdResponse {
   id: number;
 }
 
-export interface CampusLearnResponse {
+export interface OrganizationLearnResponse {
   learned: boolean;
 }
 
-export interface CampusImportResponse {
+export interface OrganizationImportResponse {
   imported: number;
 }
 
-export interface CampusAnalyzeResponse {
+export interface OrganizationAnalyzeResponse {
   terms_added: number;
 }
 
-export interface CampusRuleEntry {
+export interface OrganizationRuleEntry {
   id: number;
   rule: string;
 }
 
-export interface CampusFormattingRulesResponse {
-  shared: CampusRuleEntry[];
-  personal: CampusRuleEntry[];
+export interface OrganizationFormattingRulesResponse {
+  shared: OrganizationRuleEntry[];
+  personal: OrganizationRuleEntry[];
 }
 
-export interface CampusCommandResponse {
+export interface OrganizationCommandResponse {
   text: string;
 }
 
-export interface CampusEntraStartResponse {
+export interface OrganizationEntraStartResponse {
   flow_id: string;
   user_code: string;
   verification_uri: string;
@@ -457,13 +494,13 @@ export interface CampusEntraStartResponse {
   message: string;
 }
 
-export interface CampusEntraPollResponse {
+export interface OrganizationEntraPollResponse {
   status: "pending" | "complete" | "expired" | string;
   email?: string | null;
   retry_after?: number | null;
 }
 
-export interface CampusAiSkill {
+export interface OrganizationAiSkill {
   id: string;
   title: string;
   summary: string;
@@ -471,8 +508,8 @@ export interface CampusAiSkill {
   duration_minutes: number;
 }
 
-export interface CampusAiSkillsResponse {
-  skills: CampusAiSkill[];
+export interface OrganizationAiSkillsResponse {
+  skills: OrganizationAiSkill[];
 }
 
 /**
@@ -484,7 +521,7 @@ export interface CampusAiSkillsResponse {
  * Le type reste large ici : la validation se fait à un seul endroit, pas à
  * chaque site d'appel.
  */
-export interface CampusProfile {
+export interface OrganizationProfile {
   email: string;
   role: string;
   cohort: string;
@@ -517,7 +554,7 @@ export async function isServerReachable(baseUrl: string): Promise<boolean> {
 
   try {
     const reachable = await invoke<boolean>(
-      "check_campus_server_reachability",
+      "check_organization_server_reachability",
       {
         serverUrl: normalized,
       },

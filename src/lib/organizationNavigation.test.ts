@@ -32,7 +32,10 @@ const CAMPUS_STATUS = readFileSync(
   "src/hooks/useOrganizationStatus.ts",
   "utf8",
 );
-const CAMPUS_BACKEND = readFileSync("src-tauri/src/commands/campus.rs", "utf8");
+const CAMPUS_BACKEND = readFileSync(
+  "src-tauri/src/commands/organization.rs",
+  "utf8",
+);
 
 /** Le code, commentaires retirés : un mot dans un commentaire ne prouve rien. */
 function code(source: string): string {
@@ -79,7 +82,7 @@ describe("One flow, not two", () => {
       source.indexOf("fn load_campus_credentials"),
     );
     const completeOnboarding = source.slice(
-      source.indexOf("pub fn complete_campus_onboarding"),
+      source.indexOf("pub fn complete_organization_onboarding"),
       source.indexOf("pub fn clear_campus_session_and_notify"),
     );
 

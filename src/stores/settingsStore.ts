@@ -177,7 +177,7 @@ const settingUpdaters: {
   // ecrivait « No handler for setting » dans la console, et n'ecrivait rien
   // sur le disque. Au lancement suivant, `getAppSettings` renvoyait toujours
   // `false` : le parcours de premiere ouverture se rejouait en entier au lieu
-  // d'ouvrir l'accueil. La commande Rust s'appelle `complete_campus_onboarding`
+  // d'ouvrir l'accueil. La commande Rust s'appelle `complete_organization_onboarding`
   // pour des raisons historiques ; elle ne touche que ce reglage, dans les deux
   // editions.
   onboarding_completed: (value) => {
@@ -188,7 +188,7 @@ const settingUpdaters: {
         new Error("onboarding_completed ne peut etre que remis a true"),
       );
     }
-    return commands.completeCampusOnboarding();
+    return commands.completeOrganizationOnboarding();
   },
 };
 

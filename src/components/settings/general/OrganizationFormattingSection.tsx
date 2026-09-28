@@ -13,12 +13,14 @@ import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
-import type { CampusRuleEntry } from "@/lib/organizationApi";
+import type { OrganizationRuleEntry } from "@/lib/organizationApi";
 
 export const OrganizationFormattingSection: React.FC = () => {
   const { t } = useTranslation();
-  const [sharedRules, setSharedRules] = useState<CampusRuleEntry[]>([]);
-  const [personalRules, setPersonalRules] = useState<CampusRuleEntry[]>([]);
+  const [sharedRules, setSharedRules] = useState<OrganizationRuleEntry[]>([]);
+  const [personalRules, setPersonalRules] = useState<OrganizationRuleEntry[]>(
+    [],
+  );
   const [loading, setLoading] = useState(false);
 
   // Form

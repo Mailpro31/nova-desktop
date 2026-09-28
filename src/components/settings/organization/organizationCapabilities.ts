@@ -23,7 +23,7 @@
 
 export type DataLocation = "device" | "campus";
 
-export interface CampusCapability {
+export interface OrganizationCapability {
   id: string;
   titleKey: string;
   descriptionKey: string;
@@ -35,7 +35,7 @@ export interface CampusCapability {
  * Capacités vérifiées. Absentes volontairement : Styles distribués, AI Skills
  * administrés, politiques d'usage — le serveur n'en distribue aucun.
  */
-export const CAMPUS_CAPABILITIES: CampusCapability[] = [
+export const CAMPUS_CAPABILITIES: OrganizationCapability[] = [
   {
     id: "transcription",
     titleKey: "organization.provides.transcription.title",

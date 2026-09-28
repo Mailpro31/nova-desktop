@@ -29,7 +29,7 @@
 //!    dépose, et qu'un utilisateur standard ne peut pas modifier ;
 //! 2. `%ProgramData%\Nova\organization.json` — ce que l'installeur écrit ;
 //! 3. valeurs par défaut du package ;
-//! 4. configuration héritée `campus-config.json` — voir `commands::campus`.
+//! 4. configuration héritée `campus-config.json` — voir `commands::organization`.
 //!
 //! Une source de rang supérieur **invalide** ne se rabat pas silencieusement
 //! sur la suivante : elle échoue. Un repli silencieux transformerait une
@@ -433,7 +433,7 @@ pub fn resolve_with(
     }
 
     // 3. aucune configuration gérée : le poste n'est pas géré. Ce n'est pas une
-    //    erreur, et `campus-config.json` reste lu par `commands::campus`.
+    //    erreur, et `campus-config.json` reste lu par `commands::organization`.
     state
 }
 
@@ -463,7 +463,7 @@ pub fn get_deployment_state() -> Result<DeploymentState, String> {
     let exe_dir = exe_path
         .parent()
         .ok_or("Could not determine executable directory")?;
-    let edition = if crate::licensing::is_campus_enabled() {
+    let edition = if crate::licensing::is_organization_enabled() {
         "organization"
     } else {
         "personal"

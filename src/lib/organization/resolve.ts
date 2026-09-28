@@ -1,5 +1,5 @@
 import type {
-  OrganizationConfig,
+  ResolvedOrganization,
   OrganizationRole,
 } from "@/lib/organizationConfig";
 import { DEFAULT_ORGANIZATION } from "@/lib/organizationConfig";
@@ -73,7 +73,7 @@ function toMemberType(role: OrganizationRole | undefined): MemberType | null {
  * est un libellé, pas une clé.
  */
 function resolveOrganizationId(
-  campus: OrganizationConfig | null,
+  campus: ResolvedOrganization | null,
 ): string | null {
   const id = campus?.organization.id?.trim();
   if (!id) return null;
@@ -83,7 +83,7 @@ function resolveOrganizationId(
 
 function resolveIdentity(
   organizationType: OrganizationType,
-  campus: OrganizationConfig | null,
+  campus: ResolvedOrganization | null,
 ): OrganizationIdentity {
   const organization = campus?.organization;
   const displayName = organization?.name?.trim() || null;
@@ -105,7 +105,7 @@ function resolveIdentity(
  * lui sans que l'un se fasse passer pour l'autre. La cohorte reste par ailleurs
  * exploitable telle quelle dans le code Campus existant.
  */
-function resolveGroups(campus: OrganizationConfig | null): Group[] {
+function resolveGroups(campus: ResolvedOrganization | null): Group[] {
   const cohort = campus?.organization.cohort?.trim();
   if (!cohort) return [];
   return [
@@ -126,7 +126,7 @@ function resolveGroups(campus: OrganizationConfig | null): Group[] {
  * jamais désignées.
  */
 function resolveMember(
-  campus: OrganizationConfig | null,
+  campus: ResolvedOrganization | null,
   server: ServerIdentitySnapshot | null,
 ): OrganizationMember {
   // Quand le serveur annonce le membre, c'est lui l'autorité : le client ne
@@ -191,7 +191,9 @@ function applyServerCapabilities(
  * déjà (mode examen, par exemple, ferme la reformulation et les Styles) ; les
  * surfaces qu'aucun serveur ne distribue restent fermées plutôt que promises.
  */
-function resolveCapabilities(campus: OrganizationConfig | null): CapabilityMap {
+function resolveCapabilities(
+  campus: ResolvedOrganization | null,
+): CapabilityMap {
   if (!campus) return unknownOrganizationCapabilities();
   const capabilities = campus.capabilities;
   return Object.freeze({
@@ -265,7 +267,7 @@ export interface ResolveOrganizationContextInput {
   /** Requis en édition `organization`, ignoré sinon. */
   organizationType?: OrganizationType | null;
   /** Politique Campus déjà résolue, `null` tant qu'elle n'est pas connue. */
-  campus?: OrganizationConfig | null;
+  campus?: ResolvedOrganization | null;
   /**
    * Ce que `/api/me` a annoncé, quand le serveur porte le contrat étendu.
    * Absent avec un serveur plus ancien : le contexte se résout alors

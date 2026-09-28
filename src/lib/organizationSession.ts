@@ -1,11 +1,11 @@
 import { commands } from "@/bindings";
 import { invoke } from "@tauri-apps/api/core";
-import type { CampusSession } from "@/bindings";
+import type { OrganizationSession } from "@/bindings";
 
-export type { CampusSession };
+export type { OrganizationSession };
 
-export async function loadOrganizationSession(): Promise<CampusSession | null> {
-  const result = await commands.loadCampusSession();
+export async function loadOrganizationSession(): Promise<OrganizationSession | null> {
+  const result = await commands.loadOrganizationSession();
   if (result.status === "ok") {
     return result.data;
   }
@@ -14,18 +14,18 @@ export async function loadOrganizationSession(): Promise<CampusSession | null> {
 }
 
 export async function clearOrganizationSession(): Promise<void> {
-  await invoke("logout_campus_session");
+  await invoke("logout_organization_session");
 }
 
 export async function completeOrganizationOnboarding(): Promise<void> {
-  const result = await commands.completeCampusOnboarding();
+  const result = await commands.completeOrganizationOnboarding();
   if (result.status === "error") {
     throw new Error(result.error);
   }
 }
 
-export async function loadOrganizationConfig(): Promise<CampusConfig | null> {
-  const result = await commands.getCampusConfig();
+export async function loadOrganizationConfig(): Promise<OrganizationConfig | null> {
+  const result = await commands.getOrganizationConfig();
   if (result.status === "ok") {
     return result.data;
   }
@@ -35,17 +35,20 @@ export async function loadOrganizationConfig(): Promise<CampusConfig | null> {
 
 export async function loadOrganizationServerConfig(
   serverUrl: string,
-): Promise<CampusConfig | null> {
+): Promise<OrganizationConfig | null> {
   try {
-    return await invoke<CampusConfig>("fetch_campus_server_config", {
-      serverUrl,
-    });
+    return await invoke<OrganizationConfig>(
+      "fetch_organization_server_config",
+      {
+        serverUrl,
+      },
+    );
   } catch {
     return null;
   }
 }
 
-export interface CampusConfig {
+export interface OrganizationConfig {
   /** Vide quand la DSI déclare une organisation à découvrir plutôt qu'une adresse. */
   server_url?: string;
   /** Identifiant d'organisation, pour le mode découverte. Pas un secret. */

@@ -23,7 +23,7 @@ describe("mises à jour de l'organisation", () => {
     expect(hook).toContain("whatToReload(");
     // La policy porte les capacités et la durée maximale de dictée : `/api/me`
     // est relu pour les appliquer.
-    expect(hook).toContain("commands.getCampusMe()");
+    expect(hook).toContain("commands.getOrganizationMe()");
     expect(hook).toContain("useLearningStore.getState().loadCatalog()");
   });
 
@@ -32,14 +32,14 @@ describe("mises à jour de l'organisation", () => {
   });
 
   test("la commande existe côté Rust et est enregistrée", () => {
-    expect(read("src-tauri/src/commands/campus.rs")).toContain(
+    expect(read("src-tauri/src/commands/organization.rs")).toContain(
       "pub async fn fetch_organization_changes",
     );
-    expect(read("src-tauri/src/commands/campus.rs")).toContain(
+    expect(read("src-tauri/src/commands/organization.rs")).toContain(
       '"{}/api/organization/changes"',
     );
     expect(read("src-tauri/src/lib.rs")).toContain(
-      "commands::campus::fetch_organization_changes",
+      "commands::organization::fetch_organization_changes",
     );
   });
 });

@@ -8,7 +8,7 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { commands, type SelectionCapture } from "@/bindings";
 import { OrganizationApi } from "@/lib/organizationApi";
-import type { CampusSession } from "@/lib/organizationSession";
+import type { OrganizationSession } from "@/lib/organizationSession";
 import {
   ASK_NOVA,
   NOVA_COMMAND_SKILLS,
@@ -25,7 +25,7 @@ import { markMilestone } from "@/lib/milestones";
 interface NovaCommandPaletteProps {
   /** `null` quand la palette s'ouvre directement sur une erreur de capture. */
   capture: SelectionCapture | null;
-  session: CampusSession | null;
+  session: OrganizationSession | null;
   initialError?: CommandMessage;
   onClose: () => void;
 }

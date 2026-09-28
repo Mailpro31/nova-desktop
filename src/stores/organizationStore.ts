@@ -5,19 +5,19 @@ import {
   OrganizationApi,
   OrganizationApiError,
   isServerReachable,
-  type CampusProfile,
+  type OrganizationProfile,
   type OrganizationCatalogSnapshot,
 } from "@/lib/organizationApi";
 import {
   loadOrganizationConfig,
   loadOrganizationServerConfig,
   loadOrganizationSession,
-  type CampusConfig,
-  type CampusSession,
+  type OrganizationConfig,
+  type OrganizationSession,
 } from "@/lib/organizationSession";
 import {
   resolveOrganizationConfig,
-  type OrganizationConfig,
+  type ResolvedOrganization,
 } from "@/lib/organizationConfig";
 import {
   forgetOrganizationType,
@@ -35,10 +35,10 @@ export type OrganizationConnectionStatus =
   | "signed_out";
 
 interface OrganizationStoreState {
-  config: CampusConfig | null;
-  session: CampusSession | null;
-  profile: CampusProfile | null;
-  context: OrganizationConfig;
+  config: OrganizationConfig | null;
+  session: OrganizationSession | null;
+  profile: OrganizationProfile | null;
+  context: ResolvedOrganization;
   /**
    * Ce que le serveur a annoncé sur le membre connecté, quand il porte le
    * contrat étendu. `null` avec un serveur plus ancien, hors ligne, ou avant la
@@ -79,7 +79,7 @@ const emptyContext = resolveOrganizationConfig(null);
  * état : il doit l'apprendre dès que le serveur l'a tranché.
  */
 function tellBackendSuspended(suspended: boolean) {
-  void commands.setCampusSuspended(suspended).catch(() => {});
+  void commands.setOrganizationSuspended(suspended).catch(() => {});
 }
 
 export const useOrganizationStore = create<OrganizationStoreState>(
@@ -126,7 +126,7 @@ export const useOrganizationStore = create<OrganizationStoreState>(
 
         const reachable = await isServerReachable(session.server_url);
         let effectiveConfig = config;
-        let profile: CampusProfile | null = null;
+        let profile: OrganizationProfile | null = null;
         let meStatus: number | "ok" = "ok";
         let catalog = get().organizationCatalog;
         if (reachable) {

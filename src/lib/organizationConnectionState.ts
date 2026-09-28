@@ -1,4 +1,4 @@
-import type { CampusSession } from "@/bindings";
+import type { OrganizationSession } from "@/bindings";
 
 /**
  * État de connexion Organization, sans React ni appel réseau.
@@ -9,9 +9,9 @@ import type { CampusSession } from "@/bindings";
 
 export type OrganizationConnectionState = "unknown" | "connected" | "local";
 
-export interface CampusSnapshot {
+export interface OrganizationSnapshot {
   /** Session persistée, `null` hors connexion. */
-  session: CampusSession | null;
+  session: OrganizationSession | null;
   /** Dernière joignabilité mesurée du serveur de la session, `null` si aucune. */
   reachable: boolean | null;
 }
@@ -26,9 +26,9 @@ export interface CampusSnapshot {
  * Relire la même session garde la mesure, pour ne pas faire clignoter l'état.
  */
 export function withSession(
-  snapshot: CampusSnapshot,
-  session: CampusSession | null,
-): CampusSnapshot {
+  snapshot: OrganizationSnapshot,
+  session: OrganizationSession | null,
+): OrganizationSnapshot {
   const sameServer =
     session !== null &&
     snapshot.session !== null &&
@@ -38,7 +38,7 @@ export function withSession(
 
 /** Ce que la ligne « Connexion » doit dire. */
 export function connectionOf(
-  snapshot: CampusSnapshot,
+  snapshot: OrganizationSnapshot,
 ): OrganizationConnectionState {
   return snapshot.reachable === null
     ? "unknown"

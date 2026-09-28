@@ -16,13 +16,13 @@ import OnboardingStepShell from "./OnboardingStepShell";
 import {
   OrganizationApi,
   OrganizationApiError,
-  type CampusEntraStartResponse,
-  type CampusProfile,
+  type OrganizationEntraStartResponse,
+  type OrganizationProfile,
 } from "@/lib/organizationApi";
 import {
   loadOrganizationConfig,
   loadOrganizationServerConfig,
-  type CampusConfig,
+  type OrganizationConfig,
 } from "@/lib/organizationSession";
 import {
   isValidOrganizationEmail,
@@ -195,7 +195,7 @@ const OrganizationOnboarding: React.FC<OrganizationOnboardingProps> = ({
   // L'adresse du serveur reste saisissable, mais elle n'est plus la question
   // posée en premier : presque personne ne la connaît.
   const [showServerField, setShowServerField] = useState(false);
-  const [config, setConfig] = useState<CampusConfig | null>(null);
+  const [config, setConfig] = useState<OrganizationConfig | null>(null);
   const [configLoaded, setConfigLoaded] = useState(false);
   const [managedBootstrap, setManagedBootstrap] = useState(false);
   /**
@@ -220,14 +220,14 @@ const OrganizationOnboarding: React.FC<OrganizationOnboardingProps> = ({
    * pour le suivant — « Rejoignez votre Campus » devant un hôte qui n'avait
    * encore rien dit.
    */
-  const bootConfig = useRef<CampusConfig | null>(null);
+  const bootConfig = useRef<OrganizationConfig | null>(null);
   /**
    * Réponse de `/api/config`, attachée à l'adresse qui l'a donnée.
    * `config: null` signifie que ce serveur n'a pas répondu.
    */
   const [serverAnswer, setServerAnswer] = useState<{
     url: string;
-    config: CampusConfig | null;
+    config: OrganizationConfig | null;
   } | null>(null);
   /** Relance la lecture du serveur courant, sans refaire l'amorçage. */
   const [probeAttempt, setProbeAttempt] = useState(0);
@@ -242,10 +242,10 @@ const OrganizationOnboarding: React.FC<OrganizationOnboardingProps> = ({
   const [code, setCode] = useState("");
   const [labCode, setLabCode] = useState("");
   const [machineName, setMachineName] = useState("unknown");
-  const [profile, setProfile] = useState<CampusProfile | null>(null);
+  const [profile, setProfile] = useState<OrganizationProfile | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [microsoftFlow, setMicrosoftFlow] =
-    useState<CampusEntraStartResponse | null>(null);
+    useState<OrganizationEntraStartResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
   const lastSubmittedCode = useRef("");
@@ -326,7 +326,7 @@ const OrganizationOnboarding: React.FC<OrganizationOnboardingProps> = ({
           return;
         }
 
-        const discoveredConfig: CampusConfig = {
+        const discoveredConfig: OrganizationConfig = {
           ...loadedConfig,
           server_url: result.data.service_endpoint,
           organization_code: result.data.organization,

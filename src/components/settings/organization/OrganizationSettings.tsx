@@ -73,7 +73,7 @@ export const OrganizationSettings: React.FC = () => {
     }
     let cancelled = false;
     commands
-      .getCampusMe()
+      .getOrganizationMe()
       .then((result) => {
         if (cancelled || result.status !== "ok") return;
         setProfile({

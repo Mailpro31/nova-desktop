@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
 import { resolveOrganizationConfig } from "@/lib/organizationConfig";
-import type { CampusConfig } from "@/lib/organizationSession";
+import type { OrganizationConfig } from "@/lib/organizationSession";
 import { isBusinessMode, isCampusMode, isOrganizationMode } from "@/lib/mode";
 import {
   currentEdition,
@@ -130,7 +130,7 @@ describe("Nature de l'organisation", () => {
 });
 
 describe("Contexte d'organisation résolu", () => {
-  function config(): CampusConfig {
+  function config(): OrganizationConfig {
     return {
       server_url: "https://nova.exemple.test",
       organization: {

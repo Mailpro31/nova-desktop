@@ -34,7 +34,7 @@ export function useOrganization(): Organization | null {
     }
     let cancelled = false;
     commands
-      .getCampusMe()
+      .getOrganizationMe()
       .then((result) => {
         if (cancelled || result.status !== "ok") return;
         const name = result.data.organization?.trim();

@@ -112,7 +112,7 @@ describe("navigation", () => {
   });
 
   test("le poste lit la liste que le serveur envoie", () => {
-    const rust = readFileSync("src-tauri/src/commands/campus.rs", "utf8");
+    const rust = readFileSync("src-tauri/src/commands/organization.rs", "utf8");
     expect(rust).toContain("pub closed_capabilities: Option<Vec<String>>");
   });
 });

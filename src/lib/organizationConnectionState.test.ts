@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import type { CampusSession } from "@/bindings";
+import type { OrganizationSession } from "@/bindings";
 import { connectionOf, withSession } from "./organizationConnectionState";
 
 /**
@@ -10,7 +10,7 @@ import { connectionOf, withSession } from "./organizationConnectionState";
  * rien ne la remettait à jour sans session.
  */
 
-const ipsa: CampusSession = {
+const ipsa: OrganizationSession = {
   server_url: "https://nova-orgatest1.tail996ee7.ts.net",
   email: "membre@ipsa.example",
   organization: null,
@@ -38,7 +38,7 @@ describe("état de connexion Organization", () => {
   });
 
   test("une session d'un autre serveur repart d'un état inconnu", () => {
-    const other: CampusSession = {
+    const other: OrganizationSession = {
       ...ipsa,
       server_url: "https://autre-serveur.example",
     };
