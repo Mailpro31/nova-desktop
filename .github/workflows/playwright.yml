@@ -8,6 +8,7 @@ on:
       - "bun.lock"
       - "playwright.config.*"
       - "tests/**"
+      - ".github/workflows/playwright.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -15,7 +16,27 @@ concurrency:
 
 jobs:
   playwright:
+    # Les deux éditions, pas une seule.
+    #
+    # Les tests se répartissent par `VITE_NOVA_MODE` : ceux de l'établissement
+    # sautent sans `campus`, ceux du poste personnel sautent avec. Ce job ne
+    # tournait qu'en mode personnel, et sautait donc en silence tout le mode
+    # établissement — le seul que Nova vise désormais. Huit de ces tests ont
+    # échoué sur `main` pendant des semaines sans que personne le voie, dont
+    # une clé de traduction brute affichée sur l'accueil.
+    #
+    # `personal` n'est pas une valeur passée au build : l'édition personnelle
+    # est ce que donne l'absence de mode déclaré, comme auparavant.
+    name: playwright (${{ matrix.edition }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - edition: personal
+            nova_mode: ""
+          - edition: organization
+            nova_mode: campus
     steps:
       - uses: actions/checkout@v5
 
@@ -30,12 +51,16 @@ jobs:
         run: bunx playwright install chromium
 
       - name: Run Playwright tests
+        # Lu à la fois par les tests (`test.skip`) et par le serveur Vite que
+        # Playwright démarre (`import.meta.env.VITE_NOVA_MODE`).
+        env:
+          VITE_NOVA_MODE: ${{ matrix.nova_mode }}
         run: bun run test:playwright
 
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.edition }}
           path: playwright-report/
           retention-days: 7
