@@ -422,3 +422,21 @@ pub async fn stop_meeting(
         skipped: assembly.skipped,
     })
 }
+
+/// Décision du 01/10 : un seul Nova, Nova Organisation, et le mode réunion y
+/// est suspendu. Le poste refuse de le démarrer, même si un écran l'y menait
+/// encore : le backend reste l'autorité.
+#[cfg(test)]
+mod suspension_tests {
+    use super::meeting_mode_suspended;
+
+    #[test]
+    fn le_mode_reunion_est_suspendu_dans_nova_organisation() {
+        assert!(meeting_mode_suspended(true));
+    }
+
+    #[test]
+    fn l_edition_personnelle_suspendue_garde_son_comportement() {
+        assert!(!meeting_mode_suspended(false));
+    }
+}
