@@ -384,6 +384,100 @@ mod tests {
         }
     }
 
+    // --- Notes de cours : la dictée d'un élève, rien de plus ---
+    //
+    // Mesuré le 29/09 sur le moteur du serveur : des notes de cours générées
+    // avaient perdu la date du partiel et deux seuils, inventé des exemples,
+    // et une fois inversé une formule. Un élève dys repère mal ces erreurs en
+    // relisant : elles doivent être refusées avant d'être collées.
+
+    const COURSE: &str = "nova_style_course_notes";
+
+    #[test]
+    fn course_notes_that_add_an_example_are_refused() {
+        assert_eq!(
+            check(
+                "la portance augmente avec l'angle d'incidence jusqu'au décrochage",
+                "La portance augmente avec l'angle d'incidence jusqu'au décrochage.
+Par exemple, un avion au décollage cabre pour gagner de la portance avant de risquer le décrochage.",
+                COURSE
+            ),
+            Err("content-added")
+        );
+    }
+
+    #[test]
+    fn course_notes_that_explain_instead_of_noting_are_refused() {
+        assert_eq!(
+            check(
+                "la dérivée de x carré c'est deux x",
+                "Dérivée de x² : 2x. Cela signifie que la pente de la parabole double quand x double, ce qui explique sa courbure.",
+                COURSE
+            ),
+            Err("content-added")
+        );
+    }
+
+    #[test]
+    fn course_notes_that_drop_part_of_the_lecture_are_refused() {
+        assert_eq!(
+            check(
+                "le partiel aura lieu le douze mars, il portera sur les chapitres trois et quatre, les calculatrices sont interdites et il faudra justifier chaque résultat",
+                "Partiel le 12 mars : chapitres 3 et 4.",
+                COURSE
+            ),
+            Err("dictation-not-kept")
+        );
+    }
+
+    #[test]
+    fn course_notes_that_lose_a_dictated_figure_are_refused() {
+        assert_eq!(
+            check(
+                "au-delà de 12 % d'humidité le composite perd 30 % de sa résistance",
+                "Au-delà d'un certain taux d'humidité, le composite perd 30 % de sa résistance.",
+                COURSE
+            ),
+            Err("number-lost")
+        );
+    }
+
+    #[test]
+    fn faithful_course_notes_pass() {
+        for (input, output) in [
+            // Titre annoncé, définition, point à retenir : la structure vient de
+            // la dictée, les mots aussi.
+            (
+                "chapitre trois la photosynthèse, définition la photosynthèse c'est la transformation du dioxyde de carbone en glucose grâce à la lumière, à retenir elle produit du dioxygène",
+                "Chapitre 3 : la photosynthèse
+
+Photosynthèse : transformation du dioxyde de carbone en glucose grâce à la lumière.
+À retenir : elle produit du dioxygène.",
+            ),
+            // Nombres dictés en lettres, écrits en chiffres ; reprise résolue.
+            (
+                "la Révolution commence en mille sept cent quatre-vingt-neuf non pardon la prise de la Bastille c'est le quatorze juillet mille sept cent quatre-vingt-neuf",
+                "La prise de la Bastille : 14 juillet 1789.",
+            ),
+            // Cours de langue : la citation anglaise reste en anglais.
+            (
+                "le present perfect se forme avec have plus participe passé par exemple I have finished my homework",
+                "Present perfect : have + participe passé.
+Exemple : « I have finished my homework ».",
+            ),
+            // Énumération dictée, mise en liste.
+            (
+                "les trois états de la matière sont solide liquide et gazeux",
+                "Les trois états de la matière :
+- solide
+- liquide
+- gazeux",
+            ),
+        ] {
+            assert!(check(input, output, COURSE).is_ok(), "{output}");
+        }
+    }
+
     #[test]
     fn language_is_only_judged_when_it_is_clear() {
         assert_eq!(language_of("merci"), None);
