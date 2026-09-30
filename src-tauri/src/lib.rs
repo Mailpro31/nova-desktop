@@ -64,6 +64,7 @@ mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
 mod utils;
+mod voice_calibration;
 mod week_stats;
 mod writing_aids;
 
