@@ -1856,6 +1856,27 @@ mod tests {
     /// Chaque Style intégré doit instruire le modèle à comprendre les
     /// auto-corrections dictées « au sens », sans mot-déclencheur. Garde-fou
     /// contre une régression de prompt (point 2 de la refonte reformulation).
+    /// Le Style des élèves : intégré, donc proposé à toute installation — y
+    /// compris déjà en place, par `ensure_post_process_defaults` — et connu de
+    /// la liste des Styles intégrés, sans quoi il serait traité comme un Style
+    /// personnel.
+    #[test]
+    fn course_notes_are_a_built_in_style() {
+        let prompts = default_post_process_prompts();
+        let course = prompts
+            .iter()
+            .find(|p| p.id == "nova_style_course_notes")
+            .expect("Notes de cours");
+        assert_eq!(course.name, "Notes de cours");
+        for p in &prompts {
+            assert!(
+                crate::licensing::BUILTIN_STYLE_IDS.contains(&p.id.as_str()),
+                "{} manque dans BUILTIN_STYLE_IDS",
+                p.id
+            );
+        }
+    }
+
     #[test]
     fn every_default_style_teaches_natural_self_correction() {
         for p in default_post_process_prompts() {

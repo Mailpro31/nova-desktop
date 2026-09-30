@@ -3144,6 +3144,12 @@ mod tests {
         assert_eq!(temperature_for_style("mon_style_perso"), 0.4);
     }
 
+    /// Des notes de cours ne sont pas un exercice de style : aucune liberté.
+    #[test]
+    fn course_notes_are_written_without_creative_freedom() {
+        assert_eq!(temperature_for_style("nova_style_course_notes"), 0.0);
+    }
+
     #[test]
     fn air_timeout_scales_for_complex_and_long_dictations() {
         assert_eq!(

@@ -150,9 +150,33 @@ mod tests {
             "nova_style_todo",
             "nova_style_prompt",
             "nova_style_meeting",
+            "nova_style_course_notes",
         ] {
             let prompt = build("nova_local", "air", style, "legacy", "", false);
             assert!(prompt.len() < 650, "{style}: {} chars", prompt.len());
+        }
+    }
+
+    /// Les notes de cours d'un élève : jamais un ajout, jamais un résumé, et
+    /// l'ordre du cours gardé. C'est ce qu'a manqué la fonction de notes du
+    /// serveur, mesurée le 29/09.
+    #[test]
+    fn course_notes_forbid_adding_reordering_and_correcting_facts() {
+        let prompt = build(
+            "nova_turbo",
+            "nova-turbo",
+            "nova_style_course_notes",
+            "",
+            "",
+            false,
+        );
+        for rule in [
+            "never add",
+            "never reorder",
+            "never summarize",
+            "never correct",
+        ] {
+            assert!(prompt.contains(rule), "{rule}");
         }
     }
 }

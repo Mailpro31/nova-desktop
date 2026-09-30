@@ -10,7 +10,9 @@
 //!
 //! Ils ne visent que les Styles intégrés. Un Style personnel ou d'organisation
 //! peut légitimement traduire : il en est exclu. « Réunion » résume par nature :
-//! seul le contrôle des nombres groupés s'applique à lui.
+//! seul le contrôle des nombres groupés s'applique à lui. « Notes de cours »,
+//! à l'inverse, a les contrôles les plus stricts : les notes d'un élève ne
+//! doivent rien ajouter ni rien perdre.
 
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -184,11 +186,175 @@ fn has_personal_value_marker(text: &str) -> bool {
         .any(|marker| !marker[1].starts_with("nvxlex"))
 }
 
+/// Le Style « Notes de cours » : la dictée d'un élève, mise en forme, rien de
+/// plus. Il a ses propres contrôles, plus stricts que ceux des autres Styles.
+pub const COURSE_NOTES_STYLE: &str = "nova_style_course_notes";
+
+/// Part minimale des mots de la dictée retrouvés dans les notes. Plus haute
+/// que [`MIN_KEPT_WORDS`] : des notes de cours ne résument pas. Une reprise
+/// (« non pardon… ») écarte légitimement une partie de la dictée ; les mots de
+/// reprise et les nombres en lettres ne sont donc pas comptés.
+const COURSE_MIN_KEPT_WORDS: f32 = 0.5;
+
+/// Part maximale des mots des notes absents de la dictée. Laisse la place à
+/// une correction d'orthographe (« photo synthèse » → « photosynthèse ») et
+/// aux libellés de structure ; pas à un exemple ni à une explication.
+const COURSE_MAX_ADDED_WORDS: f32 = 0.2;
+
+/// Libellés de structure que les notes peuvent ajouter sans que l'élève les
+/// ait dits : ils mettent en forme, ils n'apportent aucun fait.
+const STRUCTURE_WORDS: &[&str] = &[
+    "retenir",
+    "definition",
+    "important",
+    "attention",
+    "chapitre",
+    "partie",
+    "titre",
+    "remarque",
+];
+
+/// Mots qui annoncent une reprise ou meublent : une note qui les écarte ne
+/// perd rien.
+const FILLER_WORDS: &[&str] = &[
+    "pardon", "plutot", "enfin", "attends", "attend", "oublie", "bref", "voila", "donc", "alors",
+    "genre", "euh", "hmm", "bon",
+];
+
+/// Nombres en lettres : les notes les écrivent en chiffres, ils ne comptent
+/// donc ni comme mots perdus ni comme mots ajoutés.
+const NUMBER_WORDS: &[&str] = &[
+    "zero",
+    "deux",
+    "trois",
+    "quatre",
+    "cinq",
+    "sept",
+    "huit",
+    "neuf",
+    "onze",
+    "douze",
+    "treize",
+    "quatorze",
+    "quinze",
+    "seize",
+    "vingt",
+    "trente",
+    "quarante",
+    "cinquante",
+    "soixante",
+    "cent",
+    "cents",
+    "mille",
+    "million",
+    "millions",
+    "milliard",
+    "milliards",
+    "virgule",
+    "pourcent",
+    "three",
+    "four",
+    "five",
+    "seven",
+    "eight",
+    "nine",
+    "eleven",
+    "twelve",
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "hundred",
+    "thousand",
+];
+
+/// Singulier approximatif : « chapitres » et « chapitre » sont le même mot.
+fn singular(word: &str) -> String {
+    if word.chars().count() > 4 && (word.ends_with('s') || word.ends_with('x')) {
+        word[..word.len() - 1].to_string()
+    } else {
+        word.to_string()
+    }
+}
+
+/// Les mots porteurs des notes de cours : quatre lettres au moins, sans
+/// accents, au singulier, hors nombres en lettres et mots de reprise.
+fn course_words(text: &str) -> HashSet<String> {
+    content_words(text)
+        .into_iter()
+        .filter(|w| !NUMBER_WORDS.contains(&w.as_str()) && !FILLER_WORDS.contains(&w.as_str()))
+        .map(|w| singular(&w))
+        .collect()
+}
+
+/// Un nombre écrit en chiffres dans la dictée — date, seuil, numéro de
+/// chapitre — doit se retrouver dans les notes. Perdre « 12 % » d'un cours,
+/// c'est perdre le seuil que l'élève révisera.
+pub fn dictated_number_lost(input: &str, output: &str) -> bool {
+    static NUMBER: Lazy<Regex> =
+        Lazy::new(|| Regex::new(r"\d+(?:[ \u{00A0}\u{202F},.]\d+)*").unwrap());
+    let compact = |s: &str| {
+        s.chars()
+            .filter(|c| !matches!(c, ' ' | '\u{00A0}' | '\u{202F}'))
+            .collect::<String>()
+    };
+    let written = compact(output);
+    NUMBER
+        .find_iter(input)
+        .any(|number| !written.contains(&compact(number.as_str())))
+}
+
+/// Part des mots des notes que l'élève n'a pas dits. `None` quand les notes
+/// n'ont aucun mot porteur.
+pub fn added_word_ratio(input: &str, output: &str) -> Option<f32> {
+    let dictated = course_words(input);
+    let written: HashSet<String> = course_words(output)
+        .into_iter()
+        .filter(|w| !STRUCTURE_WORDS.contains(&w.as_str()))
+        .collect();
+    if written.is_empty() {
+        return None;
+    }
+    let added = written.difference(&dictated).count();
+    Some(added as f32 / written.len() as f32)
+}
+
+/// Les contrôles des notes de cours. Dans l'ordre : la langue, puis les
+/// nombres (le défaut le plus coûteux pour un élève), puis ce qui a été
+/// ajouté, puis ce qui a été perdu.
+fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
+    if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
+        if dictated != written {
+            return Err("language-changed");
+        }
+    }
+    if dictated_number_lost(input, output) {
+        return Err("number-lost");
+    }
+    if added_word_ratio(input, output).is_some_and(|ratio| ratio > COURSE_MAX_ADDED_WORDS) {
+        return Err("content-added");
+    }
+    if !has_personal_value_marker(input) {
+        let dictated = course_words(input);
+        if !dictated.is_empty() {
+            let written = course_words(output);
+            let kept = dictated.intersection(&written).count() as f32 / dictated.len() as f32;
+            if kept < COURSE_MIN_KEPT_WORDS {
+                return Err("dictation-not-kept");
+            }
+        }
+    }
+    Ok(())
+}
+
 /// Les contrôles propres aux Styles intégrés. `Err` porte le motif du refus.
 ///
 /// « Réunion » résume : il échappe aux contrôles de langue, de mots repris et
 /// de nombres omis, mais pas à celui des nombres réécrits.
 pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static str> {
+    if style_id == COURSE_NOTES_STYLE {
+        return check_course_notes(input, output);
+    }
     if style_id == "nova_style_meeting" {
         return if grouped_number_reformatted(input, output) {
             Err("number-format-changed")
