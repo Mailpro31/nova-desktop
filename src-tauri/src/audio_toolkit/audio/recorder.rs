@@ -1,7 +1,7 @@
 use std::{
     io::Error,
     sync::{
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU32, Ordering},
         mpsc, Arc, Mutex,
     },
     time::{Duration, Instant},
@@ -70,6 +70,28 @@ impl VadConfig {
 /// policy while recording. Used to feed a live streaming transcription as audio arrives.
 pub type AudioFrameCallback = Arc<dyn Fn(&[f32]) + Send + Sync + 'static>;
 
+/// Gain maximal applicable à la voix (+18 dB). Au-delà, on amplifie surtout le
+/// bruit de la salle.
+pub const MAX_INPUT_GAIN: f32 = 8.0;
+
+/// Ramène un gain dans ses bornes. Un réglage abîmé ou venu d'une ancienne
+/// version ne doit rendre le micro ni muet, ni assourdissant.
+pub fn sanitize_gain(gain: f32) -> f32 {
+    if gain.is_finite() {
+        gain.clamp(1.0, MAX_INPUT_GAIN)
+    } else {
+        1.0
+    }
+}
+
+/// Applique un gain à une trame, en écrêtant à la pleine échelle.
+fn amplify(samples: &[f32], gain: f32) -> Vec<f32> {
+    samples
+        .iter()
+        .map(|sample| (sample * gain).clamp(-1.0, 1.0))
+        .collect()
+}
+
 pub struct AudioRecorder {
     device: Option<Device>,
     cmd_tx: Option<mpsc::Sender<Cmd>>,
@@ -77,6 +99,10 @@ pub struct AudioRecorder {
     vad: Option<VadConfig>,
     level_cb: Option<Arc<dyn Fn(Vec<f32>) + Send + Sync + 'static>>,
     audio_cb: Option<AudioFrameCallback>,
+    /// Gain de calibrage (bits d'un `f32`), lu au début de chaque
+    /// enregistrement. Appliqué **avant** la détection de voix : une voix basse
+    /// que le détecteur prenait pour du silence doit lui arriver relevée.
+    gain: Arc<AtomicU32>,
     /// Preferred stream config cached per device name. The two HAL property
     /// queries in `get_preferred_config` cost ~40-85ms per open (worse on
     /// USB/Bluetooth), which lands on the keypress->capture path in on-demand
@@ -95,8 +121,16 @@ impl AudioRecorder {
             vad: None,
             level_cb: None,
             audio_cb: None,
+            gain: Arc::new(AtomicU32::new(1.0f32.to_bits())),
             config_cache: Arc::new(Mutex::new(None)),
         })
+    }
+
+    /// Fixe le gain appliqué aux prochains enregistrements (borné, voir
+    /// `sanitize_gain`). Un enregistrement en cours garde le sien.
+    pub fn set_input_gain(&self, gain: f32) {
+        self.gain
+            .store(sanitize_gain(gain).to_bits(), Ordering::Relaxed);
     }
 
     /// Attach a single VAD engine, reconfigured per session for the offline vs
@@ -159,6 +193,7 @@ impl AudioRecorder {
         let level_cb = self.level_cb.clone();
         // Move the optional real-time audio frame callback into the worker thread
         let audio_cb = self.audio_cb.clone();
+        let gain = Arc::clone(&self.gain);
         let config_cache = Arc::clone(&self.config_cache);
 
         let worker = std::thread::spawn(move || {
@@ -275,6 +310,7 @@ impl AudioRecorder {
                         cmd_rx,
                         level_cb,
                         audio_cb,
+                        gain,
                         stop_flag,
                         stream_running_at,
                     );
@@ -543,6 +579,7 @@ fn run_consumer(
     cmd_rx: mpsc::Receiver<Cmd>,
     level_cb: Option<Arc<dyn Fn(Vec<f32>) + Send + Sync + 'static>>,
     audio_cb: Option<AudioFrameCallback>,
+    gain: Arc<AtomicU32>,
     stop_flag: Arc<AtomicBool>,
     stream_running_at: Instant,
 ) {
@@ -555,6 +592,8 @@ fn run_consumer(
     let mut processed_samples = Vec::<f32>::new();
     let mut recording = false;
     let mut vad_policy = VadPolicy::Offline;
+    // Gain de la session en cours, figé au démarrage de l'enregistrement.
+    let mut session_gain = 1.0f32;
 
     // ---------- latency instrumentation ---------------------------------- //
     // First-chunk arrival exposes the play()->samples-flowing gap; the
@@ -587,6 +626,7 @@ fn run_consumer(
     fn handle_frame(
         samples: &[f32],
         recording: bool,
+        gain: f32,
         vad_policy: VadPolicy,
         vad: &Option<VadConfig>,
         audio_cb: &Option<AudioFrameCallback>,
@@ -595,6 +635,14 @@ fn run_consumer(
         if !recording {
             return;
         }
+
+        let amplified;
+        let samples: &[f32] = if gain != 1.0 {
+            amplified = amplify(samples, gain);
+            &amplified
+        } else {
+            samples
+        };
 
         let mut emit = |buf: &[f32]| {
             out_buf.extend_from_slice(buf);
@@ -636,6 +684,7 @@ fn run_consumer(
                     awaiting_first_captured_chunk = Some(Instant::now());
                     stop_flag.store(false, Ordering::Relaxed);
                     vad_policy = policy;
+                    session_gain = sanitize_gain(f32::from_bits(gain.load(Ordering::Relaxed)));
                     processed_samples.clear();
                     recording = true;
                     visualizer.reset();
@@ -662,6 +711,7 @@ fn run_consumer(
                             handle_frame(
                                 frame,
                                 true,
+                                session_gain,
                                 vad_policy,
                                 &vad,
                                 &audio_cb,
@@ -681,6 +731,7 @@ fn run_consumer(
                                     handle_frame(
                                         frame,
                                         true,
+                                        session_gain,
                                         vad_policy,
                                         &vad,
                                         &audio_cb,
@@ -700,6 +751,7 @@ fn run_consumer(
                         handle_frame(
                             frame,
                             true,
+                            session_gain,
                             vad_policy,
                             &vad,
                             &audio_cb,
@@ -748,6 +800,7 @@ fn run_consumer(
             handle_frame(
                 frame,
                 recording,
+                session_gain,
                 vad_policy,
                 &vad,
                 &audio_cb,

@@ -83,6 +83,24 @@ describe("Les corrections proposées", () => {
     expect(summary.corrections).toEqual([]);
   });
 
+  test("un petit mot pris dans un terme composé n'est pas proposé", () => {
+    // « de » appartient à « dioxyde de carbone », mais une règle « du » → « de »
+    // réécrirait des milliers de phrases justes.
+    const summary = summarizeCalibration(
+      [sample({ misheard: [{ expected: "de", heard: "du" }] })],
+      ["dioxyde de carbone"],
+    );
+    expect(summary.corrections).toEqual([]);
+  });
+
+  test("un mot rare pris dans un terme composé est proposé", () => {
+    const summary = summarizeCalibration(
+      [sample({ misheard: [{ expected: "dioxyde", heard: "dit oxyde" }] })],
+      ["dioxyde de carbone"],
+    );
+    expect(summary.corrections).toHaveLength(1);
+  });
+
   test("la même erreur entendue deux fois n'est proposée qu'une fois", () => {
     const misheard = [{ expected: "photosynthèse", heard: "photo synthèse" }];
     const summary = summarizeCalibration(
