@@ -472,7 +472,29 @@ pub fn is_no_input_device_error(error_message: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{is_microphone_access_denied, is_no_input_device_error};
+    use super::{amplify, is_microphone_access_denied, is_no_input_device_error, sanitize_gain};
+
+    // --- Gain de calibrage ---
+
+    #[test]
+    fn a_calibrated_gain_raises_a_quiet_voice() {
+        assert_eq!(amplify(&[0.01, -0.02], 4.0), vec![0.04, -0.08]);
+    }
+
+    #[test]
+    fn the_gain_never_pushes_a_sample_past_full_scale() {
+        assert_eq!(amplify(&[0.6, -0.6], 4.0), vec![1.0, -1.0]);
+    }
+
+    #[test]
+    fn a_gain_out_of_bounds_is_brought_back_within_them() {
+        // Réglage abîmé ou ancien : ni muet, ni assourdissant.
+        assert_eq!(sanitize_gain(f32::NAN), 1.0);
+        assert_eq!(sanitize_gain(f32::INFINITY), 1.0);
+        assert_eq!(sanitize_gain(0.2), 1.0);
+        assert_eq!(sanitize_gain(40.0), 8.0);
+        assert_eq!(sanitize_gain(2.5), 2.5);
+    }
 
     #[test]
     fn detects_access_is_denied() {
