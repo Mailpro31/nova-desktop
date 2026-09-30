@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Kuruluş bağlı",
-      "local": "Nova Local etkin",
-      "localActive": "Nova Local etkin"
+      "local": "Bu bilgisayarda dikte",
+      "localActive": "Bu bilgisayarda dikte"
     },
     "microsoft": {
       "browserHelp": "Tarayıcında oturum açmayı tamamla. Microsoft isterse bu kodu kullan.",
@@ -1284,8 +1284,8 @@
         "detail": "Dikteniz panoda."
       },
       "organizationLocal": {
-        "title": "Nova Local etkin",
-        "detail": "{{server}} yanıt vermiyor — dikte yerel olarak sürüyor, yapay zekâ özellikleri duraklatıldı.",
+        "title": "Bu bilgisayarda dikte",
+        "detail": "{{server}} yanıt vermiyor: dikte etmeye devam edebilirsiniz, stilleriniz sunucuyla birlikte geri gelecek.",
         "unknownServer": "kuruluş sunucusu"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Son dikte"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Bu bilgisayar",
+      "local": "Bu bilgisayar",
       "organization": "Kuruluşunuzun sunucusu"
     },
     "checklist": {

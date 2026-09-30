@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organisatie verbonden",
-      "local": "Nova Local actief",
-      "localActive": "Nova Local actief"
+      "local": "Dicteren op deze computer",
+      "localActive": "Dicteren op deze computer"
     },
     "microsoft": {
       "browserHelp": "Rond het aanmelden af in je browser. Gebruik deze code als Microsoft erom vraagt.",
@@ -1284,8 +1284,8 @@
         "detail": "Uw dictaat staat op het klembord."
       },
       "organizationLocal": {
-        "title": "Nova Local is actief",
-        "detail": "{{server}} reageert niet — dicteren gaat lokaal door, AI-functies staan op pauze.",
+        "title": "Dicteren op deze computer",
+        "detail": "{{server}} reageert niet: je kunt blijven dicteren, je stijlen komen terug met de server.",
         "unknownServer": "de organisatieserver"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Laatste dictaat"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Deze computer",
+      "local": "Deze computer",
       "organization": "De server van uw organisatie"
     },
     "checklist": {

@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organisation connectée",
-      "local": "Nova Local actif",
-      "localActive": "Nova Local actif"
+      "local": "Dictée sur ce poste",
+      "localActive": "Dictée sur ce poste"
     },
     "microsoft": {
       "browserHelp": "Terminez la connexion dans votre navigateur. Utilisez ce code si Microsoft le demande.",
@@ -1284,8 +1284,8 @@
         "detail": "Votre dictée est dans le presse-papiers."
       },
       "organizationLocal": {
-        "title": "Nova Local est actif",
-        "detail": "{{server}} ne répond pas — la dictée continue en local, les fonctions IA sont en pause.",
+        "title": "Dictée sur ce poste",
+        "detail": "{{server}} ne répond pas : vous pouvez continuer à dicter, vos Styles reviendront avec le serveur.",
         "unknownServer": "le serveur de l’organisation"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Dernière dictée"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Ce poste",
+      "local": "Ce poste",
       "organization": "Le serveur de votre organisation"
     },
     "checklist": {

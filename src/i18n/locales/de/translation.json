@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organisation verbunden",
-      "local": "Nova Local aktiv",
-      "localActive": "Nova Local aktiv"
+      "local": "Diktat auf diesem Computer",
+      "localActive": "Diktat auf diesem Computer"
     },
     "microsoft": {
       "browserHelp": "Schließe die Anmeldung in deinem Browser ab. Verwende diesen Code, falls Microsoft danach fragt.",
@@ -1284,8 +1284,8 @@
         "detail": "Ihr Diktat liegt in der Zwischenablage."
       },
       "organizationLocal": {
-        "title": "Nova Local ist aktiv",
-        "detail": "{{server}} antwortet nicht — das Diktieren läuft lokal weiter, KI-Funktionen pausieren.",
+        "title": "Diktat auf diesem Computer",
+        "detail": "{{server}} antwortet nicht: Sie können weiter diktieren, Ihre Stile sind wieder da, sobald der Server antwortet.",
         "unknownServer": "der Organisationsserver"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Letztes Diktat"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Dieser Computer",
+      "local": "Dieser Computer",
       "organization": "Der Server Ihrer Organisation"
     },
     "checklist": {

@@ -77,15 +77,21 @@ pub fn set_organization_signed_in(signed_in: bool) {
     ORGANIZATION_SIGNED_IN.store(signed_in, Ordering::Relaxed);
 }
 
-/// L'organisation débloque-t-elle le palier ? Seulement pour un membre servi
-/// **et** connecté : une session révoquée ou expirée retombe en Personal, comme
-/// une suspension.
+/// L'édition Organisation lève-t-elle les paliers ? Toujours.
+///
+/// Il n'y a plus qu'un seul Nova, Nova Organisation (décision du 01/10). Un
+/// membre déconnecté ou suspendu ne « retombe » plus en Personal : ni paliers,
+/// ni badge d'achat, ni essai. Ce qui le protège ne passe pas par les paliers :
+/// l'organisation ne sert plus un membre suspendu (`organization_serves`), et
+/// sa dictée, hors serveur, est transcrite sur le poste sans être reformulée
+/// (`actions::local_rewrite_allowed`). Les deux derniers paramètres restent
+/// pour l'édition personnelle suspendue, dont le code est gardé.
 pub fn organization_unlocks_tier(
     organization_enabled: bool,
-    suspended: bool,
-    signed_in: bool,
+    _suspended: bool,
+    _signed_in: bool,
 ) -> bool {
-    organization_serves(organization_enabled, suspended) && signed_in
+    organization_enabled
 }
 
 fn organization_unlocks() -> bool {

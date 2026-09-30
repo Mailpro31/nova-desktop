@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organización conectada",
-      "local": "Nova Local activo",
-      "localActive": "Nova Local activo"
+      "local": "Dictado en este equipo",
+      "localActive": "Dictado en este equipo"
     },
     "microsoft": {
       "browserHelp": "Termina de iniciar sesión en tu navegador. Usa este código si Microsoft te lo pide.",
@@ -1284,8 +1284,8 @@
         "detail": "Tu dictado está en el portapapeles."
       },
       "organizationLocal": {
-        "title": "Nova Local está activo",
-        "detail": "{{server}} no responde: el dictado continúa en local y las funciones de IA están en pausa.",
+        "title": "Dictado en este equipo",
+        "detail": "{{server}} no responde: puedes seguir dictando; tus estilos volverán con el servidor.",
         "unknownServer": "el servidor de la organización"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Último dictado"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Este equipo",
+      "local": "Este equipo",
       "organization": "El servidor de su organización"
     },
     "checklist": {

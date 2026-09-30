@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organizace připojena",
-      "local": "Nova Local je aktivní",
-      "localActive": "Nova Local je aktivní"
+      "local": "Diktování na tomto počítači",
+      "localActive": "Diktování na tomto počítači"
     },
     "microsoft": {
       "browserHelp": "Dokončete přihlášení v prohlížeči. Pokud o to Microsoft požádá, použijte tento kód.",
@@ -1284,8 +1284,8 @@
         "detail": "Váš diktát je ve schránce."
       },
       "organizationLocal": {
-        "title": "Nova Local je aktivní",
-        "detail": "{{server}} neodpovídá — diktování pokračuje lokálně, funkce AI jsou pozastaveny.",
+        "title": "Diktování na tomto počítači",
+        "detail": "{{server}} neodpovídá: můžete dál diktovat, styly se vrátí spolu se serverem.",
         "unknownServer": "server organizace"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Poslední diktování"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Tento počítač",
+      "local": "Tento počítač",
       "organization": "Server vaší organizace"
     },
     "checklist": {

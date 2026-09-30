@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "المؤسسة متصلة",
-      "local": "Nova Local نشط",
-      "localActive": "Nova Local نشط"
+      "local": "الإملاء على هذا الحاسوب",
+      "localActive": "الإملاء على هذا الحاسوب"
     },
     "microsoft": {
       "browserHelp": "أكمل تسجيل الدخول في متصفحك. استخدم هذا الرمز إذا طلبته Microsoft.",
@@ -1284,8 +1284,8 @@
         "detail": "إملاؤك موجود في الحافظة."
       },
       "organizationLocal": {
-        "title": "‏Nova Local نشط",
-        "detail": "{{server}} لا يستجيب — يستمر الإملاء محليًا، وميزات الذكاء الاصطناعي متوقفة مؤقتًا.",
+        "title": "الإملاء على هذا الحاسوب",
+        "detail": "{{server}} لا يستجيب: يمكنك متابعة الإملاء، وستعود أنماطك مع الخادم.",
         "unknownServer": "خادم المؤسسة"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "آخر إملاء"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "هذا الحاسوب",
+      "local": "هذا الحاسوب",
       "organization": "خادم مؤسستك"
     },
     "checklist": {

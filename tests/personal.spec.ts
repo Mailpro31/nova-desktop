@@ -8,5 +8,5 @@ test("Personal mode does not expose Campus navigation", async ({ page }) => {
 
   await expect(page.getByRole("button", { name: "Campus" })).toHaveCount(0);
   await expect(page.getByText("Campus connected")).toHaveCount(0);
-  await expect(page.getByText("Nova Local active")).toHaveCount(0);
+  await expect(page.getByText("Dictating on this computer")).toHaveCount(0);
 });

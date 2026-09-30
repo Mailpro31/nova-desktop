@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "組織に接続済み",
-      "local": "Nova Local 有効",
-      "localActive": "Nova Local 動作中"
+      "local": "このコンピューターで音声入力中",
+      "localActive": "このコンピューターで音声入力中"
     },
     "microsoft": {
       "browserHelp": "ブラウザーでログインを完了してください。Microsoft から求められたら、このコードを使ってください。",
@@ -1284,8 +1284,8 @@
         "detail": "音声入力した文章はクリップボードにあります。"
       },
       "organizationLocal": {
-        "title": "Nova Local が動作中です",
-        "detail": "{{server}} が応答していません。音声入力はローカルで続行し、AI 機能は一時停止しています。",
+        "title": "このコンピューターで音声入力中",
+        "detail": "{{server}} が応答していません。音声入力は続けられます。スタイルはサーバーが戻ると再び使えます。",
         "unknownServer": "組織のサーバー"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "直近の音声入力"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "このコンピューター",
+      "local": "このコンピューター",
       "organization": "組織のサーバー"
     },
     "checklist": {

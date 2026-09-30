@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organization connected",
-      "local": "Nova Local active",
-      "localActive": "Nova Local active"
+      "local": "Dictating on this computer",
+      "localActive": "Dictating on this computer"
     },
     "microsoft": {
       "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
@@ -1284,8 +1284,8 @@
         "detail": "Your dictation is in the clipboard."
       },
       "organizationLocal": {
-        "title": "Nova Local is active",
-        "detail": "{{server}} is not responding — dictation continues locally, AI features are paused.",
+        "title": "Dictating on this computer",
+        "detail": "{{server}} is not responding — you can keep dictating; your Styles will come back with the server.",
         "unknownServer": "the organization server"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Last dictation"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "This computer",
+      "local": "This computer",
       "organization": "Your organization's server"
     },
     "checklist": {

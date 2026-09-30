@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "संस्था जोडिएको छ",
-      "local": "Nova Local सक्रिय",
-      "localActive": "Nova Local सक्रिय"
+      "local": "यो कम्प्युटरमा डिक्टेसन",
+      "localActive": "यो कम्प्युटरमा डिक्टेसन"
     },
     "microsoft": {
       "browserHelp": "ब्राउजरमा साइन इन पूरा गर्नुहोस्। Microsoft ले मागेमा यो कोड प्रयोग गर्नुहोस्।",
@@ -1284,8 +1284,8 @@
         "detail": "तपाईंको श्रुतिलेखन क्लिपबोर्डमा छ।"
       },
       "organizationLocal": {
-        "title": "Nova Local सक्रिय छ",
-        "detail": "{{server}} ले जवाफ दिइरहेको छैन — श्रुतिलेखन स्थानीय रूपमा जारी छ, AI सुविधाहरू रोकिएका छन्।",
+        "title": "यो कम्प्युटरमा डिक्टेसन",
+        "detail": "{{server}} ले जवाफ दिइरहेको छैन: तपाईं डिक्टेसन जारी राख्न सक्नुहुन्छ, सर्भरसँगै तपाईंका शैलीहरू फर्कनेछन्।",
         "unknownServer": "संस्थाको सर्भर"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "पछिल्लो श्रुतिलेखन"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "यो कम्प्युटर",
+      "local": "यो कम्प्युटर",
       "organization": "तपाईंको संस्थाको सर्भर"
     },
     "checklist": {

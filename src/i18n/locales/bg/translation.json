@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Организацията е свързана",
-      "local": "Nova Local е активен",
-      "localActive": "Nova Local е активен"
+      "local": "Диктовка на този компютър",
+      "localActive": "Диктовка на този компютър"
     },
     "microsoft": {
       "browserHelp": "Завършете влизането в браузъра си. Използвайте този код, ако Microsoft го поиска.",
@@ -1284,8 +1284,8 @@
         "detail": "Диктовката ви е в клипборда."
       },
       "organizationLocal": {
-        "title": "Nova Local е активна",
-        "detail": "{{server}} не отговаря — диктовката продължава локално, функциите с ИИ са на пауза.",
+        "title": "Диктовка на този компютър",
+        "detail": "{{server}} не отговаря: можете да продължите да диктувате, стиловете ще се върнат със сървъра.",
         "unknownServer": "сървърът на организацията"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Последна диктовка"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Този компютър",
+      "local": "Този компютър",
       "organization": "Сървърът на вашата организация"
     },
     "checklist": {

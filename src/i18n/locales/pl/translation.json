@@ -1090,8 +1090,8 @@
     },
     "status": {
       "connected": "Organizacja połączona",
-      "local": "Nova Local aktywny",
-      "localActive": "Nova Local aktywny"
+      "local": "Dyktowanie na tym komputerze",
+      "localActive": "Dyktowanie na tym komputerze"
     },
     "microsoft": {
       "browserHelp": "Dokończ logowanie w przeglądarce. Użyj tego kodu, jeśli Microsoft o niego poprosi.",
@@ -1284,8 +1284,8 @@
         "detail": "Twoje dyktowanie jest w schowku."
       },
       "organizationLocal": {
-        "title": "Nova Local działa",
-        "detail": "{{server}} nie odpowiada — dyktowanie działa lokalnie, funkcje AI są wstrzymane.",
+        "title": "Dyktowanie na tym komputerze",
+        "detail": "{{server}} nie odpowiada: możesz dalej dyktować, style wrócą razem z serwerem.",
         "unknownServer": "serwer organizacji"
       },
       "organizationSignedOut": {
@@ -1302,8 +1302,8 @@
       "lastDictation": "Ostatnie dyktowanie"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Ten komputer",
+      "local": "Ten komputer",
       "organization": "Serwer Twojej organizacji"
     },
     "checklist": {
