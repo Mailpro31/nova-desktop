@@ -620,7 +620,9 @@ test.describe("local dictation stays available without the server", () => {
 
     await expect
       .poll(() => preparedModel(page))
-      .toEqual({ modelId: "multilingual" });
+      // La langue voyage avec le modèle : le poste vérifie que celui qu'il
+      // a déjà la parle, et le remplace sinon.
+      .toEqual({ modelId: "multilingual", language: "fr" });
   });
 
   test("nothing is downloaded before the member signs in", async ({ page }) => {

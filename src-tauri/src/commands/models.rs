@@ -176,12 +176,32 @@ fn adopt_fallback_model(
     settings: &mut crate::settings::AppSettings,
     model_id: &str,
     selected_downloaded: bool,
+    selected_speaks: bool,
 ) -> bool {
-    if !settings.selected_model.is_empty() && selected_downloaded {
+    // Un modèle présent qui ne parle pas la langue de l'élève n'est pas un
+    // repli : le 29/09, un modèle anglais hérité écrivait « mon Nilbani ».
+    if !settings.selected_model.is_empty() && selected_downloaded && selected_speaks {
         return false;
     }
     settings.selected_model = model_id.to_string();
     true
+}
+
+/// Le modèle parle-t-il la langue voulue ? `None` n'impose rien ; `fr-FR`
+/// compte pour `fr`.
+fn speaks_language(supported: &[String], wanted: Option<&str>) -> bool {
+    let Some(wanted) = wanted else {
+        return true;
+    };
+    let lowered = wanted.trim().to_lowercase();
+    let base = lowered.split(['-', '_']).next().unwrap_or_default();
+    base.is_empty() || supported.iter().any(|language| language == base)
+}
+
+fn model_speaks(model_manager: &ModelManager, model_id: &str, wanted: Option<&str>) -> bool {
+    model_manager
+        .get_model_info(model_id)
+        .is_some_and(|model| speaks_language(&model.supported_languages, wanted))
 }
 
 fn is_model_downloaded(model_manager: &ModelManager, model_id: &str) -> bool {
@@ -202,12 +222,16 @@ pub async fn prepare_local_fallback_model(
     model_manager: State<'_, Arc<ModelManager>>,
     transcription_manager: State<'_, Arc<TranscriptionManager>>,
     model_id: String,
+    language: Option<String>,
 ) -> Result<(), String> {
     let model_info = model_manager
         .get_model_info(&model_id)
         .ok_or_else(|| format!("Model not found: {}", model_id))?;
 
-    if is_model_downloaded(&model_manager, &get_settings(&app_handle).selected_model) {
+    let selected = get_settings(&app_handle).selected_model;
+    if is_model_downloaded(&model_manager, &selected)
+        && model_speaks(&model_manager, &selected, language.as_deref())
+    {
         return Ok(());
     }
 
@@ -224,7 +248,17 @@ pub async fn prepare_local_fallback_model(
     // Relu après le téléchargement : le membre a pu choisir un modèle entre-temps.
     let mut settings = get_settings(&app_handle);
     let selected_downloaded = is_model_downloaded(&model_manager, &settings.selected_model);
-    if !adopt_fallback_model(&mut settings, &model_id, selected_downloaded) {
+    let selected_speaks = model_speaks(
+        &model_manager,
+        &settings.selected_model,
+        language.as_deref(),
+    );
+    if !adopt_fallback_model(
+        &mut settings,
+        &model_id,
+        selected_downloaded,
+        selected_speaks,
+    ) {
         return Ok(());
     }
     let unload_timeout = settings.model_unload_timeout;

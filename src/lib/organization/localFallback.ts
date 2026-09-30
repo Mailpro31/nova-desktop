@@ -22,11 +22,25 @@ function wantedLanguage(language: string): string | null {
   return base && base !== "auto" ? base : null;
 }
 
+/**
+ * La langue que le repli doit parler : celle de la dictée, ou — quand la
+ * dictée est sur « auto » — celle de l'interface. « auto » n'impose rien au
+ * moteur, mais un repli qui ne parle pas la langue de l'élève n'en est pas
+ * un : le 29/09, un modèle anglais hérité écrivait « mon Nilbani ».
+ */
+export function fallbackLanguage(
+  language: string,
+  uiLanguage: string,
+): string | null {
+  return wantedLanguage(language) ?? wantedLanguage(uiLanguage);
+}
+
 export function chooseLocalFallbackModel(
   models: ModelInfo[],
   language: string,
+  uiLanguage = "auto",
 ): ModelInfo | null {
-  const wanted = wantedLanguage(language);
+  const wanted = fallbackLanguage(language, uiLanguage);
   const speaks = (model: ModelInfo) =>
     wanted === null || model.supported_languages.includes(wanted);
   const eligible = models.filter(

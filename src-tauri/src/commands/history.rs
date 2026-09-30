@@ -94,9 +94,13 @@ pub async fn retry_history_entry_transcription(
     }
 
     // Rejeu d'historique : pas de détection auto (on ne re-lit pas la fenêtre).
-    let processed =
-        process_transcription_output(&app, &transcription, entry.post_process_requested, None)
-            .await;
+    // Rejouée sur le poste : en édition Organisation, jamais reformulée ici.
+    let post_process = crate::actions::local_rewrite_allowed(
+        crate::commands::organization::is_organization_enabled(&app),
+        false,
+        entry.post_process_requested,
+    );
+    let processed = process_transcription_output(&app, &transcription, post_process, None).await;
     history_manager
         .update_transcription(
             id,
