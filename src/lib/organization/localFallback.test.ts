@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import type { ModelInfo } from "@/bindings";
-import { chooseLocalFallbackModel } from "./localFallback";
+import { chooseLocalFallbackModel, fallbackLanguage } from "./localFallback";
 
 /**
  * Le modèle local qu'une organisation prépare pour les moments où son serveur
@@ -116,5 +116,31 @@ describe("chooseLocalFallbackModel", () => {
       chooseLocalFallbackModel([model({ id: "unranked" })], "fr"),
     ).toBeNull();
     expect(chooseLocalFallbackModel([], "fr")).toBeNull();
+  });
+});
+
+describe("la langue « automatique »", () => {
+  /**
+   * Mesuré le 29/09 : langue de dictée sur « auto », un modèle anglais hérité
+   * installé, serveur injoignable — « mon IBAN » devenait « mon Nilbani ».
+   * « auto » n'impose aucune langue au moteur, mais le repli, lui, doit parler
+   * celle de l'élève : c'est la langue de l'interface qui tranche.
+   */
+  test("c'est la langue de l'interface qui choisit le modèle de repli", () => {
+    const installedEnglish = model({
+      id: "installed-english",
+      is_downloaded: true,
+      supported_languages: ["en"],
+    });
+    expect(
+      chooseLocalFallbackModel([installedEnglish, multilingual], "auto", "fr")
+        ?.id,
+    ).toBe("multilingual");
+  });
+
+  test("et la langue voulue est rendue au poste pour qu'il vérifie le modèle en place", () => {
+    expect(fallbackLanguage("auto", "fr-FR")).toBe("fr");
+    expect(fallbackLanguage("de", "fr")).toBe("de");
+    expect(fallbackLanguage("auto", "auto")).toBeNull();
   });
 });

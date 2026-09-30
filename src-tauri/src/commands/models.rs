@@ -283,7 +283,7 @@ pub async fn cancel_download(
 
 #[cfg(test)]
 mod tests {
-    use super::adopt_fallback_model;
+    use super::{adopt_fallback_model, speaks_language};
     use crate::settings::get_default_settings;
 
     /// Préparer le repli local pendant le premier parcours ne doit pas le
@@ -294,7 +294,12 @@ mod tests {
         let mut settings = get_default_settings();
         settings.onboarding_completed = false;
 
-        assert!(adopt_fallback_model(&mut settings, "multilingual", false));
+        assert!(adopt_fallback_model(
+            &mut settings,
+            "multilingual",
+            false,
+            true
+        ));
         assert_eq!(settings.selected_model, "multilingual");
         assert!(!settings.onboarding_completed);
     }
@@ -304,7 +309,12 @@ mod tests {
         let mut settings = get_default_settings();
         settings.selected_model = "choisi".to_string();
 
-        assert!(!adopt_fallback_model(&mut settings, "multilingual", true));
+        assert!(!adopt_fallback_model(
+            &mut settings,
+            "multilingual",
+            true,
+            true
+        ));
         assert_eq!(settings.selected_model, "choisi");
     }
 
@@ -313,7 +323,40 @@ mod tests {
         let mut settings = get_default_settings();
         settings.selected_model = "supprime".to_string();
 
-        assert!(adopt_fallback_model(&mut settings, "multilingual", false));
+        assert!(adopt_fallback_model(
+            &mut settings,
+            "multilingual",
+            false,
+            true
+        ));
         assert_eq!(settings.selected_model, "multilingual");
+    }
+
+    /// Mesuré le 29/09 : serveur injoignable, le poste gardait un modèle
+    /// anglais hérité et écrivait « mon Nilbani » pour « mon IBAN ». Un modèle
+    /// présent qui ne parle pas la langue de l'élève n'est pas un repli.
+    #[test]
+    fn un_modele_present_qui_ne_parle_pas_la_langue_est_remplace() {
+        let mut settings = get_default_settings();
+        settings.selected_model = "anglais".to_string();
+
+        assert!(adopt_fallback_model(
+            &mut settings,
+            "multilingual",
+            true,
+            false
+        ));
+        assert_eq!(settings.selected_model, "multilingual");
+    }
+
+    #[test]
+    fn un_modele_parle_la_langue_voulue_ou_toutes_si_rien_n_est_impose() {
+        let french = ["fr".to_string(), "en".to_string()];
+        let english = ["en".to_string()];
+        assert!(speaks_language(&french, Some("fr")));
+        assert!(!speaks_language(&english, Some("fr")));
+        assert!(speaks_language(&english, None));
+        // `fr-FR` compte pour `fr`.
+        assert!(speaks_language(&french, Some("fr-FR")));
     }
 }
