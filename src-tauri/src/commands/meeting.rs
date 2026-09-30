@@ -303,6 +303,9 @@ pub struct MeetingReport {
 #[tauri::command]
 #[specta::specta]
 pub async fn start_meeting(app: AppHandle, pid: u32) -> Result<(), String> {
+    if meeting_mode_suspended(crate::commands::organization::is_organization_enabled(&app)) {
+        return Err("suspended".to_string());
+    }
     // Refus net d'un double démarrage (l'UI ne devrait pas le permettre, mais le
     // backend reste l'autorité).
     {
@@ -421,6 +424,15 @@ pub async fn stop_meeting(
         transcribed: assembly.transcribed,
         skipped: assembly.skipped,
     })
+}
+
+/// Le mode réunion est-il suspendu ?
+///
+/// Oui dans Nova Organisation (décision du 01/10) : il inventait parfois des
+/// échéances, et ce n'est pas un usage d'élève en classe. Suspendu, pas
+/// supprimé — l'édition personnelle, suspendue elle aussi, garde son code.
+fn meeting_mode_suspended(organization_edition: bool) -> bool {
+    organization_edition
 }
 
 /// Décision du 01/10 : un seul Nova, Nova Organisation, et le mode réunion y
