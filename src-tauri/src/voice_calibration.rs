@@ -18,6 +18,246 @@
 //! propose**. Les corrections passent par le même chemin que le vocabulaire
 //! personnel, et le gain par un réglage visible.
 
+/// Longueur d'une trame d'analyse : 30 ms à 16 kHz, comme la détection de voix.
+const FRAME_SAMPLES: usize = 480;
+
+/// En deçà, on ne distingue pas une voix d'un bruit : pas de profil.
+const MIN_FRAMES: usize = 10;
+
+/// Niveau visé pour la voix. Assez haut pour que la reconnaissance ne perde pas
+/// les consonnes d'une voix basse, assez bas pour laisser de la marge.
+pub const TARGET_SPEECH_DBFS: f32 = -20.0;
+
+/// Gain maximal (+18 dB). Au-delà, on amplifie surtout le bruit de la salle.
+pub const MAX_GAIN: f32 = 8.0;
+
+/// Crête à ne pas dépasser après gain.
+const PEAK_CEILING: f32 = 0.9;
+
+/// Écart voix/bruit en deçà duquel la dictée ne peut pas être fiable.
+const MIN_SPEECH_OVER_NOISE_DB: f32 = 12.0;
+
+/// Au-delà de ce nombre de mots, un écart est une phrase ratée, pas un mot
+/// mal compris.
+const MAX_SPAN_WORDS: usize = 3;
+
+/// Ce que le micro a reçu pendant la lecture.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct LevelProfile {
+    /// Niveau de la voix (dBFS) : les trames les plus fortes.
+    pub speech_dbfs: f32,
+    /// Niveau du fond (dBFS) : les trames les plus calmes.
+    pub noise_dbfs: f32,
+    /// Crête absolue, pour borner le gain.
+    pub peak: f32,
+}
+
+fn dbfs(rms: f32) -> f32 {
+    20.0 * rms.max(1e-9).log10()
+}
+
+/// Mesure la voix et le fond d'un enregistrement (16 kHz, mono).
+///
+/// Sans détecteur de voix : une lecture de phrases alterne paroles et pauses,
+/// donc les trames les plus fortes (90ᵉ centile) sont la voix et les plus
+/// calmes (10ᵉ centile) le fond. `None` si l'enregistrement est trop court
+/// pour trancher.
+pub fn level_profile(samples: &[f32]) -> Option<LevelProfile> {
+    let mut levels: Vec<f32> = samples
+        .chunks_exact(FRAME_SAMPLES)
+        .map(|frame| {
+            let energy: f32 = frame.iter().map(|s| s * s).sum::<f32>() / frame.len() as f32;
+            dbfs(energy.sqrt())
+        })
+        .collect();
+    if levels.len() < MIN_FRAMES {
+        return None;
+    }
+    levels.sort_by(|a, b| a.total_cmp(b));
+    let at = |fraction: f32| levels[((levels.len() - 1) as f32 * fraction).round() as usize];
+    let peak = samples.iter().fold(0.0f32, |max, s| max.max(s.abs()));
+    Some(LevelProfile {
+        speech_dbfs: at(0.9),
+        noise_dbfs: at(0.1),
+        peak,
+    })
+}
+
+/// Le gain qui amène la voix au niveau visé, sans jamais saturer.
+///
+/// Jamais inférieur à 1 : une voix forte n'est pas un problème à corriger, et
+/// l'atténuer ferait perdre du détail pour rien.
+pub fn recommended_gain(profile: &LevelProfile) -> f32 {
+    let wanted = 10f32.powf((TARGET_SPEECH_DBFS - profile.speech_dbfs) / 20.0);
+    let headroom = if profile.peak > 0.0 {
+        PEAK_CEILING / profile.peak
+    } else {
+        MAX_GAIN
+    };
+    wanted.min(headroom).clamp(1.0, MAX_GAIN)
+}
+
+/// La voix ressort-elle assez du fond pour qu'une dictée soit fiable ?
+///
+/// Un gain monte la voix **et** le bruit : il ne change pas cet écart. S'il
+/// est trop faible, il faut rapprocher le micro ou changer de place — et c'est
+/// ce qu'il faut dire à l'élève.
+pub fn voice_stands_out(profile: &LevelProfile) -> bool {
+    profile.speech_dbfs - profile.noise_dbfs >= MIN_SPEECH_OVER_NOISE_DB
+}
+
+/// Applique un gain, en écrêtant à la pleine échelle.
+pub fn apply_gain(samples: &mut [f32], gain: f32) {
+    for sample in samples.iter_mut() {
+        *sample = (*sample * gain).clamp(-1.0, 1.0);
+    }
+}
+
+/// Un mot lu, et ce que le moteur a écrit à sa place.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HeardAs {
+    /// La forme lue, telle qu'elle doit être écrite.
+    pub expected: String,
+    /// Ce que le moteur a transcrit.
+    pub heard: String,
+}
+
+/// Retire la ponctuation qui entoure un mot, en gardant celle qu'il contient
+/// (« d'Aéro » garde son apostrophe).
+fn trim_word(word: &str) -> &str {
+    word.trim_matches(|c: char| !c.is_alphanumeric())
+}
+
+/// Forme de comparaison : sans ponctuation autour, sans casse. Les accents
+/// restent : « aero » pour « Aéro » est justement une erreur à apprendre.
+fn comparable(word: &str) -> String {
+    trim_word(word).to_lowercase()
+}
+
+fn words(text: &str) -> Vec<&str> {
+    text.split_whitespace()
+        .map(trim_word)
+        .filter(|w| !w.is_empty())
+        .collect()
+}
+
+/// Une position de l'alignement : le mot lu et le mot entendu consommés
+/// (l'un des deux peut manquer), et s'ils concordent.
+struct Aligned {
+    read: Option<usize>,
+    got: Option<usize>,
+    same: bool,
+}
+
+/// Aligne deux suites de mots par distance d'édition.
+fn align(read: &[String], got: &[String]) -> Vec<Aligned> {
+    let (n, m) = (read.len(), got.len());
+    let mut cost = vec![vec![0usize; m + 1]; n + 1];
+    for (i, row) in cost.iter_mut().enumerate() {
+        row[0] = i;
+    }
+    for (j, cell) in cost[0].iter_mut().enumerate() {
+        *cell = j;
+    }
+    for i in 1..=n {
+        for j in 1..=m {
+            let substitution = cost[i - 1][j - 1] + usize::from(read[i - 1] != got[j - 1]);
+            cost[i][j] = substitution.min(cost[i - 1][j] + 1).min(cost[i][j - 1] + 1);
+        }
+    }
+
+    let mut path = Vec::with_capacity(n.max(m));
+    let (mut i, mut j) = (n, m);
+    while i > 0 || j > 0 {
+        let diagonal = i > 0 && j > 0;
+        if diagonal && read[i - 1] == got[j - 1] && cost[i][j] == cost[i - 1][j - 1] {
+            path.push(Aligned {
+                read: Some(i - 1),
+                got: Some(j - 1),
+                same: true,
+            });
+            i -= 1;
+            j -= 1;
+        } else if diagonal && cost[i][j] == cost[i - 1][j - 1] + 1 {
+            path.push(Aligned {
+                read: Some(i - 1),
+                got: Some(j - 1),
+                same: false,
+            });
+            i -= 1;
+            j -= 1;
+        } else if i > 0 && cost[i][j] == cost[i - 1][j] + 1 {
+            path.push(Aligned {
+                read: Some(i - 1),
+                got: None,
+                same: false,
+            });
+            i -= 1;
+        } else {
+            path.push(Aligned {
+                read: None,
+                got: Some(j - 1),
+                same: false,
+            });
+            j -= 1;
+        }
+    }
+    path.reverse();
+    path
+}
+
+/// Les mots lus que le moteur a écrits autrement.
+///
+/// Les deux textes sont alignés mot à mot. Chaque suite d'écarts entre deux
+/// mots identiques forme une paire lu → entendu. Ne sont **pas** retenus :
+///
+/// - un mot entendu mais pas lu (« euh ») : rien n'a été mal compris ;
+/// - un mot lu mais pas entendu : le moteur n'a rien écrit à remplacer ;
+/// - un écart de plus de trois mots : c'est une phrase ratée, et en tirer une
+///   règle de remplacement abîmerait des dictées justes.
+pub fn misheard_words(expected: &str, heard: &str) -> Vec<HeardAs> {
+    let read = words(expected);
+    let got = words(heard);
+    let read_cmp: Vec<String> = read.iter().map(|w| comparable(w)).collect();
+    let got_cmp: Vec<String> = got.iter().map(|w| comparable(w)).collect();
+
+    let mut found = Vec::new();
+    let mut span_read: Vec<usize> = Vec::new();
+    let mut span_got: Vec<usize> = Vec::new();
+    let mut close_span = |span_read: &mut Vec<usize>, span_got: &mut Vec<usize>| {
+        if !span_read.is_empty()
+            && !span_got.is_empty()
+            && span_read.len() <= MAX_SPAN_WORDS
+            && span_got.len() <= MAX_SPAN_WORDS
+        {
+            found.push(HeardAs {
+                expected: span_read
+                    .iter()
+                    .map(|&k| read[k])
+                    .collect::<Vec<_>>()
+                    .join(" "),
+                heard: span_got
+                    .iter()
+                    .map(|&k| got[k])
+                    .collect::<Vec<_>>()
+                    .join(" "),
+            });
+        }
+        span_read.clear();
+        span_got.clear();
+    };
+    for step in align(&read_cmp, &got_cmp) {
+        if step.same {
+            close_span(&mut span_read, &mut span_got);
+            continue;
+        }
+        span_read.extend(step.read);
+        span_got.extend(step.got);
+    }
+    close_span(&mut span_read, &mut span_got);
+    found
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
