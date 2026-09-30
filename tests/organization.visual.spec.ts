@@ -127,6 +127,11 @@ test.describe("Nova Campus visual reference", () => {
     await capture(page, testInfo, "campus-smart-setup-light");
 
     await page.getByRole("button", { name: "Use recommended setup" }).click();
+    // Le calibrage de la voix précède la première dictée ; il est facultatif.
+    await expect(
+      page.getByRole("heading", { name: "Let Nova learn your voice" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Skip", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Try Nova" })).toBeVisible();
     await capture(page, testInfo, "campus-first-dictation-light");
     await page.evaluate(async () => {
