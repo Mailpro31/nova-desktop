@@ -793,6 +793,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::history::get_audio_file_path,
                 commands::history::delete_history_entry,
                 commands::history::retry_history_entry_transcription,
+                commands::history::correct_history_entry,
                 commands::history::update_history_limit,
                 commands::history::update_recording_retention_period,
                 helpers::clamshell::is_laptop,

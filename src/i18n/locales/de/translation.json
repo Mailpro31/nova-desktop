@@ -594,7 +594,18 @@
       "retranscribe": "Erneut transkribieren",
       "retranscribeError": "Erneute Transkription fehlgeschlagen. Bitte versuche es erneut.",
       "transcribing": "Transkribiere...",
-      "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren."
+      "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren.",
+      "correction": {
+        "start": "Text korrigieren",
+        "field": "Korrigierter Text",
+        "save": "Korrektur speichern",
+        "error": "Die Korrektur konnte nicht gespeichert werden.",
+        "proposal": "Nova hat diese Begriffe vielleicht falsch verstanden. Angehakt, werden sie in Ihren nächsten Diktaten besser erkannt:",
+        "term": "„{{expected}}“ (Nova hörte „{{heard}}“)",
+        "learn": "Zu meinem Wortschatz hinzufügen",
+        "skip": "Nicht jetzt",
+        "learned": "Zu Ihrem Wortschatz hinzugefügt."
+      }
     },
     "debug": {
       "logDirectory": {

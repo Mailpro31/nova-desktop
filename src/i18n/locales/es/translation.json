@@ -594,7 +594,18 @@
       "retranscribe": "Re-transcribir",
       "retranscribeError": "No se pudo re-transcribir. Por favor, inténtalo de nuevo.",
       "transcribing": "Transcribiendo...",
-      "transcriptionFailed": "La transcripción falló. Puedes re-transcribir usando el ícono de reintentar."
+      "transcriptionFailed": "La transcripción falló. Puedes re-transcribir usando el ícono de reintentar.",
+      "correction": {
+        "start": "Corregir el texto",
+        "field": "Texto corregido",
+        "save": "Guardar la corrección",
+        "error": "No se ha podido guardar la corrección.",
+        "proposal": "Puede que Nova haya entendido mal estos términos. Si están marcados, se reconocerán mejor en tus próximos dictados:",
+        "term": "«{{expected}}» (Nova oía «{{heard}}»)",
+        "learn": "Añadir a mi vocabulario",
+        "skip": "Ahora no",
+        "learned": "Añadido a tu vocabulario."
+      }
     },
     "debug": {
       "logDirectory": {

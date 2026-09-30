@@ -1639,6 +1639,14 @@ async retryHistoryEntryTranscription(id: number) : Promise<Result<null, string>>
     else return { status: "error", error: e  as any };
 }
 },
+async correctHistoryEntry(id: number, correctedText: string) : Promise<Result<LearnableTerm[], string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("correct_history_entry", { id, correctedText }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async updateHistoryLimit(limit: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("update_history_limit", { limit }) };
@@ -2097,6 +2105,11 @@ export type ImplementationChangeResult = { success: boolean;
 reset_bindings: string[] }
 export type KeyboardImplementation = "tauri" | "handy_keys"
 export type LLMPrompt = { id: string; name: string; prompt: string }
+/**
+ * Un terme qu'une correction de l'élève propose au vocabulaire : ce qu'il a
+ * écrit, à la place de ce que le moteur avait transcrit.
+ */
+export type LearnableTerm = { expected: string; heard: string }
 export type LatencyStats = { stage: string; count: number; median_ms: number; p95_ms: number; last_ms: number }
 /**
  * Terme pressenti pour le lexique personnel, observé au fil des dictées

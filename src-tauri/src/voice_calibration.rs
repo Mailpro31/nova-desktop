@@ -258,6 +258,141 @@ pub fn misheard_words(expected: &str, heard: &str) -> Vec<HeardAs> {
     found
 }
 
+/// Longueur à partir de laquelle un mot en minuscules est assez rare pour être
+/// appris : « photosynthèse » oui, « cours » jamais.
+const MIN_LEARNED_WORD_LEN: usize = 7;
+
+/// Ressemblance minimale entre ce que le moteur a écrit et la correction : une
+/// erreur d'écoute ressemble à ce qui a été dit (« pita gore » / « Pythagore »),
+/// une phrase réécrite, non.
+const MIN_RESEMBLANCE: f32 = 0.6;
+
+fn folded_letters(text: &str) -> Vec<char> {
+    text.to_lowercase()
+        .chars()
+        .filter(|c| c.is_alphanumeric())
+        .map(|c| match c {
+            'à' | 'â' | 'ä' | 'á' => 'a',
+            'é' | 'è' | 'ê' | 'ë' => 'e',
+            'î' | 'ï' | 'í' => 'i',
+            'ô' | 'ö' | 'ó' => 'o',
+            'ù' | 'û' | 'ü' | 'ú' => 'u',
+            'ç' => 'c',
+            'ÿ' => 'y',
+            other => other,
+        })
+        .collect()
+}
+
+/// Ressemblance d'écriture de deux textes, de 0 à 1 (distance d'édition sur
+/// les lettres, sans casse ni accents).
+fn resemblance(a: &str, b: &str) -> f32 {
+    let (x, y) = (folded_letters(a), folded_letters(b));
+    let longest = x.len().max(y.len());
+    if longest == 0 {
+        return 1.0;
+    }
+    let mut previous: Vec<usize> = (0..=y.len()).collect();
+    for (i, cx) in x.iter().enumerate() {
+        let mut current = vec![i + 1; y.len() + 1];
+        for (j, cy) in y.iter().enumerate() {
+            current[j + 1] = (previous[j] + usize::from(cx != cy))
+                .min(previous[j + 1] + 1)
+                .min(current[j] + 1);
+        }
+        previous = current;
+    }
+    1.0 - previous[y.len()] as f32 / longest as f32
+}
+
+/// Les termes qu'une correction de l'élève apprend à Nova : ce qu'il a écrit
+/// (`expected`) à la place de ce que le moteur avait transcrit (`heard`).
+///
+/// Contrairement au calibrage, la casse compte : « ipsa » corrigé en « IPSA »,
+/// « baratto » en « Baratto », c'est exactement ce qu'il faut apprendre. Mais
+/// une correction n'est pas toujours une erreur d'écoute. Ne sont retenus que :
+///
+/// - les écarts qui **ressemblent** à ce qui a été dit (voir [`MIN_RESEMBLANCE`]) ;
+/// - s'ils ne diffèrent que par la casse : un sigle (deux majuscules au moins)
+///   ou un nom propre ailleurs qu'en début de phrase ;
+/// - sinon : un mot avec une majuscule, ou un mot long (voir
+///   [`MIN_LEARNED_WORD_LEN`]). Un mot courant corrigé — « court » en
+///   « cours » — ne devient jamais une règle.
+///
+/// Rien n'est appliqué ici : ce sont des propositions, que l'élève accepte.
+pub fn corrected_terms(original: &str, corrected: &str) -> Vec<HeardAs> {
+    let read = words(corrected);
+    let got = words(original);
+    // Début de phrase : premier mot, ou mot qui suit une ponctuation forte.
+    let raw: Vec<&str> = corrected.split_whitespace().collect();
+    let sentence_start: Vec<bool> = raw
+        .iter()
+        .enumerate()
+        .filter(|(_, token)| !trim_word(token).is_empty())
+        .map(|(i, _)| {
+            i == 0
+                || raw[i - 1]
+                    .chars()
+                    .last()
+                    .is_some_and(|c| matches!(c, '.' | '!' | '?'))
+        })
+        .collect();
+    let read_exact: Vec<String> = read.iter().map(|w| w.to_string()).collect();
+    let got_exact: Vec<String> = got.iter().map(|w| w.to_string()).collect();
+
+    let mut found = Vec::new();
+    let mut span_read: Vec<usize> = Vec::new();
+    let mut span_got: Vec<usize> = Vec::new();
+    let mut close_span = |span_read: &mut Vec<usize>, span_got: &mut Vec<usize>| {
+        let keep = !span_read.is_empty()
+            && !span_got.is_empty()
+            && span_read.len() <= MAX_SPAN_WORDS
+            && span_got.len() <= MAX_SPAN_WORDS;
+        if keep {
+            let expected = span_read
+                .iter()
+                .map(|&k| read[k])
+                .collect::<Vec<_>>()
+                .join(" ");
+            let heard = span_got
+                .iter()
+                .map(|&k| got[k])
+                .collect::<Vec<_>>()
+                .join(" ");
+            let at_sentence_start = sentence_start.get(span_read[0]).copied().unwrap_or(false);
+            if is_learnable(&expected, &heard, at_sentence_start) {
+                found.push(HeardAs { expected, heard });
+            }
+        }
+        span_read.clear();
+        span_got.clear();
+    };
+    for step in align(&read_exact, &got_exact) {
+        if step.same {
+            close_span(&mut span_read, &mut span_got);
+            continue;
+        }
+        span_read.extend(step.read);
+        span_got.extend(step.got);
+    }
+    close_span(&mut span_read, &mut span_got);
+    found
+}
+
+fn is_learnable(expected: &str, heard: &str, at_sentence_start: bool) -> bool {
+    if resemblance(expected, heard) < MIN_RESEMBLANCE {
+        return false;
+    }
+    let uppercase = expected.chars().filter(|c| c.is_uppercase()).count();
+    if expected.to_lowercase() == heard.to_lowercase() {
+        return uppercase >= 2 || (uppercase >= 1 && !at_sentence_start);
+    }
+    uppercase >= 1
+        || expected
+            .split_whitespace()
+            .any(|word| trim_word(word).chars().count() >= MIN_LEARNED_WORD_LEN)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

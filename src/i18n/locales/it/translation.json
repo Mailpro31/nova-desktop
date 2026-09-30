@@ -594,7 +594,18 @@
       "retranscribe": "Ri-trascrivere",
       "retranscribeError": "Impossibile ri-trascrivere. Riprova.",
       "transcribing": "Trascrizione in corso...",
-      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione."
+      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione.",
+      "correction": {
+        "start": "Correggi il testo",
+        "field": "Testo corretto",
+        "save": "Salva la correzione",
+        "error": "Impossibile salvare la correzione.",
+        "proposal": "Nova potrebbe aver capito male questi termini. Se selezionati, verranno riconosciuti meglio nei tuoi prossimi dettati:",
+        "term": "«{{expected}}» (Nova sentiva «{{heard}}»)",
+        "learn": "Aggiungi al mio vocabolario",
+        "skip": "Non ora",
+        "learned": "Aggiunto al tuo vocabolario."
+      }
     },
     "debug": {
       "logDirectory": {

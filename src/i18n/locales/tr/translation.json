@@ -594,7 +594,18 @@
       "retranscribe": "Yeniden yazıya dök",
       "retranscribeError": "Yeniden yazıya dökme başarısız oldu. Lütfen tekrar deneyin.",
       "transcribing": "Yazıya döküyor...",
-      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz."
+      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz.",
+      "correction": {
+        "start": "Metni düzelt",
+        "field": "Düzeltilmiş metin",
+        "save": "Düzeltmeyi kaydet",
+        "error": "Düzeltme kaydedilemedi.",
+        "proposal": "Nova bu terimleri yanlış duymuş olabilir. İşaretli olanlar sonraki dikte işlemlerinizde daha iyi tanınacak:",
+        "term": "“{{expected}}” (Nova “{{heard}}” duyuyordu)",
+        "learn": "Söz dağarcığıma ekle",
+        "skip": "Şimdi değil",
+        "learned": "Söz dağarcığınıza eklendi."
+      }
     },
     "debug": {
       "logDirectory": {

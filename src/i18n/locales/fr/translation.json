@@ -594,7 +594,18 @@
       "retranscribe": "Re-transcrire",
       "retranscribeError": "Impossible de re-transcrire. Veuillez réessayer.",
       "transcribing": "Transcription en cours...",
-      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai."
+      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai.",
+      "correction": {
+        "start": "Corriger le texte",
+        "field": "Texte corrigé",
+        "save": "Enregistrer la correction",
+        "error": "La correction n'a pas pu être enregistrée.",
+        "proposal": "Nova a peut-être mal entendu ces termes. Cochés, ils seront mieux reconnus dans vos prochaines dictées :",
+        "term": "« {{expected}} » (Nova entendait « {{heard}} »)",
+        "learn": "Ajouter à mon vocabulaire",
+        "skip": "Pas maintenant",
+        "learned": "Ajouté à votre vocabulaire."
+      }
     },
     "debug": {
       "logDirectory": {

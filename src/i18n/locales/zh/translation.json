@@ -594,7 +594,18 @@
       "retranscribe": "重新转录",
       "retranscribeError": "重新转录失败。请重试。",
       "transcribing": "转录中...",
-      "transcriptionFailed": "转录失败。您可以使用重试图标重新转录。"
+      "transcriptionFailed": "转录失败。您可以使用重试图标重新转录。",
+      "correction": {
+        "start": "更正文本",
+        "field": "更正后的文本",
+        "save": "保存更正",
+        "error": "无法保存更正。",
+        "proposal": "Nova 可能听错了这些术语。勾选后，将在你之后的听写中更准确地识别：",
+        "term": "“{{expected}}”（Nova 听成了“{{heard}}”）",
+        "learn": "添加到我的词汇",
+        "skip": "暂不",
+        "learned": "已添加到你的词汇。"
+      }
     },
     "debug": {
       "logDirectory": {

@@ -17,6 +17,7 @@ import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { AudioPlayer } from "../../ui/AudioPlayer";
+import { HistoryCorrection } from "./HistoryCorrection";
 import {
   entriesForStyle,
   filterEntries,
@@ -420,6 +421,13 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
               {t("settings.history.retranscribe")}
             </Button>
           </div>
+          {hasText && (
+            <HistoryCorrection
+              entryId={entry.id}
+              text={text}
+              disabled={retrying}
+            />
+          )}
         </div>
       )}
     </li>

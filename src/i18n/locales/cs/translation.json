@@ -594,7 +594,18 @@
       "retranscribe": "Přepsat znovu",
       "retranscribeError": "Opětovný přepis se nezdařil. Zkuste to prosím znovu.",
       "transcribing": "Přepisuji...",
-      "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování."
+      "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování.",
+      "correction": {
+        "start": "Opravit text",
+        "field": "Opravený text",
+        "save": "Uložit opravu",
+        "error": "Opravu se nepodařilo uložit.",
+        "proposal": "Nova možná tyto pojmy špatně slyšela. Zaškrtnuté bude v dalších diktátech rozpoznávat lépe:",
+        "term": "„{{expected}}“ (Nova slyšela „{{heard}}“)",
+        "learn": "Přidat do mé slovní zásoby",
+        "skip": "Teď ne",
+        "learned": "Přidáno do vaší slovní zásoby."
+      }
     },
     "debug": {
       "logDirectory": {

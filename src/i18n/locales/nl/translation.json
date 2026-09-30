@@ -594,7 +594,18 @@
       "retranscribe": "Opnieuw transcriberen",
       "retranscribeError": "Opnieuw transcriberen mislukt. Probeer het opnieuw.",
       "transcribing": "Transcriberen...",
-      "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram."
+      "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram.",
+      "correction": {
+        "start": "Tekst corrigeren",
+        "field": "Gecorrigeerde tekst",
+        "save": "Correctie opslaan",
+        "error": "De correctie kon niet worden opgeslagen.",
+        "proposal": "Nova heeft deze termen misschien verkeerd verstaan. Aangevinkt worden ze beter herkend in je volgende dictaten:",
+        "term": "‘{{expected}}’ (Nova hoorde ‘{{heard}}’)",
+        "learn": "Aan mijn woordenlijst toevoegen",
+        "skip": "Niet nu",
+        "learned": "Aan je woordenlijst toegevoegd."
+      }
     },
     "debug": {
       "logDirectory": {

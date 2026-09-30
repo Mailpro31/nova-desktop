@@ -594,7 +594,18 @@
       "retranscribe": "Transkrybuj ponownie",
       "retranscribeError": "Nie udało się ponownie transkrybować. Spróbuj ponownie.",
       "transcribing": "Transkrybuję...",
-      "transcriptionFailed": "Transkrypcja nie powiodła się. Możesz transkrybować ponownie za pomocą ikony ponowienia."
+      "transcriptionFailed": "Transkrypcja nie powiodła się. Możesz transkrybować ponownie za pomocą ikony ponowienia.",
+      "correction": {
+        "start": "Popraw tekst",
+        "field": "Poprawiony tekst",
+        "save": "Zapisz poprawkę",
+        "error": "Nie udało się zapisać poprawki.",
+        "proposal": "Nova mogła źle usłyszeć te terminy. Zaznaczone będą lepiej rozpoznawane w kolejnych dyktowaniach:",
+        "term": "„{{expected}}” (Nova słyszała „{{heard}}”)",
+        "learn": "Dodaj do mojego słownictwa",
+        "skip": "Nie teraz",
+        "learned": "Dodano do twojego słownictwa."
+      }
     },
     "debug": {
       "logDirectory": {

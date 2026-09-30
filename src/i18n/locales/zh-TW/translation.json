@@ -594,7 +594,18 @@
       "retranscribe": "重新轉錄",
       "retranscribeError": "重新轉錄失敗，請重試。",
       "transcribing": "轉錄中...",
-      "transcriptionFailed": "轉錄失敗。您可以使用重試圖示重新轉錄。"
+      "transcriptionFailed": "轉錄失敗。您可以使用重試圖示重新轉錄。",
+      "correction": {
+        "start": "更正文字",
+        "field": "更正後的文字",
+        "save": "儲存更正",
+        "error": "無法儲存更正。",
+        "proposal": "Nova 可能聽錯了這些術語。勾選後，將在你之後的聽寫中更準確地辨識：",
+        "term": "「{{expected}}」（Nova 聽成了「{{heard}}」）",
+        "learn": "加入我的詞彙",
+        "skip": "暫不",
+        "learned": "已加入你的詞彙。"
+      }
     },
     "debug": {
       "logDirectory": {
