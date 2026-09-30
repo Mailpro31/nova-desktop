@@ -594,7 +594,10 @@
       "retranscribe": "Re-transcrire",
       "retranscribeError": "Impossible de re-transcrire. Veuillez réessayer.",
       "transcribing": "Transcription en cours...",
-      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai."
+      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai.",
+      "readAloud": "Écouter",
+      "stopReading": "Arrêter la lecture",
+      "readAloudUnavailable": "La lecture à voix haute n'est pas disponible sur ce poste."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Un aperçu de votre utilisation de Nova."
+    },
+    "readingComfort": {
+      "title": "Lecture et confort",
+      "description": "Rendre le texte de Nova plus facile à lire, et se faire lire ses notes à voix haute.",
+      "textSize": {
+        "title": "Taille du texte",
+        "normal": "Normale",
+        "large": "Grande",
+        "larger": "Très grande"
+      },
+      "spacing": {
+        "title": "Espacement des lettres et des lignes",
+        "description": "Un texte espacé est plus facile à lire pour beaucoup de lecteurs dyslexiques.",
+        "normal": "Normal",
+        "wide": "Large",
+        "wider": "Très large"
+      },
+      "font": {
+        "title": "Police",
+        "description": "Aucune police n'a montré d'effet sur la lecture avec une dyslexie : choisissez celle qui vous semble la plus confortable.",
+        "system": "Nova",
+        "readable": "Verdana (lettres larges)"
+      },
+      "speechRate": {
+        "title": "Vitesse de lecture",
+        "description": "Pour la lecture à voix haute de vos notes, depuis l'historique.",
+        "slow": "Lente",
+        "normal": "Normale",
+        "fast": "Rapide",
+        "try": "Essayer",
+        "sample": "Voici comment Nova lira vos notes à voix haute."
+      }
     }
   },
   "footer": {

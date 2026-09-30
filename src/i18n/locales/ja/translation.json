@@ -594,7 +594,10 @@
       "retranscribe": "再文字起こし",
       "retranscribeError": "再文字起こしに失敗しました。もう一度お試しください。",
       "transcribing": "文字起こし中…",
-      "transcriptionFailed": "文字起こしに失敗しました。リトライアイコンを使用して再文字起こしできます。"
+      "transcriptionFailed": "文字起こしに失敗しました。リトライアイコンを使用して再文字起こしできます。",
+      "readAloud": "読み上げ",
+      "stopReading": "読み上げを停止",
+      "readAloudUnavailable": "このコンピューターでは読み上げを利用できません。"
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Nova の利用状況の概要です。"
+    },
+    "readingComfort": {
+      "title": "読みやすさ",
+      "description": "Nova の文字を読みやすくし、ノートを読み上げで聞けるようにします。",
+      "textSize": {
+        "title": "文字サイズ",
+        "normal": "標準",
+        "large": "大",
+        "larger": "特大"
+      },
+      "spacing": {
+        "title": "文字間隔と行間",
+        "description": "間隔の広い文字は、ディスレクシアのある多くの人にとって読みやすくなります。",
+        "normal": "標準",
+        "wide": "広め",
+        "wider": "最も広い"
+      },
+      "font": {
+        "title": "フォント",
+        "description": "ディスレクシアの読みを改善することが示されたフォントはありません。いちばん読みやすいと感じるものを選んでください。",
+        "system": "Nova",
+        "readable": "Verdana（幅の広い文字）"
+      },
+      "speechRate": {
+        "title": "読み上げ速度",
+        "description": "履歴からノートを読み上げるときの速度です。",
+        "slow": "遅い",
+        "normal": "標準",
+        "fast": "速い",
+        "try": "試す",
+        "sample": "Nova はこのようにノートを読み上げます。"
+      }
     }
   },
   "footer": {

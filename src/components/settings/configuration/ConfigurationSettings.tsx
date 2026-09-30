@@ -9,6 +9,7 @@ import {
 } from "../general/OrganizationGeneralSettings";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ThemeSelector } from "../ThemeSelector";
+import { ReadingComfortSettings } from "../ReadingComfortSettings";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { PageHeader } from "../../shell/PageHeader";
 import { ModelsSettings } from "../models/ModelsSettings";
@@ -131,6 +132,7 @@ const OrganizationGeneralTab: React.FC = () => {
         <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
         <ThemeSelector descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
+      <ReadingComfortSettings />
       {/* Toujours rendu, lié ou non : c'est la seule surface d'où l'on peut
           rattacher un compte, et la cacher tant qu'aucune organisation
           n'existe la rendait inatteignable au moment où elle sert. */}

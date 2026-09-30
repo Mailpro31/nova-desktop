@@ -9,7 +9,11 @@ import {
   Search,
   Star,
   Trash2,
+  Square,
+  Volume2,
 } from "lucide-react";
+import { speak, stopSpeaking } from "@/lib/speech";
+import { loadReadingComfort } from "@/lib/readingComfort";
 import { toast } from "sonner";
 
 import { PageHeader } from "../../shell/PageHeader";
@@ -287,9 +291,10 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
   locale,
   styles,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [copied, setCopied] = useState(false);
   const [retrying, setRetrying] = useState(false);
+  const [reading, setReading] = useState(false);
 
   const text = entry.transcription_text.trim();
   const hasText = text.length > 0;
@@ -305,6 +310,24 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
     await writeText(text);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
+  };
+
+  // La lecture à voix haute : l'aide la mieux établie pour un élève
+  // dyslexique qui relit ses notes. Une seule lecture à la fois ; relancer sur
+  // une autre dictée arrête la précédente.
+  const readAloud = () => {
+    if (reading) {
+      stopSpeaking();
+      setReading(false);
+      return;
+    }
+    const started = speak(text, {
+      uiLanguage: i18n.language,
+      rate: loadReadingComfort().speechRate,
+      onEnd: () => setReading(false),
+    });
+    if (started) setReading(true);
+    else toast.error(t("settings.history.readAloudUnavailable"));
   };
 
   const retranscribe = async () => {
@@ -383,6 +406,18 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
             disabled={!hasText || retrying}
           >
             {copied ? <Check size={15} /> : <Copy size={15} />}
+          </RowAction>
+          <RowAction
+            onClick={readAloud}
+            label={
+              reading
+                ? t("settings.history.stopReading")
+                : t("settings.history.readAloud")
+            }
+            disabled={!hasText || retrying}
+            active={reading}
+          >
+            {reading ? <Square size={14} /> : <Volume2 size={15} />}
           </RowAction>
           <RowAction
             onClick={() => void commands.toggleHistoryEntrySaved(entry.id)}

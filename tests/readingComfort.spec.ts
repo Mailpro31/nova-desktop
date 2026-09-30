@@ -39,9 +39,10 @@ async function recordSpeech(page: Page) {
         speak: (utterance: SpeechSynthesisUtterance) =>
           spoken.push(utterance.text),
         cancel: () => undefined,
-        getVoices: () => [
-          { lang: "fr-FR", name: "Hortense", localService: true },
-        ],
+        // Aucune voix : un objet simple ne peut pas tenir lieu de
+        // `SpeechSynthesisVoice`, que le navigateur exige. Le choix de la voix
+        // est couvert par `src/lib/speech.test.ts` ; ici, c'est le texte lu.
+        getVoices: () => [],
         speaking: false,
         addEventListener: () => undefined,
         removeEventListener: () => undefined,
@@ -77,9 +78,11 @@ test.describe("reading comfort", () => {
     // 0,12 em : la valeur du critère WCAG 1.4.12.
     await expect.poll(spacing).toBeGreaterThan(0.11);
 
+    // Au redémarrage, Nova rouvre l'accueil : on revient aux Réglages pour
+    // mesurer au même endroit.
     await page.reload();
-    await expect.poll(spacing).toBeGreaterThan(0.11);
     await page.getByRole("button", { name: "Settings", exact: true }).click();
+    await expect.poll(spacing).toBeGreaterThan(0.11);
     await expect(
       page
         .getByRole("radiogroup", { name: "Letter and line spacing" })

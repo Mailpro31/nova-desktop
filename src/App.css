@@ -45,8 +45,11 @@
   /* Native Windows typography first. The 15px base preserves the established
      rem rhythm while Segoe UI provides the platform's expected metrics. */
   font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 24px;
+  /* Taille réglable par l'élève (réglages de lecture) : 15 px par défaut, et le
+     rythme rem de toute l'interface suit. L'interligne garde son rapport de
+     24 px pour 15 px, en pixels comme avant, pour ne rien déplacer. */
+  font-size: var(--reading-font-size, 15px);
+  line-height: calc(var(--reading-font-size, 15px) * 1.6);
   font-weight: 400;
   letter-spacing: -0.01em;
 
@@ -73,6 +76,26 @@
   color: var(--color-text);
   background-color: var(--color-background);
   color-scheme: light dark;
+}
+
+/* Réglages de lecture — voir `src/lib/readingComfort.ts`.
+
+   L'espacement s'impose à tout le texte, `!important` compris : c'est ainsi
+   que le critère WCAG 1.4.12 éprouve une interface, et un espacement qui ne
+   s'appliquerait qu'aux textes sans classe Tailwind laisserait justement les
+   titres et les boutons serrés. Le code et les journaux gardent leur police. */
+:root[data-reading-spacing="wide"] body *,
+:root[data-reading-spacing="wider"] body * {
+  letter-spacing: var(--reading-letter-spacing) !important;
+  word-spacing: var(--reading-word-spacing) !important;
+  line-height: var(--reading-line-height) !important;
+}
+
+:root[data-reading-font="readable"] body,
+:root[data-reading-font="readable"]
+  body
+  *:not(code):not(pre):not(kbd):not(.font-mono) {
+  font-family: Verdana, Tahoma, sans-serif !important;
 }
 
 html,

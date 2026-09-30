@@ -594,7 +594,10 @@
       "retranscribe": "Ri-trascrivere",
       "retranscribeError": "Impossibile ri-trascrivere. Riprova.",
       "transcribing": "Trascrizione in corso...",
-      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione."
+      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione.",
+      "readAloud": "Leggi ad alta voce",
+      "stopReading": "Interrompi la lettura",
+      "readAloudUnavailable": "La lettura ad alta voce non è disponibile su questo computer."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Una panoramica del tuo utilizzo di Nova."
+    },
+    "readingComfort": {
+      "title": "Comfort di lettura",
+      "description": "Rendere il testo di Nova più facile da leggere e ascoltare i propri appunti ad alta voce.",
+      "textSize": {
+        "title": "Dimensione del testo",
+        "normal": "Normale",
+        "large": "Grande",
+        "larger": "Molto grande"
+      },
+      "spacing": {
+        "title": "Spaziatura di lettere e righe",
+        "description": "Un testo spaziato è più facile da leggere per molti lettori con dislessia.",
+        "normal": "Normale",
+        "wide": "Ampia",
+        "wider": "Molto ampia"
+      },
+      "font": {
+        "title": "Carattere",
+        "description": "Nessun carattere ha dimostrato di migliorare la lettura con la dislessia: scegli quello che trovi più comodo.",
+        "system": "Nova",
+        "readable": "Verdana (lettere larghe)"
+      },
+      "speechRate": {
+        "title": "Velocità di lettura",
+        "description": "Per leggere ad alta voce i tuoi appunti dalla cronologia.",
+        "slow": "Lenta",
+        "normal": "Normale",
+        "fast": "Veloce",
+        "try": "Prova",
+        "sample": "Ecco come Nova leggerà i tuoi appunti ad alta voce."
+      }
     }
   },
   "footer": {

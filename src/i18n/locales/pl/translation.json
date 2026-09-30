@@ -594,7 +594,10 @@
       "retranscribe": "Transkrybuj ponownie",
       "retranscribeError": "Nie udało się ponownie transkrybować. Spróbuj ponownie.",
       "transcribing": "Transkrybuję...",
-      "transcriptionFailed": "Transkrypcja nie powiodła się. Możesz transkrybować ponownie za pomocą ikony ponowienia."
+      "transcriptionFailed": "Transkrypcja nie powiodła się. Możesz transkrybować ponownie za pomocą ikony ponowienia.",
+      "readAloud": "Czytaj na głos",
+      "stopReading": "Zatrzymaj czytanie",
+      "readAloudUnavailable": "Czytanie na głos nie jest dostępne na tym komputerze."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Przegląd korzystania z Nova."
+    },
+    "readingComfort": {
+      "title": "Komfort czytania",
+      "description": "Ułatw czytanie tekstu w Nova i słuchaj swoich notatek na głos.",
+      "textSize": {
+        "title": "Rozmiar tekstu",
+        "normal": "Normalny",
+        "large": "Duży",
+        "larger": "Bardzo duży"
+      },
+      "spacing": {
+        "title": "Odstępy między literami i wierszami",
+        "description": "Tekst z większymi odstępami łatwiej czyta się wielu osobom z dysleksją.",
+        "normal": "Normalne",
+        "wide": "Szerokie",
+        "wider": "Bardzo szerokie"
+      },
+      "font": {
+        "title": "Czcionka",
+        "description": "Żadna czcionka nie poprawia udowodnionie czytania przy dysleksji: wybierz tę, która jest dla ciebie najwygodniejsza.",
+        "system": "Nova",
+        "readable": "Verdana (szerokie litery)"
+      },
+      "speechRate": {
+        "title": "Tempo czytania",
+        "description": "Do czytania notatek na głos z historii.",
+        "slow": "Wolne",
+        "normal": "Normalne",
+        "fast": "Szybkie",
+        "try": "Wypróbuj",
+        "sample": "Tak Nova przeczyta twoje notatki na głos."
+      }
     }
   },
   "footer": {
