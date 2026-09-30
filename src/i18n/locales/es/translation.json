@@ -1566,6 +1566,7 @@
     "dataNote": "El servidor de tu institución cuenta cuántas transcripciones y reescrituras realizas cada día. No guarda su contenido.",
     "aiSkillsPrivacyOffline": "Los Nova Commands funcionan en el servidor de tu institución, que ahora no está accesible.",
     "notInOrganization": "Esta cuenta de Microsoft no pertenece a tu institución.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "El servidor de tu centro"
   }
 }

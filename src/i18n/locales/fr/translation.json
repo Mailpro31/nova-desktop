@@ -1566,6 +1566,7 @@
     "dataNote": "Le serveur de votre établissement compte le nombre de transcriptions et de réécritures effectuées chaque jour. Il n'en conserve pas le contenu.",
     "aiSkillsPrivacyOffline": "Les Nova Commands passent par le serveur de votre établissement, actuellement injoignable.",
     "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
-    "codeForbidden": "L'accès est indisponible. Contactez votre administrateur."
+    "codeForbidden": "L'accès est indisponible. Contactez votre administrateur.",
+    "engineServer": "Le serveur de votre établissement"
   }
 }

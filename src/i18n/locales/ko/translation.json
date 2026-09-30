@@ -1566,6 +1566,7 @@
     "dataNote": "기관 서버는 하루에 받아쓰기와 다시 쓰기를 몇 번 했는지 셉니다. 내용은 저장하지 않습니다.",
     "aiSkillsPrivacyOffline": "Nova Commands는 소속 기관 서버에서 동작하며 지금은 연결되지 않습니다.",
     "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "학교 서버"
   }
 }

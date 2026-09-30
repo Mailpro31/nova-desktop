@@ -1566,6 +1566,7 @@
     "dataNote": "Der Server Ihrer Einrichtung zählt, wie viele Transkriptionen und Umschreibungen Sie täglich ausführen. Deren Inhalt wird nicht gespeichert.",
     "aiSkillsPrivacyOffline": "Nova Commands laufen auf dem Server Ihrer Einrichtung, der gerade nicht erreichbar ist.",
     "notInOrganization": "Dieses Microsoft-Konto gehört nicht zu Ihrer Einrichtung.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Server Ihrer Bildungseinrichtung"
   }
 }

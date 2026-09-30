@@ -1566,6 +1566,7 @@
     "dataNote": "De server van uw instelling telt hoeveel transcripties en herschrijvingen u per dag uitvoert. De inhoud wordt niet bewaard.",
     "aiSkillsPrivacyOffline": "Nova Commands draaien op de server van uw instelling, die nu onbereikbaar is.",
     "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "De server van je onderwijsinstelling"
   }
 }

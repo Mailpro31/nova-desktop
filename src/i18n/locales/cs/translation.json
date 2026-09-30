@@ -1566,6 +1566,7 @@
     "dataNote": "Server vaší instituce počítá, kolik přepisů a úprav denně provedete. Jejich obsah neuchovává.",
     "aiSkillsPrivacyOffline": "Nova Commands běží na serveru vaší instituce, který je nyní nedostupný.",
     "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Server vaší školy"
   }
 }

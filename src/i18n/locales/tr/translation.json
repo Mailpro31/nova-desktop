@@ -1566,6 +1566,7 @@
     "dataNote": "Kurumunuzun sunucusu her gün kaç dikte ve yeniden yazım yaptığınızı sayar. İçeriklerini saklamaz.",
     "aiSkillsPrivacyOffline": "Nova Commands kurumunuzun sunucusunda çalışır; şu anda erişilemiyor.",
     "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Okulunuzun sunucusu"
   }
 }

@@ -1566,6 +1566,7 @@
     "dataNote": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte.",
     "aiSkillsPrivacyOffline": "Nova Commands körs på din lärosätesserver, som just nu inte går att nå.",
     "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Din skolas server"
   }
 }

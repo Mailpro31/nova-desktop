@@ -1566,6 +1566,7 @@
     "dataNote": "机构服务器会统计你每天进行了多少次转写和改写，但不保存内容。",
     "aiSkillsPrivacyOffline": "Nova Commands 运行在你所在机构的服务器上，目前无法连接。",
     "notInOrganization": "此 Microsoft 账户不属于您的机构。",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "你所在学校的服务器"
   }
 }

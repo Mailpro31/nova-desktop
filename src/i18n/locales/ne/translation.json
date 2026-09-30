@@ -1566,6 +1566,7 @@
     "dataNote": "संस्थाको सर्भरले दैनिक कति श्रुतिलेखन र पुनर्लेखन गर्नुभयो भनेर गन्छ। सामग्री राख्दैन।",
     "aiSkillsPrivacyOffline": "Nova Commands तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।",
     "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "तपाईंको शैक्षिक संस्थाको सर्भर"
   }
 }

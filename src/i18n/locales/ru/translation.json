@@ -1566,6 +1566,7 @@
     "dataNote": "Сервер заведения считает, сколько расшифровок и переписываний вы делаете за день. Их содержимое не сохраняется.",
     "aiSkillsPrivacyOffline": "Nova Commands выполняются на сервере вашего учебного заведения, сейчас недоступном.",
     "notInOrganization": "Эта учётная запись Microsoft не относится к вашей организации.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Сервер вашего учебного заведения"
   }
 }

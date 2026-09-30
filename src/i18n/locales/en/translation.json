@@ -1566,6 +1566,7 @@
     "dataNote": "Your institution's server counts how many transcriptions and rewrites you run each day. It does not store their content.",
     "aiSkillsPrivacyOffline": "Nova Commands run on your institution's server, which is unreachable right now.",
     "notInOrganization": "This Microsoft account is not part of your institution.",
-    "codeForbidden": "Access is unavailable. Contact your institution administrator."
+    "codeForbidden": "Access is unavailable. Contact your institution administrator.",
+    "engineServer": "Your institution's server"
   }
 }

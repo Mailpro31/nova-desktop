@@ -1566,6 +1566,7 @@
     "dataNote": "Сервер закладу рахує, скільки розшифрувань і переписувань ви робите щодня. Їхній вміст не зберігається.",
     "aiSkillsPrivacyOffline": "Nova Commands виконуються на сервері вашого закладу, зараз недоступному.",
     "notInOrganization": "Цей обліковий запис Microsoft не належить вашому закладу.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Сервер вашого навчального закладу"
   }
 }

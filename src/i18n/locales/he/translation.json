@@ -1566,6 +1566,7 @@
     "dataNote": "שרת המוסד סופר כמה תמלולים וכתיבות מחדש אתם מבצעים בכל יום. הוא אינו שומר את התוכן.",
     "aiSkillsPrivacyOffline": "‏Nova Commands פועלות על שרת המוסד שלכם, שאינו זמין כרגע.",
     "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "השרת של מוסד הלימודים שלכם"
   }
 }
