@@ -2776,7 +2776,7 @@ mod tests {
         context_looks_like_current_draft, custom_variables_block, effective_style,
         is_blank_transcription, local_primary_timeout, protect_custom_variables, protect_lexicon,
         replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
-        temperature_for_style, validate_rewrite, with_language_hint,
+        substitute_personal_values, temperature_for_style, validate_rewrite, with_language_hint,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -2927,6 +2927,33 @@ mod tests {
             key: key.to_string(),
             value: value.to_string(),
         }
+    }
+
+    // --- Un snippet n'est inséré qu'une fois, même quand le serveur a reformulé ---
+
+    /// Mesuré en démonstration le 29/09 : le serveur de l'organisation avait
+    /// déjà remis la valeur derrière « mon iban », et le poste l'a insérée une
+    /// seconde fois — « Voici Mon iban : fr76 … : fr76 … ».
+    #[test]
+    fn a_value_the_server_already_inserted_is_not_inserted_again() {
+        let variables = vec![var("Mon iban", "fr76 3000 6000 5000")];
+        let from_server = "Voici mon iban : fr76 3000 6000 5000.";
+
+        assert_eq!(
+            substitute_personal_values(from_server, &variables, true),
+            from_server
+        );
+    }
+
+    /// Sans reformulation, personne n'a encore inséré la valeur : le poste la
+    /// met, une fois.
+    #[test]
+    fn a_raw_dictation_still_receives_the_value_once() {
+        let variables = vec![var("Mon iban", "fr76 3000 6000 5000")];
+
+        let out = substitute_personal_values("voici mon iban", &variables, false);
+
+        assert_eq!(out.matches("fr76 3000 6000 5000").count(), 1, "{out}");
     }
 
     #[test]
