@@ -11,6 +11,7 @@ import {
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { MicrophoneSelector } from "../MicrophoneSelector";
+import { VoiceCalibrationSetting } from "../VoiceCalibrationSetting";
 import { ShortcutInput } from "../ShortcutInput";
 import { OutputDeviceSelector } from "../OutputDeviceSelector";
 import { PushToTalk } from "../PushToTalk";
@@ -70,6 +71,7 @@ export const OrganizationGeneralSettings: React.FC = () => {
         description={t("organization.settings.sound.description")}
       >
         <MicrophoneSelector descriptionMode="tooltip" grouped={true} />
+        <VoiceCalibrationSetting grouped={true} />
         <MuteWhileRecording descriptionMode="tooltip" grouped={true} />
         <AudioFeedback descriptionMode="tooltip" grouped={true} />
         <OutputDeviceSelector

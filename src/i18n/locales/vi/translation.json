@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "Tổng quan về việc sử dụng Nova của bạn."
+    },
+    "voiceCalibration": {
+      "title": "Giọng của tôi",
+      "descriptionGain": "Nova tăng giọng của bạn thêm {{db}} dB.",
+      "descriptionNone": "Không điều chỉnh: giọng của bạn được giữ nguyên.",
+      "recalibrate": "Hiệu chỉnh lại giọng của tôi",
+      "reset": "Đặt lại"
     }
   },
   "footer": {

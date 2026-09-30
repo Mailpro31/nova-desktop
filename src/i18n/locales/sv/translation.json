@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "En översikt över din Nova-användning."
+    },
+    "voiceCalibration": {
+      "title": "Min röst",
+      "descriptionGain": "Nova höjer din röst med {{db}} dB.",
+      "descriptionNone": "Ingen justering: din röst kommer in som den är.",
+      "recalibrate": "Kalibrera om min röst",
+      "reset": "Återställ"
     }
   },
   "footer": {

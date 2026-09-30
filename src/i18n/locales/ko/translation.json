@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "Nova 사용 현황을 한눈에 볼 수 있습니다."
+    },
+    "voiceCalibration": {
+      "title": "내 목소리",
+      "descriptionGain": "Nova가 목소리를 {{db}}dB 높입니다.",
+      "descriptionNone": "조정 없음: 목소리가 그대로 들어옵니다.",
+      "recalibrate": "목소리 다시 보정",
+      "reset": "초기화"
     }
   },
   "footer": {

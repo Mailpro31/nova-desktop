@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "نظرة عامة على استخدامك لـ Nova."
+    },
+    "voiceCalibration": {
+      "title": "صوتي",
+      "descriptionGain": "يرفع Nova صوتك بمقدار {{db}} ديسيبل.",
+      "descriptionNone": "بلا ضبط: يصل صوتك كما هو.",
+      "recalibrate": "إعادة معايرة صوتي",
+      "reset": "إعادة تعيين"
     }
   },
   "footer": {

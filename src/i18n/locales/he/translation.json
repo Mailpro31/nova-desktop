@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "סקירה כללית של השימוש שלך ב-Nova."
+    },
+    "voiceCalibration": {
+      "title": "הקול שלי",
+      "descriptionGain": "Nova מגביר את הקול שלכם ב-{{db}} dB.",
+      "descriptionNone": "ללא כוונון: הקול שלכם מגיע כפי שהוא.",
+      "recalibrate": "כיול מחדש של הקול",
+      "reset": "איפוס"
     }
   },
   "footer": {

@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "您使用 Nova 的情況概覽。"
+    },
+    "voiceCalibration": {
+      "title": "我的聲音",
+      "descriptionGain": "Nova 將你的聲音提高 {{db}} dB。",
+      "descriptionNone": "未調整：你的聲音按原樣輸入。",
+      "recalibrate": "重新校準我的聲音",
+      "reset": "重設"
     }
   },
   "footer": {

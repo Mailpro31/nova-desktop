@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "तपाईंको Nova प्रयोगको सिंहावलोकन।"
+    },
+    "voiceCalibration": {
+      "title": "मेरो आवाज",
+      "descriptionGain": "Nova ले तपाईंको आवाज {{db}} dB बढाउँछ।",
+      "descriptionNone": "कुनै समायोजन छैन: तपाईंको आवाज जस्ताको तस्तै आउँछ।",
+      "recalibrate": "मेरो आवाज फेरि क्यालिब्रेट गर्नुहोस्",
+      "reset": "रिसेट गर्नुहोस्"
     }
   },
   "footer": {

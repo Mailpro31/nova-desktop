@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "Огляд використання Nova."
+    },
+    "voiceCalibration": {
+      "title": "Мій голос",
+      "descriptionGain": "Nova підсилює ваш голос на {{db}} дБ.",
+      "descriptionNone": "Без налаштування: голос надходить як є.",
+      "recalibrate": "Відкалібрувати голос знову",
+      "reset": "Скинути"
     }
   },
   "footer": {

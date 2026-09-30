@@ -1529,6 +1529,9 @@ async finishVoiceCalibrationSample(expected: string) : Promise<Result<Calibratio
     else return { status: "error", error: e  as any };
 }
 },
+async cancelVoiceCalibrationSample() : Promise<void> {
+    await TAURI_INVOKE("cancel_voice_calibration_sample");
+},
 async setInputGain(gain: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("set_input_gain", { gain }) };

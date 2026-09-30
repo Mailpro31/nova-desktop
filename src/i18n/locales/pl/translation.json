@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "Przegląd korzystania z Nova."
+    },
+    "voiceCalibration": {
+      "title": "Mój głos",
+      "descriptionGain": "Nova podnosi twój głos o {{db}} dB.",
+      "descriptionNone": "Bez zmian: twój głos trafia bez regulacji.",
+      "recalibrate": "Skalibruj ponownie mój głos",
+      "reset": "Resetuj"
     }
   },
   "footer": {

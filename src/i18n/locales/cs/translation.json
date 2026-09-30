@@ -720,6 +720,13 @@
     },
     "home": {
       "subtitle": "Přehled vašeho používání Nova."
+    },
+    "voiceCalibration": {
+      "title": "Můj hlas",
+      "descriptionGain": "Nova zesiluje váš hlas o {{db}} dB.",
+      "descriptionNone": "Žádná úprava: váš hlas přichází beze změny.",
+      "recalibrate": "Znovu zkalibrovat hlas",
+      "reset": "Obnovit"
     }
   },
   "footer": {
