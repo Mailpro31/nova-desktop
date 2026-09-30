@@ -608,6 +608,75 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
         );
     }
 
+    // Sorties réelles du banc du 30/09 (modèle local Qwen3-4B), toutes passées
+    // à tort par le contrôle de la première version : dictés en lettres, les
+    // nombres échappaient à toute comparaison.
+
+    #[test]
+    fn a_date_the_model_changed_is_refused() {
+        assert_eq!(
+            check(
+                "pour lundi il faut faire les exercices douze et treize page quarante-cinq et relire le chapitre cinq, important le partiel c'est le vingt mars",
+                "pour lundi il faut faire les exercices 12 et 13 page 45 et relire le chapitre 5.
+À retenir : le partiel est le 23 mars.",
+                COURSE
+            ),
+            Err("number-changed")
+        );
+        assert_eq!(
+            check(
+                "partie deux la révolution française, elle commence en mille sept cent quatre-vingt-neuf, le quatorze juillet c'est la prise de la bastille, en mille sept cent quatre-vingt-douze non pardon en mille sept cent quatre-vingt-treize louis seize est exécuté",
+                "Partie 2 la révolution française, elle commence en 1789, le 14 juillet c'est la prise de la bastille, en 1789 non pardon en 1790 louis seize est exécuté.",
+                COURSE
+            ),
+            Err("number-changed")
+        );
+    }
+
+    #[test]
+    fn a_runaway_output_is_refused() {
+        let input = "partie deux la révolution française, elle commence en mille sept cent quatre-vingt-neuf, le quatorze juillet c'est la prise de la bastille, en mille sept cent quatre-vingt-douze non pardon en mille sept cent quatre-vingt-treize louis seize est exécuté";
+        let output = format!(
+            "Partie deux, la Révolution française, elle commence en 1789, le 14 juillet c'est la prise de la Bastille, en 1789 non{}",
+            ", en 1789".repeat(80)
+        );
+        assert_eq!(check(input, &output, COURSE), Err("output-runaway"));
+    }
+
+    #[test]
+    fn numbers_said_in_words_are_read_like_digits() {
+        assert_eq!(
+            spoken_numbers("mille sept cent quatre-vingt-treize"),
+            vec!["1793".to_string()]
+        );
+        assert_eq!(
+            spoken_numbers("les exercices douze et treize page quarante-cinq"),
+            vec!["12".to_string(), "13".to_string(), "45".to_string()]
+        );
+        assert_eq!(
+            spoken_numbers("soixante et onze, quatre-vingt-dix-neuf, deux mille vingt-six"),
+            vec!["71".to_string(), "99".to_string(), "2026".to_string()]
+        );
+        assert_eq!(
+            spoken_numbers("six virgule zéro deux fois dix puissance vingt-trois"),
+            vec!["6,02".to_string(), "10".to_string(), "23".to_string()]
+        );
+        // « un » est d'abord un article : seul, il ne compte pas.
+        assert!(spoken_numbers("un accord entre une ou deux personnes").contains(&"2".to_string()));
+        assert!(!spoken_numbers("un accord entre une personne").contains(&"1".to_string()));
+    }
+
+    #[test]
+    fn a_power_written_as_a_symbol_is_the_same_number() {
+        // « x au carré » → x², « trois x au carré » → 3x².
+        assert!(check(
+            "à retenir la dérivée de x au carré c'est deux x et la dérivée de x au cube c'est trois x au carré",
+            "À retenir : la dérivée de x² est 2x et la dérivée de x³ est 3x².",
+            COURSE
+        )
+        .is_ok());
+    }
+
     #[test]
     fn faithful_course_notes_pass() {
         for (input, output) in [
