@@ -334,6 +334,61 @@ mod tests {
         .is_empty());
     }
 
+    // --- Ce qu'une correction de l'élève apprend ---
+    //
+    // L'élève corrige une dictée dans l'historique. Ce qu'il a corrigé est ce
+    // que le moteur entend mal chez lui — mais une correction de style ou de
+    // grammaire n'est pas une erreur d'écoute, et en tirer une règle de
+    // remplacement abîmerait des dictées justes.
+
+    #[test]
+    fn a_corrected_course_term_is_learned() {
+        assert_eq!(
+            corrected_terms(
+                "le théorème de pita gore relie les côtés",
+                "le théorème de Pythagore relie les côtés"
+            ),
+            vec![heard("Pythagore", "pita gore")]
+        );
+    }
+
+    #[test]
+    fn a_corrected_acronym_or_name_is_learned_even_if_only_the_case_changed() {
+        assert_eq!(
+            corrected_terms(
+                "je transmets le dossier à l'ipsa pour madame baratto",
+                "je transmets le dossier à l'IPSA pour madame Baratto"
+            ),
+            vec![heard("l'IPSA", "l'ipsa"), heard("Baratto", "baratto")]
+        );
+    }
+
+    #[test]
+    fn a_capital_at_the_start_of_a_sentence_is_not_a_term() {
+        assert!(corrected_terms(
+            "le cours commence. demain on revoit tout",
+            "Le cours commence. Demain on revoit tout"
+        )
+        .is_empty());
+    }
+
+    #[test]
+    fn a_common_word_corrected_is_never_learned() {
+        // « court » → « cours » en règle réécrirait chaque « court » dicté.
+        assert!(corrected_terms("le court de maths", "le cours de maths").is_empty());
+    }
+
+    #[test]
+    fn a_rewritten_sentence_is_not_a_correction_of_listening() {
+        // Une erreur d'écoute ressemble à ce qui a été dit (« pita gore » /
+        // « Pythagore ») ; une phrase réécrite, non.
+        assert!(corrected_terms(
+            "on va voir la loi de newton aujourd'hui",
+            "aujourd'hui nous étudierons la seconde loi de newton en détail"
+        )
+        .is_empty());
+    }
+
     // --- Le niveau ---
 
     #[test]
