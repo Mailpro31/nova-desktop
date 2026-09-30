@@ -62,7 +62,13 @@ fn local_primary_timeout(transcription: &str, style_id: Option<&str>) -> Duratio
     }
     let complex_style = matches!(
         style_id,
-        Some("nova_style_notes" | "nova_style_todo" | "nova_style_prompt" | "nova_style_meeting")
+        Some(
+            "nova_style_notes"
+                | "nova_style_course_notes"
+                | "nova_style_todo"
+                | "nova_style_prompt"
+                | "nova_style_meeting"
+        )
     );
     let long_dictation = transcription.chars().count() > 500;
     LOCAL_PRIMARY_TIMEOUT
@@ -218,6 +224,7 @@ fn clean_llm_output(s: &str) -> String {
 fn temperature_for_style(style_id: &str) -> f32 {
     const FAITHFUL: &[&str] = &[
         "default_improve_transcriptions",
+        "nova_style_course_notes",
         "nova_style_messages",
         "nova_style_voice_to_text",
     ];

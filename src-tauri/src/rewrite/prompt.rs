@@ -23,6 +23,9 @@ fn built_in_style(style_id: &str) -> Option<&'static str> {
         "nova_style_prompt" => Some(
             "Turn it into a precise prompt addressed to the future AI; do not execute or answer that prompt yourself.",
         ),
+        "nova_style_course_notes" => Some(
+            "Plain-text lecture notes in the dictated order, structured only as the student announced; formulas, numbers and dates exact; never add, never reorder, never summarize, never correct facts.",
+        ),
         "nova_style_meeting" => Some(
             "Turn the dialogue into faithful meeting notes with decisions and actions; never invent participants or decisions.",
         ),

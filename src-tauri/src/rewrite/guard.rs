@@ -287,21 +287,171 @@ fn course_words(text: &str) -> HashSet<String> {
         .collect()
 }
 
-/// Un nombre écrit en chiffres dans la dictée — date, seuil, numéro de
-/// chapitre — doit se retrouver dans les notes. Perdre « 12 % » d'un cours,
-/// c'est perdre le seuil que l'élève révisera.
-pub fn dictated_number_lost(input: &str, output: &str) -> bool {
-    static NUMBER: Lazy<Regex> =
-        Lazy::new(|| Regex::new(r"\d+(?:[ \u{00A0}\u{202F},.]\d+)*").unwrap());
-    let compact = |s: &str| {
-        s.chars()
-            .filter(|c| !matches!(c, ' ' | '\u{00A0}' | '\u{202F}'))
-            .collect::<String>()
-    };
-    let written = compact(output);
-    NUMBER
-        .find_iter(input)
-        .any(|number| !written.contains(&compact(number.as_str())))
+/// Valeur d'un mot-nombre français (sans accents).
+fn number_word_value(word: &str) -> Option<u64> {
+    Some(match word {
+        "zero" => 0,
+        "un" | "une" => 1,
+        "deux" => 2,
+        "trois" => 3,
+        "quatre" => 4,
+        "cinq" => 5,
+        "six" => 6,
+        "sept" => 7,
+        "huit" => 8,
+        "neuf" => 9,
+        "dix" => 10,
+        "onze" => 11,
+        "douze" => 12,
+        "treize" => 13,
+        "quatorze" => 14,
+        "quinze" => 15,
+        "seize" => 16,
+        "vingt" | "vingts" => 20,
+        "trente" => 30,
+        "quarante" => 40,
+        "cinquante" => 50,
+        "soixante" => 60,
+        "cent" | "cents" => 100,
+        "mille" => 1_000,
+        "million" | "millions" => 1_000_000,
+        "milliard" | "milliards" => 1_000_000_000,
+        _ => return None,
+    })
+}
+
+/// La valeur d'une suite de mots-nombres (« mille sept cent quatre-vingt-
+/// treize » → 1793).
+fn number_value(values: &[u64]) -> u64 {
+    let (mut total, mut current, mut previous) = (0u64, 0u64, None);
+    for &value in values {
+        match value {
+            100 => current = current.max(1) * 100,
+            1_000 | 1_000_000 | 1_000_000_000 => {
+                total += current.max(1) * value;
+                current = 0;
+            }
+            // « quatre-vingt » : quatre fois vingt, pas quatre plus vingt.
+            20 if previous == Some(4) => current = current - 4 + 80,
+            _ => current += value,
+        }
+        previous = Some(value);
+    }
+    total + current
+}
+
+/// Les nombres dits en lettres dans un texte, en chiffres (« vingt mars » →
+/// « 20 », « six virgule zéro deux » → « 6,02 »).
+///
+/// Une suite s'arrête à la ponctuation et au premier mot qui n'est pas un
+/// nombre ; « et » n'y entre que dans « vingt et un », « soixante et onze ».
+/// « un » ou « une » seuls sont des articles, pas des nombres.
+pub fn spoken_numbers(text: &str) -> Vec<String> {
+    static TOKEN: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\p{L}]+|\d+|[^\s\p{L}\d\-']").unwrap());
+    let tokens: Vec<String> = TOKEN
+        .find_iter(&text.to_lowercase())
+        .map(|m| fold(m.as_str()))
+        .collect();
+    let value_at = |i: usize| tokens.get(i).and_then(|t| number_word_value(t));
+    let mut numbers = Vec::new();
+    let mut i = 0;
+    while i < tokens.len() {
+        if value_at(i).is_none() {
+            i += 1;
+            continue;
+        }
+        let start = i;
+        let mut values = Vec::new();
+        while i < tokens.len() {
+            if let Some(value) = value_at(i) {
+                values.push(value);
+                i += 1;
+            } else if tokens[i] == "et"
+                && values.last().is_some_and(|v| (20..=60).contains(v))
+                && matches!(
+                    tokens.get(i + 1).map(String::as_str),
+                    Some("un" | "une" | "onze")
+                )
+            {
+                i += 1;
+            } else {
+                break;
+            }
+        }
+        if values.len() == 1 && matches!(tokens[start].as_str(), "un" | "une") {
+            continue;
+        }
+        let mut number = number_value(&values).to_string();
+        // « virgule » : les chiffres qui suivent sont des décimales, dites une
+        // à une (« zéro deux ») ou d'un bloc (« vingt-cinq »).
+        if tokens.get(i).map(String::as_str) == Some("virgule") && value_at(i + 1).is_some() {
+            i += 1;
+            let mut decimals = String::new();
+            while let Some(value) = value_at(i) {
+                decimals.push_str(&value.to_string());
+                i += 1;
+            }
+            number = format!("{number},{decimals}");
+        }
+        numbers.push(number);
+    }
+    numbers
+}
+
+/// Tous les nombres d'un texte, quelle que soit leur écriture : chiffres
+/// (« 76 300 », « 6,02 » ou « 6.02 »), exposants (« x² »), lettres (« vingt »)
+/// et puissances dites (« au carré » → 2, « au cube » → 3).
+fn numbers_in(text: &str) -> HashSet<String> {
+    static DIGITS: Lazy<Regex> =
+        Lazy::new(|| Regex::new(r"\d+(?:[ \u{00A0}\u{202F}]\d{3})*(?:[,.]\d+)?").unwrap());
+    static SUPERSCRIPT: Lazy<Regex> = Lazy::new(|| Regex::new(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+").unwrap());
+    static POWER: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\bcarr[ée]s?\b|\bcubes?\b").unwrap());
+    let mut numbers: HashSet<String> = DIGITS
+        .find_iter(text)
+        .map(|m| {
+            m.as_str()
+                .chars()
+                .filter(|c| !matches!(c, ' ' | '\u{00A0}' | '\u{202F}'))
+                .map(|c| if c == '.' { ',' } else { c })
+                .collect()
+        })
+        .collect();
+    for m in SUPERSCRIPT.find_iter(text) {
+        numbers.insert(
+            m.as_str()
+                .chars()
+                .map(|c| match c {
+                    '⁰' => '0',
+                    '¹' => '1',
+                    '²' => '2',
+                    '³' => '3',
+                    '⁴' => '4',
+                    '⁵' => '5',
+                    '⁶' => '6',
+                    '⁷' => '7',
+                    '⁸' => '8',
+                    _ => '9',
+                })
+                .collect(),
+        );
+    }
+    for m in POWER.find_iter(text) {
+        let power = if m.as_str().to_lowercase().starts_with("cub") {
+            "3"
+        } else {
+            "2"
+        };
+        numbers.insert(power.to_string());
+    }
+    numbers.extend(spoken_numbers(text));
+    numbers
+}
+
+/// Une sortie qui s'emballe — le modèle répète la même tournure jusqu'à la
+/// limite de longueur — est bien plus longue que la dictée : des notes mettent
+/// en forme, elles ne triplent pas un texte.
+fn is_runaway(input: &str, output: &str) -> bool {
+    output.chars().count() > input.chars().count() * 2 + 80
 }
 
 /// Part des mots des notes que l'élève n'a pas dits. `None` quand les notes
@@ -319,16 +469,28 @@ pub fn added_word_ratio(input: &str, output: &str) -> Option<f32> {
     Some(added as f32 / written.len() as f32)
 }
 
-/// Les contrôles des notes de cours. Dans l'ordre : la langue, puis les
-/// nombres (le défaut le plus coûteux pour un élève), puis ce qui a été
-/// ajouté, puis ce qui a été perdu.
+/// Les contrôles des notes de cours. Dans l'ordre : une sortie qui s'emballe,
+/// la langue, les nombres (le défaut le plus coûteux pour un élève), puis ce
+/// qui a été ajouté, puis ce qui a été perdu.
 fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
+    if is_runaway(input, output) {
+        return Err("output-runaway");
+    }
     if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
         if dictated != written {
             return Err("language-changed");
         }
     }
-    if dictated_number_lost(input, output) {
+    // Un nombre que l'élève n'a pas dit — une date de partiel décalée, une
+    // année d'histoire changée — est l'erreur la plus coûteuse : il la
+    // révisera. Un nombre perdu vient juste après. Dit en chiffres ou en
+    // lettres, c'est la même valeur qui est comparée.
+    let said = numbers_in(input);
+    let written = numbers_in(output);
+    if written.difference(&said).next().is_some() {
+        return Err("number-changed");
+    }
+    if said.difference(&written).next().is_some() {
         return Err("number-lost");
     }
     if added_word_ratio(input, output).is_some_and(|ratio| ratio > COURSE_MAX_ADDED_WORDS) {
