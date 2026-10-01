@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Haal concrete taken en checklists uit je dictaat.",
         "nova_style_notes": "Herstructureer je dictaat tot heldere, overzichtelijke aantekeningen.",
         "nova_style_meeting": "Vat je vergadernotities en gesprekspunten samen en maak ze op.",
-        "nova_style_voice_to_text": "Ruwe transcriptie zonder enige nabewerking."
+        "nova_style_voice_to_text": "Je dictaat woord voor woord: alleen leestekens, hoofdletters en spelling worden verbeterd."
       },
       "title": "Schrijfstijlen"
     },

@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Rút ra các việc cần làm và danh sách kiểm tra từ nội dung đọc.",
         "nova_style_notes": "Sắp xếp lại nội dung đọc thành ghi chú rõ ràng, gọn gàng.",
         "nova_style_meeting": "Tóm tắt và định dạng ghi chú cùng các điểm thảo luận trong cuộc họp.",
-        "nova_style_voice_to_text": "Bản chép lời thô, không qua bất kỳ xử lý nào."
+        "nova_style_voice_to_text": "Bài đọc của bạn từng chữ: chỉ sửa dấu câu, chữ hoa và chính tả."
       },
       "title": "Lối viết"
     },

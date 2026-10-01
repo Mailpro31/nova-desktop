@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Extrayez des tâches et listes de contrôle actionnables de votre dictée.",
         "nova_style_notes": "Restructurez votre dictée en notes claires et organisées.",
         "nova_style_meeting": "Résumez et mettez en forme vos notes et points de réunion.",
-        "nova_style_voice_to_text": "Transcription brute sans aucun post-traitement."
+        "nova_style_voice_to_text": "Votre dictée mot pour mot : seules la ponctuation, les majuscules et l'orthographe sont corrigées."
       },
       "title": "Styles d'écriture"
     },

@@ -1080,7 +1080,7 @@
         "nova_style_todo": "받아쓰기에서 실행할 작업과 체크리스트를 뽑아냅니다.",
         "nova_style_notes": "받아쓰기를 깔끔하게 정리된 노트로 재구성합니다.",
         "nova_style_meeting": "회의 메모와 논의 사항을 요약하고 정리합니다.",
-        "nova_style_voice_to_text": "후처리 없이 그대로 받아쓴 텍스트입니다."
+        "nova_style_voice_to_text": "받아쓴 그대로: 문장 부호, 대문자, 맞춤법만 고칩니다."
       },
       "title": "글쓰기 스타일"
     },

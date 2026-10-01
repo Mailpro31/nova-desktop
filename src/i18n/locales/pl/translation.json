@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Wyodrębnij z dyktowania konkretne zadania i listy kontrolne.",
         "nova_style_notes": "Przekształć dyktowanie w przejrzyste, uporządkowane notatki.",
         "nova_style_meeting": "Podsumuj i sformatuj notatki oraz ustalenia ze spotkania.",
-        "nova_style_voice_to_text": "Surowa transkrypcja bez żadnego dodatkowego przetwarzania."
+        "nova_style_voice_to_text": "Twoje dyktowanie słowo w słowo: poprawiana jest tylko interpunkcja, wielkie litery i pisownia."
       },
       "title": "Style pisania"
     },

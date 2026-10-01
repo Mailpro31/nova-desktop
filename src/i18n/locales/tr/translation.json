@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Diktenden uygulanabilir görevler ve kontrol listeleri çıkar.",
         "nova_style_notes": "Dikteni net ve düzenli notlar hâline getir.",
         "nova_style_meeting": "Toplantı notlarını ve konuşma başlıklarını özetle ve düzenle.",
-        "nova_style_voice_to_text": "Hiçbir son işlem uygulanmamış ham döküm."
+        "nova_style_voice_to_text": "Dikteniz kelimesi kelimesine: yalnızca noktalama, büyük harfler ve yazım düzeltilir."
       },
       "title": "Yazım Biçemleri"
     },

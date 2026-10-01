@@ -1080,7 +1080,7 @@
         "nova_style_todo": "從聽寫內容中擷取可執行的任務與檢查清單。",
         "nova_style_notes": "把聽寫內容重組為清楚、有條理的筆記。",
         "nova_style_meeting": "彙整並整理會議紀錄與討論重點。",
-        "nova_style_voice_to_text": "未經任何後製處理的原始逐字稿。"
+        "nova_style_voice_to_text": "逐字記錄你的口述：只修正標點、大小寫和拼寫。"
       },
       "title": "寫作風格"
     },

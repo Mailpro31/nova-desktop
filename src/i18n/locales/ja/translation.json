@@ -1080,7 +1080,7 @@
         "nova_style_todo": "音声入力から、実行できるタスクやチェックリストを取り出します。",
         "nova_style_notes": "音声入力を、すっきり整理されたノートに組み立て直します。",
         "nova_style_meeting": "会議のメモや論点を要約して整えます。",
-        "nova_style_voice_to_text": "後処理を一切しない、そのままの文字起こし。"
+        "nova_style_voice_to_text": "口述をそのまま文字に。句読点・大文字・綴りだけを直します。"
       },
       "title": "文体"
     },

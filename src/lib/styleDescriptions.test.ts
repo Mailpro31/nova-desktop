@@ -25,5 +25,4 @@ describe("« Voix → texte »", () => {
     expect(voiceToText("fr")).not.toMatch(/brute|sans aucun/i);
     expect(voiceToText("fr")).toMatch(/ponctuation/);
   });
-
 });

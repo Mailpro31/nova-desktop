@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Estrai dalla dettatura attività concrete ed elenchi di controllo.",
         "nova_style_notes": "Riorganizza la dettatura in appunti chiari e ordinati.",
         "nova_style_meeting": "Riassumi e formatta appunti e punti di discussione della riunione.",
-        "nova_style_voice_to_text": "Trascrizione grezza senza alcuna elaborazione successiva."
+        "nova_style_voice_to_text": "Il tuo dettato parola per parola: vengono corretti solo punteggiatura, maiuscole e ortografia."
       },
       "title": "Stili di scrittura"
     },

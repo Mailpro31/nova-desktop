@@ -1080,7 +1080,7 @@
         "nova_style_todo": "Plocka ut konkreta uppgifter och checklistor ur dikteringen.",
         "nova_style_notes": "Strukturera om dikteringen till tydliga och ordnade anteckningar.",
         "nova_style_meeting": "Sammanfatta och formatera mötesanteckningar och diskussionspunkter.",
-        "nova_style_voice_to_text": "Rå transkribering utan någon efterbearbetning."
+        "nova_style_voice_to_text": "Din diktering ord för ord: bara skiljetecken, versaler och stavning rättas."
       },
       "title": "Skrivstilar"
     },
