@@ -700,6 +700,69 @@ const FAITHFUL_MAX_ADDED_WORDS: f32 = 0.25;
 /// largement ce seuil.
 const FAITHFUL_MIN_WRITTEN_WORDS: usize = 6;
 
+/// Indices d'une reprise, dans un texte en minuscules sans accents. Mêmes
+/// mots que `SELF_CORRECTION_HINT` côté serveur.
+static CORRECTION_MARKER: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"\b(?:non|attends?|pardon|plutot|enfin|oublie|je veux dire|en fait|no|wait|sorry|i mean|actually|rather)\b",
+    )
+    .unwrap()
+});
+static CORRECTION_SINGLE_MARKER: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"^(?:non|attends?|pardon|plutot|enfin|oublie|no|wait|sorry|actually|rather)$")
+        .unwrap()
+});
+const CORRECTION_LOOKBEHIND_WORDS: usize = 8;
+const CORRECTION_LOOKAHEAD_WORDS: usize = 5;
+const CORRECTION_STOP_WORDS: &[&str] = &[
+    "le", "la", "les", "l", "de", "du", "des", "d", "un", "une", "a", "au", "aux", "en", "et", "c",
+    "est", "ce", "s", "se", "y", "que", "qu", "je", "j", "tu", "il", "elle", "on", "nous", "vous",
+    "ils", "elles", "mais", "donc", "puis", "alors", "bah", "ben", "euh", "hum", "mm", "the", "an",
+    "of", "to", "at", "in", "and", "is", "it", "i",
+];
+
+fn correction_words(text: &str) -> Vec<String> {
+    static WORD: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\p{L}\p{N}]+").unwrap());
+    WORD.find_iter(text)
+        .map(|word| word.as_str().to_string())
+        .collect()
+}
+
+/// La sortie a-t-elle perdu tout ce que l'élève a dit pour se corriger ?
+///
+/// Après une reprise, l'élève dit quelque chose de nouveau : « non le BUS »,
+/// « euh non ROUGE », « non pardon de la FRANCE ». Une sortie qui a perdu
+/// tous ces mots-là a gardé la version qu'il venait de rejeter. Mesuré le 01/10
+/// sur le serveur RTX : 3 dictées sur 20, sans qu'aucun autre contrôle ne le
+/// voie. À garder identique à `correction_lost` côté serveur.
+pub fn correction_lost(input: &str, output: &str) -> bool {
+    let folded = fold(&input.to_lowercase());
+    let written: HashSet<String> = correction_words(&fold(&output.to_lowercase()))
+        .into_iter()
+        .collect();
+    for marker in CORRECTION_MARKER.find_iter(&folded) {
+        let before_words = correction_words(&folded[..marker.start()]);
+        let before: HashSet<&String> = before_words
+            .iter()
+            .rev()
+            .take(CORRECTION_LOOKBEHIND_WORDS)
+            .collect();
+        let new_words: Vec<String> = correction_words(&folded[marker.end()..])
+            .into_iter()
+            .filter(|word| {
+                !CORRECTION_STOP_WORDS.contains(&word.as_str())
+                    && !before.contains(word)
+                    && !CORRECTION_SINGLE_MARKER.is_match(word)
+            })
+            .take(CORRECTION_LOOKAHEAD_WORDS)
+            .collect();
+        if !new_words.is_empty() && !new_words.iter().any(|word| written.contains(word)) {
+            return true;
+        }
+    }
+    false
+}
+
 /// Les contrôles des notes de cours. Dans l'ordre : une sortie qui s'emballe,
 /// la langue, les nombres (le défaut le plus coûteux pour un élève), puis ce
 /// qui a été ajouté, puis ce qui a été perdu.
@@ -732,6 +795,9 @@ fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
             }
         }
     }
+    if correction_lost(input, output) {
+        return Err("correction-lost");
+    }
     Ok(())
 }
 
@@ -755,6 +821,10 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
     }
     if !GUARDED_STYLES.contains(&style_id) {
         return Ok(());
+    }
+    // La version que l'élève venait de rejeter, à la place de sa correction.
+    if correction_lost(input, output) {
+        return Err("correction-lost");
     }
     if let (Some(dictated), Some(written)) = (language_of(input), language_of(output)) {
         if dictated != written {
@@ -1126,6 +1196,85 @@ Livraison au client vendredi.",
         assert!(kept.contains("13") && kept.contains("B204"), "{kept}");
         let plain = "on a 3 exemplaires et 2 copies";
         assert_eq!(without_abandoned(plain), plain);
+    }
+
+    // --- Jamais la version que l'élève vient de rejeter ---
+    //
+    // Mesuré le 01/10 sur le serveur RTX (Qwen2.5-1.5B) : 3 dictées sur 20
+    // ressortaient avec la version écartée (« non le bus » → « le train »),
+    // sans qu'aucun contrôle ne bronche. Le serveur les refuse depuis
+    // nova-server#78 ; le poste refuse la même chose, pour un serveur qui ne
+    // serait pas à jour.
+
+    const REJECTED: [(&str, &str); 4] = [
+        (
+            "je prends le train de 8 heures non le bus de 8 heures",
+            "Je prends le train de 8 heures.",
+        ),
+        (
+            "je vais acheter un vélo bleu euh non rouge",
+            "Je vais acheter un vélo bleu.",
+        ),
+        (
+            "Paris est la capitale de l'Italie non pardon de la France",
+            "Paris est la capitale de l'Italie.",
+        ),
+        (
+            "le rendez-vous chez le dentiste c'est à 9 heures non 10 heures",
+            "Le rendez-vous chez le dentiste c'est à 9 heures.",
+        ),
+    ];
+
+    #[test]
+    fn keeping_the_rejected_version_is_detected() {
+        for (dictated, output) in REJECTED {
+            assert!(correction_lost(dictated, output), "{output}");
+        }
+    }
+
+    #[test]
+    fn keeping_the_retained_version_or_a_non_that_corrects_nothing_is_fine() {
+        for (dictated, output) in [
+            (
+                "je prends le train de 8 heures non le bus de 8 heures",
+                "Je prends le bus de 8 heures.",
+            ),
+            (
+                "il faut acheter du lait oublie le lait prends plutôt du jus d'orange",
+                "Il faut acheter du jus d'orange.",
+            ),
+            (
+                "le prof a dit non à la sortie de jeudi",
+                "Le prof a dit non à la sortie de jeudi.",
+            ),
+            ("appelle Thomas non Thomas et Léa", "Appelle Thomas et Léa."),
+            (
+                "la photosynthèse produit du dioxygène",
+                "La photosynthèse produit du dioxygène.",
+            ),
+        ] {
+            assert!(!correction_lost(dictated, output), "{output}");
+        }
+    }
+
+    #[test]
+    fn a_built_in_style_never_returns_the_rejected_version() {
+        for style in [
+            "nova_style_everyday",
+            "default_improve_transcriptions",
+            "nova_style_email",
+            "nova_style_course_notes",
+        ] {
+            assert_eq!(
+                check(
+                    "je vais acheter un vélo bleu euh non rouge",
+                    "Je vais acheter un vélo bleu.",
+                    style
+                ),
+                Err("correction-lost"),
+                "{style}"
+            );
+        }
     }
 
     #[test]
