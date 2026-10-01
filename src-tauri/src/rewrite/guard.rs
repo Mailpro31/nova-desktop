@@ -1058,6 +1058,28 @@ Livraison au client vendredi.",
     }
 
     #[test]
+    fn a_marker_is_not_a_dictated_number() {
+        // `{{nvxlex0}}` protège un terme du lexique pendant la réécriture : son
+        // chiffre n'a pas été dit, sa perte n'est pas celle d'un nombre.
+        assert_eq!(
+            check(
+                "je relis {{nvxlex0}} avec Paul ce soir",
+                "Je relis avec Paul ce soir.",
+                "default_improve_transcriptions"
+            ),
+            Ok(())
+        );
+        assert_eq!(
+            check(
+                "je relis la fiche ce soir",
+                "Je relis la fiche {{nvxlex3}} ce soir.",
+                "nova_style_notes"
+            ),
+            Ok(())
+        );
+    }
+
+    #[test]
     fn dates_said_in_words_are_recognised() {
         assert!(dates_in("avant vendredi").contains("vendredi"));
         assert!(dates_in("la semaine prochaine").contains("semaine prochaine"));
