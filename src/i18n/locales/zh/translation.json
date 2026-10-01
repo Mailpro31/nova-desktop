@@ -1067,6 +1067,7 @@
       "descriptions": {
         "auto": "让 Nova 自动为你的听写选择最合适的格式。",
         "default_improve_transcriptions": "整理听写文本：标点、错别字与语句通顺。",
+        "nova_style_everyday": "以纯文本整理你日常写的一切：修正拼写和语法，保留你的原话。",
         "nova_style_course_notes": "按口述顺序整理你的课堂笔记：不添加任何内容，不改动任何数字。",
         "nova_style_email": "把听写内容整理成清晰、礼貌的邮件。",
         "nova_style_messages": "把语音变成简洁、可直接发送的消息。",

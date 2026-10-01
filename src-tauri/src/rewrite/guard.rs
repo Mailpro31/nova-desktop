@@ -21,6 +21,7 @@ use std::collections::HashSet;
 /// Styles dont la sortie doit reprendre la langue et les mots de la dictée.
 const GUARDED_STYLES: &[&str] = &[
     "default_improve_transcriptions",
+    "nova_style_everyday",
     "nova_style_voice_to_text",
     "nova_style_messages",
     "nova_style_email",
@@ -685,6 +686,7 @@ fn facts_refusal(input: &str, output: &str, lost_matters: bool) -> Option<&'stat
 /// Styles qui corrigent sans réécrire : ils n'ajoutent presque rien.
 const FAITHFUL_STYLES: &[&str] = &[
     "default_improve_transcriptions",
+    "nova_style_everyday",
     "nova_style_voice_to_text",
     "nova_style_messages",
 ];

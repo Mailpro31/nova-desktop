@@ -224,6 +224,7 @@ fn clean_llm_output(s: &str) -> String {
 fn temperature_for_style(style_id: &str) -> f32 {
     const FAITHFUL: &[&str] = &[
         "default_improve_transcriptions",
+        "nova_style_everyday",
         "nova_style_course_notes",
         "nova_style_messages",
         "nova_style_voice_to_text",

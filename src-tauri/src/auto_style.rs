@@ -22,8 +22,12 @@ use std::collections::HashMap;
 /// `post_process_selected_prompt_id`). Jamais un vrai `LLMPrompt`.
 pub const AUTO_STYLE_ID: &str = "auto";
 
-/// Style appliqué quand aucune règle ne correspond (générique, gratuit).
+/// Style de repli du palier Free, qui n'a pas accès aux autres Styles.
 const DEFAULT_AUTO_STYLE_ID: &str = "default_improve_transcriptions";
+
+/// Style appliqué quand aucune règle ne correspond : l'écriture de tous les
+/// jours d'un élève (traitement de texte, ENT, formulaire, app inconnue).
+pub const EVERYDAY_STYLE_ID: &str = "nova_style_everyday";
 
 /// Style « Réunion ». Sert aussi de définition unique de « l'app au premier plan
 /// EST une réunion » pour la capture des autres participants
@@ -364,8 +368,8 @@ const BUILTIN_RULES: &[(&str, &[&str], &[&str])] = &[
     // Des applications qui affichent le Markdown. Un traitement de texte, un
     // éditeur de texte brut ou un bloc-notes en texte enrichi (Word, Google
     // Docs, Pages, Bloc-notes, OneNote, Evernote, Apple Notes…) collent
-    // « ## Titre » et « **gras** » tels quels : ils reçoivent la transcription
-    // améliorée, un texte propre, par défaut.
+    // « ## Titre » et « **gras** » tels quels : ils reçoivent le Style « Au
+    // quotidien », en texte simple, par défaut.
     (
         "nova_style_notes",
         &[
@@ -452,8 +456,8 @@ fn whole_word_contains(haystack: &str, needle: &str) -> bool {
 }
 
 /// Résolution PURE : (titre, process, règles utilisateur) → id de Style concret.
-/// Ne renvoie jamais `AUTO_STYLE_ID` (toujours un Style applicable, ou le
-/// défaut). Testable hors Windows.
+/// Ne renvoie jamais `AUTO_STYLE_ID` : une app reconnue reçoit son Style, toute
+/// autre le Style « Au quotidien ». Testable hors Windows.
 pub fn resolve_auto_style(
     title: &str,
     process: &str,
@@ -483,7 +487,7 @@ pub fn resolve_auto_style(
         }
     }
 
-    DEFAULT_AUTO_STYLE_ID.to_string()
+    EVERYDAY_STYLE_ID.to_string()
 }
 
 /// Applique le périmètre de Styles du palier courant à la résolution Auto.
@@ -1136,10 +1140,7 @@ mod tests {
     fn an_unrecognised_app_gets_the_everyday_style() {
         // Le mélange voulu le 01/10 : une app reconnue garde son Style (e-mail,
         // messagerie, IA…) ; partout ailleurs, l'élève écrit « au quotidien ».
-        assert_eq!(
-            resolve_auto_style("", "", &no_rules()),
-            EVERYDAY_STYLE_ID
-        );
+        assert_eq!(resolve_auto_style("", "", &no_rules()), EVERYDAY_STYLE_ID);
         assert_eq!(EVERYDAY_STYLE_ID, "nova_style_everyday");
     }
 

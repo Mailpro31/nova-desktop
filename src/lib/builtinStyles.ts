@@ -3,6 +3,7 @@
 // côté Rust. Tout Style hors de cette liste est un Style PERSONNEL (Ultra).
 export const BUILTIN_STYLE_IDS: readonly string[] = [
   "default_improve_transcriptions",
+  "nova_style_everyday",
   "nova_style_course_notes",
   "nova_style_email",
   "nova_style_messages",
@@ -19,6 +20,7 @@ export const BUILTIN_STYLE_IDS: readonly string[] = [
  */
 export const STYLE_ORDER: readonly string[] = [
   "default_improve_transcriptions",
+  "nova_style_everyday",
   "nova_style_course_notes",
   "nova_style_email",
   "nova_style_messages",

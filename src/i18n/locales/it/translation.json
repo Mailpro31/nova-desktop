@@ -1067,6 +1067,7 @@
       "descriptions": {
         "auto": "Lascia che Nova scelga automaticamente la formattazione migliore per la dettatura.",
         "default_improve_transcriptions": "Ripulisci il testo dettato: punteggiatura, refusi e frasi scorrevoli.",
+        "nova_style_everyday": "Metti in ordine tutto ciò che scrivi ogni giorno, in testo semplice: ortografia e grammatica corrette, le tue parole intatte.",
         "nova_style_course_notes": "Metti in forma i tuoi appunti di lezione nell'ordine dettato: niente aggiunto, nessun numero cambiato.",
         "nova_style_email": "Formatta la dettatura come un'email chiara e cortese.",
         "nova_style_messages": "Trasforma la tua voce in messaggi brevi pronti da inviare.",

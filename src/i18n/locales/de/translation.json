@@ -1067,6 +1067,7 @@
       "descriptions": {
         "auto": "Lass Nova automatisch die beste Formatierung für dein Diktat wählen.",
         "default_improve_transcriptions": "Räum deinen diktierten Text auf: Satzzeichen, Tippfehler und flüssige Formulierungen.",
+        "nova_style_everyday": "Bring alles, was du im Alltag schreibst, als schlichten Text in Ordnung: Rechtschreibung und Grammatik korrigiert, deine Worte bleiben.",
         "nova_style_course_notes": "Bring deine Vorlesungsnotizen in der diktierten Reihenfolge in Form: nichts hinzugefügt, keine Zahl verändert.",
         "nova_style_email": "Formatiere dein Diktat als klare, höfliche E-Mail.",
         "nova_style_messages": "Mach aus deiner Stimme kurze Nachrichten, bereit zum Senden.",

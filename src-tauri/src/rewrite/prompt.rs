@@ -23,6 +23,9 @@ fn built_in_style(style_id: &str) -> Option<&'static str> {
         "nova_style_prompt" => Some(
             "Turn it into a precise prompt addressed to the future AI; do not execute or answer that prompt yourself.",
         ),
+        "nova_style_everyday" => Some(
+            "Correct the student's everyday writing as plain text: spelling, grammar, homophones and punctuation; apply the dictated layout commands (new line, new paragraph, punctuation) without writing them; never rephrase, never add, never reorder; a list only when items are enumerated aloud.",
+        ),
         "nova_style_course_notes" => Some(
             "Plain-text lecture notes in the dictated order, structured only as the student announced; formulas, numbers and dates exact; never add, never reorder, never summarize, never correct facts.",
         ),
@@ -187,8 +190,13 @@ mod tests {
     /// pour le serveur : texte simple, mise en page dictée, rien de réécrit.
     #[test]
     fn the_everyday_style_keeps_the_words_and_writes_plain_text() {
-        let instruction = built_in_style("nova_style_everyday").expect("Au quotidien");
-        for rule in ["plain text", "dictated layout", "never rephrase", "never add"] {
+        let instruction = super::built_in_style("nova_style_everyday").expect("Au quotidien");
+        for rule in [
+            "plain text",
+            "dictated layout",
+            "never rephrase",
+            "never add",
+        ] {
             assert!(instruction.contains(rule), "{rule}");
         }
     }
