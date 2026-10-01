@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Připojte se ke své škole",
         "subtitle": "Hlasové diktování poskytované vaší institucí, s vaší školní adresou."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Server vaší školy",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Jste připojeni k {{organization}}",
-        "subtitle": "Nova Campus je na tomto počítači připravena.",
+        "subtitle": "Nova je na tomto počítači připravena.",
         "start": "Get started",
         "organization": "Organizace",
         "account": "Účet",
         "processing": "Zpracování",
-        "campusInfrastructure": "Infrastruktura Campus"
+        "campusInfrastructure": "Infrastruktura vaší školy"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Server je nedostupný. Zkontrolujte připojení a zkuste to znovu.",
         "authMethodUnavailable": "Tato instituce vyžaduje způsob ověření, který tato verze zatím nepodporuje."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Pro další používání Nova Campus se prosím znovu přihlaste.",
-    "logoutConfirmTitle": "Odhlásit se z Nova Campus?",
-    "logoutConfirmDescription": "Pro používání Nova Campus se budete muset znovu přihlásit. Opravdu chcete pokračovat?",
-    "aboutSubtitle": "Informace a diagnostické nástroje pro Nova Campus.",
+    "sessionExpired": "Pro další používání Nova se prosím znovu přihlaste.",
+    "logoutConfirmTitle": "Odhlásit se z Nova?",
+    "logoutConfirmDescription": "Pro používání Nova se budete muset znovu přihlásit. Opravdu chcete pokračovat?",
+    "aboutSubtitle": "Informace a diagnostické nástroje pro Nova.",
     "personalizationDescription": "Upravte vzhled a ovládání Novy, aniž byste měnili pravidla své instituce.",
     "organizationSubtitle": "Vaše instituce, co poskytuje a kam míří vaše data.",
-    "statusConnected": "Kampus připojen",
+    "statusConnected": "Připojeno ke škole",
     "providesTitle": "Co poskytuje vaše instituce",
     "providesPaused": "Nyní pozastaveno — server instituce je nedostupný.",
     "transcriptionDescription": "Nahrávka putuje na server vaší instituce, který z ní udělá text.",

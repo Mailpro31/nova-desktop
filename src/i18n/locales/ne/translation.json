@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "आफ्नो शैक्षिक संस्थामा सामेल हुनुहोस्",
         "subtitle": "तपाईंको संस्थाले दिने आवाज श्रुतिलेखन, तपाईंको शैक्षिक इमेलसँग।"
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "तपाईंको शैक्षिक संस्थाको सर्भर",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "तपाईं {{organization}} मा जोडिनुभयो",
-        "subtitle": "Nova Campus यो कम्प्युटरमा तयार छ।",
+        "subtitle": "Nova यो कम्प्युटरमा तयार छ।",
         "start": "Get started",
         "organization": "संस्था",
         "account": "खाता",
         "processing": "प्रशोधन",
-        "campusInfrastructure": "Campus पूर्वाधार"
+        "campusInfrastructure": "तपाईंको शैक्षिक संस्थाको पूर्वाधार"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "सर्भरमा पुग्न सकिएन। जडान जाँचेर फेरि प्रयास गर्नुहोस्।",
         "authMethodUnavailable": "यो संस्थाले यो संस्करणले अझै समर्थन नगर्ने प्रमाणीकरण विधि माग्छ।"
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Nova Campus प्रयोग जारी राख्न कृपया फेरि साइन इन गर्नुहोस्।",
-    "logoutConfirmTitle": "Nova Campus बाट साइन आउट गर्ने?",
-    "logoutConfirmDescription": "Nova Campus प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
-    "aboutSubtitle": "Nova Campus का लागि जानकारी र समस्या समाधान उपकरण।",
+    "sessionExpired": "Nova प्रयोग जारी राख्न कृपया फेरि साइन इन गर्नुहोस्।",
+    "logoutConfirmTitle": "Nova बाट साइन आउट गर्ने?",
+    "logoutConfirmDescription": "Nova प्रयोग गर्न फेरि साइन इन गर्नुपर्नेछ। पक्का हो?",
+    "aboutSubtitle": "Nova का लागि जानकारी र समस्या समाधान उपकरण।",
     "personalizationDescription": "तपाईंको संस्थाका नीति नबदली Nova को रूप र प्रयोग मिलाउनुहोस्।",
     "organizationSubtitle": "तपाईंको संस्था, यसले दिने कुरा, र तपाईंको डेटा कहाँ जान्छ।",
-    "statusConnected": "क्याम्पस जोडिएको",
+    "statusConnected": "शैक्षिक संस्थासँग जोडिएको",
     "providesTitle": "तपाईंको संस्थाले दिने कुरा",
     "providesPaused": "हाल रोकिएको — संस्थाको सर्भर पुग्न सकिँदैन।",
     "transcriptionDescription": "तपाईंको रेकर्डिङ संस्थाको सर्भरमा जान्छ, जसले त्यसलाई पाठ बनाउँछ।",

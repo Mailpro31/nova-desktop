@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "학교에 참여하기",
         "subtitle": "소속 기관이 제공하는 음성 받아쓰기를, 학교 이메일로."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "학교 서버",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "{{organization}}에 연결되었습니다",
-        "subtitle": "이 컴퓨터에서 Nova Campus를 사용할 준비가 되었습니다.",
+        "subtitle": "이 컴퓨터에서 Nova를 사용할 준비가 되었습니다.",
         "start": "Get started",
         "organization": "조직",
         "account": "계정",
         "processing": "처리",
-        "campusInfrastructure": "Campus 인프라"
+        "campusInfrastructure": "학교 인프라"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "서버에 연결할 수 없습니다. 연결을 확인한 뒤 다시 시도하세요.",
         "authMethodUnavailable": "이 기관은 이 버전에서 아직 지원하지 않는 인증 방식을 요구합니다."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Nova Campus를 계속 사용하려면 다시 로그인하세요.",
-    "logoutConfirmTitle": "Nova Campus에서 로그아웃할까요?",
-    "logoutConfirmDescription": "Nova Campus를 사용하려면 다시 로그인해야 합니다. 계속할까요?",
-    "aboutSubtitle": "Nova Campus 정보와 문제 해결 도구입니다.",
+    "sessionExpired": "Nova를 계속 사용하려면 다시 로그인하세요.",
+    "logoutConfirmTitle": "Nova에서 로그아웃할까요?",
+    "logoutConfirmDescription": "Nova를 사용하려면 다시 로그인해야 합니다. 계속할까요?",
+    "aboutSubtitle": "Nova 정보와 문제 해결 도구입니다.",
     "personalizationDescription": "기관 정책을 바꾸지 않고 Nova의 모양과 사용 방식을 조정합니다.",
     "organizationSubtitle": "소속 기관, 기관이 제공하는 것, 그리고 데이터가 가는 곳.",
-    "statusConnected": "캠퍼스 연결됨",
+    "statusConnected": "학교에 연결됨",
     "providesTitle": "소속 기관이 제공하는 것",
     "providesPaused": "현재 중단됨 — 기관 서버에 연결할 수 없습니다.",
     "transcriptionDescription": "녹음이 기관 서버로 전송되어 글로 바뀝니다.",

@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Gå med i din skola",
         "subtitle": "Röstdiktering från ditt lärosäte, med din studentadress."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Din skolas server",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Du är ansluten till {{organization}}",
-        "subtitle": "Nova Campus är redo på den här datorn.",
+        "subtitle": "Nova är redo på den här datorn.",
         "start": "Get started",
         "organization": "Organisation",
         "account": "Konto",
         "processing": "Bearbetning",
-        "campusInfrastructure": "Campus-infrastruktur"
+        "campusInfrastructure": "Din skolas infrastruktur"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Servern går inte att nå. Kontrollera anslutningen och försök igen.",
         "authMethodUnavailable": "Lärosätet kräver en inloggningsmetod som den här versionen inte stöder än."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Logga in igen för att fortsätta använda Nova Campus.",
-    "logoutConfirmTitle": "Logga ut från Nova Campus?",
-    "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova Campus. Är du säker?",
-    "aboutSubtitle": "Information och felsökningsverktyg för Nova Campus.",
+    "sessionExpired": "Logga in igen för att fortsätta använda Nova.",
+    "logoutConfirmTitle": "Logga ut från Nova?",
+    "logoutConfirmDescription": "Du behöver logga in igen för att använda Nova. Är du säker?",
+    "aboutSubtitle": "Information och felsökningsverktyg för Nova.",
     "personalizationDescription": "Justera Novas utseende och interaktion utan att ändra ditt lärosätes regler.",
     "organizationSubtitle": "Ditt lärosäte, vad det tillhandahåller och vart dina data går.",
-    "statusConnected": "Campus anslutet",
+    "statusConnected": "Ansluten till din skola",
     "providesTitle": "Vad ditt lärosäte tillhandahåller",
     "providesPaused": "Pausat just nu — lärosätets server går inte att nå.",
     "transcriptionDescription": "Din inspelning skickas till lärosätets server, som gör text av den.",

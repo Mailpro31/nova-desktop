@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Sluit je aan bij je onderwijsinstelling",
         "subtitle": "Spraakdictaat aangeboden door uw instelling, met uw academische e-mail."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "De server van je onderwijsinstelling",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Je bent verbonden met {{organization}}",
-        "subtitle": "Nova Campus is klaar op deze computer.",
+        "subtitle": "Nova is klaar op deze computer.",
         "start": "Get started",
         "organization": "Organisatie",
         "account": "Gebruikersaccount",
         "processing": "Verwerking",
-        "campusInfrastructure": "Campus-infrastructuur"
+        "campusInfrastructure": "Infrastructuur van je onderwijsinstelling"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "De server is onbereikbaar. Controleer uw verbinding en probeer het opnieuw.",
         "authMethodUnavailable": "Deze instelling vereist een aanmeldmethode die deze versie nog niet ondersteunt."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Meld je opnieuw aan om Nova Campus te blijven gebruiken.",
-    "logoutConfirmTitle": "Afmelden bij Nova Campus?",
-    "logoutConfirmDescription": "Je moet je opnieuw aanmelden om Nova Campus te gebruiken. Weet je het zeker?",
-    "aboutSubtitle": "Informatie en hulpmiddelen voor probleemoplossing voor Nova Campus.",
+    "sessionExpired": "Meld je opnieuw aan om Nova te blijven gebruiken.",
+    "logoutConfirmTitle": "Afmelden bij Nova?",
+    "logoutConfirmDescription": "Je moet je opnieuw aanmelden om Nova te gebruiken. Weet je het zeker?",
+    "aboutSubtitle": "Informatie en hulpmiddelen voor probleemoplossing voor Nova.",
     "personalizationDescription": "Pas het uiterlijk en de bediening van Nova aan zonder de regels van je instelling te wijzigen.",
     "organizationSubtitle": "Uw instelling, wat zij levert en waar uw gegevens heen gaan.",
-    "statusConnected": "Campus verbonden",
+    "statusConnected": "Verbonden met je onderwijsinstelling",
     "providesTitle": "Wat uw instelling levert",
     "providesPaused": "Tijdelijk gepauzeerd — de server van uw instelling is onbereikbaar.",
     "transcriptionDescription": "Uw opname gaat naar de server van uw instelling, die er tekst van maakt.",

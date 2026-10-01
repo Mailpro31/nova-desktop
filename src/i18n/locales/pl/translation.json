@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Dołącz do swojej uczelni",
         "subtitle": "Dyktowanie głosowe zapewniane przez Twoją uczelnię, z adresem uczelnianym."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Serwer twojej uczelni",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Połączono z {{organization}}",
-        "subtitle": "Nova Campus jest gotowa na tym komputerze.",
+        "subtitle": "Nova jest gotowa na tym komputerze.",
         "start": "Get started",
         "organization": "Organizacja",
         "account": "Konto",
         "processing": "Przetwarzanie",
-        "campusInfrastructure": "Infrastruktura Campus"
+        "campusInfrastructure": "Infrastruktura twojej uczelni"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Nie można połączyć się z serwerem. Sprawdź połączenie i spróbuj ponownie.",
         "authMethodUnavailable": "Ta instytucja wymaga metody uwierzytelniania, której ta wersja jeszcze nie obsługuje."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z Nova Campus.",
-    "logoutConfirmTitle": "Wylogować się z Nova Campus?",
-    "logoutConfirmDescription": "Aby korzystać z Nova Campus, trzeba będzie zalogować się ponownie. Czy na pewno?",
-    "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova Campus.",
+    "sessionExpired": "Zaloguj się ponownie, aby dalej korzystać z Nova.",
+    "logoutConfirmTitle": "Wylogować się z Nova?",
+    "logoutConfirmDescription": "Aby korzystać z Nova, trzeba będzie zalogować się ponownie. Czy na pewno?",
+    "aboutSubtitle": "Informacje i narzędzia diagnostyczne Nova.",
     "personalizationDescription": "Dostosuj wygląd i obsługę Novy bez zmieniania zasad swojej instytucji.",
     "organizationSubtitle": "Twoja uczelnia, co zapewnia i dokąd trafiają Twoje dane.",
-    "statusConnected": "Kampus połączony",
+    "statusConnected": "Połączono z uczelnią",
     "providesTitle": "Co zapewnia Twoja uczelnia",
     "providesPaused": "Wstrzymane — serwer uczelni jest nieosiągalny.",
     "transcriptionDescription": "Nagranie trafia na serwer uczelni, który zamienia je w tekst.",
