@@ -2,11 +2,13 @@ import { expect, test } from "@playwright/test";
 import { mockTauri } from "./tauriMock";
 
 /**
- * Réglages rend accessibles les deux fonctions que l'organisation sert.
+ * Les outils que l'organisation sert restent atteignables.
  *
- * Les écrans des notes d'ingénieur et du cours AI Essentials existaient, mais
- * rien ne les affichait. Chacun revient comme un onglet de Réglages, présent
- * seulement quand l'organisation l'ouvre.
+ * Historique : les notes d'ingénieur et le cours AI Essentials ont d'abord été
+ * des onglets de Réglages que rien n'affichait (13/09). Depuis, les notes sont
+ * devenues « Notes structurées », une catégorie de la barre latérale, et les
+ * cours vivent dans Learn, un catalogue unique (14–16/09). Ces tests suivent
+ * les outils là où ils sont : dans la barre latérale, plus dans Réglages.
  */
 
 const session = {
@@ -40,28 +42,57 @@ const company = {
   organization: { id: "example", name: "Example Company", managed: true },
 };
 
+const openStructuredNotes = async (page: import("@playwright/test").Page) => {
+  await page
+    .getByRole("navigation")
+    .getByRole("button", { name: "Structured notes", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Structured notes", level: 1 }),
+  ).toBeVisible();
+};
+
 const openSettings = async (page: import("@playwright/test").Page) => {
   await page.getByRole("button", { name: "Settings" }).click();
   await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
 };
 
-test.describe("organization tools are reachable from Settings", () => {
+test.describe("organization tools are reachable", () => {
   test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
 
-  test("a school member can come back to AI Essentials", async ({ page }) => {
+  test("a school member reaches Learn and structured notes from the sidebar", async ({
+    page,
+  }) => {
     await mockTauri(page, {
       session,
       config: school,
       onboardingCompleted: true,
     });
     await page.goto("/");
+
+    const navigation = page.getByRole("navigation");
+    await navigation
+      .getByRole("button", { name: "Learn", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Learn", level: 1 }),
+    ).toBeVisible();
+    await navigation
+      .getByRole("button", { name: "Structured notes", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Structured notes", level: 1 }),
+    ).toBeVisible();
+
+    // Et plus dans Réglages : deux emplacements pour un même outil, c'est un
+    // de trop.
     await openSettings(page);
-
-    await page.getByRole("tab", { name: "AI Essentials" }).click();
-    await expect(page.getByText("0 of 6 modules completed")).toBeVisible();
-
-    await page.getByRole("button", { name: /Working with AI/ }).click();
-    await expect(page.getByText("Module 1 of 6")).toBeVisible();
+    await expect(page.getByRole("tab", { name: "AI Essentials" })).toHaveCount(
+      0,
+    );
+    await expect(
+      page.getByRole("tab", { name: "Engineering Notes" }),
+    ).toHaveCount(0);
   });
 
   test("engineering notes are structured by the organization server", async ({
@@ -73,28 +104,30 @@ test.describe("organization tools are reachable from Settings", () => {
       onboardingCompleted: true,
     });
     await page.goto("/");
-    await openSettings(page);
+    await openStructuredNotes(page);
 
-    await page.getByRole("tab", { name: "Engineering Notes" }).click();
+    // Une note d'ingénieur est une observation.
+    await page.getByRole("tab", { name: "Observation" }).click();
     await page
-      .getByPlaceholder(/Paste or dictate your observations/)
+      .getByPlaceholder("Paste or dictate your raw notes…")
       .fill("thrust 12 N at 20 C, sensor drift unclear");
-    await page.getByRole("button", { name: "Structure notes" }).click();
+    await page.getByRole("button", { name: "Structure my notes" }).click();
 
-    await expect(page.getByText("Structured note")).toBeVisible();
     await expect(
-      page.getByText("Structured: thrust 12 N at 20 C, sensor drift unclear"),
+      page.getByText(
+        "Structured observation: thrust 12 N at 20 C, sensor drift unclear",
+      ),
     ).toBeVisible();
     const sent = await page.evaluate(() =>
-      JSON.parse(localStorage.getItem("nova.test.engineeringNotes") ?? "null"),
+      JSON.parse(localStorage.getItem("nova.test.structuredNotes") ?? "null"),
     );
-    expect(sent).toEqual({
-      instruction: "",
+    expect(sent).toMatchObject({
+      noteType: "observation",
       text: "thrust 12 N at 20 C, sensor drift unclear",
     });
   });
 
-  test("the engineering notes fields use the full width of the tab", async ({
+  test("the structured notes fields use the full width of the page", async ({
     page,
   }) => {
     // Relevé à la capture : l'écran n'avait jamais été affiché, et ses deux
@@ -106,11 +139,10 @@ test.describe("organization tools are reachable from Settings", () => {
       onboardingCompleted: true,
     });
     await page.goto("/");
-    await openSettings(page);
-    await page.getByRole("tab", { name: "Engineering Notes" }).click();
+    await openStructuredNotes(page);
 
     const notes = await page
-      .getByPlaceholder(/Paste or dictate your observations/)
+      .getByPlaceholder("Paste or dictate your raw notes…")
       .boundingBox();
     const instruction = await page
       .getByPlaceholder(/Optional instruction/)
@@ -126,9 +158,11 @@ test.describe("organization tools are reachable from Settings", () => {
   test("in a narrow window every Settings tab stays visible, on several lines", async ({
     page,
   }) => {
-    // Six onglets ne tiennent pas sur une ligne dans une fenêtre étroite : la
-    // barre défilait horizontalement et coupait le dernier onglet.
-    await page.setViewportSize({ width: 760, height: 600 });
+    // Les onglets ne tiennent pas sur une ligne dans une fenêtre étroite : la
+    // barre défilait horizontalement et coupait le dernier onglet. Il en reste
+    // quatre depuis que Learn et les notes ont rejoint la barre latérale ; ils
+    // passent à la ligne à 600 px, là où six le faisaient dès 760 px.
+    await page.setViewportSize({ width: 600, height: 600 });
     await mockTauri(page, {
       session,
       config: school,
@@ -164,7 +198,7 @@ test.describe("organization tools are reachable from Settings", () => {
       .toBe(1);
   });
 
-  test("a company keeps engineering notes but is not offered the school course", async ({
+  test("a company keeps structured notes, reached from the sidebar", async ({
     page,
   }) => {
     await mockTauri(page, {
@@ -173,11 +207,14 @@ test.describe("organization tools are reachable from Settings", () => {
       onboardingCompleted: true,
     });
     await page.goto("/");
-    await openSettings(page);
 
+    await openStructuredNotes(page);
     await expect(
-      page.getByRole("tab", { name: "Engineering Notes" }),
+      page.getByRole("heading", { name: "Structured notes", level: 1 }),
     ).toBeVisible();
+    // Le cours AI Essentials n'existe plus : il n'est proposé à personne,
+    // entreprise comprise.
+    await openSettings(page);
     await expect(page.getByRole("tab", { name: "AI Essentials" })).toHaveCount(
       0,
     );

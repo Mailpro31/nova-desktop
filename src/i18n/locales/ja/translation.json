@@ -1566,6 +1566,7 @@
     "dataNote": "所属機関のサーバーは、1 日あたりの文字起こしと書き直しの回数を数えます。内容は保存しません。",
     "aiSkillsPrivacyOffline": "Nova Commands は所属機関のサーバーで動作しますが、現在つながりません。",
     "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "学校のサーバー"
   }
 }

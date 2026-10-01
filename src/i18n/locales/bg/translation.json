@@ -1566,6 +1566,7 @@
     "dataNote": "Сървърът брои колко транскрипции и пренаписвания правите всеки ден. Не съхранява съдържанието им.",
     "aiSkillsPrivacyOffline": "Nova Commands работят на сървъра на вашето учебно заведение, който сега е недостъпен.",
     "notInOrganization": "Този акаунт в Microsoft не принадлежи на вашата институция.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Сървърът на вашето учебно заведение"
   }
 }

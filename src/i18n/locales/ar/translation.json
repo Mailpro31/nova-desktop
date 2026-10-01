@@ -1566,6 +1566,7 @@
     "dataNote": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة يوميًا. ولا يحتفظ بمحتواها.",
     "aiSkillsPrivacyOffline": "تعمل Nova Commands على خادم مؤسستك، وهو غير متاح الآن.",
     "notInOrganization": "حساب Microsoft هذا لا ينتمي إلى مؤسستك.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "خادم مؤسستك التعليمية"
   }
 }

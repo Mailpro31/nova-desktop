@@ -1566,6 +1566,7 @@
     "dataNote": "機構伺服器會統計你每天進行了多少次轉錄與改寫，但不保存內容。",
     "aiSkillsPrivacyOffline": "Nova Commands 執行於你所屬機構的伺服器，目前無法連線。",
     "notInOrganization": "此 Microsoft 帳戶不屬於您的機構。",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "你所在學校的伺服器"
   }
 }

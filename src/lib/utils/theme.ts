@@ -1,5 +1,4 @@
 import { commands, type Theme } from "@/bindings";
-import { isCampusMode } from "@/lib/mode";
 
 /**
  * Appearance theme handling.
@@ -26,12 +25,12 @@ const isTheme = (value: unknown): value is Theme =>
 
 /** Apply a theme to the document root and remember it for the next launch. */
 export const applyTheme = (theme: Theme): void => {
-  // Le thème clair imposé est une décision de direction artistique **Campus**,
-  // et c'est bien `isCampusMode()` — pas `isOrganizationMode()` — qui la porte.
-  // Une entreprise n'a aucune raison d'hériter du parti pris esthétique d'un
-  // établissement : un poste Business suit le comportement Nova ordinaire, et
-  // ses employés choisissent leur thème comme tout le monde.
-  const effectiveTheme: Theme = isCampusMode() ? "light" : theme;
+  // Le thème choisi s'applique partout, école comprise. Un établissement
+  // imposait jusqu'ici le thème clair, alors que le sélecteur restait affiché
+  // dans son onglet Général : l'élève choisissait un thème, et Nova l'ignorait.
+  // Pour un élève dys, pouvoir passer en sombre est un réglage d'accessibilité,
+  // pas une coquetterie.
+  const effectiveTheme: Theme = theme;
   const root = document.documentElement;
   if (effectiveTheme === "system") {
     delete root.dataset.theme;
@@ -48,9 +47,6 @@ export const applyTheme = (theme: Theme): void => {
 
 /** Read the last-applied theme for synchronous boot-time application. */
 export const getStoredTheme = (): Theme => {
-  if (isCampusMode()) {
-    return "light";
-  }
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
     if (isTheme(stored)) return stored;
@@ -65,9 +61,7 @@ export const syncThemeFromSettings = async (): Promise<void> => {
   try {
     const result = await commands.getAppSettings();
     if (result.status === "ok") {
-      const theme: Theme = isCampusMode()
-        ? "light"
-        : (result.data.theme ?? "system");
+      const theme: Theme = result.data.theme ?? "system";
       applyTheme(theme);
     }
   } catch (e) {

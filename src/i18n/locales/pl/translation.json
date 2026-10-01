@@ -1566,6 +1566,7 @@
     "dataNote": "Serwer uczelni liczy, ile transkrypcji i przepisań wykonujesz każdego dnia. Nie przechowuje ich treści.",
     "aiSkillsPrivacyOffline": "Nova Commands działają na serwerze Twojej uczelni, teraz nieosiągalnym.",
     "notInOrganization": "To konto Microsoft nie należy do Twojej instytucji.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Serwer twojej uczelni"
   }
 }

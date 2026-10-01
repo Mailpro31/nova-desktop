@@ -1566,6 +1566,7 @@
     "dataNote": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung.",
     "aiSkillsPrivacyOffline": "Nova Commands chạy trên máy chủ của trường bạn, hiện không kết nối được.",
     "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Máy chủ của trường bạn"
   }
 }

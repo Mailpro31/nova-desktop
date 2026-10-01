@@ -1566,6 +1566,7 @@
     "dataNote": "Il server del tuo istituto conta quante trascrizioni e riscritture esegui ogni giorno. Non ne conserva il contenuto.",
     "aiSkillsPrivacyOffline": "I Nova Commands passano dal server del tuo istituto, ora irraggiungibile.",
     "notInOrganization": "Questo account Microsoft non appartiene al tuo istituto.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Il server del tuo istituto"
   }
 }
