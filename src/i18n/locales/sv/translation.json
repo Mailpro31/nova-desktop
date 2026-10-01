@@ -623,7 +623,10 @@
       "retranscribe": "Transkribera igen",
       "retranscribeError": "Misslyckades med att transkribera igen. Försök igen.",
       "transcribing": "Transkriberar...",
-      "transcriptionFailed": "Transkribering misslyckades. Du kan transkribera igen med hjälp av ikonen för nytt försök."
+      "transcriptionFailed": "Transkribering misslyckades. Du kan transkribera igen med hjälp av ikonen för nytt försök.",
+      "readAloud": "Läs upp",
+      "stopReading": "Sluta läsa upp",
+      "readAloudUnavailable": "Uppläsning är inte tillgänglig på den här datorn."
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "En översikt över din Nova-användning."
+    },
+    "readingComfort": {
+      "title": "Läskomfort",
+      "description": "Gör Novas text lättare att läsa och låt dina anteckningar läsas upp.",
+      "textSize": {
+        "title": "Textstorlek",
+        "normal": "Normal",
+        "large": "Stor",
+        "larger": "Mycket stor"
+      },
+      "spacing": {
+        "title": "Bokstavs- och radavstånd",
+        "description": "Luftig text är lättare att läsa för många med dyslexi.",
+        "normal": "Normalt",
+        "wide": "Brett",
+        "wider": "Mycket brett"
+      },
+      "font": {
+        "title": "Typsnitt",
+        "description": "Inget typsnitt har visat sig förbättra läsningen vid dyslexi: välj det som känns bekvämast.",
+        "system": "Nova",
+        "readable": "Verdana (breda bokstäver)"
+      },
+      "speechRate": {
+        "title": "Uppläsningshastighet",
+        "description": "För uppläsning av dina anteckningar från historiken.",
+        "slow": "Långsam",
+        "normal": "Normal",
+        "fast": "Snabb",
+        "try": "Prova",
+        "sample": "Så här läser Nova upp dina anteckningar."
+      }
     },
     "voiceCalibration": {
       "title": "Min röst",
@@ -1602,6 +1637,7 @@
     "dataNote": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte.",
     "aiSkillsPrivacyOffline": "Nova Commands körs på din lärosätesserver, som just nu inte går att nå.",
     "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Din skolas server"
   }
 }

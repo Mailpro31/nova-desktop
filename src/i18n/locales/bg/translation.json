@@ -623,7 +623,10 @@
       "retranscribe": "Повторна транскрипция",
       "retranscribeError": "Повторната транскрипция не бе успешна. Опитайте отново.",
       "transcribing": "Транскрибиране...",
-      "transcriptionFailed": "Транскрипцията не бе успешна. Можете да опитате отново с иконата за повторен опит."
+      "transcriptionFailed": "Транскрипцията не бе успешна. Можете да опитате отново с иконата за повторен опит.",
+      "readAloud": "Прочети на глас",
+      "stopReading": "Спри четенето",
+      "readAloudUnavailable": "Четенето на глас не е налично на този компютър."
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "Общ преглед на използването на Nova."
+    },
+    "readingComfort": {
+      "title": "Удобство при четене",
+      "description": "Направете текста на Nova по-лесен за четене и слушайте бележките си на глас.",
+      "textSize": {
+        "title": "Размер на текста",
+        "normal": "Нормален",
+        "large": "Голям",
+        "larger": "Много голям"
+      },
+      "spacing": {
+        "title": "Разстояние между букви и редове",
+        "description": "Разреденият текст се чете по-лесно от много читатели с дислексия.",
+        "normal": "Нормално",
+        "wide": "Широко",
+        "wider": "Много широко"
+      },
+      "font": {
+        "title": "Шрифт",
+        "description": "Нито един шрифт не е доказал, че подобрява четенето при дислексия: изберете този, който ви е най-удобен.",
+        "system": "Nova",
+        "readable": "Verdana (широки букви)"
+      },
+      "speechRate": {
+        "title": "Скорост на четене",
+        "description": "За четене на бележките ви на глас от историята.",
+        "slow": "Бавна",
+        "normal": "Нормална",
+        "fast": "Бърза",
+        "try": "Опитайте",
+        "sample": "Ето как Nova ще чете бележките ви на глас."
+      }
     },
     "voiceCalibration": {
       "title": "Моят глас",
@@ -1602,6 +1637,7 @@
     "dataNote": "Сървърът брои колко транскрипции и пренаписвания правите всеки ден. Не съхранява съдържанието им.",
     "aiSkillsPrivacyOffline": "Nova Commands работят на сървъра на вашето учебно заведение, който сега е недостъпен.",
     "notInOrganization": "Този акаунт в Microsoft не принадлежи на вашата институция.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Сървърът на вашето учебно заведение"
   }
 }

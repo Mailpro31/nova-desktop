@@ -14,6 +14,7 @@ import { useSettings } from "../../../hooks/useSettings";
 import { useSystemReadiness } from "../../../hooks/useSystemReadiness";
 import type { OrbState } from "./NovaOrb";
 import type { SidebarSection } from "../../Sidebar";
+import type { HomeEngineKey } from "./engineLabel";
 
 /**
  * Situation du héros, dérivée de l'état système réel.
@@ -58,7 +59,7 @@ export interface HomeState {
   /** Nom du style actif, déjà résolu (« Automatique » inclus). */
   styleName: string | null;
   /** Libellé du moteur actif, ou `null` s'il n'est pas déterminé. */
-  engineKey: "campus" | "local-fallback" | "local" | null;
+  engineKey: HomeEngineKey | null;
   microphoneName: string | null;
   /** Hôte du serveur d'organisation, `null` hors mode Organization. */
   serverName: string | null;

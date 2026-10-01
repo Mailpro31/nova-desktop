@@ -623,7 +623,10 @@
       "retranscribe": "Erneut transkribieren",
       "retranscribeError": "Erneute Transkription fehlgeschlagen. Bitte versuche es erneut.",
       "transcribing": "Transkribiere...",
-      "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren."
+      "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren.",
+      "readAloud": "Vorlesen",
+      "stopReading": "Vorlesen beenden",
+      "readAloudUnavailable": "Vorlesen ist auf diesem Computer nicht verfügbar."
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "Ein Überblick über Ihre Nova-Nutzung."
+    },
+    "readingComfort": {
+      "title": "Lesekomfort",
+      "description": "Den Text von Nova leichter lesbar machen und sich die Notizen vorlesen lassen.",
+      "textSize": {
+        "title": "Textgröße",
+        "normal": "Normal",
+        "large": "Groß",
+        "larger": "Sehr groß"
+      },
+      "spacing": {
+        "title": "Buchstaben- und Zeilenabstand",
+        "description": "Ein weiter gesetzter Text ist für viele Menschen mit Legasthenie leichter zu lesen.",
+        "normal": "Normal",
+        "wide": "Weit",
+        "wider": "Sehr weit"
+      },
+      "font": {
+        "title": "Schriftart",
+        "description": "Für keine Schriftart ist eine Wirkung auf das Lesen bei Legasthenie belegt: Wählen Sie die, die Ihnen am angenehmsten ist.",
+        "system": "Nova",
+        "readable": "Verdana (breite Buchstaben)"
+      },
+      "speechRate": {
+        "title": "Vorlesegeschwindigkeit",
+        "description": "Zum Vorlesen Ihrer Notizen aus dem Verlauf.",
+        "slow": "Langsam",
+        "normal": "Normal",
+        "fast": "Schnell",
+        "try": "Ausprobieren",
+        "sample": "So liest Nova Ihre Notizen vor."
+      }
     },
     "voiceCalibration": {
       "title": "Meine Stimme",
@@ -1602,6 +1637,7 @@
     "dataNote": "Der Server Ihrer Einrichtung zählt, wie viele Transkriptionen und Umschreibungen Sie täglich ausführen. Deren Inhalt wird nicht gespeichert.",
     "aiSkillsPrivacyOffline": "Nova Commands laufen auf dem Server Ihrer Einrichtung, der gerade nicht erreichbar ist.",
     "notInOrganization": "Dieses Microsoft-Konto gehört nicht zu Ihrer Einrichtung.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Server Ihrer Bildungseinrichtung"
   }
 }
