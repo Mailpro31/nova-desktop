@@ -624,6 +624,17 @@
       "retranscribeError": "重新转录失败。请重试。",
       "transcribing": "转录中...",
       "transcriptionFailed": "转录失败。您可以使用重试图标重新转录。",
+      "correction": {
+        "start": "更正文本",
+        "field": "更正后的文本",
+        "save": "保存更正",
+        "error": "无法保存更正。",
+        "proposal": "Nova 可能听错了这些术语。勾选后，将在你之后的听写中更准确地识别：",
+        "term": "“{{expected}}”（Nova 听成了“{{heard}}”）",
+        "learn": "添加到我的词汇",
+        "skip": "暂不",
+        "learned": "已添加到你的词汇。"
+      },
       "readAloud": "朗读",
       "stopReading": "停止朗读",
       "readAloudUnavailable": "此电脑上无法使用朗读功能。"
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "从听写内容中提取可执行的任务和检查清单。",
         "nova_style_notes": "把听写内容重组为清晰、有条理的笔记。",
         "nova_style_meeting": "汇总并整理会议记录和讨论要点。",
-        "nova_style_voice_to_text": "未经任何后处理的原始转写。"
+        "nova_style_voice_to_text": "逐字记录你的口述：只修正标点、大小写和拼写。"
       },
       "title": "写作风格"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "已连接组织",
-      "local": "Nova Local 已启用",
-      "localActive": "Nova Local 已启用"
+      "local": "正在此电脑上听写",
+      "localActive": "正在此电脑上听写"
     },
     "microsoft": {
       "browserHelp": "请在浏览器中完成登录。如果 Microsoft 要求，请使用此代码。",
@@ -1357,8 +1368,8 @@
         "detail": "你的语音输入已放入剪贴板。"
       },
       "organizationLocal": {
-        "title": "Nova Local 正在运行",
-        "detail": "{{server}} 没有响应——听写继续在本地进行，AI 功能已暂停。",
+        "title": "正在此电脑上听写",
+        "detail": "{{server}} 没有响应：你可以继续听写，服务器恢复后样式也会恢复。",
         "unknownServer": "组织服务器"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "最近一次语音输入"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "此电脑",
+      "local": "此电脑",
       "organization": "您所在组织的服务器"
     },
     "checklist": {

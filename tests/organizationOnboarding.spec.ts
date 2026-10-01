@@ -627,7 +627,9 @@ test.describe("local dictation stays available without the server", () => {
 
     await expect
       .poll(() => preparedModel(page))
-      .toEqual({ modelId: "multilingual" });
+      // La langue voyage avec le modèle : le poste vérifie que celui qu'il
+      // a déjà la parle, et le remplace sinon.
+      .toEqual({ modelId: "multilingual", language: "fr" });
   });
 
   test("nothing is downloaded before the member signs in", async ({ page }) => {
@@ -686,7 +688,7 @@ test.describe("a suspended member has no access at all", () => {
     ).toBeVisible();
     // Ni tableau de bord, ni repli Personal derrière l'écran.
     await expect(
-      page.getByRole("heading", { name: "Nova Local is active" }),
+      page.getByRole("heading", { name: "Dictating on this computer" }),
     ).toHaveCount(0);
     await expect(page.getByRole("navigation")).toHaveCount(0);
   });

@@ -1,8 +1,12 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import { commands } from "@/bindings";
 import { isOrganizationMode } from "@/lib/mode";
-import { chooseLocalFallbackModel } from "@/lib/organization/localFallback";
+import {
+  chooseLocalFallbackModel,
+  fallbackLanguage,
+} from "@/lib/organization/localFallback";
 
 interface Options {
   /** Une session Organization existe sur ce poste. */
@@ -22,6 +26,7 @@ interface Options {
  */
 export function useOrganizationLocalFallback({ signedIn, language }: Options) {
   const started = useRef(false);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (started.current || !signedIn || language === null) return;
@@ -31,14 +36,21 @@ export function useOrganizationLocalFallback({ signedIn, language }: Options) {
     void (async () => {
       const available = await commands.getAvailableModels();
       if (available.status !== "ok") return;
-      const model = chooseLocalFallbackModel(available.data, language);
+      const model = chooseLocalFallbackModel(
+        available.data,
+        language,
+        i18n.language,
+      );
       if (!model) return;
-      const prepared = await commands.prepareLocalFallbackModel(model.id);
+      const prepared = await commands.prepareLocalFallbackModel(
+        model.id,
+        fallbackLanguage(language, i18n.language),
+      );
       if (prepared.status === "error") {
         console.warn("Local fallback model not prepared:", prepared.error);
       }
     })().catch((error) => {
       console.warn("Local fallback model not prepared:", error);
     });
-  }, [signedIn, language]);
+  }, [signedIn, language, i18n.language]);
 }

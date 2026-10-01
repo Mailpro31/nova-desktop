@@ -273,7 +273,7 @@ test.describe("Nova Campus", () => {
       page.getByRole("heading", { name: "Recommended setup" }),
     ).toBeVisible();
     await expect(
-      page.getByText("Nova Local active", { exact: true }),
+      page.getByText("Dictating on this computer", { exact: true }),
     ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Use recommended setup" }),
@@ -320,7 +320,7 @@ test.describe("Nova Campus", () => {
     await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
   });
 
-  test("offline Campus presents Nova Local without technical details on Home", async ({
+  test("offline Campus says the computer is dictating on its own, without technical details on Home", async ({
     page,
   }) => {
     await mockTauri(page, {
@@ -334,12 +334,12 @@ test.describe("Nova Campus", () => {
     });
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: "Nova Local is active" }),
+      page.getByRole("heading", { name: "Dictating on this computer" }),
     ).toBeVisible();
     await expect(page.getByText("https://campus.example.edu")).toHaveCount(0);
     await page
       .getByRole("button", {
-        name: /Example Engineering School.*Nova Local active/,
+        name: /Example Engineering School.*Dictating on this computer/,
       })
       .click();
     await expect(

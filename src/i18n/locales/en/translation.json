@@ -624,6 +624,17 @@
       "retranscribeError": "Failed to re-transcribe. Please try again.",
       "transcribing": "Transcribing...",
       "transcriptionFailed": "Transcription failed. You can re-transcribe using the retry icon.",
+      "correction": {
+        "start": "Correct the text",
+        "field": "Corrected text",
+        "save": "Save the correction",
+        "error": "The correction could not be saved.",
+        "proposal": "Nova may have misheard these terms. Checked ones will be recognised better in your next dictations:",
+        "term": "“{{expected}}” (Nova heard “{{heard}}”)",
+        "learn": "Add to my vocabulary",
+        "skip": "Not now",
+        "learned": "Added to your vocabulary."
+      },
       "readAloud": "Read aloud",
       "stopReading": "Stop reading",
       "readAloudUnavailable": "Read aloud is not available on this computer."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Extract actionable tasks and checklists from your dictation.",
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
-        "nova_style_voice_to_text": "Raw transcription without any post-processing."
+        "nova_style_voice_to_text": "Your dictation word for word: only punctuation, capitals and spelling are fixed."
       },
       "title": "Writing Styles"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organization connected",
-      "local": "Nova Local active",
-      "localActive": "Nova Local active"
+      "local": "Dictating on this computer",
+      "localActive": "Dictating on this computer"
     },
     "microsoft": {
       "browserHelp": "Finish signing in in your browser. Use this code if Microsoft asks for it.",
@@ -1357,8 +1368,8 @@
         "detail": "Your dictation is in the clipboard."
       },
       "organizationLocal": {
-        "title": "Nova Local is active",
-        "detail": "{{server}} is not responding — dictation continues locally, AI features are paused.",
+        "title": "Dictating on this computer",
+        "detail": "{{server}} is not responding — you can keep dictating; your Styles will come back with the server.",
         "unknownServer": "the organization server"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Last dictation"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "This computer",
+      "local": "This computer",
       "organization": "Your organization's server"
     },
     "checklist": {

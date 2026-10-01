@@ -624,6 +624,17 @@
       "retranscribeError": "Impossible de re-transcrire. Veuillez réessayer.",
       "transcribing": "Transcription en cours...",
       "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai.",
+      "correction": {
+        "start": "Corriger le texte",
+        "field": "Texte corrigé",
+        "save": "Enregistrer la correction",
+        "error": "La correction n'a pas pu être enregistrée.",
+        "proposal": "Nova a peut-être mal entendu ces termes. Cochés, ils seront mieux reconnus dans vos prochaines dictées :",
+        "term": "« {{expected}} » (Nova entendait « {{heard}} »)",
+        "learn": "Ajouter à mon vocabulaire",
+        "skip": "Pas maintenant",
+        "learned": "Ajouté à votre vocabulaire."
+      },
       "readAloud": "Écouter",
       "stopReading": "Arrêter la lecture",
       "readAloudUnavailable": "La lecture à voix haute n'est pas disponible sur ce poste."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Extrayez des tâches et listes de contrôle actionnables de votre dictée.",
         "nova_style_notes": "Restructurez votre dictée en notes claires et organisées.",
         "nova_style_meeting": "Résumez et mettez en forme vos notes et points de réunion.",
-        "nova_style_voice_to_text": "Transcription brute sans aucun post-traitement."
+        "nova_style_voice_to_text": "Votre dictée mot pour mot : seules la ponctuation, les majuscules et l'orthographe sont corrigées."
       },
       "title": "Styles d'écriture"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organisation connectée",
-      "local": "Nova Local actif",
-      "localActive": "Nova Local actif"
+      "local": "Dictée sur ce poste",
+      "localActive": "Dictée sur ce poste"
     },
     "microsoft": {
       "browserHelp": "Terminez la connexion dans votre navigateur. Utilisez ce code si Microsoft le demande.",
@@ -1357,8 +1368,8 @@
         "detail": "Votre dictée est dans le presse-papiers."
       },
       "organizationLocal": {
-        "title": "Nova Local est actif",
-        "detail": "{{server}} ne répond pas — la dictée continue en local, les fonctions IA sont en pause.",
+        "title": "Dictée sur ce poste",
+        "detail": "{{server}} ne répond pas : vous pouvez continuer à dicter, vos Styles reviendront avec le serveur.",
         "unknownServer": "le serveur de l’organisation"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Dernière dictée"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Ce poste",
+      "local": "Ce poste",
       "organization": "Le serveur de votre organisation"
     },
     "checklist": {

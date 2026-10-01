@@ -624,6 +624,17 @@
       "retranscribeError": "Yeniden yazıya dökme başarısız oldu. Lütfen tekrar deneyin.",
       "transcribing": "Yazıya döküyor...",
       "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz.",
+      "correction": {
+        "start": "Metni düzelt",
+        "field": "Düzeltilmiş metin",
+        "save": "Düzeltmeyi kaydet",
+        "error": "Düzeltme kaydedilemedi.",
+        "proposal": "Nova bu terimleri yanlış duymuş olabilir. İşaretli olanlar sonraki dikte işlemlerinizde daha iyi tanınacak:",
+        "term": "“{{expected}}” (Nova “{{heard}}” duyuyordu)",
+        "learn": "Söz dağarcığıma ekle",
+        "skip": "Şimdi değil",
+        "learned": "Söz dağarcığınıza eklendi."
+      },
       "readAloud": "Sesli oku",
       "stopReading": "Okumayı durdur",
       "readAloudUnavailable": "Sesli okuma bu bilgisayarda kullanılamıyor."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Diktenden uygulanabilir görevler ve kontrol listeleri çıkar.",
         "nova_style_notes": "Dikteni net ve düzenli notlar hâline getir.",
         "nova_style_meeting": "Toplantı notlarını ve konuşma başlıklarını özetle ve düzenle.",
-        "nova_style_voice_to_text": "Hiçbir son işlem uygulanmamış ham döküm."
+        "nova_style_voice_to_text": "Dikteniz kelimesi kelimesine: yalnızca noktalama, büyük harfler ve yazım düzeltilir."
       },
       "title": "Yazım Biçemleri"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Kuruluş bağlı",
-      "local": "Nova Local etkin",
-      "localActive": "Nova Local etkin"
+      "local": "Bu bilgisayarda dikte",
+      "localActive": "Bu bilgisayarda dikte"
     },
     "microsoft": {
       "browserHelp": "Tarayıcında oturum açmayı tamamla. Microsoft isterse bu kodu kullan.",
@@ -1357,8 +1368,8 @@
         "detail": "Dikteniz panoda."
       },
       "organizationLocal": {
-        "title": "Nova Local etkin",
-        "detail": "{{server}} yanıt vermiyor — dikte yerel olarak sürüyor, yapay zekâ özellikleri duraklatıldı.",
+        "title": "Bu bilgisayarda dikte",
+        "detail": "{{server}} yanıt vermiyor: dikte etmeye devam edebilirsiniz, stilleriniz sunucuyla birlikte geri gelecek.",
         "unknownServer": "kuruluş sunucusu"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Son dikte"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Bu bilgisayar",
+      "local": "Bu bilgisayar",
       "organization": "Kuruluşunuzun sunucusu"
     },
     "checklist": {

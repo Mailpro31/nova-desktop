@@ -624,6 +624,17 @@
       "retranscribeError": "Falha ao re-transcrever. Por favor, tente novamente.",
       "transcribing": "Transcrevendo...",
       "transcriptionFailed": "A transcrição falhou. Você pode re-transcrever usando o ícone de tentar novamente.",
+      "correction": {
+        "start": "Corrigir o texto",
+        "field": "Texto corrigido",
+        "save": "Guardar a correção",
+        "error": "Não foi possível guardar a correção.",
+        "proposal": "O Nova pode ter percebido mal estes termos. Se estiverem marcados, serão mais bem reconhecidos nos seus próximos ditados:",
+        "term": "«{{expected}}» (o Nova ouvia «{{heard}}»)",
+        "learn": "Adicionar ao meu vocabulário",
+        "skip": "Agora não",
+        "learned": "Adicionado ao seu vocabulário."
+      },
       "readAloud": "Ler em voz alta",
       "stopReading": "Parar a leitura",
       "readAloudUnavailable": "A leitura em voz alta não está disponível neste computador."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Extraia do ditado tarefas práticas e listas de verificação.",
         "nova_style_notes": "Reorganize o ditado em anotações claras e organizadas.",
         "nova_style_meeting": "Resuma e formate as anotações e os pontos da reunião.",
-        "nova_style_voice_to_text": "Transcrição bruta, sem nenhum pós-processamento."
+        "nova_style_voice_to_text": "O seu ditado palavra a palavra: só a pontuação, as maiúsculas e a ortografia são corrigidas."
       },
       "title": "Estilos de escrita"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organização ligada",
-      "local": "Nova Local ativo",
-      "localActive": "Nova Local ativo"
+      "local": "Ditado neste computador",
+      "localActive": "Ditado neste computador"
     },
     "microsoft": {
       "browserHelp": "Conclua o login no navegador. Use este código se a Microsoft pedir.",
@@ -1357,8 +1368,8 @@
         "detail": "O seu ditado está na área de transferência."
       },
       "organizationLocal": {
-        "title": "O Nova Local está ativo",
-        "detail": "{{server}} não está a responder — o ditado continua localmente e as funções de IA estão em pausa.",
+        "title": "Ditado neste computador",
+        "detail": "{{server}} não responde: pode continuar a ditar; os seus estilos voltam com o servidor.",
         "unknownServer": "o servidor da organização"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Último ditado"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Este computador",
+      "local": "Este computador",
       "organization": "O servidor da sua organização"
     },
     "checklist": {

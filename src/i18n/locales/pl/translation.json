@@ -624,6 +624,17 @@
       "retranscribeError": "Nie udało się ponownie transkrybować. Spróbuj ponownie.",
       "transcribing": "Transkrybuję...",
       "transcriptionFailed": "Transkrypcja nie powiodła się. Możesz transkrybować ponownie za pomocą ikony ponowienia.",
+      "correction": {
+        "start": "Popraw tekst",
+        "field": "Poprawiony tekst",
+        "save": "Zapisz poprawkę",
+        "error": "Nie udało się zapisać poprawki.",
+        "proposal": "Nova mogła źle usłyszeć te terminy. Zaznaczone będą lepiej rozpoznawane w kolejnych dyktowaniach:",
+        "term": "„{{expected}}” (Nova słyszała „{{heard}}”)",
+        "learn": "Dodaj do mojego słownictwa",
+        "skip": "Nie teraz",
+        "learned": "Dodano do twojego słownictwa."
+      },
       "readAloud": "Czytaj na głos",
       "stopReading": "Zatrzymaj czytanie",
       "readAloudUnavailable": "Czytanie na głos nie jest dostępne na tym komputerze."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Wyodrębnij z dyktowania konkretne zadania i listy kontrolne.",
         "nova_style_notes": "Przekształć dyktowanie w przejrzyste, uporządkowane notatki.",
         "nova_style_meeting": "Podsumuj i sformatuj notatki oraz ustalenia ze spotkania.",
-        "nova_style_voice_to_text": "Surowa transkrypcja bez żadnego dodatkowego przetwarzania."
+        "nova_style_voice_to_text": "Twoje dyktowanie słowo w słowo: poprawiana jest tylko interpunkcja, wielkie litery i pisownia."
       },
       "title": "Style pisania"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organizacja połączona",
-      "local": "Nova Local aktywny",
-      "localActive": "Nova Local aktywny"
+      "local": "Dyktowanie na tym komputerze",
+      "localActive": "Dyktowanie na tym komputerze"
     },
     "microsoft": {
       "browserHelp": "Dokończ logowanie w przeglądarce. Użyj tego kodu, jeśli Microsoft o niego poprosi.",
@@ -1357,8 +1368,8 @@
         "detail": "Twoje dyktowanie jest w schowku."
       },
       "organizationLocal": {
-        "title": "Nova Local działa",
-        "detail": "{{server}} nie odpowiada — dyktowanie działa lokalnie, funkcje AI są wstrzymane.",
+        "title": "Dyktowanie na tym komputerze",
+        "detail": "{{server}} nie odpowiada: możesz dalej dyktować, style wrócą razem z serwerem.",
         "unknownServer": "serwer organizacji"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Ostatnie dyktowanie"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Ten komputer",
+      "local": "Ten komputer",
       "organization": "Serwer Twojej organizacji"
     },
     "checklist": {

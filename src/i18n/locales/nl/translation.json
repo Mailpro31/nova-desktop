@@ -624,6 +624,17 @@
       "retranscribeError": "Opnieuw transcriberen mislukt. Probeer het opnieuw.",
       "transcribing": "Transcriberen...",
       "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram.",
+      "correction": {
+        "start": "Tekst corrigeren",
+        "field": "Gecorrigeerde tekst",
+        "save": "Correctie opslaan",
+        "error": "De correctie kon niet worden opgeslagen.",
+        "proposal": "Nova heeft deze termen misschien verkeerd verstaan. Aangevinkt worden ze beter herkend in je volgende dictaten:",
+        "term": "‘{{expected}}’ (Nova hoorde ‘{{heard}}’)",
+        "learn": "Aan mijn woordenlijst toevoegen",
+        "skip": "Niet nu",
+        "learned": "Aan je woordenlijst toegevoegd."
+      },
       "readAloud": "Voorlezen",
       "stopReading": "Voorlezen stoppen",
       "readAloudUnavailable": "Voorlezen is niet beschikbaar op deze computer."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Haal concrete taken en checklists uit je dictaat.",
         "nova_style_notes": "Herstructureer je dictaat tot heldere, overzichtelijke aantekeningen.",
         "nova_style_meeting": "Vat je vergadernotities en gesprekspunten samen en maak ze op.",
-        "nova_style_voice_to_text": "Ruwe transcriptie zonder enige nabewerking."
+        "nova_style_voice_to_text": "Je dictaat woord voor woord: alleen leestekens, hoofdletters en spelling worden verbeterd."
       },
       "title": "Schrijfstijlen"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organisatie verbonden",
-      "local": "Nova Local actief",
-      "localActive": "Nova Local actief"
+      "local": "Dicteren op deze computer",
+      "localActive": "Dicteren op deze computer"
     },
     "microsoft": {
       "browserHelp": "Rond het aanmelden af in je browser. Gebruik deze code als Microsoft erom vraagt.",
@@ -1357,8 +1368,8 @@
         "detail": "Uw dictaat staat op het klembord."
       },
       "organizationLocal": {
-        "title": "Nova Local is actief",
-        "detail": "{{server}} reageert niet — dicteren gaat lokaal door, AI-functies staan op pauze.",
+        "title": "Dicteren op deze computer",
+        "detail": "{{server}} reageert niet: je kunt blijven dicteren, je stijlen komen terug met de server.",
         "unknownServer": "de organisatieserver"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Laatste dictaat"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Deze computer",
+      "local": "Deze computer",
       "organization": "De server van uw organisatie"
     },
     "checklist": {

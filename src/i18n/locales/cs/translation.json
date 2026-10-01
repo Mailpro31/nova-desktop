@@ -624,6 +624,17 @@
       "retranscribeError": "Opětovný přepis se nezdařil. Zkuste to prosím znovu.",
       "transcribing": "Přepisuji...",
       "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování.",
+      "correction": {
+        "start": "Opravit text",
+        "field": "Opravený text",
+        "save": "Uložit opravu",
+        "error": "Opravu se nepodařilo uložit.",
+        "proposal": "Nova možná tyto pojmy špatně slyšela. Zaškrtnuté bude v dalších diktátech rozpoznávat lépe:",
+        "term": "„{{expected}}“ (Nova slyšela „{{heard}}“)",
+        "learn": "Přidat do mé slovní zásoby",
+        "skip": "Teď ne",
+        "learned": "Přidáno do vaší slovní zásoby."
+      },
       "readAloud": "Přečíst nahlas",
       "stopReading": "Zastavit čtení",
       "readAloudUnavailable": "Čtení nahlas není na tomto počítači k dispozici."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Vytáhněte z diktátu konkrétní úkoly a kontrolní seznamy.",
         "nova_style_notes": "Přeuspořádejte diktát do přehledných a uspořádaných poznámek.",
         "nova_style_meeting": "Shrňte a naformátujte poznámky a body z porady.",
-        "nova_style_voice_to_text": "Surový přepis bez jakéhokoli dalšího zpracování."
+        "nova_style_voice_to_text": "Váš diktát slovo od slova: opravuje se jen interpunkce, velká písmena a pravopis."
       },
       "title": "Styly psaní"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organizace připojena",
-      "local": "Nova Local je aktivní",
-      "localActive": "Nova Local je aktivní"
+      "local": "Diktování na tomto počítači",
+      "localActive": "Diktování na tomto počítači"
     },
     "microsoft": {
       "browserHelp": "Dokončete přihlášení v prohlížeči. Pokud o to Microsoft požádá, použijte tento kód.",
@@ -1357,8 +1368,8 @@
         "detail": "Váš diktát je ve schránce."
       },
       "organizationLocal": {
-        "title": "Nova Local je aktivní",
-        "detail": "{{server}} neodpovídá — diktování pokračuje lokálně, funkce AI jsou pozastaveny.",
+        "title": "Diktování na tomto počítači",
+        "detail": "{{server}} neodpovídá: můžete dál diktovat, styly se vrátí spolu se serverem.",
         "unknownServer": "server organizace"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Poslední diktování"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Tento počítač",
+      "local": "Tento počítač",
       "organization": "Server vaší organizace"
     },
     "checklist": {

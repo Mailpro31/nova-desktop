@@ -69,13 +69,17 @@ describe("navigation du mode réunion", () => {
     expect(code).toContain("component: MeetingSettings");
   });
 
-  test("elle figure dans la navigation principale d'une organisation", () => {
-    // Déclarer une section ne suffit pas : la barre suit une liste explicite.
-    // C'est cet oubli qui avait fait disparaître AI Skills en Phase 31B, et
-    // c'est le même oubli qui rendait le mode réunion inatteignable.
+  test("elle est suspendue dans Nova Organisation", () => {
+    // Décision du 01/10 : un seul Nova, Nova Organisation, et le mode réunion
+    // y est suspendu — il inventait parfois des échéances, et ce n'est pas un
+    // usage d'élève. Suspendu, pas supprimé : la section reste déclarée
+    // (test précédent), mais la navigation de l'établissement ne la mène plus.
     const code = source(SIDEBAR);
-    const primary = code.slice(code.indexOf("const ORGANIZATION_PRIMARY"));
-    expect(primary.slice(0, 260)).toContain('"meeting"');
+    const primary = code.slice(
+      code.indexOf("const ORGANIZATION_PRIMARY"),
+      code.indexOf("];", code.indexOf("const ORGANIZATION_PRIMARY")),
+    );
+    expect(primary).not.toContain('"meeting"');
   });
 
   test("sa visibilité vient de la capacité, jamais de l'édition", () => {

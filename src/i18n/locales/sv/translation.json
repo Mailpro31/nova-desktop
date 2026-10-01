@@ -624,6 +624,17 @@
       "retranscribeError": "Misslyckades med att transkribera igen. Försök igen.",
       "transcribing": "Transkriberar...",
       "transcriptionFailed": "Transkribering misslyckades. Du kan transkribera igen med hjälp av ikonen för nytt försök.",
+      "correction": {
+        "start": "Rätta texten",
+        "field": "Rättad text",
+        "save": "Spara rättelsen",
+        "error": "Rättelsen kunde inte sparas.",
+        "proposal": "Nova kan ha hört fel på de här orden. Om de är markerade känns de igen bättre i dina nästa dikteringar:",
+        "term": "”{{expected}}” (Nova hörde ”{{heard}}”)",
+        "learn": "Lägg till i mitt ordförråd",
+        "skip": "Inte nu",
+        "learned": "Tillagt i ditt ordförråd."
+      },
       "readAloud": "Läs upp",
       "stopReading": "Sluta läsa upp",
       "readAloudUnavailable": "Uppläsning är inte tillgänglig på den här datorn."
@@ -1082,7 +1093,7 @@
         "nova_style_todo": "Plocka ut konkreta uppgifter och checklistor ur dikteringen.",
         "nova_style_notes": "Strukturera om dikteringen till tydliga och ordnade anteckningar.",
         "nova_style_meeting": "Sammanfatta och formatera mötesanteckningar och diskussionspunkter.",
-        "nova_style_voice_to_text": "Rå transkribering utan någon efterbearbetning."
+        "nova_style_voice_to_text": "Din diktering ord för ord: bara skiljetecken, versaler och stavning rättas."
       },
       "title": "Skrivstilar"
     },
@@ -1163,8 +1174,8 @@
     },
     "status": {
       "connected": "Organisation ansluten",
-      "local": "Nova Local aktiv",
-      "localActive": "Nova Local aktivt"
+      "local": "Diktering på den här datorn",
+      "localActive": "Diktering på den här datorn"
     },
     "microsoft": {
       "browserHelp": "Slutför inloggningen i webbläsaren. Använd den här koden om Microsoft ber om den.",
@@ -1357,8 +1368,8 @@
         "detail": "Din diktering finns i urklipp."
       },
       "organizationLocal": {
-        "title": "Nova Local är aktivt",
-        "detail": "{{server}} svarar inte — diktering fortsätter lokalt, AI-funktioner är pausade.",
+        "title": "Diktering på den här datorn",
+        "detail": "{{server}} svarar inte: du kan fortsätta diktera, dina stilar kommer tillbaka med servern.",
         "unknownServer": "organisationens server"
       },
       "organizationSignedOut": {
@@ -1375,8 +1386,8 @@
       "lastDictation": "Senaste diktering"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Den här datorn",
+      "local": "Den här datorn",
       "organization": "Din organisations server"
     },
     "checklist": {
