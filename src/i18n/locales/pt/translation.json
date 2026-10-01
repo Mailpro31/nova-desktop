@@ -1081,7 +1081,7 @@
         "nova_style_todo": "Extraia do ditado tarefas práticas e listas de verificação.",
         "nova_style_notes": "Reorganize o ditado em anotações claras e organizadas.",
         "nova_style_meeting": "Resuma e formate as anotações e os pontos da reunião.",
-        "nova_style_voice_to_text": "Transcrição bruta, sem nenhum pós-processamento."
+        "nova_style_voice_to_text": "O seu ditado palavra a palavra: só a pontuação, as maiúsculas e a ortografia são corrigidas."
       },
       "title": "Estilos de escrita"
     },

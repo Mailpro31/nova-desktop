@@ -1081,7 +1081,7 @@
         "nova_style_todo": "Vytáhněte z diktátu konkrétní úkoly a kontrolní seznamy.",
         "nova_style_notes": "Přeuspořádejte diktát do přehledných a uspořádaných poznámek.",
         "nova_style_meeting": "Shrňte a naformátujte poznámky a body z porady.",
-        "nova_style_voice_to_text": "Surový přepis bez jakéhokoli dalšího zpracování."
+        "nova_style_voice_to_text": "Váš diktát slovo od slova: opravuje se jen interpunkce, velká písmena a pravopis."
       },
       "title": "Styly psaní"
     },

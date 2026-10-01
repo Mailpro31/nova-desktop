@@ -1081,7 +1081,7 @@
         "nova_style_todo": "Hol konkrete Aufgaben und Checklisten aus deinem Diktat.",
         "nova_style_notes": "Ordne dein Diktat zu klaren, übersichtlichen Notizen.",
         "nova_style_meeting": "Fasse Besprechungsnotizen und Gesprächspunkte zusammen und formatiere sie.",
-        "nova_style_voice_to_text": "Rohe Transkription ohne jede Nachbearbeitung."
+        "nova_style_voice_to_text": "Dein Diktat Wort für Wort: Nur Satzzeichen, Großschreibung und Rechtschreibung werden korrigiert."
       },
       "title": "Schreibstile"
     },

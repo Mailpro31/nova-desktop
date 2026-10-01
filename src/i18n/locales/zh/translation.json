@@ -1081,7 +1081,7 @@
         "nova_style_todo": "从听写内容中提取可执行的任务和检查清单。",
         "nova_style_notes": "把听写内容重组为清晰、有条理的笔记。",
         "nova_style_meeting": "汇总并整理会议记录和讨论要点。",
-        "nova_style_voice_to_text": "未经任何后处理的原始转写。"
+        "nova_style_voice_to_text": "逐字记录你的口述：只修正标点、大小写和拼写。"
       },
       "title": "写作风格"
     },

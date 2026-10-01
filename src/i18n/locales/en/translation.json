@@ -1081,7 +1081,7 @@
         "nova_style_todo": "Extract actionable tasks and checklists from your dictation.",
         "nova_style_notes": "Restructure your dictation as clean, organized notes.",
         "nova_style_meeting": "Summarize and format your meeting notes and talking points.",
-        "nova_style_voice_to_text": "Raw transcription without any post-processing."
+        "nova_style_voice_to_text": "Your dictation word for word: only punctuation, capitals and spelling are fixed."
       },
       "title": "Writing Styles"
     },
