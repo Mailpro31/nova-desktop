@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "הצטרפו למוסד הלימודים שלכם",
         "subtitle": "הכתבה קולית שמספק המוסד שלכם, עם הדוא\"ל האקדמי שלכם."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "השרת של מוסד הלימודים שלכם",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "אתם מחוברים ל-{{organization}}",
-        "subtitle": "Nova Campus מוכן במחשב הזה.",
+        "subtitle": "Nova מוכן במחשב הזה.",
         "start": "Get started",
         "organization": "ארגון",
         "account": "חשבון",
         "processing": "עיבוד",
-        "campusInfrastructure": "תשתית Campus"
+        "campusInfrastructure": "התשתית של מוסד הלימודים שלכם"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "לא ניתן להגיע לשרת. בדקו את החיבור ונסו שוב.",
         "authMethodUnavailable": "המוסד הזה דורש שיטת אימות שגרסה זו עדיין לא תומכת בה."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש ב-Nova Campus.",
-    "logoutConfirmTitle": "להתנתק מ-Nova Campus?",
-    "logoutConfirmDescription": "תצטרכו להתחבר שוב כדי להשתמש ב-Nova Campus. להמשיך?",
-    "aboutSubtitle": "מידע וכלי אבחון עבור Nova Campus.",
+    "sessionExpired": "יש להתחבר שוב כדי להמשיך להשתמש ב-Nova.",
+    "logoutConfirmTitle": "להתנתק מ-Nova?",
+    "logoutConfirmDescription": "תצטרכו להתחבר שוב כדי להשתמש ב-Nova. להמשיך?",
+    "aboutSubtitle": "מידע וכלי אבחון עבור Nova.",
     "personalizationDescription": "התאימו את המראה והאינטראקציה של Nova בלי לשנות את המדיניות של המוסד שלכם.",
     "organizationSubtitle": "המוסד שלכם, מה הוא מספק, ולאן הולכים הנתונים שלכם.",
-    "statusConnected": "הקמפוס מחובר",
+    "statusConnected": "מחובר למוסד הלימודים",
     "providesTitle": "מה המוסד שלכם מספק",
     "providesPaused": "מושהה כרגע — שרת המוסד אינו זמין.",
     "transcriptionDescription": "ההקלטה נשלחת לשרת המוסד, שהופך אותה לטקסט.",

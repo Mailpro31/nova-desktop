@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Treten Sie Ihrer Bildungseinrichtung bei",
         "subtitle": "Spracherkennung Ihrer Einrichtung, mit Ihrer Hochschul-E-Mail."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Server Ihrer Bildungseinrichtung",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Du bist mit {{organization}} verbunden",
-        "subtitle": "Nova Campus ist auf diesem Computer bereit.",
+        "subtitle": "Nova ist auf diesem Computer bereit.",
         "start": "Get started",
         "organization": "Organisation",
         "account": "Konto",
         "processing": "Verarbeitung",
-        "campusInfrastructure": "Campus-Infrastruktur"
+        "campusInfrastructure": "Infrastruktur Ihrer Bildungseinrichtung"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Der Server ist nicht erreichbar. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
         "authMethodUnavailable": "Diese Einrichtung verlangt eine Anmeldemethode, die diese Version noch nicht unterstützt."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Bitte melde dich erneut an, um Nova Campus weiter zu verwenden.",
-    "logoutConfirmTitle": "Von Nova Campus abmelden?",
-    "logoutConfirmDescription": "Du musst dich erneut anmelden, um Nova Campus zu verwenden. Bist du sicher?",
-    "aboutSubtitle": "Informationen und Diagnosewerkzeuge für Nova Campus.",
+    "sessionExpired": "Bitte melde dich erneut an, um Nova weiter zu verwenden.",
+    "logoutConfirmTitle": "Von Nova abmelden?",
+    "logoutConfirmDescription": "Du musst dich erneut anmelden, um Nova zu verwenden. Bist du sicher?",
+    "aboutSubtitle": "Informationen und Diagnosewerkzeuge für Nova.",
     "personalizationDescription": "Passe Aussehen und Bedienung von Nova an, ohne die Richtlinien deiner Einrichtung zu ändern.",
     "organizationSubtitle": "Ihre Einrichtung, ihre Leistungen und der Weg Ihrer Daten.",
-    "statusConnected": "Campus verbunden",
+    "statusConnected": "Mit Ihrer Bildungseinrichtung verbunden",
     "providesTitle": "Was Ihre Einrichtung bereitstellt",
     "providesPaused": "Derzeit pausiert — der Server Ihrer Einrichtung ist nicht erreichbar.",
     "transcriptionDescription": "Ihre Aufnahme geht an den Server Ihrer Einrichtung, der daraus Text macht.",

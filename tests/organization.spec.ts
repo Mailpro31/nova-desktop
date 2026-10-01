@@ -45,12 +45,12 @@ test.describe("Nova Campus", () => {
     // Une seule surface : le titre Campus, le champ e-mail et aucun champ
     // serveur, sans clic intermédiaire pour y arriver.
     await expect(
-      page.getByRole("heading", { name: "Join your campus" }),
+      page.getByRole("heading", { name: "Join your institution" }),
     ).toBeVisible();
     await expect(
       page.getByRole("textbox", { name: "School email" }),
     ).toBeVisible();
-    await expect(page.getByLabel("Campus server")).toHaveCount(0);
+    await expect(page.getByLabel("Your institution's server")).toHaveCount(0);
   });
 
   test("manual setup validates email and handles an incorrect code", async ({

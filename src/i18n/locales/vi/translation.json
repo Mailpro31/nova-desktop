@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Tham gia trường của bạn",
         "subtitle": "Đọc chính tả do trường của bạn cung cấp, với email học thuật của bạn."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Máy chủ của trường bạn",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Bạn đã kết nối với {{organization}}",
-        "subtitle": "Nova Campus đã sẵn sàng trên máy tính này.",
+        "subtitle": "Nova đã sẵn sàng trên máy tính này.",
         "start": "Get started",
         "organization": "Tổ chức",
         "account": "Tài khoản",
         "processing": "Xử lý",
-        "campusInfrastructure": "Hạ tầng Campus"
+        "campusInfrastructure": "Hạ tầng của trường bạn"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Không kết nối được máy chủ. Hãy kiểm tra kết nối và thử lại.",
         "authMethodUnavailable": "Cơ sở này yêu cầu một phương thức xác thực mà phiên bản này chưa hỗ trợ."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Vui lòng đăng nhập lại để tiếp tục dùng Nova Campus.",
-    "logoutConfirmTitle": "Đăng xuất khỏi Nova Campus?",
-    "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova Campus. Bạn có chắc không?",
-    "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova Campus.",
+    "sessionExpired": "Vui lòng đăng nhập lại để tiếp tục dùng Nova.",
+    "logoutConfirmTitle": "Đăng xuất khỏi Nova?",
+    "logoutConfirmDescription": "Bạn sẽ cần đăng nhập lại để dùng Nova. Bạn có chắc không?",
+    "aboutSubtitle": "Thông tin và công cụ khắc phục sự cố cho Nova.",
     "personalizationDescription": "Điều chỉnh giao diện và cách tương tác của Nova mà không thay đổi quy định của cơ sở đào tạo.",
     "organizationSubtitle": "Trường của bạn, những gì trường cung cấp, và dữ liệu đi đâu.",
-    "statusConnected": "Đã kết nối Campus",
+    "statusConnected": "Đã kết nối với trường",
     "providesTitle": "Những gì trường của bạn cung cấp",
     "providesPaused": "Đang tạm dừng — không kết nối được máy chủ của trường.",
     "transcriptionDescription": "Bản ghi được gửi tới máy chủ của trường để chuyển thành văn bản.",

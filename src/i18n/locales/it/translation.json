@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Unisciti al tuo istituto",
         "subtitle": "La dettatura vocale fornita dal tuo istituto, con la tua email accademica."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Il server del tuo istituto",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Sei connesso a {{organization}}",
-        "subtitle": "Nova Campus è pronto su questo computer.",
+        "subtitle": "Nova è pronto su questo computer.",
         "start": "Get started",
         "organization": "Organizzazione",
         "account": "Account personale",
         "processing": "Elaborazione",
-        "campusInfrastructure": "Infrastruttura Campus"
+        "campusInfrastructure": "Infrastruttura del tuo istituto"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Server irraggiungibile. Controlla la connessione e riprova.",
         "authMethodUnavailable": "Questo istituto richiede un metodo di autenticazione non ancora supportato da questa versione."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Accedi di nuovo per continuare a usare Nova Campus.",
-    "logoutConfirmTitle": "Uscire da Nova Campus?",
-    "logoutConfirmDescription": "Dovrai accedere di nuovo per usare Nova Campus. Sei sicuro?",
-    "aboutSubtitle": "Informazioni e strumenti di diagnostica per Nova Campus.",
+    "sessionExpired": "Accedi di nuovo per continuare a usare Nova.",
+    "logoutConfirmTitle": "Uscire da Nova?",
+    "logoutConfirmDescription": "Dovrai accedere di nuovo per usare Nova. Sei sicuro?",
+    "aboutSubtitle": "Informazioni e strumenti di diagnostica per Nova.",
     "personalizationDescription": "Regola l'aspetto e l'interazione di Nova senza cambiare le regole del tuo istituto.",
     "organizationSubtitle": "Il tuo istituto, ciò che fornisce e dove vanno i tuoi dati.",
-    "statusConnected": "Campus connesso",
+    "statusConnected": "Connesso al tuo istituto",
     "providesTitle": "Ciò che fornisce il tuo istituto",
     "providesPaused": "In pausa — il server del tuo istituto è irraggiungibile.",
     "transcriptionDescription": "La registrazione viene inviata al server del tuo istituto, che la trasforma in testo.",

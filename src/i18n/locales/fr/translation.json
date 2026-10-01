@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Rejoignez votre Campus",
+        "title": "Rejoignez votre établissement",
         "subtitle": "La dictée vocale fournie par votre établissement, avec votre adresse académique."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Serveur Campus",
+        "serverLabel": "Le serveur de votre établissement",
         "serverPlaceholder": "https://nova.ecole.fr",
         "emailLabel": "Email école",
         "emailPlaceholder": "prenom.nom@ecole.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Vous êtes connecté à {{organization}}",
-        "subtitle": "Nova Campus est prêt sur cet ordinateur.",
+        "subtitle": "Nova est prêt sur cet ordinateur.",
         "start": "Commencer à utiliser Nova",
         "organization": "Organisation",
         "account": "Compte",
         "processing": "Traitement",
-        "campusInfrastructure": "Infrastructure Campus"
+        "campusInfrastructure": "Infrastructure de votre établissement"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Le serveur est injoignable. Vérifiez votre connexion et réessayez.",
         "authMethodUnavailable": "Cet établissement exige une méthode d'authentification non prise en charge par cette version."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Veuillez vous reconnecter pour continuer à utiliser Nova Campus.",
-    "logoutConfirmTitle": "Se déconnecter de Nova Campus ?",
-    "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser Nova Campus. Êtes-vous sûr ?",
-    "aboutSubtitle": "Informations et outils de diagnostic pour Nova Campus.",
+    "sessionExpired": "Veuillez vous reconnecter pour continuer à utiliser Nova.",
+    "logoutConfirmTitle": "Se déconnecter de Nova ?",
+    "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser Nova. Êtes-vous sûr ?",
+    "aboutSubtitle": "Informations et outils de diagnostic pour Nova.",
     "personalizationDescription": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre établissement.",
     "organizationSubtitle": "Votre établissement, ce qu'il fournit, et où vont vos données.",
-    "statusConnected": "Campus connecté",
+    "statusConnected": "Connecté à votre établissement",
     "providesTitle": "Ce que votre établissement fournit",
     "providesPaused": "Actuellement en pause — le serveur de votre établissement est injoignable.",
     "transcriptionDescription": "Votre enregistrement est envoyé au serveur de votre établissement, qui le transforme en texte.",

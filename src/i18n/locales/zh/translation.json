@@ -988,8 +988,8 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
-        "subtitle": "由你所在机构提供的语音输入，使用你的校园邮箱。"
+        "title": "加入你的学校",
+        "subtitle": "由你所在机构提供的语音输入，使用你的学校邮箱。"
       },
       "lab": {
         "open": "加入测试服务器",
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "你所在学校的服务器",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "你已连接到 {{organization}}",
-        "subtitle": "Nova Campus 已在这台电脑上准备就绪。",
+        "subtitle": "Nova 已在这台电脑上准备就绪。",
         "start": "Get started",
         "organization": "组织",
         "account": "账户",
         "processing": "处理方式",
-        "campusInfrastructure": "Campus 基础设施"
+        "campusInfrastructure": "你所在学校的基础设施"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "无法连接服务器。请检查网络后重试。",
         "authMethodUnavailable": "该机构要求的身份验证方式当前版本尚不支持。"
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "请重新登录以继续使用 Nova Campus。",
-    "logoutConfirmTitle": "要退出 Nova Campus 吗？",
-    "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova Campus。确定吗？",
-    "aboutSubtitle": "Nova Campus 的信息与故障排查工具。",
+    "sessionExpired": "请重新登录以继续使用 Nova。",
+    "logoutConfirmTitle": "要退出 Nova 吗？",
+    "logoutConfirmDescription": "退出后需要重新登录才能使用 Nova。确定吗？",
+    "aboutSubtitle": "Nova 的信息与故障排查工具。",
     "personalizationDescription": "调整 Nova 的外观与交互方式，不会改变你所在院校的规定。",
     "organizationSubtitle": "你所在的机构、它提供什么，以及你的数据去了哪里。",
-    "statusConnected": "校园已连接",
+    "statusConnected": "已连接到学校",
     "providesTitle": "你所在机构提供的能力",
     "providesPaused": "当前暂停 — 无法连接机构服务器。",
     "transcriptionDescription": "你的录音发送到机构服务器，由它转成文字。",

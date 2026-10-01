@@ -452,9 +452,9 @@ test.describe("single organization sign-in surface", () => {
       .fill("https://nova.school.test");
 
     await expect(
-      page.getByRole("heading", { name: "Join your campus" }),
+      page.getByRole("heading", { name: "Join your institution" }),
     ).toBeVisible();
-    await expect(page.getByLabel("Campus server")).toBeVisible();
+    await expect(page.getByLabel("Your institution's server")).toBeVisible();
     await expect(
       page.getByRole("textbox", { name: "School email" }),
     ).toBeVisible();
@@ -866,10 +866,12 @@ test.describe("the surface follows the server it is talking to", () => {
     await page
       .getByLabel("Organization server")
       .fill("https://nova.school.test");
-    await expect(page.getByLabel("Campus server")).toBeVisible();
+    await expect(page.getByLabel("Your institution's server")).toBeVisible();
 
     // Un hôte qui ne répond pas n'a rien annoncé : l'écran redevient neutre.
-    await page.getByLabel("Campus server").fill("https://offline.example.test");
+    await page
+      .getByLabel("Your institution's server")
+      .fill("https://offline.example.test");
     await expect(
       page.getByRole("heading", { name: "Connect to your organization" }),
     ).toBeVisible();
@@ -885,8 +887,8 @@ test.describe("the surface follows the server it is talking to", () => {
     await page
       .getByLabel("Organization server")
       .fill("https://nova.school.test");
-    await expect(page.getByLabel("Campus server")).toBeVisible();
-    await page.getByLabel("Campus server").fill("");
+    await expect(page.getByLabel("Your institution's server")).toBeVisible();
+    await page.getByLabel("Your institution's server").fill("");
     await expect(
       page.getByRole("heading", { name: "Connect to your organization" }),
     ).toBeVisible();

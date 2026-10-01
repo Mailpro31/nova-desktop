@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "انضم إلى مؤسستك التعليمية",
         "subtitle": "الإملاء الصوتي الذي توفّره مؤسستك، ببريدك الأكاديمي."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "خادم مؤسستك التعليمية",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "أنت متصل بـ {{organization}}",
-        "subtitle": "Nova Campus جاهز على هذا الكمبيوتر.",
+        "subtitle": "Nova جاهز على هذا الكمبيوتر.",
         "start": "Get started",
         "organization": "المؤسسة",
         "account": "الحساب",
         "processing": "المعالجة",
-        "campusInfrastructure": "بنية Campus"
+        "campusInfrastructure": "البنية التحتية لمؤسستك التعليمية"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "تعذّر الوصول إلى الخادم. تحقّق من اتصالك وأعد المحاولة.",
         "authMethodUnavailable": "تتطلب هذه المؤسسة طريقة مصادقة لا يدعمها هذا الإصدار بعد."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "يُرجى تسجيل الدخول مجددًا لمواصلة استخدام Nova Campus.",
-    "logoutConfirmTitle": "تسجيل الخروج من Nova Campus؟",
-    "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام Nova Campus. هل أنت متأكد؟",
-    "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova Campus.",
+    "sessionExpired": "يُرجى تسجيل الدخول مجددًا لمواصلة استخدام Nova.",
+    "logoutConfirmTitle": "تسجيل الخروج من Nova؟",
+    "logoutConfirmDescription": "ستحتاج إلى تسجيل الدخول مجددًا لاستخدام Nova. هل أنت متأكد؟",
+    "aboutSubtitle": "معلومات وأدوات تشخيص لـ Nova.",
     "personalizationDescription": "اضبط مظهر Nova وطريقة التفاعل معه دون تغيير سياسات مؤسستك.",
     "organizationSubtitle": "مؤسستك، وما تقدّمه، وإلى أين تذهب بياناتك.",
-    "statusConnected": "الحرم متصل",
+    "statusConnected": "متصل بمؤسستك التعليمية",
     "providesTitle": "ما تقدّمه مؤسستك",
     "providesPaused": "متوقف مؤقتًا — تعذّر الوصول إلى خادم مؤسستك.",
     "transcriptionDescription": "يُرسل تسجيلك إلى خادم مؤسستك الذي يحوّله إلى نص.",

@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Join your campus",
+        "title": "Join your institution",
         "subtitle": "Voice dictation provided by your institution, using your academic email."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Campus server",
+        "serverLabel": "Your institution's server",
         "serverPlaceholder": "https://nova.school.edu",
         "emailLabel": "School email",
         "emailPlaceholder": "name@school.edu",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "You're connected to {{organization}}",
-        "subtitle": "Nova Campus is ready on this computer.",
+        "subtitle": "Nova is ready on this computer.",
         "start": "Start using Nova",
         "organization": "Organization",
         "account": "Account",
         "processing": "Processing",
-        "campusInfrastructure": "Campus infrastructure"
+        "campusInfrastructure": "Your institution's infrastructure"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Could not reach the server. Check your connection and try again.",
         "authMethodUnavailable": "This institution requires an authentication method not yet supported by this version."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Please sign in again to continue using Nova Campus.",
-    "logoutConfirmTitle": "Sign out of Nova Campus?",
-    "logoutConfirmDescription": "You will need to sign in again to use Nova Campus. Are you sure?",
-    "aboutSubtitle": "Information and troubleshooting tools for Nova Campus.",
+    "sessionExpired": "Please sign in again to continue using Nova.",
+    "logoutConfirmTitle": "Sign out of Nova?",
+    "logoutConfirmDescription": "You will need to sign in again to use Nova. Are you sure?",
+    "aboutSubtitle": "Information and troubleshooting tools for Nova.",
     "personalizationDescription": "Adjust Nova's appearance and interaction without changing your institution's policies.",
     "organizationSubtitle": "Your institution, what it provides, and where your data goes.",
-    "statusConnected": "Campus connected",
+    "statusConnected": "Connected to your institution",
     "providesTitle": "What your institution provides",
     "providesPaused": "Currently paused — your institution's server is unreachable.",
     "transcriptionDescription": "Your recording is sent to your institution's server, which turns it into text.",
