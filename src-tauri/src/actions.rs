@@ -62,7 +62,13 @@ fn local_primary_timeout(transcription: &str, style_id: Option<&str>) -> Duratio
     }
     let complex_style = matches!(
         style_id,
-        Some("nova_style_notes" | "nova_style_todo" | "nova_style_prompt" | "nova_style_meeting")
+        Some(
+            "nova_style_notes"
+                | "nova_style_course_notes"
+                | "nova_style_todo"
+                | "nova_style_prompt"
+                | "nova_style_meeting"
+        )
     );
     let long_dictation = transcription.chars().count() > 500;
     LOCAL_PRIMARY_TIMEOUT
@@ -218,6 +224,7 @@ fn clean_llm_output(s: &str) -> String {
 fn temperature_for_style(style_id: &str) -> f32 {
     const FAITHFUL: &[&str] = &[
         "default_improve_transcriptions",
+        "nova_style_course_notes",
         "nova_style_messages",
         "nova_style_voice_to_text",
     ];
@@ -3198,6 +3205,12 @@ mod tests {
         assert_eq!(temperature_for_style("nova_style_todo"), 0.4);
         // Style personnel inconnu → un peu de liberté par défaut.
         assert_eq!(temperature_for_style("mon_style_perso"), 0.4);
+    }
+
+    /// Des notes de cours ne sont pas un exercice de style : aucune liberté.
+    #[test]
+    fn course_notes_are_written_without_creative_freedom() {
+        assert_eq!(temperature_for_style("nova_style_course_notes"), 0.0);
     }
 
     #[test]
