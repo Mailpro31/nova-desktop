@@ -645,7 +645,11 @@ fn without_list_numbering(text: &str) -> String {
 /// `lost_matters` — partout sauf dans un compte rendu, qui résume. Ce qu'une
 /// reprise a abandonné peut disparaître ; la valeur retenue, jamais.
 fn facts_refusal(input: &str, output: &str, lost_matters: bool) -> Option<&'static str> {
-    let output = without_list_numbering(output);
+    // Les repères (`{{nvxlex0}}`, `{{adresse}}`) protègent un terme pendant la
+    // réécriture : leurs chiffres n'ont pas été dits.
+    static MARKER: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^{}]*\}\}").unwrap());
+    let input = &MARKER.replace_all(input, " ").into_owned();
+    let output = without_list_numbering(&MARKER.replace_all(output, " "));
     let written_numbers = numbers_in(&output);
     let written_dates = dates_in(&output);
     if written_numbers
