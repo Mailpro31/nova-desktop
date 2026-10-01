@@ -3369,6 +3369,17 @@ mod organization_response_tests {
     }
 
     #[test]
+    fn structuring_long_notes_waits_as_long_as_the_server_may_work() {
+        // Le poste coupait à 30 s alors que le serveur s'en accorde 60 par
+        // morceau de 4000 caractères : une longue transcription échouait côté
+        // poste avant que le serveur ait fini.
+        assert_eq!(structured_notes_timeout(200), Duration::from_secs(90));
+        assert_eq!(structured_notes_timeout(4_000), Duration::from_secs(90));
+        assert_eq!(structured_notes_timeout(20_000), Duration::from_secs(330));
+        assert_eq!(structured_notes_timeout(200_000), Duration::from_secs(600));
+    }
+
+    #[test]
     fn la_reformulation_lit_lobjet_renvoye_par_le_serveur() {
         let parsed: ReformulateResponse =
             serde_json::from_str(SERVER_PAYLOAD).expect("objet deserialisable");
