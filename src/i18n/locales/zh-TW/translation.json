@@ -988,8 +988,8 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
-        "subtitle": "由你所屬機構提供的語音輸入，使用你的校園信箱。"
+        "title": "加入你的學校",
+        "subtitle": "由你所屬機構提供的語音輸入，使用你的學校信箱。"
       },
       "lab": {
         "open": "加入測試伺服器",
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "你所在學校的伺服器",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "你已連線到 {{organization}}",
-        "subtitle": "Nova Campus 已在這台電腦上準備就緒。",
+        "subtitle": "Nova 已在這台電腦上準備就緒。",
         "start": "Get started",
         "organization": "組織",
         "account": "帳戶",
         "processing": "處理方式",
-        "campusInfrastructure": "Campus 基礎架構"
+        "campusInfrastructure": "你所在學校的基礎架構"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "無法連線伺服器。請檢查網路後重試。",
         "authMethodUnavailable": "此機構要求的驗證方式目前版本尚不支援。"
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "請重新登入以繼續使用 Nova Campus。",
-    "logoutConfirmTitle": "要登出 Nova Campus 嗎？",
-    "logoutConfirmDescription": "登出後需要重新登入才能使用 Nova Campus。確定嗎？",
-    "aboutSubtitle": "Nova Campus 的資訊與疑難排解工具。",
+    "sessionExpired": "請重新登入以繼續使用 Nova。",
+    "logoutConfirmTitle": "要登出 Nova 嗎？",
+    "logoutConfirmDescription": "登出後需要重新登入才能使用 Nova。確定嗎？",
+    "aboutSubtitle": "Nova 的資訊與疑難排解工具。",
     "personalizationDescription": "調整 Nova 的外觀與互動方式，不會變更你所屬學校的規定。",
     "organizationSubtitle": "你所屬的機構、它提供什麼，以及你的資料去了哪裡。",
-    "statusConnected": "校園已連線",
+    "statusConnected": "已連線到學校",
     "providesTitle": "你所屬機構提供的能力",
     "providesPaused": "目前暫停 — 無法連線機構伺服器。",
     "transcriptionDescription": "你的錄音送到機構伺服器，由它轉成文字。",

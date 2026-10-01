@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "学校に参加",
         "subtitle": "所属機関が提供する音声入力を、大学のメールアドレスで。"
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "学校のサーバー",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "{{organization}} に接続しました",
-        "subtitle": "このパソコンで Nova Campus を使う準備ができました。",
+        "subtitle": "このパソコンで Nova を使う準備ができました。",
         "start": "Get started",
         "organization": "組織",
         "account": "アカウント",
         "processing": "処理",
-        "campusInfrastructure": "Campus インフラ"
+        "campusInfrastructure": "学校のインフラ"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "サーバーに接続できません。接続を確認してもう一度お試しください。",
         "authMethodUnavailable": "この機関では、このバージョンがまだ対応していない認証方法が必要です。"
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Nova Campus を引き続き使うには、もう一度ログインしてください。",
-    "logoutConfirmTitle": "Nova Campus からログアウトしますか？",
-    "logoutConfirmDescription": "Nova Campus を使うには再度ログインが必要です。よろしいですか？",
-    "aboutSubtitle": "Nova Campus の情報とトラブルシューティング用ツール。",
+    "sessionExpired": "Nova を引き続き使うには、もう一度ログインしてください。",
+    "logoutConfirmTitle": "Nova からログアウトしますか？",
+    "logoutConfirmDescription": "Nova を使うには再度ログインが必要です。よろしいですか？",
+    "aboutSubtitle": "Nova の情報とトラブルシューティング用ツール。",
     "personalizationDescription": "所属機関のポリシーを変えずに、Nova の見た目と操作を調整します。",
     "organizationSubtitle": "所属機関、その提供内容、そしてデータの行き先。",
-    "statusConnected": "キャンパスに接続済み",
+    "statusConnected": "学校に接続済み",
     "providesTitle": "所属機関が提供するもの",
     "providesPaused": "現在停止中 — 所属機関のサーバーに接続できません。",
     "transcriptionDescription": "録音は所属機関のサーバーへ送られ、文字になります。",

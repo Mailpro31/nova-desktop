@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Присоединяйтесь к своему учебному заведению",
         "subtitle": "Голосовая диктовка от вашего учебного заведения, с академической почтой."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Сервер вашего учебного заведения",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "Вы подключены к {{organization}}",
-        "subtitle": "Nova Campus готов к работе на этом компьютере.",
+        "subtitle": "Nova готов к работе на этом компьютере.",
         "start": "Get started",
         "organization": "Организация",
         "account": "Учётная запись",
         "processing": "Обработка",
-        "campusInfrastructure": "Инфраструктура Campus"
+        "campusInfrastructure": "Инфраструктура вашего учебного заведения"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Сервер недоступен. Проверьте подключение и повторите попытку.",
         "authMethodUnavailable": "Это учреждение требует способ входа, который эта версия пока не поддерживает."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Войдите снова, чтобы продолжить пользоваться Nova Campus.",
-    "logoutConfirmTitle": "Выйти из Nova Campus?",
-    "logoutConfirmDescription": "Чтобы пользоваться Nova Campus, придётся войти снова. Продолжить?",
-    "aboutSubtitle": "Сведения и средства диагностики Nova Campus.",
+    "sessionExpired": "Войдите снова, чтобы продолжить пользоваться Nova.",
+    "logoutConfirmTitle": "Выйти из Nova?",
+    "logoutConfirmDescription": "Чтобы пользоваться Nova, придётся войти снова. Продолжить?",
+    "aboutSubtitle": "Сведения и средства диагностики Nova.",
     "personalizationDescription": "Настройте внешний вид и поведение Nova, не меняя правил вашего учебного заведения.",
     "organizationSubtitle": "Ваше учебное заведение, что оно даёт и куда идут ваши данные.",
-    "statusConnected": "Кампус подключён",
+    "statusConnected": "Подключено к учебному заведению",
     "providesTitle": "Что предоставляет ваше учебное заведение",
     "providesPaused": "Сейчас недоступно — сервер заведения не отвечает.",
     "transcriptionDescription": "Запись отправляется на сервер заведения, который превращает её в текст.",

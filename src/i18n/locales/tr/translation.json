@@ -988,7 +988,7 @@
   "organization": {
     "onboarding": {
       "welcome": {
-        "title": "Welcome to Nova Campus",
+        "title": "Okulunuza katılın",
         "subtitle": "Kurumunuzun sağladığı sesli dikte, akademik e-postanızla."
       },
       "lab": {
@@ -1002,7 +1002,7 @@
         "productName": "Nova Lab"
       },
       "email": {
-        "serverLabel": "Nova Server",
+        "serverLabel": "Okulunuzun sunucusu",
         "serverPlaceholder": "https://nova.ipsa.fr",
         "emailLabel": "Academic email",
         "emailPlaceholder": "first.last@ipsa.fr",
@@ -1035,14 +1035,14 @@
       },
       "ready": {
         "title": "{{organization}} ile bağlantı kuruldu",
-        "subtitle": "Nova Campus bu bilgisayarda hazır.",
+        "subtitle": "Nova bu bilgisayarda hazır.",
         "start": "Get started",
         "organization": "Kuruluş",
         "account": "Hesap",
         "processing": "İşleme",
-        "campusInfrastructure": "Campus altyapısı"
+        "campusInfrastructure": "Okulunuzun altyapısı"
       },
-      "label": "Nova Campus",
+      "label": "Nova",
       "errors": {
         "network": "Sunucuya ulaşılamadı. Bağlantınızı denetleyip yeniden deneyin.",
         "authMethodUnavailable": "Bu kurum, bu sürümün henüz desteklemediği bir kimlik doğrulama yöntemi gerektiriyor."
@@ -1633,13 +1633,13 @@
     }
   },
   "educationWording": {
-    "sessionExpired": "Nova Campus'ı kullanmaya devam etmek için lütfen yeniden oturum aç.",
-    "logoutConfirmTitle": "Nova Campus oturumu kapatılsın mı?",
-    "logoutConfirmDescription": "Nova Campus'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",
-    "aboutSubtitle": "Nova Campus için bilgiler ve sorun giderme araçları.",
+    "sessionExpired": "Nova'ı kullanmaya devam etmek için lütfen yeniden oturum aç.",
+    "logoutConfirmTitle": "Nova oturumu kapatılsın mı?",
+    "logoutConfirmDescription": "Nova'ı kullanmak için yeniden oturum açman gerekecek. Emin misin?",
+    "aboutSubtitle": "Nova için bilgiler ve sorun giderme araçları.",
     "personalizationDescription": "Kurumunun politikalarını değiştirmeden Nova'nın görünümünü ve etkileşimini ayarla.",
     "organizationSubtitle": "Kurumunuz, sağladıkları ve verilerinizin gittiği yer.",
-    "statusConnected": "Kampüs bağlı",
+    "statusConnected": "Okulunuza bağlı",
     "providesTitle": "Kurumunuzun sağladıkları",
     "providesPaused": "Şu anda duraklatıldı — kurum sunucusuna ulaşılamıyor.",
     "transcriptionDescription": "Kaydınız kurumunuzun sunucusuna gider ve metne dönüştürülür.",
