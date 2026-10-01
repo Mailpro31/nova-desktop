@@ -1123,21 +1123,24 @@ mod tests {
         // « signal » (repère process-only) ne doit pas matcher dans un titre.
         assert_eq!(
             resolve_auto_style("Signal processing basics", "chrome.exe", &no_rules()),
-            "default_improve_transcriptions"
+            EVERYDAY_STYLE_ID
         );
         // « chat » ne doit pas déclencher (le repère est « google chat », entier).
         assert_eq!(
             resolve_auto_style("Le chat de la voisine", "chrome.exe", &no_rules()),
-            "default_improve_transcriptions"
+            EVERYDAY_STYLE_ID
         );
     }
 
     #[test]
-    fn empty_context_falls_back_to_default() {
+    fn an_unrecognised_app_gets_the_everyday_style() {
+        // Le mélange voulu le 01/10 : une app reconnue garde son Style (e-mail,
+        // messagerie, IA…) ; partout ailleurs, l'élève écrit « au quotidien ».
         assert_eq!(
             resolve_auto_style("", "", &no_rules()),
-            "default_improve_transcriptions"
+            EVERYDAY_STYLE_ID
         );
+        assert_eq!(EVERYDAY_STYLE_ID, "nova_style_everyday");
     }
 
     #[test]
@@ -1153,7 +1156,7 @@ mod tests {
         ] {
             assert_eq!(
                 resolve_auto_style(title, process, &no_rules()),
-                "default_improve_transcriptions",
+                EVERYDAY_STYLE_ID,
                 "{title}"
             );
         }
@@ -1202,7 +1205,7 @@ mod tests {
         // …mais PAS outline.exe (pas de faux positif).
         assert_eq!(
             resolve_auto_style("Plan — Outline", "outline.exe", &no_rules()),
-            "default_improve_transcriptions"
+            EVERYDAY_STYLE_ID
         );
     }
 

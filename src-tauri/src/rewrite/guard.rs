@@ -1050,6 +1050,40 @@ Livraison au client vendredi.",
     }
 
     #[test]
+    fn the_everyday_style_is_as_strict_as_a_faithful_style() {
+        assert_eq!(
+            check(
+                "je passe te voir cet après-midi",
+                "Je passe te voir cet après-midi pour discuter du budget, des priorités et des prochaines étapes du projet.",
+                "nova_style_everyday"
+            ),
+            Err("content-added")
+        );
+        assert_eq!(
+            check(
+                "le contrôle de maths est jeudi",
+                "Le contrôle de maths est vendredi.",
+                "nova_style_everyday"
+            ),
+            Err("date-changed")
+        );
+        assert_eq!(
+            check(
+                "merci beaucoup pour ton aide",
+                "Thank you very much for your help.",
+                "nova_style_everyday"
+            ),
+            Err("language-changed")
+        );
+        assert!(check(
+            "il a mangé a la cantine et sa a était bon",
+            "Il a mangé à la cantine et ça a été bon.",
+            "nova_style_everyday"
+        )
+        .is_ok());
+    }
+
+    #[test]
     fn a_faithful_style_may_fix_a_misheard_word_in_a_short_dictation() {
         assert_eq!(
             check(

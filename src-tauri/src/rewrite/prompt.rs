@@ -182,4 +182,14 @@ mod tests {
             assert!(prompt.contains(rule), "{rule}");
         }
     }
+
+    /// Le Style « Au quotidien » a sa consigne courte, pour le moteur compact et
+    /// pour le serveur : texte simple, mise en page dictée, rien de réécrit.
+    #[test]
+    fn the_everyday_style_keeps_the_words_and_writes_plain_text() {
+        let instruction = built_in_style("nova_style_everyday").expect("Au quotidien");
+        for rule in ["plain text", "dictated layout", "never rephrase", "never add"] {
+            assert!(instruction.contains(rule), "{rule}");
+        }
+    }
 }

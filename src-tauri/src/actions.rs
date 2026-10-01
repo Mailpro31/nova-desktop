@@ -3217,6 +3217,11 @@ mod tests {
     }
 
     #[test]
+    fn the_everyday_style_is_written_without_creative_freedom() {
+        assert_eq!(temperature_for_style("nova_style_everyday"), 0.0);
+    }
+
+    #[test]
     fn air_timeout_scales_for_complex_and_long_dictations() {
         assert_eq!(
             local_primary_timeout("texte court", Some("nova_style_email")),

@@ -1903,6 +1903,22 @@ mod tests {
         }
     }
 
+    /// Le Style de tous les jours d'un élève : corriger sans réécrire, en
+    /// texte simple, avec la mise en page qu'il dicte.
+    #[test]
+    fn the_everyday_style_is_built_in_and_faithful() {
+        let prompts = default_post_process_prompts();
+        let everyday = prompts
+            .iter()
+            .find(|p| p.id == "nova_style_everyday")
+            .expect("Au quotidien");
+        assert_eq!(everyday.name, "Au quotidien");
+        let prompt = everyday.prompt.to_lowercase();
+        for rule in ["markdown", "à la ligne", "homophones", "ne reformule pas"] {
+            assert!(prompt.contains(rule), "{rule}");
+        }
+    }
+
     #[test]
     fn every_default_style_teaches_natural_self_correction() {
         for p in default_post_process_prompts() {
