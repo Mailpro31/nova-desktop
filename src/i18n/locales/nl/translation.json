@@ -1074,6 +1074,7 @@
       "descriptions": {
         "auto": "Laat Nova automatisch de beste opmaak voor je dictaat kiezen.",
         "default_improve_transcriptions": "Maak je gedicteerde tekst op: interpunctie, typefouten en vlotte zinnen.",
+        "nova_style_course_notes": "Zet je collegeaantekeningen op in de gedicteerde volgorde: niets toegevoegd, geen getal veranderd.",
         "nova_style_email": "Maak van je dictaat een duidelijke, beleefde e-mail.",
         "nova_style_messages": "Zet je stem om in korte berichten die klaar zijn om te versturen.",
         "nova_style_prompt": "Zet je dictaat om in een gestructureerde prompt voor AI-tools.",

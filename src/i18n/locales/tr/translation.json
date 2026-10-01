@@ -1074,6 +1074,7 @@
       "descriptions": {
         "auto": "Diktene en uygun biçimi Nova otomatik olarak seçsin.",
         "default_improve_transcriptions": "Dikte ettiğin metni düzelt: noktalama, yazım hataları ve akıcı ifadeler.",
+        "nova_style_course_notes": "Ders notlarınızı dikte ettiğiniz sırayla düzenleyin: hiçbir şey eklenmez, hiçbir sayı değişmez.",
         "nova_style_email": "Dikteni açık ve kibar bir e-postaya dönüştür.",
         "nova_style_messages": "Sesini gönderilmeye hazır kısa mesajlara dönüştür.",
         "nova_style_prompt": "Dikteni yapay zekâ araçları için yapılandırılmış bir isteme dönüştür.",

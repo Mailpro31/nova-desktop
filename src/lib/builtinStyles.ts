@@ -13,6 +13,22 @@ export const BUILTIN_STYLE_IDS: readonly string[] = [
   "nova_style_voice_to_text",
 ];
 
+/**
+ * Ordre d'affichage des Styles intégrés : du plus courant au plus spécialisé.
+ * Un Style absent d'ici remontait en tête de liste.
+ */
+export const STYLE_ORDER: readonly string[] = [
+  "default_improve_transcriptions",
+  "nova_style_course_notes",
+  "nova_style_email",
+  "nova_style_messages",
+  "nova_style_notes",
+  "nova_style_todo",
+  "nova_style_prompt",
+  "nova_style_voice_to_text",
+  "nova_style_meeting",
+];
+
 // Styles inclus dans le palier Free — doit rester synchronisé avec
 // `licensing::FREE_STYLE_IDS` côté Rust. Exactement trois : « Transcription
 // améliorée », « E-mail » et « Notes ». Les autres presets intégrés

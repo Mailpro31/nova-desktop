@@ -1074,6 +1074,7 @@
       "descriptions": {
         "auto": "Let Nova automatically choose the best formatting for your dictation.",
         "default_improve_transcriptions": "Clean up your dictated text: punctuation, typos and fluid phrasing.",
+        "nova_style_course_notes": "Lay out your lecture notes in the order you dictated them: nothing added, no number changed.",
         "nova_style_email": "Format your dictation as a clear, polite email.",
         "nova_style_messages": "Turn your voice into concise, ready-to-send messages.",
         "nova_style_prompt": "Transform your dictation into a structured prompt for AI tools.",

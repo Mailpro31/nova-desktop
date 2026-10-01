@@ -1074,6 +1074,7 @@
       "descriptions": {
         "auto": "Låt Nova automatiskt välja den bästa formateringen för din diktering.",
         "default_improve_transcriptions": "Snygga till din dikterade text: skiljetecken, stavfel och flytande formuleringar.",
+        "nova_style_course_notes": "Ställ upp dina föreläsningsanteckningar i den ordning du dikterade dem: inget tillagt, inga siffror ändrade.",
         "nova_style_email": "Formatera dikteringen som ett tydligt och artigt mejl.",
         "nova_style_messages": "Gör om din röst till korta meddelanden som är redo att skickas.",
         "nova_style_prompt": "Gör om dikteringen till en strukturerad prompt för AI-verktyg.",
