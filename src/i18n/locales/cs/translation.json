@@ -594,7 +594,10 @@
       "retranscribe": "Přepsat znovu",
       "retranscribeError": "Opětovný přepis se nezdařil. Zkuste to prosím znovu.",
       "transcribing": "Přepisuji...",
-      "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování."
+      "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování.",
+      "readAloud": "Přečíst nahlas",
+      "stopReading": "Zastavit čtení",
+      "readAloudUnavailable": "Čtení nahlas není na tomto počítači k dispozici."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Přehled vašeho používání Nova."
+    },
+    "readingComfort": {
+      "title": "Pohodlí při čtení",
+      "description": "Usnadněte si čtení textu v Nova a nechte si poznámky přečíst nahlas.",
+      "textSize": {
+        "title": "Velikost textu",
+        "normal": "Normální",
+        "large": "Velká",
+        "larger": "Velmi velká"
+      },
+      "spacing": {
+        "title": "Rozestupy písmen a řádků",
+        "description": "Proložený text se mnoha čtenářům s dyslexií čte snáze.",
+        "normal": "Normální",
+        "wide": "Široké",
+        "wider": "Velmi široké"
+      },
+      "font": {
+        "title": "Písmo",
+        "description": "U žádného písma se neprokázalo, že zlepšuje čtení při dyslexii: vyberte si to, které je vám nejpříjemnější.",
+        "system": "Nova",
+        "readable": "Verdana (široká písmena)"
+      },
+      "speechRate": {
+        "title": "Rychlost čtení",
+        "description": "Pro čtení poznámek nahlas z historie.",
+        "slow": "Pomalá",
+        "normal": "Normální",
+        "fast": "Rychlá",
+        "try": "Vyzkoušet",
+        "sample": "Takto vám Nova přečte poznámky nahlas."
+      }
     }
   },
   "footer": {

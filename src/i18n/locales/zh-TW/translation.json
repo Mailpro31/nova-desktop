@@ -594,7 +594,10 @@
       "retranscribe": "重新轉錄",
       "retranscribeError": "重新轉錄失敗，請重試。",
       "transcribing": "轉錄中...",
-      "transcriptionFailed": "轉錄失敗。您可以使用重試圖示重新轉錄。"
+      "transcriptionFailed": "轉錄失敗。您可以使用重試圖示重新轉錄。",
+      "readAloud": "朗讀",
+      "stopReading": "停止朗讀",
+      "readAloudUnavailable": "這台電腦無法使用朗讀功能。"
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "您使用 Nova 的情況概覽。"
+    },
+    "readingComfort": {
+      "title": "閱讀舒適度",
+      "description": "讓 Nova 的文字更容易閱讀，並朗讀你的筆記。",
+      "textSize": {
+        "title": "文字大小",
+        "normal": "一般",
+        "large": "大",
+        "larger": "特大"
+      },
+      "spacing": {
+        "title": "字母與行距",
+        "description": "對許多有閱讀障礙的讀者來說，間距較寬的文字更容易閱讀。",
+        "normal": "一般",
+        "wide": "寬",
+        "wider": "最寬"
+      },
+      "font": {
+        "title": "字型",
+        "description": "目前沒有證據顯示任何字型能改善閱讀障礙者的閱讀：請選擇你覺得最舒適的字型。",
+        "system": "Nova",
+        "readable": "Verdana（字母較寬）"
+      },
+      "speechRate": {
+        "title": "朗讀速度",
+        "description": "用於從歷史紀錄朗讀你的筆記。",
+        "slow": "慢",
+        "normal": "一般",
+        "fast": "快",
+        "try": "試聽",
+        "sample": "Nova 會這樣朗讀你的筆記。"
+      }
     }
   },
   "footer": {

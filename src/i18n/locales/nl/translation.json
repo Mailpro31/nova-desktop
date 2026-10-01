@@ -594,7 +594,10 @@
       "retranscribe": "Opnieuw transcriberen",
       "retranscribeError": "Opnieuw transcriberen mislukt. Probeer het opnieuw.",
       "transcribing": "Transcriberen...",
-      "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram."
+      "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram.",
+      "readAloud": "Voorlezen",
+      "stopReading": "Voorlezen stoppen",
+      "readAloudUnavailable": "Voorlezen is niet beschikbaar op deze computer."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Een overzicht van uw Nova-gebruik."
+    },
+    "readingComfort": {
+      "title": "Leescomfort",
+      "description": "De tekst van Nova makkelijker leesbaar maken en je notities laten voorlezen.",
+      "textSize": {
+        "title": "Tekstgrootte",
+        "normal": "Normaal",
+        "large": "Groot",
+        "larger": "Zeer groot"
+      },
+      "spacing": {
+        "title": "Letter- en regelafstand",
+        "description": "Ruim gezette tekst leest voor veel mensen met dyslexie makkelijker.",
+        "normal": "Normaal",
+        "wide": "Ruim",
+        "wider": "Zeer ruim"
+      },
+      "font": {
+        "title": "Lettertype",
+        "description": "Van geen enkel lettertype is aangetoond dat het lezen met dyslexie verbetert: kies wat voor jou het prettigst is.",
+        "system": "Nova",
+        "readable": "Verdana (brede letters)"
+      },
+      "speechRate": {
+        "title": "Voorleessnelheid",
+        "description": "Voor het voorlezen van je notities vanuit de geschiedenis.",
+        "slow": "Langzaam",
+        "normal": "Normaal",
+        "fast": "Snel",
+        "try": "Proberen",
+        "sample": "Zo leest Nova je notities voor."
+      }
     }
   },
   "footer": {

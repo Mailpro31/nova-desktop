@@ -594,7 +594,10 @@
       "retranscribe": "תמלל מחדש",
       "retranscribeError": "תמלול מחדש נכשל. נסה שוב.",
       "transcribing": "מתמלל...",
-      "transcriptionFailed": "התמלול נכשל. אפשר לתמלל מחדש באמצעות אייקון הניסיון החוזר."
+      "transcriptionFailed": "התמלול נכשל. אפשר לתמלל מחדש באמצעות אייקון הניסיון החוזר.",
+      "readAloud": "הקרא בקול",
+      "stopReading": "עצור הקראה",
+      "readAloudUnavailable": "הקראה בקול אינה זמינה במחשב זה."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "סקירה כללית של השימוש שלך ב-Nova."
+    },
+    "readingComfort": {
+      "title": "נוחות קריאה",
+      "description": "הפכו את הטקסט של Nova לקל יותר לקריאה, והאזינו להערות שלכם בקול.",
+      "textSize": {
+        "title": "גודל טקסט",
+        "normal": "רגיל",
+        "large": "גדול",
+        "larger": "גדול מאוד"
+      },
+      "spacing": {
+        "title": "מרווח בין אותיות ושורות",
+        "description": "טקסט מרווח קל יותר לקריאה עבור קוראים רבים עם דיסלקציה.",
+        "normal": "רגיל",
+        "wide": "רחב",
+        "wider": "רחב מאוד"
+      },
+      "font": {
+        "title": "גופן",
+        "description": "לא הוכח שגופן כלשהו משפר קריאה עם דיסלקציה: בחרו את הגופן שנוח לכם ביותר.",
+        "system": "Nova",
+        "readable": "Verdana (אותיות רחבות)"
+      },
+      "speechRate": {
+        "title": "מהירות קריאה",
+        "description": "להקראת ההערות שלכם מההיסטוריה.",
+        "slow": "איטית",
+        "normal": "רגילה",
+        "fast": "מהירה",
+        "try": "נסו",
+        "sample": "כך Nova יקריא את ההערות שלכם."
+      }
     }
   },
   "footer": {

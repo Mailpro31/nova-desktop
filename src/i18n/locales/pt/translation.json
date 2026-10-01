@@ -594,7 +594,10 @@
       "retranscribe": "Re-transcrever",
       "retranscribeError": "Falha ao re-transcrever. Por favor, tente novamente.",
       "transcribing": "Transcrevendo...",
-      "transcriptionFailed": "A transcrição falhou. Você pode re-transcrever usando o ícone de tentar novamente."
+      "transcriptionFailed": "A transcrição falhou. Você pode re-transcrever usando o ícone de tentar novamente.",
+      "readAloud": "Ler em voz alta",
+      "stopReading": "Parar a leitura",
+      "readAloudUnavailable": "A leitura em voz alta não está disponível neste computador."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Uma visão geral do seu uso do Nova."
+    },
+    "readingComfort": {
+      "title": "Conforto de leitura",
+      "description": "Tornar o texto do Nova mais fácil de ler e ouvir as suas notas em voz alta.",
+      "textSize": {
+        "title": "Tamanho do texto",
+        "normal": "Normal",
+        "large": "Grande",
+        "larger": "Muito grande"
+      },
+      "spacing": {
+        "title": "Espaçamento entre letras e linhas",
+        "description": "Um texto espaçado é mais fácil de ler para muitos leitores com dislexia.",
+        "normal": "Normal",
+        "wide": "Amplo",
+        "wider": "Muito amplo"
+      },
+      "font": {
+        "title": "Tipo de letra",
+        "description": "Nenhum tipo de letra demonstrou melhorar a leitura com dislexia: escolha o que achar mais confortável.",
+        "system": "Nova",
+        "readable": "Verdana (letras largas)"
+      },
+      "speechRate": {
+        "title": "Velocidade de leitura",
+        "description": "Para ler as suas notas em voz alta a partir do histórico.",
+        "slow": "Lenta",
+        "normal": "Normal",
+        "fast": "Rápida",
+        "try": "Experimentar",
+        "sample": "É assim que o Nova vai ler as suas notas em voz alta."
+      }
     }
   },
   "footer": {

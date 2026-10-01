@@ -594,7 +594,10 @@
       "retranscribe": "Yeniden yazıya dök",
       "retranscribeError": "Yeniden yazıya dökme başarısız oldu. Lütfen tekrar deneyin.",
       "transcribing": "Yazıya döküyor...",
-      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz."
+      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz.",
+      "readAloud": "Sesli oku",
+      "stopReading": "Okumayı durdur",
+      "readAloudUnavailable": "Sesli okuma bu bilgisayarda kullanılamıyor."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +694,38 @@
     },
     "home": {
       "subtitle": "Nova kullanımınıza genel bir bakış."
+    },
+    "readingComfort": {
+      "title": "Okuma rahatlığı",
+      "description": "Nova'nın metnini daha kolay okunur hale getirin ve notlarınızı sesli dinleyin.",
+      "textSize": {
+        "title": "Metin boyutu",
+        "normal": "Normal",
+        "large": "Büyük",
+        "larger": "Çok büyük"
+      },
+      "spacing": {
+        "title": "Harf ve satır aralığı",
+        "description": "Aralıklı metin, disleksisi olan birçok okur için daha kolay okunur.",
+        "normal": "Normal",
+        "wide": "Geniş",
+        "wider": "Çok geniş"
+      },
+      "font": {
+        "title": "Yazı tipi",
+        "description": "Hiçbir yazı tipinin disleksiyle okumayı iyileştirdiği gösterilmedi: size en rahat geleni seçin.",
+        "system": "Nova",
+        "readable": "Verdana (geniş harfler)"
+      },
+      "speechRate": {
+        "title": "Okuma hızı",
+        "description": "Notlarınızı geçmişten sesli okumak için.",
+        "slow": "Yavaş",
+        "normal": "Normal",
+        "fast": "Hızlı",
+        "try": "Dene",
+        "sample": "Nova notlarınızı böyle sesli okuyacak."
+      }
     }
   },
   "footer": {
