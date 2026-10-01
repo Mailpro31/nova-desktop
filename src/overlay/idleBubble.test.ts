@@ -36,7 +36,12 @@ describe("bulle au repos", () => {
 
   test("le menu des Styles ouvert garde toute sa hauteur", () => {
     expect(
-      idleWindowHeight({ ...rest, expanded: true, menuOpen: true, menuHeight: 230 }),
+      idleWindowHeight({
+        ...rest,
+        expanded: true,
+        menuOpen: true,
+        menuHeight: 230,
+      }),
     ).toBe(230);
     // Même si la souris a quitté la bulle : on ne referme pas un menu ouvert.
     expect(idleWindowHeight({ ...rest, menuOpen: true, menuHeight: 230 })).toBe(
