@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 
 import {
   CALIBRATION_PHRASES,
+  gainInDecibels,
   summarizeCalibration,
   type CalibrationResult,
 } from "./voiceCalibration";
@@ -119,5 +120,19 @@ describe("Les phrases lues", () => {
         expect(phrase.text.toLowerCase()).toContain(term.toLowerCase());
       }
     }
+  });
+});
+
+describe("Le gain affiché dans les réglages", () => {
+  test("se lit en décibels, arrondis", () => {
+    expect(gainInDecibels(1)).toBe(0);
+    expect(gainInDecibels(2)).toBe(6);
+    expect(gainInDecibels(8)).toBe(18);
+  });
+
+  test("un réglage absent ou abîmé se lit comme aucun gain", () => {
+    expect(gainInDecibels(undefined)).toBe(0);
+    expect(gainInDecibels(Number.NaN)).toBe(0);
+    expect(gainInDecibels(0.5)).toBe(0);
   });
 });

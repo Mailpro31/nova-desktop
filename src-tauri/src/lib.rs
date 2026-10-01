@@ -781,6 +781,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::transcription::clear_transcribe_gpu_blacklist,
                 commands::calibration::start_voice_calibration_sample,
                 commands::calibration::finish_voice_calibration_sample,
+                commands::calibration::cancel_voice_calibration_sample,
                 commands::calibration::set_input_gain,
                 meeting_capture::probe_meeting_capture,
                 commands::meeting::list_meeting_apps,

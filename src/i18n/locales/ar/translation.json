@@ -755,6 +755,13 @@
         "try": "جرّب",
         "sample": "هكذا سيقرأ Nova ملاحظاتك بصوت عالٍ."
       }
+    },
+    "voiceCalibration": {
+      "title": "صوتي",
+      "descriptionGain": "يرفع Nova صوتك بمقدار {{db}} ديسيبل.",
+      "descriptionNone": "بلا ضبط: يصل صوتك كما هو.",
+      "recalibrate": "إعادة معايرة صوتي",
+      "reset": "إعادة تعيين"
     }
   },
   "footer": {

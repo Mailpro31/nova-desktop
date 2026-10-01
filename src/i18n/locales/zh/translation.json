@@ -755,6 +755,13 @@
         "try": "试听",
         "sample": "Nova 将这样朗读你的笔记。"
       }
+    },
+    "voiceCalibration": {
+      "title": "我的声音",
+      "descriptionGain": "Nova 将你的声音提高 {{db}} dB。",
+      "descriptionNone": "未调整：你的声音按原样输入。",
+      "recalibrate": "重新校准我的声音",
+      "reset": "重置"
     }
   },
   "footer": {

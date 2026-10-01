@@ -755,6 +755,13 @@
         "try": "Dene",
         "sample": "Nova notlarınızı böyle sesli okuyacak."
       }
+    },
+    "voiceCalibration": {
+      "title": "Sesim",
+      "descriptionGain": "Nova sesinizi {{db}} dB yükseltiyor.",
+      "descriptionNone": "Ayar yok: sesiniz olduğu gibi geliyor.",
+      "recalibrate": "Sesimi yeniden kalibre et",
+      "reset": "Sıfırla"
     }
   },
   "footer": {

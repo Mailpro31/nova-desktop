@@ -100,6 +100,15 @@ pub async fn finish_voice_calibration_sample(
     })
 }
 
+/// Abandonne la phrase en cours de lecture. Sans effet sur une dictée : seul
+/// l'enregistrement de calibrage est concerné.
+#[tauri::command]
+#[specta::specta]
+pub fn cancel_voice_calibration_sample(app: AppHandle) {
+    app.state::<Arc<AudioRecordingManager>>()
+        .cancel_recording_of(CALIBRATION_BINDING);
+}
+
 /// Applique le gain que l'élève a accepté. Borné : voir `sanitize_gain`.
 #[tauri::command]
 #[specta::specta]
