@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova 不只是转写",
       "introSubtitle": "开口说话，Nova 会用贴合当前场景的文风书写。",
-      "unavailable": "暂无可用的写作风格。"
+      "unavailable": "暂无可用的写作风格。",
+      "saidLabel": "你说",
+      "said": "“呃，周一开会，不对等一下，周二在图书馆”",
+      "writtenLabel": "Nova 写",
+      "written": "周二在图书馆开会。",
+      "automatic": "Nova 会根据应用为你选择风格：在 Word 或学校门户里是整理好的文字，在邮箱里是一封邮件。",
+      "stylesLabel": "写作风格",
+      "changeLater": "你可以随时通过气泡或在设置中更换风格。"
     },
     "voiceCalibration": {
       "title": "让 Nova 学习你的声音",

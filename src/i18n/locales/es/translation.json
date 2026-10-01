@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova hace más que transcribir",
       "introSubtitle": "Habla y Nova escribe con el estilo adecuado a lo que haces.",
-      "unavailable": "Todavía no hay ningún estilo de escritura disponible."
+      "unavailable": "Todavía no hay ningún estilo de escritura disponible.",
+      "saidLabel": "Tú dices",
+      "said": "«eh, reunión el lunes, no espera, el martes en la biblioteca»",
+      "writtenLabel": "Nova escribe",
+      "written": "Reunión el martes en la biblioteca.",
+      "automatic": "Nova elige el estilo por ti según la aplicación: tu texto pasado a limpio en Word o en el portal del centro, un correo en tu buzón.",
+      "stylesLabel": "Estilos de escritura",
+      "changeLater": "Puedes cambiar de estilo en cualquier momento desde la burbuja o en Ajustes."
     },
     "voiceCalibration": {
       "title": "Nova aprende tu voz",

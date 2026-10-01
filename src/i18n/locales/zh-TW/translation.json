@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova 不只是轉寫",
       "introSubtitle": "開口說話，Nova 會用貼合當前情境的文風書寫。",
-      "unavailable": "目前沒有可用的寫作風格。"
+      "unavailable": "目前沒有可用的寫作風格。",
+      "saidLabel": "你說",
+      "said": "「呃，週一開會，不對等一下，週二在圖書館」",
+      "writtenLabel": "Nova 寫",
+      "written": "週二在圖書館開會。",
+      "automatic": "Nova 會依應用程式替你選擇風格：在 Word 或學校入口網站是整理好的文字，在信箱裡是一封郵件。",
+      "stylesLabel": "寫作風格",
+      "changeLater": "你可以隨時透過泡泡或在設定中更換風格。"
     },
     "voiceCalibration": {
       "title": "讓 Nova 學習你的聲音",

@@ -13,21 +13,29 @@ interface WritingStylesIntroStepProps {
   onSkip: () => void;
 }
 
-/** Nombre de styles montrés : au-delà, l'écran devient un catalogue. */
-const MAX_SHOWN = 4;
+/**
+ * Les trois Styles présentés à l'élève, dans cet ordre : celui que le mode
+ * automatique choisit partout, celui du cours, et l'e-mail. Les autres restent
+ * dans les Réglages : à la première ouverture, un écran n'est pas un catalogue.
+ */
+const FEATURED_STYLE_IDS = [
+  "nova_style_everyday",
+  "nova_style_course_notes",
+  "nova_style_email",
+];
 
 /**
  * Découverte des **Styles d'écriture** : la manière dont Nova rédige une
  * dictée.
  *
- * Cet écran s'appelait « AI Skills » tant que les deux notions étaient
- * confondues. Il ne le fait plus : les AI Skills sont des actions sur du texte
- * sélectionné, et ils sont expérimentaux. **Les présenter ici les ferait
- * découvrir à un étudiant qui ne peut pas les utiliser** — la première
- * ouverture ne doit montrer que ce qui fonctionne réellement.
+ * Refait le 01/10 à la demande de Sash. L'écran montrait les quatre premiers
+ * Styles enregistrés, au hasard de leur ordre, sans dire ce qu'ils faisaient,
+ * sur des cartes qui semblaient cliquables. Il montre maintenant ce que Nova
+ * fait vraiment : un avant/après sur une reprise, le mode automatique, et
+ * trois Styles décrits.
  *
- * Source de vérité : les Styles réellement configurés (`post_process_prompts`).
- * Rien n'est écrit en dur ; sans style disponible, l'écran le dit.
+ * Source de vérité des Styles : ceux réellement configurés
+ * (`post_process_prompts`) ; un Style absent n'est pas présenté.
  */
 export const WritingStylesIntroStep: React.FC<WritingStylesIntroStepProps> = ({
   stepIndex,
@@ -40,7 +48,9 @@ export const WritingStylesIntroStep: React.FC<WritingStylesIntroStepProps> = ({
   const { getSetting } = useSettings();
 
   const prompts = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
-  const shown = prompts.slice(0, MAX_SHOWN);
+  const featured = FEATURED_STYLE_IDS.map((id) =>
+    prompts.find((prompt) => prompt.id === id),
+  ).filter((prompt): prompt is LLMPrompt => prompt !== undefined);
 
   return (
     <OnboardingStepShell
@@ -53,24 +63,54 @@ export const WritingStylesIntroStep: React.FC<WritingStylesIntroStepProps> = ({
       onContinue={onContinue}
       continueLabel={t("onboarding.step.continue")}
     >
-      {shown.length === 0 ? (
-        <p className="text-sm text-text-secondary text-center py-6">
-          {t("onboarding.writingStyles.unavailable")}
+      <div className="w-full max-w-[560px] space-y-6">
+        <figure className="rounded-card border border-hairline overflow-hidden">
+          <div className="px-4 py-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-text-secondary">
+              {t("onboarding.writingStyles.saidLabel")}
+            </p>
+            <p className="mt-1.5 text-sm text-text-secondary">
+              {t("onboarding.writingStyles.said")}
+            </p>
+          </div>
+          <div className="px-4 py-3 border-t border-hairline bg-accent/10">
+            <p className="text-xs font-medium uppercase tracking-wide text-accent">
+              {t("onboarding.writingStyles.writtenLabel")}
+            </p>
+            <p className="mt-1.5 text-base font-medium text-text">
+              {t("onboarding.writingStyles.written")}
+            </p>
+          </div>
+        </figure>
+
+        <p className="text-sm leading-relaxed text-text-secondary text-center">
+          {t("onboarding.writingStyles.automatic")}
         </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          {shown.map((prompt) => (
-            <div
-              key={prompt.id}
-              className="rounded-card border border-hairline px-3.5 py-3"
-            >
-              <p className="text-sm font-medium text-text truncate">
-                {prompt.name}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+
+        {featured.length === 0 ? (
+          <p className="text-sm text-text-secondary text-center py-2">
+            {t("onboarding.writingStyles.unavailable")}
+          </p>
+        ) : (
+          <ul
+            aria-label={t("onboarding.writingStyles.stylesLabel")}
+            className="divide-y divide-hairline rounded-card border border-hairline"
+          >
+            {featured.map((prompt) => (
+              <li key={prompt.id} className="px-4 py-3">
+                <p className="text-sm font-semibold text-text">{prompt.name}</p>
+                <p className="mt-0.5 text-sm text-text-secondary">
+                  {t(`organization.styles.descriptions.${prompt.id}`, "")}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <p className="text-xs text-text-secondary text-center">
+          {t("onboarding.writingStyles.changeLater")}
+        </p>
+      </div>
     </OnboardingStepShell>
   );
 };

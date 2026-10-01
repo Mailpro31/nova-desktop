@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova gör mer än att transkribera",
       "introSubtitle": "Tala, så skriver Nova i den stil som passar det du gör.",
-      "unavailable": "Ingen skrivstil är tillgänglig ännu."
+      "unavailable": "Ingen skrivstil är tillgänglig ännu.",
+      "saidLabel": "Du säger",
+      "said": "”öh, möte på måndag, nej vänta, tisdag på biblioteket”",
+      "writtenLabel": "Nova skriver",
+      "written": "Möte på tisdag på biblioteket.",
+      "automatic": "Nova väljer stil åt dig beroende på appen: din text uppstädad i Word eller på skolportalen, ett e-postmeddelande i din inkorg.",
+      "stylesLabel": "Skrivstilar",
+      "changeLater": "Du kan byta stil när som helst från bubblan eller i Inställningar."
     },
     "voiceCalibration": {
       "title": "Låt Nova lära sig din röst",

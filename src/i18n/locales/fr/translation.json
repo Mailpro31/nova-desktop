@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova ne fait pas que transcrire",
       "introSubtitle": "Parlez, et Nova écrit dans le style adapté à ce que vous faites.",
-      "unavailable": "Aucun style d'écriture n'est disponible pour l'instant."
+      "unavailable": "Aucun style d'écriture n'est disponible pour l'instant.",
+      "saidLabel": "Vous dites",
+      "said": "« euh, rendez-vous lundi, non attends, mardi à la bibliothèque »",
+      "writtenLabel": "Nova écrit",
+      "written": "Rendez-vous mardi à la bibliothèque.",
+      "automatic": "Nova choisit le style pour vous selon l'application : votre texte mis au propre dans Word ou sur l'ENT, un e-mail dans votre messagerie.",
+      "stylesLabel": "Styles d'écriture",
+      "changeLater": "Vous pouvez changer de style à tout moment depuis la bulle ou dans les Réglages."
     },
     "voiceCalibration": {
       "title": "Apprenons votre voix",

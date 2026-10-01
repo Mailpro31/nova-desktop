@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova không chỉ chép lại lời nói",
       "introSubtitle": "Hãy nói, Nova sẽ viết theo văn phong phù hợp với việc bạn đang làm.",
-      "unavailable": "Chưa có văn phong nào khả dụng."
+      "unavailable": "Chưa có văn phong nào khả dụng.",
+      "saidLabel": "Bạn nói",
+      "said": "“ờ, họp thứ Hai, không, khoan đã, thứ Ba ở thư viện”",
+      "writtenLabel": "Nova viết",
+      "written": "Họp thứ Ba ở thư viện.",
+      "automatic": "Nova chọn kiểu viết cho bạn theo ứng dụng: văn bản gọn gàng trong Word hoặc trên cổng thông tin của trường, một email trong hộp thư của bạn.",
+      "stylesLabel": "Kiểu viết",
+      "changeLater": "Bạn có thể đổi kiểu viết bất cứ lúc nào từ bong bóng hoặc trong Cài đặt."
     },
     "voiceCalibration": {
       "title": "Để Nova học giọng nói của bạn",

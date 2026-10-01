@@ -12,6 +12,8 @@ import { mockTauri } from "./tauriMock";
  * le mode automatique, et trois Styles choisis, chacun avec sa description.
  */
 
+test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
+
 const campusConfig = {
   server_url: "https://campus.example.edu",
   organization_type: "education",
@@ -61,11 +63,11 @@ test("the styles step shows a real before/after and what Automatic does", async 
   await reachStylesStep(page);
 
   // Un avant/après : la reprise disparaît, seule la version retenue reste.
-  await expect(page.getByText("You say")).toBeVisible();
+  await expect(page.getByText("You say", { exact: true })).toBeVisible();
   await expect(
     page.getByText("“uh, meeting on Monday, no wait, Tuesday at the library”"),
   ).toBeVisible();
-  await expect(page.getByText("Nova writes")).toBeVisible();
+  await expect(page.getByText("Nova writes", { exact: true })).toBeVisible();
   await expect(
     page.getByText("Meeting on Tuesday at the library."),
   ).toBeVisible();
