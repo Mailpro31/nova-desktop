@@ -686,7 +686,7 @@ test.describe("a suspended member has no access at all", () => {
     ).toBeVisible();
     // Ni tableau de bord, ni repli Personal derrière l'écran.
     await expect(
-      page.getByRole("heading", { name: "Nova Local is active" }),
+      page.getByRole("heading", { name: "Dictating on this computer" }),
     ).toHaveCount(0);
     await expect(page.getByRole("navigation")).toHaveCount(0);
   });

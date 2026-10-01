@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "הארגון מחובר",
-      "local": "Nova Local פעיל",
-      "localActive": "Nova Local פעיל"
+      "local": "הכתבה במחשב הזה",
+      "localActive": "הכתבה במחשב הזה"
     },
     "microsoft": {
       "browserHelp": "סיימו את ההתחברות בדפדפן. השתמשו בקוד הזה אם Microsoft מבקשת אותו.",
@@ -1356,8 +1356,8 @@
         "detail": "ההכתבה שלכם בלוח הגזירים."
       },
       "organizationLocal": {
-        "title": "‏Nova Local פעיל",
-        "detail": "‏{{server}} לא מגיב — ההכתבה ממשיכה מקומית, ותכונות ה-AI מושהות.",
+        "title": "הכתבה במחשב הזה",
+        "detail": "{{server}} לא מגיב: אפשר להמשיך להכתיב, הסגנונות יחזרו עם השרת.",
         "unknownServer": "שרת הארגון"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "ההכתבה האחרונה"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "המחשב הזה",
+      "local": "המחשב הזה",
       "organization": "השרת של הארגון שלך"
     },
     "checklist": {

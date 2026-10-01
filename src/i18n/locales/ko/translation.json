@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "조직 연결됨",
-      "local": "Nova Local 활성",
-      "localActive": "Nova Local 활성"
+      "local": "이 컴퓨터에서 받아쓰기 중",
+      "localActive": "이 컴퓨터에서 받아쓰기 중"
     },
     "microsoft": {
       "browserHelp": "브라우저에서 로그인을 마치세요. Microsoft가 요청하면 이 코드를 사용하세요.",
@@ -1356,8 +1356,8 @@
         "detail": "받아쓴 내용은 클립보드에 있습니다."
       },
       "organizationLocal": {
-        "title": "Nova Local이 켜져 있습니다",
-        "detail": "{{server}}이(가) 응답하지 않습니다. 받아쓰기는 로컬에서 계속되며 AI 기능은 일시 중지됩니다.",
+        "title": "이 컴퓨터에서 받아쓰기 중",
+        "detail": "{{server}}가 응답하지 않습니다. 받아쓰기는 계속할 수 있으며, 스타일은 서버가 돌아오면 다시 사용할 수 있습니다.",
         "unknownServer": "조직 서버"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "최근 받아쓰기"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "이 컴퓨터",
+      "local": "이 컴퓨터",
       "organization": "조직의 서버"
     },
     "checklist": {

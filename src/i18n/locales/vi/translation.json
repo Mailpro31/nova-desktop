@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "Đã kết nối tổ chức",
-      "local": "Nova Local đang hoạt động",
-      "localActive": "Nova Local đang hoạt động"
+      "local": "Đang đọc chính tả trên máy tính này",
+      "localActive": "Đang đọc chính tả trên máy tính này"
     },
     "microsoft": {
       "browserHelp": "Hoàn tất đăng nhập trong trình duyệt. Dùng mã này nếu Microsoft yêu cầu.",
@@ -1356,8 +1356,8 @@
         "detail": "Nội dung bạn đọc đang ở trong bảng nháp."
       },
       "organizationLocal": {
-        "title": "Nova Local đang hoạt động",
-        "detail": "{{server}} không phản hồi — việc đọc chính tả tiếp tục cục bộ, các tính năng AI tạm dừng.",
+        "title": "Đang đọc chính tả trên máy tính này",
+        "detail": "{{server}} không phản hồi: bạn vẫn có thể đọc chính tả, các kiểu sẽ trở lại khi máy chủ hoạt động.",
         "unknownServer": "máy chủ của tổ chức"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "Lần đọc gần nhất"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Máy tính này",
+      "local": "Máy tính này",
       "organization": "Máy chủ của tổ chức bạn"
     },
     "checklist": {

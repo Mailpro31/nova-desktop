@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "Organizzazione connessa",
-      "local": "Nova Local attivo",
-      "localActive": "Nova Local attivo"
+      "local": "Dettatura su questo computer",
+      "localActive": "Dettatura su questo computer"
     },
     "microsoft": {
       "browserHelp": "Completa l'accesso nel browser. Usa questo codice se Microsoft lo richiede.",
@@ -1356,8 +1356,8 @@
         "detail": "La tua dettatura è negli appunti."
       },
       "organizationLocal": {
-        "title": "Nova Local è attivo",
-        "detail": "{{server}} non risponde: la dettatura prosegue in locale, le funzioni IA sono in pausa.",
+        "title": "Dettatura su questo computer",
+        "detail": "{{server}} non risponde: puoi continuare a dettare, i tuoi stili torneranno con il server.",
         "unknownServer": "il server dell’organizzazione"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "Ultima dettatura"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Questo computer",
+      "local": "Questo computer",
       "organization": "Il server della tua organizzazione"
     },
     "checklist": {

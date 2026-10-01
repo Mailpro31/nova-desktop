@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "已连接组织",
-      "local": "Nova Local 已启用",
-      "localActive": "Nova Local 已启用"
+      "local": "正在此电脑上听写",
+      "localActive": "正在此电脑上听写"
     },
     "microsoft": {
       "browserHelp": "请在浏览器中完成登录。如果 Microsoft 要求，请使用此代码。",
@@ -1356,8 +1356,8 @@
         "detail": "你的语音输入已放入剪贴板。"
       },
       "organizationLocal": {
-        "title": "Nova Local 正在运行",
-        "detail": "{{server}} 没有响应——听写继续在本地进行，AI 功能已暂停。",
+        "title": "正在此电脑上听写",
+        "detail": "{{server}} 没有响应：你可以继续听写，服务器恢复后样式也会恢复。",
         "unknownServer": "组织服务器"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "最近一次语音输入"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "此电脑",
+      "local": "此电脑",
       "organization": "您所在组织的服务器"
     },
     "checklist": {

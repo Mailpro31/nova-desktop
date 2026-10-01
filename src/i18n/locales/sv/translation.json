@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "Organisation ansluten",
-      "local": "Nova Local aktiv",
-      "localActive": "Nova Local aktivt"
+      "local": "Diktering på den här datorn",
+      "localActive": "Diktering på den här datorn"
     },
     "microsoft": {
       "browserHelp": "Slutför inloggningen i webbläsaren. Använd den här koden om Microsoft ber om den.",
@@ -1356,8 +1356,8 @@
         "detail": "Din diktering finns i urklipp."
       },
       "organizationLocal": {
-        "title": "Nova Local är aktivt",
-        "detail": "{{server}} svarar inte — diktering fortsätter lokalt, AI-funktioner är pausade.",
+        "title": "Diktering på den här datorn",
+        "detail": "{{server}} svarar inte: du kan fortsätta diktera, dina stilar kommer tillbaka med servern.",
         "unknownServer": "organisationens server"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "Senaste diktering"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Den här datorn",
+      "local": "Den här datorn",
       "organization": "Din organisations server"
     },
     "checklist": {

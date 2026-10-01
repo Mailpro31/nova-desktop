@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "Organização ligada",
-      "local": "Nova Local ativo",
-      "localActive": "Nova Local ativo"
+      "local": "Ditado neste computador",
+      "localActive": "Ditado neste computador"
     },
     "microsoft": {
       "browserHelp": "Conclua o login no navegador. Use este código se a Microsoft pedir.",
@@ -1356,8 +1356,8 @@
         "detail": "O seu ditado está na área de transferência."
       },
       "organizationLocal": {
-        "title": "O Nova Local está ativo",
-        "detail": "{{server}} não está a responder — o ditado continua localmente e as funções de IA estão em pausa.",
+        "title": "Ditado neste computador",
+        "detail": "{{server}} não responde: pode continuar a ditar; os seus estilos voltam com o servidor.",
         "unknownServer": "o servidor da organização"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "Último ditado"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Este computador",
+      "local": "Este computador",
       "organization": "O servidor da sua organização"
     },
     "checklist": {

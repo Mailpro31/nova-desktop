@@ -1162,8 +1162,8 @@
     },
     "status": {
       "connected": "Організацію підключено",
-      "local": "Nova Local активний",
-      "localActive": "Nova Local активний"
+      "local": "Диктування на цьому комп'ютері",
+      "localActive": "Диктування на цьому комп'ютері"
     },
     "microsoft": {
       "browserHelp": "Завершіть вхід у браузері. Використайте цей код, якщо Microsoft його попросить.",
@@ -1356,8 +1356,8 @@
         "detail": "Ваше диктування в буфері обміну."
       },
       "organizationLocal": {
-        "title": "Nova Local активна",
-        "detail": "{{server}} не відповідає — диктовка триває локально, функції ШІ призупинено.",
+        "title": "Диктування на цьому комп'ютері",
+        "detail": "{{server}} не відповідає: можна далі диктувати, стилі повернуться разом із сервером.",
         "unknownServer": "сервер організації"
       },
       "organizationSignedOut": {
@@ -1374,8 +1374,8 @@
       "lastDictation": "Останнє диктування"
     },
     "engine": {
-      "local-fallback": "Nova Local",
-      "local": "Nova Local",
+      "local-fallback": "Цей комп'ютер",
+      "local": "Цей комп'ютер",
       "organization": "Сервер вашої організації"
     },
     "checklist": {
