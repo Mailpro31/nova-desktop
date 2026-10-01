@@ -623,7 +623,10 @@
       "retranscribe": "Phiên âm lại",
       "retranscribeError": "Không thể phiên âm lại. Vui lòng thử lại.",
       "transcribing": "Đang phiên âm...",
-      "transcriptionFailed": "Phiên âm thất bại. Bạn có thể phiên âm lại bằng biểu tượng thử lại."
+      "transcriptionFailed": "Phiên âm thất bại. Bạn có thể phiên âm lại bằng biểu tượng thử lại.",
+      "readAloud": "Đọc to",
+      "stopReading": "Dừng đọc",
+      "readAloudUnavailable": "Tính năng đọc to không có trên máy tính này."
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "Tổng quan về việc sử dụng Nova của bạn."
+    },
+    "readingComfort": {
+      "title": "Đọc thoải mái",
+      "description": "Giúp văn bản của Nova dễ đọc hơn và nghe đọc to ghi chú của bạn.",
+      "textSize": {
+        "title": "Cỡ chữ",
+        "normal": "Bình thường",
+        "large": "Lớn",
+        "larger": "Rất lớn"
+      },
+      "spacing": {
+        "title": "Khoảng cách chữ và dòng",
+        "description": "Văn bản giãn cách dễ đọc hơn với nhiều người mắc chứng khó đọc.",
+        "normal": "Bình thường",
+        "wide": "Rộng",
+        "wider": "Rất rộng"
+      },
+      "font": {
+        "title": "Phông chữ",
+        "description": "Chưa có phông chữ nào được chứng minh giúp đọc tốt hơn khi mắc chứng khó đọc: hãy chọn phông bạn thấy dễ chịu nhất.",
+        "system": "Nova",
+        "readable": "Verdana (chữ rộng)"
+      },
+      "speechRate": {
+        "title": "Tốc độ đọc",
+        "description": "Để đọc to ghi chú của bạn từ lịch sử.",
+        "slow": "Chậm",
+        "normal": "Bình thường",
+        "fast": "Nhanh",
+        "try": "Thử",
+        "sample": "Nova sẽ đọc to ghi chú của bạn như thế này."
+      }
     }
   },
   "footer": {
@@ -1595,6 +1630,7 @@
     "dataNote": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung.",
     "aiSkillsPrivacyOffline": "Nova Commands chạy trên máy chủ của trường bạn, hiện không kết nối được.",
     "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Máy chủ của trường bạn"
   }
 }

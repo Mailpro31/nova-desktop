@@ -25,7 +25,7 @@ export function resolveOverlayTheme(
 export function initOverlayTheme(): void {
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   const apply = () => {
-    // `getStoredTheme` applique déjà la règle Campus (clair imposé).
+    // Le thème choisi dans Nova, école comprise : plus aucun thème imposé.
     document.documentElement.dataset.theme = resolveOverlayTheme(
       getStoredTheme(),
       media.matches,

@@ -623,7 +623,10 @@
       "retranscribe": "다시 전사",
       "retranscribeError": "다시 전사에 실패했습니다. 다시 시도해주세요.",
       "transcribing": "전사 중...",
-      "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다."
+      "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다.",
+      "readAloud": "소리 내어 읽기",
+      "stopReading": "읽기 중지",
+      "readAloudUnavailable": "이 컴퓨터에서는 소리 내어 읽기를 사용할 수 없습니다."
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "Nova 사용 현황을 한눈에 볼 수 있습니다."
+    },
+    "readingComfort": {
+      "title": "읽기 편의",
+      "description": "Nova의 텍스트를 더 읽기 쉽게 만들고 노트를 소리 내어 들어 보세요.",
+      "textSize": {
+        "title": "텍스트 크기",
+        "normal": "보통",
+        "large": "크게",
+        "larger": "아주 크게"
+      },
+      "spacing": {
+        "title": "글자 및 줄 간격",
+        "description": "간격이 넓은 텍스트는 난독증이 있는 많은 독자에게 더 읽기 쉽습니다.",
+        "normal": "보통",
+        "wide": "넓게",
+        "wider": "아주 넓게"
+      },
+      "font": {
+        "title": "글꼴",
+        "description": "난독증이 있는 읽기를 개선한다고 입증된 글꼴은 없습니다. 가장 편한 글꼴을 고르세요.",
+        "system": "Nova",
+        "readable": "Verdana (넓은 글자)"
+      },
+      "speechRate": {
+        "title": "읽기 속도",
+        "description": "기록에서 노트를 소리 내어 읽을 때 사용합니다.",
+        "slow": "느리게",
+        "normal": "보통",
+        "fast": "빠르게",
+        "try": "들어 보기",
+        "sample": "Nova는 이렇게 노트를 읽어 줍니다."
+      }
     }
   },
   "footer": {
@@ -1595,6 +1630,7 @@
     "dataNote": "기관 서버는 하루에 받아쓰기와 다시 쓰기를 몇 번 했는지 셉니다. 내용은 저장하지 않습니다.",
     "aiSkillsPrivacyOffline": "Nova Commands는 소속 기관 서버에서 동작하며 지금은 연결되지 않습니다.",
     "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "학교 서버"
   }
 }

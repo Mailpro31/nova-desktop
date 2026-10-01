@@ -623,7 +623,10 @@
       "retranscribe": "फेरि ट्रान्सक्राइब गर्नुहोस्",
       "retranscribeError": "फेरि ट्रान्सक्राइब गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
       "transcribing": "ट्रान्सक्राइब गरिँदैछ...",
-      "transcriptionFailed": "ट्रान्सक्रिप्सन गर्न सकिएन। रिट्राई आइकन प्रयोग गरेर फेरि ट्रान्सक्राइब गर्न सक्नुहुन्छ।"
+      "transcriptionFailed": "ट्रान्सक्रिप्सन गर्न सकिएन। रिट्राई आइकन प्रयोग गरेर फेरि ट्रान्सक्राइब गर्न सक्नुहुन्छ।",
+      "readAloud": "ठूलो स्वरमा पढ्नुहोस्",
+      "stopReading": "पढ्न रोक्नुहोस्",
+      "readAloudUnavailable": "यो कम्प्युटरमा ठूलो स्वरमा पढ्ने सुविधा उपलब्ध छैन।"
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "तपाईंको Nova प्रयोगको सिंहावलोकन।"
+    },
+    "readingComfort": {
+      "title": "पढाइ सहजता",
+      "description": "Nova को पाठ पढ्न सजिलो बनाउनुहोस् र आफ्ना नोटहरू ठूलो स्वरमा सुन्नुहोस्।",
+      "textSize": {
+        "title": "पाठको आकार",
+        "normal": "सामान्य",
+        "large": "ठूलो",
+        "larger": "धेरै ठूलो"
+      },
+      "spacing": {
+        "title": "अक्षर र पङ्क्तिबीचको दूरी",
+        "description": "फराकिलो पाठ डिस्लेक्सिया भएका धेरै पाठकलाई पढ्न सजिलो हुन्छ।",
+        "normal": "सामान्य",
+        "wide": "फराकिलो",
+        "wider": "धेरै फराकिलो"
+      },
+      "font": {
+        "title": "फन्ट",
+        "description": "कुनै पनि फन्टले डिस्लेक्सियामा पढाइ सुधार्छ भन्ने प्रमाणित भएको छैन: तपाईंलाई सबैभन्दा सहज लाग्ने छान्नुहोस्।",
+        "system": "Nova",
+        "readable": "Verdana (फराकिला अक्षर)"
+      },
+      "speechRate": {
+        "title": "पढ्ने गति",
+        "description": "इतिहासबाट आफ्ना नोटहरू ठूलो स्वरमा पढ्नका लागि।",
+        "slow": "ढिलो",
+        "normal": "सामान्य",
+        "fast": "छिटो",
+        "try": "प्रयास गर्नुहोस्",
+        "sample": "Nova ले तपाईंका नोटहरू यसरी ठूलो स्वरमा पढ्नेछ।"
+      }
     }
   },
   "footer": {
@@ -1595,6 +1630,7 @@
     "dataNote": "संस्थाको सर्भरले दैनिक कति श्रुतिलेखन र पुनर्लेखन गर्नुभयो भनेर गन्छ। सामग्री राख्दैन।",
     "aiSkillsPrivacyOffline": "Nova Commands तपाईंको संस्थाको सर्भरमा चल्छन्, जुन अहिले पुग्न सकिँदैन।",
     "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "तपाईंको शैक्षिक संस्थाको सर्भर"
   }
 }

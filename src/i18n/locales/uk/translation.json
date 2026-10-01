@@ -623,7 +623,10 @@
       "retranscribe": "Перетранскрибувати",
       "retranscribeError": "Не вдалося перетранскрибувати. Будь ласка, спробуйте ще раз.",
       "transcribing": "Транскрибування...",
-      "transcriptionFailed": "Транскрипція не вдалася. Ви можете перетранскрибувати за допомогою іконки повтору."
+      "transcriptionFailed": "Транскрипція не вдалася. Ви можете перетранскрибувати за допомогою іконки повтору.",
+      "readAloud": "Прочитати вголос",
+      "stopReading": "Зупинити читання",
+      "readAloudUnavailable": "Читання вголос недоступне на цьому комп'ютері."
     },
     "debug": {
       "logDirectory": {
@@ -720,6 +723,38 @@
     },
     "home": {
       "subtitle": "Огляд використання Nova."
+    },
+    "readingComfort": {
+      "title": "Зручність читання",
+      "description": "Зробіть текст Nova легшим для читання й слухайте свої нотатки вголос.",
+      "textSize": {
+        "title": "Розмір тексту",
+        "normal": "Звичайний",
+        "large": "Великий",
+        "larger": "Дуже великий"
+      },
+      "spacing": {
+        "title": "Інтервал між літерами й рядками",
+        "description": "Розріджений текст легше читати багатьом людям із дислексією.",
+        "normal": "Звичайний",
+        "wide": "Широкий",
+        "wider": "Дуже широкий"
+      },
+      "font": {
+        "title": "Шрифт",
+        "description": "Жоден шрифт не довів, що покращує читання при дислексії: оберіть той, який вам зручніший.",
+        "system": "Nova",
+        "readable": "Verdana (широкі літери)"
+      },
+      "speechRate": {
+        "title": "Швидкість читання",
+        "description": "Для читання нотаток уголос з історії.",
+        "slow": "Повільна",
+        "normal": "Звичайна",
+        "fast": "Швидка",
+        "try": "Спробувати",
+        "sample": "Ось як Nova читатиме ваші нотатки вголос."
+      }
     }
   },
   "footer": {
@@ -1595,6 +1630,7 @@
     "dataNote": "Сервер закладу рахує, скільки розшифрувань і переписувань ви робите щодня. Їхній вміст не зберігається.",
     "aiSkillsPrivacyOffline": "Nova Commands виконуються на сервері вашого закладу, зараз недоступному.",
     "notInOrganization": "Цей обліковий запис Microsoft не належить вашому закладу.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Сервер вашого навчального закладу"
   }
 }
