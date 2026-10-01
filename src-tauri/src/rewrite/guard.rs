@@ -704,6 +704,123 @@ mod tests {
         }
     }
 
+    // --- Tous les Styles : ni nombre ni date inventés, perdus ou changés ---
+    //
+    // Décision du 01/10 : quelle que soit la personne qui dicte, Nova ne
+    // change jamais ce qu'elle a dit. Les dates en toutes lettres comptent
+    // autant que les chiffres : le 29/09, le mode réunion avait transformé
+    // « avant vendredi » en « la semaine prochaine », sans aucun chiffre.
+
+    #[test]
+    fn a_meeting_summary_cannot_invent_a_deadline() {
+        assert_eq!(
+            check(
+                "Sasha commande les hélices avant vendredi",
+                "Sasha a commandé les hélices avant. La batterie doit être testée la semaine prochaine.",
+                "nova_style_meeting"
+            ),
+            Err("date-changed")
+        );
+    }
+
+    #[test]
+    fn a_changed_day_or_number_is_refused_in_every_built_in_style() {
+        assert_eq!(
+            check(
+                "le rendez-vous est jeudi à 14 heures en salle B204",
+                "Bonjour,
+
+Le rendez-vous est vendredi à 14 heures en salle B204.
+
+Cordialement",
+                "nova_style_email"
+            ),
+            Err("date-changed")
+        );
+        assert_eq!(
+            check(
+                "il faut relire les pages douze à quinze pour demain",
+                "- Relire les pages 12 à 16 pour demain",
+                "nova_style_todo"
+            ),
+            Err("number-changed")
+        );
+        assert_eq!(
+            check(
+                "il faut trois exemplaires et deux copies du dossier",
+                "Il faut 3 exemplaires du dossier.",
+                "default_improve_transcriptions"
+            ),
+            Err("number-lost")
+        );
+    }
+
+    #[test]
+    fn a_self_correction_may_drop_the_abandoned_value() {
+        assert!(check(
+            "le rendez-vous est le 12 non pardon le 13 en salle B204",
+            "Le rendez-vous est le 13 en salle B204.",
+            "default_improve_transcriptions"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_self_correction_never_lets_the_final_value_be_lost() {
+        // Le modèle a gardé la version abandonnée et perdu la bonne.
+        assert_eq!(
+            check(
+                "le rendez-vous est le 12 non pardon le 13 en salle B204",
+                "Le rendez-vous est le 12 en salle B204.",
+                "default_improve_transcriptions"
+            ),
+            Err("number-lost")
+        );
+    }
+
+    #[test]
+    fn list_numbering_is_not_an_invented_number() {
+        assert!(check(
+            "il faut lancer le développement puis préparer la maquette avec Marc",
+            "1. Lancer le développement.
+2. Préparer la maquette avec Marc.",
+            "nova_style_notes"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_meeting_summary_may_still_leave_out_a_date() {
+        assert!(check(
+            "on se voit lundi pour faire le point et on livre vendredi au client",
+            "## Résumé
+Livraison au client vendredi.",
+            "nova_style_meeting"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_faithful_style_cannot_add_content() {
+        assert_eq!(
+            check(
+                "je passe te voir cet après-midi",
+                "Je passe te voir cet après-midi pour discuter du budget, des priorités et des prochaines étapes du projet.",
+                "nova_style_messages"
+            ),
+            Err("content-added")
+        );
+    }
+
+    #[test]
+    fn dates_said_in_words_are_recognised() {
+        assert!(dates_in("avant vendredi").contains("vendredi"));
+        assert!(dates_in("la semaine prochaine").contains("semaine prochaine"));
+        assert!(dates_in("le 3 mars, puis demain").contains("mars"));
+        assert!(dates_in("before Friday, next week").contains("friday"));
+        assert!(dates_in("un cours sur les nombres").is_empty());
+    }
+
     #[test]
     fn styles_that_may_summarize_or_translate_are_left_alone() {
         // « Réunion » résume ; un Style personnel peut s'appeler « En anglais ».
