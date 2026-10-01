@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import OnboardingStepShell from "./OnboardingStepShell";
@@ -18,6 +18,9 @@ interface VoiceCalibrationStepProps {
   stepCount: number;
   onBack?: () => void;
   onSkip?: () => void;
+  /** Libellé du bouton secondaire : « Passer » au premier lancement,
+   * « Annuler » depuis les réglages. */
+  skipLabel?: string;
   onDone: () => void;
 }
 
@@ -52,6 +55,7 @@ export const VoiceCalibrationStep: React.FC<VoiceCalibrationStepProps> = ({
   stepCount,
   onBack,
   onSkip,
+  skipLabel,
   onDone,
 }) => {
   const { t } = useTranslation();
@@ -63,6 +67,25 @@ export const VoiceCalibrationStep: React.FC<VoiceCalibrationStepProps> = ({
 
   const total = CALIBRATION_PHRASES.length;
   const summary = summarizeCalibration(results, calibrationTerms());
+
+  // Un enregistrement de calibrage laissé ouvert bloquerait la dictée
+  // suivante (« Already recording »). Quitter l'écran en pleine lecture —
+  // Passer, Annuler, ou fermeture de la fenêtre des réglages — le referme.
+  const listening = useRef(false);
+  listening.current = phase.kind === "listening";
+  useEffect(
+    () => () => {
+      if (listening.current) void commands.cancelVoiceCalibrationSample();
+    },
+    [],
+  );
+
+  const leave = onSkip
+    ? async () => {
+        if (listening.current) await commands.cancelVoiceCalibrationSample();
+        onSkip();
+      }
+    : undefined;
 
   const startListening = async (index: number) => {
     setError(null);
@@ -135,7 +158,8 @@ export const VoiceCalibrationStep: React.FC<VoiceCalibrationStepProps> = ({
         stepIndex={stepIndex}
         stepCount={stepCount}
         onBack={onBack}
-        onSkip={onSkip}
+        onSkip={leave}
+        skipLabel={skipLabel}
         onContinue={() => setPhase({ kind: "ready", index: 0 })}
         continueLabel={t("onboarding.voiceCalibration.start")}
       >
@@ -157,6 +181,8 @@ export const VoiceCalibrationStep: React.FC<VoiceCalibrationStepProps> = ({
         title={t("onboarding.voiceCalibration.summaryTitle")}
         stepIndex={stepIndex}
         stepCount={stepCount}
+        onSkip={leave}
+        skipLabel={skipLabel}
         onContinue={save}
         continueLabel={t("onboarding.voiceCalibration.save")}
         continueDisabled={phase.kind === "saving"}
@@ -219,7 +245,8 @@ export const VoiceCalibrationStep: React.FC<VoiceCalibrationStepProps> = ({
       subtitle={t("onboarding.voiceCalibration.readSubtitle")}
       stepIndex={stepIndex}
       stepCount={stepCount}
-      onSkip={onSkip}
+      onSkip={leave}
+      skipLabel={skipLabel}
       onContinue={() => goNext(index)}
       continueLabel={
         index + 1 < total

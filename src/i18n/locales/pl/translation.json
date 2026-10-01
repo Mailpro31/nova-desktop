@@ -755,6 +755,13 @@
         "try": "Wypróbuj",
         "sample": "Tak Nova przeczyta twoje notatki na głos."
       }
+    },
+    "voiceCalibration": {
+      "title": "Mój głos",
+      "descriptionGain": "Nova podnosi twój głos o {{db}} dB.",
+      "descriptionNone": "Bez zmian: twój głos trafia bez regulacji.",
+      "recalibrate": "Skalibruj ponownie mój głos",
+      "reset": "Resetuj"
     }
   },
   "footer": {

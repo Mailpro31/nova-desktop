@@ -59,6 +59,23 @@ export const CALIBRATION_PHRASES: CalibrationPhrase[] = [
   },
 ];
 
+/**
+ * Le gain de calibrage, en décibels arrondis, pour l'afficher.
+ *
+ * Un réglage absent, abîmé ou inférieur à 1 se lit comme « aucun gain » :
+ * c'est ainsi que l'enregistreur le traite (`sanitize_gain`).
+ */
+export function gainInDecibels(gain: number | undefined | null): number {
+  if (
+    gain === undefined ||
+    gain === null ||
+    !Number.isFinite(gain) ||
+    gain <= 1
+  )
+    return 0;
+  return Math.round(20 * Math.log10(gain));
+}
+
 /** Tous les termes que le calibrage peut apprendre. */
 export function calibrationTerms(): string[] {
   return CALIBRATION_PHRASES.flatMap((phrase) => phrase.terms);

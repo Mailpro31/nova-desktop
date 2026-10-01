@@ -644,6 +644,19 @@ impl AudioRecordingManager {
     }
 
     /// Cancel any ongoing recording without returning audio samples
+    /// Annule l'enregistrement en cours **seulement** s'il appartient à
+    /// `binding_id`. L'écran de calibrage s'en sert quand l'élève l'abandonne
+    /// en pleine lecture : il ne doit jamais couper une dictée.
+    pub fn cancel_recording_of(&self, binding_id: &str) {
+        let owned = matches!(
+            &*self.state.lock().unwrap(),
+            RecordingState::Recording { binding_id: active } if active == binding_id
+        );
+        if owned {
+            self.cancel_recording();
+        }
+    }
+
     pub fn cancel_recording(&self) {
         self.cancel_generation.fetch_add(1, Ordering::AcqRel);
         let mut state = self.state.lock().unwrap();

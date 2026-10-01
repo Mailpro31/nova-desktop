@@ -755,6 +755,13 @@
         "try": "Experimentar",
         "sample": "É assim que o Nova vai ler as suas notas em voz alta."
       }
+    },
+    "voiceCalibration": {
+      "title": "A minha voz",
+      "descriptionGain": "O Nova aumenta a sua voz em {{db}} dB.",
+      "descriptionNone": "Sem ajuste: a sua voz chega tal como é.",
+      "recalibrate": "Recalibrar a minha voz",
+      "reset": "Repor"
     }
   },
   "footer": {

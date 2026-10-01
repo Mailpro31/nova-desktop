@@ -755,6 +755,13 @@
         "try": "Proberen",
         "sample": "Zo leest Nova je notities voor."
       }
+    },
+    "voiceCalibration": {
+      "title": "Mijn stem",
+      "descriptionGain": "Nova versterkt je stem met {{db}} dB.",
+      "descriptionNone": "Geen aanpassing: je stem komt binnen zoals hij is.",
+      "recalibrate": "Mijn stem opnieuw kalibreren",
+      "reset": "Herstellen"
     }
   },
   "footer": {

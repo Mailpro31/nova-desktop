@@ -755,6 +755,13 @@
         "try": "Thử",
         "sample": "Nova sẽ đọc to ghi chú của bạn như thế này."
       }
+    },
+    "voiceCalibration": {
+      "title": "Giọng của tôi",
+      "descriptionGain": "Nova tăng giọng của bạn thêm {{db}} dB.",
+      "descriptionNone": "Không điều chỉnh: giọng của bạn được giữ nguyên.",
+      "recalibrate": "Hiệu chỉnh lại giọng của tôi",
+      "reset": "Đặt lại"
     }
   },
   "footer": {

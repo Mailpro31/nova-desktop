@@ -755,6 +755,13 @@
         "try": "試す",
         "sample": "Nova はこのようにノートを読み上げます。"
       }
+    },
+    "voiceCalibration": {
+      "title": "自分の声",
+      "descriptionGain": "Nova はあなたの声を {{db}} dB 上げています。",
+      "descriptionNone": "調整なし：声はそのまま入力されます。",
+      "recalibrate": "声を再調整する",
+      "reset": "リセット"
     }
   },
   "footer": {

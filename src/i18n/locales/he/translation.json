@@ -755,6 +755,13 @@
         "try": "נסו",
         "sample": "כך Nova יקריא את ההערות שלכם."
       }
+    },
+    "voiceCalibration": {
+      "title": "הקול שלי",
+      "descriptionGain": "Nova מגביר את הקול שלכם ב-{{db}} dB.",
+      "descriptionNone": "ללא כוונון: הקול שלכם מגיע כפי שהוא.",
+      "recalibrate": "כיול מחדש של הקול",
+      "reset": "איפוס"
     }
   },
   "footer": {
