@@ -1128,6 +1128,85 @@ Livraison au client vendredi.",
         assert_eq!(without_abandoned(plain), plain);
     }
 
+    // --- Jamais la version que l'élève vient de rejeter ---
+    //
+    // Mesuré le 01/10 sur le serveur RTX (Qwen2.5-1.5B) : 3 dictées sur 20
+    // ressortaient avec la version écartée (« non le bus » → « le train »),
+    // sans qu'aucun contrôle ne bronche. Le serveur les refuse depuis
+    // nova-server#78 ; le poste refuse la même chose, pour un serveur qui ne
+    // serait pas à jour.
+
+    const REJECTED: [(&str, &str); 4] = [
+        (
+            "je prends le train de 8 heures non le bus de 8 heures",
+            "Je prends le train de 8 heures.",
+        ),
+        (
+            "je vais acheter un vélo bleu euh non rouge",
+            "Je vais acheter un vélo bleu.",
+        ),
+        (
+            "Paris est la capitale de l'Italie non pardon de la France",
+            "Paris est la capitale de l'Italie.",
+        ),
+        (
+            "le rendez-vous chez le dentiste c'est à 9 heures non 10 heures",
+            "Le rendez-vous chez le dentiste c'est à 9 heures.",
+        ),
+    ];
+
+    #[test]
+    fn keeping_the_rejected_version_is_detected() {
+        for (dictated, output) in REJECTED {
+            assert!(correction_lost(dictated, output), "{output}");
+        }
+    }
+
+    #[test]
+    fn keeping_the_retained_version_or_a_non_that_corrects_nothing_is_fine() {
+        for (dictated, output) in [
+            (
+                "je prends le train de 8 heures non le bus de 8 heures",
+                "Je prends le bus de 8 heures.",
+            ),
+            (
+                "il faut acheter du lait oublie le lait prends plutôt du jus d'orange",
+                "Il faut acheter du jus d'orange.",
+            ),
+            (
+                "le prof a dit non à la sortie de jeudi",
+                "Le prof a dit non à la sortie de jeudi.",
+            ),
+            ("appelle Thomas non Thomas et Léa", "Appelle Thomas et Léa."),
+            (
+                "la photosynthèse produit du dioxygène",
+                "La photosynthèse produit du dioxygène.",
+            ),
+        ] {
+            assert!(!correction_lost(dictated, output), "{output}");
+        }
+    }
+
+    #[test]
+    fn a_built_in_style_never_returns_the_rejected_version() {
+        for style in [
+            "nova_style_everyday",
+            "default_improve_transcriptions",
+            "nova_style_email",
+            "nova_style_course_notes",
+        ] {
+            assert_eq!(
+                check(
+                    "je vais acheter un vélo bleu euh non rouge",
+                    "Je vais acheter un vélo bleu.",
+                    style
+                ),
+                Err("correction-lost"),
+                "{style}"
+            );
+        }
+    }
+
     #[test]
     fn dates_said_in_words_are_recognised() {
         assert!(dates_in("avant vendredi").contains("vendredi"));
