@@ -1067,6 +1067,7 @@
       "descriptions": {
         "auto": "讓 Nova 自動為你的聽寫選擇最合適的格式。",
         "default_improve_transcriptions": "整理聽寫文字：標點、錯字與語句通順。",
+        "nova_style_course_notes": "依口述順序整理你的課堂筆記：不添加任何內容，不更動任何數字。",
         "nova_style_email": "把聽寫內容整理成清楚、有禮貌的電子郵件。",
         "nova_style_messages": "把語音變成簡潔、可直接傳送的訊息。",
         "nova_style_prompt": "把聽寫內容轉為適用於 AI 工具的結構化提示詞。",

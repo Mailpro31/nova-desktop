@@ -1067,6 +1067,7 @@
       "descriptions": {
         "auto": "Nechte Novu automaticky zvolit nejlepší formátování diktátu.",
         "default_improve_transcriptions": "Učešte nadiktovaný text: interpunkce, překlepy a plynulé formulace.",
+        "nova_style_course_notes": "Uspořádejte poznámky z výuky v pořadí, v jakém jste je nadiktovali: nic přidaného, žádné změněné číslo.",
         "nova_style_email": "Naformátujte diktát jako jasný a zdvořilý e-mail.",
         "nova_style_messages": "Proměňte hlas ve stručné zprávy připravené k odeslání.",
         "nova_style_prompt": "Proměňte diktát ve strukturovaný prompt pro nástroje AI.",

@@ -1067,6 +1067,7 @@
       "descriptions": {
         "auto": "Pozwól Novie automatycznie wybrać najlepsze formatowanie dyktowania.",
         "default_improve_transcriptions": "Popraw podyktowany tekst: interpunkcja, literówki i płynne zdania.",
+        "nova_style_course_notes": "Uporządkuj notatki z zajęć w kolejności dyktowania: nic nie dodano, żadna liczba nie zmieniona.",
         "nova_style_email": "Sformatuj dyktowanie jako jasny i uprzejmy e-mail.",
         "nova_style_messages": "Zamień głos w zwięzłe wiadomości gotowe do wysłania.",
         "nova_style_prompt": "Przekształć dyktowanie w uporządkowany prompt dla narzędzi AI.",
