@@ -549,6 +549,25 @@ fn protect_custom_variables(text: &str, variables: &[crate::settings::CustomVari
     output
 }
 
+/// Insère les valeurs des raccourcis personnels, une fois.
+///
+/// `already_rewritten` dit si une reformulation — locale ou celle du serveur de
+/// l'organisation — a déjà produit le texte. Dans ce cas la valeur a été mise
+/// là où elle devait l'être (repère `{{clé}}` résolu ici, ou valeur déjà
+/// réinsérée par le serveur) : chercher à nouveau le déclencheur l'ajouterait
+/// une seconde fois derrière lui. Sinon, personne ne l'a encore insérée.
+fn substitute_personal_values(
+    text: &str,
+    variables: &[crate::settings::CustomVariable],
+    already_rewritten: bool,
+) -> String {
+    if already_rewritten {
+        resolve_variable_tokens(text, variables)
+    } else {
+        apply_custom_variables(text, variables)
+    }
+}
+
 /// Substitution DÉTERMINISTE des raccourcis personnels (« Mes informations »)
 /// par simple remplacement du mot-clé, utilisée UNIQUEMENT quand aucune
 /// reformulation n'a eu lieu (Style désactivé, quota atteint, ou IA en échec) :
@@ -1825,13 +1844,15 @@ pub(crate) async fn process_transcription_output(
     transcription: &str,
     post_process: bool,
     auto_style_override: Option<String>,
+    rewritten_by_organization: bool,
 ) -> ProcessedTranscription {
     let mut settings = get_settings(app);
     // Les snippets et le vocabulaire de l'organisation, gardés pour le cas où
     // son serveur ne répond pas : les snippets passent par le mécanisme de
     // « Mes informations » (leur contenu ne part jamais au modèle), et le
     // vocabulaire est appliqué au texte final. Quand le serveur a reformulé, il
-    // les a déjà appliqués : les appliquer à nouveau ne change rien.
+    // les a déjà appliqués : `rewritten_by_organization` empêche que la valeur
+    // d'un snippet soit insérée une seconde fois derrière son déclencheur.
     let organization_aids = crate::writing_aids::for_organization(active_organization().as_deref());
     if let Some(aids) = &organization_aids {
         settings.custom_variables =
@@ -1853,7 +1874,8 @@ pub(crate) async fn process_transcription_output(
     // Vrai dès qu'une reformulation IA a réellement produit un texte : décide
     // quel mécanisme de raccourcis personnels s'applique ensuite (repères vs
     // remplacement mot-à-mot — jamais les deux).
-    let mut reformulation_applied = false;
+    // Le serveur de l'organisation compte : il a déjà remis les valeurs.
+    let mut reformulation_applied = rewritten_by_organization;
 
     // Resolve the language the transcription actually ran in (the persisted
     // intent coerced against the loaded model's capabilities) so OpenCC keys off
@@ -1948,11 +1970,11 @@ pub(crate) async fn process_transcription_output(
     //  • pas de reformulation (Style désactivé, quota atteint, IA en échec) →
     //    aucun repère n'a pu être posé, on retombe sur le remplacement
     //    déterministe du mot-clé sur le texte brut.
-    let substituted = if reformulation_applied {
-        resolve_variable_tokens(&final_text, &settings.custom_variables)
-    } else {
-        apply_custom_variables(&final_text, &settings.custom_variables)
-    };
+    let substituted = substitute_personal_values(
+        &final_text,
+        &settings.custom_variables,
+        reformulation_applied,
+    );
     if substituted != final_text {
         final_text = substituted;
         post_processed_text = Some(final_text.clone());
@@ -2364,6 +2386,9 @@ impl ShortcutAction for TranscribeAction {
                     // est injoignable ou renvoie une erreur non-fatale.
                     let transcription_time = Instant::now();
                     let mut organization_used = false;
+                    // Vrai seulement si la reformulation du serveur a été
+                    // acceptée : refusée, c'est la dictée brute qui repart.
+                    let mut organization_rewritten = false;
                     let mut organization_error: Option<OrganizationError> = None;
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
@@ -2398,7 +2423,10 @@ impl ShortcutAction for TranscribeAction {
                                                         &reformulated,
                                                         &style.id,
                                                     ) {
-                                                        Ok(checked) => Ok(checked),
+                                                        Ok(checked) => {
+                                                            organization_rewritten = true;
+                                                            Ok(checked)
+                                                        }
                                                         Err(reason) => {
                                                             warn!(
                                                             "Rejected unsafe rewrite from the organization server ({})",
@@ -2535,6 +2563,7 @@ impl ShortcutAction for TranscribeAction {
                                     &transcription,
                                     effective_post_process,
                                     auto_style_override.clone(),
+                                    organization_rewritten,
                                 ),
                                 || rm.was_cancelled_since(cancel_generation),
                             )
@@ -2776,7 +2805,7 @@ mod tests {
         context_looks_like_current_draft, custom_variables_block, effective_style,
         is_blank_transcription, local_primary_timeout, protect_custom_variables, protect_lexicon,
         replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
-        temperature_for_style, validate_rewrite, with_language_hint,
+        substitute_personal_values, temperature_for_style, validate_rewrite, with_language_hint,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -2927,6 +2956,33 @@ mod tests {
             key: key.to_string(),
             value: value.to_string(),
         }
+    }
+
+    // --- Un snippet n'est inséré qu'une fois, même quand le serveur a reformulé ---
+
+    /// Mesuré en démonstration le 29/09 : le serveur de l'organisation avait
+    /// déjà remis la valeur derrière « mon iban », et le poste l'a insérée une
+    /// seconde fois — « Voici Mon iban : fr76 … : fr76 … ».
+    #[test]
+    fn a_value_the_server_already_inserted_is_not_inserted_again() {
+        let variables = vec![var("Mon iban", "fr76 3000 6000 5000")];
+        let from_server = "Voici mon iban : fr76 3000 6000 5000.";
+
+        assert_eq!(
+            substitute_personal_values(from_server, &variables, true),
+            from_server
+        );
+    }
+
+    /// Sans reformulation, personne n'a encore inséré la valeur : le poste la
+    /// met, une fois.
+    #[test]
+    fn a_raw_dictation_still_receives_the_value_once() {
+        let variables = vec![var("Mon iban", "fr76 3000 6000 5000")];
+
+        let out = substitute_personal_values("voici mon iban", &variables, false);
+
+        assert_eq!(out.matches("fr76 3000 6000 5000").count(), 1, "{out}");
     }
 
     #[test]
