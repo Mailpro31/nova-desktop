@@ -7,6 +7,7 @@ import { SettingContainer } from "../../ui/SettingContainer";
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
 import { TierBadge } from "../license/TierBadge";
 import { ThemeSelector } from "../ThemeSelector";
+import { ReadingComfortSettings } from "../ReadingComfortSettings";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ShowOverlay } from "../ShowOverlay";
 import { isOrganizationMode } from "@/lib/mode";
@@ -109,6 +110,7 @@ export const PersonalizationSettings: React.FC = () => {
           <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
         </SettingsGroup>
       )}
+      {!organizationMode && <ReadingComfortSettings />}
 
       <SettingsGroup title={t("personalization.orb")}>
         <SettingContainer

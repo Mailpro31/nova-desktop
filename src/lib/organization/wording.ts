@@ -102,6 +102,10 @@ export const ORGANIZATION_WORDING = {
     education: "educationWording.notInOrganization",
     organization: "organization.microsoft.notInOrganization",
   },
+  engineServer: {
+    education: "educationWording.engineServer",
+    organization: "home.engine.organization",
+  },
   codeForbidden: {
     education: "educationWording.codeForbidden",
     organization: "organization.onboarding.code.forbidden",

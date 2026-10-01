@@ -1513,6 +1513,33 @@ async clearTranscribeGpuBlacklist() : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async startVoiceCalibrationSample() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("start_voice_calibration_sample") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async finishVoiceCalibrationSample(expected: string) : Promise<Result<CalibrationResult, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("finish_voice_calibration_sample", { expected }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async cancelVoiceCalibrationSample() : Promise<void> {
+    await TAURI_INVOKE("cancel_voice_calibration_sample");
+},
+async setInputGain(gain: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_input_gain", { gain }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 /**
  * Teste la capture des autres participants sur CETTE machine, contre
  * l'application de réunion actuellement au premier plan.
@@ -1753,7 +1780,7 @@ context_reading_enabled?: boolean;
  * image de l'écran via le moteur en ligne (Turbo). Réservé Nova Ultra + en
  * ligne ; sans effet si `context_reading_enabled` est faux. Désactivé par défaut.
  */
-context_visual_enabled?: boolean; model_unload_timeout?: ModelUnloadTimeout; word_correction_threshold?: number; history_limit?: number; recording_retention_period?: RecordingRetentionPeriod; paste_method?: PasteMethod; clipboard_handling?: ClipboardHandling; auto_submit?: boolean; auto_submit_key?: AutoSubmitKey; post_process_enabled?: boolean; post_process_provider_id?: string; post_process_providers?: PostProcessProvider[]; post_process_api_keys?: SecretMap; post_process_models?: Partial<{ [key in string]: string }>; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; 
+context_visual_enabled?: boolean; model_unload_timeout?: ModelUnloadTimeout; word_correction_threshold?: number; input_gain?: number; history_limit?: number; recording_retention_period?: RecordingRetentionPeriod; paste_method?: PasteMethod; clipboard_handling?: ClipboardHandling; auto_submit?: boolean; auto_submit_key?: AutoSubmitKey; post_process_enabled?: boolean; post_process_provider_id?: string; post_process_providers?: PostProcessProvider[]; post_process_api_keys?: SecretMap; post_process_models?: Partial<{ [key in string]: string }>; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; 
 /**
  * Migration unique : bascule les anciennes installs (qui avaient
  * « Transcription améliorée » comme défaut figé) vers le mode
@@ -1854,6 +1881,19 @@ export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
 export type AvailableAccelerators = { transcribe: string[]; ort: string[]; gpu_devices: GpuDeviceOption[] }
 export type BindingResponse = { success: boolean; binding: ShortcutBinding | null; error: string | null }
+/**
+ * Ce qu'une phrase lue a appris à Nova.
+ */
+export type CalibrationResult = { speech_dbfs: number; noise_dbfs: number; voice_stands_out: boolean; 
+/**
+ * Gain total recommandé, gain actuel compris : la phrase a été enregistrée
+ * avec le gain déjà en place.
+ */
+recommended_gain: number; 
+/**
+ * Ce que le moteur a transcrit.
+ */
+heard: string; misheard: MisheardWord[] }
 export type OrganizationAiSkill = { id: string; title: string; summary: string; practice: string; duration_minutes: number }
 export type OrganizationAiSkillsPolicyConfig = { enabled?: boolean | null; required?: boolean | null; trackProgress?: boolean | null }
 export type OrganizationAiSkillsResponse = { skills: OrganizationAiSkill[] }
@@ -2234,6 +2274,10 @@ transcribed: number;
  * Prises ignorées (transcription en échec ou vide).
  */
 skipped: number }
+/**
+ * Un mot lu et ce que le moteur a écrit à sa place.
+ */
+export type MisheardWord = { expected: string; heard: string }
 export type ModelInfo = { id: string; name: string; description: string; filename: string; source: ModelSource; size_mb: number; is_downloaded: boolean; is_downloading: boolean; partial_size: number; is_directory: boolean; engine_type: EngineType; accuracy_score: number; speed_score: number; supports_translation: boolean; is_recommended: boolean; supported_languages: string[]; supports_language_selection: boolean; is_custom: boolean; supports_streaming: boolean; supports_language_detection: boolean }
 export type ModelLoadStatus = { is_loaded: boolean; current_model: string | null }
 /**

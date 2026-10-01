@@ -22,8 +22,26 @@ name: "Nova — Release Windows (mise à jour auto)"
 
 on: workflow_dispatch
 
+# Nova personnel n'est plus publié (décision du 30/09/2026) : Nova se concentre
+# sur l'édition Organization, pour les établissements. Le canal de mise à jour
+# est celui de `nova-release-organization.yml`.
+#
+# Ce workflow est désactivé, pas supprimé : les postes Personal déjà installés
+# gardent leur dernière version, et le code de l'édition reste en place tant
+# que sa suppression n'a pas été faite dans une PR à part. Pour le rouvrir,
+# retirer le job `retired` et la ligne `needs` qui y mène.
+
 jobs:
+  retired:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nova personnel n'est plus publie
+        run: |
+          echo "::error::Nova personnel n'est plus publie depuis le 30/09/2026. Utiliser « Nova Organization — Release Windows » (nova-release-organization.yml)."
+          exit 1
+
   publish-windows:
+    needs: retired
     permissions:
       contents: write
     uses: ./.github/workflows/build.yml

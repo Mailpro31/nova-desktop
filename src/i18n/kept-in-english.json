@@ -21,7 +21,8 @@
     "home.engine.local-fallback",
     "sidebar.aiSkills",
     "sidebar.novaCommands",
-    "settings.about.acknowledgments.ggml.title"
+    "settings.about.acknowledgments.ggml.title",
+    "settings.readingComfort.font.system"
   ],
   "byLanguage": {
     "cs": [
@@ -43,7 +44,10 @@
       "theme.options.system",
       "home.active.engine",
       "settings.advanced.overlay.style.options.minimal",
-      "settings.advanced.overlay.style.options.live"
+      "settings.advanced.overlay.style.options.live",
+      "settings.readingComfort.textSize.normal",
+      "settings.readingComfort.spacing.normal",
+      "settings.readingComfort.speechRate.normal"
     ],
     "es": [
       "modelSelector.streaming",
@@ -55,7 +59,10 @@
       "edition.choice.personal.title",
       "settings.general.title",
       "sidebar.general",
-      "structuredNotes.types.ideas"
+      "structuredNotes.types.ideas",
+      "settings.readingComfort.textSize.normal",
+      "settings.readingComfort.spacing.normal",
+      "settings.readingComfort.speechRate.normal"
     ],
     "fr": [
       "modelSelector.streaming",
@@ -82,7 +89,8 @@
       "performanceOptimizer.classes.performance",
       "home.active.microphone",
       "styles.section.builtin",
-      "learn.quiz.correct"
+      "learn.quiz.correct",
+      "settings.readingComfort.spacing.normal"
     ],
     "it": [
       "modelSelector.streaming",
@@ -132,7 +140,10 @@
       "sidebar.prompts",
       "novaCommands.original",
       "settings.advanced.groups.experimental",
-      "settings.sound.volume.title"
+      "settings.sound.volume.title",
+      "settings.readingComfort.textSize.normal",
+      "settings.readingComfort.spacing.normal",
+      "settings.readingComfort.speechRate.normal"
     ],
     "sv": [
       "modelSelector.streaming",
@@ -148,12 +159,17 @@
       "settings.advanced.overlay.style.options.minimal",
       "settings.advanced.overlay.style.options.live",
       "performanceOptimizer.acceleration",
-      "performanceOptimizer.median"
+      "performanceOptimizer.median",
+      "settings.readingComfort.textSize.normal",
+      "settings.readingComfort.speechRate.normal"
     ],
     "tr": [
       "settings.postProcessing.api.model.title",
       "tray.model",
-      "settings.advanced.overlay.style.options.minimal"
+      "settings.advanced.overlay.style.options.minimal",
+      "settings.readingComfort.textSize.normal",
+      "settings.readingComfort.spacing.normal",
+      "settings.readingComfort.speechRate.normal"
     ]
   }
 }

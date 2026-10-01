@@ -221,6 +221,35 @@
       "introTitle": "Nova to nie tylko transkrypcja",
       "introSubtitle": "Mów, a Nova napisze w stylu pasującym do Twojego zadania.",
       "unavailable": "Nie ma jeszcze dostępnego stylu pisania."
+    },
+    "voiceCalibration": {
+      "title": "Pozwól Novej poznać swój głos",
+      "subtitle": "Przeczytaj kilka zdań z lekcji. Nova zmierzy mikrofon i wykryje słowa, które źle rozumie w twoim głosie. Nic nie zostanie zastosowane bez twojej zgody.",
+      "tipQuiet": "Mów jak na lekcji, cicho: to ten głos Nova musi słyszeć.",
+      "tipPlace": "Usiądź tam, gdzie pracujesz, z mikrofonem, którego będziesz używać.",
+      "tipDuration": "{{count}} zdań, około dwóch minut.",
+      "start": "Zacznij",
+      "readTitle": "Zdanie {{current}} z {{total}}",
+      "readSubtitle": "Naciśnij „Czytaj”, powiedz zdanie, a potem naciśnij „Gotowe”.",
+      "record": "Czytaj",
+      "stop": "Gotowe",
+      "retry": "Przeczytaj to zdanie ponownie",
+      "listening": "Nova słucha…",
+      "analysing": "Nova analizuje to, co usłyszała…",
+      "heardLabel": "Nova zrozumiała:",
+      "heardNothing": "Nic nie słychać. Przysuń się do mikrofonu i przeczytaj zdanie ponownie.",
+      "next": "Następne zdanie",
+      "finish": "Zobacz wynik",
+      "summaryTitle": "Twój głos jest skalibrowany",
+      "gainRaised": "Nova podniesie twój głos o {{db}} dB, bez przesterowania.",
+      "gainUnchanged": "Twój głos ma już właściwy poziom: żadna zmiana nie jest potrzebna.",
+      "tooNoisy": "Twój głos słabo przebija się przez hałas otoczenia. Przysuń mikrofon lub zmień miejsce: samo ustawienie nie wystarczy.",
+      "noCorrection": "Nova dobrze zrozumiała terminy z lekcji. Brak poprawek do dodania.",
+      "correctionsIntro": "Nova źle zrozumiała te terminy. Zaznaczone zostaną poprawione w twoich kolejnych dyktowaniach:",
+      "correction": "„{{expected}}” (Nova słyszała „{{heard}}”)",
+      "save": "Zapisz",
+      "errorMicrophone": "Nie udało się uruchomić mikrofonu. Sprawdź, czy nie trwa dyktowanie, i spróbuj ponownie.",
+      "errorAnalysis": "Nova nie mogła przeanalizować tego czytania. Przeczytaj zdanie ponownie."
     }
   },
   "modelSelector": {
@@ -605,7 +634,10 @@
         "learn": "Dodaj do mojego słownictwa",
         "skip": "Nie teraz",
         "learned": "Dodano do twojego słownictwa."
-      }
+      },
+      "readAloud": "Czytaj na głos",
+      "stopReading": "Zatrzymaj czytanie",
+      "readAloudUnavailable": "Czytanie na głos nie jest dostępne na tym komputerze."
     },
     "debug": {
       "logDirectory": {
@@ -702,6 +734,45 @@
     },
     "home": {
       "subtitle": "Przegląd korzystania z Nova."
+    },
+    "readingComfort": {
+      "title": "Komfort czytania",
+      "description": "Ułatw czytanie tekstu w Nova i słuchaj swoich notatek na głos.",
+      "textSize": {
+        "title": "Rozmiar tekstu",
+        "normal": "Normalny",
+        "large": "Duży",
+        "larger": "Bardzo duży"
+      },
+      "spacing": {
+        "title": "Odstępy między literami i wierszami",
+        "description": "Tekst z większymi odstępami łatwiej czyta się wielu osobom z dysleksją.",
+        "normal": "Normalne",
+        "wide": "Szerokie",
+        "wider": "Bardzo szerokie"
+      },
+      "font": {
+        "title": "Czcionka",
+        "description": "Żadna czcionka nie poprawia udowodnionie czytania przy dysleksji: wybierz tę, która jest dla ciebie najwygodniejsza.",
+        "system": "Nova",
+        "readable": "Verdana (szerokie litery)"
+      },
+      "speechRate": {
+        "title": "Tempo czytania",
+        "description": "Do czytania notatek na głos z historii.",
+        "slow": "Wolne",
+        "normal": "Normalne",
+        "fast": "Szybkie",
+        "try": "Wypróbuj",
+        "sample": "Tak Nova przeczyta twoje notatki na głos."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Mój głos",
+      "descriptionGain": "Nova podnosi twój głos o {{db}} dB.",
+      "descriptionNone": "Bez zmian: twój głos trafia bez regulacji.",
+      "recalibrate": "Skalibruj ponownie mój głos",
+      "reset": "Resetuj"
     }
   },
   "footer": {
@@ -1577,6 +1648,7 @@
     "dataNote": "Serwer uczelni liczy, ile transkrypcji i przepisań wykonujesz każdego dnia. Nie przechowuje ich treści.",
     "aiSkillsPrivacyOffline": "Nova Commands działają na serwerze Twojej uczelni, teraz nieosiągalnym.",
     "notInOrganization": "To konto Microsoft nie należy do Twojej instytucji.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Serwer twojej uczelni"
   }
 }

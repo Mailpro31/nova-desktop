@@ -221,6 +221,35 @@
       "introTitle": "Nova עושה יותר מתמלול",
       "introSubtitle": "דברו, ו-Nova כותב בסגנון שמתאים למה שאתם עושים.",
       "unavailable": "עדיין אין סגנון כתיבה זמין."
+    },
+    "voiceCalibration": {
+      "title": "תנו ל-Nova ללמוד את הקול שלכם",
+      "subtitle": "קראו כמה משפטים מהשיעור. Nova מודד את המיקרופון ומזהה את המילים שהוא מבין לא נכון אצלכם. שום דבר לא מוחל בלי אישורכם.",
+      "tipQuiet": "דברו כמו בכיתה, בשקט: זה הקול ש-Nova צריך לשמוע.",
+      "tipPlace": "שבו במקום שבו אתם עובדים, עם המיקרופון שבו תשתמשו.",
+      "tipDuration": "{{count}} משפטים, בערך שתי דקות.",
+      "start": "התחלה",
+      "readTitle": "משפט {{current}} מתוך {{total}}",
+      "readSubtitle": "לחצו על „קריאה”, אמרו את המשפט ואז לחצו על „סיימתי”.",
+      "record": "קריאה",
+      "stop": "סיימתי",
+      "retry": "לקרוא שוב את המשפט",
+      "listening": "Nova מקשיב…",
+      "analysing": "Nova מנתח את מה ששמע…",
+      "heardLabel": "Nova הבין:",
+      "heardNothing": "לא נשמע דבר. התקרבו למיקרופון וקראו שוב את המשפט.",
+      "next": "המשפט הבא",
+      "finish": "הצגת התוצאה",
+      "summaryTitle": "הקול שלכם כויל",
+      "gainRaised": "Nova יגביר את הקול שלכם ב-{{db}} dB, בלי לעוות אותו.",
+      "gainUnchanged": "הקול שלכם כבר מגיע ברמה הנכונה: אין צורך בכוונון.",
+      "tooNoisy": "הקול שלכם בקושי בולט מעל רעש הרקע. קרבו את המיקרופון או החליפו מקום: כוונון לבדו לא יספיק.",
+      "noCorrection": "Nova הבין היטב את מונחי השיעור. אין תיקונים להוסיף.",
+      "correctionsIntro": "Nova הבין לא נכון את המונחים האלה. אם הם מסומנים, הם יתוקנו בהכתבות הבאות שלכם:",
+      "correction": "„{{expected}}” (Nova שמע „{{heard}}”)",
+      "save": "שמירה",
+      "errorMicrophone": "לא ניתן היה להפעיל את המיקרופון. ודאו שאין הכתבה פעילה ונסו שוב.",
+      "errorAnalysis": "Nova לא הצליח לנתח את הקריאה הזו. קראו שוב את המשפט."
     }
   },
   "modelSelector": {
@@ -605,7 +634,10 @@
         "learn": "הוסיפו לאוצר המילים שלי",
         "skip": "לא עכשיו",
         "learned": "נוסף לאוצר המילים שלכם."
-      }
+      },
+      "readAloud": "הקרא בקול",
+      "stopReading": "עצור הקראה",
+      "readAloudUnavailable": "הקראה בקול אינה זמינה במחשב זה."
     },
     "debug": {
       "logDirectory": {
@@ -702,6 +734,45 @@
     },
     "home": {
       "subtitle": "סקירה כללית של השימוש שלך ב-Nova."
+    },
+    "readingComfort": {
+      "title": "נוחות קריאה",
+      "description": "הפכו את הטקסט של Nova לקל יותר לקריאה, והאזינו להערות שלכם בקול.",
+      "textSize": {
+        "title": "גודל טקסט",
+        "normal": "רגיל",
+        "large": "גדול",
+        "larger": "גדול מאוד"
+      },
+      "spacing": {
+        "title": "מרווח בין אותיות ושורות",
+        "description": "טקסט מרווח קל יותר לקריאה עבור קוראים רבים עם דיסלקציה.",
+        "normal": "רגיל",
+        "wide": "רחב",
+        "wider": "רחב מאוד"
+      },
+      "font": {
+        "title": "גופן",
+        "description": "לא הוכח שגופן כלשהו משפר קריאה עם דיסלקציה: בחרו את הגופן שנוח לכם ביותר.",
+        "system": "Nova",
+        "readable": "Verdana (אותיות רחבות)"
+      },
+      "speechRate": {
+        "title": "מהירות קריאה",
+        "description": "להקראת ההערות שלכם מההיסטוריה.",
+        "slow": "איטית",
+        "normal": "רגילה",
+        "fast": "מהירה",
+        "try": "נסו",
+        "sample": "כך Nova יקריא את ההערות שלכם."
+      }
+    },
+    "voiceCalibration": {
+      "title": "הקול שלי",
+      "descriptionGain": "Nova מגביר את הקול שלכם ב-{{db}} dB.",
+      "descriptionNone": "ללא כוונון: הקול שלכם מגיע כפי שהוא.",
+      "recalibrate": "כיול מחדש של הקול",
+      "reset": "איפוס"
     }
   },
   "footer": {
@@ -1577,6 +1648,7 @@
     "dataNote": "שרת המוסד סופר כמה תמלולים וכתיבות מחדש אתם מבצעים בכל יום. הוא אינו שומר את התוכן.",
     "aiSkillsPrivacyOffline": "‏Nova Commands פועלות על שרת המוסד שלכם, שאינו זמין כרגע.",
     "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "השרת של מוסד הלימודים שלכם"
   }
 }

@@ -8,6 +8,9 @@ import { OrganizationFileTranscribeModal } from "./OrganizationFileTranscribeMod
 import { Button } from "../../ui/Button";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { isOrganizationMode } from "@/lib/mode";
+import { announcedTypeFrom } from "@/lib/organization/wording";
+import { useOrganizationStore } from "@/stores/organizationStore";
+import { homeEngineLabelKey } from "./engineLabel";
 import { formatRelativeTime } from "@/utils/dateFormat";
 import type { SidebarSection } from "../../Sidebar";
 
@@ -35,6 +38,14 @@ interface HomeSettingsProps {
 export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
   const { t, i18n } = useTranslation();
   const home = useHomeState();
+  // Nature annoncée par le serveur : elle choisit « établissement » ou un
+  // libellé neutre pour la rangée Moteur.
+  const organizationType = useOrganizationStore((state) =>
+    announcedTypeFrom(
+      state.serverIdentity?.organizationType,
+      state.config?.organization_type,
+    ),
+  );
   const [fileModalOpen, setFileModalOpen] = useState(false);
   const organizationMode = isOrganizationMode();
 
@@ -90,7 +101,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
           {home.engineKey && (
             <ActiveRow
               label={t("home.active.engine")}
-              value={t(`home.engine.${home.engineKey}`)}
+              value={t(homeEngineLabelKey(home.engineKey, organizationType))}
             />
           )}
           {home.microphoneName && (

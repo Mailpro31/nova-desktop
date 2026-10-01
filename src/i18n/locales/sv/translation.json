@@ -221,6 +221,35 @@
       "introTitle": "Nova gör mer än att transkribera",
       "introSubtitle": "Tala, så skriver Nova i den stil som passar det du gör.",
       "unavailable": "Ingen skrivstil är tillgänglig ännu."
+    },
+    "voiceCalibration": {
+      "title": "Låt Nova lära sig din röst",
+      "subtitle": "Läs upp några meningar från lektionen. Nova mäter din mikrofon och hittar orden som den missförstår i din röst. Inget tillämpas utan ditt godkännande.",
+      "tipQuiet": "Tala som i klassrummet, lågt: det är den rösten Nova behöver höra.",
+      "tipPlace": "Sätt dig där du arbetar, med mikrofonen du ska använda.",
+      "tipDuration": "{{count}} meningar, ungefär två minuter.",
+      "start": "Börja",
+      "readTitle": "Mening {{current}} av {{total}}",
+      "readSubtitle": "Tryck på ”Läs”, säg meningen och tryck sedan på ”Klar”.",
+      "record": "Läs",
+      "stop": "Klar",
+      "retry": "Läs den här meningen igen",
+      "listening": "Nova lyssnar …",
+      "analysing": "Nova analyserar det den hörde …",
+      "heardLabel": "Nova förstod:",
+      "heardNothing": "Inget hörbart. Gå närmare mikrofonen och läs meningen igen.",
+      "next": "Nästa mening",
+      "finish": "Visa resultatet",
+      "summaryTitle": "Din röst är kalibrerad",
+      "gainRaised": "Nova höjer din röst med {{db}} dB, utan att den överstyrs.",
+      "gainUnchanged": "Din röst kommer redan in på rätt nivå: ingen justering behövs.",
+      "tooNoisy": "Din röst hörs dåligt över bakgrundsljudet. Flytta mikrofonen närmare eller byt plats: en inställning räcker inte.",
+      "noCorrection": "Nova förstod ämnesorden rätt. Ingen rättelse att lägga till.",
+      "correctionsIntro": "Nova missförstod de här orden. Om de är markerade rättas de i dina nästa dikteringar:",
+      "correction": "”{{expected}}” (Nova hörde ”{{heard}}”)",
+      "save": "Spara",
+      "errorMicrophone": "Mikrofonen kunde inte starta. Kontrollera att ingen diktering pågår och försök igen.",
+      "errorAnalysis": "Nova kunde inte analysera den här läsningen. Läs meningen igen."
     }
   },
   "modelSelector": {
@@ -605,7 +634,10 @@
         "learn": "Lägg till i mitt ordförråd",
         "skip": "Inte nu",
         "learned": "Tillagt i ditt ordförråd."
-      }
+      },
+      "readAloud": "Läs upp",
+      "stopReading": "Sluta läsa upp",
+      "readAloudUnavailable": "Uppläsning är inte tillgänglig på den här datorn."
     },
     "debug": {
       "logDirectory": {
@@ -702,6 +734,45 @@
     },
     "home": {
       "subtitle": "En översikt över din Nova-användning."
+    },
+    "readingComfort": {
+      "title": "Läskomfort",
+      "description": "Gör Novas text lättare att läsa och låt dina anteckningar läsas upp.",
+      "textSize": {
+        "title": "Textstorlek",
+        "normal": "Normal",
+        "large": "Stor",
+        "larger": "Mycket stor"
+      },
+      "spacing": {
+        "title": "Bokstavs- och radavstånd",
+        "description": "Luftig text är lättare att läsa för många med dyslexi.",
+        "normal": "Normalt",
+        "wide": "Brett",
+        "wider": "Mycket brett"
+      },
+      "font": {
+        "title": "Typsnitt",
+        "description": "Inget typsnitt har visat sig förbättra läsningen vid dyslexi: välj det som känns bekvämast.",
+        "system": "Nova",
+        "readable": "Verdana (breda bokstäver)"
+      },
+      "speechRate": {
+        "title": "Uppläsningshastighet",
+        "description": "För uppläsning av dina anteckningar från historiken.",
+        "slow": "Långsam",
+        "normal": "Normal",
+        "fast": "Snabb",
+        "try": "Prova",
+        "sample": "Så här läser Nova upp dina anteckningar."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Min röst",
+      "descriptionGain": "Nova höjer din röst med {{db}} dB.",
+      "descriptionNone": "Ingen justering: din röst kommer in som den är.",
+      "recalibrate": "Kalibrera om min röst",
+      "reset": "Återställ"
     }
   },
   "footer": {
@@ -1577,6 +1648,7 @@
     "dataNote": "Lärosätets server räknar hur många transkriberingar och omskrivningar du gör varje dag. Innehållet sparas inte.",
     "aiSkillsPrivacyOffline": "Nova Commands körs på din lärosätesserver, som just nu inte går att nå.",
     "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Din skolas server"
   }
 }

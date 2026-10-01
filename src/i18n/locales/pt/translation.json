@@ -221,6 +221,35 @@
       "introTitle": "O Nova faz mais do que transcrever",
       "introSubtitle": "Fale e o Nova escreve no estilo adequado ao que está a fazer.",
       "unavailable": "Ainda não há nenhum estilo de escrita disponível."
+    },
+    "voiceCalibration": {
+      "title": "O Nova aprende a sua voz",
+      "subtitle": "Leia algumas frases de aula. O Nova mede o seu microfone e identifica as palavras que entende mal na sua voz. Nada é aplicado sem a sua autorização.",
+      "tipQuiet": "Fale como na aula, em voz baixa: é essa a voz que o Nova precisa de ouvir.",
+      "tipPlace": "Instale-se onde trabalha, com o microfone que vai usar.",
+      "tipDuration": "{{count}} frases, cerca de dois minutos.",
+      "start": "Começar",
+      "readTitle": "Frase {{current}} de {{total}}",
+      "readSubtitle": "Prima «Ler», diga a frase e depois prima «Terminei».",
+      "record": "Ler",
+      "stop": "Terminei",
+      "retry": "Ler esta frase novamente",
+      "listening": "O Nova está a ouvir…",
+      "analysing": "O Nova está a analisar o que ouviu…",
+      "heardLabel": "O Nova percebeu:",
+      "heardNothing": "Nada audível. Aproxime-se do microfone e leia a frase novamente.",
+      "next": "Frase seguinte",
+      "finish": "Ver o resultado",
+      "summaryTitle": "A sua voz está calibrada",
+      "gainRaised": "O Nova vai aumentar a sua voz em {{db}} dB, sem a saturar.",
+      "gainUnchanged": "A sua voz já chega ao nível certo: não é preciso ajustar nada.",
+      "tooNoisy": "A sua voz mal se destaca do ruído ambiente. Aproxime o microfone ou mude de lugar: um ajuste não chega.",
+      "noCorrection": "O Nova percebeu bem os termos da aula. Nenhuma correção a acrescentar.",
+      "correctionsIntro": "O Nova percebeu mal estes termos. Se estiverem marcados, serão corrigidos nos seus próximos ditados:",
+      "correction": "«{{expected}}» (o Nova ouvia «{{heard}}»)",
+      "save": "Guardar",
+      "errorMicrophone": "Não foi possível iniciar o microfone. Verifique se não há um ditado em curso e tente novamente.",
+      "errorAnalysis": "O Nova não conseguiu analisar esta leitura. Leia a frase novamente."
     }
   },
   "modelSelector": {
@@ -605,7 +634,10 @@
         "learn": "Adicionar ao meu vocabulário",
         "skip": "Agora não",
         "learned": "Adicionado ao seu vocabulário."
-      }
+      },
+      "readAloud": "Ler em voz alta",
+      "stopReading": "Parar a leitura",
+      "readAloudUnavailable": "A leitura em voz alta não está disponível neste computador."
     },
     "debug": {
       "logDirectory": {
@@ -702,6 +734,45 @@
     },
     "home": {
       "subtitle": "Uma visão geral do seu uso do Nova."
+    },
+    "readingComfort": {
+      "title": "Conforto de leitura",
+      "description": "Tornar o texto do Nova mais fácil de ler e ouvir as suas notas em voz alta.",
+      "textSize": {
+        "title": "Tamanho do texto",
+        "normal": "Normal",
+        "large": "Grande",
+        "larger": "Muito grande"
+      },
+      "spacing": {
+        "title": "Espaçamento entre letras e linhas",
+        "description": "Um texto espaçado é mais fácil de ler para muitos leitores com dislexia.",
+        "normal": "Normal",
+        "wide": "Amplo",
+        "wider": "Muito amplo"
+      },
+      "font": {
+        "title": "Tipo de letra",
+        "description": "Nenhum tipo de letra demonstrou melhorar a leitura com dislexia: escolha o que achar mais confortável.",
+        "system": "Nova",
+        "readable": "Verdana (letras largas)"
+      },
+      "speechRate": {
+        "title": "Velocidade de leitura",
+        "description": "Para ler as suas notas em voz alta a partir do histórico.",
+        "slow": "Lenta",
+        "normal": "Normal",
+        "fast": "Rápida",
+        "try": "Experimentar",
+        "sample": "É assim que o Nova vai ler as suas notas em voz alta."
+      }
+    },
+    "voiceCalibration": {
+      "title": "A minha voz",
+      "descriptionGain": "O Nova aumenta a sua voz em {{db}} dB.",
+      "descriptionNone": "Sem ajuste: a sua voz chega tal como é.",
+      "recalibrate": "Recalibrar a minha voz",
+      "reset": "Repor"
     }
   },
   "footer": {
@@ -1577,6 +1648,7 @@
     "dataNote": "O servidor da sua instituição conta quantas transcrições e reescritas faz por dia. Não guarda o seu conteúdo.",
     "aiSkillsPrivacyOffline": "Os Nova Commands correm no servidor da sua instituição, agora inacessível.",
     "notInOrganization": "Esta conta Microsoft não pertence à sua instituição.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "O servidor da sua instituição"
   }
 }

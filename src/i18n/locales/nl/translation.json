@@ -221,6 +221,35 @@
       "introTitle": "Nova doet meer dan transcriberen",
       "introSubtitle": "Spreek, en Nova schrijft in de stijl die bij je werk past.",
       "unavailable": "Er is nog geen schrijfstijl beschikbaar."
+    },
+    "voiceCalibration": {
+      "title": "Laat Nova je stem leren kennen",
+      "subtitle": "Lees een paar zinnen uit de les voor. Nova meet je microfoon en spoort de woorden op die het bij jou verkeerd verstaat. Er wordt niets toegepast zonder jouw toestemming.",
+      "tipQuiet": "Spreek zoals in de klas, zachtjes: dat is de stem die Nova moet horen.",
+      "tipPlace": "Ga zitten waar je werkt, met de microfoon die je gaat gebruiken.",
+      "tipDuration": "{{count}} zinnen, ongeveer twee minuten.",
+      "start": "Beginnen",
+      "readTitle": "Zin {{current}} van {{total}}",
+      "readSubtitle": "Druk op ‘Voorlezen’, zeg de zin en druk dan op ‘Klaar’.",
+      "record": "Voorlezen",
+      "stop": "Klaar",
+      "retry": "Deze zin opnieuw lezen",
+      "listening": "Nova luistert…",
+      "analysing": "Nova analyseert wat het hoorde…",
+      "heardLabel": "Nova heeft verstaan:",
+      "heardNothing": "Niets hoorbaar. Kom dichter bij de microfoon en lees de zin opnieuw.",
+      "next": "Volgende zin",
+      "finish": "Resultaat bekijken",
+      "summaryTitle": "Je stem is gekalibreerd",
+      "gainRaised": "Nova versterkt je stem met {{db}} dB, zonder te oversturen.",
+      "gainUnchanged": "Je stem komt al op het juiste niveau binnen: geen aanpassing nodig.",
+      "tooNoisy": "Je stem komt nauwelijks boven het achtergrondgeluid uit. Zet de microfoon dichterbij of ga ergens anders zitten: een instelling alleen is niet genoeg.",
+      "noCorrection": "Nova heeft de vaktermen goed verstaan. Geen correctie nodig.",
+      "correctionsIntro": "Nova heeft deze termen verkeerd verstaan. Aangevinkt worden ze in je volgende dictaten gecorrigeerd:",
+      "correction": "‘{{expected}}’ (Nova hoorde ‘{{heard}}’)",
+      "save": "Opslaan",
+      "errorMicrophone": "De microfoon kon niet starten. Controleer dat er geen dictaat bezig is en probeer het opnieuw.",
+      "errorAnalysis": "Nova kon deze lezing niet analyseren. Lees de zin opnieuw."
     }
   },
   "modelSelector": {
@@ -605,7 +634,10 @@
         "learn": "Aan mijn woordenlijst toevoegen",
         "skip": "Niet nu",
         "learned": "Aan je woordenlijst toegevoegd."
-      }
+      },
+      "readAloud": "Voorlezen",
+      "stopReading": "Voorlezen stoppen",
+      "readAloudUnavailable": "Voorlezen is niet beschikbaar op deze computer."
     },
     "debug": {
       "logDirectory": {
@@ -702,6 +734,45 @@
     },
     "home": {
       "subtitle": "Een overzicht van uw Nova-gebruik."
+    },
+    "readingComfort": {
+      "title": "Leescomfort",
+      "description": "De tekst van Nova makkelijker leesbaar maken en je notities laten voorlezen.",
+      "textSize": {
+        "title": "Tekstgrootte",
+        "normal": "Normaal",
+        "large": "Groot",
+        "larger": "Zeer groot"
+      },
+      "spacing": {
+        "title": "Letter- en regelafstand",
+        "description": "Ruim gezette tekst leest voor veel mensen met dyslexie makkelijker.",
+        "normal": "Normaal",
+        "wide": "Ruim",
+        "wider": "Zeer ruim"
+      },
+      "font": {
+        "title": "Lettertype",
+        "description": "Van geen enkel lettertype is aangetoond dat het lezen met dyslexie verbetert: kies wat voor jou het prettigst is.",
+        "system": "Nova",
+        "readable": "Verdana (brede letters)"
+      },
+      "speechRate": {
+        "title": "Voorleessnelheid",
+        "description": "Voor het voorlezen van je notities vanuit de geschiedenis.",
+        "slow": "Langzaam",
+        "normal": "Normaal",
+        "fast": "Snel",
+        "try": "Proberen",
+        "sample": "Zo leest Nova je notities voor."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Mijn stem",
+      "descriptionGain": "Nova versterkt je stem met {{db}} dB.",
+      "descriptionNone": "Geen aanpassing: je stem komt binnen zoals hij is.",
+      "recalibrate": "Mijn stem opnieuw kalibreren",
+      "reset": "Herstellen"
     }
   },
   "footer": {
@@ -1577,6 +1648,7 @@
     "dataNote": "De server van uw instelling telt hoeveel transcripties en herschrijvingen u per dag uitvoert. De inhoud wordt niet bewaard.",
     "aiSkillsPrivacyOffline": "Nova Commands draaien op de server van uw instelling, die nu onbereikbaar is.",
     "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "De server van je onderwijsinstelling"
   }
 }

@@ -221,6 +221,35 @@
       "introTitle": "Nova does more than transcribe",
       "introSubtitle": "Speak, and Nova writes in the style that fits what you are doing.",
       "unavailable": "No writing style is available yet."
+    },
+    "voiceCalibration": {
+      "title": "Let Nova learn your voice",
+      "subtitle": "Read a few course sentences. Nova measures your microphone and spots the words it misunderstands in your voice. Nothing is applied without your approval.",
+      "tipQuiet": "Speak as you would in class, quietly: that is the voice Nova needs to hear.",
+      "tipPlace": "Sit where you work, with the microphone you will use.",
+      "tipDuration": "{{count}} sentences, about two minutes.",
+      "start": "Start",
+      "readTitle": "Sentence {{current}} of {{total}}",
+      "readSubtitle": "Press “Read”, say the sentence, then press “Done”.",
+      "record": "Read",
+      "stop": "Done",
+      "retry": "Read this sentence again",
+      "listening": "Nova is listening…",
+      "analysing": "Nova is analysing what it heard…",
+      "heardLabel": "Nova understood:",
+      "heardNothing": "Nothing audible. Move closer to the microphone and read the sentence again.",
+      "next": "Next sentence",
+      "finish": "See the result",
+      "summaryTitle": "Your voice is calibrated",
+      "gainRaised": "Nova will raise your voice by {{db}} dB, without clipping it.",
+      "gainUnchanged": "Your voice already comes in at the right level: no adjustment needed.",
+      "tooNoisy": "Your voice does not stand out from the background noise. Move the microphone closer or change places: a setting will not be enough.",
+      "noCorrection": "Nova understood the course terms. No correction to add.",
+      "correctionsIntro": "Nova misunderstood these terms. When checked, they will be corrected in your next dictations:",
+      "correction": "“{{expected}}” (Nova heard “{{heard}}”)",
+      "save": "Save",
+      "errorMicrophone": "The microphone could not start. Check that no dictation is in progress, then try again.",
+      "errorAnalysis": "Nova could not analyse this reading. Read the sentence again."
     }
   },
   "modelSelector": {
@@ -605,7 +634,10 @@
         "learn": "Add to my vocabulary",
         "skip": "Not now",
         "learned": "Added to your vocabulary."
-      }
+      },
+      "readAloud": "Read aloud",
+      "stopReading": "Stop reading",
+      "readAloudUnavailable": "Read aloud is not available on this computer."
     },
     "debug": {
       "logDirectory": {
@@ -702,6 +734,45 @@
     },
     "home": {
       "subtitle": "An overview of your Nova usage."
+    },
+    "readingComfort": {
+      "title": "Reading comfort",
+      "description": "Make Nova's text easier to read, and hear your notes read aloud.",
+      "textSize": {
+        "title": "Text size",
+        "normal": "Normal",
+        "large": "Large",
+        "larger": "Larger"
+      },
+      "spacing": {
+        "title": "Letter and line spacing",
+        "description": "Spaced-out text is easier to read for many dyslexic readers.",
+        "normal": "Normal",
+        "wide": "Wide",
+        "wider": "Widest"
+      },
+      "font": {
+        "title": "Font",
+        "description": "No font has been shown to improve reading with dyslexia: choose the one you find most comfortable.",
+        "system": "Nova",
+        "readable": "Verdana (wide letters)"
+      },
+      "speechRate": {
+        "title": "Reading speed",
+        "description": "For reading your notes aloud from the history.",
+        "slow": "Slow",
+        "normal": "Normal",
+        "fast": "Fast",
+        "try": "Try",
+        "sample": "This is how Nova will read your notes aloud."
+      }
+    },
+    "voiceCalibration": {
+      "title": "My voice",
+      "descriptionGain": "Nova raises your voice by {{db}} dB.",
+      "descriptionNone": "No adjustment: your voice comes in as it is.",
+      "recalibrate": "Recalibrate my voice",
+      "reset": "Reset"
     }
   },
   "footer": {
@@ -1577,6 +1648,7 @@
     "dataNote": "Your institution's server counts how many transcriptions and rewrites you run each day. It does not store their content.",
     "aiSkillsPrivacyOffline": "Nova Commands run on your institution's server, which is unreachable right now.",
     "notInOrganization": "This Microsoft account is not part of your institution.",
-    "codeForbidden": "Access is unavailable. Contact your institution administrator."
+    "codeForbidden": "Access is unavailable. Contact your institution administrator.",
+    "engineServer": "Your institution's server"
   }
 }
