@@ -24,9 +24,12 @@ async function showIdleBubble(page: Page) {
           }
         ).__NOVA_TEST_EMIT__?.("show-overlay", "idle"),
       );
-      return page.locator(".scard.sidle").count();
+      return page.locator(".shandle").count();
     })
     .toBe(1);
+  // Au repos, la bulle n'est qu'une poignée : on la survole pour la déplier.
+  await page.locator(".ov-stage").hover();
+  await expect(page.locator(".scard.sidle")).toHaveCount(1);
 }
 
 async function bubbleColors(page: Page): Promise<Colors> {

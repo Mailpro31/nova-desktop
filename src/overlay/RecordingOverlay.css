@@ -893,3 +893,29 @@
     transition-duration: 1ms;
   }
 }
+
+/* ============================================================
+   Bulle au repos repliée : une fine poignée translucide. Toujours affichée
+   au-dessus de toutes les fenêtres, la pilule entière masquait le bas des
+   applications ; elle ne se déplie qu'au survol (voir idleBubble.ts). La
+   fenêtre native fait 48 x 14 (overlay.rs) : toute sa surface déclenche le
+   survol.
+   ============================================================ */
+.shandle {
+  position: relative;
+  width: 40px;
+  height: 6px;
+  margin: 4px 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--s-accent) 55%, var(--s-surface));
+  box-shadow: 0 0 0 1px var(--s-border);
+  opacity: 0.6;
+  transition: opacity 160ms ease;
+}
+.ov-stage:hover .shandle {
+  opacity: 1;
+}
+.shandle .sunread {
+  top: -4px;
+  right: -6px;
+}

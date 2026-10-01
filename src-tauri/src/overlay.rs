@@ -52,6 +52,12 @@ const OVERLAY_WORK_WIDTH: f64 = 218.0;
 const OVERLAY_MENU_WIDTH: f64 = 232.0;
 const OVERLAY_HEIGHT: f64 = 42.0;
 
+// Bulle au repos repliée : une fine poignée. Toujours affichée au-dessus de
+// toutes les fenêtres, la pilule entière masquait le bas des applications ;
+// elle ne se déplie plus qu'au survol (voir `src/overlay/idleBubble.ts`).
+const OVERLAY_HANDLE_WIDTH: f64 = 48.0;
+const OVERLAY_HANDLE_HEIGHT: f64 = 14.0;
+
 // État « recording » uniquement : un peu plus haut que le repos pour loger,
 // SOUS/ AU-DESSUS de la pilule (selon le placement), l'indice micro discret
 // (« Je vous entends » / « Parlez un peu plus fort »). La carte reste ancrée
@@ -75,7 +81,7 @@ fn overlay_dimensions(state: &str) -> (f64, f64) {
     } else if state == "recording" {
         (OVERLAY_COMPACT_WIDTH, OVERLAY_RECORDING_HEIGHT)
     } else if state == "idle" {
-        (OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
+        (OVERLAY_HANDLE_WIDTH, OVERLAY_HANDLE_HEIGHT)
     } else {
         (OVERLAY_WORK_WIDTH, OVERLAY_HEIGHT)
     }
@@ -486,19 +492,15 @@ pub fn show_idle_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "idle");
 }
 
-/// Agrandit (ou rétablit) la fenêtre de la bulle pour héberger le menu de choix
-/// de Style : la fenêtre idle fait 46 px, trop court pour un menu déroulant. On
+/// Redimensionne la fenêtre de la bulle au repos : poignée, pilule au survol, ou
+/// assez haute pour le menu de choix de Style et la carte de suggestion. On
 /// la ré-ancre au bord de l'écran après redimensionnement (ancrage bas → le menu
 /// s'étend vers le haut ; ancrage haut → vers le bas).
 #[tauri::command]
 #[specta::specta]
 pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String> {
     if let Some(window) = app.get_webview_window("recording_overlay") {
-        let (width, h) = if height > OVERLAY_HEIGHT {
-            (OVERLAY_MENU_WIDTH, height)
-        } else {
-            (OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
-        };
+        let (width, h) = idle_window_size(height);
         let _ = window.set_size(tauri::Size::Logical(tauri::LogicalSize {
             width,
             height: h,
@@ -510,6 +512,18 @@ pub fn set_overlay_menu_height(app: AppHandle, height: f64) -> Result<(), String
         force_overlay_topmost(&window);
     }
     Ok(())
+}
+
+/// Taille de la fenêtre au repos pour la hauteur demandée par la bulle : la
+/// poignée par défaut, la pilule au survol, le menu ou la suggestion au-delà.
+fn idle_window_size(height: f64) -> (f64, f64) {
+    if height > OVERLAY_HEIGHT {
+        (OVERLAY_MENU_WIDTH, height)
+    } else if height >= OVERLAY_HEIGHT {
+        (OVERLAY_IDLE_WIDTH, OVERLAY_HEIGHT)
+    } else {
+        (OVERLAY_HANDLE_WIDTH, OVERLAY_HANDLE_HEIGHT)
+    }
 }
 
 /// La souris est-elle au-dessus de la bulle ? (coordonnées logiques, comme
@@ -685,11 +699,22 @@ mod tests {
 
     #[test]
     fn compact_states_use_their_visible_footprint() {
-        assert_eq!(overlay_dimensions("idle"), (102.0, 42.0));
+        // Au repos, la bulle n'est qu'une fine poignée : la pilule entière
+        // masquait le bas des applications (champ de saisie, boutons).
+        assert_eq!(overlay_dimensions("idle"), (48.0, 14.0));
         assert_eq!(overlay_dimensions("recording"), (126.0, 62.0));
         assert_eq!(overlay_dimensions("preparing"), (218.0, 42.0));
         assert_eq!(overlay_dimensions("transcribing"), (218.0, 42.0));
         assert_eq!(overlay_dimensions("processing"), (218.0, 42.0));
+    }
+
+    #[test]
+    fn the_idle_window_grows_only_when_asked() {
+        // Poignée par défaut ; pilule au survol ; menu ou suggestion au besoin.
+        assert_eq!(idle_window_size(0.0), (48.0, 14.0));
+        assert_eq!(idle_window_size(14.0), (48.0, 14.0));
+        assert_eq!(idle_window_size(42.0), (102.0, 42.0));
+        assert_eq!(idle_window_size(230.0), (232.0, 230.0));
     }
 
     #[test]

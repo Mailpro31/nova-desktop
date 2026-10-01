@@ -12,6 +12,11 @@ import type {
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
 import { styleLockFeature } from "@/lib/builtinStyles";
+import {
+  IDLE_COLLAPSE_DELAY_MS,
+  IDLE_PILL_HEIGHT,
+  idleWindowHeight,
+} from "./idleBubble";
 
 type OverlayState =
   | "idle"
@@ -98,6 +103,28 @@ const RecordingOverlay: React.FC = () => {
   const [styles, setStyles] = useState<StyleItem[]>([]);
   const [selectedStyleId, setSelectedStyleId] = useState<string>("");
   const [menuOpen, setMenuOpen] = useState(false);
+  // Bulle au repos dépliée (survol) ou repliée en poignée : repliée, elle ne
+  // masque plus le bas des applications.
+  const [expanded, setExpanded] = useState(false);
+  const collapseTimerRef = useRef<number | null>(null);
+  const cancelCollapse = () => {
+    if (collapseTimerRef.current !== null) {
+      window.clearTimeout(collapseTimerRef.current);
+      collapseTimerRef.current = null;
+    }
+  };
+  const expandBubble = () => {
+    cancelCollapse();
+    setExpanded(true);
+  };
+  const scheduleCollapse = () => {
+    cancelCollapse();
+    collapseTimerRef.current = window.setTimeout(() => {
+      collapseTimerRef.current = null;
+      setExpanded(false);
+    }, IDLE_COLLAPSE_DELAY_MS);
+  };
+  useEffect(() => cancelCollapse, []);
   // Fonctionnalités du palier courant : décide quels Styles sont verrouillés.
   // Défensif : licence dormante → `has()` vrai partout → aucune fonctionnalité
   // absente → rien n'est verrouillé (bulle inchangée pour tous aujourd'hui).
@@ -158,7 +185,8 @@ const RecordingOverlay: React.FC = () => {
   const MENU_ROW_H = 34;
 
   const resizeForMenu = async (open: boolean, count: number) => {
-    const height = open ? 46 + count * MENU_ROW_H + 14 : 0;
+    // Menu refermé : la souris est encore sur la bulle, qui reste dépliée.
+    const height = open ? 46 + count * MENU_ROW_H + 14 : IDLE_PILL_HEIGHT;
     try {
       await invoke("set_overlay_menu_height", { height });
     } catch {
@@ -298,12 +326,19 @@ const RecordingOverlay: React.FC = () => {
 
   // Au repos (menu fermé), agrandit la fenêtre overlay pour loger la carte —
   // même canal que le menu des Styles. Réinitialise à la hauteur de repos sinon.
+  // Hors menu : poignée au repos, pilule au survol, carte de suggestion si
+  // elle a quelque chose à proposer.
   useEffect(() => {
     if (state !== "idle" || menuOpen) return;
     invoke("set_overlay_menu_height", {
-      height: suggestionVisible ? SUGGEST_OVERLAY_HEIGHT : 0,
+      height: idleWindowHeight({
+        expanded,
+        menuOpen: false,
+        menuHeight: 0,
+        suggestionHeight: suggestionVisible ? SUGGEST_OVERLAY_HEIGHT : 0,
+      }),
     }).catch(() => {});
-  }, [suggestionVisible, state, menuOpen]);
+  }, [suggestionVisible, state, menuOpen, expanded]);
 
   const smoothedLevelsRef = useRef<number[]>(Array(16).fill(0));
   // Live-text scroll-back: the text region "sticks" to the newest line while the
@@ -332,6 +367,9 @@ const RecordingOverlay: React.FC = () => {
         const overlayState = event.payload as OverlayState;
         setState(overlayState);
         if (overlayState === "idle") {
+          // Chaque retour au repos commence replié.
+          cancelCollapse();
+          setExpanded(false);
           void fetchStyles();
         } else {
           setMenuOpen(false);
@@ -641,10 +679,28 @@ const RecordingOverlay: React.FC = () => {
   // ---- Idle overlay: la bulle au repos, toujours affichée.
   // [engrenage → réglages] [orbe Nova] [étoile → menu des Styles] ----
   if (state === "idle") {
+    // Repliée : une fine poignée, qui se déplie dès que la souris l'approche.
+    if (!expanded && !menuOpen && !suggestionVisible) {
+      return (
+        <div
+          dir={direction}
+          className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+          onMouseEnter={expandBubble}
+        >
+          <div className="shandle" aria-hidden="true">
+            {hasUnreadNotification && <span className="sunread" />}
+          </div>
+        </div>
+      );
+    }
     return (
       <div
         dir={direction}
         className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+        onMouseEnter={expandBubble}
+        onMouseLeave={() => {
+          if (!menuOpen) scheduleCollapse();
+        }}
       >
         <div className="sidle-col">
           {menuOpen && (
