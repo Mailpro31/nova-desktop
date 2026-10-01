@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova does more than transcribe",
       "introSubtitle": "Speak, and Nova writes in the style that fits what you are doing.",
-      "unavailable": "No writing style is available yet."
+      "unavailable": "No writing style is available yet.",
+      "saidLabel": "You say",
+      "said": "“uh, meeting on Monday, no wait, Tuesday at the library”",
+      "writtenLabel": "Nova writes",
+      "written": "Meeting on Tuesday at the library.",
+      "automatic": "Nova picks the style for you depending on the app: your text cleaned up in Word or on your school portal, an email in your mailbox.",
+      "stylesLabel": "Writing styles",
+      "changeLater": "You can change style at any time from the bubble or in Settings."
     },
     "voiceCalibration": {
       "title": "Let Nova learn your voice",

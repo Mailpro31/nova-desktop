@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova umí víc než přepis",
       "introSubtitle": "Mluvte a Nova píše stylem, který odpovídá vaší práci.",
-      "unavailable": "Zatím není k dispozici žádný styl psaní."
+      "unavailable": "Zatím není k dispozici žádný styl psaní.",
+      "saidLabel": "Řeknete",
+      "said": "„ehm, schůzka v pondělí, ne počkej, v úterý v knihovně“",
+      "writtenLabel": "Nova napíše",
+      "written": "Schůzka v úterý v knihovně.",
+      "automatic": "Nova za vás vybere styl podle aplikace: upravený text ve Wordu nebo ve školním portálu, e-mail ve vaší schránce.",
+      "stylesLabel": "Styly psaní",
+      "changeLater": "Styl můžete kdykoli změnit z bubliny nebo v Nastavení."
     },
     "voiceCalibration": {
       "title": "Naučte Novu svůj hlas",

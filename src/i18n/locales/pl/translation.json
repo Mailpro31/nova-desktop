@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova to nie tylko transkrypcja",
       "introSubtitle": "Mów, a Nova napisze w stylu pasującym do Twojego zadania.",
-      "unavailable": "Nie ma jeszcze dostępnego stylu pisania."
+      "unavailable": "Nie ma jeszcze dostępnego stylu pisania.",
+      "saidLabel": "Mówisz",
+      "said": "„yyy, spotkanie w poniedziałek, nie czekaj, we wtorek w bibliotece”",
+      "writtenLabel": "Nova pisze",
+      "written": "Spotkanie we wtorek w bibliotece.",
+      "automatic": "Nova sama dobiera styl do aplikacji: uporządkowany tekst w Wordzie lub na portalu szkoły, e-mail w skrzynce pocztowej.",
+      "stylesLabel": "Style pisania",
+      "changeLater": "Styl możesz zmienić w każdej chwili z bańki lub w Ustawieniach."
     },
     "voiceCalibration": {
       "title": "Pozwól Novej poznać swój głos",

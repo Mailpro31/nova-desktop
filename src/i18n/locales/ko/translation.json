@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova는 받아쓰기만 하지 않습니다",
       "introSubtitle": "말하면 Nova가 상황에 맞는 문체로 씁니다.",
-      "unavailable": "아직 사용할 수 있는 문체가 없습니다."
+      "unavailable": "아직 사용할 수 있는 문체가 없습니다.",
+      "saidLabel": "이렇게 말하면",
+      "said": "“음, 월요일에 회의, 아니 잠깐, 화요일에 도서관에서”",
+      "writtenLabel": "Nova가 쓰는 글",
+      "written": "화요일에 도서관에서 회의.",
+      "automatic": "Nova가 앱에 맞춰 스타일을 골라 줍니다. Word나 학교 포털에서는 다듬은 글로, 메일함에서는 이메일로.",
+      "stylesLabel": "글쓰기 스타일",
+      "changeLater": "버블이나 설정에서 언제든지 스타일을 바꿀 수 있습니다."
     },
     "voiceCalibration": {
       "title": "Nova가 목소리를 익히게 하세요",

@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova yalnızca deşifre etmez",
       "introSubtitle": "Konuşun, Nova yaptığınız işe uygun üslupla yazsın.",
-      "unavailable": "Henüz kullanılabilir bir yazım üslubu yok."
+      "unavailable": "Henüz kullanılabilir bir yazım üslubu yok.",
+      "saidLabel": "Siz diyorsunuz",
+      "said": "“ıı, pazartesi toplantı, hayır dur, salı günü kütüphanede”",
+      "writtenLabel": "Nova yazıyor",
+      "written": "Salı günü kütüphanede toplantı.",
+      "automatic": "Nova stili uygulamaya göre sizin için seçer: Word'de ya da okul portalında temizlenmiş metniniz, posta kutunuzda bir e-posta.",
+      "stylesLabel": "Yazım stilleri",
+      "changeLater": "Stili istediğiniz zaman baloncuktan veya Ayarlar'dan değiştirebilirsiniz."
     },
     "voiceCalibration": {
       "title": "Nova sesinizi öğrensin",

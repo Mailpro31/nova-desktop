@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "O Nova faz mais do que transcrever",
       "introSubtitle": "Fale e o Nova escreve no estilo adequado ao que está a fazer.",
-      "unavailable": "Ainda não há nenhum estilo de escrita disponível."
+      "unavailable": "Ainda não há nenhum estilo de escrita disponível.",
+      "saidLabel": "Você diz",
+      "said": "«hum, reunião na segunda, não espera, na terça na biblioteca»",
+      "writtenLabel": "O Nova escreve",
+      "written": "Reunião na terça na biblioteca.",
+      "automatic": "O Nova escolhe o estilo por si consoante a aplicação: o seu texto passado a limpo no Word ou no portal da escola, um e-mail na sua caixa de correio.",
+      "stylesLabel": "Estilos de escrita",
+      "changeLater": "Pode mudar de estilo a qualquer momento a partir da bolha ou nas Definições."
     },
     "voiceCalibration": {
       "title": "O Nova aprende a sua voz",

@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova non si limita a trascrivere",
       "introSubtitle": "Parla e Nova scrive nello stile adatto a ciò che stai facendo.",
-      "unavailable": "Nessuno stile di scrittura è ancora disponibile."
+      "unavailable": "Nessuno stile di scrittura è ancora disponibile.",
+      "saidLabel": "Tu dici",
+      "said": "«ehm, riunione lunedì, no aspetta, martedì in biblioteca»",
+      "writtenLabel": "Nova scrive",
+      "written": "Riunione martedì in biblioteca.",
+      "automatic": "Nova sceglie lo stile per te in base all'app: il tuo testo in ordine in Word o sul portale della scuola, un'e-mail nella tua casella.",
+      "stylesLabel": "Stili di scrittura",
+      "changeLater": "Puoi cambiare stile in qualsiasi momento dalla bolla o nelle Impostazioni."
     },
     "voiceCalibration": {
       "title": "Nova impara la tua voce",

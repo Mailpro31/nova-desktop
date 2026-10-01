@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova は文字起こしだけではありません",
       "introSubtitle": "話すだけで、作業に合った文体で Nova が書きます。",
-      "unavailable": "利用できる文体はまだありません。"
+      "unavailable": "利用できる文体はまだありません。",
+      "saidLabel": "あなたの言葉",
+      "said": "「えっと、月曜に打ち合わせ、いや待って、火曜に図書館で」",
+      "writtenLabel": "Nova が書く文",
+      "written": "火曜に図書館で打ち合わせ。",
+      "automatic": "Nova はアプリに合わせてスタイルを選びます。Word や学校のポータルでは整えた文章に、メールソフトではメールに。",
+      "stylesLabel": "文章スタイル",
+      "changeLater": "スタイルはバブルや設定からいつでも変更できます。"
     },
     "voiceCalibration": {
       "title": "Nova にあなたの声を覚えさせましょう",

@@ -220,7 +220,14 @@
     "writingStyles": {
       "introTitle": "Nova doet meer dan transcriberen",
       "introSubtitle": "Spreek, en Nova schrijft in de stijl die bij je werk past.",
-      "unavailable": "Er is nog geen schrijfstijl beschikbaar."
+      "unavailable": "Er is nog geen schrijfstijl beschikbaar.",
+      "saidLabel": "Je zegt",
+      "said": "„eh, afspraak op maandag, nee wacht, dinsdag in de bibliotheek”",
+      "writtenLabel": "Nova schrijft",
+      "written": "Afspraak op dinsdag in de bibliotheek.",
+      "automatic": "Nova kiest de stijl voor je op basis van de app: je tekst netjes in Word of op het schoolportaal, een e-mail in je mailbox.",
+      "stylesLabel": "Schrijfstijlen",
+      "changeLater": "Je kunt op elk moment van stijl wisselen via de bel of in Instellingen."
     },
     "voiceCalibration": {
       "title": "Laat Nova je stem leren kennen",
