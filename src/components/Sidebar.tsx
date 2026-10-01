@@ -280,7 +280,8 @@ const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "postprocessing",
   "prompts",
   "notes",
-  "meeting",
+  // « meeting » : suspendu dans Nova Organisation (décision du 01/10). La
+  // section reste déclarée, et le poste refuse de démarrer une réunion.
   "history",
 ];
 
