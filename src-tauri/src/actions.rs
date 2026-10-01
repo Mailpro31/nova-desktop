@@ -835,7 +835,10 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
     // Un compte rendu résume : il ne reprend pas chaque heure ni chaque montant
     // cité. Exiger tous les nombres le faisait refuser presque à chaque fois.
     if style_id != MEETING_STYLE {
-        for number in DIGITS.find_iter(input) {
+        // Ce qu'une reprise a abandonné (« le 12, non pardon, le 13 ») n'a pas
+        // à survivre ; la valeur retenue, si.
+        let required = crate::rewrite::guard::without_abandoned(input);
+        for number in DIGITS.find_iter(&required) {
             if !output.contains(number.as_str()) {
                 return Err("explicit-number-lost");
             }

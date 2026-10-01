@@ -580,7 +580,7 @@ fn is_fact_token(word: &str) -> bool {
 /// avant « pardon », « plutôt », « je veux dire », ou avant un « non » suivi
 /// d'un nombre ou d'une date (« le 12 non le 13 »). La valeur retenue, elle,
 /// reste : c'est elle qui doit se retrouver dans la sortie.
-fn without_abandoned(text: &str) -> String {
+pub(crate) fn without_abandoned(text: &str) -> String {
     let raw: Vec<&str> = text.split_whitespace().collect();
     let words: Vec<String> = raw
         .iter()
