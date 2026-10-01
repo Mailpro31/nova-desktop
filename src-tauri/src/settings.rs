@@ -442,6 +442,11 @@ pub struct AppSettings {
     pub model_unload_timeout: ModelUnloadTimeout,
     #[serde(default = "default_word_correction_threshold")]
     pub word_correction_threshold: f64,
+    /// Gain appliqué à la voix avant la détection et la transcription, fixé
+    /// par le calibrage de la voix (voir `voice_calibration`). 1 = inchangé ;
+    /// borné à l'usage par `audio_toolkit::sanitize_gain`.
+    #[serde(default = "default_input_gain")]
+    pub input_gain: f32,
     #[serde(default = "default_history_limit")]
     pub history_limit: usize,
     #[serde(default = "default_recording_retention_period")]
@@ -672,6 +677,10 @@ fn default_log_level() -> LogLevel {
 
 fn default_word_correction_threshold() -> f64 {
     0.18
+}
+
+fn default_input_gain() -> f32 {
+    1.0
 }
 
 fn default_paste_delay_ms() -> u64 {
@@ -1542,6 +1551,7 @@ pub fn get_default_settings() -> AppSettings {
         custom_variables: Vec::new(),
         model_unload_timeout: ModelUnloadTimeout::default(),
         word_correction_threshold: default_word_correction_threshold(),
+        input_gain: default_input_gain(),
         history_limit: default_history_limit(),
         recording_retention_period: default_recording_retention_period(),
         paste_method: PasteMethod::default(),

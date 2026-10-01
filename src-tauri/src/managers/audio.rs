@@ -520,6 +520,9 @@ impl AudioRecordingManager {
             }
 
             if let Some(rec) = self.recorder.lock().unwrap().as_ref() {
+                // Le gain issu du calibrage de la voix, relu à chaque
+                // enregistrement : un recalibrage vaut dès la dictée suivante.
+                rec.set_input_gain(get_settings(&self.app_handle).input_gain);
                 if rec.start(vad_policy).is_ok() {
                     *self.is_recording.lock().unwrap() = true;
                     *state = RecordingState::Recording {
