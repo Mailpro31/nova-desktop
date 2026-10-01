@@ -12,6 +12,7 @@ import {
   NOTE_TYPES,
   structuredNotesEngine,
   type NoteType,
+  structuredNotesErrorKey,
 } from "@/lib/structuredNotes";
 import { useOrganizationStore } from "@/stores/organizationStore";
 
@@ -58,8 +59,14 @@ export const StructuredNotesSettings: React.FC = () => {
         if (response.status === "error") throw new Error(response.error);
         setResult(response.data);
       }
-    } catch {
-      toast.error(t("structuredNotes.error"));
+    } catch (error) {
+      toast.error(
+        t(
+          structuredNotesErrorKey(
+            error instanceof Error ? error.message : String(error),
+          ),
+        ),
+      );
     } finally {
       setLoading(false);
     }

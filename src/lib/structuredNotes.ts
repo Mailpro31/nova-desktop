@@ -39,3 +39,22 @@ export function structuredNotesEngine(
     ? "organization"
     : "unavailable";
 }
+
+/**
+ * Le message à montrer quand la structuration échoue, d'après l'erreur reçue.
+ *
+ * Un texte trop long ne passera pas en réessayant : l'élève doit le savoir.
+ * Le délai est testé avant le réseau, parce qu'un délai dépassé arrive aussi
+ * comme une erreur réseau (« operation timed out »).
+ */
+export function structuredNotesErrorKey(message: string): string {
+  if (/HTTP 413|AI_PROMPT_TOO_LONG/.test(message)) {
+    return "structuredNotes.errorTooLong";
+  }
+  if (/HTTP 504|timed out|timeout/i.test(message)) {
+    return "structuredNotes.errorSlow";
+  }
+  if (/HTTP 429/.test(message)) return "structuredNotes.errorBusy";
+  if (/network error/i.test(message)) return "structuredNotes.errorOffline";
+  return "structuredNotes.error";
+}

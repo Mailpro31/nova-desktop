@@ -2133,6 +2133,16 @@ pub async fn get_organization_ai_skills(
 /// Un serveur antérieur à `/api/structured-notes` répond 404 : la note part
 /// alors vers `/api/engineering-notes`, avec la structure du type en
 /// consigne, plutôt que d'échouer tant que le serveur n'est pas à jour.
+/// Ce que le poste attend la structuration d'une note : le serveur s'accorde
+/// 60 s par morceau de 4000 caractères, qu'il traite l'un après l'autre. Le
+/// poste coupait à 30 s, avant que le serveur ait fini une longue
+/// transcription.
+fn structured_notes_timeout(chars: usize) -> Duration {
+    const PIECE_CHARS: usize = 4_000;
+    let pieces = chars.div_ceil(PIECE_CHARS).max(1) as u64;
+    Duration::from_secs((30 + 60 * pieces).min(600))
+}
+
 #[tauri::command]
 #[specta::specta]
 pub async fn format_organization_structured_notes(
@@ -2141,7 +2151,13 @@ pub async fn format_organization_structured_notes(
     note_type: String,
     instruction: String,
 ) -> Result<OrganizationCommandResponse, String> {
-    let (base_url, client) = authenticated_client(&app)?;
+    let credentials = load_organization_credentials(&app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
+    let client = organization_request_client_with_timeout(
+        Some(&credentials.token),
+        structured_notes_timeout(text.chars().count()),
+    );
     let response = client
         .post(format!("{}/api/structured-notes", base_url))
         .json(&serde_json::json!({
@@ -3366,6 +3382,17 @@ mod organization_response_tests {
         let parsed: TranscribeResponse =
             serde_json::from_str(SERVER_PAYLOAD).expect("objet deserialisable");
         assert_eq!(parsed.text, "Bonjour, ceci est un essai de dictee.");
+    }
+
+    #[test]
+    fn structuring_long_notes_waits_as_long_as_the_server_may_work() {
+        // Le poste coupait à 30 s alors que le serveur s'en accorde 60 par
+        // morceau de 4000 caractères : une longue transcription échouait côté
+        // poste avant que le serveur ait fini.
+        assert_eq!(structured_notes_timeout(200), Duration::from_secs(90));
+        assert_eq!(structured_notes_timeout(4_000), Duration::from_secs(90));
+        assert_eq!(structured_notes_timeout(20_000), Duration::from_secs(330));
+        assert_eq!(structured_notes_timeout(200_000), Duration::from_secs(600));
     }
 
     #[test]
