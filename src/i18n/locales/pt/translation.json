@@ -1085,6 +1085,7 @@
       "descriptions": {
         "auto": "Deixe o Nova escolher automaticamente a melhor formatação para o seu ditado.",
         "default_improve_transcriptions": "Limpe o texto ditado: pontuação, erros de digitação e frases fluidas.",
+        "nova_style_everyday": "Passe a limpo tudo o que escreve no dia a dia, em texto simples: ortografia e gramática corrigidas, as suas palavras mantidas.",
         "nova_style_course_notes": "Formate os seus apontamentos de aula pela ordem ditada: nada acrescentado, nenhum número alterado.",
         "nova_style_email": "Formate o ditado como um e-mail claro e cordial.",
         "nova_style_messages": "Transforme sua voz em mensagens curtas prontas para enviar.",

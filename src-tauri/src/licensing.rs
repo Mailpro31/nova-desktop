@@ -202,6 +202,7 @@ pub const FREE_STYLE_IDS: &[&str] = &[
 /// (Nova Ultra) pour être créé, modifié ou appliqué.
 pub const BUILTIN_STYLE_IDS: &[&str] = &[
     "default_improve_transcriptions",
+    "nova_style_everyday",
     "nova_style_course_notes",
     "nova_style_email",
     "nova_style_messages",

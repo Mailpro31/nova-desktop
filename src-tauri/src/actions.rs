@@ -243,6 +243,7 @@ pub(crate) fn local_rewrite_allowed(
 fn temperature_for_style(style_id: &str) -> f32 {
     const FAITHFUL: &[&str] = &[
         "default_improve_transcriptions",
+        "nova_style_everyday",
         "nova_style_course_notes",
         "nova_style_messages",
         "nova_style_voice_to_text",
@@ -873,7 +874,10 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
     // Un compte rendu résume : il ne reprend pas chaque heure ni chaque montant
     // cité. Exiger tous les nombres le faisait refuser presque à chaque fois.
     if style_id != MEETING_STYLE {
-        for number in DIGITS.find_iter(input) {
+        // Ce qu'une reprise a abandonné (« le 12, non pardon, le 13 ») n'a pas
+        // à survivre ; la valeur retenue, si.
+        let required = crate::rewrite::guard::without_abandoned(input);
+        for number in DIGITS.find_iter(&required) {
             if !output.contains(number.as_str()) {
                 return Err("explicit-number-lost");
             }
@@ -3259,6 +3263,11 @@ mod tests {
     }
 
     #[test]
+    fn the_everyday_style_is_written_without_creative_freedom() {
+        assert_eq!(temperature_for_style("nova_style_everyday"), 0.0);
+    }
+
+    #[test]
     fn air_timeout_scales_for_complex_and_long_dictations() {
         assert_eq!(
             local_primary_timeout("texte court", Some("nova_style_email")),
@@ -3303,6 +3312,32 @@ mod tests {
         // Une dictée, elle, garde tous ses nombres.
         assert_eq!(
             validate_rewrite(dialogue, "On a dépensé beaucoup.", "nova_style_email"),
+            Err("explicit-number-lost")
+        );
+    }
+
+    #[test]
+    fn a_self_correction_may_drop_the_abandoned_number() {
+        // « le 12, non pardon, le 13 » : seul le 13 a été voulu.
+        let dictation = "le rendez-vous est le 12 non pardon le 13 en salle B204";
+        assert!(validate_rewrite(
+            dictation,
+            "Le rendez-vous est le 13 en salle B204.",
+            "default_improve_transcriptions"
+        )
+        .is_ok());
+        assert!(checked_organization_rewrite(
+            dictation,
+            "Le rendez-vous est le 13 en salle B204.",
+            "nova_style_email"
+        )
+        .is_ok());
+        assert_eq!(
+            validate_rewrite(
+                dictation,
+                "Le rendez-vous est le 12 en salle B204.",
+                "default_improve_transcriptions"
+            ),
             Err("explicit-number-lost")
         );
     }

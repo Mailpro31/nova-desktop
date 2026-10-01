@@ -1085,6 +1085,7 @@
       "descriptions": {
         "auto": "音声入力に最適な書式を Nova が自動で選びます。",
         "default_improve_transcriptions": "音声入力したテキストを整えます：句読点、誤字、自然な言い回し。",
+        "nova_style_everyday": "毎日書くものをすべてプレーンテキストで整えます。綴りと文法を直し、あなたの言葉はそのまま残します。",
         "nova_style_course_notes": "授業ノートを口述した順に整えます。何も足さず、数字も変えません。",
         "nova_style_email": "音声入力を、わかりやすく丁寧なメールに整えます。",
         "nova_style_messages": "声を、すぐに送れる簡潔なメッセージにします。",

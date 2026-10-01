@@ -1085,6 +1085,7 @@
       "descriptions": {
         "auto": "Để Nova tự động chọn định dạng phù hợp nhất cho nội dung bạn đọc.",
         "default_improve_transcriptions": "Chỉnh sửa văn bản đã đọc: dấu câu, lỗi gõ và câu văn trôi chảy.",
+        "nova_style_everyday": "Chỉnh sửa mọi thứ bạn viết hằng ngày dưới dạng văn bản thuần: sửa chính tả và ngữ pháp, giữ nguyên lời của bạn.",
         "nova_style_course_notes": "Trình bày ghi chép bài giảng theo đúng thứ tự bạn đọc: không thêm gì, không đổi con số nào.",
         "nova_style_email": "Định dạng nội dung đọc thành một email rõ ràng, lịch sự.",
         "nova_style_messages": "Biến giọng nói của bạn thành tin nhắn ngắn gọn, sẵn sàng gửi.",

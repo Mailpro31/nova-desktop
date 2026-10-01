@@ -21,6 +21,7 @@ use std::collections::HashSet;
 /// Styles dont la sortie doit reprendre la langue et les mots de la dictée.
 const GUARDED_STYLES: &[&str] = &[
     "default_improve_transcriptions",
+    "nova_style_everyday",
     "nova_style_voice_to_text",
     "nova_style_messages",
     "nova_style_email",
@@ -469,6 +470,236 @@ pub fn added_word_ratio(input: &str, output: &str) -> Option<f32> {
     Some(added as f32 / written.len() as f32)
 }
 
+/// Jours et mois, en français et en anglais, sans accents. « may » et « march »
+/// n'y sont pas : en anglais ce sont d'abord des verbes.
+const DATE_WORDS: &[&str] = &[
+    "lundi",
+    "mardi",
+    "mercredi",
+    "jeudi",
+    "vendredi",
+    "samedi",
+    "dimanche",
+    "janvier",
+    "fevrier",
+    "mars",
+    "avril",
+    "mai",
+    "juin",
+    "juillet",
+    "aout",
+    "septembre",
+    "octobre",
+    "novembre",
+    "decembre",
+    "demain",
+    "hier",
+    "aujourdhui",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+    "january",
+    "february",
+    "april",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+    "tomorrow",
+    "yesterday",
+    "today",
+    "tonight",
+];
+
+/// Périodes qui, avec « prochain » ou « dernier », fixent une échéance : « la
+/// semaine prochaine », « next week ».
+const DATE_PERIODS: &[&str] = &["semaine", "mois", "annee", "an", "week", "month", "year"];
+const DATE_RELATIVES: &[&str] = &[
+    "prochain",
+    "prochaine",
+    "dernier",
+    "derniere",
+    "next",
+    "last",
+];
+
+/// Les mots d'un texte, en minuscules, sans accents ni apostrophes
+/// (« aujourd'hui » → « aujourdhui »).
+fn date_tokens(text: &str) -> Vec<String> {
+    static WORD: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\p{L}']+").unwrap());
+    WORD.find_iter(&text.to_lowercase())
+        .map(|m| fold(&m.as_str().replace('\'', "")))
+        .collect()
+}
+
+/// Les dates dites en toutes lettres : jours, mois, « demain », « la semaine
+/// prochaine ». Un « avant vendredi » devenu « la semaine prochaine » change
+/// une échéance sans qu'aucun chiffre ne bouge.
+pub fn dates_in(text: &str) -> HashSet<String> {
+    let tokens = date_tokens(text);
+    let mut dates = HashSet::new();
+    for (i, token) in tokens.iter().enumerate() {
+        if DATE_WORDS.contains(&token.as_str()) {
+            dates.insert(token.clone());
+        }
+        if DATE_PERIODS.contains(&token.as_str()) {
+            let relative = [i.checked_sub(1), Some(i + 1)]
+                .into_iter()
+                .flatten()
+                .filter_map(|j| tokens.get(j))
+                .find(|word| DATE_RELATIVES.contains(&word.as_str()));
+            if let Some(relative) = relative {
+                dates.insert(format!("{token} {relative}"));
+            }
+        }
+    }
+    dates
+}
+
+/// Mots qui annoncent une reprise : ce qui est dit juste avant peut être
+/// écarté.
+const CORRECTION_MARKERS: &[&str] = &["pardon", "plutot", "attends", "sorry", "rather"];
+
+/// Nombre de mots, avant une reprise, que la reprise peut remplacer.
+const CORRECTION_WINDOW: usize = 6;
+
+fn is_fact_token(word: &str) -> bool {
+    let folded = fold(word);
+    word.chars().any(|c| c.is_ascii_digit())
+        || number_word_value(&folded).is_some()
+        || DATE_WORDS.contains(&folded.as_str())
+}
+
+/// La dictée sans ce qu'une reprise a abandonné : les quelques mots dits juste
+/// avant « pardon », « plutôt », « je veux dire », ou avant un « non » suivi
+/// d'un nombre ou d'une date (« le 12 non le 13 »). La valeur retenue, elle,
+/// reste : c'est elle qui doit se retrouver dans la sortie.
+pub(crate) fn without_abandoned(text: &str) -> String {
+    let raw: Vec<&str> = text.split_whitespace().collect();
+    let words: Vec<String> = raw
+        .iter()
+        .map(|w| {
+            fold(&w.to_lowercase())
+                .trim_matches(|c: char| !c.is_alphanumeric())
+                .to_string()
+        })
+        .collect();
+    let mut dropped = vec![false; raw.len()];
+    let mut i = 0;
+    while i < words.len() {
+        let phrase = words.get(i..i + 3).map(|w| w.join(" ")).unwrap_or_default();
+        let span = if CORRECTION_MARKERS.contains(&words[i].as_str()) {
+            1
+        } else if phrase == "je veux dire" {
+            3
+        } else if matches!(
+            words.get(i..i + 2).map(|w| w.join(" ")).as_deref(),
+            Some("i mean") | Some("no wait")
+        ) {
+            2
+        } else if matches!(words[i].as_str(), "non" | "no")
+            && words.get(i + 1).is_some_and(|next| is_fact_token(next))
+        {
+            1
+        } else {
+            0
+        };
+        if span > 0 {
+            for flag in dropped
+                .iter_mut()
+                .take(i + span)
+                .skip(i.saturating_sub(CORRECTION_WINDOW))
+            {
+                *flag = true;
+            }
+            i += span;
+        } else {
+            i += 1;
+        }
+    }
+    raw.iter()
+        .zip(dropped)
+        .filter(|(_, gone)| !gone)
+        .map(|(word, _)| *word)
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+/// Retire la numérotation d'une liste (« 1. », « 2) ») : la mise en forme
+/// ajoute ces numéros, ce ne sont pas des nombres inventés.
+fn without_list_numbering(text: &str) -> String {
+    static NUMBERING: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?m)^\s*\d+[.)]\s+").unwrap());
+    NUMBERING.replace_all(text, "").into_owned()
+}
+
+/// Les nombres et les dates de la sortie face à ceux de la dictée.
+///
+/// Un nombre ou une date que la personne n'a pas dits est refusé partout.
+/// Un nombre ou une date dits et absents de la sortie l'est quand
+/// `lost_matters` — partout sauf dans un compte rendu, qui résume. Ce qu'une
+/// reprise a abandonné peut disparaître ; la valeur retenue, jamais.
+fn facts_refusal(input: &str, output: &str, lost_matters: bool) -> Option<&'static str> {
+    // Les repères (`{{nvxlex0}}`, `{{adresse}}`) protègent un terme pendant la
+    // réécriture : leurs chiffres n'ont pas été dits.
+    static MARKER: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^{}]*\}\}").unwrap());
+    let input = &MARKER.replace_all(input, " ").into_owned();
+    let output = without_list_numbering(&MARKER.replace_all(output, " "));
+    let written_numbers = numbers_in(&output);
+    let written_dates = dates_in(&output);
+    if written_numbers
+        .difference(&numbers_in(input))
+        .next()
+        .is_some()
+    {
+        return Some("number-changed");
+    }
+    if written_dates.difference(&dates_in(input)).next().is_some() {
+        return Some("date-changed");
+    }
+    if lost_matters {
+        let required = without_abandoned(input);
+        if numbers_in(&required)
+            .difference(&written_numbers)
+            .next()
+            .is_some()
+        {
+            return Some("number-lost");
+        }
+        if dates_in(&required)
+            .difference(&written_dates)
+            .next()
+            .is_some()
+        {
+            return Some("date-lost");
+        }
+    }
+    None
+}
+
+/// Styles qui corrigent sans réécrire : ils n'ajoutent presque rien.
+const FAITHFUL_STYLES: &[&str] = &[
+    "default_improve_transcriptions",
+    "nova_style_everyday",
+    "nova_style_voice_to_text",
+    "nova_style_messages",
+];
+
+/// Part de mots ajoutés au-delà de laquelle un Style fidèle a réécrit.
+const FAITHFUL_MAX_ADDED_WORDS: f32 = 0.25;
+
+/// En dessous de ce nombre de mots porteurs, la part ajoutée ne mesure rien :
+/// dans « on se voit au sinéma ce soir », corriger un seul mot mal entendu en
+/// ajoute déjà un sur trois. Un poème ou une réponse inventés dépassent
+/// largement ce seuil.
+const FAITHFUL_MIN_WRITTEN_WORDS: usize = 6;
+
 /// Les contrôles des notes de cours. Dans l'ordre : une sortie qui s'emballe,
 /// la langue, les nombres (le défaut le plus coûteux pour un élève), puis ce
 /// qui a été ajouté, puis ce qui a été perdu.
@@ -485,13 +716,8 @@ fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
     // année d'histoire changée — est l'erreur la plus coûteuse : il la
     // révisera. Un nombre perdu vient juste après. Dit en chiffres ou en
     // lettres, c'est la même valeur qui est comparée.
-    let said = numbers_in(input);
-    let written = numbers_in(output);
-    if written.difference(&said).next().is_some() {
-        return Err("number-changed");
-    }
-    if said.difference(&written).next().is_some() {
-        return Err("number-lost");
+    if let Some(reason) = facts_refusal(input, output, true) {
+        return Err(reason);
     }
     if added_word_ratio(input, output).is_some_and(|ratio| ratio > COURSE_MAX_ADDED_WORDS) {
         return Err("content-added");
@@ -518,10 +744,13 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
         return check_course_notes(input, output);
     }
     if style_id == "nova_style_meeting" {
-        return if grouped_number_reformatted(input, output) {
-            Err("number-format-changed")
-        } else {
-            Ok(())
+        if grouped_number_reformatted(input, output) {
+            return Err("number-format-changed");
+        }
+        // Un compte rendu résume : il peut omettre, jamais inventer.
+        return match facts_refusal(input, output, false) {
+            Some(reason) => Err(reason),
+            None => Ok(()),
         };
     }
     if !GUARDED_STYLES.contains(&style_id) {
@@ -544,6 +773,16 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
     }
     if grouped_number_lost(input, output) {
         return Err("number-format-changed");
+    }
+    if let Some(reason) = facts_refusal(input, output, true) {
+        return Err(reason);
+    }
+    if FAITHFUL_STYLES.contains(&style_id)
+        && !has_personal_value_marker(input)
+        && course_words(output).len() >= FAITHFUL_MIN_WRITTEN_WORDS
+        && added_word_ratio(input, output).is_some_and(|ratio| ratio > FAITHFUL_MAX_ADDED_WORDS)
+    {
+        return Err("content-added");
     }
     Ok(())
 }
@@ -702,6 +941,200 @@ mod tests {
         ] {
             assert!(check(input, output, style).is_ok(), "{style}: {output}");
         }
+    }
+
+    // --- Tous les Styles : ni nombre ni date inventés, perdus ou changés ---
+    //
+    // Décision du 01/10 : quelle que soit la personne qui dicte, Nova ne
+    // change jamais ce qu'elle a dit. Les dates en toutes lettres comptent
+    // autant que les chiffres : le 29/09, le mode réunion avait transformé
+    // « avant vendredi » en « la semaine prochaine », sans aucun chiffre.
+
+    #[test]
+    fn a_meeting_summary_cannot_invent_a_deadline() {
+        assert_eq!(
+            check(
+                "Sasha commande les hélices avant vendredi",
+                "Sasha a commandé les hélices avant. La batterie doit être testée la semaine prochaine.",
+                "nova_style_meeting"
+            ),
+            Err("date-changed")
+        );
+    }
+
+    #[test]
+    fn a_changed_day_or_number_is_refused_in_every_built_in_style() {
+        assert_eq!(
+            check(
+                "le rendez-vous est jeudi à 14 heures en salle B204",
+                "Bonjour,
+
+Le rendez-vous est vendredi à 14 heures en salle B204.
+
+Cordialement",
+                "nova_style_email"
+            ),
+            Err("date-changed")
+        );
+        assert_eq!(
+            check(
+                "il faut relire les pages douze à quinze pour demain",
+                "- Relire les pages 12 à 16 pour demain",
+                "nova_style_todo"
+            ),
+            Err("number-changed")
+        );
+        assert_eq!(
+            check(
+                "il faut trois exemplaires et deux copies du dossier",
+                "Il faut 3 exemplaires du dossier.",
+                "default_improve_transcriptions"
+            ),
+            Err("number-lost")
+        );
+    }
+
+    #[test]
+    fn a_self_correction_may_drop_the_abandoned_value() {
+        assert!(check(
+            "le rendez-vous est le 12 non pardon le 13 en salle B204",
+            "Le rendez-vous est le 13 en salle B204.",
+            "default_improve_transcriptions"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_self_correction_never_lets_the_final_value_be_lost() {
+        // Le modèle a gardé la version abandonnée et perdu la bonne.
+        assert_eq!(
+            check(
+                "le rendez-vous est le 12 non pardon le 13 en salle B204",
+                "Le rendez-vous est le 12 en salle B204.",
+                "default_improve_transcriptions"
+            ),
+            Err("number-lost")
+        );
+    }
+
+    #[test]
+    fn list_numbering_is_not_an_invented_number() {
+        assert!(check(
+            "il faut lancer le développement puis préparer la maquette avec Marc",
+            "1. Lancer le développement.
+2. Préparer la maquette avec Marc.",
+            "nova_style_notes"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_meeting_summary_may_still_leave_out_a_date() {
+        assert!(check(
+            "on se voit lundi pour faire le point et on livre vendredi au client",
+            "## Résumé
+Livraison au client vendredi.",
+            "nova_style_meeting"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_faithful_style_cannot_add_content() {
+        assert_eq!(
+            check(
+                "je passe te voir cet après-midi",
+                "Je passe te voir cet après-midi pour discuter du budget, des priorités et des prochaines étapes du projet.",
+                "nova_style_messages"
+            ),
+            Err("content-added")
+        );
+    }
+
+    #[test]
+    fn the_everyday_style_is_as_strict_as_a_faithful_style() {
+        assert_eq!(
+            check(
+                "je passe te voir cet après-midi",
+                "Je passe te voir cet après-midi pour discuter du budget, des priorités et des prochaines étapes du projet.",
+                "nova_style_everyday"
+            ),
+            Err("content-added")
+        );
+        assert_eq!(
+            check(
+                "le contrôle de maths est jeudi",
+                "Le contrôle de maths est vendredi.",
+                "nova_style_everyday"
+            ),
+            Err("date-changed")
+        );
+        assert_eq!(
+            check(
+                "merci beaucoup pour ton aide",
+                "Thank you very much for your help.",
+                "nova_style_everyday"
+            ),
+            Err("language-changed")
+        );
+        assert!(check(
+            "il a mangé a la cantine et sa a était bon",
+            "Il a mangé à la cantine et ça a été bon.",
+            "nova_style_everyday"
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn a_faithful_style_may_fix_a_misheard_word_in_a_short_dictation() {
+        assert_eq!(
+            check(
+                "on se voit au sinéma ce soir",
+                "On se voit au cinéma ce soir.",
+                "default_improve_transcriptions"
+            ),
+            Ok(())
+        );
+    }
+
+    #[test]
+    fn a_marker_is_not_a_dictated_number() {
+        // `{{nvxlex0}}` protège un terme du lexique pendant la réécriture : son
+        // chiffre n'a pas été dit, sa perte n'est pas celle d'un nombre.
+        assert_eq!(
+            check(
+                "je relis {{nvxlex0}} avec Paul ce soir",
+                "Je relis avec Paul ce soir.",
+                "default_improve_transcriptions"
+            ),
+            Ok(())
+        );
+        assert_eq!(
+            check(
+                "je relis la fiche ce soir",
+                "Je relis la fiche {{nvxlex3}} ce soir.",
+                "nova_style_notes"
+            ),
+            Ok(())
+        );
+    }
+
+    #[test]
+    fn a_self_correction_abandons_only_what_precedes_it() {
+        let kept = without_abandoned("le rendez-vous est le 12 non pardon le 13 en salle B204");
+        assert!(!kept.contains("12"), "{kept}");
+        assert!(kept.contains("13") && kept.contains("B204"), "{kept}");
+        let plain = "on a 3 exemplaires et 2 copies";
+        assert_eq!(without_abandoned(plain), plain);
+    }
+
+    #[test]
+    fn dates_said_in_words_are_recognised() {
+        assert!(dates_in("avant vendredi").contains("vendredi"));
+        assert!(dates_in("la semaine prochaine").contains("semaine prochaine"));
+        assert!(dates_in("le 3 mars, puis demain").contains("mars"));
+        assert!(dates_in("before Friday, next week").contains("friday"));
+        assert!(dates_in("un cours sur les nombres").is_empty());
     }
 
     #[test]

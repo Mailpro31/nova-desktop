@@ -26,6 +26,8 @@ describe("Styles intégrés", () => {
       expect(STYLE_ORDER).toContain(id);
     }
     expect(STYLE_ORDER[0]).toBe("default_improve_transcriptions");
+    expect(STYLE_ORDER[1]).toBe("nova_style_everyday");
+    expect(BUILTIN_STYLE_IDS).toContain("nova_style_everyday");
   });
 
   test("chacun dit ce qu'il fait, dans chaque langue", () => {

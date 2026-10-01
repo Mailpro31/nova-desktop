@@ -1085,6 +1085,7 @@
       "descriptions": {
         "auto": "Deja que Nova elija automáticamente el mejor formato para tu dictado.",
         "default_improve_transcriptions": "Pule tu texto dictado: puntuación, erratas y frases fluidas.",
+        "nova_style_everyday": "Pon en limpio todo lo que escribes a diario, en texto simple: ortografía y gramática corregidas, tus palabras intactas.",
         "nova_style_course_notes": "Da formato a tus apuntes de clase en el orden dictado: nada añadido, ningún número cambiado.",
         "nova_style_email": "Da formato a tu dictado como un correo claro y cortés.",
         "nova_style_messages": "Convierte tu voz en mensajes breves listos para enviar.",

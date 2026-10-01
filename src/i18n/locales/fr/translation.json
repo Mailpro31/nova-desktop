@@ -1085,6 +1085,7 @@
       "descriptions": {
         "auto": "Laissez Nova choisir automatiquement la meilleure mise en forme pour votre dictée.",
         "default_improve_transcriptions": "Nettoyez votre texte dicté : ponctuation, fautes et phrases fluides.",
+        "nova_style_everyday": "Mettez au propre tout ce que vous écrivez au quotidien, en texte simple : orthographe et grammaire corrigées, vos mots gardés.",
         "nova_style_course_notes": "Mettez en forme vos notes de cours dans l'ordre dicté : rien d'ajouté, aucun chiffre changé.",
         "nova_style_email": "Mettez en forme votre dictée sous la forme d'un email clair et poli.",
         "nova_style_messages": "Transformez votre voix en messages concis prêts à l'envoi.",
