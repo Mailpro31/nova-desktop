@@ -3207,6 +3207,32 @@ mod tests {
     }
 
     #[test]
+    fn a_self_correction_may_drop_the_abandoned_number() {
+        // « le 12, non pardon, le 13 » : seul le 13 a été voulu.
+        let dictation = "le rendez-vous est le 12 non pardon le 13 en salle B204";
+        assert!(validate_rewrite(
+            dictation,
+            "Le rendez-vous est le 13 en salle B204.",
+            "default_improve_transcriptions"
+        )
+        .is_ok());
+        assert!(checked_organization_rewrite(
+            dictation,
+            "Le rendez-vous est le 13 en salle B204.",
+            "nova_style_email"
+        )
+        .is_ok());
+        assert_eq!(
+            validate_rewrite(
+                dictation,
+                "Le rendez-vous est le 12 en salle B204.",
+                "default_improve_transcriptions"
+            ),
+            Err("explicit-number-lost")
+        );
+    }
+
+    #[test]
     fn variable_resolution_removes_a_duplicated_determiner() {
         let variables = vec![CustomVariable {
             key: "mon adresse".to_string(),

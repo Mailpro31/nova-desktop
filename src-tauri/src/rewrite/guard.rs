@@ -1084,6 +1084,15 @@ Livraison au client vendredi.",
     }
 
     #[test]
+    fn a_self_correction_abandons_only_what_precedes_it() {
+        let kept = without_abandoned("le rendez-vous est le 12 non pardon le 13 en salle B204");
+        assert!(!kept.contains("12"), "{kept}");
+        assert!(kept.contains("13") && kept.contains("B204"), "{kept}");
+        let plain = "on a 3 exemplaires et 2 copies";
+        assert_eq!(without_abandoned(plain), plain);
+    }
+
+    #[test]
     fn dates_said_in_words_are_recognised() {
         assert!(dates_in("avant vendredi").contains("vendredi"));
         assert!(dates_in("la semaine prochaine").contains("semaine prochaine"));
