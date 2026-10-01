@@ -624,6 +624,17 @@
       "retranscribeError": "다시 전사에 실패했습니다. 다시 시도해주세요.",
       "transcribing": "전사 중...",
       "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다.",
+      "correction": {
+        "start": "텍스트 수정",
+        "field": "수정한 텍스트",
+        "save": "수정 내용 저장",
+        "error": "수정 내용을 저장할 수 없습니다.",
+        "proposal": "Nova가 이 용어를 잘못 들었을 수 있습니다. 선택한 용어는 다음 받아쓰기부터 더 잘 인식됩니다:",
+        "term": "“{{expected}}” (Nova에게는 “{{heard}}”로 들렸습니다)",
+        "learn": "내 어휘에 추가",
+        "skip": "나중에",
+        "learned": "어휘에 추가했습니다."
+      },
       "readAloud": "소리 내어 읽기",
       "stopReading": "읽기 중지",
       "readAloudUnavailable": "이 컴퓨터에서는 소리 내어 읽기를 사용할 수 없습니다."

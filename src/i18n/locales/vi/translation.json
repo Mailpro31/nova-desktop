@@ -624,6 +624,17 @@
       "retranscribeError": "Không thể phiên âm lại. Vui lòng thử lại.",
       "transcribing": "Đang phiên âm...",
       "transcriptionFailed": "Phiên âm thất bại. Bạn có thể phiên âm lại bằng biểu tượng thử lại.",
+      "correction": {
+        "start": "Sửa văn bản",
+        "field": "Văn bản đã sửa",
+        "save": "Lưu bản sửa",
+        "error": "Không thể lưu bản sửa.",
+        "proposal": "Nova có thể đã nghe nhầm các thuật ngữ này. Nếu được đánh dấu, chúng sẽ được nhận diện tốt hơn trong những lần đọc chính tả tiếp theo:",
+        "term": "“{{expected}}” (Nova nghe thành “{{heard}}”)",
+        "learn": "Thêm vào vốn từ của tôi",
+        "skip": "Để sau",
+        "learned": "Đã thêm vào vốn từ của bạn."
+      },
       "readAloud": "Đọc to",
       "stopReading": "Dừng đọc",
       "readAloudUnavailable": "Tính năng đọc to không có trên máy tính này."

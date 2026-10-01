@@ -624,6 +624,17 @@
       "retranscribeError": "Failed to re-transcribe. Please try again.",
       "transcribing": "Transcribing...",
       "transcriptionFailed": "Transcription failed. You can re-transcribe using the retry icon.",
+      "correction": {
+        "start": "Correct the text",
+        "field": "Corrected text",
+        "save": "Save the correction",
+        "error": "The correction could not be saved.",
+        "proposal": "Nova may have misheard these terms. Checked ones will be recognised better in your next dictations:",
+        "term": "“{{expected}}” (Nova heard “{{heard}}”)",
+        "learn": "Add to my vocabulary",
+        "skip": "Not now",
+        "learned": "Added to your vocabulary."
+      },
       "readAloud": "Read aloud",
       "stopReading": "Stop reading",
       "readAloudUnavailable": "Read aloud is not available on this computer."

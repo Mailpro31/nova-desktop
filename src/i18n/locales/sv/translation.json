@@ -624,6 +624,17 @@
       "retranscribeError": "Misslyckades med att transkribera igen. Försök igen.",
       "transcribing": "Transkriberar...",
       "transcriptionFailed": "Transkribering misslyckades. Du kan transkribera igen med hjälp av ikonen för nytt försök.",
+      "correction": {
+        "start": "Rätta texten",
+        "field": "Rättad text",
+        "save": "Spara rättelsen",
+        "error": "Rättelsen kunde inte sparas.",
+        "proposal": "Nova kan ha hört fel på de här orden. Om de är markerade känns de igen bättre i dina nästa dikteringar:",
+        "term": "”{{expected}}” (Nova hörde ”{{heard}}”)",
+        "learn": "Lägg till i mitt ordförråd",
+        "skip": "Inte nu",
+        "learned": "Tillagt i ditt ordförråd."
+      },
       "readAloud": "Läs upp",
       "stopReading": "Sluta läsa upp",
       "readAloudUnavailable": "Uppläsning är inte tillgänglig på den här datorn."

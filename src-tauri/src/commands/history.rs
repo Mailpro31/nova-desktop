@@ -3,8 +3,59 @@ use crate::managers::{
     history::{HistoryManager, PaginatedHistory},
     transcription::TranscriptionManager,
 };
+use serde::Serialize;
+use specta::Type;
 use std::sync::Arc;
 use tauri::{AppHandle, State};
+
+/// Un terme qu'une correction de l'élève propose au vocabulaire : ce qu'il a
+/// écrit, à la place de ce que le moteur avait transcrit.
+#[derive(Debug, Clone, Serialize, Type)]
+pub struct LearnableTerm {
+    pub expected: String,
+    pub heard: String,
+}
+
+/// L'élève corrige une dictée de l'historique.
+///
+/// La correction remplace le texte de l'entrée, et ce qu'il a corrigé est
+/// renvoyé comme **proposition** de vocabulaire — voir
+/// `voice_calibration::corrected_terms` pour ce qui peut s'apprendre et ce qui
+/// ne s'apprend jamais. Rien n'est ajouté au vocabulaire ici : l'écran le
+/// demande à l'élève.
+#[tauri::command]
+#[specta::specta]
+pub async fn correct_history_entry(
+    history_manager: State<'_, Arc<HistoryManager>>,
+    id: i64,
+    corrected_text: String,
+) -> Result<Vec<LearnableTerm>, String> {
+    let corrected = corrected_text.trim().to_string();
+    if corrected.is_empty() {
+        return Err("the corrected text is empty".to_string());
+    }
+    let entry = history_manager
+        .get_entry_by_id(id)
+        .await
+        .map_err(|e| e.to_string())?
+        .ok_or_else(|| format!("History entry {} not found", id))?;
+    let terms = crate::voice_calibration::corrected_terms(&entry.transcription_text, &corrected);
+    history_manager
+        .update_transcription(
+            id,
+            corrected,
+            entry.post_processed_text,
+            entry.post_process_prompt,
+        )
+        .map_err(|e| e.to_string())?;
+    Ok(terms
+        .into_iter()
+        .map(|term| LearnableTerm {
+            expected: term.expected,
+            heard: term.heard,
+        })
+        .collect())
+}
 
 #[tauri::command]
 #[specta::specta]

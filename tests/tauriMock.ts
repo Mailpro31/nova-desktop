@@ -35,6 +35,11 @@ interface MockOptions {
   /** Dictées servies par `get_history_entries`. Absentes, l'historique est vide. */
   historyEntries?: Array<Record<string, unknown>>;
   /**
+   * Termes que `correct_history_entry` rend pour une dictée corrigée. Le
+   * calcul réel est testé côté Rust (`voice_calibration::corrected_terms`).
+   */
+  correctionTerms?: Array<{ expected: string; heard: string }>;
+  /**
    * Catalogue Learn servi par `fetch_learning_catalog`. Absent, la commande
    * répond `null` comme avant, et la progression aussi.
    */
@@ -244,6 +249,17 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
             JSON.stringify(args),
           );
           return { text: `Structured: ${String(args.text)}` };
+        case "correct_history_entry":
+          localStorage.setItem("nova.test.correction", JSON.stringify(args));
+          return settings.correctionTerms ?? [];
+        case "learn_organization_dictionary": {
+          const learned = JSON.parse(
+            localStorage.getItem("nova.test.learned") ?? "[]",
+          ) as unknown[];
+          learned.push(args);
+          localStorage.setItem("nova.test.learned", JSON.stringify(learned));
+          return { learned: true };
+        }
         case "get_history_entries": {
           const entries = settings.historyEntries ?? [];
           return { entries, total: entries.length };

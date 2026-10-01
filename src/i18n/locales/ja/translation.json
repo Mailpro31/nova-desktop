@@ -624,6 +624,17 @@
       "retranscribeError": "再文字起こしに失敗しました。もう一度お試しください。",
       "transcribing": "文字起こし中…",
       "transcriptionFailed": "文字起こしに失敗しました。リトライアイコンを使用して再文字起こしできます。",
+      "correction": {
+        "start": "テキストを修正",
+        "field": "修正後のテキスト",
+        "save": "修正を保存",
+        "error": "修正を保存できませんでした。",
+        "proposal": "Nova はこれらの用語を聞き間違えた可能性があります。チェックしたものは次回以降の音声入力でより正確に認識されます：",
+        "term": "「{{expected}}」（Nova には「{{heard}}」と聞こえていました）",
+        "learn": "自分の語彙に追加",
+        "skip": "今はしない",
+        "learned": "語彙に追加しました。"
+      },
       "readAloud": "読み上げ",
       "stopReading": "読み上げを停止",
       "readAloudUnavailable": "このコンピューターでは読み上げを利用できません。"
