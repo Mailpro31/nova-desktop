@@ -221,6 +221,25 @@ fn clean_llm_output(s: &str) -> String {
 /// reproductible, fin du « incohérent d'une fois à l'autre ») ; styles qui
 /// restructurent (e-mail, notes, prompt, to-do, styles personnels) → un peu de
 /// liberté pour un rendu plus naturel.
+/// Nova peut-il reformuler une dictée **sur le poste** ?
+///
+/// Jamais en édition Organisation — il n'y a plus qu'un seul Nova (décision
+/// du 01/10). Quand le serveur de l'école ne sert pas la dictée (hors ligne,
+/// session absente, membre suspendu), Nova la transcrit sur le poste et s'arrête
+/// là : le petit modèle local et le moteur en ligne hérités de l'édition
+/// personnelle ne la touchent pas. Les snippets et le vocabulaire de
+/// l'organisation, eux, s'appliquent toujours : ils sont déterministes.
+///
+/// L'édition personnelle, suspendue mais gardée, conserve son comportement :
+/// reformuler en local quand le serveur n'a rien fait.
+pub(crate) fn local_rewrite_allowed(
+    organization_edition: bool,
+    served_by_organization: bool,
+    post_process: bool,
+) -> bool {
+    post_process && !organization_edition && !served_by_organization
+}
+
 fn temperature_for_style(style_id: &str) -> f32 {
     const FAITHFUL: &[&str] = &[
         "default_improve_transcriptions",
@@ -2559,11 +2578,11 @@ impl ShortcutAction for TranscribeAction {
                             let output_processing_time = Instant::now();
                             // Si le serveur campus a déjà reformulé, on désactive la
                             // reformulation locale pour éviter un double traitement.
-                            let effective_post_process = if organization_used {
-                                false
-                            } else {
-                                post_process
-                            };
+                            let effective_post_process = local_rewrite_allowed(
+                                organization::is_organization_enabled(&ah),
+                                organization_used,
+                                post_process,
+                            );
                             let Some(processed) = complete_unless_cancelled(
                                 process_transcription_output(
                                     &ah,
@@ -2810,9 +2829,10 @@ mod tests {
         apply_custom_variables, build_runtime_system_prompt, build_transcript_message,
         checked_organization_rewrite, clean_llm_output, complete_unless_cancelled,
         context_looks_like_current_draft, custom_variables_block, effective_style,
-        is_blank_transcription, local_primary_timeout, protect_custom_variables, protect_lexicon,
-        replace_keyword_ci, resolve_variable_tokens, restore_lexicon, should_use_streaming_overlay,
-        substitute_personal_values, temperature_for_style, validate_rewrite, with_language_hint,
+        is_blank_transcription, local_primary_timeout, local_rewrite_allowed,
+        protect_custom_variables, protect_lexicon, replace_keyword_ci, resolve_variable_tokens,
+        restore_lexicon, should_use_streaming_overlay, substitute_personal_values,
+        temperature_for_style, validate_rewrite, with_language_hint,
     };
     use crate::settings::CustomVariable;
     use crate::settings::OverlayStyle;
@@ -2963,6 +2983,31 @@ mod tests {
             key: key.to_string(),
             value: value.to_string(),
         }
+    }
+
+    // --- Hors ligne, en édition Organisation : transcrire, jamais reformuler ---
+
+    /// Un seul Nova, Nova Organisation (décision du 01/10). Quand le serveur de
+    /// l'école ne sert pas la dictée — hors ligne, session absente, membre
+    /// suspendu —, Nova la transcrit sur le poste et s'arrête là : ni le petit
+    /// modèle local (Nova Local, profils Air/Aura/Apex), ni le moteur en ligne
+    /// hérité de l'édition personnelle ne la reformulent.
+    #[test]
+    fn the_organization_edition_never_rewrites_on_the_workstation() {
+        // Serveur injoignable : la dictée est collée telle que transcrite.
+        assert!(!local_rewrite_allowed(true, false, true));
+        // Le serveur a déjà reformulé : rien à refaire.
+        assert!(!local_rewrite_allowed(true, true, true));
+        // Style désactivé : rien à faire non plus.
+        assert!(!local_rewrite_allowed(true, false, false));
+    }
+
+    /// Le code de l'édition personnelle reste en place, suspendu : son
+    /// comportement ne change pas.
+    #[test]
+    fn the_suspended_personal_edition_keeps_its_behaviour() {
+        assert!(local_rewrite_allowed(false, false, true));
+        assert!(!local_rewrite_allowed(false, false, false));
     }
 
     // --- Un snippet n'est inséré qu'une fois, même quand le serveur a reformulé ---

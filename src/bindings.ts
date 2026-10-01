@@ -1328,9 +1328,9 @@ async setActiveModel(modelId: string) : Promise<Result<null, string>> {
  * Télécharge le modèle s'il manque, puis ne le sélectionne que si aucun modèle
  * présent sur le disque ne l'est déjà. Ne touche jamais `onboarding_completed`.
  */
-async prepareLocalFallbackModel(modelId: string) : Promise<Result<null, string>> {
+async prepareLocalFallbackModel(modelId: string, language: string | null) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("prepare_local_fallback_model", { modelId }) };
+    return { status: "ok", data: await TAURI_INVOKE("prepare_local_fallback_model", { modelId, language }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
