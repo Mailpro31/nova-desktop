@@ -32,8 +32,11 @@ describe("Styles intégrés", () => {
     for (const locale of readdirSync(LOCALES)) {
       for (const id of BUILTIN_STYLE_IDS) {
         const text = description(locale, id);
-        expect({ locale, id, ok: typeof text === "string" && text.length > 0 })
-          .toEqual({ locale, id, ok: true });
+        expect({
+          locale,
+          id,
+          ok: typeof text === "string" && text.length > 0,
+        }).toEqual({ locale, id, ok: true });
       }
     }
   });

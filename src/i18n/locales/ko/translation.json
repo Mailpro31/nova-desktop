@@ -1038,6 +1038,7 @@
       "descriptions": {
         "auto": "받아쓰기에 가장 알맞은 서식을 Nova가 자동으로 고릅니다.",
         "default_improve_transcriptions": "받아쓴 텍스트를 다듬습니다: 문장 부호, 오타, 자연스러운 문장.",
+        "nova_style_course_notes": "강의 노트를 받아쓴 순서대로 정리합니다. 아무것도 더하지 않고 숫자도 바꾸지 않습니다.",
         "nova_style_email": "받아쓰기를 명확하고 정중한 이메일로 정리합니다.",
         "nova_style_messages": "음성을 바로 보낼 수 있는 간결한 메시지로 바꿉니다.",
         "nova_style_prompt": "받아쓰기를 AI 도구용 구조화된 프롬프트로 바꿉니다.",

@@ -20,21 +20,13 @@ import { getStatus, TIER_FOR_FEATURE } from "../license/TierBadge";
 import { useOrganizationStore } from "@/stores/organizationStore";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
-import { BUILTIN_STYLE_IDS, styleLockFeature } from "@/lib/builtinStyles";
+import {
+  BUILTIN_STYLE_IDS,
+  STYLE_ORDER,
+  styleLockFeature,
+} from "@/lib/builtinStyles";
 import { isOrganizationMode } from "@/lib/mode";
 import { disabledStyleSet } from "@/lib/organization/disabledStyles";
-
-/** Ordre d'affichage des presets : du plus courant au plus spécialisé. */
-const STYLE_ORDER = [
-  "default_improve_transcriptions",
-  "nova_style_email",
-  "nova_style_messages",
-  "nova_style_notes",
-  "nova_style_todo",
-  "nova_style_prompt",
-  "nova_style_voice_to_text",
-  "nova_style_meeting",
-];
 
 /**
  * « Réunion » pilote le mode réunion, absent de la distribution campus : l'y
