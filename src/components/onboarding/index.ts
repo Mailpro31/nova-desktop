@@ -11,3 +11,4 @@ export { default as WelcomeStep } from "./WelcomeStep";
 export { default as SmartSetupStep } from "./SmartSetupStep";
 export { default as CustomizeStep } from "./CustomizeStep";
 export { default as WritingStylesIntroStep } from "./WritingStylesIntroStep";
+export { default as VoiceCalibrationStep } from "./VoiceCalibrationStep";

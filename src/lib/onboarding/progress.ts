@@ -25,6 +25,7 @@ export type SkippableStep =
   | "writingStyles"
   | "style"
   | "variables"
+  | "voiceCalibration"
   | "firstDictation";
 
 interface StoredProgress {

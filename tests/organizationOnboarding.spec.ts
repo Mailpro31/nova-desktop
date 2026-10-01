@@ -202,6 +202,13 @@ test("the first organization journey reaches dictation before optional training"
   );
   await page.getByRole("button", { name: "Use recommended setup" }).click();
 
+  // Le calibrage de la voix vient avant la première dictée, pour qu'elle en
+  // profite — mais il reste facultatif : la dictée ne doit jamais en dépendre.
+  await expect(
+    page.getByRole("heading", { name: "Let Nova learn your voice" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Skip", exact: true }).click();
+
   await expect(page.getByRole("heading", { name: "Try Nova" })).toBeVisible();
   await expect(page.locator("body")).not.toContainText(
     "Choose your writing style",

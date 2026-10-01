@@ -221,6 +221,35 @@
       "introTitle": "Nova لا يكتفي بالنسخ",
       "introSubtitle": "تحدّث، وسيكتب Nova بالأسلوب المناسب لما تفعله.",
       "unavailable": "لا يتوفر أي أسلوب كتابة بعد."
+    },
+    "voiceCalibration": {
+      "title": "دع Nova يتعلّم صوتك",
+      "subtitle": "اقرأ بعض الجمل من الدرس. يقيس Nova الميكروفون ويكتشف الكلمات التي يسيء فهمها في صوتك. لا يُطبَّق شيء دون موافقتك.",
+      "tipQuiet": "تحدّث كما في القسم، بصوت منخفض: هذا هو الصوت الذي يجب أن يسمعه Nova.",
+      "tipPlace": "اجلس حيث تعمل، مع الميكروفون الذي ستستخدمه.",
+      "tipDuration": "{{count}} جمل، حوالي دقيقتين.",
+      "start": "ابدأ",
+      "readTitle": "الجملة {{current}} من {{total}}",
+      "readSubtitle": "اضغط «اقرأ»، وقل الجملة، ثم اضغط «انتهيت».",
+      "record": "اقرأ",
+      "stop": "انتهيت",
+      "retry": "أعد قراءة هذه الجملة",
+      "listening": "Nova يستمع…",
+      "analysing": "Nova يحلّل ما سمعه…",
+      "heardLabel": "فهم Nova:",
+      "heardNothing": "لا شيء مسموع. اقترب من الميكروفون وأعد قراءة الجملة.",
+      "next": "الجملة التالية",
+      "finish": "عرض النتيجة",
+      "summaryTitle": "تمت معايرة صوتك",
+      "gainRaised": "سيرفع Nova صوتك بمقدار {{db}} ديسيبل دون تشويه.",
+      "gainUnchanged": "صوتك يصل بالفعل بالمستوى المناسب: لا حاجة لأي ضبط.",
+      "tooNoisy": "صوتك لا يبرز بوضوح فوق الضجيج المحيط. قرّب الميكروفون أو غيّر مكانك: الضبط وحده لن يكفي.",
+      "noCorrection": "فهم Nova مصطلحات الدرس جيدًا. لا تصحيحات لإضافتها.",
+      "correctionsIntro": "أساء Nova فهم هذه المصطلحات. إذا كانت محدّدة، فستُصحَّح في إملاءاتك القادمة:",
+      "correction": "«{{expected}}» (كان Nova يسمع «{{heard}}»)",
+      "save": "حفظ",
+      "errorMicrophone": "تعذّر تشغيل الميكروفون. تأكّد من عدم وجود إملاء جارٍ ثم أعد المحاولة.",
+      "errorAnalysis": "تعذّر على Nova تحليل هذه القراءة. أعد قراءة الجملة."
     }
   },
   "modelSelector": {
@@ -573,7 +602,10 @@
       "retranscribe": "إعادة النسخ",
       "retranscribeError": "فشلت إعادة النسخ. يرجى المحاولة مرة أخرى.",
       "transcribing": "جارٍ النسخ...",
-      "transcriptionFailed": "فشل النسخ. يمكنك إعادة النسخ باستخدام أيقونة إعادة المحاولة."
+      "transcriptionFailed": "فشل النسخ. يمكنك إعادة النسخ باستخدام أيقونة إعادة المحاولة.",
+      "readAloud": "اقرأ بصوت عالٍ",
+      "stopReading": "أوقف القراءة",
+      "readAloudUnavailable": "القراءة بصوت عالٍ غير متاحة على هذا الحاسوب."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "نظرة عامة على استخدامك لـ Nova."
+    },
+    "readingComfort": {
+      "title": "راحة القراءة",
+      "description": "اجعل نص Nova أسهل في القراءة واستمع إلى ملاحظاتك بصوت عالٍ.",
+      "textSize": {
+        "title": "حجم النص",
+        "normal": "عادي",
+        "large": "كبير",
+        "larger": "كبير جدًا"
+      },
+      "spacing": {
+        "title": "التباعد بين الحروف والأسطر",
+        "description": "النص المتباعد أسهل في القراءة لكثير من القراء المصابين بعسر القراءة.",
+        "normal": "عادي",
+        "wide": "واسع",
+        "wider": "واسع جدًا"
+      },
+      "font": {
+        "title": "الخط",
+        "description": "لم يثبت أن أي خط يحسّن القراءة مع عسر القراءة: اختر الخط الذي تجده أكثر راحة.",
+        "system": "Nova",
+        "readable": "Verdana (حروف عريضة)"
+      },
+      "speechRate": {
+        "title": "سرعة القراءة",
+        "description": "لقراءة ملاحظاتك بصوت عالٍ من السجل.",
+        "slow": "بطيئة",
+        "normal": "عادية",
+        "fast": "سريعة",
+        "try": "جرّب",
+        "sample": "هكذا سيقرأ Nova ملاحظاتك بصوت عالٍ."
+      }
+    },
+    "voiceCalibration": {
+      "title": "صوتي",
+      "descriptionGain": "يرفع Nova صوتك بمقدار {{db}} ديسيبل.",
+      "descriptionNone": "بلا ضبط: يصل صوتك كما هو.",
+      "recalibrate": "إعادة معايرة صوتي",
+      "reset": "إعادة تعيين"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "يحصي خادم مؤسستك عدد عمليات النسخ وإعادة الصياغة يوميًا. ولا يحتفظ بمحتواها.",
     "aiSkillsPrivacyOffline": "تعمل Nova Commands على خادم مؤسستك، وهو غير متاح الآن.",
     "notInOrganization": "حساب Microsoft هذا لا ينتمي إلى مؤسستك.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "خادم مؤسستك التعليمية"
   }
 }

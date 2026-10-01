@@ -6,7 +6,8 @@ pub mod vad;
 
 pub use audio::{
     is_microphone_access_denied, is_no_input_device_error, list_input_devices, list_output_devices,
-    read_wav_samples, save_wav_file, verify_wav_file, AudioRecorder, CpalDeviceInfo, VadPolicy,
+    read_wav_samples, sanitize_gain, save_wav_file, verify_wav_file, AudioRecorder, CpalDeviceInfo,
+    VadPolicy, MAX_INPUT_GAIN,
 };
 pub use text::{apply_custom_words, detect_lexicon_candidates, filter_transcription_output};
 pub use utils::get_cpal_host;

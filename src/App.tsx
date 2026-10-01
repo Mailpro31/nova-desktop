@@ -29,6 +29,7 @@ import Onboarding, {
   CustomizeStep,
   SmartSetupStep,
   TutorialOnboarding,
+  VoiceCalibrationStep,
   WelcomeStep,
 } from "./components/onboarding";
 import { SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
@@ -681,6 +682,16 @@ function App() {
         onBack={flow.canGoBack ? flow.back : undefined}
         onAccept={flow.next}
         onCustomize={() => setCustomizing(true)}
+      />
+    );
+  } else if (flow.current === "voiceCalibration") {
+    content = (
+      <VoiceCalibrationStep
+        stepIndex={flow.displayIndex}
+        stepCount={flow.displayCount}
+        onBack={flow.canGoBack ? flow.back : undefined}
+        onSkip={flow.skip}
+        onDone={flow.next}
       />
     );
   } else if (flow.current === "writingStyles") {

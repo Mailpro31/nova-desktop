@@ -221,6 +221,35 @@
       "introTitle": "Nova không chỉ chép lại lời nói",
       "introSubtitle": "Hãy nói, Nova sẽ viết theo văn phong phù hợp với việc bạn đang làm.",
       "unavailable": "Chưa có văn phong nào khả dụng."
+    },
+    "voiceCalibration": {
+      "title": "Để Nova học giọng nói của bạn",
+      "subtitle": "Hãy đọc vài câu trong bài học. Nova đo micrô của bạn và tìm những từ mà nó nghe sai trong giọng của bạn. Không có gì được áp dụng khi chưa có sự đồng ý của bạn.",
+      "tipQuiet": "Hãy nói như trong lớp, nhỏ nhẹ: đó chính là giọng Nova cần nghe.",
+      "tipPlace": "Ngồi ở chỗ bạn làm việc, với chiếc micrô bạn sẽ dùng.",
+      "tipDuration": "{{count}} câu, khoảng hai phút.",
+      "start": "Bắt đầu",
+      "readTitle": "Câu {{current}} trên {{total}}",
+      "readSubtitle": "Nhấn “Đọc”, nói câu đó, rồi nhấn “Xong”.",
+      "record": "Đọc",
+      "stop": "Xong",
+      "retry": "Đọc lại câu này",
+      "listening": "Nova đang lắng nghe…",
+      "analysing": "Nova đang phân tích những gì đã nghe…",
+      "heardLabel": "Nova đã hiểu:",
+      "heardNothing": "Không nghe thấy gì. Hãy lại gần micrô hơn và đọc lại câu.",
+      "next": "Câu tiếp theo",
+      "finish": "Xem kết quả",
+      "summaryTitle": "Giọng của bạn đã được hiệu chỉnh",
+      "gainRaised": "Nova sẽ tăng giọng của bạn thêm {{db}} dB mà không làm méo tiếng.",
+      "gainUnchanged": "Giọng của bạn đã ở mức phù hợp: không cần điều chỉnh.",
+      "tooNoisy": "Giọng của bạn khó nổi bật so với tiếng ồn xung quanh. Hãy đưa micrô lại gần hoặc đổi chỗ: chỉ điều chỉnh thì không đủ.",
+      "noCorrection": "Nova đã hiểu đúng các thuật ngữ trong bài. Không có sửa đổi nào cần thêm.",
+      "correctionsIntro": "Nova đã nghe sai các thuật ngữ này. Nếu được đánh dấu, chúng sẽ được sửa trong những lần đọc chính tả tiếp theo:",
+      "correction": "“{{expected}}” (Nova nghe thành “{{heard}}”)",
+      "save": "Lưu",
+      "errorMicrophone": "Không thể khởi động micrô. Hãy kiểm tra để chắc chắn không có lần đọc chính tả nào đang diễn ra, rồi thử lại.",
+      "errorAnalysis": "Nova không thể phân tích lần đọc này. Hãy đọc lại câu."
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "Phiên âm lại",
       "retranscribeError": "Không thể phiên âm lại. Vui lòng thử lại.",
       "transcribing": "Đang phiên âm...",
-      "transcriptionFailed": "Phiên âm thất bại. Bạn có thể phiên âm lại bằng biểu tượng thử lại."
+      "transcriptionFailed": "Phiên âm thất bại. Bạn có thể phiên âm lại bằng biểu tượng thử lại.",
+      "readAloud": "Đọc to",
+      "stopReading": "Dừng đọc",
+      "readAloudUnavailable": "Tính năng đọc to không có trên máy tính này."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "Tổng quan về việc sử dụng Nova của bạn."
+    },
+    "readingComfort": {
+      "title": "Đọc thoải mái",
+      "description": "Giúp văn bản của Nova dễ đọc hơn và nghe đọc to ghi chú của bạn.",
+      "textSize": {
+        "title": "Cỡ chữ",
+        "normal": "Bình thường",
+        "large": "Lớn",
+        "larger": "Rất lớn"
+      },
+      "spacing": {
+        "title": "Khoảng cách chữ và dòng",
+        "description": "Văn bản giãn cách dễ đọc hơn với nhiều người mắc chứng khó đọc.",
+        "normal": "Bình thường",
+        "wide": "Rộng",
+        "wider": "Rất rộng"
+      },
+      "font": {
+        "title": "Phông chữ",
+        "description": "Chưa có phông chữ nào được chứng minh giúp đọc tốt hơn khi mắc chứng khó đọc: hãy chọn phông bạn thấy dễ chịu nhất.",
+        "system": "Nova",
+        "readable": "Verdana (chữ rộng)"
+      },
+      "speechRate": {
+        "title": "Tốc độ đọc",
+        "description": "Để đọc to ghi chú của bạn từ lịch sử.",
+        "slow": "Chậm",
+        "normal": "Bình thường",
+        "fast": "Nhanh",
+        "try": "Thử",
+        "sample": "Nova sẽ đọc to ghi chú của bạn như thế này."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Giọng của tôi",
+      "descriptionGain": "Nova tăng giọng của bạn thêm {{db}} dB.",
+      "descriptionNone": "Không điều chỉnh: giọng của bạn được giữ nguyên.",
+      "recalibrate": "Hiệu chỉnh lại giọng của tôi",
+      "reset": "Đặt lại"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "Máy chủ của trường đếm số lần bạn chuyển lời nói thành văn bản và viết lại mỗi ngày. Máy chủ không lưu nội dung.",
     "aiSkillsPrivacyOffline": "Nova Commands chạy trên máy chủ của trường bạn, hiện không kết nối được.",
     "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Máy chủ của trường bạn"
   }
 }

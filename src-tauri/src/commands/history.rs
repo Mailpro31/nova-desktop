@@ -100,7 +100,8 @@ pub async fn retry_history_entry_transcription(
         false,
         entry.post_process_requested,
     );
-    let processed = process_transcription_output(&app, &transcription, post_process, None).await;
+    let processed =
+        process_transcription_output(&app, &transcription, post_process, None, false).await;
     history_manager
         .update_transcription(
             id,

@@ -221,6 +221,35 @@
       "introTitle": "Nova non si limita a trascrivere",
       "introSubtitle": "Parla e Nova scrive nello stile adatto a ciò che stai facendo.",
       "unavailable": "Nessuno stile di scrittura è ancora disponibile."
+    },
+    "voiceCalibration": {
+      "title": "Nova impara la tua voce",
+      "subtitle": "Leggi alcune frasi di lezione. Nova misura il tuo microfono e individua le parole che capisce male nella tua voce. Nulla viene applicato senza il tuo consenso.",
+      "tipQuiet": "Parla come in classe, a bassa voce: è questa la voce che Nova deve sentire.",
+      "tipPlace": "Mettiti dove lavori, con il microfono che userai.",
+      "tipDuration": "{{count}} frasi, circa due minuti.",
+      "start": "Inizia",
+      "readTitle": "Frase {{current}} di {{total}}",
+      "readSubtitle": "Premi «Leggi», pronuncia la frase, poi premi «Ho finito».",
+      "record": "Leggi",
+      "stop": "Ho finito",
+      "retry": "Rileggi questa frase",
+      "listening": "Nova ti ascolta…",
+      "analysing": "Nova analizza ciò che ha sentito…",
+      "heardLabel": "Nova ha capito:",
+      "heardNothing": "Niente di udibile. Avvicinati al microfono e rileggi la frase.",
+      "next": "Frase successiva",
+      "finish": "Vedi il risultato",
+      "summaryTitle": "La tua voce è calibrata",
+      "gainRaised": "Nova alzerà la tua voce di {{db}} dB, senza saturarla.",
+      "gainUnchanged": "La tua voce arriva già al livello giusto: nessuna regolazione necessaria.",
+      "tooNoisy": "La tua voce emerge poco dal rumore di fondo. Avvicina il microfono o cambia posto: una regolazione non basterà.",
+      "noCorrection": "Nova ha capito bene i termini della lezione. Nessuna correzione da aggiungere.",
+      "correctionsIntro": "Nova ha capito male questi termini. Se selezionati, verranno corretti nei tuoi prossimi dettati:",
+      "correction": "«{{expected}}» (Nova sentiva «{{heard}}»)",
+      "save": "Salva",
+      "errorMicrophone": "Il microfono non si è avviato. Verifica che non ci sia un dettato in corso, poi riprova.",
+      "errorAnalysis": "Nova non è riuscito ad analizzare questa lettura. Rileggi la frase."
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "Ri-trascrivere",
       "retranscribeError": "Impossibile ri-trascrivere. Riprova.",
       "transcribing": "Trascrizione in corso...",
-      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione."
+      "transcriptionFailed": "Trascrizione fallita. Puoi ri-trascrivere usando l'icona di ripetizione.",
+      "readAloud": "Leggi ad alta voce",
+      "stopReading": "Interrompi la lettura",
+      "readAloudUnavailable": "La lettura ad alta voce non è disponibile su questo computer."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "Una panoramica del tuo utilizzo di Nova."
+    },
+    "readingComfort": {
+      "title": "Comfort di lettura",
+      "description": "Rendere il testo di Nova più facile da leggere e ascoltare i propri appunti ad alta voce.",
+      "textSize": {
+        "title": "Dimensione del testo",
+        "normal": "Normale",
+        "large": "Grande",
+        "larger": "Molto grande"
+      },
+      "spacing": {
+        "title": "Spaziatura di lettere e righe",
+        "description": "Un testo spaziato è più facile da leggere per molti lettori con dislessia.",
+        "normal": "Normale",
+        "wide": "Ampia",
+        "wider": "Molto ampia"
+      },
+      "font": {
+        "title": "Carattere",
+        "description": "Nessun carattere ha dimostrato di migliorare la lettura con la dislessia: scegli quello che trovi più comodo.",
+        "system": "Nova",
+        "readable": "Verdana (lettere larghe)"
+      },
+      "speechRate": {
+        "title": "Velocità di lettura",
+        "description": "Per leggere ad alta voce i tuoi appunti dalla cronologia.",
+        "slow": "Lenta",
+        "normal": "Normale",
+        "fast": "Veloce",
+        "try": "Prova",
+        "sample": "Ecco come Nova leggerà i tuoi appunti ad alta voce."
+      }
+    },
+    "voiceCalibration": {
+      "title": "La mia voce",
+      "descriptionGain": "Nova alza la tua voce di {{db}} dB.",
+      "descriptionNone": "Nessuna regolazione: la tua voce arriva così com'è.",
+      "recalibrate": "Ricalibra la mia voce",
+      "reset": "Ripristina"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "Il server del tuo istituto conta quante trascrizioni e riscritture esegui ogni giorno. Non ne conserva il contenuto.",
     "aiSkillsPrivacyOffline": "I Nova Commands passano dal server del tuo istituto, ora irraggiungibile.",
     "notInOrganization": "Questo account Microsoft non appartiene al tuo istituto.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Il server del tuo istituto"
   }
 }

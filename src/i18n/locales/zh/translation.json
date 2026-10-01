@@ -221,6 +221,35 @@
       "introTitle": "Nova 不只是转写",
       "introSubtitle": "开口说话，Nova 会用贴合当前场景的文风书写。",
       "unavailable": "暂无可用的写作风格。"
+    },
+    "voiceCalibration": {
+      "title": "让 Nova 学习你的声音",
+      "subtitle": "朗读几句课堂上的句子。Nova 会测量你的麦克风，并找出它在你的声音中听错的词。未经你同意，不会应用任何内容。",
+      "tipQuiet": "像在课堂上一样小声说话：Nova 需要听到的正是这种声音。",
+      "tipPlace": "坐在你平时学习的地方，使用你将要使用的麦克风。",
+      "tipDuration": "{{count}} 句，大约两分钟。",
+      "start": "开始",
+      "readTitle": "第 {{current}} 句，共 {{total}} 句",
+      "readSubtitle": "点击“朗读”，说出句子，然后点击“完成”。",
+      "record": "朗读",
+      "stop": "完成",
+      "retry": "重新朗读这句",
+      "listening": "Nova 正在聆听…",
+      "analysing": "Nova 正在分析听到的内容…",
+      "heardLabel": "Nova 听到的是：",
+      "heardNothing": "没有听到声音。请靠近麦克风，重新朗读这句。",
+      "next": "下一句",
+      "finish": "查看结果",
+      "summaryTitle": "你的声音已校准",
+      "gainRaised": "Nova 会将你的声音提高 {{db}} dB，且不会失真。",
+      "gainUnchanged": "你的声音已经处于合适的音量：无需调整。",
+      "tooNoisy": "你的声音很难从环境噪音中分辨出来。请把麦克风靠近一些或换个位置：仅靠设置是不够的。",
+      "noCorrection": "Nova 正确听懂了课堂术语。没有需要添加的更正。",
+      "correctionsIntro": "Nova 听错了这些术语。勾选后，将在你之后的听写中自动更正：",
+      "correction": "“{{expected}}”（Nova 听成了“{{heard}}”）",
+      "save": "保存",
+      "errorMicrophone": "无法启动麦克风。请确认没有正在进行的听写，然后重试。",
+      "errorAnalysis": "Nova 无法分析这次朗读。请重新朗读这句。"
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "重新转录",
       "retranscribeError": "重新转录失败。请重试。",
       "transcribing": "转录中...",
-      "transcriptionFailed": "转录失败。您可以使用重试图标重新转录。"
+      "transcriptionFailed": "转录失败。您可以使用重试图标重新转录。",
+      "readAloud": "朗读",
+      "stopReading": "停止朗读",
+      "readAloudUnavailable": "此电脑上无法使用朗读功能。"
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "您使用 Nova 的情况概览。"
+    },
+    "readingComfort": {
+      "title": "阅读舒适度",
+      "description": "让 Nova 的文字更易阅读，并朗读你的笔记。",
+      "textSize": {
+        "title": "文字大小",
+        "normal": "正常",
+        "large": "大",
+        "larger": "特大"
+      },
+      "spacing": {
+        "title": "字母和行间距",
+        "description": "对许多有阅读障碍的读者来说，间距较宽的文字更容易阅读。",
+        "normal": "正常",
+        "wide": "宽",
+        "wider": "最宽"
+      },
+      "font": {
+        "title": "字体",
+        "description": "尚无证据表明任何字体能改善阅读障碍者的阅读：请选择你觉得最舒适的字体。",
+        "system": "Nova",
+        "readable": "Verdana（字母较宽）"
+      },
+      "speechRate": {
+        "title": "朗读速度",
+        "description": "用于从历史记录中朗读你的笔记。",
+        "slow": "慢",
+        "normal": "正常",
+        "fast": "快",
+        "try": "试听",
+        "sample": "Nova 将这样朗读你的笔记。"
+      }
+    },
+    "voiceCalibration": {
+      "title": "我的声音",
+      "descriptionGain": "Nova 将你的声音提高 {{db}} dB。",
+      "descriptionNone": "未调整：你的声音按原样输入。",
+      "recalibrate": "重新校准我的声音",
+      "reset": "重置"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "机构服务器会统计你每天进行了多少次转写和改写，但不保存内容。",
     "aiSkillsPrivacyOffline": "Nova Commands 运行在你所在机构的服务器上，目前无法连接。",
     "notInOrganization": "此 Microsoft 账户不属于您的机构。",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "你所在学校的服务器"
   }
 }

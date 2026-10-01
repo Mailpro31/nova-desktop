@@ -221,6 +221,35 @@
       "introTitle": "Nova는 받아쓰기만 하지 않습니다",
       "introSubtitle": "말하면 Nova가 상황에 맞는 문체로 씁니다.",
       "unavailable": "아직 사용할 수 있는 문체가 없습니다."
+    },
+    "voiceCalibration": {
+      "title": "Nova가 목소리를 익히게 하세요",
+      "subtitle": "수업 문장을 몇 개 읽어 주세요. Nova가 마이크를 측정하고 사용자의 목소리에서 잘못 알아듣는 단어를 찾습니다. 동의 없이는 아무것도 적용되지 않습니다.",
+      "tipQuiet": "수업 시간처럼 작은 목소리로 말하세요. Nova가 들어야 하는 목소리가 바로 그 목소리입니다.",
+      "tipPlace": "실제로 공부하는 자리에서, 사용할 마이크로 진행하세요.",
+      "tipDuration": "{{count}}개 문장, 약 2분.",
+      "start": "시작",
+      "readTitle": "{{total}}개 중 {{current}}번째 문장",
+      "readSubtitle": "‘읽기’를 누르고 문장을 말한 다음 ‘완료’를 누르세요.",
+      "record": "읽기",
+      "stop": "완료",
+      "retry": "이 문장 다시 읽기",
+      "listening": "Nova가 듣고 있습니다…",
+      "analysing": "Nova가 들은 내용을 분석하고 있습니다…",
+      "heardLabel": "Nova가 이해한 내용:",
+      "heardNothing": "들리는 소리가 없습니다. 마이크에 더 가까이 가서 문장을 다시 읽어 주세요.",
+      "next": "다음 문장",
+      "finish": "결과 보기",
+      "summaryTitle": "목소리 보정이 완료되었습니다",
+      "gainRaised": "Nova가 왜곡 없이 목소리를 {{db}}dB 높입니다.",
+      "gainUnchanged": "목소리가 이미 적절한 크기로 들어옵니다. 조정이 필요 없습니다.",
+      "tooNoisy": "목소리가 주변 소음에 묻힙니다. 마이크를 가까이 하거나 자리를 옮기세요. 설정만으로는 충분하지 않습니다.",
+      "noCorrection": "Nova가 수업 용어를 잘 이해했습니다. 추가할 수정 사항이 없습니다.",
+      "correctionsIntro": "Nova가 다음 용어를 잘못 알아들었습니다. 선택하면 다음 받아쓰기부터 수정됩니다:",
+      "correction": "“{{expected}}” (Nova에게는 “{{heard}}”로 들렸습니다)",
+      "save": "저장",
+      "errorMicrophone": "마이크를 시작할 수 없습니다. 진행 중인 받아쓰기가 없는지 확인한 뒤 다시 시도하세요.",
+      "errorAnalysis": "Nova가 이 읽기를 분석하지 못했습니다. 문장을 다시 읽어 주세요."
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "다시 전사",
       "retranscribeError": "다시 전사에 실패했습니다. 다시 시도해주세요.",
       "transcribing": "전사 중...",
-      "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다."
+      "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다.",
+      "readAloud": "소리 내어 읽기",
+      "stopReading": "읽기 중지",
+      "readAloudUnavailable": "이 컴퓨터에서는 소리 내어 읽기를 사용할 수 없습니다."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "Nova 사용 현황을 한눈에 볼 수 있습니다."
+    },
+    "readingComfort": {
+      "title": "읽기 편의",
+      "description": "Nova의 텍스트를 더 읽기 쉽게 만들고 노트를 소리 내어 들어 보세요.",
+      "textSize": {
+        "title": "텍스트 크기",
+        "normal": "보통",
+        "large": "크게",
+        "larger": "아주 크게"
+      },
+      "spacing": {
+        "title": "글자 및 줄 간격",
+        "description": "간격이 넓은 텍스트는 난독증이 있는 많은 독자에게 더 읽기 쉽습니다.",
+        "normal": "보통",
+        "wide": "넓게",
+        "wider": "아주 넓게"
+      },
+      "font": {
+        "title": "글꼴",
+        "description": "난독증이 있는 읽기를 개선한다고 입증된 글꼴은 없습니다. 가장 편한 글꼴을 고르세요.",
+        "system": "Nova",
+        "readable": "Verdana (넓은 글자)"
+      },
+      "speechRate": {
+        "title": "읽기 속도",
+        "description": "기록에서 노트를 소리 내어 읽을 때 사용합니다.",
+        "slow": "느리게",
+        "normal": "보통",
+        "fast": "빠르게",
+        "try": "들어 보기",
+        "sample": "Nova는 이렇게 노트를 읽어 줍니다."
+      }
+    },
+    "voiceCalibration": {
+      "title": "내 목소리",
+      "descriptionGain": "Nova가 목소리를 {{db}}dB 높입니다.",
+      "descriptionNone": "조정 없음: 목소리가 그대로 들어옵니다.",
+      "recalibrate": "목소리 다시 보정",
+      "reset": "초기화"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "기관 서버는 하루에 받아쓰기와 다시 쓰기를 몇 번 했는지 셉니다. 내용은 저장하지 않습니다.",
     "aiSkillsPrivacyOffline": "Nova Commands는 소속 기관 서버에서 동작하며 지금은 연결되지 않습니다.",
     "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "학교 서버"
   }
 }

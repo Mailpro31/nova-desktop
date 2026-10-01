@@ -221,6 +221,35 @@
       "introTitle": "Nova yalnızca deşifre etmez",
       "introSubtitle": "Konuşun, Nova yaptığınız işe uygun üslupla yazsın.",
       "unavailable": "Henüz kullanılabilir bir yazım üslubu yok."
+    },
+    "voiceCalibration": {
+      "title": "Nova sesinizi öğrensin",
+      "subtitle": "Dersten birkaç cümle okuyun. Nova mikrofonunuzu ölçer ve sesinizde yanlış anladığı kelimeleri bulur. Onayınız olmadan hiçbir şey uygulanmaz.",
+      "tipQuiet": "Sınıftaki gibi, alçak sesle konuşun: Nova'nın duyması gereken ses budur.",
+      "tipPlace": "Çalıştığınız yere, kullanacağınız mikrofonla yerleşin.",
+      "tipDuration": "{{count}} cümle, yaklaşık iki dakika.",
+      "start": "Başla",
+      "readTitle": "Cümle {{current}} / {{total}}",
+      "readSubtitle": "“Oku”ya basın, cümleyi söyleyin, sonra “Bitti”ye basın.",
+      "record": "Oku",
+      "stop": "Bitti",
+      "retry": "Bu cümleyi yeniden oku",
+      "listening": "Nova dinliyor…",
+      "analysing": "Nova duyduklarını analiz ediyor…",
+      "heardLabel": "Nova şunu anladı:",
+      "heardNothing": "Duyulabilir bir şey yok. Mikrofona yaklaşın ve cümleyi yeniden okuyun.",
+      "next": "Sonraki cümle",
+      "finish": "Sonucu gör",
+      "summaryTitle": "Sesiniz kalibre edildi",
+      "gainRaised": "Nova sesinizi bozmadan {{db}} dB yükseltecek.",
+      "gainUnchanged": "Sesiniz zaten doğru seviyede geliyor: ayar gerekmiyor.",
+      "tooNoisy": "Sesiniz ortam gürültüsünden zor ayırt ediliyor. Mikrofonu yaklaştırın veya yer değiştirin: tek başına bir ayar yetmez.",
+      "noCorrection": "Nova ders terimlerini doğru anladı. Eklenecek düzeltme yok.",
+      "correctionsIntro": "Nova bu terimleri yanlış anladı. İşaretliyse sonraki dikte işlemlerinizde düzeltilecekler:",
+      "correction": "“{{expected}}” (Nova “{{heard}}” duyuyordu)",
+      "save": "Kaydet",
+      "errorMicrophone": "Mikrofon başlatılamadı. Devam eden bir dikte olmadığını kontrol edip yeniden deneyin.",
+      "errorAnalysis": "Nova bu okumayı analiz edemedi. Cümleyi yeniden okuyun."
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "Yeniden yazıya dök",
       "retranscribeError": "Yeniden yazıya dökme başarısız oldu. Lütfen tekrar deneyin.",
       "transcribing": "Yazıya döküyor...",
-      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz."
+      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar yazıya dökebilirsiniz.",
+      "readAloud": "Sesli oku",
+      "stopReading": "Okumayı durdur",
+      "readAloudUnavailable": "Sesli okuma bu bilgisayarda kullanılamıyor."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "Nova kullanımınıza genel bir bakış."
+    },
+    "readingComfort": {
+      "title": "Okuma rahatlığı",
+      "description": "Nova'nın metnini daha kolay okunur hale getirin ve notlarınızı sesli dinleyin.",
+      "textSize": {
+        "title": "Metin boyutu",
+        "normal": "Normal",
+        "large": "Büyük",
+        "larger": "Çok büyük"
+      },
+      "spacing": {
+        "title": "Harf ve satır aralığı",
+        "description": "Aralıklı metin, disleksisi olan birçok okur için daha kolay okunur.",
+        "normal": "Normal",
+        "wide": "Geniş",
+        "wider": "Çok geniş"
+      },
+      "font": {
+        "title": "Yazı tipi",
+        "description": "Hiçbir yazı tipinin disleksiyle okumayı iyileştirdiği gösterilmedi: size en rahat geleni seçin.",
+        "system": "Nova",
+        "readable": "Verdana (geniş harfler)"
+      },
+      "speechRate": {
+        "title": "Okuma hızı",
+        "description": "Notlarınızı geçmişten sesli okumak için.",
+        "slow": "Yavaş",
+        "normal": "Normal",
+        "fast": "Hızlı",
+        "try": "Dene",
+        "sample": "Nova notlarınızı böyle sesli okuyacak."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Sesim",
+      "descriptionGain": "Nova sesinizi {{db}} dB yükseltiyor.",
+      "descriptionNone": "Ayar yok: sesiniz olduğu gibi geliyor.",
+      "recalibrate": "Sesimi yeniden kalibre et",
+      "reset": "Sıfırla"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "Kurumunuzun sunucusu her gün kaç dikte ve yeniden yazım yaptığınızı sayar. İçeriklerini saklamaz.",
     "aiSkillsPrivacyOffline": "Nova Commands kurumunuzun sunucusunda çalışır; şu anda erişilemiyor.",
     "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Okulunuzun sunucusu"
   }
 }

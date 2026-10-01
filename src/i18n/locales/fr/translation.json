@@ -221,6 +221,35 @@
       "introTitle": "Nova ne fait pas que transcrire",
       "introSubtitle": "Parlez, et Nova écrit dans le style adapté à ce que vous faites.",
       "unavailable": "Aucun style d'écriture n'est disponible pour l'instant."
+    },
+    "voiceCalibration": {
+      "title": "Apprenons votre voix",
+      "subtitle": "Lisez quelques phrases de cours. Nova mesure votre micro et repère les mots qu'il comprend mal chez vous. Rien n'est appliqué sans votre accord.",
+      "tipQuiet": "Parlez comme en classe, à voix basse : c'est cette voix-là que Nova doit entendre.",
+      "tipPlace": "Installez-vous là où vous travaillez, avec le micro que vous utiliserez.",
+      "tipDuration": "{{count}} phrases, environ deux minutes.",
+      "start": "Commencer",
+      "readTitle": "Phrase {{current}} sur {{total}}",
+      "readSubtitle": "Appuyez sur « Lire », dites la phrase, puis appuyez sur « J'ai fini ».",
+      "record": "Lire",
+      "stop": "J'ai fini",
+      "retry": "Relire cette phrase",
+      "listening": "Nova vous écoute…",
+      "analysing": "Nova analyse ce qu'il a entendu…",
+      "heardLabel": "Nova a compris :",
+      "heardNothing": "Rien d'audible. Rapprochez-vous du micro et relisez la phrase.",
+      "next": "Phrase suivante",
+      "finish": "Voir le résultat",
+      "summaryTitle": "Votre voix est calibrée",
+      "gainRaised": "Nova relèvera votre voix de {{db}} dB, sans la faire saturer.",
+      "gainUnchanged": "Votre voix arrive déjà au bon niveau : aucun réglage n'est nécessaire.",
+      "tooNoisy": "Votre voix ressort mal du bruit ambiant. Rapprochez le micro ou changez de place : un réglage ne suffira pas.",
+      "noCorrection": "Nova a bien compris les termes de cours. Aucune correction à ajouter.",
+      "correctionsIntro": "Nova a mal compris ces termes. Cochés, ils seront corrigés dans vos prochaines dictées :",
+      "correction": "« {{expected}} » (Nova entendait « {{heard}} »)",
+      "save": "Enregistrer",
+      "errorMicrophone": "Le micro n'a pas pu démarrer. Vérifiez qu'aucune dictée n'est en cours, puis réessayez.",
+      "errorAnalysis": "Nova n'a pas pu analyser cette lecture. Relisez la phrase."
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "Re-transcrire",
       "retranscribeError": "Impossible de re-transcrire. Veuillez réessayer.",
       "transcribing": "Transcription en cours...",
-      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai."
+      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai.",
+      "readAloud": "Écouter",
+      "stopReading": "Arrêter la lecture",
+      "readAloudUnavailable": "La lecture à voix haute n'est pas disponible sur ce poste."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "Un aperçu de votre utilisation de Nova."
+    },
+    "readingComfort": {
+      "title": "Lecture et confort",
+      "description": "Rendre le texte de Nova plus facile à lire, et se faire lire ses notes à voix haute.",
+      "textSize": {
+        "title": "Taille du texte",
+        "normal": "Normale",
+        "large": "Grande",
+        "larger": "Très grande"
+      },
+      "spacing": {
+        "title": "Espacement des lettres et des lignes",
+        "description": "Un texte espacé est plus facile à lire pour beaucoup de lecteurs dyslexiques.",
+        "normal": "Normal",
+        "wide": "Large",
+        "wider": "Très large"
+      },
+      "font": {
+        "title": "Police",
+        "description": "Aucune police n'a montré d'effet sur la lecture avec une dyslexie : choisissez celle qui vous semble la plus confortable.",
+        "system": "Nova",
+        "readable": "Verdana (lettres larges)"
+      },
+      "speechRate": {
+        "title": "Vitesse de lecture",
+        "description": "Pour la lecture à voix haute de vos notes, depuis l'historique.",
+        "slow": "Lente",
+        "normal": "Normale",
+        "fast": "Rapide",
+        "try": "Essayer",
+        "sample": "Voici comment Nova lira vos notes à voix haute."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Ma voix",
+      "descriptionGain": "Nova relève votre voix de {{db}} dB.",
+      "descriptionNone": "Aucun réglage : votre voix arrive telle quelle.",
+      "recalibrate": "Recalibrer ma voix",
+      "reset": "Réinitialiser"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "Le serveur de votre établissement compte le nombre de transcriptions et de réécritures effectuées chaque jour. Il n'en conserve pas le contenu.",
     "aiSkillsPrivacyOffline": "Les Nova Commands passent par le serveur de votre établissement, actuellement injoignable.",
     "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
-    "codeForbidden": "L'accès est indisponible. Contactez votre administrateur."
+    "codeForbidden": "L'accès est indisponible. Contactez votre administrateur.",
+    "engineServer": "Le serveur de votre établissement"
   }
 }

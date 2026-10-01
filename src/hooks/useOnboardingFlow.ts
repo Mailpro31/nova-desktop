@@ -16,6 +16,7 @@ export type OnboardingStepId =
   | "welcome"
   | "model"
   | "smartSetup"
+  | "voiceCalibration"
   | "writingStyles"
   | "firstDictation";
 
@@ -101,6 +102,10 @@ export function useOnboardingFlow({
     pending.push("smartSetup");
 
     if (organizationMode) {
+      // Le calibrage avant la première dictée : c'est lui qui règle le gain et
+      // apprend les mots mal entendus, donc la première dictée en profite.
+      // Facultatif — un élève pressé dicte tout de suite et calibre plus tard.
+      if (!isSkipped("voiceCalibration")) pending.push("voiceCalibration");
       // Montrer un premier résultat avant les options de style garde le chemin
       // principal court. Les réglages fins viennent une fois la dictée prouvée.
       if (!readiness.hasDictated && !isSkipped("firstDictation")) {

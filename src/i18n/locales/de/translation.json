@@ -221,6 +221,35 @@
       "introTitle": "Nova transkribiert nicht nur",
       "introSubtitle": "Sprechen Sie, und Nova schreibt im passenden Stil.",
       "unavailable": "Noch ist kein Schreibstil verfügbar."
+    },
+    "voiceCalibration": {
+      "title": "Lassen Sie Nova Ihre Stimme lernen",
+      "subtitle": "Lesen Sie einige Sätze aus dem Unterricht vor. Nova misst Ihr Mikrofon und erkennt die Wörter, die es bei Ihnen falsch versteht. Nichts wird ohne Ihre Zustimmung übernommen.",
+      "tipQuiet": "Sprechen Sie leise, wie im Unterricht: Genau diese Stimme muss Nova hören.",
+      "tipPlace": "Setzen Sie sich an Ihren Arbeitsplatz, mit dem Mikrofon, das Sie verwenden werden.",
+      "tipDuration": "{{count}} Sätze, etwa zwei Minuten.",
+      "start": "Loslegen",
+      "readTitle": "Satz {{current}} von {{total}}",
+      "readSubtitle": "Drücken Sie „Vorlesen“, sprechen Sie den Satz und drücken Sie dann „Fertig“.",
+      "record": "Vorlesen",
+      "stop": "Fertig",
+      "retry": "Diesen Satz erneut lesen",
+      "listening": "Nova hört zu …",
+      "analysing": "Nova analysiert, was es gehört hat …",
+      "heardLabel": "Nova hat verstanden:",
+      "heardNothing": "Nichts hörbar. Gehen Sie näher ans Mikrofon und lesen Sie den Satz erneut.",
+      "next": "Nächster Satz",
+      "finish": "Ergebnis anzeigen",
+      "summaryTitle": "Ihre Stimme ist kalibriert",
+      "gainRaised": "Nova hebt Ihre Stimme um {{db}} dB an, ohne sie zu übersteuern.",
+      "gainUnchanged": "Ihre Stimme kommt bereits im richtigen Pegel an: Keine Anpassung nötig.",
+      "tooNoisy": "Ihre Stimme hebt sich kaum vom Umgebungslärm ab. Bringen Sie das Mikrofon näher oder wechseln Sie den Platz: Eine Einstellung allein reicht nicht.",
+      "noCorrection": "Nova hat die Fachbegriffe richtig verstanden. Keine Korrektur nötig.",
+      "correctionsIntro": "Nova hat diese Begriffe falsch verstanden. Angehakt, werden sie in Ihren nächsten Diktaten korrigiert:",
+      "correction": "„{{expected}}“ (Nova hörte „{{heard}}“)",
+      "save": "Speichern",
+      "errorMicrophone": "Das Mikrofon konnte nicht starten. Prüfen Sie, dass kein Diktat läuft, und versuchen Sie es erneut.",
+      "errorAnalysis": "Nova konnte diese Lesung nicht auswerten. Lesen Sie den Satz erneut."
     }
   },
   "modelSelector": {
@@ -594,7 +623,10 @@
       "retranscribe": "Erneut transkribieren",
       "retranscribeError": "Erneute Transkription fehlgeschlagen. Bitte versuche es erneut.",
       "transcribing": "Transkribiere...",
-      "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren."
+      "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren.",
+      "readAloud": "Vorlesen",
+      "stopReading": "Vorlesen beenden",
+      "readAloudUnavailable": "Vorlesen ist auf diesem Computer nicht verfügbar."
     },
     "debug": {
       "logDirectory": {
@@ -691,6 +723,45 @@
     },
     "home": {
       "subtitle": "Ein Überblick über Ihre Nova-Nutzung."
+    },
+    "readingComfort": {
+      "title": "Lesekomfort",
+      "description": "Den Text von Nova leichter lesbar machen und sich die Notizen vorlesen lassen.",
+      "textSize": {
+        "title": "Textgröße",
+        "normal": "Normal",
+        "large": "Groß",
+        "larger": "Sehr groß"
+      },
+      "spacing": {
+        "title": "Buchstaben- und Zeilenabstand",
+        "description": "Ein weiter gesetzter Text ist für viele Menschen mit Legasthenie leichter zu lesen.",
+        "normal": "Normal",
+        "wide": "Weit",
+        "wider": "Sehr weit"
+      },
+      "font": {
+        "title": "Schriftart",
+        "description": "Für keine Schriftart ist eine Wirkung auf das Lesen bei Legasthenie belegt: Wählen Sie die, die Ihnen am angenehmsten ist.",
+        "system": "Nova",
+        "readable": "Verdana (breite Buchstaben)"
+      },
+      "speechRate": {
+        "title": "Vorlesegeschwindigkeit",
+        "description": "Zum Vorlesen Ihrer Notizen aus dem Verlauf.",
+        "slow": "Langsam",
+        "normal": "Normal",
+        "fast": "Schnell",
+        "try": "Ausprobieren",
+        "sample": "So liest Nova Ihre Notizen vor."
+      }
+    },
+    "voiceCalibration": {
+      "title": "Meine Stimme",
+      "descriptionGain": "Nova hebt Ihre Stimme um {{db}} dB an.",
+      "descriptionNone": "Keine Anpassung: Ihre Stimme kommt unverändert an.",
+      "recalibrate": "Stimme neu kalibrieren",
+      "reset": "Zurücksetzen"
     }
   },
   "footer": {
@@ -1566,6 +1637,7 @@
     "dataNote": "Der Server Ihrer Einrichtung zählt, wie viele Transkriptionen und Umschreibungen Sie täglich ausführen. Deren Inhalt wird nicht gespeichert.",
     "aiSkillsPrivacyOffline": "Nova Commands laufen auf dem Server Ihrer Einrichtung, der gerade nicht erreichbar ist.",
     "notInOrganization": "Dieses Microsoft-Konto gehört nicht zu Ihrer Einrichtung.",
-    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator."
+    "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
+    "engineServer": "Server Ihrer Bildungseinrichtung"
   }
 }
