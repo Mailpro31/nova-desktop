@@ -2029,6 +2029,25 @@ pub(crate) async fn process_transcription_output(
         }
     }
 
+    // `{date}`, `{heure}` : seul le contenu d'un snippet en porte, inséré
+    // ci-dessus ou déjà par le serveur de l'organisation.
+    let date_language =
+        match crate::rewrite::placeholders::DateLanguage::from_code(&effective_language) {
+            crate::rewrite::placeholders::DateLanguage::Numeric => {
+                crate::rewrite::placeholders::DateLanguage::from_code(&settings.app_language)
+            }
+            language => language,
+        };
+    let dated = crate::rewrite::placeholders::expand(
+        &final_text,
+        chrono::Local::now().naive_local(),
+        date_language,
+    );
+    if dated != final_text {
+        final_text = dated;
+        post_processed_text = Some(final_text.clone());
+    }
+
     if prepared.marker.is_some() {
         final_text = prepared.finish(&final_text);
         post_processed_text = Some(final_text.clone());
