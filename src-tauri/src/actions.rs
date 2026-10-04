@@ -1932,8 +1932,10 @@ pub(crate) async fn process_transcription_output(
     let prepared = crate::rewrite::spoken_marks::prepare(&final_text);
     final_text = prepared.body.clone();
 
-    // Un repère seul (« J'ai décroché. ») n'a rien à reformuler.
-    if post_process && !final_text.trim().is_empty() {
+    // Un repère seul (« J'ai décroché. ») n'a rien à reformuler, et une
+    // formule est déjà écrite en symboles : le modèle ne pourrait que la
+    // déformer.
+    if post_process && !final_text.trim().is_empty() && !prepared.is_formula() {
         // Protection du lexique personnel : les marques, noms propres et
         // termes techniques (potentiellement multi-mots) présents dans la
         // dictée sont masqués par un repère `{{…}}` AVANT l'appel au modèle,
@@ -2474,7 +2476,10 @@ impl ShortcutAction for TranscribeAction {
                                     // repère seul, ou un refus, repart brut et
                                     // `process_transcription_output` le traite.
                                     let prepared = crate::rewrite::spoken_marks::prepare(&text);
-                                    if post_process && !prepared.body.trim().is_empty() {
+                                    if post_process
+                                        && !prepared.body.trim().is_empty()
+                                        && !prepared.is_formula()
+                                    {
                                         if let Some(style) = resolve_effective_style(
                                             &ah,
                                             auto_style_override.as_deref(),

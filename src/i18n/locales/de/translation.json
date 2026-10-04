@@ -1151,6 +1151,8 @@
       "rule": "Sagen Sie den Marker ganz am Anfang des Diktats und machen Sie eine kurze Pause: „{{example}}“ Nova setzt ihn an den Anfang der Notiz, ohne ihn umzuformulieren.",
       "blocksTitle": "Kursblöcke",
       "numbering": "Beispiele und Übungen werden während einer Stunde automatisch nummeriert. Sagen Sie „{{example}}“, um die Nummer zu wählen.",
+      "formulaTitle": "Formeln",
+      "formula": "Beginnen Sie mit „Formule“ und diktieren Sie sie auf Französisch: „{{said}}“ ergibt {{written}}. Nova schreibt sie in Symbolen, ohne sie umzuformulieren. Verstandene Wörter:",
       "layoutTitle": "Diktiertes Layout",
       "search": "Um Ihre Marker wiederzufinden, suchen Sie im Verlauf nach „{{marker}}“.",
       "english": "Auf Englisch: {{phrases}}."

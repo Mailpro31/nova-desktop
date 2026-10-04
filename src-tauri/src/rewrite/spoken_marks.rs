@@ -77,7 +77,11 @@ const MARKERS: &[(&str, &str, &str, bool)] = &[
     ("example", "🧪 Example", EN, NUMBERED),
     ("exercice", "✍ Exercice", FR, NUMBERED),
     ("exercise", "✍ Exercise", EN, NUMBERED),
+    // Une formule s'écrit en symboles, par règles fixes (`spoken_maths`).
+    ("formule", "🔢 Formule", FR, PLAIN),
 ];
+
+const FORMULA_LABEL: &str = "🔢 Formule";
 
 /// La dictée prête pour le Style : son repère éventuel, mis de côté, et le
 /// contenu, mise en page appliquée.
@@ -88,6 +92,13 @@ pub struct PreparedDictation {
 }
 
 impl PreparedDictation {
+    /// Une formule est déjà écrite en symboles : aucun Style ne la reprend,
+    /// le modèle ne pourrait que la déformer.
+    pub fn is_formula(&self) -> bool {
+        self.marker
+            .is_some_and(|marker| marker.label == FORMULA_LABEL)
+    }
+
     /// Remet le repère devant le texte que le Style a rendu. Un exemple ou un
     /// exercice prend le numéro suivant du cours en cours.
     pub fn finish(&self, text: &str) -> String {
@@ -158,10 +169,13 @@ pub fn prepare(text: &str) -> PreparedDictation {
         Some((marker, body)) => (Some(marker), body),
         None => (None, text.to_string()),
     };
-    PreparedDictation {
-        marker,
-        body: apply_layout_commands(&body),
-    }
+    let body = match marker {
+        Some(marker) if marker.label == FORMULA_LABEL => {
+            crate::rewrite::spoken_maths::to_symbols(&body)
+        }
+        _ => apply_layout_commands(&body),
+    };
+    PreparedDictation { marker, body }
 }
 
 /// Le repère dit en tête de dictée, et le reste. `None` si la dictée ne
@@ -186,7 +200,13 @@ pub fn split_study_marker(text: &str) -> Option<(StudyMarker, String)> {
         })
         .max_by_key(|(length, _, _)| *length)
         .map(|(_, marker, after)| (marker, after))?;
-    Some((marker, capitalize_first(after.trim())))
+    // Une formule garde sa casse : « x au carré » n'est pas « X au carré ».
+    let body = if marker.label == FORMULA_LABEL {
+        after.trim().to_string()
+    } else {
+        capitalize_first(after.trim())
+    };
+    Some((marker, body))
 }
 
 /// Fin du déclencheur dans `rest`, ponctuation qui le suit comprise, et le
@@ -366,6 +386,22 @@ mod tests {
 
     fn marked(text: &str) -> Option<(&'static str, String)> {
         split_study_marker(text).map(|(marker, body)| (marker.label, body))
+    }
+
+    #[test]
+    fn a_formula_is_written_in_symbols_and_skips_the_style() {
+        let prepared = prepare("Formule, delta égale b au carré moins quatre a c.");
+        assert!(prepared.is_formula());
+        assert_eq!(prepared.body, "Δ = b² − 4ac.");
+        assert_eq!(
+            prepared.finish(&prepared.body),
+            "🔢 Formule : Δ = b² − 4ac."
+        );
+        assert_eq!(prepare("Formule : x au carré").body, "x²");
+        assert!(!prepare("Important, x plus 1.").is_formula());
+        // Hors d'une formule, « plus » et « moins » restent des mots.
+        assert_eq!(prepare("Important, x plus 1.").body, "X plus 1.");
+        assert_eq!(marked("Formule de Héron pour l'aire."), None);
     }
 
     #[test]

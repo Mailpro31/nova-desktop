@@ -1151,6 +1151,8 @@
       "rule": "Diga o marcador logo no início do ditado e faça uma pausa curta: «{{example}}» O Nova coloca-o no topo da nota, sem o reformular.",
       "blocksTitle": "Blocos de aula",
       "numbering": "Os exemplos e exercícios numeram-se sozinhos durante uma aula. Diga «{{example}}» para escolher o número.",
+      "formulaTitle": "Fórmulas",
+      "formula": "Comece por «Formule» e dite-a em francês: «{{said}}» dá {{written}}. O Nova escreve-a em símbolos, sem a reformular. Palavras reconhecidas:",
       "layoutTitle": "Formatação ditada",
       "search": "Para encontrar os seus marcadores, pesquise «{{marker}}» no histórico.",
       "english": "Em inglês: {{phrases}}."

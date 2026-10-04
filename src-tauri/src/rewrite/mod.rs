@@ -5,3 +5,4 @@ pub mod placeholders;
 pub mod prompt;
 pub mod route;
 pub mod spoken_marks;
+pub mod spoken_maths;

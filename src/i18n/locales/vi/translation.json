@@ -1151,6 +1151,8 @@
       "rule": "Nói dấu ngay đầu bài đọc, rồi ngừng một chút: “{{example}}” Nova đặt nó lên đầu ghi chú, không diễn đạt lại.",
       "blocksTitle": "Khối bài học",
       "numbering": "Ví dụ và bài tập tự đánh số trong một buổi học. Nói “{{example}}” để chọn số.",
+      "formulaTitle": "Công thức",
+      "formula": "Bắt đầu bằng “Formule”, rồi đọc công thức bằng tiếng Pháp: “{{said}}” cho ra {{written}}. Nova viết bằng ký hiệu, không diễn đạt lại. Các từ được hiểu:",
       "layoutTitle": "Bố cục đọc chính tả",
       "search": "Để tìm lại các dấu, hãy tìm “{{marker}}” trong lịch sử.",
       "english": "Bằng tiếng Anh: {{phrases}}."

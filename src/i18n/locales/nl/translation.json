@@ -1151,6 +1151,8 @@
       "rule": "Zeg de markering helemaal aan het begin van het dictaat en pauzeer kort: “{{example}}” Nova zet hem bovenaan de notitie, zonder hem te herformuleren.",
       "blocksTitle": "Lesblokken",
       "numbering": "Voorbeelden en oefeningen worden tijdens een les vanzelf genummerd. Zeg “{{example}}” om het nummer te kiezen.",
+      "formulaTitle": "Formules",
+      "formula": "Begin met “Formule” en dicteer haar in het Frans: “{{said}}” geeft {{written}}. Nova schrijft haar in symbolen, zonder te herformuleren. Herkende woorden:",
       "layoutTitle": "Gedicteerde opmaak",
       "search": "Zoek in de geschiedenis naar “{{marker}}” om je markeringen terug te vinden.",
       "english": "In het Engels: {{phrases}}."

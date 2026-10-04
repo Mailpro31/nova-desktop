@@ -1151,6 +1151,8 @@
       "rule": "Pronuncia il marcatore all'inizio della dettatura, poi fai una breve pausa: «{{example}}» Nova lo mette in cima alla nota, senza riformularlo.",
       "blocksTitle": "Blocchi di lezione",
       "numbering": "Esempi ed esercizi si numerano da soli durante una lezione. Di' «{{example}}» per scegliere il numero.",
+      "formulaTitle": "Formule",
+      "formula": "Inizia con «Formule», poi dettala in francese: «{{said}}» diventa {{written}}. Nova la scrive in simboli, senza riformularla. Parole riconosciute:",
       "layoutTitle": "Impaginazione dettata",
       "search": "Per ritrovare i tuoi marcatori, cerca «{{marker}}» nella cronologia.",
       "english": "In inglese: {{phrases}}."

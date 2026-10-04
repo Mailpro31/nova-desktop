@@ -1151,6 +1151,8 @@
       "rule": "İşareti diktenin en başında söyleyin ve kısa bir ara verin: “{{example}}” Nova onu yeniden ifade etmeden notun en üstüne koyar.",
       "blocksTitle": "Ders blokları",
       "numbering": "Örnekler ve alıştırmalar ders boyunca kendiliğinden numaralanır. Numarayı seçmek için “{{example}}” deyin.",
+      "formulaTitle": "Formüller",
+      "formula": "“Formule” diyerek başlayın, sonra formülü Fransızca dikte edin: “{{said}}” → {{written}}. Nova onu yeniden ifade etmeden sembollerle yazar. Anlaşılan sözcükler:",
       "layoutTitle": "Dikte edilen düzen",
       "search": "İşaretlerinizi bulmak için geçmişte “{{marker}}” araması yapın.",
       "english": "İngilizce: {{phrases}}."
