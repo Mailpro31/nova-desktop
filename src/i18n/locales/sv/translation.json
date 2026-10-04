@@ -1142,12 +1142,15 @@
       "contentLabel": "Infogad text",
       "contentPlaceholder": "T.ex. https://meet.google.com/abc-def-ghi",
       "add": "Lägg till snutt",
-      "tip": "Tips: säg ”{{trigger}}” under dikteringen för att infoga din information direkt!"
+      "tip": "Tips: säg ”{{trigger}}” under dikteringen för att infoga din information direkt!",
+      "values": "I den infogade texten blir {{date}} och {{time}} dikteringens datum och tid."
     },
     "studyMarkers": {
       "title": "Röstmarkeringar",
       "description": "Markera det viktiga under lektionen, bara genom att säga det.",
       "rule": "Säg markeringen allra först i dikteringen och gör en kort paus: ”{{example}}” Nova lägger den överst i anteckningen, utan att formulera om den.",
+      "blocksTitle": "Lektionsblock",
+      "numbering": "Exempel och övningar numreras automatiskt under en lektion. Säg ”{{example}}” för att välja numret.",
       "layoutTitle": "Dikterad layout",
       "search": "Sök efter ”{{marker}}” i historiken för att hitta dina markeringar.",
       "english": "På engelska: {{phrases}}."

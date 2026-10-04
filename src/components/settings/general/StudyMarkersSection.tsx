@@ -16,6 +16,23 @@ export const STUDY_MARKERS: ReadonlyArray<{ said: string; written: string }> = [
   { said: "Schéma à reprendre", written: "✏ Schéma à reprendre" },
 ];
 
+/** Les blocs de cours ; les exemples et les exercices se numérotent seuls. */
+export const COURSE_BLOCKS: ReadonlyArray<{
+  said: string;
+  written: string;
+  numbered?: boolean;
+}> = [
+  { said: "Théorème", written: "📐 Théorème" },
+  { said: "Propriété", written: "📐 Propriété" },
+  { said: "À retenir", written: "📌 À retenir" },
+  { said: "Méthode", written: "🛠 Méthode" },
+  { said: "Remarque", written: "💬 Remarque" },
+  { said: "Exemple", written: "🧪 Exemple", numbered: true },
+  { said: "Exercice", written: "✍ Exercice", numbered: true },
+];
+
+const NUMBERING_HINT = " 1, 2, 3…";
+
 export const LAYOUT_COMMANDS: ReadonlyArray<string> = [
   "À la ligne",
   "Point à la ligne",
@@ -29,6 +46,12 @@ export const ENGLISH_MARKERS: ReadonlyArray<string> = [
   "Definition",
   "I lost track",
   "Diagram to redo",
+  "Theorem",
+  "Property",
+  "Key point",
+  "Method",
+  "Example",
+  "Exercise",
   "New line",
   "New paragraph",
 ];
@@ -57,6 +80,28 @@ export const StudyMarkersSection: React.FC = () => {
           </div>
         ))}
       </dl>
+
+      <div className="space-y-2">
+        <h4 className="text-xs font-medium text-text">
+          {t("organization.studyMarkers.blocksTitle")}
+        </h4>
+        <dl className="divide-y divide-hairline border-y border-hairline">
+          {COURSE_BLOCKS.map(({ said, written, numbered }) => (
+            <div
+              key={said}
+              className="flex min-h-11 items-center justify-between gap-3 px-2 py-2"
+            >
+              <dt className="text-sm font-semibold text-text">« {said} »</dt>
+              <dd className="text-sm text-text-secondary">
+                {numbered ? written + NUMBERING_HINT : written}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="text-xs text-text-secondary leading-relaxed">
+          {t("organization.studyMarkers.numbering", { example: "Exemple 3" })}
+        </p>
+      </div>
 
       <div className="space-y-1">
         <h4 className="text-xs font-medium text-text">

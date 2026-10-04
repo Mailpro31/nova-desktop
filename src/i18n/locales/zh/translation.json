@@ -1142,12 +1142,15 @@
       "contentLabel": "插入的文本",
       "contentPlaceholder": "例如：https://meet.google.com/abc-def-ghi",
       "add": "添加片段",
-      "tip": "提示：听写时说“{{trigger}}”，即可立即插入你的信息！"
+      "tip": "提示：听写时说“{{trigger}}”，即可立即插入你的信息！",
+      "values": "插入的文本中，{{date}} 和 {{time}} 会变成口述时的日期和时间。"
     },
     "studyMarkers": {
       "title": "语音标记",
       "description": "上课时只需说出来，就能标记重点。",
       "rule": "在口述的最开头说出标记，然后稍作停顿：“{{example}}” Nova 会把它放在笔记开头，不做改写。",
+      "blocksTitle": "课堂区块",
+      "numbering": "一节课中的例子和练习会自动编号。说“{{example}}”可指定编号。",
       "layoutTitle": "口述排版",
       "search": "要找回你的标记，请在历史记录中搜索“{{marker}}”。",
       "english": "英语：{{phrases}}。"

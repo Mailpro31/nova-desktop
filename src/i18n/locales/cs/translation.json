@@ -1142,12 +1142,15 @@
       "contentLabel": "Vložený text",
       "contentPlaceholder": "Např. https://meet.google.com/abc-def-ghi",
       "add": "Přidat úryvek",
-      "tip": "Tip: během diktování řekněte „{{trigger}}“ a informace se hned vloží!"
+      "tip": "Tip: během diktování řekněte „{{trigger}}“ a informace se hned vloží!",
+      "values": "Ve vloženém textu se {{date}} a {{time}} změní na datum a čas diktátu."
     },
     "studyMarkers": {
       "title": "Hlasové značky",
       "description": "Označte během výuky, co je důležité – stačí to říct.",
       "rule": "Řekněte značku hned na začátku diktátu a krátce se odmlčte: „{{example}}“ Nova ji umístí na začátek poznámky, aniž by ji přeformulovala.",
+      "blocksTitle": "Bloky výuky",
+      "numbering": "Příklady a cvičení se během hodiny číslují samy. Řekněte „{{example}}“ a zvolíte číslo.",
       "layoutTitle": "Diktované rozvržení",
       "search": "Své značky najdete, když v historii vyhledáte „{{marker}}“.",
       "english": "Anglicky: {{phrases}}."

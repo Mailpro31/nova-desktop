@@ -1142,12 +1142,15 @@
       "contentLabel": "Eklenen metin",
       "contentPlaceholder": "Örn. https://meet.google.com/abc-def-ghi",
       "add": "Parçacık ekle",
-      "tip": "İpucu: Dikte sırasında “{{trigger}}” de, bilgilerin anında eklensin!"
+      "tip": "İpucu: Dikte sırasında “{{trigger}}” de, bilgilerin anında eklensin!",
+      "values": "Eklenen metinde {{date}} ve {{time}}, diktenin tarihi ve saati olur."
     },
     "studyMarkers": {
       "title": "Sesli işaretler",
       "description": "Derste önemli olanı sadece söyleyerek işaretleyin.",
       "rule": "İşareti diktenin en başında söyleyin ve kısa bir ara verin: “{{example}}” Nova onu yeniden ifade etmeden notun en üstüne koyar.",
+      "blocksTitle": "Ders blokları",
+      "numbering": "Örnekler ve alıştırmalar ders boyunca kendiliğinden numaralanır. Numarayı seçmek için “{{example}}” deyin.",
       "layoutTitle": "Dikte edilen düzen",
       "search": "İşaretlerinizi bulmak için geçmişte “{{marker}}” araması yapın.",
       "english": "İngilizce: {{phrases}}."

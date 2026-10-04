@@ -1142,12 +1142,15 @@
       "contentLabel": "Wstawiany tekst",
       "contentPlaceholder": "Np. https://meet.google.com/abc-def-ghi",
       "add": "Dodaj fragment",
-      "tip": "Wskazówka: powiedz „{{trigger}}” podczas dyktowania, aby od razu wstawić swoje dane!"
+      "tip": "Wskazówka: powiedz „{{trigger}}” podczas dyktowania, aby od razu wstawić swoje dane!",
+      "values": "We wstawianym tekście {{date}} i {{time}} zmieniają się w datę i godzinę dyktowania."
     },
     "studyMarkers": {
       "title": "Znaczniki głosowe",
       "description": "Zaznaczaj to, co ważne, podczas zajęć — wystarczy to powiedzieć.",
       "rule": "Powiedz znacznik na samym początku dyktowania, a potem zrób krótką pauzę: „{{example}}” Nova umieści go na początku notatki, bez przeredagowania.",
+      "blocksTitle": "Bloki zajęć",
+      "numbering": "Przykłady i ćwiczenia numerują się same podczas zajęć. Powiedz „{{example}}”, aby wybrać numer.",
       "layoutTitle": "Dyktowany układ",
       "search": "Aby odnaleźć znaczniki, wyszukaj „{{marker}}” w historii.",
       "english": "Po angielsku: {{phrases}}."

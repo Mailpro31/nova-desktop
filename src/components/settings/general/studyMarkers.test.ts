@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  COURSE_BLOCKS,
   ENGLISH_MARKERS,
   LAYOUT_COMMANDS,
   STUDY_MARKERS,
@@ -16,7 +17,7 @@ const rules = readFileSync(
 
 describe("repères vocaux", () => {
   test("chaque repère montré est un déclencheur, avec le texte écrit", () => {
-    for (const { said, written } of STUDY_MARKERS) {
+    for (const { said, written } of [...STUDY_MARKERS, ...COURSE_BLOCKS]) {
       expect(rules).toContain(`("${said.toLowerCase()}", "${written}"`);
     }
   });

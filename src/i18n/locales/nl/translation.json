@@ -1142,12 +1142,15 @@
       "contentLabel": "Ingevoegde tekst",
       "contentPlaceholder": "Bijv. https://meet.google.com/abc-def-ghi",
       "add": "Fragment toevoegen",
-      "tip": "Tip: zeg „{{trigger}}” tijdens het dicteren om je gegevens meteen in te voegen!"
+      "tip": "Tip: zeg „{{trigger}}” tijdens het dicteren om je gegevens meteen in te voegen!",
+      "values": "In de ingevoegde tekst worden {{date}} en {{time}} de datum en tijd van het dictaat."
     },
     "studyMarkers": {
       "title": "Spraakmarkeringen",
       "description": "Markeer wat belangrijk is tijdens de les, gewoon door het te zeggen.",
       "rule": "Zeg de markering helemaal aan het begin van het dictaat en pauzeer kort: “{{example}}” Nova zet hem bovenaan de notitie, zonder hem te herformuleren.",
+      "blocksTitle": "Lesblokken",
+      "numbering": "Voorbeelden en oefeningen worden tijdens een les vanzelf genummerd. Zeg “{{example}}” om het nummer te kiezen.",
       "layoutTitle": "Gedicteerde opmaak",
       "search": "Zoek in de geschiedenis naar “{{marker}}” om je markeringen terug te vinden.",
       "english": "In het Engels: {{phrases}}."
