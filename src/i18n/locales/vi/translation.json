@@ -1142,12 +1142,15 @@
       "contentLabel": "Văn bản được chèn",
       "contentPlaceholder": "Ví dụ: https://meet.google.com/abc-def-ghi",
       "add": "Thêm đoạn",
-      "tip": "Mẹo: nói “{{trigger}}” khi đọc chính tả để chèn ngay thông tin của bạn!"
+      "tip": "Mẹo: nói “{{trigger}}” khi đọc chính tả để chèn ngay thông tin của bạn!",
+      "values": "Trong văn bản được chèn, {{date}} và {{time}} trở thành ngày và giờ đọc chính tả."
     },
     "studyMarkers": {
       "title": "Dấu đánh dấu bằng giọng nói",
       "description": "Đánh dấu điều quan trọng trong giờ học, chỉ cần nói ra.",
       "rule": "Nói dấu ngay đầu bài đọc, rồi ngừng một chút: “{{example}}” Nova đặt nó lên đầu ghi chú, không diễn đạt lại.",
+      "blocksTitle": "Khối bài học",
+      "numbering": "Ví dụ và bài tập tự đánh số trong một buổi học. Nói “{{example}}” để chọn số.",
       "layoutTitle": "Bố cục đọc chính tả",
       "search": "Để tìm lại các dấu, hãy tìm “{{marker}}” trong lịch sử.",
       "english": "Bằng tiếng Anh: {{phrases}}."

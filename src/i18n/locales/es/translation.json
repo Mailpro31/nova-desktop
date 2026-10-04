@@ -1142,12 +1142,15 @@
       "contentLabel": "Texto insertado",
       "contentPlaceholder": "P. ej. https://meet.google.com/abc-def-ghi",
       "add": "Añadir fragmento",
-      "tip": "Consejo: di «{{trigger}}» durante el dictado para insertar tu información al instante."
+      "tip": "Consejo: di «{{trigger}}» durante el dictado para insertar tu información al instante.",
+      "values": "En el texto insertado, {{date}} y {{time}} se convierten en la fecha y la hora del dictado."
     },
     "studyMarkers": {
       "title": "Marcadores de voz",
       "description": "Señala lo importante durante la clase, solo con decirlo.",
       "rule": "Di el marcador al principio del dictado y haz una breve pausa: «{{example}}» Nova lo coloca al inicio de la nota, sin reformularlo.",
+      "blocksTitle": "Bloques de clase",
+      "numbering": "Los ejemplos y ejercicios se numeran solos durante una clase. Di «{{example}}» para elegir el número.",
       "layoutTitle": "Formato dictado",
       "search": "Para encontrar tus marcadores, busca «{{marker}}» en el historial.",
       "english": "En inglés: {{phrases}}."

@@ -85,6 +85,9 @@ export const OrganizationSnippetsSection: React.FC = () => {
           {t("organization.snippets.tip", { trigger: "mon lien visio" })}
         </p>
       </div>
+      <p className="text-xs text-text-secondary leading-relaxed">
+        {t("organization.snippets.values", { date: "{date}", time: "{heure}" })}
+      </p>
 
       {/* Add form */}
       <form onSubmit={handleAdd} className="space-y-2 pt-1">

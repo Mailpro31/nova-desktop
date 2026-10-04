@@ -1142,12 +1142,15 @@
       "contentLabel": "Inserted text",
       "contentPlaceholder": "E.g. https://meet.google.com/abc-def-ghi",
       "add": "Add snippet",
-      "tip": "Tip: Say \"{{trigger}}\" during dictation to instantly insert your information!"
+      "tip": "Tip: Say \"{{trigger}}\" during dictation to instantly insert your information!",
+      "values": "In the inserted text, {{date}} and {{time}} become the date and time of the dictation."
     },
     "studyMarkers": {
       "title": "Voice markers",
       "description": "Flag what matters during class, just by saying it.",
       "rule": "Say the marker at the very start of the dictation, then pause briefly: “{{example}}” Nova puts it at the top of the note, without rewording it.",
+      "blocksTitle": "Course blocks",
+      "numbering": "Examples and exercises number themselves during a class. Say “{{example}}” to pick the number.",
       "layoutTitle": "Dictated layout",
       "search": "To find your markers again, search for “{{marker}}” in the history.",
       "english": "In English: {{phrases}}."

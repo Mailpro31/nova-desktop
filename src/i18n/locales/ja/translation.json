@@ -1142,12 +1142,15 @@
       "contentLabel": "挿入するテキスト",
       "contentPlaceholder": "例：https://meet.google.com/abc-def-ghi",
       "add": "スニペットを追加",
-      "tip": "ヒント：音声入力中に「{{trigger}}」と言うと、情報がすぐに挿入されます！"
+      "tip": "ヒント：音声入力中に「{{trigger}}」と言うと、情報がすぐに挿入されます！",
+      "values": "挿入されるテキストでは、{{date}} と {{time}} が口述の日付と時刻になります。"
     },
     "studyMarkers": {
       "title": "音声マーカー",
       "description": "授業中に大事なことを、声に出すだけで印を付けられます。",
       "rule": "口述の冒頭でマーカーを言い、少し間を置いてください:「{{example}}」Nova は言い換えずにノートの先頭に置きます。",
+      "blocksTitle": "授業ブロック",
+      "numbering": "例と演習は授業中に自動で番号が付きます。番号を選ぶには「{{example}}」と言ってください。",
       "layoutTitle": "口述によるレイアウト",
       "search": "マーカーを探すには、履歴で「{{marker}}」を検索します。",
       "english": "英語では: {{phrases}}。"
