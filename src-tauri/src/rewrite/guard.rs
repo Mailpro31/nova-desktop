@@ -857,9 +857,95 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
     Ok(())
 }
 
+/// Ce qu'un assistant dit à l'élève, et qu'un élève ne dicte pas dans ses
+/// notes ni dans son e-mail, où que ce soit dans la sortie. Mesuré sur le RTX
+/// (04/10) : « Je suis désolé, mais votre demande semble incomplète.
+/// Pourriez-vous préciser… » en fin d'e-mail, que le contrôle du seul début
+/// laissait passer. Même liste que le serveur (`ASSISTANT_SENTENCES`).
+const ASSISTANT_SENTENCES: &[&str] = &[
+    "votre demande semble",
+    "demande semble incomplète",
+    "pourriez vous préciser",
+    "pouvez vous préciser",
+    "je n ai pas compris votre",
+    "je ne comprends pas votre",
+    "en tant qu assistant",
+    "en tant qu ia",
+    "en tant que modèle",
+    "voulez vous que je",
+    "souhaitez vous que je",
+    "n hésitez pas à me",
+    "le texte fourni",
+    "la transcription fournie",
+    "la dictée fournie",
+    "your request seems",
+    "could you clarify",
+    "could you please clarify",
+    "as an ai",
+    "as an assistant",
+    "would you like me to",
+    "feel free to ask me",
+    "the text provided",
+    "the transcript provided",
+    "i didn t understand your",
+];
+
+/// Le texte en mots minuscules, séparés et bornés par une espace : la
+/// ponctuation et les traits d'union ne comptent pas.
+fn spoken_words(text: &str) -> String {
+    static WORDS: Lazy<Regex> = Lazy::new(|| Regex::new(r"[^\W_]+").expect("words"));
+    let words: Vec<String> = WORDS
+        .find_iter(&text.to_lowercase())
+        .map(|word| word.as_str().to_string())
+        .collect();
+    format!(" {} ", words.join(" "))
+}
+
+/// Une phrase d'assistant dans la sortie, que l'élève n'a pas dictée lui-même.
+pub fn assistant_sentence(input: &str, output: &str) -> bool {
+    let said = spoken_words(input);
+    let wrote = spoken_words(output);
+    ASSISTANT_SENTENCES.iter().any(|sentence| {
+        let needle = format!(" {sentence} ");
+        wrote.contains(&needle) && !said.contains(&needle)
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn an_assistant_sentence_anywhere_is_caught() {
+        let dictated = "on se voit mardi non attends mercredi à 10 heures";
+        // La sortie mesurée sur le RTX, Style E-mail.
+        assert!(assistant_sentence(
+            dictated,
+            "Bonjour,\nmercredi à 10 heures, je vous verrai.\nJe suis désolé, mais votre \
+             demande semble incomplète. Pourriez-vous préciser quel événement ou \
+             rendez-vous vous attendiez ?"
+        ));
+        assert!(assistant_sentence(
+            dictated,
+            "On se voit mercredi à 10 heures. Voulez-vous que je reformule autrement ?"
+        ));
+        assert!(assistant_sentence(
+            dictated,
+            "See you Wednesday at 10. Would you like me to make it more formal?"
+        ));
+    }
+
+    #[test]
+    fn a_student_who_says_it_keeps_it() {
+        assert!(!assistant_sentence(
+            "bonjour madame pourriez vous préciser la date du partiel merci",
+            "Bonjour Madame,\n\nPourriez-vous préciser la date du partiel ?\n\nMerci."
+        ));
+        assert!(!assistant_sentence(
+            "je suis désolé mais je ne pourrai pas venir",
+            "Je suis désolé, mais je ne pourrai pas venir."
+        ));
+    }
 
     // Chaque cas vient du banc d'essai du 2026-09-21 : sortie réelle du modèle.
 
