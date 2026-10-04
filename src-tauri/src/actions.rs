@@ -870,6 +870,11 @@ fn validate_rewrite(input: &str, output: &str, style_id: &str) -> Result<(), &'s
     if conversational_answer_prefix(output) && !conversational_answer_prefix(input) {
         return Err("chatbot-answer");
     }
+    // Une phrase d'assistant plus loin dans le texte : « Pourriez-vous
+    // préciser… » en fin d'e-mail.
+    if crate::rewrite::guard::assistant_sentence(input, output) {
+        return Err("chatbot-answer");
+    }
     static DIGITS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b\d+(?:[.,]\d+)?\b").unwrap());
     // Un compte rendu résume : il ne reprend pas chaque heure ni chaque montant
     // cité. Exiger tous les nombres le faisait refuser presque à chaque fois.
