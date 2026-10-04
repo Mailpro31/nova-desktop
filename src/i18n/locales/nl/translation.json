@@ -1144,6 +1144,14 @@
       "add": "Fragment toevoegen",
       "tip": "Tip: zeg „{{trigger}}” tijdens het dicteren om je gegevens meteen in te voegen!"
     },
+    "studyMarkers": {
+      "title": "Spraakmarkeringen",
+      "description": "Markeer wat belangrijk is tijdens de les, gewoon door het te zeggen.",
+      "rule": "Zeg de markering helemaal aan het begin van het dictaat en pauzeer kort: “{{example}}” Nova zet hem bovenaan de notitie, zonder hem te herformuleren.",
+      "layoutTitle": "Gedicteerde opmaak",
+      "search": "Zoek in de geschiedenis naar “{{marker}}” om je markeringen terug te vinden.",
+      "english": "In het Engels: {{phrases}}."
+    },
     "formatting": {
       "title": "Opmaakregels",
       "description": "Regels die automatisch worden toegepast bij het herformuleren van je dictaten.",

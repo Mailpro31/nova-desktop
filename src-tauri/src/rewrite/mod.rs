@@ -3,3 +3,4 @@ pub mod guard;
 pub mod phonetics;
 pub mod prompt;
 pub mod route;
+pub mod spoken_marks;

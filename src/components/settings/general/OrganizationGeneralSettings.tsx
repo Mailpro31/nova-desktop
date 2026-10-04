@@ -7,6 +7,7 @@ import {
   BookA,
   MessageSquare,
   ListFilter,
+  Bookmark,
 } from "lucide-react";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -23,6 +24,7 @@ import { MuteWhileRecording } from "../MuteWhileRecording";
 import { OrganizationDictionarySection } from "./OrganizationDictionarySection";
 import { OrganizationSnippetsSection } from "./OrganizationSnippetsSection";
 import { OrganizationFormattingSection } from "./OrganizationFormattingSection";
+import { StudyMarkersSection } from "./StudyMarkersSection";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
@@ -120,6 +122,14 @@ export const OrganizationPersonalizationSections: React.FC = () => {
         description={t("organization.snippets.description")}
       >
         <OrganizationSnippetsSection />
+      </SectionCard>
+
+      <SectionCard
+        icon={Bookmark}
+        title={t("organization.studyMarkers.title")}
+        description={t("organization.studyMarkers.description")}
+      >
+        <StudyMarkersSection />
       </SectionCard>
 
       <SectionCard

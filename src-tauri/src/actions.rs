@@ -1889,7 +1889,9 @@ pub(crate) async fn process_transcription_output(
             crate::writing_aids::with_snippets(&settings.custom_variables, aids);
     }
     // A transcription is always content. No spoken phrase can cancel the
-    // operation, mutate the dictionary, insert punctuation, or select a Style.
+    // operation, mutate the dictionary, or select a Style. Only fixed text
+    // rules apply: a study marker said first (`spoken_marks`) and the
+    // dictated line breaks.
     let effective_style_override = auto_style_override;
     let mut final_text = transcription.to_string();
     let mut post_processed_text: Option<String> = None;
@@ -1922,7 +1924,16 @@ pub(crate) async fn process_transcription_output(
     // échouent et que Nova colle finalement le texte de repli.
     final_text = crate::rewrite::phonetics::normalize(&final_text);
 
-    if post_process {
+    // Le repère d'étude dit en tête (« Important, … ») est mis de côté : le
+    // Style ne reçoit que le contenu, et le repère revient devant à la fin.
+    // Les retours à la ligne dictés sont appliqués avant le modèle, qui
+    // n'écrit donc plus « à la ligne » en toutes lettres. Un texte déjà
+    // marqué par le serveur de l'organisation ne contient plus de déclencheur.
+    let prepared = crate::rewrite::spoken_marks::prepare(&final_text);
+    final_text = prepared.body.clone();
+
+    // Un repère seul (« J'ai décroché. ») n'a rien à reformuler.
+    if post_process && !final_text.trim().is_empty() {
         // Protection du lexique personnel : les marques, noms propres et
         // termes techniques (potentiellement multi-mots) présents dans la
         // dictée sont masqués par un repère `{{…}}` AVANT l'appel au modèle,
@@ -2016,6 +2027,11 @@ pub(crate) async fn process_transcription_output(
             final_text = enforced;
             post_processed_text = Some(final_text.clone());
         }
+    }
+
+    if prepared.marker.is_some() {
+        final_text = prepared.finish(&final_text);
+        post_processed_text = Some(final_text.clone());
     }
 
     ProcessedTranscription {
@@ -2434,13 +2450,18 @@ impl ShortcutAction for TranscribeAction {
                                     organization::invalidate_server_reachability_cache(
                                         &session.server_url,
                                     );
-                                    if post_process {
+                                    // Le serveur ne reçoit que le contenu : le
+                                    // repère d'étude revient devant ensuite. Un
+                                    // repère seul, ou un refus, repart brut et
+                                    // `process_transcription_output` le traite.
+                                    let prepared = crate::rewrite::spoken_marks::prepare(&text);
+                                    if post_process && !prepared.body.trim().is_empty() {
                                         if let Some(style) = resolve_effective_style(
                                             &ah,
                                             auto_style_override.as_deref(),
                                         ) {
                                             match organization::reformulate_organization(
-                                                &text,
+                                                &prepared.body,
                                                 &style.id,
                                                 &style.prompt,
                                                 &session,
@@ -2449,13 +2470,13 @@ impl ShortcutAction for TranscribeAction {
                                             {
                                                 Ok(reformulated) => {
                                                     match checked_organization_rewrite(
-                                                        &text,
+                                                        &prepared.body,
                                                         &reformulated,
                                                         &style.id,
                                                     ) {
                                                         Ok(checked) => {
                                                             organization_rewritten = true;
-                                                            Ok(checked)
+                                                            Ok(prepared.finish(&checked))
                                                         }
                                                         Err(reason) => {
                                                             warn!(

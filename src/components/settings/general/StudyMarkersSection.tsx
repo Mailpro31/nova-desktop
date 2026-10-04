@@ -1,0 +1,80 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Lightbulb } from "lucide-react";
+
+/**
+ * Ce que l'élève peut dire, et ce que Nova écrit. Les déclencheurs sont ceux
+ * de `src-tauri/src/rewrite/spoken_marks.rs` : ils se disent dans la langue
+ * de la dictée, pas dans celle de l'interface.
+ */
+export const STUDY_MARKERS: ReadonlyArray<{ said: string; written: string }> = [
+  { said: "Important", written: "⚠ Important" },
+  { said: "À revoir", written: "🔁 À revoir" },
+  { said: "Question", written: "❓ Question" },
+  { said: "Définition", written: "📘 Définition" },
+  { said: "J'ai décroché", written: "⏸ J'ai décroché" },
+  { said: "Schéma à reprendre", written: "✏ Schéma à reprendre" },
+];
+
+export const LAYOUT_COMMANDS: ReadonlyArray<string> = [
+  "À la ligne",
+  "Point à la ligne",
+  "Nouveau paragraphe",
+];
+
+export const ENGLISH_MARKERS: ReadonlyArray<string> = [
+  "Important",
+  "To review",
+  "Question",
+  "Definition",
+  "I lost track",
+  "Diagram to redo",
+  "New line",
+  "New paragraph",
+];
+
+export const StudyMarkersSection: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-4 px-4 py-3">
+      <div className="flex items-start gap-2.5 border-s-2 border-accent bg-accent/5 px-3 py-2.5">
+        <Lightbulb size={16} className="text-accent shrink-0 mt-0.5" />
+        <p className="text-xs text-text-secondary leading-relaxed">
+          {t("organization.studyMarkers.rule", {
+            example: "Important, la dérivée d'une constante est nulle.",
+          })}
+        </p>
+      </div>
+
+      <dl className="divide-y divide-hairline border-y border-hairline">
+        {STUDY_MARKERS.map(({ said, written }) => (
+          <div
+            key={said}
+            className="flex min-h-11 items-center justify-between gap-3 px-2 py-2"
+          >
+            <dt className="text-sm font-semibold text-text">« {said} »</dt>
+            <dd className="text-sm text-text-secondary">{written}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className="space-y-1">
+        <h4 className="text-xs font-medium text-text">
+          {t("organization.studyMarkers.layoutTitle")}
+        </h4>
+        <p className="text-xs text-text-secondary leading-relaxed">
+          {LAYOUT_COMMANDS.map((command) => `« ${command} »`).join(" · ")}
+        </p>
+      </div>
+
+      <p className="text-xs text-text-secondary leading-relaxed">
+        {t("organization.studyMarkers.search", { marker: "À revoir" })}
+      </p>
+      <p className="text-xs text-text-secondary leading-relaxed">
+        {t("organization.studyMarkers.english", {
+          phrases: ENGLISH_MARKERS.join(", "),
+        })}
+      </p>
+    </div>
+  );
+};
