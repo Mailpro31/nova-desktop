@@ -1144,6 +1144,14 @@
       "add": "Parçacık ekle",
       "tip": "İpucu: Dikte sırasında “{{trigger}}” de, bilgilerin anında eklensin!"
     },
+    "studyMarkers": {
+      "title": "Sesli işaretler",
+      "description": "Derste önemli olanı sadece söyleyerek işaretleyin.",
+      "rule": "İşareti diktenin en başında söyleyin ve kısa bir ara verin: “{{example}}” Nova onu yeniden ifade etmeden notun en üstüne koyar.",
+      "layoutTitle": "Dikte edilen düzen",
+      "search": "İşaretlerinizi bulmak için geçmişte “{{marker}}” araması yapın.",
+      "english": "İngilizce: {{phrases}}."
+    },
     "formatting": {
       "title": "Biçimlendirme kuralları",
       "description": "Diktelerin yeniden yazılırken otomatik uygulanan kurallar.",

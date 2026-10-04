@@ -1144,6 +1144,14 @@
       "add": "Añadir fragmento",
       "tip": "Consejo: di «{{trigger}}» durante el dictado para insertar tu información al instante."
     },
+    "studyMarkers": {
+      "title": "Marcadores de voz",
+      "description": "Señala lo importante durante la clase, solo con decirlo.",
+      "rule": "Di el marcador al principio del dictado y haz una breve pausa: «{{example}}» Nova lo coloca al inicio de la nota, sin reformularlo.",
+      "layoutTitle": "Formato dictado",
+      "search": "Para encontrar tus marcadores, busca «{{marker}}» en el historial.",
+      "english": "En inglés: {{phrases}}."
+    },
     "formatting": {
       "title": "Reglas de formato",
       "description": "Reglas que se aplican automáticamente al reformular tus dictados.",

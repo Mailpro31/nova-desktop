@@ -1144,6 +1144,14 @@
       "add": "Baustein hinzufügen",
       "tip": "Tipp: Sag beim Diktieren „{{trigger}}“, um deine Angaben sofort einzufügen!"
     },
+    "studyMarkers": {
+      "title": "Sprachmarker",
+      "description": "Markieren Sie Wichtiges im Unterricht, indem Sie es einfach sagen.",
+      "rule": "Sagen Sie den Marker ganz am Anfang des Diktats und machen Sie eine kurze Pause: „{{example}}“ Nova setzt ihn an den Anfang der Notiz, ohne ihn umzuformulieren.",
+      "layoutTitle": "Diktiertes Layout",
+      "search": "Um Ihre Marker wiederzufinden, suchen Sie im Verlauf nach „{{marker}}“.",
+      "english": "Auf Englisch: {{phrases}}."
+    },
     "formatting": {
       "title": "Formatierungsregeln",
       "description": "Regeln, die beim Umformulieren deiner Diktate automatisch angewendet werden.",

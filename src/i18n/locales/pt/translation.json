@@ -1144,6 +1144,14 @@
       "add": "Adicionar trecho",
       "tip": "Dica: diga “{{trigger}}” durante o ditado para inserir suas informações na hora!"
     },
+    "studyMarkers": {
+      "title": "Marcadores de voz",
+      "description": "Assinale o que importa durante a aula, apenas dizendo.",
+      "rule": "Diga o marcador logo no início do ditado e faça uma pausa curta: «{{example}}» O Nova coloca-o no topo da nota, sem o reformular.",
+      "layoutTitle": "Formatação ditada",
+      "search": "Para encontrar os seus marcadores, pesquise «{{marker}}» no histórico.",
+      "english": "Em inglês: {{phrases}}."
+    },
     "formatting": {
       "title": "Regras de formatação",
       "description": "Regras aplicadas automaticamente ao reformular seus ditados.",

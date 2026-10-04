@@ -1144,6 +1144,14 @@
       "add": "Ajouter le snippet",
       "tip": "Astuce : Dites « {{trigger}} » lors d'une dictée pour insérer vos informations instantanément !"
     },
+    "studyMarkers": {
+      "title": "Repères vocaux",
+      "description": "Marquez ce qui compte pendant le cours, simplement en le disant.",
+      "rule": "Dites le repère tout au début de la dictée, puis marquez une courte pause : « {{example}} » Nova le place en tête de la note, sans le reformuler.",
+      "layoutTitle": "Mise en page dictée",
+      "search": "Pour retrouver vos repères, cherchez « {{marker}} » dans l'historique.",
+      "english": "En anglais : {{phrases}}."
+    },
     "formatting": {
       "title": "Règles de formatage",
       "description": "Règles appliquées automatiquement lors de la reformulation de vos dictées.",

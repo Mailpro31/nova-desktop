@@ -1144,6 +1144,14 @@
       "add": "Přidat úryvek",
       "tip": "Tip: během diktování řekněte „{{trigger}}“ a informace se hned vloží!"
     },
+    "studyMarkers": {
+      "title": "Hlasové značky",
+      "description": "Označte během výuky, co je důležité – stačí to říct.",
+      "rule": "Řekněte značku hned na začátku diktátu a krátce se odmlčte: „{{example}}“ Nova ji umístí na začátek poznámky, aniž by ji přeformulovala.",
+      "layoutTitle": "Diktované rozvržení",
+      "search": "Své značky najdete, když v historii vyhledáte „{{marker}}“.",
+      "english": "Anglicky: {{phrases}}."
+    },
     "formatting": {
       "title": "Pravidla formátování",
       "description": "Pravidla, která se automaticky použijí při přeformulování diktátů.",

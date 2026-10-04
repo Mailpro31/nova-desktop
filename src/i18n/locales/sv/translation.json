@@ -1144,6 +1144,14 @@
       "add": "Lägg till snutt",
       "tip": "Tips: säg ”{{trigger}}” under dikteringen för att infoga din information direkt!"
     },
+    "studyMarkers": {
+      "title": "Röstmarkeringar",
+      "description": "Markera det viktiga under lektionen, bara genom att säga det.",
+      "rule": "Säg markeringen allra först i dikteringen och gör en kort paus: ”{{example}}” Nova lägger den överst i anteckningen, utan att formulera om den.",
+      "layoutTitle": "Dikterad layout",
+      "search": "Sök efter ”{{marker}}” i historiken för att hitta dina markeringar.",
+      "english": "På engelska: {{phrases}}."
+    },
     "formatting": {
       "title": "Formateringsregler",
       "description": "Regler som tillämpas automatiskt när dina dikteringar formuleras om.",

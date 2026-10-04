@@ -1144,6 +1144,14 @@
       "add": "Aggiungi frammento",
       "tip": "Suggerimento: di' «{{trigger}}» durante la dettatura per inserire subito le tue informazioni!"
     },
+    "studyMarkers": {
+      "title": "Marcatori vocali",
+      "description": "Segna ciò che conta durante la lezione, semplicemente dicendolo.",
+      "rule": "Pronuncia il marcatore all'inizio della dettatura, poi fai una breve pausa: «{{example}}» Nova lo mette in cima alla nota, senza riformularlo.",
+      "layoutTitle": "Impaginazione dettata",
+      "search": "Per ritrovare i tuoi marcatori, cerca «{{marker}}» nella cronologia.",
+      "english": "In inglese: {{phrases}}."
+    },
     "formatting": {
       "title": "Regole di formattazione",
       "description": "Regole applicate automaticamente quando le dettature vengono riformulate.",

@@ -1144,6 +1144,14 @@
       "add": "Add snippet",
       "tip": "Tip: Say \"{{trigger}}\" during dictation to instantly insert your information!"
     },
+    "studyMarkers": {
+      "title": "Voice markers",
+      "description": "Flag what matters during class, just by saying it.",
+      "rule": "Say the marker at the very start of the dictation, then pause briefly: “{{example}}” Nova puts it at the top of the note, without rewording it.",
+      "layoutTitle": "Dictated layout",
+      "search": "To find your markers again, search for “{{marker}}” in the history.",
+      "english": "In English: {{phrases}}."
+    },
     "formatting": {
       "title": "Formatting rules",
       "description": "Rules automatically applied when reformulating your dictations.",

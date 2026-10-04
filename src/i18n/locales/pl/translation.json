@@ -1144,6 +1144,14 @@
       "add": "Dodaj fragment",
       "tip": "Wskazówka: powiedz „{{trigger}}” podczas dyktowania, aby od razu wstawić swoje dane!"
     },
+    "studyMarkers": {
+      "title": "Znaczniki głosowe",
+      "description": "Zaznaczaj to, co ważne, podczas zajęć — wystarczy to powiedzieć.",
+      "rule": "Powiedz znacznik na samym początku dyktowania, a potem zrób krótką pauzę: „{{example}}” Nova umieści go na początku notatki, bez przeredagowania.",
+      "layoutTitle": "Dyktowany układ",
+      "search": "Aby odnaleźć znaczniki, wyszukaj „{{marker}}” w historii.",
+      "english": "Po angielsku: {{phrases}}."
+    },
     "formatting": {
       "title": "Reguły formatowania",
       "description": "Reguły stosowane automatycznie przy przeredagowywaniu dyktowań.",

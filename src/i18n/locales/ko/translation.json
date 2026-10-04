@@ -1144,6 +1144,14 @@
       "add": "스니펫 추가",
       "tip": "팁: 받아쓰기 중에 “{{trigger}}”라고 말하면 정보가 바로 삽입됩니다!"
     },
+    "studyMarkers": {
+      "title": "음성 표시",
+      "description": "수업 중 중요한 내용을 말로만 표시하세요.",
+      "rule": "받아쓰기를 시작할 때 표시를 말하고 잠시 멈추세요: \"{{example}}\" Nova는 이를 바꿔 말하지 않고 노트 맨 앞에 넣습니다.",
+      "layoutTitle": "받아쓰기 서식",
+      "search": "표시를 다시 찾으려면 기록에서 \"{{marker}}\"을(를) 검색하세요.",
+      "english": "영어: {{phrases}}."
+    },
     "formatting": {
       "title": "서식 규칙",
       "description": "받아쓰기를 다시 쓸 때 자동으로 적용되는 규칙입니다.",

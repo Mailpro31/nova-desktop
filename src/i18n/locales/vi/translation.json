@@ -1144,6 +1144,14 @@
       "add": "Thêm đoạn",
       "tip": "Mẹo: nói “{{trigger}}” khi đọc chính tả để chèn ngay thông tin của bạn!"
     },
+    "studyMarkers": {
+      "title": "Dấu đánh dấu bằng giọng nói",
+      "description": "Đánh dấu điều quan trọng trong giờ học, chỉ cần nói ra.",
+      "rule": "Nói dấu ngay đầu bài đọc, rồi ngừng một chút: “{{example}}” Nova đặt nó lên đầu ghi chú, không diễn đạt lại.",
+      "layoutTitle": "Bố cục đọc chính tả",
+      "search": "Để tìm lại các dấu, hãy tìm “{{marker}}” trong lịch sử.",
+      "english": "Bằng tiếng Anh: {{phrases}}."
+    },
     "formatting": {
       "title": "Quy tắc định dạng",
       "description": "Các quy tắc được tự động áp dụng khi viết lại nội dung bạn đọc.",
