@@ -8,6 +8,16 @@ import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 import type { OrganizationSnippetEntry } from "@/lib/organizationApi";
 
+/** Les façons de dire un snippet, comme le serveur les lit. */
+export const snippetWays = (trigger: string): string[] => {
+  const ways: string[] = [];
+  for (const way of trigger.split(/[,|]/).map((part) => part.trim())) {
+    if (way && !ways.some((known) => known.toLowerCase() === way.toLowerCase()))
+      ways.push(way);
+  }
+  return ways;
+};
+
 export const OrganizationSnippetsSection: React.FC = () => {
   const { t } = useTranslation();
   const [snippets, setSnippets] = useState<OrganizationSnippetEntry[]>([]);
@@ -126,6 +136,12 @@ export const OrganizationSnippetsSection: React.FC = () => {
           </div>
         </div>
 
+        <p className="text-xs text-text-secondary">
+          {t("organization.snippets.aliases", {
+            example: "mon matricule, mon numéro étudiant",
+          })}
+        </p>
+
         <div className="flex justify-end pt-1">
           <Button
             type="submit"
@@ -179,7 +195,9 @@ export const OrganizationSnippetsSection: React.FC = () => {
                 <div className="flex min-w-0 flex-1 items-center gap-2.5">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold text-text truncate">
-                      « {snip.trigger} »
+                      {snippetWays(snip.trigger)
+                        .map((way) => `« ${way} »`)
+                        .join(" · ")}
                     </p>
                     <p className="text-xs text-text-secondary font-mono truncate mt-0.5">
                       {snip.content}

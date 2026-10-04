@@ -644,7 +644,14 @@
       },
       "readAloud": "Vorlesen",
       "stopReading": "Vorlesen beenden",
-      "readAloudUnavailable": "Vorlesen ist auf diesem Computer nicht verfügbar."
+      "readAloudUnavailable": "Vorlesen ist auf diesem Computer nicht verfügbar.",
+      "snippet": {
+        "start": "Als Snippet speichern",
+        "trigger": "Was Sie sagen, um diesen Text einzufügen",
+        "save": "Snippet speichern",
+        "saved": "Snippet gespeichert: Sagen Sie „{{trigger}}“.",
+        "error": "Das Snippet konnte nicht gespeichert werden."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Keine Sprachbausteine eingerichtet.",
       "triggerLabel": "Gesprochene Phrase",
       "triggerPlaceholder": "z. B. mein Meeting-Link",
+      "aliases": "Mehrere Formulierungen? Trennen Sie sie mit einem Komma: „{{example}}“.",
       "contentLabel": "Eingefügter Text",
       "contentPlaceholder": "z. B. https://meet.google.com/abc-def-ghi",
       "add": "Baustein hinzufügen",

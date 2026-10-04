@@ -644,7 +644,14 @@
       },
       "readAloud": "Read aloud",
       "stopReading": "Stop reading",
-      "readAloudUnavailable": "Read aloud is not available on this computer."
+      "readAloudUnavailable": "Read aloud is not available on this computer.",
+      "snippet": {
+        "start": "Make it a snippet",
+        "trigger": "What you will say to insert this text",
+        "save": "Save snippet",
+        "saved": "Snippet saved: say “{{trigger}}”.",
+        "error": "The snippet could not be saved."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "No voice snippets configured.",
       "triggerLabel": "Spoken phrase",
       "triggerPlaceholder": "E.g. my meeting link",
+      "aliases": "Several ways to say it? Separate them with a comma: “{{example}}”.",
       "contentLabel": "Inserted text",
       "contentPlaceholder": "E.g. https://meet.google.com/abc-def-ghi",
       "add": "Add snippet",

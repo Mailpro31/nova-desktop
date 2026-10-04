@@ -644,7 +644,14 @@
       },
       "readAloud": "Czytaj na głos",
       "stopReading": "Zatrzymaj czytanie",
-      "readAloudUnavailable": "Czytanie na głos nie jest dostępne na tym komputerze."
+      "readAloudUnavailable": "Czytanie na głos nie jest dostępne na tym komputerze.",
+      "snippet": {
+        "start": "Zrób z tego snippet",
+        "trigger": "Co powiesz, aby wstawić ten tekst",
+        "save": "Zapisz snippet",
+        "saved": "Snippet zapisany: powiedz „{{trigger}}”.",
+        "error": "Nie udało się zapisać snippetu."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Nie skonfigurowano fragmentów głosowych.",
       "triggerLabel": "Wypowiadana fraza",
       "triggerPlaceholder": "Np. mój link do spotkania",
+      "aliases": "Kilka sposobów, by to powiedzieć? Oddziel je przecinkiem: „{{example}}”.",
       "contentLabel": "Wstawiany tekst",
       "contentPlaceholder": "Np. https://meet.google.com/abc-def-ghi",
       "add": "Dodaj fragment",

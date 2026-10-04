@@ -644,7 +644,14 @@
       },
       "readAloud": "Läs upp",
       "stopReading": "Sluta läsa upp",
-      "readAloudUnavailable": "Uppläsning är inte tillgänglig på den här datorn."
+      "readAloudUnavailable": "Uppläsning är inte tillgänglig på den här datorn.",
+      "snippet": {
+        "start": "Gör till snippet",
+        "trigger": "Det du säger för att infoga texten",
+        "save": "Spara snippet",
+        "saved": "Snippet sparat: säg ”{{trigger}}”.",
+        "error": "Det gick inte att spara snippetet."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Inga röstsnuttar har konfigurerats.",
       "triggerLabel": "Talad fras",
       "triggerPlaceholder": "T.ex. min möteslänk",
+      "aliases": "Flera sätt att säga det? Skilj dem åt med kommatecken: ”{{example}}”.",
       "contentLabel": "Infogad text",
       "contentPlaceholder": "T.ex. https://meet.google.com/abc-def-ghi",
       "add": "Lägg till snutt",

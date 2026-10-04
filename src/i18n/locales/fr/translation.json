@@ -644,7 +644,14 @@
       },
       "readAloud": "Écouter",
       "stopReading": "Arrêter la lecture",
-      "readAloudUnavailable": "La lecture à voix haute n'est pas disponible sur ce poste."
+      "readAloudUnavailable": "La lecture à voix haute n'est pas disponible sur ce poste.",
+      "snippet": {
+        "start": "En faire un snippet",
+        "trigger": "Ce que vous direz pour insérer ce texte",
+        "save": "Enregistrer le snippet",
+        "saved": "Snippet enregistré : dites « {{trigger}} ».",
+        "error": "Le snippet n'a pas pu être enregistré."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Aucun snippet vocal configuré.",
       "triggerLabel": "Expression prononcée",
       "triggerPlaceholder": "Ex: mon lien visio",
+      "aliases": "Plusieurs façons de le dire ? Séparez-les par une virgule : « {{example}} ».",
       "contentLabel": "Texte inséré",
       "contentPlaceholder": "Ex: https://meet.google.com/abc-def-ghi",
       "add": "Ajouter le snippet",

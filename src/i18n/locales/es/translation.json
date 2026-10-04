@@ -644,7 +644,14 @@
       },
       "readAloud": "Leer en voz alta",
       "stopReading": "Detener la lectura",
-      "readAloudUnavailable": "La lectura en voz alta no está disponible en este equipo."
+      "readAloudUnavailable": "La lectura en voz alta no está disponible en este equipo.",
+      "snippet": {
+        "start": "Convertir en snippet",
+        "trigger": "Lo que dirás para insertar este texto",
+        "save": "Guardar el snippet",
+        "saved": "Snippet guardado: di «{{trigger}}».",
+        "error": "No se pudo guardar el snippet."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "No hay fragmentos de voz configurados.",
       "triggerLabel": "Frase pronunciada",
       "triggerPlaceholder": "P. ej. mi enlace de reunión",
+      "aliases": "¿Varias formas de decirlo? Sepáralas con una coma: «{{example}}».",
       "contentLabel": "Texto insertado",
       "contentPlaceholder": "P. ej. https://meet.google.com/abc-def-ghi",
       "add": "Añadir fragmento",

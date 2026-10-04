@@ -644,7 +644,14 @@
       },
       "readAloud": "הקרא בקול",
       "stopReading": "עצור הקראה",
-      "readAloudUnavailable": "הקראה בקול אינה זמינה במחשב זה."
+      "readAloudUnavailable": "הקראה בקול אינה זמינה במחשב זה.",
+      "snippet": {
+        "start": "הפוך לקטע",
+        "trigger": "מה תאמרו כדי להכניס את הטקסט הזה",
+        "save": "שמור קטע",
+        "saved": "הקטע נשמר: אמרו \"{{trigger}}\".",
+        "error": "לא ניתן היה לשמור את הקטע."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "לא הוגדרו קטעים קוליים.",
       "triggerLabel": "ביטוי מדובר",
       "triggerPlaceholder": "לדוגמה הקישור לפגישה שלי",
+      "aliases": "כמה דרכים לומר זאת? הפרידו ביניהן בפסיק: \"{{example}}\".",
       "contentLabel": "טקסט שיוכנס",
       "contentPlaceholder": "לדוגמה https://meet.google.com/abc-def-ghi",
       "add": "הוספת קטע",

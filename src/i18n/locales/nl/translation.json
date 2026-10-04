@@ -644,7 +644,14 @@
       },
       "readAloud": "Voorlezen",
       "stopReading": "Voorlezen stoppen",
-      "readAloudUnavailable": "Voorlezen is niet beschikbaar op deze computer."
+      "readAloudUnavailable": "Voorlezen is niet beschikbaar op deze computer.",
+      "snippet": {
+        "start": "Maak er een snippet van",
+        "trigger": "Wat je zegt om deze tekst in te voegen",
+        "save": "Snippet opslaan",
+        "saved": "Snippet opgeslagen: zeg “{{trigger}}”.",
+        "error": "Het snippet kon niet worden opgeslagen."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Geen spraakfragmenten ingesteld.",
       "triggerLabel": "Uitgesproken zin",
       "triggerPlaceholder": "Bijv. mijn vergaderlink",
+      "aliases": "Meerdere manieren om het te zeggen? Scheid ze met een komma: “{{example}}”.",
       "contentLabel": "Ingevoegde tekst",
       "contentPlaceholder": "Bijv. https://meet.google.com/abc-def-ghi",
       "add": "Fragment toevoegen",
