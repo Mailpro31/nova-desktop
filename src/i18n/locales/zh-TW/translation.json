@@ -644,7 +644,14 @@
       },
       "readAloud": "朗讀",
       "stopReading": "停止朗讀",
-      "readAloudUnavailable": "這台電腦無法使用朗讀功能。"
+      "readAloudUnavailable": "這台電腦無法使用朗讀功能。",
+      "snippet": {
+        "start": "存為片段",
+        "trigger": "插入這段文字時你要說的話",
+        "save": "儲存片段",
+        "saved": "片段已儲存：說「{{trigger}}」。",
+        "error": "無法儲存片段。"
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "尚未設定語音片段。",
       "triggerLabel": "口說詞語",
       "triggerPlaceholder": "例如：我的會議連結",
+      "aliases": "有幾種說法？用逗號分隔：「{{example}}」。",
       "contentLabel": "插入的文字",
       "contentPlaceholder": "例如：https://meet.google.com/abc-def-ghi",
       "add": "新增片段",

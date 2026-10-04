@@ -644,7 +644,14 @@
       },
       "readAloud": "Přečíst nahlas",
       "stopReading": "Zastavit čtení",
-      "readAloudUnavailable": "Čtení nahlas není na tomto počítači k dispozici."
+      "readAloudUnavailable": "Čtení nahlas není na tomto počítači k dispozici.",
+      "snippet": {
+        "start": "Udělat z toho snippet",
+        "trigger": "Co řeknete, abyste vložili tento text",
+        "save": "Uložit snippet",
+        "saved": "Snippet uložen: řekněte „{{trigger}}“.",
+        "error": "Snippet se nepodařilo uložit."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Nejsou nastaveny žádné hlasové úryvky.",
       "triggerLabel": "Vyslovená fráze",
       "triggerPlaceholder": "Např. můj odkaz na schůzku",
+      "aliases": "Více způsobů, jak to říct? Oddělte je čárkou: „{{example}}“.",
       "contentLabel": "Vložený text",
       "contentPlaceholder": "Např. https://meet.google.com/abc-def-ghi",
       "add": "Přidat úryvek",

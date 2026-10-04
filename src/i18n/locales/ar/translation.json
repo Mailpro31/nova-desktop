@@ -623,7 +623,14 @@
       },
       "readAloud": "اقرأ بصوت عالٍ",
       "stopReading": "أوقف القراءة",
-      "readAloudUnavailable": "القراءة بصوت عالٍ غير متاحة على هذا الحاسوب."
+      "readAloudUnavailable": "القراءة بصوت عالٍ غير متاحة على هذا الحاسوب.",
+      "snippet": {
+        "start": "اجعلها مقتطفًا",
+        "trigger": "ما ستقوله لإدراج هذا النص",
+        "save": "حفظ المقتطف",
+        "saved": "تم حفظ المقتطف: قل «{{trigger}}».",
+        "error": "تعذّر حفظ المقتطف."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "لم تُهيّأ أي مقتطفات صوتية.",
       "triggerLabel": "العبارة المنطوقة",
       "triggerPlaceholder": "مثال: رابط اجتماعي",
+      "aliases": "هل هناك عدة طرق لقولها؟ افصل بينها بفاصلة: «{{example}}».",
       "contentLabel": "النص المُدرج",
       "contentPlaceholder": "مثال: https://meet.google.com/abc-def-ghi",
       "add": "إضافة مقتطف",

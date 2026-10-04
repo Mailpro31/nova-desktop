@@ -644,7 +644,14 @@
       },
       "readAloud": "読み上げ",
       "stopReading": "読み上げを停止",
-      "readAloudUnavailable": "このコンピューターでは読み上げを利用できません。"
+      "readAloudUnavailable": "このコンピューターでは読み上げを利用できません。",
+      "snippet": {
+        "start": "スニペットにする",
+        "trigger": "このテキストを挿入するために言う言葉",
+        "save": "スニペットを保存",
+        "saved": "スニペットを保存しました:「{{trigger}}」と言ってください。",
+        "error": "スニペットを保存できませんでした。"
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "音声スニペットは設定されていません。",
       "triggerLabel": "話すフレーズ",
       "triggerPlaceholder": "例：会議のリンク",
+      "aliases": "言い方が複数ありますか？カンマで区切ってください:「{{example}}」。",
       "contentLabel": "挿入するテキスト",
       "contentPlaceholder": "例：https://meet.google.com/abc-def-ghi",
       "add": "スニペットを追加",

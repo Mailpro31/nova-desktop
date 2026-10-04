@@ -644,7 +644,14 @@
       },
       "readAloud": "소리 내어 읽기",
       "stopReading": "읽기 중지",
-      "readAloudUnavailable": "이 컴퓨터에서는 소리 내어 읽기를 사용할 수 없습니다."
+      "readAloudUnavailable": "이 컴퓨터에서는 소리 내어 읽기를 사용할 수 없습니다.",
+      "snippet": {
+        "start": "스니펫으로 만들기",
+        "trigger": "이 텍스트를 넣기 위해 말할 내용",
+        "save": "스니펫 저장",
+        "saved": "스니펫을 저장했습니다: \"{{trigger}}\"라고 말하세요.",
+        "error": "스니펫을 저장할 수 없습니다."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "설정된 음성 스니펫이 없습니다.",
       "triggerLabel": "말할 문구",
       "triggerPlaceholder": "예: 내 회의 링크",
+      "aliases": "말하는 방법이 여러 가지인가요? 쉼표로 구분하세요: \"{{example}}\".",
       "contentLabel": "삽입할 텍스트",
       "contentPlaceholder": "예: https://meet.google.com/abc-def-ghi",
       "add": "스니펫 추가",

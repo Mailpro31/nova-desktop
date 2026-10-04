@@ -644,7 +644,14 @@
       },
       "readAloud": "Đọc to",
       "stopReading": "Dừng đọc",
-      "readAloudUnavailable": "Tính năng đọc to không có trên máy tính này."
+      "readAloudUnavailable": "Tính năng đọc to không có trên máy tính này.",
+      "snippet": {
+        "start": "Tạo đoạn mẫu",
+        "trigger": "Điều bạn sẽ nói để chèn văn bản này",
+        "save": "Lưu đoạn mẫu",
+        "saved": "Đã lưu đoạn mẫu: hãy nói “{{trigger}}”.",
+        "error": "Không thể lưu đoạn mẫu."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Chưa thiết lập đoạn giọng nói nào.",
       "triggerLabel": "Cụm từ nói",
       "triggerPlaceholder": "Ví dụ: liên kết cuộc họp của tôi",
+      "aliases": "Có nhiều cách nói? Hãy tách chúng bằng dấu phẩy: “{{example}}”.",
       "contentLabel": "Văn bản được chèn",
       "contentPlaceholder": "Ví dụ: https://meet.google.com/abc-def-ghi",
       "add": "Thêm đoạn",

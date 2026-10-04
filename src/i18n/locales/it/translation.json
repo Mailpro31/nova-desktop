@@ -644,7 +644,14 @@
       },
       "readAloud": "Leggi ad alta voce",
       "stopReading": "Interrompi la lettura",
-      "readAloudUnavailable": "La lettura ad alta voce non è disponibile su questo computer."
+      "readAloudUnavailable": "La lettura ad alta voce non è disponibile su questo computer.",
+      "snippet": {
+        "start": "Crea uno snippet",
+        "trigger": "Cosa dirai per inserire questo testo",
+        "save": "Salva lo snippet",
+        "saved": "Snippet salvato: di' «{{trigger}}».",
+        "error": "Impossibile salvare lo snippet."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Nessun frammento vocale configurato.",
       "triggerLabel": "Frase pronunciata",
       "triggerPlaceholder": "Es. il mio link alla riunione",
+      "aliases": "Più modi per dirlo? Separali con una virgola: «{{example}}».",
       "contentLabel": "Testo inserito",
       "contentPlaceholder": "Es. https://meet.google.com/abc-def-ghi",
       "add": "Aggiungi frammento",

@@ -57,17 +57,39 @@ pub fn for_organization(organization_id: Option<&str>) -> Option<WritingAids> {
 pub fn with_snippets(variables: &[CustomVariable], aids: &WritingAids) -> Vec<CustomVariable> {
     let mut merged = variables.to_vec();
     for (trigger, content) in &aids.snippets {
-        let taken = merged
-            .iter()
-            .any(|variable| variable.key.trim().eq_ignore_ascii_case(trigger.trim()));
-        if !taken && !trigger.trim().is_empty() && !content.trim().is_empty() {
-            merged.push(CustomVariable {
-                key: trigger.trim().to_string(),
-                value: content.clone(),
-            });
+        if content.trim().is_empty() {
+            continue;
+        }
+        for way in snippet_triggers(trigger) {
+            let taken = merged
+                .iter()
+                .any(|variable| variable.key.trim().eq_ignore_ascii_case(way));
+            if !taken {
+                merged.push(CustomVariable {
+                    key: way.to_string(),
+                    value: content.clone(),
+                });
+            }
         }
     }
     merged
+}
+
+/// Les façons de dire un snippet : « mon matricule, mon numéro IPSA ». Même
+/// règle que le serveur (`snippet_triggers`) : virgule ou barre verticale,
+/// sans doublon ni façon vide.
+pub fn snippet_triggers(trigger: &str) -> Vec<&str> {
+    let mut ways: Vec<&str> = Vec::new();
+    for way in trigger.split([',', '|']).map(str::trim) {
+        if !way.is_empty()
+            && !ways
+                .iter()
+                .any(|known| known.to_lowercase() == way.to_lowercase())
+        {
+            ways.push(way);
+        }
+    }
+    ways
 }
 
 /// Le vocabulaire appliqué au texte, à l'identique, du terme le plus long au
@@ -181,6 +203,23 @@ mod tests {
         assert_eq!(merged.len(), 2);
         assert_eq!(merged[0].value, "7 impasse des Lilas");
         assert_eq!(merged[1].key, "mon iban");
+    }
+
+    #[test]
+    fn each_way_of_saying_a_snippet_becomes_a_value() {
+        let aids = WritingAids {
+            organization_id: Some("ipsa".into()),
+            vocabulary: vec![],
+            snippets: vec![(
+                "mon numéro étudiant, mon matricule | Mon matricule".into(),
+                "21458732".into(),
+            )],
+        };
+        let merged = with_snippets(&[], &aids);
+        let keys: Vec<&str> = merged.iter().map(|v| v.key.as_str()).collect();
+        assert_eq!(keys, ["mon numéro étudiant", "mon matricule"]);
+        assert!(merged.iter().all(|v| v.value == "21458732"));
+        assert_eq!(snippet_triggers(" , | "), Vec::<&str>::new());
     }
 
     #[test]

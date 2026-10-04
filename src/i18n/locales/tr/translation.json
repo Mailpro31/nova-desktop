@@ -644,7 +644,14 @@
       },
       "readAloud": "Sesli oku",
       "stopReading": "Okumayı durdur",
-      "readAloudUnavailable": "Sesli okuma bu bilgisayarda kullanılamıyor."
+      "readAloudUnavailable": "Sesli okuma bu bilgisayarda kullanılamıyor.",
+      "snippet": {
+        "start": "Snippet yap",
+        "trigger": "Bu metni eklemek için ne söyleyeceksiniz",
+        "save": "Snippet'i kaydet",
+        "saved": "Snippet kaydedildi: “{{trigger}}” deyin.",
+        "error": "Snippet kaydedilemedi."
+      }
     },
     "debug": {
       "logDirectory": {
@@ -1139,6 +1146,7 @@
       "empty": "Yapılandırılmış sesli parçacık yok.",
       "triggerLabel": "Söylenen ifade",
       "triggerPlaceholder": "Örn. toplantı bağlantım",
+      "aliases": "Söylemenin birkaç yolu mu var? Virgülle ayırın: “{{example}}”.",
       "contentLabel": "Eklenen metin",
       "contentPlaceholder": "Örn. https://meet.google.com/abc-def-ghi",
       "add": "Parçacık ekle",

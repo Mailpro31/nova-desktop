@@ -22,6 +22,7 @@ import { Input } from "../../ui/Input";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { AudioPlayer } from "../../ui/AudioPlayer";
 import { HistoryCorrection } from "./HistoryCorrection";
+import { HistorySnippet } from "./HistorySnippet";
 import {
   entriesForStyle,
   filterEntries,
@@ -463,6 +464,7 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
               disabled={retrying}
             />
           )}
+          {hasText && <HistorySnippet text={text} disabled={retrying} />}
         </div>
       )}
     </li>
