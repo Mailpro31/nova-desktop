@@ -31,6 +31,28 @@ export const COURSE_BLOCKS: ReadonlyArray<{
   { said: "Exercice", written: "✍ Exercice", numbered: true },
 ];
 
+/** Une formule dictée, et ce que Nova écrit, par règles fixes. */
+export const FORMULA_EXAMPLE = {
+  said: "Formule, delta égale b au carré moins quatre a c",
+  written: "🔢 Formule : Δ = b² − 4ac",
+};
+
+/** Quelques mots de maths compris dans une formule (`spoken_maths.rs`). */
+export const FORMULA_WORDS: ReadonlyArray<{ said: string; written: string }> = [
+  { said: "au carré", written: "²" },
+  { said: "racine carrée de", written: "√" },
+  { said: "fois", written: "×" },
+  { said: "sur", written: "/" },
+  { said: "plus ou moins", written: "±" },
+  { said: "différent de", written: "≠" },
+  { said: "tend vers", written: "→" },
+  { said: "alpha", written: "α" },
+  { said: "delta", written: "Δ" },
+  { said: "pi", written: "π" },
+  { said: "indice", written: "x₁" },
+  { said: "mètres par seconde", written: "m/s" },
+];
+
 const NUMBERING_HINT = " 1, 2, 3…";
 
 export const LAYOUT_COMMANDS: ReadonlyArray<string> = [
@@ -100,6 +122,23 @@ export const StudyMarkersSection: React.FC = () => {
         </dl>
         <p className="text-xs text-text-secondary leading-relaxed">
           {t("organization.studyMarkers.numbering", { example: "Exemple 3" })}
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <h4 className="text-xs font-medium text-text">
+          {t("organization.studyMarkers.formulaTitle")}
+        </h4>
+        <p className="text-xs text-text-secondary leading-relaxed">
+          {t("organization.studyMarkers.formula", {
+            said: FORMULA_EXAMPLE.said,
+            written: FORMULA_EXAMPLE.written,
+          })}
+        </p>
+        <p className="text-xs text-text-secondary leading-relaxed">
+          {FORMULA_WORDS.map(
+            ({ said, written }) => `« ${said} » ${written}`,
+          ).join(" · ")}
         </p>
       </div>
 

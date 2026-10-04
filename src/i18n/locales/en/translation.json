@@ -1151,6 +1151,8 @@
       "rule": "Say the marker at the very start of the dictation, then pause briefly: “{{example}}” Nova puts it at the top of the note, without rewording it.",
       "blocksTitle": "Course blocks",
       "numbering": "Examples and exercises number themselves during a class. Say “{{example}}” to pick the number.",
+      "formulaTitle": "Formulas",
+      "formula": "Start with “Formule”, then dictate it in French: “{{said}}” gives {{written}}. Nova writes it in symbols, without rewording it. Words understood:",
       "layoutTitle": "Dictated layout",
       "search": "To find your markers again, search for “{{marker}}” in the history.",
       "english": "In English: {{phrases}}."

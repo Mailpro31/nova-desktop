@@ -1151,6 +1151,8 @@
       "rule": "Dites le repère tout au début de la dictée, puis marquez une courte pause : « {{example}} » Nova le place en tête de la note, sans le reformuler.",
       "blocksTitle": "Blocs de cours",
       "numbering": "Les exemples et les exercices se numérotent seuls pendant un cours. Dites « {{example}} » pour choisir le numéro.",
+      "formulaTitle": "Formules",
+      "formula": "Commencez par « Formule », puis dictez-la : « {{said}} » donne {{written}}. Nova l'écrit en symboles, sans la reformuler. Les mots compris :",
       "layoutTitle": "Mise en page dictée",
       "search": "Pour retrouver vos repères, cherchez « {{marker}} » dans l'historique.",
       "english": "En anglais : {{phrases}}."

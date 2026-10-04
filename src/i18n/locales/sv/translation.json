@@ -1151,6 +1151,8 @@
       "rule": "Säg markeringen allra först i dikteringen och gör en kort paus: ”{{example}}” Nova lägger den överst i anteckningen, utan att formulera om den.",
       "blocksTitle": "Lektionsblock",
       "numbering": "Exempel och övningar numreras automatiskt under en lektion. Säg ”{{example}}” för att välja numret.",
+      "formulaTitle": "Formler",
+      "formula": "Börja med ”Formule” och diktera den på franska: ”{{said}}” ger {{written}}. Nova skriver den med symboler, utan att formulera om den. Ord som förstås:",
       "layoutTitle": "Dikterad layout",
       "search": "Sök efter ”{{marker}}” i historiken för att hitta dina markeringar.",
       "english": "På engelska: {{phrases}}."

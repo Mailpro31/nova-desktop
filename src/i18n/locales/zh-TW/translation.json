@@ -1151,6 +1151,8 @@
       "rule": "在口述的最開頭說出標記，然後稍作停頓：「{{example}}」Nova 會把它放在筆記開頭，不做改寫。",
       "blocksTitle": "課堂區塊",
       "numbering": "一堂課中的例子和練習會自動編號。說「{{example}}」可指定編號。",
+      "formulaTitle": "公式",
+      "formula": "先說「Formule」，再用法語口述公式：「{{said}}」會寫成 {{written}}。Nova 用符號書寫，不做改寫。可辨識的詞：",
       "layoutTitle": "口述排版",
       "search": "要找回你的標記，請在歷史記錄中搜尋「{{marker}}」。",
       "english": "英文：{{phrases}}。"

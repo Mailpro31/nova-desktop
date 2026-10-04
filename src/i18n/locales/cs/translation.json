@@ -1151,6 +1151,8 @@
       "rule": "Řekněte značku hned na začátku diktátu a krátce se odmlčte: „{{example}}“ Nova ji umístí na začátek poznámky, aniž by ji přeformulovala.",
       "blocksTitle": "Bloky výuky",
       "numbering": "Příklady a cvičení se během hodiny číslují samy. Řekněte „{{example}}“ a zvolíte číslo.",
+      "formulaTitle": "Vzorce",
+      "formula": "Začněte slovem „Formule“ a pak vzorec nadiktujte francouzsky: „{{said}}“ dá {{written}}. Nova ho zapíše symboly, bez přeformulování. Rozpoznaná slova:",
       "layoutTitle": "Diktované rozvržení",
       "search": "Své značky najdete, když v historii vyhledáte „{{marker}}“.",
       "english": "Anglicky: {{phrases}}."

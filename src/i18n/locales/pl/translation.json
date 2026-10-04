@@ -1151,6 +1151,8 @@
       "rule": "Powiedz znacznik na samym początku dyktowania, a potem zrób krótką pauzę: „{{example}}” Nova umieści go na początku notatki, bez przeredagowania.",
       "blocksTitle": "Bloki zajęć",
       "numbering": "Przykłady i ćwiczenia numerują się same podczas zajęć. Powiedz „{{example}}”, aby wybrać numer.",
+      "formulaTitle": "Wzory",
+      "formula": "Zacznij od „Formule”, a potem podyktuj wzór po francusku: „{{said}}” daje {{written}}. Nova zapisuje go symbolami, bez przeredagowania. Rozpoznawane słowa:",
       "layoutTitle": "Dyktowany układ",
       "search": "Aby odnaleźć znaczniki, wyszukaj „{{marker}}” w historii.",
       "english": "Po angielsku: {{phrases}}."

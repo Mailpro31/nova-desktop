@@ -1151,6 +1151,8 @@
       "rule": "在口述的最开头说出标记，然后稍作停顿：“{{example}}” Nova 会把它放在笔记开头，不做改写。",
       "blocksTitle": "课堂区块",
       "numbering": "一节课中的例子和练习会自动编号。说“{{example}}”可指定编号。",
+      "formulaTitle": "公式",
+      "formula": "先说“Formule”，再用法语口述公式：“{{said}}”会写成 {{written}}。Nova 用符号书写，不做改写。可识别的词：",
       "layoutTitle": "口述排版",
       "search": "要找回你的标记，请在历史记录中搜索“{{marker}}”。",
       "english": "英语：{{phrases}}。"

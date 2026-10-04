@@ -1151,6 +1151,8 @@
       "rule": "Di el marcador al principio del dictado y haz una breve pausa: «{{example}}» Nova lo coloca al inicio de la nota, sin reformularlo.",
       "blocksTitle": "Bloques de clase",
       "numbering": "Los ejemplos y ejercicios se numeran solos durante una clase. Di «{{example}}» para elegir el número.",
+      "formulaTitle": "Fórmulas",
+      "formula": "Empieza por «Formule» y díctala en francés: «{{said}}» da {{written}}. Nova la escribe con símbolos, sin reformularla. Palabras reconocidas:",
       "layoutTitle": "Formato dictado",
       "search": "Para encontrar tus marcadores, busca «{{marker}}» en el historial.",
       "english": "En inglés: {{phrases}}."

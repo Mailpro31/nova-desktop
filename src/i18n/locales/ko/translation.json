@@ -1151,6 +1151,8 @@
       "rule": "받아쓰기를 시작할 때 표시를 말하고 잠시 멈추세요: \"{{example}}\" Nova는 이를 바꿔 말하지 않고 노트 맨 앞에 넣습니다.",
       "blocksTitle": "수업 블록",
       "numbering": "예제와 연습 문제는 수업 중에 자동으로 번호가 매겨집니다. 번호를 정하려면 \"{{example}}\"라고 말하세요.",
+      "formulaTitle": "수식",
+      "formula": "\"Formule\"로 시작한 뒤 프랑스어로 수식을 말하세요: \"{{said}}\"는 {{written}}이 됩니다. Nova는 바꿔 말하지 않고 기호로 씁니다. 인식되는 단어:",
       "layoutTitle": "받아쓰기 서식",
       "search": "표시를 다시 찾으려면 기록에서 \"{{marker}}\"을(를) 검색하세요.",
       "english": "영어: {{phrases}}."

@@ -1151,6 +1151,8 @@
       "rule": "口述の冒頭でマーカーを言い、少し間を置いてください:「{{example}}」Nova は言い換えずにノートの先頭に置きます。",
       "blocksTitle": "授業ブロック",
       "numbering": "例と演習は授業中に自動で番号が付きます。番号を選ぶには「{{example}}」と言ってください。",
+      "formulaTitle": "数式",
+      "formula": "「Formule」で始め、フランス語で数式を口述してください:「{{said}}」は {{written}} になります。Nova は言い換えずに記号で書きます。認識される語:",
       "layoutTitle": "口述によるレイアウト",
       "search": "マーカーを探すには、履歴で「{{marker}}」を検索します。",
       "english": "英語では: {{phrases}}。"
