@@ -1291,6 +1291,37 @@
       "save": "Rapport opslaan",
       "saved": "Rapport opgeslagen.",
       "failed": "Het rapport kon niet worden opgeslagen."
+    },
+    "timetable": {
+      "title": "Rooster",
+      "description": "Zet elk dictaat onder de les waarin je het maakte.",
+      "intro": "Koppel je rooster: in de geschiedenis staat elk dictaat onder de les waarin je het maakte, en de export krijgt de naam van de les. Dictaten die je al hebt gemaakt, worden ook ingedeeld.",
+      "linkLabel": "Abonnementslink van je rooster",
+      "connect": "Koppelen",
+      "linkHelp": "Je vindt deze link in je online rooster (ADE, Hyperplanning, Outlook, Google Agenda…), vaak onder ‘Exporteren’, ‘Abonneren’ of ‘Synchroniseren’. Hij begint met webcal:// of https://.",
+      "importFile": "Een .ics-bestand importeren",
+      "importOther": "Een ander bestand importeren",
+      "fileFilter": "Agenda",
+      "connected": "Rooster gekoppeld.",
+      "imported": "Rooster geïmporteerd.",
+      "fromLink": "Gekoppeld via een link",
+      "fromFile": "Geïmporteerd uit een bestand",
+      "updated": "Bijgewerkt {{when}}",
+      "current": "Huidige les",
+      "next": "Volgende les",
+      "noCourse": "Geen komende les",
+      "refresh": "Vernieuwen",
+      "remove": "Verwijderen",
+      "privacy": "De link en het rooster blijven op deze computer: ze worden naar geen enkele server gestuurd, ook niet naar die van je school. Een abonnementslink wordt elke zes uur opnieuw gelezen.",
+      "errors": {
+        "invalid_link": "Dit is geen geldige abonnementslink. Hij moet beginnen met webcal:// of https://.",
+        "unreachable": "Het rooster kon niet worden gelezen. Controleer je verbinding en de link.",
+        "unreadable": "Dit bestand kon niet worden gelezen.",
+        "not_calendar": "Deze link of dit bestand is geen rooster in ICS-formaat. Een verlopen link geeft vaak een aanmeldpagina terug.",
+        "too_large": "Deze agenda is te groot (meer dan 5 MB).",
+        "keyring": "De link kon niet worden opgeslagen in de beveiligde opslag van het systeem.",
+        "storage": "Het rooster kon niet op deze computer worden opgeslagen."
+      }
     }
   },
   "aiSkills": {

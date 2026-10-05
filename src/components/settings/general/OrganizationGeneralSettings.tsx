@@ -8,6 +8,7 @@ import {
   MessageSquare,
   ListFilter,
   Bookmark,
+  CalendarDays,
 } from "lucide-react";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -25,6 +26,7 @@ import { OrganizationDictionarySection } from "./OrganizationDictionarySection";
 import { OrganizationSnippetsSection } from "./OrganizationSnippetsSection";
 import { OrganizationFormattingSection } from "./OrganizationFormattingSection";
 import { StudyMarkersSection } from "./StudyMarkersSection";
+import { TimetableSection } from "./TimetableSection";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
@@ -130,6 +132,14 @@ export const OrganizationPersonalizationSections: React.FC = () => {
         description={t("organization.studyMarkers.description")}
       >
         <StudyMarkersSection />
+      </SectionCard>
+
+      <SectionCard
+        icon={CalendarDays}
+        title={t("organization.timetable.title")}
+        description={t("organization.timetable.description")}
+      >
+        <TimetableSection />
       </SectionCard>
 
       <SectionCard

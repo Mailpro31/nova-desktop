@@ -1291,6 +1291,37 @@
       "save": "Uložit zprávu",
       "saved": "Zpráva uložena.",
       "failed": "Zprávu se nepodařilo uložit."
+    },
+    "timetable": {
+      "title": "Rozvrh",
+      "description": "Zařaďte každé diktování pod hodinu, ve které vzniklo.",
+      "intro": "Propojte svůj rozvrh: v historii se každé diktování zařadí pod hodinu, během které vzniklo, a export ponese název předmětu. Zařadí se i diktování, která už máte.",
+      "linkLabel": "Odkaz k odběru vašeho rozvrhu",
+      "connect": "Propojit",
+      "linkHelp": "Tento odkaz najdete ve svém online rozvrhu (ADE, Hyperplanning, Outlook, Google Kalendář…), často pod „Exportovat“, „Odebírat“ nebo „Synchronizovat“. Začíná webcal:// nebo https://.",
+      "importFile": "Importovat soubor .ics",
+      "importOther": "Importovat jiný soubor",
+      "fileFilter": "Kalendář",
+      "connected": "Rozvrh propojen.",
+      "imported": "Rozvrh importován.",
+      "fromLink": "Propojeno odkazem",
+      "fromFile": "Importováno ze souboru",
+      "updated": "Aktualizováno {{when}}",
+      "current": "Probíhající hodina",
+      "next": "Další hodina",
+      "noCourse": "Žádná nadcházející hodina",
+      "refresh": "Obnovit",
+      "remove": "Odebrat",
+      "privacy": "Odkaz i rozvrh zůstávají v tomto počítači: neodesílají se na žádný server, ani na server vaší školy. Odkaz k odběru se znovu načítá každých šest hodin.",
+      "errors": {
+        "invalid_link": "Toto není platný odkaz k odběru. Musí začínat webcal:// nebo https://.",
+        "unreachable": "Rozvrh se nepodařilo načíst. Zkontrolujte připojení a odkaz.",
+        "unreadable": "Tento soubor se nepodařilo načíst.",
+        "not_calendar": "Tento odkaz nebo soubor není rozvrh ve formátu ICS. Odkaz s prošlou platností často vrací přihlašovací stránku.",
+        "too_large": "Tento kalendář je příliš velký (více než 5 MB).",
+        "keyring": "Odkaz se nepodařilo uložit do zabezpečeného úložiště systému.",
+        "storage": "Rozvrh se nepodařilo uložit do tohoto počítače."
+      }
     }
   },
   "aiSkills": {

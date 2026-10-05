@@ -1291,6 +1291,37 @@
       "save": "Zapisz raport",
       "saved": "Raport zapisany.",
       "failed": "Nie udało się zapisać raportu."
+    },
+    "timetable": {
+      "title": "Plan zajęć",
+      "description": "Przypisuj każde dyktowanie do zajęć, na których je nagrano.",
+      "intro": "Połącz plan zajęć: w historii każde dyktowanie trafia pod zajęcia, w trakcie których je nagrano, a eksport otrzymuje nazwę zajęć. Dyktowania nagrane wcześniej również zostaną przypisane.",
+      "linkLabel": "Link subskrypcji Twojego planu zajęć",
+      "connect": "Połącz",
+      "linkHelp": "Ten link znajdziesz w swoim planie zajęć online (ADE, Hyperplanning, Outlook, Kalendarz Google…), często w opcji „Eksportuj”, „Subskrybuj” lub „Synchronizuj”. Zaczyna się od webcal:// lub https://.",
+      "importFile": "Importuj plik .ics",
+      "importOther": "Importuj inny plik",
+      "fileFilter": "Kalendarz",
+      "connected": "Plan zajęć połączony.",
+      "imported": "Plan zajęć zaimportowany.",
+      "fromLink": "Połączono przez link",
+      "fromFile": "Zaimportowano z pliku",
+      "updated": "Zaktualizowano {{when}}",
+      "current": "Bieżące zajęcia",
+      "next": "Następne zajęcia",
+      "noCourse": "Brak nadchodzących zajęć",
+      "refresh": "Odśwież",
+      "remove": "Usuń",
+      "privacy": "Link i plan zajęć pozostają na tym komputerze: nie są wysyłane na żaden serwer, nawet serwer Twojej uczelni. Link subskrypcji jest odczytywany ponownie co sześć godzin.",
+      "errors": {
+        "invalid_link": "To nie jest prawidłowy link subskrypcji. Musi zaczynać się od webcal:// lub https://.",
+        "unreachable": "Nie udało się odczytać planu zajęć. Sprawdź połączenie i link.",
+        "unreadable": "Nie udało się odczytać tego pliku.",
+        "not_calendar": "Ten link lub plik nie jest planem zajęć w formacie ICS. Wygasły link często zwraca stronę logowania.",
+        "too_large": "Ten kalendarz jest za duży (ponad 5 MB).",
+        "keyring": "Nie udało się zapisać linku w bezpiecznym magazynie systemu.",
+        "storage": "Nie udało się zapisać planu zajęć na tym komputerze."
+      }
     }
   },
   "aiSkills": {

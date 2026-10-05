@@ -56,7 +56,8 @@ export function groupByRecency(
 }
 
 /**
- * Filtre local sur le texte transcrit.
+ * Filtre local sur le texte transcrit, et sur le nom du cours quand
+ * l'emploi du temps est relié : chercher « fluides » retrouve tout le cours.
  *
  * Local par nécessité autant que par principe : l'historique est une base
  * SQLite sur la machine, aucun serveur n'a à connaître ce qui y est cherché.
@@ -66,11 +67,14 @@ export function groupByRecency(
 export function filterEntries(
   entries: HistoryEntry[],
   query: string,
+  courseOf: (entry: HistoryEntry) => string | null = () => null,
 ): HistoryEntry[] {
   const needle = normalize(query);
   if (!needle) return entries;
-  return entries.filter((entry) =>
-    normalize(entry.transcription_text).includes(needle),
+  return entries.filter(
+    (entry) =>
+      normalize(entry.transcription_text).includes(needle) ||
+      normalize(courseOf(entry) ?? "").includes(needle),
   );
 }
 

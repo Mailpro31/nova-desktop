@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import {
+  CalendarDays,
   Check,
   Copy,
   FolderOpen,
@@ -39,6 +40,8 @@ import {
   type LLMPrompt,
 } from "@/bindings";
 import { formatDateTime } from "@/utils/dateFormat";
+import { courseAt, courseRuns, type CourseRun } from "@/lib/timetable";
+import { useTimetableStore } from "@/stores/timetableStore";
 import { useOsType } from "@/hooks/useOsType";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { readFile } from "@tauri-apps/plugin-fs";
@@ -140,15 +143,37 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
     };
   }, []);
 
+  // L'emploi du temps relié range les dictées par cours ; sans lui, rien ne
+  // change.
+  const courses = useTimetableStore((state) => state.events);
+  const timetableLoaded = useTimetableStore((state) => state.loaded);
+  const loadTimetable = useTimetableStore((state) => state.load);
+  useEffect(() => {
+    if (!timetableLoaded) void loadTimetable();
+  }, [timetableLoaded, loadTimetable]);
+
   const visibleEntries = useMemo(
     () =>
       prompts ? entriesForStyle(entries, styles, PROMPT_STYLE_ID) : entries,
     [prompts, entries, styles],
   );
   const groups = useMemo(
-    () => groupByRecency(filterEntries(visibleEntries, query)),
-    [visibleEntries, query],
+    () =>
+      groupByRecency(
+        filterEntries(
+          visibleEntries,
+          query,
+          (entry) => courseAt(courses, entry.timestamp)?.summary ?? null,
+        ),
+      ),
+    [visibleEntries, query, courses],
   );
+  const runsOf = (list: HistoryEntry[]): CourseRun[] =>
+    prompts ? [{ course: null, entries: list }] : courseRuns(list, courses);
+  const clock = (seconds: number) =>
+    new Intl.DateTimeFormat(i18n.language, { timeStyle: "short" }).format(
+      new Date(seconds * 1000),
+    );
   const matchCount = groups.reduce((n, g) => n + g.entries.length, 0);
 
   const remove = async (id: number) => {
@@ -248,23 +273,49 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
                   section={t(BUCKET_LABEL[group.bucket])}
                 />
               </div>
-              <ul>
-                {group.entries.map((entry) => (
-                  <HistoryRow
-                    key={entry.id}
-                    entry={entry}
-                    bucket={group.bucket}
-                    expanded={expanded === entry.id}
-                    onToggle={() =>
-                      setExpanded((id) => (id === entry.id ? null : entry.id))
-                    }
-                    onDelete={() => void remove(entry.id)}
-                    osType={osType}
-                    locale={i18n.language}
-                    styles={styles}
-                  />
-                ))}
-              </ul>
+              {runsOf(group.entries).map((run) => (
+                <div key={`${run.course?.key ?? "none"}-${run.entries[0].id}`}>
+                  {run.course && (
+                    <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-b border-hairline px-2 pb-1">
+                      <h3 className="flex min-w-0 items-baseline gap-2 text-sm font-semibold text-text">
+                        <CalendarDays
+                          size={14}
+                          aria-hidden="true"
+                          className="shrink-0 self-center text-text-secondary"
+                        />
+                        <span className="truncate">{run.course.summary}</span>
+                        <span className="shrink-0 text-xs font-normal tabular-nums text-text-secondary">
+                          {`${clock(run.course.start)}–${clock(run.course.end)}`}
+                        </span>
+                      </h3>
+                      <RevisionExport
+                        entries={run.entries}
+                        section={run.course.summary}
+                        date={run.course.start}
+                      />
+                    </div>
+                  )}
+                  <ul>
+                    {run.entries.map((entry) => (
+                      <HistoryRow
+                        key={entry.id}
+                        entry={entry}
+                        bucket={group.bucket}
+                        expanded={expanded === entry.id}
+                        onToggle={() =>
+                          setExpanded((id) =>
+                            id === entry.id ? null : entry.id,
+                          )
+                        }
+                        onDelete={() => void remove(entry.id)}
+                        osType={osType}
+                        locale={i18n.language}
+                        styles={styles}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </section>
           ))}
         </div>

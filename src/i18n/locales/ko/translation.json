@@ -1291,6 +1291,37 @@
       "save": "보고서 저장",
       "saved": "보고서를 저장했습니다.",
       "failed": "보고서를 저장하지 못했습니다."
+    },
+    "timetable": {
+      "title": "시간표",
+      "description": "각 받아쓰기를 진행한 수업 아래에 정리합니다.",
+      "intro": "시간표를 연결하면 기록에서 각 받아쓰기가 진행한 수업 아래에 정리되고, 내보내기 파일에 수업 이름이 붙습니다. 이미 한 받아쓰기도 정리됩니다.",
+      "linkLabel": "시간표 구독 링크",
+      "connect": "연결",
+      "linkHelp": "이 링크는 온라인 시간표(ADE, Hyperplanning, Outlook, Google 캘린더 등)의 '내보내기', '구독' 또는 '동기화' 메뉴에 있습니다. webcal:// 또는 https://로 시작합니다.",
+      "importFile": ".ics 파일 가져오기",
+      "importOther": "다른 파일 가져오기",
+      "fileFilter": "캘린더",
+      "connected": "시간표가 연결되었습니다.",
+      "imported": "시간표를 가져왔습니다.",
+      "fromLink": "링크로 연결됨",
+      "fromFile": "파일에서 가져옴",
+      "updated": "{{when}}에 업데이트됨",
+      "current": "현재 수업",
+      "next": "다음 수업",
+      "noCourse": "예정된 수업이 없습니다",
+      "refresh": "새로 고침",
+      "remove": "제거",
+      "privacy": "링크와 시간표는 이 컴퓨터에만 남으며, 학교 서버를 포함해 어떤 서버에도 전송되지 않습니다. 구독 링크는 6시간마다 다시 읽습니다.",
+      "errors": {
+        "invalid_link": "올바른 구독 링크가 아닙니다. webcal:// 또는 https://로 시작해야 합니다.",
+        "unreachable": "시간표를 읽을 수 없습니다. 연결 상태와 링크를 확인하세요.",
+        "unreadable": "이 파일을 읽을 수 없습니다.",
+        "not_calendar": "이 링크나 파일은 ICS 형식의 시간표가 아닙니다. 만료된 링크는 로그인 페이지를 반환하는 경우가 많습니다.",
+        "too_large": "이 캘린더는 너무 큽니다(5MB 초과).",
+        "keyring": "링크를 시스템의 보안 저장소에 저장할 수 없습니다.",
+        "storage": "시간표를 이 컴퓨터에 저장할 수 없습니다."
+      }
     }
   },
   "aiSkills": {
