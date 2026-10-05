@@ -393,6 +393,18 @@ pub(crate) const UI_GATED_FEATURES: &[&str] = &[
 mod organization_boundary_tests {
     use super::*;
 
+    /// Le mode et la session sont des états globaux, et les tests tournent en
+    /// parallèle : sans verrou, un test rendait le mode pendant qu'un autre
+    /// l'attendait posé (échec intermittent de la CI de la 1.0.51). Chaque
+    /// test qui lit ou pose cet état le prend d'abord.
+    static STATE: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    fn state() -> std::sync::MutexGuard<'static, ()> {
+        STATE
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner())
+    }
+
     /// Le mode campus est un état global : chaque test le pose et le rend.
     struct OrganizationMode;
     impl OrganizationMode {
@@ -409,6 +421,7 @@ mod organization_boundary_tests {
 
     #[test]
     fn organization_can_never_show_an_upsell() {
+        let _state = state();
         let _organization = OrganizationMode::on();
         // Sans clé de licence : le cas exact d'un poste étudiant.
         for feature in UI_GATED_FEATURES {
@@ -437,6 +450,7 @@ mod organization_boundary_tests {
 
     #[test]
     fn organization_never_shows_an_upsell_even_signed_out_or_suspended() {
+        let _state = state();
         let _organization = OrganizationMode::on();
         let _session = Session::signed_out_and_suspended();
         for feature in UI_GATED_FEATURES {
@@ -449,6 +463,7 @@ mod organization_boundary_tests {
 
     #[test]
     fn organization_unlocks_every_writing_style() {
+        let _state = state();
         let _organization = OrganizationMode::on();
         // La liste des Styles se construit sur ces deux clés côté interface.
         assert!(has("all_styles", "", 0));
@@ -457,6 +472,7 @@ mod organization_boundary_tests {
 
     #[test]
     fn organization_mode_is_released_and_restrictions_return() {
+        let _state = state();
         {
             let _organization = OrganizationMode::on();
             assert!(has("meeting_mode", "", 0));
@@ -468,6 +484,7 @@ mod organization_boundary_tests {
 
     #[test]
     fn personal_free_keeps_its_restrictions() {
+        let _state = state();
         assert!(
             !has("all_styles", "", 0),
             "Free ne débloque pas tous les Styles"
