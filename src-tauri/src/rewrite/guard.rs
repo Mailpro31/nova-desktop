@@ -874,7 +874,10 @@ const ASSISTANT_SENTENCES: &[&str] = &[
     "en tant que modèle",
     "voulez vous que je",
     "souhaitez vous que je",
-    "n hésitez pas à me",
+    // « N'hésitez pas à me contacter » est une formule d'e-mail ordinaire :
+    // seules les offres d'assistant restent.
+    "n hésitez pas à me demander",
+    "n hésitez pas à me poser",
     "le texte fourni",
     "la transcription fournie",
     "la dictée fournie",
@@ -890,24 +893,41 @@ const ASSISTANT_SENTENCES: &[&str] = &[
     "i didn t understand your",
 ];
 
-/// Le texte en mots minuscules, séparés et bornés par une espace : la
-/// ponctuation et les traits d'union ne comptent pas.
-fn spoken_words(text: &str) -> String {
+fn fold_accent(c: char) -> char {
+    match c {
+        'à' | 'â' | 'ä' => 'a',
+        'é' | 'è' | 'ê' | 'ë' => 'e',
+        'î' | 'ï' => 'i',
+        'ô' | 'ö' => 'o',
+        'ù' | 'û' | 'ü' => 'u',
+        'ç' => 'c',
+        other => other,
+    }
+}
+
+/// Les mots du texte, en minuscules et sans accents : la ponctuation, les
+/// traits d'union et « preciser » pour « préciser » ne comptent pas.
+fn spoken_words(text: &str) -> Vec<String> {
     static WORDS: Lazy<Regex> = Lazy::new(|| Regex::new(r"[^\W_]+").expect("words"));
-    let words: Vec<String> = WORDS
+    WORDS
         .find_iter(&text.to_lowercase())
-        .map(|word| word.as_str().to_string())
-        .collect();
-    format!(" {} ", words.join(" "))
+        .map(|word| word.as_str().chars().map(fold_accent).collect())
+        .collect()
 }
 
 /// Une phrase d'assistant dans la sortie, que l'élève n'a pas dictée lui-même.
+///
+/// L'élève l'a dite si tous ses mots sont dans la dictée, dans n'importe quel
+/// ordre : « est-ce que vous pourriez préciser » devient légitimement
+/// « Pourriez-vous préciser » dans un e-mail.
 pub fn assistant_sentence(input: &str, output: &str) -> bool {
     let said = spoken_words(input);
-    let wrote = spoken_words(output);
+    let wrote = format!(" {} ", spoken_words(output).join(" "));
     ASSISTANT_SENTENCES.iter().any(|sentence| {
-        let needle = format!(" {sentence} ");
-        wrote.contains(&needle) && !said.contains(&needle)
+        let needle = spoken_words(sentence);
+        let in_output = wrote.contains(&format!(" {} ", needle.join(" ")));
+        let said_it = needle.iter().all(|word| said.contains(word));
+        in_output && !said_it
     })
 }
 
@@ -932,6 +952,36 @@ mod tests {
         assert!(assistant_sentence(
             dictated,
             "See you Wednesday at 10. Would you like me to make it more formal?"
+        ));
+    }
+
+    /// Chasse aux bugs du 05/10 : de vrais e-mails d'élève étaient refusés.
+    #[test]
+    fn a_student_who_says_it_in_another_order_keeps_it() {
+        for (dictated, written) in [
+            (
+                "est-ce que vous pourriez préciser la date du partiel",
+                "Pourriez-vous préciser la date du partiel ?",
+            ),
+            (
+                "vous voulez que je vous envoie le rapport",
+                "Voulez-vous que je vous envoie le rapport ?",
+            ),
+            (
+                "pourriez vous preciser la date",
+                "Pourriez-vous préciser la date ?",
+            ),
+            (
+                "si vous avez des questions dites le moi",
+                "N'hésitez pas à me contacter si vous avez des questions.",
+            ),
+        ] {
+            assert!(!assistant_sentence(dictated, written), "{dictated}");
+        }
+        // Ce qui a été mesuré sur le RTX reste refusé.
+        assert!(assistant_sentence(
+            "on se voit mardi non attends mercredi à 10 heures",
+            "Mercredi à 10 heures. Pourriez-vous préciser quel rendez-vous ?"
         ));
     }
 

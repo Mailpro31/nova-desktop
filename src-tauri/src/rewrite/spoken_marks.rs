@@ -170,9 +170,11 @@ pub fn prepare(text: &str) -> PreparedDictation {
         None => (None, text.to_string()),
     };
     let body = match marker {
-        Some(marker) if marker.label == FORMULA_LABEL => {
-            crate::rewrite::spoken_maths::to_symbols(&body)
-        }
+        Some(marker) if marker.label == FORMULA_LABEL => apply_layout_commands(&body)
+            .split('\n')
+            .map(super::spoken_maths::to_symbols)
+            .collect::<Vec<_>>()
+            .join("\n"),
         _ => apply_layout_commands(&body),
     };
     PreparedDictation { marker, body }
@@ -227,6 +229,14 @@ fn trigger_end(rest: &str, trigger: &str, numbered: bool) -> Option<(usize, Opti
         if let Some((said, length)) = spoken_number(&rest[end..]) {
             number = Some(said);
             end += length;
+            // « Exercice 3.2 », « Exemple 2,1 » : un numéro de sous-partie, pas
+            // un « 3 » suivi d'une pause. Laissé tel quel plutôt que tronqué.
+            let mut next = rest[end..].chars();
+            if matches!(next.next(), Some('.' | ',' | '-'))
+                && next.next().is_some_and(|c| c.is_ascii_digit())
+            {
+                return None;
+            }
         }
     }
     let after = &rest[end..];
@@ -279,7 +289,20 @@ fn spoken_number(after: &str) -> Option<(u32, usize)> {
     if trimmed.len() == after.len() {
         return None;
     }
-    let leading = after.len() - trimmed.len();
+    let mut leading = after.len() - trimmed.len();
+    // « Exemple numéro 3 », « Exemple n° 3 ».
+    let mut trimmed = trimmed;
+    for prefix in ["numéro ", "numero ", "n° ", "n°", "number "] {
+        if trimmed.len() >= prefix.len()
+            && trimmed.is_char_boundary(prefix.len())
+            && trimmed[..prefix.len()].to_lowercase() == prefix
+        {
+            let rest = trimmed[prefix.len()..].trim_start();
+            leading += trimmed.len() - rest.len();
+            trimmed = rest;
+            break;
+        }
+    }
     let word: String = trimmed
         .chars()
         .take_while(|c| c.is_alphanumeric())
@@ -310,11 +333,67 @@ fn same_letter(found: char, expected: char) -> bool {
 }
 
 fn capitalize_first(text: &str) -> String {
+    let first_word: Vec<char> = text.chars().take_while(|c| c.is_alphanumeric()).collect();
+    // « x est positif » : une variable garde sa casse ; « iPhone » aussi.
+    // « l'énergie » : une élision, pas une variable.
+    let elided = text
+        .chars()
+        .nth(first_word.len())
+        .is_some_and(|c| c == '\'' || c == '’');
+    let variable = first_word.len() == 1 && first_word[0].is_ascii_lowercase() && !elided;
+    let mixed = first_word.iter().skip(1).any(|c| c.is_uppercase());
+    if variable || mixed {
+        return text.to_string();
+    }
     let mut chars = text.chars();
     match chars.next() {
         Some(first) => first.to_uppercase().chain(chars).collect(),
         None => String::new(),
     }
+}
+
+/// « point » est ici un nom (« premier point », « le point ») : la suite
+/// « point à la ligne » est du contenu.
+fn point_is_a_noun(before: &str) -> bool {
+    let word = before
+        .trim_end()
+        .rsplit(|c: char| !c.is_alphabetic())
+        .next()
+        .unwrap_or("")
+        .to_lowercase();
+    word.ends_with("ième")
+        || [
+            "le", "un", "ce", "du", "au", "premier", "second", "dernier", "chaque", "quel", "mon",
+            "ton", "son", "notre", "votre", "leur", "cet", "bon", "seul", "même", "autre",
+        ]
+        .contains(&word.as_str())
+}
+
+fn full_stop_new_lines(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    let mut last = 0;
+    for found in FULL_STOP_NEW_LINE.find_iter(text) {
+        let pause_before = found
+            .as_str()
+            .trim_start_matches([' ', '\t'])
+            .starts_with(['.', ',', ';', ':']);
+        let digit_after = text[found.end()..]
+            .chars()
+            .next()
+            .is_some_and(|c| c.is_ascii_digit());
+        if digit_after || (!pause_before && point_is_a_noun(&text[..found.start()])) {
+            continue;
+        }
+        out.push_str(&text[last..found.start()]);
+        let so_far = out.trim_end_matches([' ', '\t']);
+        // Après « ? », « ! », « … », un retour à la ligne, ou en tête : pas
+        // de point en plus.
+        let ended = so_far.is_empty() || so_far.ends_with(['?', '!', '…', '\n', '.']);
+        out.push_str(if ended { "\n" } else { ".\n" });
+        last = found.end();
+    }
+    out.push_str(&text[last..]);
+    out
 }
 
 /// « point à la ligne », partout : on ne le dit jamais pour dire autre chose.
@@ -329,13 +408,14 @@ static FULL_STOP_NEW_LINE: Lazy<Regex> = Lazy::new(|| {
 /// début de la dictée ou une ponctuation, et une ponctuation ou la fin.
 static NEW_LINE: Lazy<Regex> = Lazy::new(|| {
     Regex::new(
-        r"(?iu)(^|[.,;:!?…\n])[ \t]*(retour[ \t]+(?:à|a)[ \t]+la[ \t]+ligne|(?:à|a)[ \t]+la[ \t]+ligne|nouvelle[ \t]+ligne|nouveau[ \t]+paragraphe|new[ \t]+paragraph|new[ \t]+line)[ \t]*(?:[.,;:!?…]+[ \t]*|$)",
+        r"(?iu)(^|[.,;:!?…\n])[ \t]*(retour[ \t]+(?:à|a)[ \t]+la[ \t]+ligne|(?:à|a)[ \t]+la[ \t]+ligne|nouvelle[ \t]+ligne|nouveau[ \t]+paragraphe|new[ \t]+paragraph|new[ \t]+line)[ \t]*(?:[.,;:!?…]+[ \t]*|(?m:$))",
     )
     .expect("new line pattern")
 });
 
-static LINE_START: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"[ \t]*\n[ \t]*(\p{Ll})?").expect("line start pattern"));
+static LINE_START: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"[ \t]*\n[ \t]*(\p{Ll}[\p{L}\p{N}]*['’]?)?").expect("line start pattern")
+});
 
 static EXTRA_BLANK_LINES: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"\n{3,}").expect("blank lines pattern"));
@@ -343,7 +423,8 @@ static EXTRA_BLANK_LINES: Lazy<Regex> =
 /// Les retours à la ligne dictés, appliqués. Le texte est rendu tel quel s'il
 /// n'en contient aucun.
 pub fn apply_layout_commands(text: &str) -> String {
-    let mut with_lines = FULL_STOP_NEW_LINE.replace_all(text, ".\n").into_owned();
+    let normalized = text.replace("\r\n", "\n");
+    let mut with_lines = full_stop_new_lines(&normalized);
     // Une commande consomme la ponctuation qui la suit : la suivante, dite
     // juste après, n'est reconnue qu'au tour d'après.
     for _ in 0..8 {
@@ -353,11 +434,11 @@ pub fn apply_layout_commands(text: &str) -> String {
         }
         with_lines = next;
     }
-    if with_lines == text {
+    if with_lines == normalized {
         return text.to_string();
     }
     let tidy = LINE_START.replace_all(&with_lines, |caps: &Captures| match caps.get(1) {
-        Some(letter) => format!("\n{}", letter.as_str().to_uppercase()),
+        Some(word) => format!("\n{}", capitalize_first(word.as_str())),
         None => "\n".to_string(),
     });
     EXTRA_BLANK_LINES
@@ -369,7 +450,8 @@ pub fn apply_layout_commands(text: &str) -> String {
 fn new_line(caps: &Captures) -> String {
     // Une virgule devant un retour à la ligne n'a plus de sens ; un point, si.
     let before = match &caps[1] {
-        "," | ";" | ":" => "",
+        // Déjà à la ligne : la commande n'en ajoute pas une seconde.
+        "," | ";" | ":" | "\n" => "",
         other => other,
     };
     let breaks = if caps[2].to_lowercase().contains("paragraph") {
@@ -388,6 +470,68 @@ mod tests {
         split_study_marker(text).map(|(marker, body)| (marker.label, body))
     }
 
+    /// Cas trouvés par la chasse aux bugs du 05/10, sur des dictées réelles.
+    #[test]
+    fn bug_hunt_layout_cases_stay_fixed() {
+        for (said, written) in [
+            // « point » est un nom : rien n'est coupé.
+            (
+                "Premier point à la ligne deuxième point",
+                "Premier point à la ligne deuxième point",
+            ),
+            (
+                "Regarde le point à la ligne 3 du tableau.",
+                "Regarde le point à la ligne 3 du tableau.",
+            ),
+            // Pas de point en trop après « ? ».
+            ("Tu viens ? Point à la ligne. Oui.", "Tu viens ?\nOui."),
+            ("Bonjour.\r\nÀ la ligne. Merci.", "Bonjour.\nMerci."),
+            // Une variable et une marque gardent leur casse.
+            ("Fin. À la ligne, x égale 2.", "Fin.\nx égale 2."),
+            ("Fin. À la ligne, iPhone.", "Fin.\niPhone."),
+            (
+                "la masse se conserve point à la ligne l'énergie aussi",
+                "la masse se conserve.\nL'énergie aussi",
+            ),
+        ] {
+            assert_eq!(apply_layout_commands(said), written, "{said}");
+        }
+    }
+
+    #[test]
+    fn bug_hunt_marker_cases_stay_fixed() {
+        for (said, pasted) in [
+            (
+                "Exercice 3.2, calculer la limite.",
+                "Exercice 3.2, calculer la limite.",
+            ),
+            (
+                "Exemple numéro 3, on lance un dé.",
+                "🧪 Exemple 3 : On lance un dé.",
+            ),
+            (
+                "Exemple n°3, on lance un dé.",
+                "🧪 Exemple 3 : On lance un dé.",
+            ),
+            ("Remarque, x est positif.", "💬 Remarque : x est positif."),
+            (
+                "Important, iPhone et iPad.",
+                "⚠ Important : iPhone et iPad.",
+            ),
+            (
+                "Important. Point à la ligne. La dérivée.",
+                "⚠ Important : La dérivée.",
+            ),
+            (
+                "Formule, x égale 2 point à la ligne y égale 3.",
+                "🔢 Formule : x = 2.\ny = 3.",
+            ),
+        ] {
+            let prepared = prepare(said);
+            assert_eq!(prepared.finish(&prepared.body), pasted, "{said}");
+        }
+    }
+
     #[test]
     fn a_formula_is_written_in_symbols_and_skips_the_style() {
         let prepared = prepare("Formule, delta égale b au carré moins quatre a c.");
@@ -400,7 +544,7 @@ mod tests {
         assert_eq!(prepare("Formule : x au carré").body, "x²");
         assert!(!prepare("Important, x plus 1.").is_formula());
         // Hors d'une formule, « plus » et « moins » restent des mots.
-        assert_eq!(prepare("Important, x plus 1.").body, "X plus 1.");
+        assert_eq!(prepare("Important, x plus 1.").body, "x plus 1.");
         assert_eq!(marked("Formule de Héron pour l'aire."), None);
     }
 

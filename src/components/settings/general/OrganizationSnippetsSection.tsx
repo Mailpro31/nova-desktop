@@ -11,7 +11,20 @@ import type { OrganizationSnippetEntry } from "@/lib/organizationApi";
 /** Les façons de dire un snippet, comme le serveur les lit. */
 export const snippetWays = (trigger: string): string[] => {
   const ways: string[] = [];
-  for (const way of trigger.split(/[,|]/).map((part) => part.trim())) {
+  // Une virgule ne sépare que des phrases d'au moins deux mots :
+  // « Cordialement, Sasha Martin » reste une seule façon de le dire.
+  const commaWays = (part: string): string[] => {
+    const pieces = part.split(",");
+    const phrases = pieces.every((piece) => {
+      const words = piece.trim().split(/\s+/).filter(Boolean).length;
+      return words === 0 || words >= 2;
+    });
+    return pieces.length > 1 && phrases ? pieces : [part];
+  };
+  for (const way of trigger
+    .split("|")
+    .flatMap(commaWays)
+    .map((part) => part.trim())) {
     if (way && !ways.some((known) => known.toLowerCase() === way.toLowerCase()))
       ways.push(way);
   }
