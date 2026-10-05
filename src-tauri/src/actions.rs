@@ -2465,9 +2465,11 @@ impl ShortcutAction for TranscribeAction {
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
                         if let Some(session) = organization::should_use_organization(&ah).await {
+                            let dictation_language = get_settings(&ah).selected_language;
                             match organization::transcribe_organization(
                                 &wav_path_for_verify,
                                 &session,
+                                Some(&dictation_language),
                             )
                             .await
                             {

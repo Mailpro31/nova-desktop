@@ -130,7 +130,9 @@ async fn transcribe(app: &AppHandle, samples: Vec<f32>) -> Result<String, String
         ));
         let written = crate::audio_toolkit::save_wav_file(&wav_path, &samples);
         if written.is_ok() {
-            let result = organization::transcribe_organization(&wav_path, &session).await;
+            let language = get_settings(app).selected_language;
+            let result =
+                organization::transcribe_organization(&wav_path, &session, Some(&language)).await;
             let _ = std::fs::remove_file(&wav_path);
             if let Ok(text) = result {
                 return Ok(text);
