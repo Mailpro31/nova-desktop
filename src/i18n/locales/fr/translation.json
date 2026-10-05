@@ -889,7 +889,8 @@
     "styleSuggestion": "Vous dictez souvent dans {{app}} — essayez le Style {{style}}",
     "styleSuggestionApply": "Essayer",
     "styleSuggestionDismiss": "Ne plus afficher",
-    "dictationLimitWarning": "Arrêt dans {{seconds}} s (limite de l'organisation)"
+    "dictationLimitWarning": "Arrêt dans {{seconds}} s (limite de l'organisation)",
+    "unclear": "Je n'ai pas bien entendu, rien n'a été collé. Parlez un peu plus fort ou plus près du micro."
   },
   "whatsNew": {
     "updatedNotice": "Nova a été mis à jour",

@@ -468,6 +468,16 @@ pub fn show_capture_error_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "capture-error");
 }
 
+/// Le serveur n'a pas compris la dictée : rien n'est collé, et la bulle le dit
+/// (« parlez un peu plus fort ou plus près du micro »), même quand la bulle est
+/// masquée d'ordinaire, comme une erreur de micro.
+pub fn show_unclear_overlay(app_handle: &AppHandle) {
+    show_overlay_state(app_handle, "capture-error");
+    if let Some(window) = app_handle.get_webview_window("recording_overlay") {
+        let _ = window.emit("transcription-unclear", ());
+    }
+}
+
 /// Shows the larger streaming overlay that displays live transcription text
 pub fn show_streaming_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "streaming");

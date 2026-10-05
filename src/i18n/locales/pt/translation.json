@@ -874,7 +874,8 @@
     "styleSuggestion": "Dita frequentemente em {{app}} — experimente o Estilo {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Não mostrar novamente",
-    "dictationLimitWarning": "Para em {{seconds}} s (limite da organização)"
+    "dictationLimitWarning": "Para em {{seconds}} s (limite da organização)",
+    "unclear": "Não ouvi bem, por isso nada foi colado. Fale um pouco mais alto ou mais perto do microfone."
   },
   "whatsNew": {
     "updatedNotice": "Nova foi atualizado",

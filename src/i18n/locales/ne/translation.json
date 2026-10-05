@@ -880,7 +880,8 @@
     "styleSuggestion": "तपाईं प्रायः {{app}} मा डिक्टेट गर्नुहुन्छ — {{style}} शैली प्रयोग गरेर हेर्नुहोस्",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "फेरि नदेखाउनुहोस्",
-    "dictationLimitWarning": "{{seconds}} सेकेन्डमा रोकिन्छ (संस्थाको सीमा)"
+    "dictationLimitWarning": "{{seconds}} सेकेन्डमा रोकिन्छ (संस्थाको सीमा)",
+    "unclear": "स्पष्ट सुनिएन, त्यसैले केही टाँसिएन। अलि ठूलो स्वरमा वा माइक्रोफोन नजिकबाट बोल्नुहोस्।"
   },
   "quota": {
     "lifetimeUsage": "निःशुल्क Turbo पुनर्लेखन",

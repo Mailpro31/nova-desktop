@@ -874,7 +874,8 @@
     "styleSuggestion": "Dictas a menudo en {{app}}: prueba el Estilo {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "No volver a mostrar",
-    "dictationLimitWarning": "Se detiene en {{seconds}} s (límite de la organización)"
+    "dictationLimitWarning": "Se detiene en {{seconds}} s (límite de la organización)",
+    "unclear": "No te he oído bien, así que no se ha pegado nada. Habla un poco más alto o más cerca del micrófono."
   },
   "whatsNew": {
     "updatedNotice": "Nova se ha actualizado",

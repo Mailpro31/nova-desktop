@@ -874,7 +874,8 @@
     "styleSuggestion": "{{app}} içinde sık dikte ediyorsunuz — {{style}} Stilini deneyin",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Bir daha gösterme",
-    "dictationLimitWarning": "{{seconds}} sn içinde duracak (kuruluş sınırı)"
+    "dictationLimitWarning": "{{seconds}} sn içinde duracak (kuruluş sınırı)",
+    "unclear": "Net duyamadım, bu yüzden hiçbir şey yapıştırılmadı. Biraz daha yüksek sesle ya da mikrofona daha yakın konuşun."
   },
   "whatsNew": {
     "updatedNotice": "Nova güncellendi",

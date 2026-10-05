@@ -2462,18 +2462,23 @@ impl ShortcutAction for TranscribeAction {
                     // acceptée : refusée, c'est la dictée brute qui repart.
                     let mut organization_rewritten = false;
                     let mut organization_error: Option<OrganizationError> = None;
+                    // Le serveur n'a pas compris la dictée : rien n'est collé,
+                    // et la bulle demande de parler plus fort.
+                    let mut organization_unclear = false;
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
                         if let Some(session) = organization::should_use_organization(&ah).await {
                             let dictation_language = get_settings(&ah).selected_language;
-                            match organization::transcribe_organization(
+                            match organization::transcribe_organization_detailed(
                                 &wav_path_for_verify,
                                 &session,
                                 Some(&dictation_language),
                             )
                             .await
                             {
-                                Ok(text) => {
+                                Ok(transcript) => {
+                                    let text = transcript.text;
+                                    organization_unclear = transcript.unclear;
                                     organization_used = true;
                                     organization::invalidate_server_reachability_cache(
                                         &session.server_url,
@@ -2686,7 +2691,11 @@ impl ShortcutAction for TranscribeAction {
                             }
 
                             if processed.final_text.is_empty() {
-                                utils::hide_recording_overlay(&ah);
+                                if organization_unclear {
+                                    crate::overlay::show_unclear_overlay(&ah);
+                                } else {
+                                    utils::hide_recording_overlay(&ah);
+                                }
                                 change_tray_icon(&ah, TrayIconState::Idle);
                             } else {
                                 // L'overlay atteint visiblement 100 % avant que le

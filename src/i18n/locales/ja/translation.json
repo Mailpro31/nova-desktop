@@ -874,7 +874,8 @@
     "styleSuggestion": "{{app}} でよく口述しています。{{style}} スタイルを試してみましょう",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "今後表示しない",
-    "dictationLimitWarning": "{{seconds}} 秒後に停止（組織の上限）"
+    "dictationLimitWarning": "{{seconds}} 秒後に停止（組織の上限）",
+    "unclear": "よく聞き取れなかったため、何も貼り付けていません。もう少し大きな声で、またはマイクに近づいて話してください。"
   },
   "whatsNew": {
     "updatedNotice": "Nova が更新されました",

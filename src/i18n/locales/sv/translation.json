@@ -874,7 +874,8 @@
     "styleSuggestion": "Du dikterar ofta i {{app}} — prova stilen {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Visa inte igen",
-    "dictationLimitWarning": "Stoppar om {{seconds}} s (organisationens gräns)"
+    "dictationLimitWarning": "Stoppar om {{seconds}} s (organisationens gräns)",
+    "unclear": "Jag hörde inte tydligt, så inget klistrades in. Tala lite högre eller närmare mikrofonen."
   },
   "whatsNew": {
     "updatedNotice": "Nova har uppdaterats",

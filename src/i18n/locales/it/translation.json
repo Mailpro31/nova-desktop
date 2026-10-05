@@ -874,7 +874,8 @@
     "styleSuggestion": "Detti spesso in {{app}}: prova lo Stile {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Non mostrare più",
-    "dictationLimitWarning": "Si ferma tra {{seconds}} s (limite dell'organizzazione)"
+    "dictationLimitWarning": "Si ferma tra {{seconds}} s (limite dell'organizzazione)",
+    "unclear": "Non ho sentito bene, quindi non è stato incollato nulla. Parla un po' più forte o più vicino al microfono."
   },
   "whatsNew": {
     "updatedNotice": "Nova è stato aggiornato",

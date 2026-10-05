@@ -874,7 +874,8 @@
     "styleSuggestion": "Bạn thường đọc chính tả trong {{app}} — hãy thử Phong cách {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Không hiện lại",
-    "dictationLimitWarning": "Dừng sau {{seconds}} giây (giới hạn của tổ chức)"
+    "dictationLimitWarning": "Dừng sau {{seconds}} giây (giới hạn của tổ chức)",
+    "unclear": "Tôi nghe không rõ nên chưa dán gì cả. Hãy nói to hơn một chút hoặc gần micrô hơn."
   },
   "whatsNew": {
     "updatedNotice": "Nova đã được cập nhật",
