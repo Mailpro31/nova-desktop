@@ -1291,6 +1291,37 @@
       "save": "Bericht speichern",
       "saved": "Bericht gespeichert.",
       "failed": "Der Bericht konnte nicht gespeichert werden."
+    },
+    "timetable": {
+      "title": "Stundenplan",
+      "description": "Ordnen Sie jedes Diktat der Lehrveranstaltung zu, in der Sie es gemacht haben.",
+      "intro": "Verbinden Sie Ihren Stundenplan: Im Verlauf wird jedes Diktat unter der Lehrveranstaltung abgelegt, in der Sie es gemacht haben, und der Export trägt den Namen der Veranstaltung. Bereits gemachte Diktate werden ebenfalls zugeordnet.",
+      "linkLabel": "Abonnement-Link Ihres Stundenplans",
+      "connect": "Verbinden",
+      "linkHelp": "Diesen Link finden Sie in Ihrem Online-Stundenplan (ADE, Hyperplanning, Outlook, Google Kalender…), oft unter „Exportieren“, „Abonnieren“ oder „Synchronisieren“. Er beginnt mit webcal:// oder https://.",
+      "importFile": "Eine .ics-Datei importieren",
+      "importOther": "Eine andere Datei importieren",
+      "fileFilter": "Kalender",
+      "connected": "Stundenplan verbunden.",
+      "imported": "Stundenplan importiert.",
+      "fromLink": "Über einen Link verbunden",
+      "fromFile": "Aus einer Datei importiert",
+      "updated": "Aktualisiert {{when}}",
+      "current": "Laufende Veranstaltung",
+      "next": "Nächste Veranstaltung",
+      "noCourse": "Keine anstehende Veranstaltung",
+      "refresh": "Aktualisieren",
+      "remove": "Entfernen",
+      "privacy": "Der Link und der Stundenplan bleiben auf diesem Computer: Sie werden an keinen Server gesendet, auch nicht an den Ihrer Hochschule. Ein Abonnement-Link wird alle sechs Stunden neu gelesen.",
+      "errors": {
+        "invalid_link": "Dies ist kein gültiger Abonnement-Link. Er muss mit webcal:// oder https:// beginnen.",
+        "unreachable": "Der Stundenplan konnte nicht gelesen werden. Prüfen Sie Ihre Verbindung und den Link.",
+        "unreadable": "Diese Datei konnte nicht gelesen werden.",
+        "not_calendar": "Dieser Link oder diese Datei ist kein Stundenplan im ICS-Format. Ein abgelaufener Link liefert oft eine Anmeldeseite.",
+        "too_large": "Dieser Kalender ist zu groß (über 5 MB).",
+        "keyring": "Der Link konnte nicht im sicheren Speicher des Systems abgelegt werden.",
+        "storage": "Der Stundenplan konnte auf diesem Computer nicht gespeichert werden."
+      }
     }
   },
   "aiSkills": {

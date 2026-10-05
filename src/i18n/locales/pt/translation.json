@@ -1291,6 +1291,37 @@
       "save": "Guardar o relatório",
       "saved": "Relatório guardado.",
       "failed": "Não foi possível guardar o relatório."
+    },
+    "timetable": {
+      "title": "Horário",
+      "description": "Arquive cada ditado na aula em que o fez.",
+      "intro": "Ligue o seu horário: no histórico, cada ditado é arquivado na aula durante a qual o fez, e a exportação recebe o nome da aula. Os ditados já feitos também são arquivados.",
+      "linkLabel": "Link de subscrição do seu horário",
+      "connect": "Ligar",
+      "linkHelp": "Encontra este link no seu horário online (ADE, Hyperplanning, Outlook, Google Agenda…), muitas vezes em «Exportar», «Subscrever» ou «Sincronizar». Começa por webcal:// ou https://.",
+      "importFile": "Importar um ficheiro .ics",
+      "importOther": "Importar outro ficheiro",
+      "fileFilter": "Calendário",
+      "connected": "Horário ligado.",
+      "imported": "Horário importado.",
+      "fromLink": "Ligado por link",
+      "fromFile": "Importado de um ficheiro",
+      "updated": "Atualizado {{when}}",
+      "current": "Aula em curso",
+      "next": "Próxima aula",
+      "noCourse": "Nenhuma aula prevista",
+      "refresh": "Atualizar",
+      "remove": "Remover",
+      "privacy": "O link e o horário ficam neste computador: não são enviados para nenhum servidor, nem sequer para o da sua instituição. Um link de subscrição é relido a cada seis horas.",
+      "errors": {
+        "invalid_link": "Este não é um link de subscrição válido. Deve começar por webcal:// ou https://.",
+        "unreachable": "Não foi possível ler o horário. Verifique a ligação e o link.",
+        "unreadable": "Não foi possível ler este ficheiro.",
+        "not_calendar": "Este link ou ficheiro não é um horário no formato ICS. Um link expirado devolve muitas vezes uma página de início de sessão.",
+        "too_large": "Este calendário é demasiado grande (mais de 5 MB).",
+        "keyring": "Não foi possível guardar o link no armazenamento seguro do sistema.",
+        "storage": "Não foi possível guardar o horário neste computador."
+      }
     }
   },
   "aiSkills": {

@@ -1291,6 +1291,37 @@
       "save": "Save the report",
       "saved": "Report saved.",
       "failed": "The report could not be saved."
+    },
+    "timetable": {
+      "title": "Timetable",
+      "description": "File each dictation under the class where you made it.",
+      "intro": "Connect your timetable: in your history, each dictation is filed under the class during which you made it, and exports are named after the class. Dictations you have already made are filed too.",
+      "linkLabel": "Your timetable's subscription link",
+      "connect": "Connect",
+      "linkHelp": "You will find this link in your online timetable (ADE, Hyperplanning, Outlook, Google Calendar…), often under “Export”, “Subscribe” or “Sync”. It starts with webcal:// or https://.",
+      "importFile": "Import an .ics file",
+      "importOther": "Import another file",
+      "fileFilter": "Calendar",
+      "connected": "Timetable connected.",
+      "imported": "Timetable imported.",
+      "fromLink": "Connected by link",
+      "fromFile": "Imported from a file",
+      "updated": "Updated {{when}}",
+      "current": "Current class",
+      "next": "Next class",
+      "noCourse": "No upcoming class",
+      "refresh": "Refresh",
+      "remove": "Remove",
+      "privacy": "The link and the timetable stay on this computer: they are not sent to any server, not even your school's. A subscription link is read again every six hours.",
+      "errors": {
+        "invalid_link": "This is not a valid subscription link. It must start with webcal:// or https://.",
+        "unreachable": "The timetable could not be read. Check your connection and the link.",
+        "unreadable": "This file could not be read.",
+        "not_calendar": "This link or file is not an ICS timetable. An expired link often returns a sign-in page.",
+        "too_large": "This calendar is too large (over 5 MB).",
+        "keyring": "The link could not be stored in the system's secure storage.",
+        "storage": "The timetable could not be saved on this computer."
+      }
     }
   },
   "aiSkills": {

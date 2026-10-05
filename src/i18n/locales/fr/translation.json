@@ -1291,6 +1291,37 @@
       "save": "Enregistrer le rapport",
       "saved": "Rapport enregistré.",
       "failed": "Le rapport n'a pas pu être enregistré."
+    },
+    "timetable": {
+      "title": "Emploi du temps",
+      "description": "Rangez chaque dictée sous le cours où vous l'avez faite.",
+      "intro": "Reliez votre emploi du temps : dans l'historique, chaque dictée est rangée sous le cours pendant lequel vous l'avez faite, et l'export prend le nom du cours. Les dictées déjà faites sont rangées aussi.",
+      "linkLabel": "Lien d'abonnement de votre emploi du temps",
+      "connect": "Relier",
+      "linkHelp": "Ce lien se trouve dans votre emploi du temps en ligne (ADE, Hyperplanning, Outlook, Google Agenda…), souvent sous « Exporter », « S'abonner » ou « Synchroniser ». Il commence par webcal:// ou https://.",
+      "importFile": "Importer un fichier .ics",
+      "importOther": "Importer un autre fichier",
+      "fileFilter": "Calendrier",
+      "connected": "Emploi du temps relié.",
+      "imported": "Emploi du temps importé.",
+      "fromLink": "Relié par un lien",
+      "fromFile": "Importé depuis un fichier",
+      "updated": "Mis à jour {{when}}",
+      "current": "Cours en cours",
+      "next": "Prochain cours",
+      "noCourse": "Aucun cours à venir",
+      "refresh": "Actualiser",
+      "remove": "Retirer",
+      "privacy": "Le lien et l'emploi du temps restent sur cet ordinateur : ils ne sont envoyés à aucun serveur, pas même à celui de votre établissement. Un lien d'abonnement est relu toutes les six heures.",
+      "errors": {
+        "invalid_link": "Ce lien n'est pas un lien d'abonnement valide. Il doit commencer par webcal:// ou https://.",
+        "unreachable": "L'emploi du temps n'a pas pu être lu. Vérifiez votre connexion et le lien.",
+        "unreadable": "Ce fichier n'a pas pu être lu.",
+        "not_calendar": "Ce lien ou ce fichier n'est pas un emploi du temps au format ICS. Un lien expiré renvoie souvent une page de connexion.",
+        "too_large": "Ce calendrier est trop volumineux (plus de 5 Mo).",
+        "keyring": "Le lien n'a pas pu être rangé dans le stockage sécurisé du système.",
+        "storage": "L'emploi du temps n'a pas pu être enregistré sur cet ordinateur."
+      }
     }
   },
   "aiSkills": {

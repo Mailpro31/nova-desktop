@@ -1291,6 +1291,37 @@
       "save": "Salva il rapporto",
       "saved": "Rapporto salvato.",
       "failed": "Non è stato possibile salvare il rapporto."
+    },
+    "timetable": {
+      "title": "Orario",
+      "description": "Archivia ogni dettatura sotto la lezione in cui l'hai fatta.",
+      "intro": "Collega il tuo orario: nella cronologia, ogni dettatura viene archiviata sotto la lezione durante la quale l'hai fatta e l'esportazione prende il nome della lezione. Anche le dettature già fatte vengono ordinate.",
+      "linkLabel": "Link di abbonamento del tuo orario",
+      "connect": "Collega",
+      "linkHelp": "Trovi questo link nel tuo orario online (ADE, Hyperplanning, Outlook, Google Calendar…), spesso in «Esporta», «Iscriviti» o «Sincronizza». Inizia con webcal:// o https://.",
+      "importFile": "Importa un file .ics",
+      "importOther": "Importa un altro file",
+      "fileFilter": "Calendario",
+      "connected": "Orario collegato.",
+      "imported": "Orario importato.",
+      "fromLink": "Collegato tramite link",
+      "fromFile": "Importato da un file",
+      "updated": "Aggiornato {{when}}",
+      "current": "Lezione in corso",
+      "next": "Prossima lezione",
+      "noCourse": "Nessuna lezione in programma",
+      "refresh": "Aggiorna",
+      "remove": "Rimuovi",
+      "privacy": "Il link e l'orario restano su questo computer: non vengono inviati a nessun server, nemmeno a quello del tuo istituto. Un link di abbonamento viene riletto ogni sei ore.",
+      "errors": {
+        "invalid_link": "Questo non è un link di abbonamento valido. Deve iniziare con webcal:// o https://.",
+        "unreachable": "Non è stato possibile leggere l'orario. Controlla la connessione e il link.",
+        "unreadable": "Non è stato possibile leggere questo file.",
+        "not_calendar": "Questo link o file non è un orario in formato ICS. Un link scaduto restituisce spesso una pagina di accesso.",
+        "too_large": "Questo calendario è troppo grande (oltre 5 MB).",
+        "keyring": "Non è stato possibile salvare il link nell'archivio sicuro del sistema.",
+        "storage": "Non è stato possibile salvare l'orario su questo computer."
+      }
     }
   },
   "aiSkills": {

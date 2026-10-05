@@ -1291,6 +1291,37 @@
       "save": "Guardar el informe",
       "saved": "Informe guardado.",
       "failed": "No se ha podido guardar el informe."
+    },
+    "timetable": {
+      "title": "Horario",
+      "description": "Guarda cada dictado bajo la clase en la que lo hiciste.",
+      "intro": "Conecta tu horario: en el historial, cada dictado se guarda bajo la clase durante la que lo hiciste, y la exportación lleva el nombre de la clase. Los dictados ya hechos también se ordenan.",
+      "linkLabel": "Enlace de suscripción de tu horario",
+      "connect": "Conectar",
+      "linkHelp": "Encontrarás este enlace en tu horario en línea (ADE, Hyperplanning, Outlook, Google Calendar…), a menudo en «Exportar», «Suscribirse» o «Sincronizar». Empieza por webcal:// o https://.",
+      "importFile": "Importar un archivo .ics",
+      "importOther": "Importar otro archivo",
+      "fileFilter": "Calendario",
+      "connected": "Horario conectado.",
+      "imported": "Horario importado.",
+      "fromLink": "Conectado por enlace",
+      "fromFile": "Importado desde un archivo",
+      "updated": "Actualizado {{when}}",
+      "current": "Clase en curso",
+      "next": "Próxima clase",
+      "noCourse": "No hay clases próximas",
+      "refresh": "Actualizar",
+      "remove": "Quitar",
+      "privacy": "El enlace y el horario se quedan en este ordenador: no se envían a ningún servidor, ni siquiera al de tu centro. Un enlace de suscripción se vuelve a leer cada seis horas.",
+      "errors": {
+        "invalid_link": "No es un enlace de suscripción válido. Debe empezar por webcal:// o https://.",
+        "unreachable": "No se ha podido leer el horario. Comprueba tu conexión y el enlace.",
+        "unreadable": "No se ha podido leer este archivo.",
+        "not_calendar": "Este enlace o archivo no es un horario en formato ICS. Un enlace caducado suele devolver una página de inicio de sesión.",
+        "too_large": "Este calendario es demasiado grande (más de 5 MB).",
+        "keyring": "No se ha podido guardar el enlace en el almacenamiento seguro del sistema.",
+        "storage": "No se ha podido guardar el horario en este ordenador."
+      }
     }
   },
   "aiSkills": {

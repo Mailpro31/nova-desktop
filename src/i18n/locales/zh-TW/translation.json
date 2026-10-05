@@ -1291,6 +1291,37 @@
       "save": "儲存報告",
       "saved": "報告已儲存。",
       "failed": "無法儲存報告。"
+    },
+    "timetable": {
+      "title": "課表",
+      "description": "把每筆聽寫歸到你做這筆聽寫時所上的課底下。",
+      "intro": "連結課表後，歷史紀錄中的每筆聽寫都會歸到做聽寫時所上的課底下，匯出檔也會以課程命名。已經做過的聽寫同樣會被歸類。",
+      "linkLabel": "課表訂閱連結",
+      "connect": "連結",
+      "linkHelp": "這個連結可以在線上課表（ADE、Hyperplanning、Outlook、Google 日曆等）中找到，通常位於「匯出」「訂閱」或「同步」底下。它以 webcal:// 或 https:// 開頭。",
+      "importFile": "匯入 .ics 檔案",
+      "importOther": "匯入其他檔案",
+      "fileFilter": "日曆",
+      "connected": "課表已連結。",
+      "imported": "課表已匯入。",
+      "fromLink": "透過連結連結",
+      "fromFile": "從檔案匯入",
+      "updated": "更新於 {{when}}",
+      "current": "目前課程",
+      "next": "下一堂課",
+      "noCourse": "沒有即將到來的課程",
+      "refresh": "重新整理",
+      "remove": "移除",
+      "privacy": "連結和課表保留在這台電腦上：不會傳送到任何伺服器，包括你學校的伺服器。訂閱連結每六小時重新讀取一次。",
+      "errors": {
+        "invalid_link": "這不是有效的訂閱連結。它必須以 webcal:// 或 https:// 開頭。",
+        "unreachable": "無法讀取課表。請檢查網路連線和連結。",
+        "unreadable": "無法讀取此檔案。",
+        "not_calendar": "此連結或檔案不是 ICS 格式的課表。過期的連結通常會傳回登入頁面。",
+        "too_large": "此日曆太大（超過 5 MB）。",
+        "keyring": "無法將連結儲存到系統的安全儲存空間。",
+        "storage": "無法將課表儲存到這台電腦上。"
+      }
     }
   },
   "aiSkills": {

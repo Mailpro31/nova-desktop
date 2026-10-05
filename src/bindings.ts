@@ -1626,6 +1626,58 @@ async clearPerformanceHistory() : Promise<void> {
 async acknowledgeThinkingFrame(id: number) : Promise<void> {
     await TAURI_INVOKE("acknowledge_thinking_frame", { id });
 },
+async timetableStatus() : Promise<TimetableStatus> {
+    return await TAURI_INVOKE("timetable_status");
+},
+/**
+ * Relie un lien d'abonnement. Le lien n'est gardé qu'une fois le calendrier
+ * lu : un lien qui ne marche pas n'est pas enregistré.
+ */
+async timetableConnect(link: string) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("timetable_connect", { link }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Importe un fichier `.ics` choisi par l'élève. Un lien relié auparavant est
+ * oublié : il n'y a qu'un emploi du temps.
+ */
+async timetableImport(path: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("timetable_import", { path }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Le calendrier gardé sur le poste, relu d'abord par le lien s'il date de
+ * plus de six heures (ou si `refresh`). Si le lien ne répond pas, la copie
+ * locale sert : une salle sans réseau ne doit pas faire disparaître les
+ * cours. Seule une actualisation demandée signale l'échec.
+ */
+async timetableLoad(refresh: boolean) : Promise<Result<string | null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("timetable_load", { refresh }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Retire l'emploi du temps : le lien, la copie locale et l'état.
+ */
+async timetableDisconnect() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("timetable_disconnect") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async getHistoryEntries(cursor: number | null, limit: number | null) : Promise<Result<PaginatedHistory, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_history_entries", { cursor, limit }) };
@@ -2558,6 +2610,20 @@ pid: number }
  */
 export type Theme = "system" | "light" | "dark"
 export type Tier = "free" | "pro" | "ultra" | "business"
+export type TimetableSource =
+/**
+ * Un lien d'abonnement, relu régulièrement.
+ */
+"link" |
+/**
+ * Un fichier importé une fois.
+ */
+"file"
+export type TimetableStatus = { source: TimetableSource | null;
+/**
+ * Dernière lecture réussie, en secondes depuis l'époque Unix.
+ */
+updated_at: number | null }
 export type TranscribeAcceleratorSetting = "auto" | "cpu" | "gpu"
 export type TypingTool = "auto" | "wtype" | "kwtype" | "dotool" | "ydotool" | "xdotool"
 export type WeekStat = { words: number; chars: number; 

@@ -1291,6 +1291,37 @@
       "save": "Raporu kaydet",
       "saved": "Rapor kaydedildi.",
       "failed": "Rapor kaydedilemedi."
+    },
+    "timetable": {
+      "title": "Ders programı",
+      "description": "Her dikteyi yaptığınız dersin altına yerleştirin.",
+      "intro": "Ders programınızı bağlayın: geçmişte her dikte, sırasında yaptığınız dersin altına yerleştirilir ve dışa aktarma dersin adını alır. Daha önce yaptığınız dikteler de yerleştirilir.",
+      "linkLabel": "Ders programınızın abonelik bağlantısı",
+      "connect": "Bağla",
+      "linkHelp": "Bu bağlantıyı çevrimiçi ders programınızda (ADE, Hyperplanning, Outlook, Google Takvim…) genellikle “Dışa aktar”, “Abone ol” veya “Eşitle” altında bulabilirsiniz. webcal:// veya https:// ile başlar.",
+      "importFile": ".ics dosyası içe aktar",
+      "importOther": "Başka bir dosya içe aktar",
+      "fileFilter": "Takvim",
+      "connected": "Ders programı bağlandı.",
+      "imported": "Ders programı içe aktarıldı.",
+      "fromLink": "Bağlantıyla bağlandı",
+      "fromFile": "Bir dosyadan içe aktarıldı",
+      "updated": "Güncellendi: {{when}}",
+      "current": "Şu anki ders",
+      "next": "Sonraki ders",
+      "noCourse": "Yaklaşan ders yok",
+      "refresh": "Yenile",
+      "remove": "Kaldır",
+      "privacy": "Bağlantı ve ders programı bu bilgisayarda kalır: hiçbir sunucuya, okulunuzunkine bile gönderilmez. Abonelik bağlantısı altı saatte bir yeniden okunur.",
+      "errors": {
+        "invalid_link": "Bu geçerli bir abonelik bağlantısı değil. webcal:// veya https:// ile başlamalıdır.",
+        "unreachable": "Ders programı okunamadı. Bağlantınızı ve adresi kontrol edin.",
+        "unreadable": "Bu dosya okunamadı.",
+        "not_calendar": "Bu bağlantı veya dosya ICS biçiminde bir ders programı değil. Süresi dolmuş bir bağlantı genellikle bir oturum açma sayfası döndürür.",
+        "too_large": "Bu takvim çok büyük (5 MB'tan fazla).",
+        "keyring": "Bağlantı sistemin güvenli depolama alanına kaydedilemedi.",
+        "storage": "Ders programı bu bilgisayara kaydedilemedi."
+      }
     }
   },
   "aiSkills": {

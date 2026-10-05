@@ -26,8 +26,10 @@ const EXTENSION: Record<Format, string> = {
 interface RevisionExportProps {
   /** Les dictées de la section, telles que l'historique les montre. */
   entries: HistoryEntry[];
-  /** Le nom de la section : « Aujourd'hui », « Hier »… */
+  /** Le nom de la section : « Aujourd'hui », « Hier », ou le cours. */
   section: string;
+  /** Le jour à nommer, en secondes : celui du cours. Aujourd'hui sinon. */
+  date?: number;
 }
 
 /**
@@ -38,6 +40,7 @@ interface RevisionExportProps {
 export const RevisionExport: React.FC<RevisionExportProps> = ({
   entries,
   section,
+  date,
 }) => {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -46,7 +49,7 @@ export const RevisionExport: React.FC<RevisionExportProps> = ({
   const title = t("history.export.title", {
     section,
     date: new Intl.DateTimeFormat(i18n.language, { dateStyle: "long" }).format(
-      new Date(),
+      date === undefined ? new Date() : new Date(date * 1000),
     ),
   });
 

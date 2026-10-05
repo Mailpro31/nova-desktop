@@ -1291,6 +1291,37 @@
       "save": "Lưu báo cáo",
       "saved": "Đã lưu báo cáo.",
       "failed": "Không thể lưu báo cáo."
+    },
+    "timetable": {
+      "title": "Thời khóa biểu",
+      "description": "Xếp mỗi lần đọc chính tả vào buổi học mà bạn đã thực hiện.",
+      "intro": "Kết nối thời khóa biểu: trong lịch sử, mỗi lần đọc chính tả được xếp vào buổi học diễn ra lúc bạn thực hiện, và tệp xuất mang tên môn học. Những lần đọc đã thực hiện trước đó cũng được xếp.",
+      "linkLabel": "Liên kết đăng ký thời khóa biểu của bạn",
+      "connect": "Kết nối",
+      "linkHelp": "Bạn sẽ tìm thấy liên kết này trong thời khóa biểu trực tuyến (ADE, Hyperplanning, Outlook, Google Lịch…), thường ở mục “Xuất”, “Đăng ký” hoặc “Đồng bộ”. Liên kết bắt đầu bằng webcal:// hoặc https://.",
+      "importFile": "Nhập tệp .ics",
+      "importOther": "Nhập tệp khác",
+      "fileFilter": "Lịch",
+      "connected": "Đã kết nối thời khóa biểu.",
+      "imported": "Đã nhập thời khóa biểu.",
+      "fromLink": "Kết nối bằng liên kết",
+      "fromFile": "Nhập từ tệp",
+      "updated": "Cập nhật {{when}}",
+      "current": "Buổi học hiện tại",
+      "next": "Buổi học tiếp theo",
+      "noCourse": "Không có buổi học sắp tới",
+      "refresh": "Làm mới",
+      "remove": "Gỡ bỏ",
+      "privacy": "Liên kết và thời khóa biểu ở lại trên máy tính này: chúng không được gửi đến bất kỳ máy chủ nào, kể cả máy chủ của trường bạn. Liên kết đăng ký được đọc lại sáu giờ một lần.",
+      "errors": {
+        "invalid_link": "Đây không phải là liên kết đăng ký hợp lệ. Liên kết phải bắt đầu bằng webcal:// hoặc https://.",
+        "unreachable": "Không thể đọc thời khóa biểu. Hãy kiểm tra kết nối và liên kết.",
+        "unreadable": "Không thể đọc tệp này.",
+        "not_calendar": "Liên kết hoặc tệp này không phải là thời khóa biểu định dạng ICS. Liên kết đã hết hạn thường trả về trang đăng nhập.",
+        "too_large": "Lịch này quá lớn (hơn 5 MB).",
+        "keyring": "Không thể lưu liên kết vào kho lưu trữ an toàn của hệ thống.",
+        "storage": "Không thể lưu thời khóa biểu trên máy tính này."
+      }
     }
   },
   "aiSkills": {

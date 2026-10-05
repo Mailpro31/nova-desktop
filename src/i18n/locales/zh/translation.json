@@ -1291,6 +1291,37 @@
       "save": "保存报告",
       "saved": "报告已保存。",
       "failed": "无法保存报告。"
+    },
+    "timetable": {
+      "title": "课程表",
+      "description": "把每条听写归到你做这条听写时所上的课下面。",
+      "intro": "连接课程表后，历史记录中的每条听写都会归到做听写时所上的课下面，导出文件也会以课程命名。已经做过的听写同样会被归类。",
+      "linkLabel": "课程表订阅链接",
+      "connect": "连接",
+      "linkHelp": "这个链接可以在在线课程表（ADE、Hyperplanning、Outlook、Google 日历等）中找到，通常位于“导出”“订阅”或“同步”下。它以 webcal:// 或 https:// 开头。",
+      "importFile": "导入 .ics 文件",
+      "importOther": "导入其他文件",
+      "fileFilter": "日历",
+      "connected": "课程表已连接。",
+      "imported": "课程表已导入。",
+      "fromLink": "通过链接连接",
+      "fromFile": "从文件导入",
+      "updated": "更新于 {{when}}",
+      "current": "当前课程",
+      "next": "下一节课",
+      "noCourse": "没有即将到来的课程",
+      "refresh": "刷新",
+      "remove": "移除",
+      "privacy": "链接和课程表保留在这台电脑上：不会发送到任何服务器，包括你学校的服务器。订阅链接每六小时重新读取一次。",
+      "errors": {
+        "invalid_link": "这不是有效的订阅链接。它必须以 webcal:// 或 https:// 开头。",
+        "unreachable": "无法读取课程表。请检查网络连接和链接。",
+        "unreadable": "无法读取此文件。",
+        "not_calendar": "此链接或文件不是 ICS 格式的课程表。过期的链接通常会返回登录页面。",
+        "too_large": "此日历太大（超过 5 MB）。",
+        "keyring": "无法将链接保存到系统的安全存储中。",
+        "storage": "无法将课程表保存到这台电脑上。"
+      }
     }
   },
   "aiSkills": {

@@ -1291,6 +1291,37 @@
       "save": "Spara rapporten",
       "saved": "Rapporten sparades.",
       "failed": "Rapporten kunde inte sparas."
+    },
+    "timetable": {
+      "title": "Schema",
+      "description": "Sortera varje diktering under lektionen där du gjorde den.",
+      "intro": "Koppla ditt schema: i historiken sorteras varje diktering under lektionen då du gjorde den, och exporten får lektionens namn. Dikteringar du redan har gjort sorteras också.",
+      "linkLabel": "Prenumerationslänk till ditt schema",
+      "connect": "Koppla",
+      "linkHelp": "Du hittar länken i ditt schema på nätet (ADE, Hyperplanning, Outlook, Google Kalender…), ofta under ”Exportera”, ”Prenumerera” eller ”Synkronisera”. Den börjar med webcal:// eller https://.",
+      "importFile": "Importera en .ics-fil",
+      "importOther": "Importera en annan fil",
+      "fileFilter": "Kalender",
+      "connected": "Schemat är kopplat.",
+      "imported": "Schemat är importerat.",
+      "fromLink": "Kopplat via länk",
+      "fromFile": "Importerat från en fil",
+      "updated": "Uppdaterat {{when}}",
+      "current": "Pågående lektion",
+      "next": "Nästa lektion",
+      "noCourse": "Inga kommande lektioner",
+      "refresh": "Uppdatera",
+      "remove": "Ta bort",
+      "privacy": "Länken och schemat stannar på den här datorn: de skickas inte till någon server, inte ens till din skolas. En prenumerationslänk läses om var sjätte timme.",
+      "errors": {
+        "invalid_link": "Det här är ingen giltig prenumerationslänk. Den måste börja med webcal:// eller https://.",
+        "unreachable": "Schemat kunde inte läsas. Kontrollera anslutningen och länken.",
+        "unreadable": "Filen kunde inte läsas.",
+        "not_calendar": "Länken eller filen är inget schema i ICS-format. En utgången länk ger ofta en inloggningssida.",
+        "too_large": "Kalendern är för stor (över 5 MB).",
+        "keyring": "Länken kunde inte sparas i systemets säkra lagring.",
+        "storage": "Schemat kunde inte sparas på den här datorn."
+      }
     }
   },
   "aiSkills": {

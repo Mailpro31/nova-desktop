@@ -61,6 +61,7 @@ mod signal_handle;
 mod structured_notes;
 mod style_policy;
 mod telemetry;
+mod timetable;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
@@ -793,6 +794,11 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 performance::change_adaptive_performance_setting,
                 performance::clear_performance_history,
                 performance::acknowledge_thinking_frame,
+                commands::timetable::timetable_status,
+                commands::timetable::timetable_connect,
+                commands::timetable::timetable_import,
+                commands::timetable::timetable_load,
+                commands::timetable::timetable_disconnect,
                 commands::history::get_history_entries,
                 commands::history::toggle_history_entry_saved,
                 commands::history::get_audio_file_path,
