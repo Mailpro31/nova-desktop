@@ -79,6 +79,14 @@ const MARKERS: &[(&str, &str, &str, bool)] = &[
     ("exercise", "✍ Exercise", EN, NUMBERED),
     // Une formule s'écrit en symboles, par règles fixes (`spoken_maths`).
     ("formule", "🔢 Formule", FR, PLAIN),
+    // L'ancre de diapositive : « Diapo 12 » recale les notes sur le support
+    // publié, « Diapo suivante » prend le numéro d'après.
+    ("diapo", "🖼 Diapo", FR, NUMBERED),
+    ("diapositive", "🖼 Diapo", FR, NUMBERED),
+    ("diapo suivante", "🖼 Diapo", FR, NUMBERED),
+    ("diapositive suivante", "🖼 Diapo", FR, NUMBERED),
+    ("slide", "🖼 Slide", EN, NUMBERED),
+    ("next slide", "🖼 Slide", EN, NUMBERED),
 ];
 
 const FORMULA_LABEL: &str = "🔢 Formule";
@@ -139,7 +147,7 @@ impl StudyMarker {
 }
 
 /// Au-delà de deux heures sans nouveau bloc de la même sorte, c'est un autre
-/// cours : la numérotation repart de 1.
+/// cours : la numérotation repart de 1. Les diapositives suivent la même règle.
 const COURSE_GAP: Duration = Duration::from_secs(2 * 60 * 60);
 
 /// Le dernier numéro donné à chaque sorte de bloc, et quand.
@@ -607,6 +615,32 @@ mod tests {
             numbering.next("🧪 Exemple", None, start + 3 * 60 * minute),
             1
         );
+    }
+
+    #[test]
+    fn a_slide_anchor_keeps_the_said_number_and_follows_on() {
+        let pasted = |said: &str| {
+            let prepared = prepare(said);
+            prepared.finish(&prepared.body)
+        };
+        assert_eq!(
+            pasted("Diapo 12, la loi de Bernoulli."),
+            "🖼 Diapo 12 : La loi de Bernoulli."
+        );
+        assert_eq!(pasted("Diapo suivante."), "🖼 Diapo 13");
+        assert_eq!(
+            pasted("Diapositive numéro 20 : les pertes de charge."),
+            "🖼 Diapo 20 : Les pertes de charge."
+        );
+        assert_eq!(
+            pasted("Diapositive suivante, le venturi."),
+            "🖼 Diapo 21 : Le venturi."
+        );
+        assert_eq!(pasted("Slide 4."), "🖼 Slide 4");
+        // Dans une phrase, ce sont des mots du cours.
+        assert_eq!(marked("Diapositive de synthèse à la fin."), None);
+        assert_eq!(marked("Diapo suivante on verra le venturi."), None);
+        assert_eq!(marked("Slides du cours sur Moodle."), None);
     }
 
     #[test]

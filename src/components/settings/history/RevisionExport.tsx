@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import type { HistoryEntry } from "@/bindings";
 import {
+  clockTime,
   exportFileName,
   revisionCards,
   toAnkiCsv,
@@ -56,7 +57,7 @@ export const RevisionExport: React.FC<RevisionExportProps> = ({
     }
     const content =
       format === "markdown"
-        ? toMarkdown(entries, title)
+        ? toMarkdown(entries, title, (at) => clockTime(at, i18n.language))
         : format === "anki"
           ? toAnkiCsv(entries, title)
           : toOpml(entries, title, t("history.export.notes"));

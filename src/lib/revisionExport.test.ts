@@ -69,10 +69,12 @@ describe("export pour réviser", () => {
   });
 
   test("les notes Markdown suivent le cours", () => {
-    const md = toMarkdown(course, "Mécanique des fluides");
-    expect(md.startsWith("# Mécanique des fluides\n\nLe cours commence")).toBe(
-      true,
-    );
+    const md = toMarkdown(course, "Mécanique des fluides", (at) => `t${at}`);
+    expect(
+      md.startsWith("# Mécanique des fluides\n\n*t1010*\n\nLe cours commence"),
+    ).toBe(true);
+    // Moins de dix minutes entre deux dictées : l'heure n'est pas répétée.
+    expect(md).not.toContain("*t1020*");
     expect(md).toContain(
       "**📘 Définition :** La viscosité est la résistance d'un fluide à l'écoulement.",
     );
@@ -118,6 +120,46 @@ describe("export pour réviser", () => {
     );
     expect(opml).toContain('<outline text="Notes">');
     expect(opml).toContain('<outline text="⏸ J\'ai décroché">');
+  });
+
+  test("une ancre de diapositive devient un titre, avec son heure", () => {
+    const slides = [
+      entry("Le venturi accélère le fluide.", 5000),
+      entry("🖼 Diapo 13", 4990),
+      entry("Après la pause.", 4000),
+      entry("🖼 Diapo 12 : La loi de Bernoulli.", 2000),
+    ];
+    expect(splitMarker("🖼 Diapo 12 : La loi de Bernoulli.")).toEqual({
+      label: "🖼 Diapo 12",
+      body: "La loi de Bernoulli.",
+    });
+    expect(toMarkdown(slides, "Fluides", (at) => `t${at}`)).toBe(
+      [
+        "# Fluides",
+        "",
+        "## 🖼 Diapo 12 · t2000",
+        "",
+        "La loi de Bernoulli.",
+        "",
+        "*t4000*",
+        "",
+        "Après la pause.",
+        "",
+        "## 🖼 Diapo 13 · t4990",
+        "",
+        "Le venturi accélère le fluide.",
+        "",
+      ].join("\n"),
+    );
+    // Une diapositive n'est pas une carte de révision.
+    expect(revisionCards(slides)).toEqual([]);
+    // Dans la carte mentale, elle garde son numéro.
+    const opml = toOpml(slides, "Fluides", "Notes");
+    expect(opml).toContain('<outline text="🖼 Diapo">');
+    expect(opml).toContain(
+      '<outline text="🖼 Diapo 12 : La loi de Bernoulli."/>',
+    );
+    expect(opml).toContain('<outline text="🖼 Diapo 13"/>');
   });
 
   test("le nom de fichier ne garde aucun caractère interdit", () => {

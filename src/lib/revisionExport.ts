@@ -30,7 +30,7 @@ export interface MarkedNote {
 
 // Les repères de `spoken_marks.rs`, sans leur numéro (« 🧪 Exemple 2 »).
 const LABEL =
-  /^((?:⚠|🔁|❓|📘|⏸|✏|📐|📌|🛠|💬|🧪|✍|🔢)️?\s+[^:\n]+?)(?:\s*:\s*|$)/u;
+  /^((?:⚠|🔁|❓|📘|⏸|✏|📐|📌|🛠|💬|🧪|✍|🔢|🖼)️?\s+[^:\n]+?)(?:\s*:\s*|$)/u;
 
 export function splitMarker(text: string): MarkedNote | null {
   const found = LABEL.exec(text);
@@ -43,10 +43,47 @@ function labelFamily(label: string): string {
   return label.replace(/\s+\d+$/u, "");
 }
 
-export function toMarkdown(entries: HistoryEntry[], title: string): string {
+/** Une ancre de diapositive : « 🖼 Diapo 12 », « 🖼 Slide 4 ». */
+function isSlide(label: string): boolean {
+  return label.startsWith("🖼");
+}
+
+/** L'heure d'une dictée, « 10:42 », à l'heure du poste. */
+export function clockTime(timestamp: number, locale?: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(timestamp * 1000));
+}
+
+// Au-delà de dix minutes sans dictée (pause, changement de partie), l'heure
+// est rappelée : elle sert à recaler les notes sur le déroulé du cours.
+const PAUSE_SECONDS = 10 * 60;
+
+/**
+ * Les notes du cours, dans l'ordre. Une ancre « Diapo 12 » devient un titre,
+ * avec son heure : le document se parcourt diapositive par diapositive dans
+ * le volet de navigation de Word. L'heure est aussi rappelée au début et
+ * après chaque pause.
+ */
+export function toMarkdown(
+  entries: HistoryEntry[],
+  title: string,
+  clock: (timestamp: number) => string = (timestamp) => clockTime(timestamp),
+): string {
   const lines = [`# ${title}`, ""];
+  let previous: number | null = null;
   for (const entry of inCourseOrder(entries)) {
     const marked = splitMarker(noteText(entry));
+    const paused =
+      previous === null || entry.timestamp - previous >= PAUSE_SECONDS;
+    previous = entry.timestamp;
+    if (marked && isSlide(marked.label)) {
+      lines.push(`## ${marked.label} · ${clock(entry.timestamp)}`, "");
+      if (marked.body) lines.push(marked.body, "");
+      continue;
+    }
+    if (paused) lines.push(`*${clock(entry.timestamp)}*`, "");
     if (marked) {
       lines.push(
         marked.body
@@ -157,7 +194,12 @@ export function toOpml(
   for (const entry of inCourseOrder(entries)) {
     const marked = splitMarker(noteText(entry));
     const branch = marked ? labelFamily(marked.label) : notesLabel;
-    const text = marked ? marked.body || marked.label : noteText(entry);
+    // Une diapositive garde son numéro : sans lui, la branche ne dit rien.
+    const text = !marked
+      ? noteText(entry)
+      : isSlide(marked.label) && marked.body
+        ? `${marked.label} : ${marked.body}`
+        : marked.body || marked.label;
     const list = branches.get(branch) ?? [];
     list.push(text.replace(/\s*\n\s*/gu, " "));
     branches.set(branch, list);
