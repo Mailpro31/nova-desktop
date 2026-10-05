@@ -806,6 +806,12 @@ fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
 /// « Réunion » résume : il échappe aux contrôles de langue, de mots repris et
 /// de nombres omis, mais pas à celui des nombres réécrits.
 pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static str> {
+    // Ce qui était à l'élève devient à quelqu'un d'autre : « mon matricule »
+    // → « votre matricule ».
+    let person_guarded = style_id == COURSE_NOTES_STYLE || GUARDED_STYLES.contains(&style_id);
+    if person_guarded && person_changed(input, output) {
+        return Err("person-changed");
+    }
     if style_id == COURSE_NOTES_STYLE {
         return check_course_notes(input, output);
     }
@@ -931,9 +937,83 @@ pub fn assistant_sentence(input: &str, output: &str) -> bool {
     })
 }
 
+const FIRST_PERSON_POSSESSIVES: &[&str] = &["mon", "ma", "mes", "notre", "nos"];
+const OTHER_POSSESSIVES: &[&str] = &[
+    "votre", "vos", "ton", "ta", "tes", "son", "sa", "ses", "leur", "leurs",
+];
+
+/// « mon matricule » réécrit « votre matricule » : la personne a changé.
+///
+/// Mesuré sur le RTX le 05/10 : « Mon Matricule c'est pour le dossier de
+/// bourse » est devenu « Votre matricule est pour le dossier de bourse ». Un
+/// nom que l'élève a dit avec un possessif de la première personne ne peut
+/// pas revenir avec celui d'une autre personne sans jamais garder le sien.
+/// Même règle que le serveur (`person_changed`).
+pub fn person_changed(input: &str, output: &str) -> bool {
+    let said = spoken_words(input);
+    let wrote = spoken_words(output);
+    let owned: HashSet<&str> = said
+        .windows(2)
+        .filter(|pair| FIRST_PERSON_POSSESSIVES.contains(&pair[0].as_str()))
+        .map(|pair| pair[1].as_str())
+        .collect();
+    owned.into_iter().any(|noun| {
+        let before: Vec<&str> = wrote
+            .windows(2)
+            .filter(|pair| pair[1] == noun)
+            .map(|pair| pair[0].as_str())
+            .collect();
+        before.iter().any(|word| OTHER_POSSESSIVES.contains(word))
+            && !before
+                .iter()
+                .any(|word| FIRST_PERSON_POSSESSIVES.contains(word))
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_changed_person_is_caught() {
+        assert!(person_changed(
+            "Mon Matricule c'est pour le dossier de bourse",
+            "Votre matricule est pour le dossier de bourse."
+        ));
+        assert!(person_changed(
+            "je rends mes notes demain",
+            "Vous rendez vos notes demain."
+        ));
+        assert!(person_changed(
+            "ma présentation est prête",
+            "Sa présentation est prête."
+        ));
+        assert_eq!(
+            check(
+                "Mon Matricule c'est pour le dossier de bourse",
+                "Votre matricule est pour le dossier de bourse.",
+                "nova_style_everyday"
+            ),
+            Err("person-changed")
+        );
+    }
+
+    #[test]
+    fn faithful_rewrites_keep_their_person() {
+        for (input, output) in [
+            (
+                "mon matricule c'est pour le dossier",
+                "Mon matricule, c'est pour le dossier.",
+            ),
+            ("merci pour ton aide", "Merci pour votre aide."),
+            (
+                "j'ai lu votre message et mon rapport est prêt",
+                "J'ai lu votre message, et mon rapport est prêt.",
+            ),
+        ] {
+            assert!(!person_changed(input, output), "{input}");
+        }
+    }
 
     #[test]
     fn an_assistant_sentence_anywhere_is_caught() {

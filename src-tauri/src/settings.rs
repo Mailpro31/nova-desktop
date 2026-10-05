@@ -594,7 +594,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 4;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 5;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -695,8 +695,11 @@ fn default_auto_submit() -> bool {
     false
 }
 
+/// Un élève retrouve ses repères (« À revoir ») en cherchant dans
+/// l'historique : cinq dictées n'en gardaient même pas un cours. Deux cents
+/// dictées, avec leur audio, tiennent dans quelques dizaines de Mo.
 fn default_history_limit() -> usize {
-    5
+    200
 }
 
 fn default_recording_retention_period() -> RecordingRetentionPeriod {
@@ -1808,6 +1811,16 @@ fn apply_settings_migrations(
         settings.local_model_autoprovision_done = false;
         updated = true;
     }
+    if stored_schema_version < 5 {
+        // L'ancienne limite par défaut, 5 dictées, effaçait un cours entier
+        // avant la fin : la recherche de « À revoir » ne retrouvait rien, et
+        // une dictée de test disparaissait avant d'être mesurée (05/10). Une
+        // limite choisie autrement par l'utilisateur est gardée.
+        if settings.history_limit == 5 {
+            settings.history_limit = default_history_limit();
+        }
+        updated = true;
+    }
     if stored_schema_version < CURRENT_SETTINGS_SCHEMA_VERSION as u64 {
         settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
     }
@@ -2330,7 +2343,33 @@ mod tests {
 
         assert!(apply_settings_migrations(&mut settings, &raw));
         assert!(!settings.local_model_autoprovision_done);
-        assert_eq!(settings.settings_schema_version, 4);
+        assert_eq!(
+            settings.settings_schema_version,
+            CURRENT_SETTINGS_SCHEMA_VERSION
+        );
+    }
+
+    #[test]
+    fn the_old_five_dictation_history_is_raised_once() {
+        let mut settings = get_default_settings();
+        settings.settings_schema_version = 4;
+        settings.history_limit = 5;
+        let raw = serde_json::json!({
+            "settings_schema_version": 4,
+            "onboarding_completed": true,
+            "whats_new_last_seen_version": default_whats_new_last_seen_version(),
+            "overlay_style": "live",
+            "history_limit": 5
+        });
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert_eq!(settings.history_limit, 200);
+
+        // Une limite choisie par l'utilisateur est gardée.
+        let mut chosen = get_default_settings();
+        chosen.settings_schema_version = 4;
+        chosen.history_limit = 30;
+        apply_settings_migrations(&mut chosen, &raw);
+        assert_eq!(chosen.history_limit, 30);
     }
 
     #[test]
