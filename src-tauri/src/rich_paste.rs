@@ -26,7 +26,7 @@ static NUMBERED: Lazy<Regex> =
 static BOLD: Lazy<Regex> = Lazy::new(|| Regex::new(r"\*\*([^*\n]+?)\*\*").expect("bold pattern"));
 /// Les repères et blocs de `spoken_marks.rs`, en tête de ligne.
 static MARKER: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"^((?:⚠|🔁|❓|📘|⏸|✏|📐|📌|🛠|💬|🧪|✍|🔢)\u{FE0F}?\s+[^:\n]+?)(\s*:\s*.*)?$")
+    Regex::new(r"^((?:⚠|🔁|❓|📘|⏸|✏|📐|📌|🛠|💬|🧪|✍|🔢|🖼)\u{FE0F}?\s+[^:\n]+?)(\s*:\s*.*)?$")
         .expect("marker pattern")
 });
 
@@ -180,6 +180,10 @@ mod tests {
         assert_eq!(
             to_html("🔢 Formule : Δ = b² − 4ac.").unwrap(),
             "<p class=MsoNormal><b>🔢 Formule :</b> Δ = b² − 4ac.</p>"
+        );
+        assert_eq!(
+            to_html("🖼 Diapo 12 : La loi de Bernoulli.").unwrap(),
+            "<p class=MsoNormal><b>🖼 Diapo 12 :</b> La loi de Bernoulli.</p>"
         );
     }
 

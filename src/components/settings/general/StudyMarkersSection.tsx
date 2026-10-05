@@ -29,6 +29,8 @@ export const COURSE_BLOCKS: ReadonlyArray<{
   { said: "Remarque", written: "💬 Remarque" },
   { said: "Exemple", written: "🧪 Exemple", numbered: true },
   { said: "Exercice", written: "✍ Exercice", numbered: true },
+  { said: "Diapo 12", written: "🖼 Diapo 12" },
+  { said: "Diapo suivante", written: "🖼 Diapo 13" },
 ];
 
 /** Une formule dictée, et ce que Nova écrit, par règles fixes. */
@@ -74,6 +76,8 @@ export const ENGLISH_MARKERS: ReadonlyArray<string> = [
   "Method",
   "Example",
   "Exercise",
+  "Slide",
+  "Next slide",
   "New line",
   "New paragraph",
 ];
