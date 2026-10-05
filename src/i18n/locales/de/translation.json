@@ -651,7 +651,8 @@
         "save": "Snippet speichern",
         "saved": "Snippet gespeichert: Sagen Sie „{{trigger}}“.",
         "error": "Das Snippet konnte nicht gespeichert werden."
-      }
+      },
+      "pastedVersion": "Von Nova eingefügte Version"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nichts passt zu „{{query}}“.",
     "empty": "Hier erscheinen Ihre Diktate.",
     "copy": "Kopieren",
-    "copied": "Kopiert"
+    "copied": "Kopiert",
+    "export": {
+      "button": "Zum Lernen exportieren",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notizen (Markdown)",
+      "anki": "Lernkarten (Anki)",
+      "mindmap": "Mindmap (OPML)",
+      "saved": "Datei gespeichert.",
+      "failed": "Die Datei konnte nicht gespeichert werden.",
+      "noCards": "Hier gibt es nichts zu lernen: Sagen Sie „Définition“, „Théorème“ oder „À retenir“ am Anfang eines Diktats, um Karten zu erstellen.",
+      "notes": "Notizen"
+    }
   },
   "prompts": {
     "subtitle": "Prompts, die Nova aus Ihren Diktaten geschrieben hat, bereit zur Wiederverwendung.",

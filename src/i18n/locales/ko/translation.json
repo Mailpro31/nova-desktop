@@ -651,7 +651,8 @@
         "save": "스니펫 저장",
         "saved": "스니펫을 저장했습니다: \"{{trigger}}\"라고 말하세요.",
         "error": "스니펫을 저장할 수 없습니다."
-      }
+      },
+      "pastedVersion": "Nova가 붙여 넣은 버전"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "“{{query}}”와 일치하는 것이 없습니다.",
     "empty": "받아쓴 내용이 여기에 나타납니다.",
     "copy": "복사",
-    "copied": "복사했습니다"
+    "copied": "복사했습니다",
+    "export": {
+      "button": "복습용으로 내보내기",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "노트 (Markdown)",
+      "anki": "복습 카드 (Anki)",
+      "mindmap": "마인드맵 (OPML)",
+      "saved": "파일을 저장했습니다.",
+      "failed": "파일을 저장할 수 없습니다.",
+      "noCards": "여기에는 복습할 내용이 없습니다. 카드를 만들려면 받아쓰기 시작에 \"Définition\", \"Théorème\", \"À retenir\"라고 말하세요.",
+      "notes": "노트"
+    }
   },
   "prompts": {
     "subtitle": "Nova가 받아쓰기로 작성한, 다시 쓸 수 있는 프롬프트입니다.",

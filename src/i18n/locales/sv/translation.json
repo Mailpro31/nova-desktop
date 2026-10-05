@@ -651,7 +651,8 @@
         "save": "Spara snippet",
         "saved": "Snippet sparat: säg ”{{trigger}}”.",
         "error": "Det gick inte att spara snippetet."
-      }
+      },
+      "pastedVersion": "Version inklistrad av Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Inget matchar ”{{query}}”.",
     "empty": "Här visas dina dikteringar.",
     "copy": "Kopiera",
-    "copied": "Kopierat"
+    "copied": "Kopierat",
+    "export": {
+      "button": "Exportera för repetition",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Anteckningar (Markdown)",
+      "anki": "Repetitionskort (Anki)",
+      "mindmap": "Tankekarta (OPML)",
+      "saved": "Filen sparades.",
+      "failed": "Filen kunde inte sparas.",
+      "noCards": "Inget att repetera här: säg ”Définition”, ”Théorème” eller ”À retenir” i början av en diktering för att skapa kort.",
+      "notes": "Anteckningar"
+    }
   },
   "prompts": {
     "subtitle": "Promptar som Nova har skrivit utifrån dina dikteringar, redo att återanvändas.",

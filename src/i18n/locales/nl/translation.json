@@ -651,7 +651,8 @@
         "save": "Snippet opslaan",
         "saved": "Snippet opgeslagen: zeg “{{trigger}}”.",
         "error": "Het snippet kon niet worden opgeslagen."
-      }
+      },
+      "pastedVersion": "Door Nova geplakte versie"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Niets komt overeen met “{{query}}”.",
     "empty": "Hier verschijnen uw dictaten.",
     "copy": "Kopiëren",
-    "copied": "Gekopieerd"
+    "copied": "Gekopieerd",
+    "export": {
+      "button": "Exporteren om te herhalen",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notities (Markdown)",
+      "anki": "Flashcards (Anki)",
+      "mindmap": "Mindmap (OPML)",
+      "saved": "Bestand opgeslagen.",
+      "failed": "Het bestand kon niet worden opgeslagen.",
+      "noCards": "Hier valt niets te herhalen: zeg “Définition”, “Théorème” of “À retenir” aan het begin van een dictaat om kaarten te maken.",
+      "notes": "Notities"
+    }
   },
   "prompts": {
     "subtitle": "Prompts die Nova uit uw dictaten heeft geschreven, klaar om te hergebruiken.",

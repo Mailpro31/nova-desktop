@@ -651,7 +651,8 @@
         "save": "שמור קטע",
         "saved": "הקטע נשמר: אמרו \"{{trigger}}\".",
         "error": "לא ניתן היה לשמור את הקטע."
-      }
+      },
+      "pastedVersion": "הגרסה ש-Nova הדביק"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "שום דבר לא תואם ל־«{{query}}».",
     "empty": "ההכתבות שלכם יופיעו כאן.",
     "copy": "העתק",
-    "copied": "הועתק"
+    "copied": "הועתק",
+    "export": {
+      "button": "ייצוא לחזרה",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "הערות (Markdown)",
+      "anki": "כרטיסיות (Anki)",
+      "mindmap": "מפת חשיבה (OPML)",
+      "saved": "הקובץ נשמר.",
+      "failed": "לא ניתן היה לשמור את הקובץ.",
+      "noCards": "אין כאן מה לחזור עליו: אמרו \"Définition\", \"Théorème\" או \"À retenir\" בתחילת הכתבה כדי ליצור כרטיסיות.",
+      "notes": "הערות"
+    }
   },
   "prompts": {
     "subtitle": "פרומפטים ש-Nova כתבה מההכתבות שלכם, מוכנים לשימוש חוזר.",

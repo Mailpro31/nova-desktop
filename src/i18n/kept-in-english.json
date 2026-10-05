@@ -20,7 +20,8 @@
     "sidebar.aiSkills",
     "sidebar.novaCommands",
     "settings.about.acknowledgments.ggml.title",
-    "settings.readingComfort.font.system"
+    "settings.readingComfort.font.system",
+    "history.export.title"
   ],
   "byLanguage": {
     "cs": [
@@ -88,7 +89,9 @@
       "home.active.microphone",
       "styles.section.builtin",
       "learn.quiz.correct",
-      "settings.readingComfort.spacing.normal"
+      "settings.readingComfort.spacing.normal",
+      "history.export.markdown",
+      "history.export.notes"
     ],
     "it": [
       "modelSelector.streaming",
@@ -119,7 +122,8 @@
       "settings.postProcessing.api.provider.title",
       "personalization.overlay",
       "learn.exercise.feedback",
-      "settings.advanced.overlay.style.options.live"
+      "settings.advanced.overlay.style.options.live",
+      "history.export.anki"
     ],
     "pl": [
       "modelSelector.streaming",

@@ -651,7 +651,8 @@
         "save": "Guardar el snippet",
         "saved": "Snippet guardado: di «{{trigger}}».",
         "error": "No se pudo guardar el snippet."
-      }
+      },
+      "pastedVersion": "Versión pegada por Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nada coincide con «{{query}}».",
     "empty": "Aquí aparecerán tus dictados.",
     "copy": "Copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "export": {
+      "button": "Exportar para repasar",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notas (Markdown)",
+      "anki": "Tarjetas de repaso (Anki)",
+      "mindmap": "Mapa mental (OPML)",
+      "saved": "Archivo guardado.",
+      "failed": "No se pudo guardar el archivo.",
+      "noCards": "Nada que repasar aquí: di «Définition», «Théorème» o «À retenir» al inicio de un dictado para crear tarjetas.",
+      "notes": "Notas"
+    }
   },
   "prompts": {
     "subtitle": "Los prompts que Nova ha escrito a partir de tus dictados, listos para reutilizar.",
