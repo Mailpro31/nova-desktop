@@ -630,7 +630,8 @@
         "save": "حفظ المقتطف",
         "saved": "تم حفظ المقتطف: قل «{{trigger}}».",
         "error": "تعذّر حفظ المقتطف."
-      }
+      },
+      "pastedVersion": "النسخة التي ألصقها Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "لا شيء يطابق «{{query}}».",
     "empty": "ستظهر إملاءاتك هنا.",
     "copy": "نسخ",
-    "copied": "تم النسخ"
+    "copied": "تم النسخ",
+    "export": {
+      "button": "تصدير للمراجعة",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "ملاحظات (Markdown)",
+      "anki": "بطاقات مراجعة (Anki)",
+      "mindmap": "خريطة ذهنية (OPML)",
+      "saved": "تم حفظ الملف.",
+      "failed": "تعذّر حفظ الملف.",
+      "noCards": "لا شيء للمراجعة هنا: قل «Définition» أو «Théorème» أو «À retenir» في بداية الإملاء لإنشاء بطاقات.",
+      "notes": "ملاحظات"
+    }
   },
   "prompts": {
     "subtitle": "الموجِّهات التي كتبها Nova من إملاءاتك، جاهزة لإعادة الاستخدام.",

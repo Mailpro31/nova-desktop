@@ -651,7 +651,8 @@
         "save": "儲存片段",
         "saved": "片段已儲存：說「{{trigger}}」。",
         "error": "無法儲存片段。"
-      }
+      },
+      "pastedVersion": "Nova 貼上的版本"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "沒有與「{{query}}」相符的內容。",
     "empty": "你的語音輸入會顯示在這裡。",
     "copy": "複製",
-    "copied": "已複製"
+    "copied": "已複製",
+    "export": {
+      "button": "匯出複習",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "筆記 (Markdown)",
+      "anki": "複習卡片 (Anki)",
+      "mindmap": "心智圖 (OPML)",
+      "saved": "檔案已儲存。",
+      "failed": "無法儲存檔案。",
+      "noCards": "這裡沒有可複習的內容：在口述開頭說「Définition」「Théorème」或「À retenir」即可建立卡片。",
+      "notes": "筆記"
+    }
   },
   "prompts": {
     "subtitle": "Nova 根據你的聽寫產生的提示詞，可直接再次使用。",

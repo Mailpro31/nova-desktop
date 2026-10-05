@@ -651,7 +651,8 @@
         "save": "Enregistrer le snippet",
         "saved": "Snippet enregistré : dites « {{trigger}} ».",
         "error": "Le snippet n'a pas pu être enregistré."
-      }
+      },
+      "pastedVersion": "Version collée par Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Rien ne correspond à « {{query}} ».",
     "empty": "Vos dictées apparaîtront ici.",
     "copy": "Copier",
-    "copied": "Copié"
+    "copied": "Copié",
+    "export": {
+      "button": "Exporter pour réviser",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notes (Markdown)",
+      "anki": "Cartes de révision (Anki)",
+      "mindmap": "Carte mentale (OPML)",
+      "saved": "Fichier enregistré.",
+      "failed": "Le fichier n'a pas pu être enregistré.",
+      "noCards": "Aucun bloc à réviser ici : dites « Définition », « Théorème » ou « À retenir » au début d'une dictée pour créer des cartes.",
+      "notes": "Notes"
+    }
   },
   "prompts": {
     "subtitle": "Les prompts que Nova a écrits à partir de vos dictées, prêts à réutiliser.",

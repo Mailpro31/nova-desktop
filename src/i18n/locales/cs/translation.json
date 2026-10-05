@@ -651,7 +651,8 @@
         "save": "Uložit snippet",
         "saved": "Snippet uložen: řekněte „{{trigger}}“.",
         "error": "Snippet se nepodařilo uložit."
-      }
+      },
+      "pastedVersion": "Verze vložená Novou"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nic neodpovídá „{{query}}“.",
     "empty": "Tady se objeví vaše diktáty.",
     "copy": "Kopírovat",
-    "copied": "Zkopírováno"
+    "copied": "Zkopírováno",
+    "export": {
+      "button": "Exportovat k opakování",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Poznámky (Markdown)",
+      "anki": "Kartičky (Anki)",
+      "mindmap": "Myšlenková mapa (OPML)",
+      "saved": "Soubor uložen.",
+      "failed": "Soubor se nepodařilo uložit.",
+      "noCards": "Není tu co opakovat: řekněte na začátku diktátu „Définition“, „Théorème“ nebo „À retenir“ a vytvoříte kartičky.",
+      "notes": "Poznámky"
+    }
   },
   "prompts": {
     "subtitle": "Prompty, které Nova napsala z vašich diktátů, připravené k dalšímu použití.",

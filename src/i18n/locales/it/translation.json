@@ -651,7 +651,8 @@
         "save": "Salva lo snippet",
         "saved": "Snippet salvato: di' «{{trigger}}».",
         "error": "Impossibile salvare lo snippet."
-      }
+      },
+      "pastedVersion": "Versione incollata da Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nulla corrisponde a «{{query}}».",
     "empty": "Qui appariranno le tue dettature.",
     "copy": "Copia",
-    "copied": "Copiato"
+    "copied": "Copiato",
+    "export": {
+      "button": "Esporta per ripassare",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Appunti (Markdown)",
+      "anki": "Schede di ripasso (Anki)",
+      "mindmap": "Mappa mentale (OPML)",
+      "saved": "File salvato.",
+      "failed": "Impossibile salvare il file.",
+      "noCards": "Niente da ripassare qui: di' «Définition», «Théorème» o «À retenir» all'inizio di una dettatura per creare schede.",
+      "notes": "Appunti"
+    }
   },
   "prompts": {
     "subtitle": "I prompt che Nova ha scritto dalle tue dettature, pronti da riutilizzare.",

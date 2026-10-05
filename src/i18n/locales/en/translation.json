@@ -651,7 +651,8 @@
         "save": "Save snippet",
         "saved": "Snippet saved: say “{{trigger}}”.",
         "error": "The snippet could not be saved."
-      }
+      },
+      "pastedVersion": "Version pasted by Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nothing matches “{{query}}”.",
     "empty": "Your dictations will appear here.",
     "copy": "Copy",
-    "copied": "Copied"
+    "copied": "Copied",
+    "export": {
+      "button": "Export to revise",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notes (Markdown)",
+      "anki": "Flashcards (Anki)",
+      "mindmap": "Mind map (OPML)",
+      "saved": "File saved.",
+      "failed": "The file could not be saved.",
+      "noCards": "Nothing to revise here: say “Definition”, “Theorem” or “Key point” at the start of a dictation to create cards.",
+      "notes": "Notes"
+    }
   },
   "prompts": {
     "subtitle": "Prompts Nova wrote from your dictations, ready to reuse.",

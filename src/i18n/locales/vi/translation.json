@@ -651,7 +651,8 @@
         "save": "Lưu đoạn mẫu",
         "saved": "Đã lưu đoạn mẫu: hãy nói “{{trigger}}”.",
         "error": "Không thể lưu đoạn mẫu."
-      }
+      },
+      "pastedVersion": "Phiên bản Nova đã dán"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Không có gì khớp với “{{query}}”.",
     "empty": "Các lần đọc của bạn sẽ hiện ở đây.",
     "copy": "Sao chép",
-    "copied": "Đã sao chép"
+    "copied": "Đã sao chép",
+    "export": {
+      "button": "Xuất để ôn tập",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Ghi chú (Markdown)",
+      "anki": "Thẻ ôn tập (Anki)",
+      "mindmap": "Sơ đồ tư duy (OPML)",
+      "saved": "Đã lưu tệp.",
+      "failed": "Không thể lưu tệp.",
+      "noCards": "Không có gì để ôn ở đây: hãy nói “Définition”, “Théorème” hoặc “À retenir” ở đầu bài đọc để tạo thẻ.",
+      "notes": "Ghi chú"
+    }
   },
   "prompts": {
     "subtitle": "Các prompt Nova đã viết từ những lần đọc chính tả của bạn, sẵn sàng dùng lại.",

@@ -651,7 +651,8 @@
         "save": "Guardar o snippet",
         "saved": "Snippet guardado: diga «{{trigger}}».",
         "error": "Não foi possível guardar o snippet."
-      }
+      },
+      "pastedVersion": "Versão colada pelo Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nada corresponde a «{{query}}».",
     "empty": "Os seus ditados aparecerão aqui.",
     "copy": "Copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "export": {
+      "button": "Exportar para rever",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notas (Markdown)",
+      "anki": "Cartões de revisão (Anki)",
+      "mindmap": "Mapa mental (OPML)",
+      "saved": "Ficheiro guardado.",
+      "failed": "Não foi possível guardar o ficheiro.",
+      "noCards": "Nada para rever aqui: diga «Définition», «Théorème» ou «À retenir» no início de um ditado para criar cartões.",
+      "notes": "Notas"
+    }
   },
   "prompts": {
     "subtitle": "Os prompts que o Nova escreveu a partir dos seus ditados, prontos a reutilizar.",

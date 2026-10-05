@@ -23,6 +23,7 @@ import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { AudioPlayer } from "../../ui/AudioPlayer";
 import { HistoryCorrection } from "./HistoryCorrection";
 import { HistorySnippet } from "./HistorySnippet";
+import { RevisionExport } from "./RevisionExport";
 import {
   entriesForStyle,
   filterEntries,
@@ -238,9 +239,15 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
         <div className="flex flex-col gap-[24px]">
           {groups.map((group) => (
             <section key={group.bucket}>
-              <h2 className="mb-1 text-xs font-semibold uppercase tracking-wide text-text-secondary">
-                {t(BUCKET_LABEL[group.bucket])}
-              </h2>
+              <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-xs font-semibold uppercase tracking-wide text-text-secondary">
+                  {t(BUCKET_LABEL[group.bucket])}
+                </h2>
+                <RevisionExport
+                  entries={group.entries}
+                  section={t(BUCKET_LABEL[group.bucket])}
+                />
+              </div>
               <ul>
                 {group.entries.map((entry) => (
                   <HistoryRow
@@ -300,6 +307,10 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
   const text = entry.transcription_text.trim();
   const hasText = text.length > 0;
+  // Ce que Nova a collé, quand ce n'est pas mot pour mot ce que l'élève a
+  // dit : vérifier la fidélité d'un coup d'œil, sans rouvrir le document.
+  const pasted = (entry.post_processed_text ?? "").trim();
+  const showPasted = pasted.length > 0 && pasted !== text;
 
   // Le Style employé est enregistré avec la transcription mais n'était affiché
   // nulle part. C'est la seule métadonnée réellement stockée qui explique
@@ -445,6 +456,16 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
       {expanded && (
         <div className="flex flex-col gap-3 px-2 pb-3">
+          {showPasted && (
+            <div className="rounded-card border border-hairline px-3 py-2">
+              <p className="text-xs font-medium text-text-secondary">
+                {t("settings.history.pastedVersion")}
+              </p>
+              <p className="mt-1 whitespace-pre-wrap break-words text-sm text-text">
+                {pasted}
+              </p>
+            </div>
+          )}
           <AudioPlayer onLoadRequest={loadAudio} className="w-full" />
           <div>
             <Button

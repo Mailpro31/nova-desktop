@@ -651,7 +651,8 @@
         "save": "Snippet'i kaydet",
         "saved": "Snippet kaydedildi: “{{trigger}}” deyin.",
         "error": "Snippet kaydedilemedi."
-      }
+      },
+      "pastedVersion": "Nova'nın yapıştırdığı sürüm"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "“{{query}}” ile eşleşen bir şey yok.",
     "empty": "Dikteleriniz burada görünecek.",
     "copy": "Kopyala",
-    "copied": "Kopyalandı"
+    "copied": "Kopyalandı",
+    "export": {
+      "button": "Tekrar için dışa aktar",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notlar (Markdown)",
+      "anki": "Tekrar kartları (Anki)",
+      "mindmap": "Zihin haritası (OPML)",
+      "saved": "Dosya kaydedildi.",
+      "failed": "Dosya kaydedilemedi.",
+      "noCards": "Burada tekrar edilecek bir şey yok: kart oluşturmak için dikte başında “Définition”, “Théorème” veya “À retenir” deyin.",
+      "notes": "Notlar"
+    }
   },
   "prompts": {
     "subtitle": "Nova'nın dikteleriniz üzerinden yazdığı, yeniden kullanıma hazır promptlar.",

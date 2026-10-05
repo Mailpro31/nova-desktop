@@ -651,7 +651,8 @@
         "save": "Zapisz snippet",
         "saved": "Snippet zapisany: powiedz „{{trigger}}”.",
         "error": "Nie udało się zapisać snippetu."
-      }
+      },
+      "pastedVersion": "Wersja wklejona przez Nova"
     },
     "debug": {
       "logDirectory": {
@@ -1460,7 +1461,18 @@
     "noMatch": "Nic nie pasuje do „{{query}}”.",
     "empty": "Tu pojawią się Twoje dyktowania.",
     "copy": "Kopiuj",
-    "copied": "Skopiowano"
+    "copied": "Skopiowano",
+    "export": {
+      "button": "Eksportuj do powtórki",
+      "title": "Nova — {{section}} — {{date}}",
+      "markdown": "Notatki (Markdown)",
+      "anki": "Fiszki (Anki)",
+      "mindmap": "Mapa myśli (OPML)",
+      "saved": "Plik zapisany.",
+      "failed": "Nie udało się zapisać pliku.",
+      "noCards": "Nic tu do powtórki: powiedz „Définition”, „Théorème” lub „À retenir” na początku dyktowania, aby utworzyć fiszki.",
+      "notes": "Notatki"
+    }
   },
   "prompts": {
     "subtitle": "Prompty napisane przez Nova na podstawie Twoich dyktowań, gotowe do ponownego użycia.",
