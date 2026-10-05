@@ -16,6 +16,12 @@ use regex::{Captures, Regex};
 /// d'abord (« inférieur ou égal à » avant « inférieur à », « grand delta »
 /// avant « delta »).
 const PHRASES: &[(&str, &str)] = &[
+    // Comparaisons dites « plus petit que », avant « plus ».
+    (r"(?:est\s+)?plus\s+petite?\s+ou\s+égale?\s+à", " ≤ "),
+    (r"(?:est\s+)?plus\s+grande?\s+ou\s+égale?\s+à", " ≥ "),
+    (r"(?:est\s+)?plus\s+petite?\s+que", " < "),
+    (r"(?:est\s+)?plus\s+grande?\s+que", " > "),
+    (r"un\s+demi", " 1/2 "),
     // Comparaisons.
     (
         r"est\s+inférieure?\s+ou\s+égale?\s+à|inférieure?\s+ou\s+égale?\s+à",
@@ -54,7 +60,7 @@ const PHRASES: &[(&str, &str)] = &[
     (r"racine\s+carrée\s+de|racine\s+carrée|racine\s+de", " √"),
     (r"intégrale\s+de|intégrale", " ∫ "),
     (r"dérivée\s+partielle\s+de|d\s+rond", " ∂"),
-    (r"infini", "∞"),
+    (r"(?:l['’]\s*)?infini", "∞"),
     (
         r"ouvrez\s+la\s+parenthèse|ouvre\s+la\s+parenthèse|parenthèse\s+ouvrante",
         " (",
@@ -93,7 +99,6 @@ const PHRASES: &[(&str, &str)] = &[
         " km/h ",
     ),
     (r"degrés?\s+celsius", " °C "),
-    (r"degrés?", "°"),
 ];
 
 /// Les unités simples, seulement juste après un nombre : « 3 mètres » donne
@@ -175,24 +180,48 @@ static NUMBER_RULES: Lazy<Vec<Rule>> = Lazy::new(|| {
 static SQUARED: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?iu)\s*\bau\s+carré\b").expect("squared"));
 static CUBED: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?iu)\s*\bau\s+cube\b").expect("cubed"));
 static POWER: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"(?iu)\s*\b(?:puissance|exposant)\s+(−\s*|-\s*|moins\s+)?(\d+|n)\b").expect("power")
+    Regex::new(r"(?u)\s*\b(?i:puissance|exposant)\s+(−\s*|-\s*|moins\s+)?(\d+|[abikmnptxy])\b")
+        .expect("power")
 });
 static INDEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"(?iu)\s*\bindice\s+(\d+|[ijn])\b").expect("index"));
 /// « 3 virgule 5 » : la virgule décimale française.
 static DECIMAL: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"(?iu)(\d)\s+virgule\s+(\d)").expect("decimal"));
+/// « f de x » : f(x). Seulement les lettres de fonction usuelles.
+static FUNCTION_OF: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"\b([fghuv])\s+de\s+([a-zα-ω]|\d+)\b").expect("function of"));
+static DEGREES: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?iu)(\d)\s*\bdegrés?\b").expect("degrees"));
 static SPACES: Lazy<Regex> = Lazy::new(|| Regex::new(r"[ \t]+").expect("spaces"));
 
 /// Une formule dictée, écrite en symboles.
 pub fn to_symbols(text: &str) -> String {
-    let mut out = DECIMAL.replace_all(text, "$1,$2").into_owned();
+    let mut out = text.to_string();
     for rule in PHRASE_RULES.iter() {
         out = rule.pattern.replace_all(&out, rule.symbol).into_owned();
     }
     for rule in NUMBER_RULES.iter() {
-        out = rule.pattern.replace_all(&out, rule.symbol).into_owned();
+        out = rule
+            .pattern
+            .replace_all(&out, |caps: &Captures| {
+                let whole = caps.get(0).expect("match");
+                // « d'un ressort » : un article, pas le nombre 1.
+                let elided = out[..whole.start()].ends_with(['\'', '’']);
+                let compound =
+                    out[whole.end()..].starts_with('-') || out[..whole.start()].ends_with('-');
+                if elided || compound {
+                    whole.as_str().to_string()
+                } else {
+                    rule.symbol.to_string()
+                }
+            })
+            .into_owned();
     }
+    out = FUNCTION_OF.replace_all(&out, "$1($2)").into_owned();
+    // Après les nombres dits en lettres : « trois virgule cinq ».
+    out = DECIMAL.replace_all(&out, "$1,$2").into_owned();
+    out = DEGREES.replace_all(&out, "$1°").into_owned();
     out = SQUARED.replace_all(&out, "²").into_owned();
     out = CUBED.replace_all(&out, "³").into_owned();
     out = POWER
@@ -238,6 +267,15 @@ fn superscript(text: &str) -> String {
             '8' => '⁸',
             '9' => '⁹',
             'n' | 'N' => 'ⁿ',
+            'x' => 'ˣ',
+            'a' => 'ᵃ',
+            'b' => 'ᵇ',
+            'i' => 'ⁱ',
+            'k' => 'ᵏ',
+            'm' => 'ᵐ',
+            'p' => 'ᵖ',
+            't' => 'ᵗ',
+            'y' => 'ʸ',
             other => other,
         })
         .collect()
@@ -264,7 +302,16 @@ fn subscript(text: &str) -> String {
         .collect()
 }
 
-const POWERS: &str = "⁰¹²³⁴⁵⁶⁷⁸⁹ⁿ⁻₀₁₂₃₄₅₆₇₈₉ᵢⱼₙ";
+const POWERS: &str = "⁰¹²³⁴⁵⁶⁷⁸⁹ⁿ⁻₀₁₂₃₄₅₆₇₈₉ᵢⱼₙˣᵃᵇⁱᵏᵐᵖᵗʸ";
+
+const OPERATORS: &[&str] = &[
+    "=", "<", ">", "≤", "≥", "≈", "≠", "→", "×", "/", "±", "∈", "(", "+", "−",
+];
+
+fn is_number(token: &str) -> bool {
+    let token = token.trim_end_matches(['.', ',', ';', ':', '!', '?']);
+    !token.is_empty() && token.chars().all(|c| c.is_ascii_digit() || c == ',')
+}
 
 /// Un nombre, une lettre seule (latine ou grecque) ou un symbole qui
 /// s'écrit collé (∞), avec ses exposants et indices.
@@ -280,7 +327,7 @@ fn is_atom(token: &str) -> bool {
     let mut letters = core.chars();
     let is_letter = letters
         .next()
-        .is_some_and(|c| c.is_alphabetic() || c == '∞')
+        .is_some_and(|c| (c.is_alphabetic() && !matches!(c, 'à' | 'À')) || c == '∞')
         && letters.next().is_none();
     is_number || is_letter
 }
@@ -295,9 +342,19 @@ fn tidy(text: &str) -> String {
         .collect();
     let mut out = String::new();
     let mut previous: Option<&str> = None;
+    let mut before_previous: Option<&str> = None;
     for token in tokens {
         if let Some(before) = previous {
-            let glued = (is_atom(before) && is_atom(token))
+            // « x = − 3 » : un signe en tête ou après un opérateur est unaire.
+            let unary_sign = matches!(before, "−" | "+")
+                && before_previous.is_none_or(|op| OPERATORS.contains(&op));
+            // « 2. y » : une fin de phrase ou une virgule de liste sépare.
+            let ends_clause = before.ends_with(['.', ',', ';', ':', '!', '?']);
+            let glued = (is_atom(before)
+                && is_atom(token)
+                && !ends_clause
+                && !(is_number(before) && is_number(token)))
+                || unary_sign
                 || before.ends_with(['√', '(', '∂'])
                 || token.starts_with([')', ',', '.'])
                 || before == "/"
@@ -308,6 +365,7 @@ fn tidy(text: &str) -> String {
             }
         }
         out.push_str(token);
+        before_previous = previous;
         previous = Some(token);
     }
     out
@@ -316,6 +374,34 @@ fn tidy(text: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::to_symbols;
+
+    /// Cas trouvés par la chasse aux bugs du 05/10, sur des dictées réelles.
+    #[test]
+    fn bug_hunt_cases_stay_fixed() {
+        for (said, written) in [
+            ("x tend vers plus l'infini", "x → +∞"),
+            ("x tend vers moins l’infini", "x → −∞"),
+            ("g égale neuf virgule huit", "g = 9,8"),
+            ("x plus petit que 3", "x < 3"),
+            ("x plus grand ou égal à 3", "x ≥ 3"),
+            (
+                "l'énergie d'un ressort égale un demi k x au carré",
+                "l'énergie d'un ressort = 1/2 kx²",
+            ),
+            ("e puissance moins x", "e⁻ˣ"),
+            ("P de degré 3", "P de degré 3"),
+            ("angle égale 30 degrés", "angle = 30°"),
+            ("les points 2 3", "les points 2 3"),
+            ("x égale moins 3", "x = −3"),
+            ("moins b sur 2 a", "−b/2a"),
+            ("x égale 2. y égale 3.", "x = 2. y = 3."),
+            ("intégrale de 0 à 1 de f de x d x", "∫ 0 à 1 de f(x) dx"),
+            ("x égale dix-sept", "x = dix-sept"),
+            ("a, b et c", "a, b et c"),
+        ] {
+            assert_eq!(to_symbols(said), written, "{said}");
+        }
+    }
 
     #[test]
     fn a_discriminant_is_written_in_symbols() {

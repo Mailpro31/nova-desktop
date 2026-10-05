@@ -76,11 +76,11 @@ pub fn with_snippets(variables: &[CustomVariable], aids: &WritingAids) -> Vec<Cu
 }
 
 /// Les façons de dire un snippet : « mon matricule, mon numéro IPSA ». Même
-/// règle que le serveur (`snippet_triggers`) : virgule ou barre verticale,
-/// sans doublon ni façon vide.
+/// règle que le serveur (`snippet_triggers`) : barre verticale, ou virgule
+/// entre des phrases d'au moins deux mots, sans doublon ni façon vide.
 pub fn snippet_triggers(trigger: &str) -> Vec<&str> {
     let mut ways: Vec<&str> = Vec::new();
-    for way in trigger.split([',', '|']).map(str::trim) {
+    for way in trigger.split('|').flat_map(comma_ways).map(str::trim) {
         if !way.is_empty()
             && !ways
                 .iter()
@@ -90,6 +90,23 @@ pub fn snippet_triggers(trigger: &str) -> Vec<&str> {
         }
     }
     ways
+}
+
+/// Une virgule ne sépare deux façons de dire que si chacune a au moins deux
+/// mots : « mon matricule, mon numéro étudiant ». « Cordialement, Sasha
+/// Martin » reste une seule phrase, sinon « cordialement » dit seul
+/// déclencherait le snippet.
+fn comma_ways(part: &str) -> Vec<&str> {
+    let pieces: Vec<&str> = part.split(',').collect();
+    let all_phrases = pieces.iter().all(|piece| {
+        let words = piece.split_whitespace().count();
+        words == 0 || words >= 2
+    });
+    if pieces.len() > 1 && all_phrases {
+        pieces
+    } else {
+        vec![part]
+    }
 }
 
 /// Le vocabulaire appliqué au texte, à l'identique, du terme le plus long au
@@ -220,6 +237,24 @@ mod tests {
         assert_eq!(keys, ["mon numéro étudiant", "mon matricule"]);
         assert!(merged.iter().all(|v| v.value == "21458732"));
         assert_eq!(snippet_triggers(" , | "), Vec::<&str>::new());
+    }
+
+    /// Chasse aux bugs du 05/10 : « cordialement » seul déclenchait la
+    /// signature.
+    #[test]
+    fn a_comma_inside_a_phrase_does_not_split_it() {
+        assert_eq!(
+            snippet_triggers("Cordialement, Sasha Martin"),
+            ["Cordialement, Sasha Martin"]
+        );
+        assert_eq!(
+            snippet_triggers("bonjour, merci | ma signature"),
+            ["bonjour, merci", "ma signature"]
+        );
+        assert_eq!(
+            snippet_triggers("mon matricule, mon numéro étudiant"),
+            ["mon matricule", "mon numéro étudiant"]
+        );
     }
 
     #[test]

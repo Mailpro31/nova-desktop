@@ -11,8 +11,18 @@ describe("les façons de dire un snippet", () => {
     ).toEqual(["mon numéro étudiant", "mon matricule", "mon numéro IPSA"]);
   });
 
+  test("une virgule dans une phrase ne la coupe pas", () => {
+    expect(snippetWays("Cordialement, Sasha Martin")).toEqual([
+      "Cordialement, Sasha Martin",
+    ]);
+    expect(snippetWays("bonjour, merci | ma signature")).toEqual([
+      "bonjour, merci",
+      "ma signature",
+    ]);
+  });
+
   test("ni doublon, ni façon vide", () => {
-    expect(snippetWays(" a , b|  A,, ")).toEqual(["a", "b"]);
+    expect(snippetWays(" a b , c d|  A B,, ")).toEqual(["a b", "c d"]);
     expect(snippetWays("mon lien visio")).toEqual(["mon lien visio"]);
   });
 });

@@ -11,6 +11,8 @@
 //! tel quel.
 
 use chrono::{Datelike, NaiveDateTime, Timelike, Weekday};
+use once_cell::sync::Lazy;
+use regex::{Captures, Regex};
 
 const FR_DAYS: [&str; 7] = [
     "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche",
@@ -125,11 +127,23 @@ pub fn expand(text: &str, now: NaiveDateTime, language: DateLanguage) -> String 
         }
         _ => format!("{} h {:02}", now.hour(), now.minute()),
     };
-    text.replace("{date}", &date)
-        .replace("{jour}", &day)
-        .replace("{day}", &day)
-        .replace("{heure}", &time)
-        .replace("{time}", &time)
+    // Casse ignorée (« {Date} ») ; un repère doublé (« {{date}} ») est un
+    // repère interne de Nova, jamais touché.
+    static PLACEHOLDER: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(r"(?i)(\{?)\{(date|jour|day|heure|time)\}(\}?)").expect("placeholder")
+    });
+    PLACEHOLDER
+        .replace_all(text, |caps: &Captures| {
+            if !caps[1].is_empty() || !caps[3].is_empty() {
+                return caps[0].to_string();
+            }
+            match caps[2].to_lowercase().as_str() {
+                "date" => date.clone(),
+                "jour" | "day" => day.clone(),
+                _ => time.clone(),
+            }
+        })
+        .into_owned()
 }
 
 fn weekday_index(weekday: Weekday) -> usize {
@@ -191,6 +205,17 @@ mod tests {
         ] {
             assert_eq!(expand(text, now, DateLanguage::French), text);
         }
+    }
+
+    /// Chasse aux bugs du 05/10.
+    #[test]
+    fn case_is_ignored_and_double_braces_are_left_alone() {
+        let now = at(2026, 10, 4, 14, 5);
+        assert_eq!(
+            expand("{Date} à {HEURE}", now, DateLanguage::French),
+            "dimanche 4 octobre 2026 à 14 h 05"
+        );
+        assert_eq!(expand("{{date}}", now, DateLanguage::French), "{{date}}");
     }
 
     #[test]
