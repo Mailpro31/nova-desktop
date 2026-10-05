@@ -957,17 +957,37 @@ pub fn person_changed(input: &str, output: &str) -> bool {
         .filter(|pair| FIRST_PERSON_POSSESSIVES.contains(&pair[0].as_str()))
         .map(|pair| pair[1].as_str())
         .collect();
-    owned.into_iter().any(|noun| {
+    let changed = owned.iter().any(|noun| {
         let before: Vec<&str> = wrote
             .windows(2)
-            .filter(|pair| pair[1] == noun)
+            .filter(|pair| pair[1] == *noun)
             .map(|pair| pair[0].as_str())
             .collect();
         before.iter().any(|word| OTHER_POSSESSIVES.contains(word))
             && !before
                 .iter()
                 .any(|word| FIRST_PERSON_POSSESSIVES.contains(word))
-    })
+    });
+    if changed {
+        return true;
+    }
+    // Le possessif a changé de nom : « mon numéro étudiant » réécrit « le
+    // numéro de mon étudiant » (RTX, 05/10). Le numéro n'est plus celui de
+    // l'élève. Même règle que le serveur.
+    let owned_after: HashSet<&str> = wrote
+        .windows(2)
+        .filter(|pair| FIRST_PERSON_POSSESSIVES.contains(&pair[0].as_str()))
+        .map(|pair| pair[1].as_str())
+        .collect();
+    said.windows(3)
+        .filter(|triple| FIRST_PERSON_POSSESSIVES.contains(&triple[0].as_str()))
+        .any(|triple| {
+            let (noun, following) = (triple[1].as_str(), triple[2].as_str());
+            wrote.iter().any(|word| word == noun)
+                && !owned_after.contains(noun)
+                && owned_after.contains(following)
+                && !owned.contains(following)
+        })
 }
 
 #[cfg(test)]
@@ -996,6 +1016,31 @@ mod tests {
             ),
             Err("person-changed")
         );
+    }
+
+    #[test]
+    fn a_possessive_moved_to_the_next_word_is_caught() {
+        // Mesuré sur le RTX le 05/10, Style par défaut du poste.
+        assert!(person_changed(
+            "mon numéro étudiant c'est 21 45 87 32",
+            "le numéro de mon étudiant est 21 45 87 32"
+        ));
+        for (input, output) in [
+            (
+                "mon numéro étudiant c'est 21 45 87 32",
+                "Mon numéro étudiant est 21 45 87 32.",
+            ),
+            (
+                "ma présentation demain est prête",
+                "Demain, ma présentation est prête.",
+            ),
+            (
+                "mon cours de maths commence",
+                "Mon cours de maths commence.",
+            ),
+        ] {
+            assert!(!person_changed(input, output), "{input}");
+        }
     }
 
     #[test]
