@@ -874,7 +874,8 @@
     "styleSuggestion": "Често диктувате в {{app}} — опитайте стила {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Не показвай отново",
-    "dictationLimitWarning": "Спиране след {{seconds}} с (лимит на организацията)"
+    "dictationLimitWarning": "Спиране след {{seconds}} с (лимит на организацията)",
+    "unclear": "Не чух ясно, затова нищо не е поставено. Говорете малко по-силно или по-близо до микрофона."
   },
   "whatsNew": {
     "updatedNotice": "Nova беше актуализирана",

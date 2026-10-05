@@ -874,7 +874,8 @@
     "styleSuggestion": "Ви часто диктуєте в {{app}} — спробуйте Стиль {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Більше не показувати",
-    "dictationLimitWarning": "Зупинка через {{seconds}} с (ліміт організації)"
+    "dictationLimitWarning": "Зупинка через {{seconds}} с (ліміт організації)",
+    "unclear": "Я погано почув, тому нічого не вставлено. Говоріть трохи голосніше або ближче до мікрофона."
   },
   "whatsNew": {
     "updatedNotice": "Nova оновлено",

@@ -874,7 +874,8 @@
     "styleSuggestion": "Sie diktieren oft in {{app}} — probieren Sie den Stil {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Nicht mehr anzeigen",
-    "dictationLimitWarning": "Stopp in {{seconds}} s (Limit der Organisation)"
+    "dictationLimitWarning": "Stopp in {{seconds}} s (Limit der Organisation)",
+    "unclear": "Ich habe das nicht deutlich gehört, daher wurde nichts eingefügt. Sprechen Sie etwas lauter oder näher am Mikrofon."
   },
   "whatsNew": {
     "updatedNotice": "Nova wurde aktualisiert",

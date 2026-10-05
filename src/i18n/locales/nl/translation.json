@@ -880,7 +880,8 @@
     "styleSuggestion": "U dicteert vaak in {{app}} — probeer de Stijl {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Niet meer tonen",
-    "dictationLimitWarning": "Stopt over {{seconds}} s (limiet van de organisatie)"
+    "dictationLimitWarning": "Stopt over {{seconds}} s (limiet van de organisatie)",
+    "unclear": "Ik heb het niet goed gehoord, dus er is niets geplakt. Spreek iets luider of dichter bij de microfoon."
   },
   "quota": {
     "lifetimeUsage": "Gratis Turbo-herformuleringen",

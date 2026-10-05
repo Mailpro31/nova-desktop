@@ -2275,6 +2275,17 @@ fn organization_client(token: &str) -> reqwest::Client {
 #[derive(Deserialize, Debug)]
 struct TranscribeResponse {
     text: String,
+    /// Le serveur n'a pas compris la dictée (confiance trop basse, phrase en
+    /// boucle) : rien à coller. Absent sur un serveur plus ancien.
+    #[serde(default)]
+    unclear: bool,
+}
+
+/// Ce que le serveur a transcrit, et s'il l'a compris.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct OrganizationTranscript {
+    pub text: String,
+    pub unclear: bool,
 }
 
 /// Ce que `/api/reformulate` repond : `{ "text": "..." }`.
@@ -2493,6 +2504,19 @@ pub async fn transcribe_organization(
     session: &OrganizationCredentials,
     language: Option<&str>,
 ) -> Result<String, OrganizationError> {
+    transcribe_organization_detailed(wav_path, session, language)
+        .await
+        .map(|transcript| transcript.text)
+}
+
+/// Comme `transcribe_organization`, en disant aussi si le serveur a compris
+/// la dictée : une dictée incomprise n'est pas collée, et la bulle demande de
+/// parler plus fort.
+pub async fn transcribe_organization_detailed(
+    wav_path: &Path,
+    session: &OrganizationCredentials,
+    language: Option<&str>,
+) -> Result<OrganizationTranscript, OrganizationError> {
     let base_url = normalize_base_url(&session.server_url);
     let client = organization_client(&session.token);
 
@@ -2544,7 +2568,10 @@ pub async fn transcribe_organization(
 
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
     let parsed: TranscribeResponse = handle_organization_response(response).await?;
-    Ok(parsed.text)
+    Ok(OrganizationTranscript {
+        text: parsed.text,
+        unclear: parsed.unclear,
+    })
 }
 
 /// Reformule côté serveur, en désignant le Style appliqué.
@@ -2766,6 +2793,18 @@ pub fn invalidate_server_reachability_cache(base_url: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn an_unclear_dictation_is_read_from_the_server_reply() {
+        let unclear: TranscribeResponse =
+            serde_json::from_str(r#"{"text": "", "unclear": true}"#).unwrap();
+        assert!(unclear.unclear);
+        assert_eq!(unclear.text, "");
+        // Un serveur plus ancien ne dit rien : la dictée est tenue pour comprise.
+        let older: TranscribeResponse = serde_json::from_str(r#"{"text": "Bonjour."}"#).unwrap();
+        assert!(!older.unclear);
+        assert_eq!(older.text, "Bonjour.");
+    }
 
     #[test]
     fn the_dictation_language_travels_with_the_audio() {

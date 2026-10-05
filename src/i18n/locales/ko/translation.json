@@ -874,7 +874,8 @@
     "styleSuggestion": "{{app}}에서 자주 받아쓰시네요 — {{style}} 스타일을 사용해 보세요",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "다시 보지 않기",
-    "dictationLimitWarning": "{{seconds}}초 후 중지 (조직 제한)"
+    "dictationLimitWarning": "{{seconds}}초 후 중지 (조직 제한)",
+    "unclear": "잘 들리지 않아 아무것도 붙여 넣지 않았습니다. 조금 더 크게, 또는 마이크에 더 가까이에서 말하세요."
   },
   "whatsNew": {
     "updatedNotice": "Nova가 업데이트되었습니다",

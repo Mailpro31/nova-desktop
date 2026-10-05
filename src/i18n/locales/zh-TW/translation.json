@@ -874,7 +874,8 @@
     "styleSuggestion": "你經常在 {{app}} 中聽寫——試試 {{style}} 風格",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "不再顯示",
-    "dictationLimitWarning": "{{seconds}} 秒後停止（組織限制）"
+    "dictationLimitWarning": "{{seconds}} 秒後停止（組織限制）",
+    "unclear": "沒有聽清楚，因此沒有貼上任何內容。請稍微大聲一點，或靠近麥克風說話。"
   },
   "whatsNew": {
     "updatedNotice": "Nova 已更新",

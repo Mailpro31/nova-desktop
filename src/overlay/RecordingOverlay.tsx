@@ -34,6 +34,9 @@ type StyleItem = { id: string; name: string };
 // every overlay form). Mic levels arrive as 16 FFT buckets; we take the first N.
 const WAVE_BARS = 9;
 
+// Le temps de lire « Je n'ai pas bien entendu… » avant que la bulle se referme.
+const UNCLEAR_NOTICE_MS = 5000;
+
 // ---- Suggestion de Style contextuelle discrète (point 5) ----
 // Toute la mémoire/décision vit côté frontend (aucun churn de réglages) et
 // PERSISTE dans le localStorage de l'overlay. Seuil volontairement bas mais pas
@@ -467,6 +470,17 @@ const RecordingOverlay: React.FC = () => {
         setIsVisible(true);
       });
 
+      // Le serveur n'a pas compris la dictée : rien n'a été collé. La bulle
+      // le dit, puis se referme d'elle-même.
+      const unlistenUnclear = await listen("transcription-unclear", () => {
+        setCaptureErrorMessage(t("overlay.unclear"));
+        setState("capture-error");
+        setIsVisible(true);
+        window.setTimeout(() => {
+          void commands.dismissRecordingOverlay();
+        }, UNCLEAR_NOTICE_MS);
+      });
+
       const unlistenLimitWarning = await listen<number>(
         "dictation-limit-warning",
         (event) => setLimitWarning(event.payload),
@@ -515,6 +529,7 @@ const RecordingOverlay: React.FC = () => {
         unlistenThinkingComplete();
         unlistenPasteFallback();
         unlistenRecordingError();
+        unlistenUnclear();
         unlistenLimitWarning();
         unlistenAttention();
         unlistenContext();

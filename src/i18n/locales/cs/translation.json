@@ -874,7 +874,8 @@
     "styleSuggestion": "V {{app}} často diktujete — vyzkoušejte Styl {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Znovu nezobrazovat",
-    "dictationLimitWarning": "Zastavení za {{seconds}} s (limit organizace)"
+    "dictationLimitWarning": "Zastavení za {{seconds}} s (limit organizace)",
+    "unclear": "Neslyšel jsem to zřetelně, nic se nevložilo. Mluvte trochu hlasitěji nebo blíž k mikrofonu."
   },
   "whatsNew": {
     "updatedNotice": "Nova byla aktualizována",

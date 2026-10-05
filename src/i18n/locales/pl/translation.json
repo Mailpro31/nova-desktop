@@ -874,7 +874,8 @@
     "styleSuggestion": "Często dyktujesz w {{app}} — wypróbuj Styl {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Nie pokazuj ponownie",
-    "dictationLimitWarning": "Zatrzymanie za {{seconds}} s (limit organizacji)"
+    "dictationLimitWarning": "Zatrzymanie za {{seconds}} s (limit organizacji)",
+    "unclear": "Nie usłyszałem wyraźnie, więc nic nie wklejono. Mów trochę głośniej lub bliżej mikrofonu."
   },
   "whatsNew": {
     "updatedNotice": "Nova została zaktualizowana",

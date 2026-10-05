@@ -874,7 +874,8 @@
     "styleSuggestion": "تُملي كثيرًا في {{app}} — جرّب أسلوب {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "عدم الإظهار مرة أخرى",
-    "dictationLimitWarning": "يتوقف بعد {{seconds}} ث (حد المؤسسة)"
+    "dictationLimitWarning": "يتوقف بعد {{seconds}} ث (حد المؤسسة)",
+    "unclear": "لم أسمع بوضوح، لذلك لم يُلصق شيء. تحدّث بصوت أعلى قليلًا أو أقرب إلى الميكروفون."
   },
   "whatsNew": {
     "updatedNotice": "تم تحديث Nova",

@@ -874,7 +874,8 @@
     "styleSuggestion": "אתם מכתיבים הרבה ב-{{app}} — נסו את הסגנון {{style}}",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "לא להציג שוב",
-    "dictationLimitWarning": "נעצר בעוד {{seconds}} שנ׳ (מגבלת הארגון)"
+    "dictationLimitWarning": "נעצר בעוד {{seconds}} שנ׳ (מגבלת הארגון)",
+    "unclear": "לא שמעתי בבירור, ולכן שום דבר לא הודבק. דברו מעט חזק יותר או קרוב יותר למיקרופון."
   },
   "whatsNew": {
     "updatedNotice": "Nova עודכנה",
