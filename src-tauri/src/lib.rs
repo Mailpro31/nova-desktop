@@ -51,6 +51,7 @@ mod performance;
 pub mod portable;
 mod quota;
 mod rewrite;
+mod rich_paste;
 mod screen_ocr;
 mod screen_vision;
 mod screen_vlm;

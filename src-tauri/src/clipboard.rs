@@ -12,6 +12,21 @@ use tauri_plugin_clipboard_manager::ClipboardExt;
 #[cfg(target_os = "linux")]
 use crate::utils::{is_kde_wayland, is_wayland};
 
+/// La dictée dans le presse-papier : son texte exact, et à côté sa mise en
+/// forme en HTML quand elle en a une (titres, listes, gras, repères). Word,
+/// OneNote ou Google Docs collent le HTML ; toutes les autres applications
+/// collent le texte, exactement comme avant (`rich_paste`).
+fn write_dictation(app_handle: &AppHandle, text: &str) -> Result<(), String> {
+    let clipboard = app_handle.clipboard();
+    match crate::rich_paste::to_html(text) {
+        Some(html) => clipboard
+            .write_html(html.as_str(), Some(text))
+            .or_else(|_| clipboard.write_text(text)),
+        None => clipboard.write_text(text),
+    }
+    .map_err(|e| format!("Failed to write to clipboard: {}", e))
+}
+
 /// Pastes text using the clipboard: saves current content, writes text, sends paste keystroke, restores clipboard.
 fn paste_via_clipboard(
     enigo: &mut Enigo,
@@ -21,8 +36,6 @@ fn paste_via_clipboard(
     paste_delay_ms: u64,
     paste_delay_after_ms: u64,
 ) -> Result<(), String> {
-    let clipboard = app_handle.clipboard();
-
     // Write text to clipboard first
     // On Wayland, prefer wl-copy for better compatibility (especially with umlauts)
     #[cfg(target_os = "linux")]
@@ -30,15 +43,11 @@ fn paste_via_clipboard(
         info!("Using wl-copy for clipboard write on Wayland");
         write_clipboard_via_wl_copy(text)
     } else {
-        clipboard
-            .write_text(text)
-            .map_err(|e| format!("Failed to write to clipboard: {}", e))
+        write_dictation(app_handle, text)
     };
 
     #[cfg(not(target_os = "linux"))]
-    let write_result = clipboard
-        .write_text(text)
-        .map_err(|e| format!("Failed to write to clipboard: {}", e));
+    let write_result = write_dictation(app_handle, text);
 
     write_result?;
 
@@ -73,11 +82,11 @@ fn paste_via_clipboard(
     if is_wayland() && is_wl_copy_available() {
         let _ = write_clipboard_via_wl_copy(text);
     } else {
-        let _ = clipboard.write_text(text);
+        let _ = write_dictation(app_handle, text);
     }
 
     #[cfg(not(target_os = "linux"))]
-    let _ = clipboard.write_text(text);
+    let _ = write_dictation(app_handle, text);
 
     Ok(())
 }
