@@ -2462,9 +2462,36 @@ pub(crate) fn build_audio_multipart(
 /// reconstitution. Un test qui rejoue une construction voisine ne prouve rien
 /// sur ce qui part reellement — c'est precisement l'erreur qui a laisse passer
 /// les octets excedentaires.
+/// L'adresse de transcription, avec la langue de dictée quand c'en est une.
+///
+/// Imposée à Whisper, la langue a presque divisé par deux les erreurs de mots
+/// sur une voix cassée dans le bruit (0,47 → 0,27, mesuré le 05/10). « auto »
+/// ou une valeur douteuse ne part pas : le serveur laisse alors Whisper
+/// deviner, comme avant. Un ancien serveur ignore le paramètre.
+fn transcribe_url(base_url: &str, language: Option<&str>) -> String {
+    let code = language
+        .map(|value| {
+            value
+                .split(['-', '_'])
+                .next()
+                .unwrap_or("")
+                .to_ascii_lowercase()
+        })
+        .filter(|code| {
+            (2..=3).contains(&code.len())
+                && code.chars().all(|c| c.is_ascii_lowercase())
+                && code != "auto"
+        });
+    match code {
+        Some(code) => format!("{base_url}/api/transcribe?language={code}"),
+        None => format!("{base_url}/api/transcribe"),
+    }
+}
+
 pub async fn transcribe_organization(
     wav_path: &Path,
     session: &OrganizationCredentials,
+    language: Option<&str>,
 ) -> Result<String, OrganizationError> {
     let base_url = normalize_base_url(&session.server_url);
     let client = organization_client(&session.token);
@@ -2489,7 +2516,7 @@ pub async fn transcribe_organization(
     let body = reqwest::Body::from(multipart.body);
 
     let request = client
-        .post(format!("{}/api/transcribe", base_url))
+        .post(transcribe_url(&base_url, language))
         .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
         .body(body)
         .build()
@@ -2739,6 +2766,36 @@ pub fn invalidate_server_reachability_cache(base_url: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_dictation_language_travels_with_the_audio() {
+        let base = "https://nova.ipsa.fr";
+        assert_eq!(
+            transcribe_url(base, Some("fr")),
+            "https://nova.ipsa.fr/api/transcribe?language=fr"
+        );
+        assert_eq!(
+            transcribe_url(base, Some("en-US")),
+            "https://nova.ipsa.fr/api/transcribe?language=en"
+        );
+        assert_eq!(
+            transcribe_url(base, Some("zh-Hans")),
+            "https://nova.ipsa.fr/api/transcribe?language=zh"
+        );
+        // Whisper devine, comme avant : « auto », rien, ou une valeur douteuse.
+        for language in [
+            None,
+            Some("auto"),
+            Some(""),
+            Some("fr&x=1"),
+            Some("français"),
+        ] {
+            assert_eq!(
+                transcribe_url(base, language),
+                "https://nova.ipsa.fr/api/transcribe"
+            );
+        }
+    }
 
     fn lesson_json(extra: &str) -> String {
         format!(
@@ -3627,7 +3684,7 @@ mod multipart_wire_tests {
             .enable_all()
             .build()
             .expect("runtime");
-        let transcription = runtime.block_on(transcribe_organization(wav.path(), &session));
+        let transcription = runtime.block_on(transcribe_organization(wav.path(), &session, None));
 
         let wire = observed
             .recv_timeout(TEST_DEADLINE)
@@ -3915,7 +3972,7 @@ mod multipart_tls_wire_tests {
                 token: "jeton-de-session-factice".to_string(),
             };
 
-            let transcription = transcribe_organization(wav.path(), &session).await;
+            let transcription = transcribe_organization(wav.path(), &session, None).await;
             let observation = tokio::time::timeout(TEST_DEADLINE, server)
                 .await
                 .expect("le serveur de test n'a pas rendu la main dans le delai imparti")
