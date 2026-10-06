@@ -1508,7 +1508,14 @@
       "saved": "ファイルを保存しました。",
       "failed": "ファイルを保存できませんでした。",
       "noCards": "ここには復習するものがありません。カードを作るには、口述の冒頭で「Définition」「Théorème」「À retenir」と言ってください。",
-      "notes": "ノート"
+      "notes": "ノート",
+      "ankiSend": "Anki に送る",
+      "ankiSent": "Anki に追加したカード：{{count}}（デッキ「{{deck}}」）。",
+      "ankiSentSkipped": "Anki に追加したカード：{{count}}、既存：{{skipped}}（デッキ「{{deck}}」）。",
+      "ankiNotRunning": "Anki が応答しません。AnkiConnect アドオン（コード 2055492159）を入れた Anki を開いてから、もう一度お試しください。",
+      "ankiTooOld": "AnkiConnect アドオンが古すぎます。Anki で更新してから、もう一度お試しください。",
+      "ankiNoModel": "Anki に「基本」ノートタイプがありません。ツール › ノートタイプの管理 で追加してから、もう一度お試しください。",
+      "ankiFailed": "Anki がカードを受け付けませんでした。もう一度試すか、「復習カード (Anki)」で読み込んでください。"
     }
   },
   "prompts": {

@@ -1508,7 +1508,14 @@
       "saved": "Bestand opgeslagen.",
       "failed": "Het bestand kon niet worden opgeslagen.",
       "noCards": "Hier valt niets te herhalen: zeg “Définition”, “Théorème” of “À retenir” aan het begin van een dictaat om kaarten te maken.",
-      "notes": "Notities"
+      "notes": "Notities",
+      "ankiSend": "Naar Anki sturen",
+      "ankiSent": "Kaarten toegevoegd aan Anki: {{count}} (stapel ‘{{deck}}’).",
+      "ankiSentSkipped": "Kaarten toegevoegd aan Anki: {{count}}, al aanwezig: {{skipped}} (stapel ‘{{deck}}’).",
+      "ankiNotRunning": "Anki reageert niet. Open Anki met de add-on AnkiConnect (code 2055492159) en probeer het opnieuw.",
+      "ankiTooOld": "De add-on AnkiConnect is te oud. Werk hem bij in Anki en probeer het opnieuw.",
+      "ankiNoModel": "Anki heeft geen notitietype ‘Basis’. Voeg het toe via Extra › Notitietypen beheren en probeer het opnieuw.",
+      "ankiFailed": "Anki heeft de kaarten geweigerd. Probeer het opnieuw of gebruik ‘Flashcards (Anki)’ om ze te importeren."
     }
   },
   "prompts": {

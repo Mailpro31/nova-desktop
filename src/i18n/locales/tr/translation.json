@@ -1508,7 +1508,14 @@
       "saved": "Dosya kaydedildi.",
       "failed": "Dosya kaydedilemedi.",
       "noCards": "Burada tekrar edilecek bir şey yok: kart oluşturmak için dikte başında “Définition”, “Théorème” veya “À retenir” deyin.",
-      "notes": "Notlar"
+      "notes": "Notlar",
+      "ankiSend": "Anki'ye gönder",
+      "ankiSent": "Anki'ye eklenen kartlar: {{count}} (deste “{{deck}}”).",
+      "ankiSentSkipped": "Anki'ye eklenen kartlar: {{count}}, zaten var olan: {{skipped}} (deste “{{deck}}”).",
+      "ankiNotRunning": "Anki yanıt vermiyor. Anki'yi AnkiConnect eklentisiyle (kod 2055492159) açın ve yeniden deneyin.",
+      "ankiTooOld": "AnkiConnect eklentisi çok eski. Anki'de güncelleyin ve yeniden deneyin.",
+      "ankiNoModel": "Anki'de “Temel” not türü yok. Araçlar › Not türlerini yönet bölümünden ekleyin ve yeniden deneyin.",
+      "ankiFailed": "Anki kartları reddetti. Yeniden deneyin ya da “Tekrar kartları (Anki)” ile içe aktarın."
     }
   },
   "prompts": {

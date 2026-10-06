@@ -1508,7 +1508,14 @@
       "saved": "Filen sparades.",
       "failed": "Filen kunde inte sparas.",
       "noCards": "Inget att repetera här: säg ”Définition”, ”Théorème” eller ”À retenir” i början av en diktering för att skapa kort.",
-      "notes": "Anteckningar"
+      "notes": "Anteckningar",
+      "ankiSend": "Skicka till Anki",
+      "ankiSent": "Kort tillagda i Anki: {{count}} (kortlek ”{{deck}}”).",
+      "ankiSentSkipped": "Kort tillagda i Anki: {{count}}, redan där: {{skipped}} (kortlek ”{{deck}}”).",
+      "ankiNotRunning": "Anki svarar inte. Öppna Anki med tillägget AnkiConnect (kod 2055492159) och försök igen.",
+      "ankiTooOld": "Tillägget AnkiConnect är för gammalt. Uppdatera det i Anki och försök igen.",
+      "ankiNoModel": "Anki har ingen anteckningstyp ”Grundläggande”. Lägg till den under Verktyg › Hantera anteckningstyper och försök igen.",
+      "ankiFailed": "Anki avvisade korten. Försök igen eller använd ”Repetitionskort (Anki)” för att importera dem."
     }
   },
   "prompts": {

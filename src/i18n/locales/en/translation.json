@@ -1508,7 +1508,14 @@
       "saved": "File saved.",
       "failed": "The file could not be saved.",
       "noCards": "Nothing to revise here: say “Definition”, “Theorem” or “Key point” at the start of a dictation to create cards.",
-      "notes": "Notes"
+      "notes": "Notes",
+      "ankiSend": "Send to Anki",
+      "ankiSent": "Cards added to Anki: {{count}} (deck “{{deck}}”).",
+      "ankiSentSkipped": "Cards added to Anki: {{count}}, already there: {{skipped}} (deck “{{deck}}”).",
+      "ankiNotRunning": "Anki is not responding. Open Anki with the AnkiConnect add-on (code 2055492159), then try again.",
+      "ankiTooOld": "The AnkiConnect add-on is too old. Update it in Anki, then try again.",
+      "ankiNoModel": "Anki has no “Basic” note type. Add it in Tools › Manage Note Types, then try again.",
+      "ankiFailed": "Anki refused the cards. Try again, or use “Flashcards (Anki)” to import them."
     }
   },
   "prompts": {

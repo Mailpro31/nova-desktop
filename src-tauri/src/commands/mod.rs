@@ -1,3 +1,4 @@
+pub mod anki;
 pub mod audio;
 pub mod calibration;
 pub mod history;

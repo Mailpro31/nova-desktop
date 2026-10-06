@@ -5,7 +5,7 @@ import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 
-import type { HistoryEntry } from "@/bindings";
+import { commands, type HistoryEntry } from "@/bindings";
 import {
   clockTime,
   exportFileName,
@@ -21,6 +21,13 @@ const EXTENSION: Record<Format, string> = {
   markdown: "md",
   anki: "csv",
   mindmap: "opml",
+};
+
+const ANKI_ERRORS: Record<string, string> = {
+  anki_not_running: "history.export.ankiNotRunning",
+  anki_too_old: "history.export.ankiTooOld",
+  anki_no_model: "history.export.ankiNoModel",
+  anki_error: "history.export.ankiFailed",
 };
 
 interface RevisionExportProps {
@@ -52,6 +59,37 @@ export const RevisionExport: React.FC<RevisionExportProps> = ({
       date === undefined ? new Date() : new Date(date * 1000),
     ),
   });
+
+  // Envoyer directement dans Anki : quatre étapes d'import en moins pour un
+  // élève dyspraxique. Les codes d'erreur viennent de `commands::anki`.
+  const sendToAnki = async () => {
+    const cards = revisionCards(entries);
+    if (cards.length === 0) {
+      toast.info(t("history.export.noCards"));
+      return;
+    }
+    setBusy(true);
+    try {
+      const result = await commands.ankiSendCards(title, cards);
+      if (result.status === "error") {
+        toast.error(
+          t(ANKI_ERRORS[result.error] ?? "history.export.ankiFailed"),
+        );
+        return;
+      }
+      const { added, skipped, deck } = result.data;
+      toast.success(
+        skipped > 0
+          ? t("history.export.ankiSentSkipped", { count: added, skipped, deck })
+          : t("history.export.ankiSent", { count: added, deck }),
+      );
+      setOpen(false);
+    } catch {
+      toast.error(t("history.export.ankiFailed"));
+    } finally {
+      setBusy(false);
+    }
+  };
 
   const exportAs = async (format: Format) => {
     if (format === "anki" && revisionCards(entries).length === 0) {
@@ -104,6 +142,16 @@ export const RevisionExport: React.FC<RevisionExportProps> = ({
             {t(`history.export.${format}`)}
           </button>
         ))}
+      {open && (
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() => void sendToAnki()}
+          className="cursor-pointer rounded-chip border border-hairline px-2 py-0.5 text-xs text-text transition-colors duration-[140ms] hover:bg-mid-gray/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-35"
+        >
+          {t("history.export.ankiSend")}
+        </button>
+      )}
     </div>
   );
 };

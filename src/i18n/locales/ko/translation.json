@@ -1508,7 +1508,14 @@
       "saved": "파일을 저장했습니다.",
       "failed": "파일을 저장할 수 없습니다.",
       "noCards": "여기에는 복습할 내용이 없습니다. 카드를 만들려면 받아쓰기 시작에 \"Définition\", \"Théorème\", \"À retenir\"라고 말하세요.",
-      "notes": "노트"
+      "notes": "노트",
+      "ankiSend": "Anki로 보내기",
+      "ankiSent": "Anki에 추가한 카드: {{count}}(덱 “{{deck}}”).",
+      "ankiSentSkipped": "Anki에 추가한 카드: {{count}}, 이미 있음: {{skipped}}(덱 “{{deck}}”).",
+      "ankiNotRunning": "Anki가 응답하지 않습니다. AnkiConnect 부가 기능(코드 2055492159)을 설치한 Anki를 연 뒤 다시 시도하세요.",
+      "ankiTooOld": "AnkiConnect 부가 기능이 너무 오래되었습니다. Anki에서 업데이트한 뒤 다시 시도하세요.",
+      "ankiNoModel": "Anki에 “기본” 노트 유형이 없습니다. 도구 › 노트 유형 관리에서 추가한 뒤 다시 시도하세요.",
+      "ankiFailed": "Anki가 카드를 거부했습니다. 다시 시도하거나 “복습 카드 (Anki)”로 가져오세요."
     }
   },
   "prompts": {

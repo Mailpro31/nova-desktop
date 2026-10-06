@@ -1508,7 +1508,14 @@
       "saved": "Soubor uložen.",
       "failed": "Soubor se nepodařilo uložit.",
       "noCards": "Není tu co opakovat: řekněte na začátku diktátu „Définition“, „Théorème“ nebo „À retenir“ a vytvoříte kartičky.",
-      "notes": "Poznámky"
+      "notes": "Poznámky",
+      "ankiSend": "Odeslat do Anki",
+      "ankiSent": "Karty přidané do Anki: {{count}} (balíček „{{deck}}“).",
+      "ankiSentSkipped": "Karty přidané do Anki: {{count}}, už existující: {{skipped}} (balíček „{{deck}}“).",
+      "ankiNotRunning": "Anki neodpovídá. Otevřete Anki s doplňkem AnkiConnect (kód 2055492159) a zkuste to znovu.",
+      "ankiTooOld": "Doplněk AnkiConnect je příliš starý. Aktualizujte ho v Anki a zkuste to znovu.",
+      "ankiNoModel": "Anki nemá typ poznámky „Základní“. Přidejte ho v Nástroje › Spravovat typy poznámek a zkuste to znovu.",
+      "ankiFailed": "Anki karty odmítlo. Zkuste to znovu, nebo je naimportujte přes „Kartičky (Anki)“."
     }
   },
   "prompts": {

@@ -1626,6 +1626,14 @@ async clearPerformanceHistory() : Promise<void> {
 async acknowledgeThinkingFrame(id: number) : Promise<void> {
     await TAURI_INVOKE("acknowledge_thinking_frame", { id });
 },
+async ankiSendCards(title: string, cards: AnkiCard[]) : Promise<Result<AnkiSendResult, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("anki_send_cards", { title, cards }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async timetableStatus() : Promise<TimetableStatus> {
     return await TAURI_INVOKE("timetable_status");
 },
@@ -1787,6 +1795,15 @@ export type AdaptiveClass = "low_memory" | "balanced" | "performance"
  * object, so a partial store can never fail the whole load (#1619).
  * Field-level defaults below take precedence where present.
  */
+/**
+ * Une carte telle que l'historique la fabrique (`revisionCards`).
+ */
+export type AnkiCard = { front: string; back: string; tag: string }
+/**
+ * Ce qui a été envoyé : les cartes ajoutées, et celles qu'Anki n'a pas
+ * reprises, presque toujours parce qu'elles étaient déjà dans le paquet.
+ */
+export type AnkiSendResult = { deck: string; added: number; skipped: number }
 export type AppSettings = { 
 /**
  * Internal settings schema marker for one-time migrations. Fresh installs

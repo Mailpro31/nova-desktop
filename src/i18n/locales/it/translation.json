@@ -1508,7 +1508,14 @@
       "saved": "File salvato.",
       "failed": "Impossibile salvare il file.",
       "noCards": "Niente da ripassare qui: di' «Définition», «Théorème» o «À retenir» all'inizio di una dettatura per creare schede.",
-      "notes": "Appunti"
+      "notes": "Appunti",
+      "ankiSend": "Invia ad Anki",
+      "ankiSent": "Carte aggiunte ad Anki: {{count}} (mazzo «{{deck}}»).",
+      "ankiSentSkipped": "Carte aggiunte ad Anki: {{count}}, già presenti: {{skipped}} (mazzo «{{deck}}»).",
+      "ankiNotRunning": "Anki non risponde. Apri Anki con il componente aggiuntivo AnkiConnect (codice 2055492159) e riprova.",
+      "ankiTooOld": "Il componente aggiuntivo AnkiConnect è troppo vecchio. Aggiornalo in Anki e riprova.",
+      "ankiNoModel": "Anki non ha il tipo di nota «Base». Aggiungilo da Strumenti › Gestisci tipi di nota e riprova.",
+      "ankiFailed": "Anki ha rifiutato le carte. Riprova, oppure usa «Schede di ripasso (Anki)» per importarle."
     }
   },
   "prompts": {

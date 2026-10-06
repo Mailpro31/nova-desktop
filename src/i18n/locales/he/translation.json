@@ -1508,7 +1508,14 @@
       "saved": "הקובץ נשמר.",
       "failed": "לא ניתן היה לשמור את הקובץ.",
       "noCards": "אין כאן מה לחזור עליו: אמרו \"Définition\", \"Théorème\" או \"À retenir\" בתחילת הכתבה כדי ליצור כרטיסיות.",
-      "notes": "הערות"
+      "notes": "הערות",
+      "ankiSend": "שליחה ל-Anki",
+      "ankiSent": "כרטיסים שנוספו ל-Anki: {{count}} (חפיסה „{{deck}}”).",
+      "ankiSentSkipped": "כרטיסים שנוספו ל-Anki: {{count}}, שכבר היו: {{skipped}} (חפיסה „{{deck}}”).",
+      "ankiNotRunning": "Anki לא מגיב. פתחו את Anki עם התוסף AnkiConnect (קוד 2055492159) ונסו שוב.",
+      "ankiTooOld": "התוסף AnkiConnect ישן מדי. עדכנו אותו ב-Anki ונסו שוב.",
+      "ankiNoModel": "ב-Anki אין סוג הערה „בסיסי”. הוסיפו אותו בכלים › ניהול סוגי הערות ונסו שוב.",
+      "ankiFailed": "Anki דחה את הכרטיסים. נסו שוב, או ייבאו אותם דרך „כרטיסיות (Anki)”."
     }
   },
   "prompts": {

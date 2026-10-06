@@ -1508,7 +1508,14 @@
       "saved": "Datei gespeichert.",
       "failed": "Die Datei konnte nicht gespeichert werden.",
       "noCards": "Hier gibt es nichts zu lernen: Sagen Sie „Définition“, „Théorème“ oder „À retenir“ am Anfang eines Diktats, um Karten zu erstellen.",
-      "notes": "Notizen"
+      "notes": "Notizen",
+      "ankiSend": "An Anki senden",
+      "ankiSent": "In Anki hinzugefügte Karten: {{count}} (Stapel „{{deck}}“).",
+      "ankiSentSkipped": "In Anki hinzugefügte Karten: {{count}}, bereits vorhanden: {{skipped}} (Stapel „{{deck}}“).",
+      "ankiNotRunning": "Anki antwortet nicht. Öffnen Sie Anki mit dem Add-on AnkiConnect (Code 2055492159) und versuchen Sie es erneut.",
+      "ankiTooOld": "Das Add-on AnkiConnect ist zu alt. Aktualisieren Sie es in Anki und versuchen Sie es erneut.",
+      "ankiNoModel": "Anki hat keinen Notiztyp „Einfach“. Fügen Sie ihn unter Extras › Notiztypen verwalten hinzu und versuchen Sie es erneut.",
+      "ankiFailed": "Anki hat die Karten abgelehnt. Versuchen Sie es erneut oder importieren Sie sie über „Lernkarten (Anki)“."
     }
   },
   "prompts": {

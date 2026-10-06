@@ -1508,7 +1508,14 @@
       "saved": "Đã lưu tệp.",
       "failed": "Không thể lưu tệp.",
       "noCards": "Không có gì để ôn ở đây: hãy nói “Définition”, “Théorème” hoặc “À retenir” ở đầu bài đọc để tạo thẻ.",
-      "notes": "Ghi chú"
+      "notes": "Ghi chú",
+      "ankiSend": "Gửi sang Anki",
+      "ankiSent": "Số thẻ đã thêm vào Anki: {{count}} (bộ thẻ “{{deck}}”).",
+      "ankiSentSkipped": "Số thẻ đã thêm vào Anki: {{count}}, đã có sẵn: {{skipped}} (bộ thẻ “{{deck}}”).",
+      "ankiNotRunning": "Anki không phản hồi. Hãy mở Anki có tiện ích AnkiConnect (mã 2055492159) rồi thử lại.",
+      "ankiTooOld": "Tiện ích AnkiConnect quá cũ. Hãy cập nhật trong Anki rồi thử lại.",
+      "ankiNoModel": "Anki không có loại ghi chú “Cơ bản”. Hãy thêm trong Công cụ › Quản lý loại ghi chú rồi thử lại.",
+      "ankiFailed": "Anki đã từ chối các thẻ. Hãy thử lại, hoặc dùng “Thẻ ôn tập (Anki)” để nhập."
     }
   },
   "prompts": {
