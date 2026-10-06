@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "润色",
-        "description": "让表达更清楚、更顺。"
+        "description": "在不改变你用词的情况下纠正拼写和语法。"
       },
       "translate": {
         "name": "翻译",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "窗口已切换",
       "offlineTitle": "组织不可用",
       "failedTitle": "命令失败",
-      "emptyResultTitle": "没有可显示的内容"
+      "emptyResultTitle": "没有可显示的内容",
+      "refusedTitle": "结果已被舍弃",
+      "refused": "结果改变了你的文本（数字、日期、语言或含义），因此 Nova 不提供该结果。"
     },
-    "original": "原文"
+    "original": "原文",
+    "generatedNote": "由 AI 生成：使用前请再读一遍。"
   },
   "home": {
     "hero": {

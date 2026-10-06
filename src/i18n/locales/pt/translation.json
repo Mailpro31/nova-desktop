@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Melhorar",
-        "description": "Ganhar em clareza e redação."
+        "description": "Corrigir a ortografia e a gramática sem mudar as suas palavras."
       },
       "translate": {
         "name": "Traduzir",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Janela mudou",
       "offlineTitle": "Organização indisponível",
       "failedTitle": "Comando falhou",
-      "emptyResultTitle": "Nada para mostrar"
+      "emptyResultTitle": "Nada para mostrar",
+      "refusedTitle": "Resultado descartado",
+      "refused": "O resultado alterava o seu texto (um número, uma data, a língua ou o sentido), por isso o Nova não o propõe."
     },
-    "original": "Original"
+    "original": "Original",
+    "generatedNote": "Produzido por IA: releia antes de o utilizar."
   },
   "home": {
     "hero": {

@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Förbättra",
-        "description": "Vinna i klarhet och formulering."
+        "description": "Rätta stavning och grammatik utan att ändra dina ord."
       },
       "translate": {
         "name": "Översätt",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Fönstret har bytts",
       "offlineTitle": "Organisationen är inte nåbar",
       "failedTitle": "Kommandot misslyckades",
-      "emptyResultTitle": "Inget att visa"
+      "emptyResultTitle": "Inget att visa",
+      "refusedTitle": "Resultatet lades åt sidan",
+      "refused": "Resultatet ändrade din text (ett tal, ett datum, språket eller innebörden), så Nova föreslår det inte."
     },
-    "original": "Original"
+    "original": "Original",
+    "generatedNote": "Skapat av AI: läs igenom det innan du använder det."
   },
   "home": {
     "hero": {

@@ -10,6 +10,7 @@ import {
 import {
   clientCommandMessage,
   commandMessage,
+  isCommandRefusal,
   leavesDocumentUntouched,
   type ClientCommandError,
 } from "./errors";
@@ -36,6 +37,7 @@ const ALL_CLIENT_ERRORS: ClientCommandError[] = [
   "offline",
   "failed",
   "emptyResult",
+  "refused",
 ];
 
 function lookup(key: string): unknown {
@@ -160,5 +162,37 @@ describe("targetLanguageName", () => {
   test("retombe sur l'anglais plutôt que sur un code brut", () => {
     // Envoyer « xx » au modèle produirait une traduction imprévisible.
     expect(targetLanguageName("xx")).toBe("English");
+  });
+});
+
+describe("fidélité des commandes (banc du RTX, 06/10)", () => {
+  test("Améliorer demande une correction minimale, sans réécrire", () => {
+    const improve = NOVA_COMMAND_SKILLS.find((s) => s.id === "improve")!;
+    const instruction = improve.instruction("French");
+    expect(instruction).toContain(
+      "Correct the spelling, grammar and punctuation",
+    );
+    expect(instruction).toContain("Keep every word that is correctly spelled");
+    expect(instruction).toContain("keep who the text is addressed to");
+    // Le serveur la classe comme une réécriture : mêmes nombres, mêmes mots.
+    expect(instruction).not.toContain("Improve the wording");
+  });
+
+  test("un résultat écarté par le serveur est reconnu, une panne non", () => {
+    expect(
+      isCommandRefusal(
+        new Error(
+          'HTTP 422 Unprocessable Entity: {"detail":{"code":"COMMAND_REFUSED","reason":"language-changed"}}',
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      isCommandRefusal(new Error("HTTP 503: AI_RUNTIME_UNAVAILABLE")),
+    ).toBe(false);
+    expect(isCommandRefusal(undefined)).toBe(false);
+  });
+
+  test("le résultat porte la mention d'un texte produit par l'IA", () => {
+    expectTranslated("novaCommands.generatedNote");
   });
 });

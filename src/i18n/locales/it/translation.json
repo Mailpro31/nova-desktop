@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Migliora",
-        "description": "Guadagnare in chiarezza e forma."
+        "description": "Correggere ortografia e grammatica senza cambiare le tue parole."
       },
       "translate": {
         "name": "Traduci",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Finestra cambiata",
       "offlineTitle": "Organizzazione non raggiungibile",
       "failedTitle": "Comando non riuscito",
-      "emptyResultTitle": "Niente da mostrare"
+      "emptyResultTitle": "Niente da mostrare",
+      "refusedTitle": "Risultato scartato",
+      "refused": "Il risultato cambiava il tuo testo (un numero, una data, la lingua o il senso), quindi Nova non lo propone."
     },
-    "original": "Originale"
+    "original": "Originale",
+    "generatedNote": "Prodotto dall'IA: rileggilo prima di usarlo."
   },
   "home": {
     "hero": {

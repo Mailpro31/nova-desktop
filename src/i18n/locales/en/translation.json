@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Improve",
-        "description": "Improve clarity and wording."
+        "description": "Fix spelling and grammar without changing your words."
       },
       "translate": {
         "name": "Translate",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Target changed",
       "offlineTitle": "Organization unavailable",
       "failedTitle": "Command failed",
-      "emptyResultTitle": "Nothing to show"
+      "emptyResultTitle": "Nothing to show",
+      "refusedTitle": "Result set aside",
+      "refused": "The result changed your text (a number, a date, the language or the meaning), so Nova does not offer it."
     },
-    "original": "Original"
+    "original": "Original",
+    "generatedNote": "Produced by AI: read it over before you use it."
   },
   "home": {
     "hero": {

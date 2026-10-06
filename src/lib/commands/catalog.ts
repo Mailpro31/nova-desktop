@@ -132,8 +132,13 @@ export const NOVA_COMMAND_SKILLS: NovaCommandSkill[] = [
     descriptionKey: "novaCommands.skill.improve.description",
     icon: WandSparkles,
     showsOriginal: true,
+    // « Improve the wording » laissait le petit modèle du serveur tout
+    // réécrire : banc du RTX du 06/10, un message d'élève y perdait sa moitié,
+    // changeait de destinataire (« quelqu'un » → « vous ») et voyait « 18 h »
+    // devenir « minuit ». Une correction minimale, elle, passait. Pour un élève
+    // dys, c'est aussi ce qu'il attend : ses mots, sans les fautes.
     instruction: () =>
-      "Improve the wording, grammar and clarity of the following text. Keep the same language, the same meaning and a similar length. Return only the improved text.",
+      "Correct the spelling, grammar and punctuation of the following text. Keep every word that is correctly spelled, in the same order; do not add, remove or reword ideas, and keep who the text is addressed to. Keep the same language. Return only the corrected text.",
   },
   {
     ...COMMON,

@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Trau chuốt",
-        "description": "Rõ ràng và mượt mà hơn."
+        "description": "Sửa chính tả và ngữ pháp mà không thay đổi từ ngữ của bạn."
       },
       "translate": {
         "name": "Dịch",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Cửa sổ đã đổi",
       "offlineTitle": "Không kết nối được tổ chức",
       "failedTitle": "Lệnh thất bại",
-      "emptyResultTitle": "Không có gì để hiện"
+      "emptyResultTitle": "Không có gì để hiện",
+      "refusedTitle": "Kết quả đã bị gạt bỏ",
+      "refused": "Kết quả làm thay đổi văn bản của bạn (một con số, một ngày, ngôn ngữ hoặc ý nghĩa), nên Nova không đề xuất."
     },
-    "original": "Bản gốc"
+    "original": "Bản gốc",
+    "generatedNote": "Do AI tạo ra: hãy đọc lại trước khi sử dụng."
   },
   "home": {
     "hero": {

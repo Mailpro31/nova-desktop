@@ -18,6 +18,7 @@ import {
 import {
   clientCommandMessage,
   commandMessage,
+  isCommandRefusal,
   type CommandMessage,
 } from "@/lib/commands/errors";
 import { markMilestone } from "@/lib/milestones";
@@ -93,10 +94,16 @@ export const NovaCommandPalette: React.FC<NovaCommandPaletteProps> = ({
         // réponse exploitable. Ouvrir la palette n'est pas un accomplissement.
         markMilestone("first_ai_skill_used");
         setPhase({ name: "result", skill, result });
-      } catch {
+      } catch (error) {
         // Le détail réseau/serveur n'est pas actionnable, et le texte de
-        // l'utilisateur n'apparaît jamais dans un message d'erreur.
-        setPhase({ name: "error", message: clientCommandMessage("failed") });
+        // l'utilisateur n'apparaît jamais dans un message d'erreur. Seul un
+        // résultat écarté par le serveur est nommé : ce n'est pas une panne.
+        setPhase({
+          name: "error",
+          message: clientCommandMessage(
+            isCommandRefusal(error) ? "refused" : "failed",
+          ),
+        });
       }
     },
     [capture, session],
@@ -269,6 +276,11 @@ export const NovaCommandPalette: React.FC<NovaCommandPaletteProps> = ({
             )}
             <p className="whitespace-pre-wrap text-sm leading-relaxed text-text">
               {phase.result}
+            </p>
+            {/* Transparence (AI Act, art. 50) : un texte produit par un modèle
+                peut se tromper, même quand le serveur ne l'a pas écarté. */}
+            <p className="mt-3 text-xs text-text-secondary">
+              {t("novaCommands.generatedNote")}
             </p>
           </div>
 

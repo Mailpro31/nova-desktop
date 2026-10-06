@@ -20,7 +20,11 @@ export interface CommandMessage {
  * l'établissement, et rien de local ne le remplace. `emptyResult` couvre une
  * réponse serveur vide, qui n'est pas un aperçu.
  */
-export type ClientCommandError = "offline" | "failed" | "emptyResult";
+export type ClientCommandError =
+  | "offline"
+  | "failed"
+  | "emptyResult"
+  | "refused";
 
 const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
   offline: {
@@ -35,7 +39,26 @@ const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
     titleKey: "novaCommands.error.emptyResultTitle",
     bodyKey: "novaCommands.error.emptyResult",
   },
+  refused: {
+    titleKey: "novaCommands.error.refusedTitle",
+    bodyKey: "novaCommands.error.refused",
+  },
 };
+
+/**
+ * Le serveur a écarté le résultat : il changeait un nombre, une date, la
+ * langue ou le sens du texte (`COMMAND_REFUSED`, nova-server#92). Ce n'est
+ * pas une panne, et l'élève doit le savoir.
+ */
+export function isCommandRefusal(error: unknown): boolean {
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === "string"
+        ? error
+        : "";
+  return message.includes("COMMAND_REFUSED");
+}
 
 export function clientCommandMessage(
   error: ClientCommandError,

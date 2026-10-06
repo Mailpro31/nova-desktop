@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Mejorar",
-        "description": "Ganar en claridad y redacción."
+        "description": "Corregir la ortografía y la gramática sin cambiar tus palabras."
       },
       "translate": {
         "name": "Traducir",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "La ventana ha cambiado",
       "offlineTitle": "Organización no disponible",
       "failedTitle": "El comando falló",
-      "emptyResultTitle": "Nada que mostrar"
+      "emptyResultTitle": "Nada que mostrar",
+      "refusedTitle": "Resultado descartado",
+      "refused": "El resultado cambiaba tu texto (un número, una fecha, el idioma o el sentido), así que Nova no lo propone."
     },
-    "original": "Original"
+    "original": "Original",
+    "generatedNote": "Generado por IA: revísalo antes de usarlo."
   },
   "home": {
     "hero": {

@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "推敲",
-        "description": "明快さと言い回しを整える。"
+        "description": "言葉を変えずに、つづりと文法を直します。"
       },
       "translate": {
         "name": "翻訳",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "ウィンドウが変わりました",
       "offlineTitle": "組織に接続できません",
       "failedTitle": "コマンドが失敗しました",
-      "emptyResultTitle": "表示するものがありません"
+      "emptyResultTitle": "表示するものがありません",
+      "refusedTitle": "結果を表示しませんでした",
+      "refused": "結果があなたの文章（数値、日付、言語、または意味）を変えていたため、Nova は提示しません。"
     },
-    "original": "元の文章"
+    "original": "元の文章",
+    "generatedNote": "AI が作成しました。使う前に読み直してください。"
   },
   "home": {
     "hero": {

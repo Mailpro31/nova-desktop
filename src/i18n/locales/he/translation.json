@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "שפר",
-        "description": "להרוויח בבהירות ובניסוח."
+        "description": "תיקון איות ודקדוק בלי לשנות את המילים שלכם."
       },
       "translate": {
         "name": "תרגם",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "החלון השתנה",
       "offlineTitle": "הארגון אינו זמין",
       "failedTitle": "הפקודה נכשלה",
-      "emptyResultTitle": "אין מה להציג"
+      "emptyResultTitle": "אין מה להציג",
+      "refusedTitle": "התוצאה נדחתה",
+      "refused": "התוצאה שינתה את הטקסט שלכם (מספר, תאריך, שפה או משמעות), ולכן Nova לא מציע אותה."
     },
-    "original": "מקור"
+    "original": "מקור",
+    "generatedNote": "נוצר על ידי בינה מלאכותית: קראו לפני השימוש."
   },
   "home": {
     "hero": {

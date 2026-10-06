@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Vylepšit",
-        "description": "Získat na jasnosti a formulaci."
+        "description": "Opravit pravopis a gramatiku beze změny vašich slov."
       },
       "translate": {
         "name": "Přeložit",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Okno se změnilo",
       "offlineTitle": "Organizace není dostupná",
       "failedTitle": "Příkaz selhal",
-      "emptyResultTitle": "Není co zobrazit"
+      "emptyResultTitle": "Není co zobrazit",
+      "refusedTitle": "Výsledek odložen",
+      "refused": "Výsledek měnil váš text (číslo, datum, jazyk nebo smysl), proto ho Nova nenabízí."
     },
-    "original": "Originál"
+    "original": "Originál",
+    "generatedNote": "Vytvořeno AI: před použitím si to přečtěte."
   },
   "home": {
     "hero": {
