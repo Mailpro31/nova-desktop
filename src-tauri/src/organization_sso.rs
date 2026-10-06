@@ -680,6 +680,17 @@ fn urlencode(value: &str) -> String {
 mod tests {
     use super::*;
 
+    /// Les tests du verrou de connexion le prennent tous : lancés en parallèle,
+    /// l'un trouvait le verrou de l'autre et échouait au hasard (CI de la
+    /// 1.0.56, 06/10). Ils passent donc l'un après l'autre.
+    static SIGN_IN_GUARD_TESTS: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    fn sign_in_guard_test() -> std::sync::MutexGuard<'static, ()> {
+        SIGN_IN_GUARD_TESTS
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner())
+    }
+
     /// Répond comme un serveur Nova : la route historique
     /// `/api/auth/entra/pkce/available` n'annonce que des types, la route
     /// détaillée `/api/auth/providers` porte les noms choisis par
@@ -890,6 +901,7 @@ mod tests {
 
     #[test]
     fn only_one_sign_in_runs_at_a_time() {
+        let _serial = sign_in_guard_test();
         let first = SignInGuard::acquire().expect("première tentative");
         assert_eq!(
             SignInGuard::acquire().unwrap_err(),
@@ -944,6 +956,7 @@ mod tests {
         // Le verrou est global au poste : tant qu'une connexion Microsoft est
         // ouverte, une tentative Google est refusée, et réciproquement. Aucun
         // retour de navigateur ne peut donc atterrir sur l'écouteur de l'autre.
+        let _serial = sign_in_guard_test();
         let first = SignInGuard::acquire().expect("première tentative");
         assert_eq!(
             SignInGuard::acquire().unwrap_err(),
