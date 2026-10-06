@@ -5,6 +5,7 @@ import {
   ASK_NOVA,
   ASK_NOVA_ID,
   NOVA_COMMAND_SKILLS,
+  looksFrench,
   targetLanguageName,
 } from "./catalog";
 import {
@@ -194,5 +195,38 @@ describe("fidélité des commandes (banc du RTX, 06/10)", () => {
 
   test("le résultat porte la mention d'un texte produit par l'IA", () => {
     expectTranslated("novaCommands.generatedNote");
+  });
+});
+
+describe("Améliorer suit la langue du texte (banc du RTX, 6112404)", () => {
+  const FAUTES =
+    "jai oublier de prendre mes note pendant le cour de thermo, est ce que quelqu'un peu me les envoyé avant jeudi";
+  const improve = NOVA_COMMAND_SKILLS.find((s) => s.id === "improve")!;
+
+  test("un texte français reçoit une consigne courte en français", () => {
+    const instruction = improve.instruction("English", FAUTES);
+    expect(instruction).toContain("Corrige seulement l'orthographe");
+    expect(instruction).toContain("ne change rien d'autre");
+    expect(instruction).toContain("la même personne");
+  });
+
+  test("un texte anglais, court ou mêlé garde la consigne anglaise", () => {
+    expect(
+      improve.instruction(
+        "French",
+        "The lab report is due on March 12 and each group must measure the flow rate.",
+      ),
+    ).toContain("Correct the spelling");
+    expect(improve.instruction("French", "B204")).toContain(
+      "Correct the spelling",
+    );
+    expect(improve.instruction("French")).toContain("Correct the spelling");
+  });
+
+  test("la détection du français est celle du serveur", () => {
+    expect(looksFrench(FAUTES)).toBe(true);
+    expect(looksFrench("Le partiel aura lieu le 15 novembre.")).toBe(true);
+    expect(looksFrench("The report is due on Monday.")).toBe(false);
+    expect(looksFrench("rho V L mu")).toBe(false);
   });
 });

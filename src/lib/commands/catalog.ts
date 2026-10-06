@@ -84,10 +84,10 @@ export interface NovaCommandSkillInfo {
 /** Un Skill exécutable : il porte en plus la consigne envoyée au serveur. */
 export interface NovaCommandSkill extends NovaCommandSkillInfo {
   /**
-   * Paramétrée par la langue d'interface pour la seule action qui en dépend
-   * réellement — la traduction.
+   * Paramétrée par la langue d'interface pour la traduction, et par le texte
+   * sélectionné pour Améliorer, dont la consigne suit la langue du texte.
    */
-  instruction: (targetLanguage: string) => string;
+  instruction: (targetLanguage: string, text?: string) => string;
 }
 
 const COMMON = {
@@ -137,8 +137,16 @@ export const NOVA_COMMAND_SKILLS: NovaCommandSkill[] = [
     // changeait de destinataire (« quelqu'un » → « vous ») et voyait « 18 h »
     // devenir « minuit ». Une correction minimale, elle, passait. Pour un élève
     // dys, c'est aussi ce qu'il attend : ses mots, sans les fautes.
-    instruction: () =>
-      "Correct the spelling, grammar and punctuation of the following text. Keep every word that is correctly spelled, in the same order; do not add, remove or reword ideas, and keep who the text is addressed to. Keep the same language. Return only the corrected text.",
+    //
+    // Sur un texte français, la consigne anglaise détaillée a encore donné
+    // « je m'oublie » et « quelqu'un » → « on » (RTX, 6112404), alors que la
+    // consigne courte en français « Corrige seulement l'orthographe, ne change
+    // rien d'autre » corrigeait juste, deux fois sur deux. Le petit modèle
+    // tient mieux une consigne dans la langue du texte.
+    instruction: (_targetLanguage, text = "") =>
+      looksFrench(text)
+        ? "Corrige seulement l'orthographe, la grammaire et la ponctuation de ce texte, et ne change rien d'autre : garde chaque mot bien écrit, dans le même ordre, et la même personne. Renvoie seulement le texte corrigé."
+        : "Correct the spelling, grammar and punctuation of the following text. Keep every word that is correctly spelled, in the same order; do not add, remove or reword ideas, and keep who the text is addressed to. Keep the same language. Return only the corrected text.",
   },
   {
     ...COMMON,
@@ -153,6 +161,32 @@ export const NOVA_COMMAND_SKILLS: NovaCommandSkill[] = [
 ];
 
 export const ASK_NOVA_ID = "ask";
+
+const FRENCH_WORDS = new Set(
+  "le la les de des du un une et est que qui pour pas je ne dans sur avec ce cette mon mes vous nous il elle on au aux".split(
+    " ",
+  ),
+);
+const ENGLISH_WORDS = new Set(
+  "the a an and is are of to in for not i you we this that with my on it be".split(
+    " ",
+  ),
+);
+
+/**
+ * Le texte est-il nettement en français ? Même règle que le serveur
+ * (`dictation_language`) : deux mots repères au moins, et deux fois plus que
+ * d'anglais. Un texte trop court ou mêlé n'est pas jugé français.
+ */
+export function looksFrench(text: string): boolean {
+  const words = text
+    .toLowerCase()
+    .split(/[^\p{L}]+/u)
+    .filter(Boolean);
+  const french = words.filter((word) => FRENCH_WORDS.has(word)).length;
+  const english = words.filter((word) => ENGLISH_WORDS.has(word)).length;
+  return french >= 2 && french > 2 * english;
+}
 
 /**
  * Instruction libre.
