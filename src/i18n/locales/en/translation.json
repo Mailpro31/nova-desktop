@@ -1733,5 +1733,26 @@
     "notInOrganization": "This Microsoft account is not part of your institution.",
     "codeForbidden": "Access is unavailable. Contact your institution administrator.",
     "engineServer": "Your institution's server"
+  },
+  "revisionSheet": {
+    "button": "Revision sheet",
+    "title": "Revision sheet — {{name}}",
+    "empty": "No markers in this class: say “Definition”, “Key point” or “Formula” at the start of a dictation to fill the sheet.",
+    "copied": "Sheet copied: paste it into Word, OneNote or a document.",
+    "failed": "The sheet could not be copied.",
+    "sections": {
+      "important": "Important",
+      "definitions": "Definitions",
+      "theorems": "Theorems and properties",
+      "formulas": "Formulas",
+      "methods": "Methods",
+      "keyPoints": "Key points",
+      "examples": "Examples and exercises",
+      "remarks": "Remarks",
+      "toReview": "To review",
+      "questions": "Questions to ask",
+      "diagrams": "Diagrams to redo",
+      "lostTrack": "When I lost track"
+    }
   }
 }

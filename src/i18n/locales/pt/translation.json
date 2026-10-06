@@ -1733,5 +1733,26 @@
     "notInOrganization": "Esta conta Microsoft não pertence à sua instituição.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "O servidor da sua instituição"
+  },
+  "revisionSheet": {
+    "button": "Ficha de revisão",
+    "title": "Ficha de revisão — {{name}}",
+    "empty": "Nenhuma marca nesta aula: diga «Definição», «A reter» ou «Fórmula» no início de um ditado para preencher a ficha.",
+    "copied": "Ficha copiada: cole-a no Word, no OneNote ou num documento.",
+    "failed": "Não foi possível copiar a ficha.",
+    "sections": {
+      "important": "Importante",
+      "definitions": "Definições",
+      "theorems": "Teoremas e propriedades",
+      "formulas": "Fórmulas",
+      "methods": "Métodos",
+      "keyPoints": "A reter",
+      "examples": "Exemplos e exercícios",
+      "remarks": "Observações",
+      "toReview": "A rever",
+      "questions": "Perguntas a fazer",
+      "diagrams": "Esquemas a refazer",
+      "lostTrack": "Momentos em que me perdi"
+    }
   }
 }

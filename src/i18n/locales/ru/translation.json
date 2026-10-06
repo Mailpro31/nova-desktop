@@ -1733,5 +1733,26 @@
     "notInOrganization": "Эта учётная запись Microsoft не относится к вашей организации.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Сервер вашего учебного заведения"
+  },
+  "revisionSheet": {
+    "button": "Лист для повторения",
+    "title": "Лист для повторения — {{name}}",
+    "empty": "На этом занятии нет отметок: скажите «Определение», «Запомнить» или «Формула» в начале диктовки, чтобы заполнить лист.",
+    "copied": "Лист скопирован: вставьте его в Word, OneNote или документ.",
+    "failed": "Не удалось скопировать лист.",
+    "sections": {
+      "important": "Важно",
+      "definitions": "Определения",
+      "theorems": "Теоремы и свойства",
+      "formulas": "Формулы",
+      "methods": "Методы",
+      "keyPoints": "Запомнить",
+      "examples": "Примеры и упражнения",
+      "remarks": "Замечания",
+      "toReview": "Повторить",
+      "questions": "Вопросы преподавателю",
+      "diagrams": "Схемы, которые нужно перерисовать",
+      "lostTrack": "Где я потерял нить"
+    }
   }
 }

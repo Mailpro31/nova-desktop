@@ -1733,5 +1733,26 @@
     "notInOrganization": "Tento účet Microsoft nepatří k vaší instituci.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Server vaší školy"
+  },
+  "revisionSheet": {
+    "button": "Opakovací list",
+    "title": "Opakovací list — {{name}}",
+    "empty": "V této hodině nejsou žádné značky: řekněte „Definice“, „Zapamatovat“ nebo „Vzorec“ na začátku diktování a list se vyplní.",
+    "copied": "List zkopírován: vložte ho do Wordu, OneNote nebo dokumentu.",
+    "failed": "List se nepodařilo zkopírovat.",
+    "sections": {
+      "important": "Důležité",
+      "definitions": "Definice",
+      "theorems": "Věty a vlastnosti",
+      "formulas": "Vzorce",
+      "methods": "Metody",
+      "keyPoints": "Zapamatovat",
+      "examples": "Příklady a cvičení",
+      "remarks": "Poznámky",
+      "toReview": "K opakování",
+      "questions": "Otázky k položení",
+      "diagrams": "Schémata k překreslení",
+      "lostTrack": "Kdy jsem se ztratil"
+    }
   }
 }

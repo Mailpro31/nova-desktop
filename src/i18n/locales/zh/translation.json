@@ -1733,5 +1733,26 @@
     "notInOrganization": "此 Microsoft 账户不属于您的机构。",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "你所在学校的服务器"
+  },
+  "revisionSheet": {
+    "button": "复习单",
+    "title": "复习单 — {{name}}",
+    "empty": "这节课没有标记：在听写开头说“定义”“要点”或“公式”，即可填入复习单。",
+    "copied": "复习单已复制：请粘贴到 Word、OneNote 或文档中。",
+    "failed": "无法复制复习单。",
+    "sections": {
+      "important": "重要",
+      "definitions": "定义",
+      "theorems": "定理与性质",
+      "formulas": "公式",
+      "methods": "方法",
+      "keyPoints": "要点",
+      "examples": "例题与练习",
+      "remarks": "备注",
+      "toReview": "待复习",
+      "questions": "要问的问题",
+      "diagrams": "要重画的示意图",
+      "lostTrack": "我跟不上的时候"
+    }
   }
 }

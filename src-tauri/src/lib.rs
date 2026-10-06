@@ -799,6 +799,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::timetable::timetable_import,
                 commands::timetable::timetable_load,
                 commands::timetable::timetable_disconnect,
+                commands::history::copy_formatted_text,
                 commands::history::get_history_entries,
                 commands::history::toggle_history_entry_saved,
                 commands::history::get_audio_file_path,

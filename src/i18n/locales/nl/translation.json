@@ -1733,5 +1733,26 @@
     "notInOrganization": "Dit Microsoft-account hoort niet bij uw instelling.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "De server van je onderwijsinstelling"
+  },
+  "revisionSheet": {
+    "button": "Samenvattingsblad",
+    "title": "Samenvattingsblad — {{name}}",
+    "empty": "Geen markeringen in deze les: zeg ‘Definitie’, ‘Onthouden’ of ‘Formule’ aan het begin van een dictaat om het blad te vullen.",
+    "copied": "Blad gekopieerd: plak het in Word, OneNote of een document.",
+    "failed": "Het blad kon niet worden gekopieerd.",
+    "sections": {
+      "important": "Belangrijk",
+      "definitions": "Definities",
+      "theorems": "Stellingen en eigenschappen",
+      "formulas": "Formules",
+      "methods": "Methoden",
+      "keyPoints": "Onthouden",
+      "examples": "Voorbeelden en oefeningen",
+      "remarks": "Opmerkingen",
+      "toReview": "Nog herhalen",
+      "questions": "Vragen om te stellen",
+      "diagrams": "Schema's om opnieuw te maken",
+      "lostTrack": "Waar ik de draad kwijt was"
+    }
   }
 }

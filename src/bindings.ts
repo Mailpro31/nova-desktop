@@ -1678,6 +1678,19 @@ async timetableDisconnect() : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Copie un texte avec sa mise en forme : une fiche de révision copiée arrive
+ * dans Word ou OneNote avec de vrais titres et de vraies listes, et en texte
+ * simple partout ailleurs (`rich_paste`).
+ */
+async copyFormattedText(text: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("copy_formatted_text", { text }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async getHistoryEntries(cursor: number | null, limit: number | null) : Promise<Result<PaginatedHistory, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_history_entries", { cursor, limit }) };

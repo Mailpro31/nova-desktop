@@ -1733,5 +1733,26 @@
     "notInOrganization": "חשבון Microsoft זה אינו שייך למוסד שלך.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "השרת של מוסד הלימודים שלכם"
+  },
+  "revisionSheet": {
+    "button": "דף חזרה",
+    "title": "דף חזרה — {{name}}",
+    "empty": "אין סימונים בשיעור הזה: אמרו „הגדרה”, „לזכור” או „נוסחה” בתחילת הכתבה כדי למלא את הדף.",
+    "copied": "הדף הועתק: הדביקו אותו ב-Word, ב-OneNote או במסמך.",
+    "failed": "לא ניתן היה להעתיק את הדף.",
+    "sections": {
+      "important": "חשוב",
+      "definitions": "הגדרות",
+      "theorems": "משפטים ותכונות",
+      "formulas": "נוסחאות",
+      "methods": "שיטות",
+      "keyPoints": "לזכור",
+      "examples": "דוגמאות ותרגילים",
+      "remarks": "הערות",
+      "toReview": "לחזור על",
+      "questions": "שאלות לשאול",
+      "diagrams": "שרטוטים לשרטט מחדש",
+      "lostTrack": "רגעים שבהם איבדתי את החוט"
+    }
   }
 }

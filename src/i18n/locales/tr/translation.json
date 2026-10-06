@@ -1733,5 +1733,26 @@
     "notInOrganization": "Bu Microsoft hesabı kurumunuza ait değil.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Okulunuzun sunucusu"
+  },
+  "revisionSheet": {
+    "button": "Tekrar sayfası",
+    "title": "Tekrar sayfası — {{name}}",
+    "empty": "Bu derste işaret yok: sayfayı doldurmak için bir diktenin başında “Tanım”, “Akılda tut” veya “Formül” deyin.",
+    "copied": "Sayfa kopyalandı: Word, OneNote veya bir belgeye yapıştırın.",
+    "failed": "Sayfa kopyalanamadı.",
+    "sections": {
+      "important": "Önemli",
+      "definitions": "Tanımlar",
+      "theorems": "Teoremler ve özellikler",
+      "formulas": "Formüller",
+      "methods": "Yöntemler",
+      "keyPoints": "Akılda tut",
+      "examples": "Örnekler ve alıştırmalar",
+      "remarks": "Notlar",
+      "toReview": "Tekrar edilecekler",
+      "questions": "Sorulacak sorular",
+      "diagrams": "Yeniden çizilecek şemalar",
+      "lostTrack": "Konuyu kaçırdığım anlar"
+    }
   }
 }

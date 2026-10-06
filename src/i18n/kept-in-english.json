@@ -91,7 +91,8 @@
       "learn.quiz.correct",
       "settings.readingComfort.spacing.normal",
       "history.export.markdown",
-      "history.export.notes"
+      "history.export.notes",
+      "revisionSheet.sections.important"
     ],
     "it": [
       "modelSelector.streaming",

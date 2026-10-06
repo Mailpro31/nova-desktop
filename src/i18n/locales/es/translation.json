@@ -1733,5 +1733,26 @@
     "notInOrganization": "Esta cuenta de Microsoft no pertenece a tu institución.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "El servidor de tu centro"
+  },
+  "revisionSheet": {
+    "button": "Ficha de repaso",
+    "title": "Ficha de repaso — {{name}}",
+    "empty": "No hay marcas en esta clase: di «Definición», «A recordar» o «Fórmula» al principio de un dictado para rellenar la ficha.",
+    "copied": "Ficha copiada: pégala en Word, OneNote o un documento.",
+    "failed": "No se ha podido copiar la ficha.",
+    "sections": {
+      "important": "Importante",
+      "definitions": "Definiciones",
+      "theorems": "Teoremas y propiedades",
+      "formulas": "Fórmulas",
+      "methods": "Métodos",
+      "keyPoints": "A recordar",
+      "examples": "Ejemplos y ejercicios",
+      "remarks": "Observaciones",
+      "toReview": "A repasar",
+      "questions": "Preguntas para hacer",
+      "diagrams": "Esquemas por rehacer",
+      "lostTrack": "Momentos en que me perdí"
+    }
   }
 }
