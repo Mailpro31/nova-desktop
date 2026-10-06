@@ -1508,7 +1508,14 @@
       "saved": "Archivo guardado.",
       "failed": "No se pudo guardar el archivo.",
       "noCards": "Nada que repasar aquí: di «Définition», «Théorème» o «À retenir» al inicio de un dictado para crear tarjetas.",
-      "notes": "Notas"
+      "notes": "Notas",
+      "ankiSend": "Enviar a Anki",
+      "ankiSent": "Tarjetas añadidas a Anki: {{count}} (mazo «{{deck}}»).",
+      "ankiSentSkipped": "Tarjetas añadidas a Anki: {{count}}, ya presentes: {{skipped}} (mazo «{{deck}}»).",
+      "ankiNotRunning": "Anki no responde. Abre Anki con el complemento AnkiConnect (código 2055492159) y vuelve a intentarlo.",
+      "ankiTooOld": "El complemento AnkiConnect es demasiado antiguo. Actualízalo en Anki y vuelve a intentarlo.",
+      "ankiNoModel": "Anki no tiene el tipo de nota «Básico». Añádelo en Herramientas › Administrar tipos de nota y vuelve a intentarlo.",
+      "ankiFailed": "Anki ha rechazado las tarjetas. Vuelve a intentarlo o usa «Tarjetas de repaso (Anki)» para importarlas."
     }
   },
   "prompts": {

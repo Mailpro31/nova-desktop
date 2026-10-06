@@ -1,4 +1,5 @@
 mod actions;
+mod anki;
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 mod apple_intelligence;
 mod audio_feedback;
@@ -794,6 +795,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 performance::change_adaptive_performance_setting,
                 performance::clear_performance_history,
                 performance::acknowledge_thinking_frame,
+                commands::anki::anki_send_cards,
                 commands::timetable::timetable_status,
                 commands::timetable::timetable_connect,
                 commands::timetable::timetable_import,

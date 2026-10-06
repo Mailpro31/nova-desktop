@@ -1508,7 +1508,14 @@
       "saved": "文件已保存。",
       "failed": "无法保存文件。",
       "noCards": "这里没有可复习的内容：在口述开头说“Définition”“Théorème”或“À retenir”即可创建卡片。",
-      "notes": "笔记"
+      "notes": "笔记",
+      "ankiSend": "发送到 Anki",
+      "ankiSent": "已添加到 Anki 的卡片：{{count}}（牌组“{{deck}}”）。",
+      "ankiSentSkipped": "已添加到 Anki 的卡片：{{count}}，已存在：{{skipped}}（牌组“{{deck}}”）。",
+      "ankiNotRunning": "Anki 没有响应。请打开装有 AnkiConnect 插件（代码 2055492159）的 Anki，然后重试。",
+      "ankiTooOld": "AnkiConnect 插件版本过旧。请在 Anki 中更新后重试。",
+      "ankiNoModel": "Anki 中没有“基础”笔记类型。请在 工具 › 管理笔记类型 中添加后重试。",
+      "ankiFailed": "Anki 拒绝了这些卡片。请重试，或使用“复习卡片 (Anki)”导入。"
     }
   },
   "prompts": {

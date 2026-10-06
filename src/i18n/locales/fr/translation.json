@@ -1508,7 +1508,14 @@
       "saved": "Fichier enregistré.",
       "failed": "Le fichier n'a pas pu être enregistré.",
       "noCards": "Aucun bloc à réviser ici : dites « Définition », « Théorème » ou « À retenir » au début d'une dictée pour créer des cartes.",
-      "notes": "Notes"
+      "notes": "Notes",
+      "ankiSend": "Envoyer dans Anki",
+      "ankiSent": "Cartes ajoutées dans Anki : {{count}} (paquet « {{deck}} »).",
+      "ankiSentSkipped": "Cartes ajoutées dans Anki : {{count}}, déjà présentes : {{skipped}} (paquet « {{deck}} »).",
+      "ankiNotRunning": "Anki ne répond pas. Ouvrez Anki avec le module AnkiConnect (code 2055492159), puis réessayez.",
+      "ankiTooOld": "Le module AnkiConnect est trop ancien. Mettez-le à jour dans Anki, puis réessayez.",
+      "ankiNoModel": "Anki n'a pas de type de note « Basique ». Ajoutez-le dans Outils › Gérer les types de notes, puis réessayez.",
+      "ankiFailed": "Anki a refusé les cartes. Réessayez, ou utilisez « Cartes de révision (Anki) » pour les importer."
     }
   },
   "prompts": {

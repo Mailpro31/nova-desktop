@@ -1508,7 +1508,14 @@
       "saved": "Ficheiro guardado.",
       "failed": "Não foi possível guardar o ficheiro.",
       "noCards": "Nada para rever aqui: diga «Définition», «Théorème» ou «À retenir» no início de um ditado para criar cartões.",
-      "notes": "Notas"
+      "notes": "Notas",
+      "ankiSend": "Enviar para o Anki",
+      "ankiSent": "Cartões adicionados ao Anki: {{count}} (baralho «{{deck}}»).",
+      "ankiSentSkipped": "Cartões adicionados ao Anki: {{count}}, já presentes: {{skipped}} (baralho «{{deck}}»).",
+      "ankiNotRunning": "O Anki não responde. Abra o Anki com o complemento AnkiConnect (código 2055492159) e tente novamente.",
+      "ankiTooOld": "O complemento AnkiConnect é demasiado antigo. Atualize-o no Anki e tente novamente.",
+      "ankiNoModel": "O Anki não tem o tipo de nota «Básico». Adicione-o em Ferramentas › Gerir tipos de nota e tente novamente.",
+      "ankiFailed": "O Anki recusou os cartões. Tente novamente ou use «Cartões de revisão (Anki)» para os importar."
     }
   },
   "prompts": {

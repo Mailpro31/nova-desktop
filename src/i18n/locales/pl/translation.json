@@ -1508,7 +1508,14 @@
       "saved": "Plik zapisany.",
       "failed": "Nie udało się zapisać pliku.",
       "noCards": "Nic tu do powtórki: powiedz „Définition”, „Théorème” lub „À retenir” na początku dyktowania, aby utworzyć fiszki.",
-      "notes": "Notatki"
+      "notes": "Notatki",
+      "ankiSend": "Wyślij do Anki",
+      "ankiSent": "Fiszki dodane do Anki: {{count}} (talia „{{deck}}”).",
+      "ankiSentSkipped": "Fiszki dodane do Anki: {{count}}, już obecne: {{skipped}} (talia „{{deck}}”).",
+      "ankiNotRunning": "Anki nie odpowiada. Otwórz Anki z dodatkiem AnkiConnect (kod 2055492159) i spróbuj ponownie.",
+      "ankiTooOld": "Dodatek AnkiConnect jest zbyt stary. Zaktualizuj go w Anki i spróbuj ponownie.",
+      "ankiNoModel": "Anki nie ma typu notatki „Podstawowy”. Dodaj go w Narzędzia › Zarządzaj typami notatek i spróbuj ponownie.",
+      "ankiFailed": "Anki odrzuciło fiszki. Spróbuj ponownie lub zaimportuj je przez „Fiszki (Anki)”."
     }
   },
   "prompts": {
