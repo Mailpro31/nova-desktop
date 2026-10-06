@@ -1390,7 +1390,9 @@
       "failedTitle": "명령 실패",
       "emptyResultTitle": "보여줄 것이 없음",
       "refusedTitle": "결과를 제외했습니다",
-      "refused": "결과가 텍스트(숫자, 날짜, 언어 또는 의미)를 바꾸어 Nova가 제안하지 않습니다."
+      "refused": "결과가 텍스트(숫자, 날짜, 언어 또는 의미)를 바꾸어 Nova가 제안하지 않습니다.",
+      "refusedFormulaTitle": "수식은 강의 자료에서 확인하세요",
+      "refusedFormula": "이 텍스트에는 Nova가 왜곡 없이 옮기지 못한 수식이 있습니다. 강의 자료에 적힌 그대로 확인하세요."
     },
     "original": "원문",
     "generatedNote": "AI가 만든 내용입니다. 사용하기 전에 다시 읽어 보세요."

@@ -1390,7 +1390,9 @@
       "failedTitle": "指令失敗",
       "emptyResultTitle": "沒有可顯示的內容",
       "refusedTitle": "結果已被捨棄",
-      "refused": "結果改變了你的文字（數字、日期、語言或含義），因此 Nova 不提供該結果。"
+      "refused": "結果改變了你的文字（數字、日期、語言或含義），因此 Nova 不提供該結果。",
+      "refusedFormulaTitle": "請在課程中查看公式",
+      "refusedFormula": "這段文字包含一個 Nova 無法不失真地複述的公式。請依課程中的原樣閱讀它。"
     },
     "original": "原文",
     "generatedNote": "由 AI 產生：使用前請再讀一遍。"

@@ -19,6 +19,7 @@ import {
   clientCommandMessage,
   commandMessage,
   isCommandRefusal,
+  refusalMessage,
   type CommandMessage,
 } from "@/lib/commands/errors";
 import { markMilestone } from "@/lib/milestones";
@@ -101,7 +102,7 @@ export const NovaCommandPalette: React.FC<NovaCommandPaletteProps> = ({
         setPhase({
           name: "error",
           message: clientCommandMessage(
-            isCommandRefusal(error) ? "refused" : "failed",
+            isCommandRefusal(error) ? refusalMessage(error) : "failed",
           ),
         });
       }

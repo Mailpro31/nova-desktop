@@ -1390,7 +1390,9 @@
       "failedTitle": "Opdracht mislukt",
       "emptyResultTitle": "Niets te tonen",
       "refusedTitle": "Resultaat terzijde gelegd",
-      "refused": "Het resultaat veranderde je tekst (een getal, een datum, de taal of de betekenis), dus Nova stelt het niet voor."
+      "refused": "Het resultaat veranderde je tekst (een getal, een datum, de taal of de betekenis), dus Nova stelt het niet voor.",
+      "refusedFormulaTitle": "Lees de formule na in de cursus",
+      "refusedFormula": "Deze tekst bevat een formule die Nova niet kon overnemen zonder haar te vervormen. Lees haar na zoals ze in je cursus staat."
     },
     "original": "Origineel",
     "generatedNote": "Gemaakt door AI: lees het na voordat je het gebruikt."

@@ -1390,7 +1390,9 @@
       "failedTitle": "Comando non riuscito",
       "emptyResultTitle": "Niente da mostrare",
       "refusedTitle": "Risultato scartato",
-      "refused": "Il risultato cambiava il tuo testo (un numero, una data, la lingua o il senso), quindi Nova non lo propone."
+      "refused": "Il risultato cambiava il tuo testo (un numero, una data, la lingua o il senso), quindi Nova non lo propone.",
+      "refusedFormulaTitle": "Rileggi la formula nel corso",
+      "refusedFormula": "Questo testo contiene una formula che Nova non è riuscito a riprendere senza deformarla. Rileggila così com'è nel tuo corso."
     },
     "original": "Originale",
     "generatedNote": "Prodotto dall'IA: rileggilo prima di usarlo."

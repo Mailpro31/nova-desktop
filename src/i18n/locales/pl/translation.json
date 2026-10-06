@@ -1390,7 +1390,9 @@
       "failedTitle": "Polecenie nie powiodło się",
       "emptyResultTitle": "Nie ma co pokazać",
       "refusedTitle": "Wynik odrzucony",
-      "refused": "Wynik zmieniał Twój tekst (liczbę, datę, język lub sens), więc Nova go nie proponuje."
+      "refused": "Wynik zmieniał Twój tekst (liczbę, datę, język lub sens), więc Nova go nie proponuje.",
+      "refusedFormulaTitle": "Sprawdź wzór w materiałach",
+      "refusedFormula": "Ten tekst zawiera wzór, którego Nova nie potrafiła przytoczyć bez zniekształcenia. Przeczytaj go tak, jak jest zapisany w materiałach z zajęć."
     },
     "original": "Oryginał",
     "generatedNote": "Wygenerowane przez AI: przeczytaj przed użyciem."

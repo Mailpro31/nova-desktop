@@ -1390,7 +1390,9 @@
       "failedTitle": "Lệnh thất bại",
       "emptyResultTitle": "Không có gì để hiện",
       "refusedTitle": "Kết quả đã bị gạt bỏ",
-      "refused": "Kết quả làm thay đổi văn bản của bạn (một con số, một ngày, ngôn ngữ hoặc ý nghĩa), nên Nova không đề xuất."
+      "refused": "Kết quả làm thay đổi văn bản của bạn (một con số, một ngày, ngôn ngữ hoặc ý nghĩa), nên Nova không đề xuất.",
+      "refusedFormulaTitle": "Hãy xem lại công thức trong bài học",
+      "refusedFormula": "Văn bản này có một công thức mà Nova không thể viết lại mà không làm sai lệch. Hãy đọc công thức đúng như trong bài học của bạn."
     },
     "original": "Bản gốc",
     "generatedNote": "Do AI tạo ra: hãy đọc lại trước khi sử dụng."
