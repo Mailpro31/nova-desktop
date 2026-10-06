@@ -111,8 +111,11 @@ export const NovaCommandPalette: React.FC<NovaCommandPaletteProps> = ({
 
   const runPreset = useCallback(
     (skill: NovaCommandSkill) =>
-      void run(skill, skill.instruction(targetLanguageName(i18n.language))),
-    [run, i18n.language],
+      void run(
+        skill,
+        skill.instruction(targetLanguageName(i18n.language), capture?.text),
+      ),
+    [run, i18n.language, capture],
   );
 
   const handleListKeyDown = (event: React.KeyboardEvent) => {
