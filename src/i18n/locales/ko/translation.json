@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "다듬기",
-        "description": "명료함과 표현을 가다듬습니다."
+        "description": "단어를 바꾸지 않고 맞춤법과 문법을 고칩니다."
       },
       "translate": {
         "name": "번역",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "창이 바뀜",
       "offlineTitle": "조직에 연결할 수 없음",
       "failedTitle": "명령 실패",
-      "emptyResultTitle": "보여줄 것이 없음"
+      "emptyResultTitle": "보여줄 것이 없음",
+      "refusedTitle": "결과를 제외했습니다",
+      "refused": "결과가 텍스트(숫자, 날짜, 언어 또는 의미)를 바꾸어 Nova가 제안하지 않습니다."
     },
-    "original": "원문"
+    "original": "원문",
+    "generatedNote": "AI가 만든 내용입니다. 사용하기 전에 다시 읽어 보세요."
   },
   "home": {
     "hero": {

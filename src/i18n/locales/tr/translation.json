@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "İyileştir",
-        "description": "Netlik ve anlatımda kazanmak."
+        "description": "Kelimelerinizi değiştirmeden yazım ve dil bilgisini düzeltin."
       },
       "translate": {
         "name": "Çevir",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Pencere değişti",
       "offlineTitle": "Kuruluşa ulaşılamıyor",
       "failedTitle": "Komut başarısız",
-      "emptyResultTitle": "Gösterilecek bir şey yok"
+      "emptyResultTitle": "Gösterilecek bir şey yok",
+      "refusedTitle": "Sonuç kenara bırakıldı",
+      "refused": "Sonuç metninizi değiştiriyordu (bir sayı, bir tarih, dil ya da anlam), bu yüzden Nova onu önermiyor."
     },
-    "original": "Özgün"
+    "original": "Özgün",
+    "generatedNote": "Yapay zekâ tarafından üretildi: kullanmadan önce okuyun."
   },
   "home": {
     "hero": {

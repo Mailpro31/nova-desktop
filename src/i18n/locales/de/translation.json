@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Verbessern",
-        "description": "Klarheit und Formulierung verbessern."
+        "description": "Rechtschreibung und Grammatik korrigieren, ohne Ihre Worte zu ändern."
       },
       "translate": {
         "name": "Übersetzen",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Fenster gewechselt",
       "offlineTitle": "Organisation nicht erreichbar",
       "failedTitle": "Befehl fehlgeschlagen",
-      "emptyResultTitle": "Nichts anzuzeigen"
+      "emptyResultTitle": "Nichts anzuzeigen",
+      "refusedTitle": "Ergebnis verworfen",
+      "refused": "Das Ergebnis hat Ihren Text verändert (eine Zahl, ein Datum, die Sprache oder den Sinn), daher schlägt Nova es nicht vor."
     },
-    "original": "Original"
+    "original": "Original",
+    "generatedNote": "Von KI erstellt: Lesen Sie es durch, bevor Sie es verwenden."
   },
   "home": {
     "hero": {

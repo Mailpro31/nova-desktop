@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Popraw",
-        "description": "Zyskać na jasności i sformułowaniu."
+        "description": "Popraw pisownię i gramatykę bez zmieniania Twoich słów."
       },
       "translate": {
         "name": "Przetłumacz",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Okno się zmieniło",
       "offlineTitle": "Organizacja niedostępna",
       "failedTitle": "Polecenie nie powiodło się",
-      "emptyResultTitle": "Nie ma co pokazać"
+      "emptyResultTitle": "Nie ma co pokazać",
+      "refusedTitle": "Wynik odrzucony",
+      "refused": "Wynik zmieniał Twój tekst (liczbę, datę, język lub sens), więc Nova go nie proponuje."
     },
-    "original": "Oryginał"
+    "original": "Oryginał",
+    "generatedNote": "Wygenerowane przez AI: przeczytaj przed użyciem."
   },
   "home": {
     "hero": {

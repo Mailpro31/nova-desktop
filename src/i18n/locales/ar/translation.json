@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "حسّن",
-        "description": "كسب الوضوح وحسن الصياغة."
+        "description": "تصحيح الإملاء والنحو دون تغيير كلماتك."
       },
       "translate": {
         "name": "ترجم",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "تغيّرت النافذة",
       "offlineTitle": "المؤسسة غير متاحة",
       "failedTitle": "فشل الأمر",
-      "emptyResultTitle": "لا شيء لعرضه"
+      "emptyResultTitle": "لا شيء لعرضه",
+      "refusedTitle": "تم استبعاد النتيجة",
+      "refused": "كانت النتيجة تغيّر نصك (رقمًا أو تاريخًا أو اللغة أو المعنى)، لذلك لا يقترحها Nova."
     },
-    "original": "الأصل"
+    "original": "الأصل",
+    "generatedNote": "أنتجه الذكاء الاصطناعي: راجِعه قبل استخدامه."
   },
   "home": {
     "hero": {

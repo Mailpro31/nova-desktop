@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "Verbeteren",
-        "description": "Winnen aan helderheid en formulering."
+        "description": "Spelling en grammatica verbeteren zonder je woorden te veranderen."
       },
       "translate": {
         "name": "Vertalen",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "Venster gewisseld",
       "offlineTitle": "Organisatie niet bereikbaar",
       "failedTitle": "Opdracht mislukt",
-      "emptyResultTitle": "Niets te tonen"
+      "emptyResultTitle": "Niets te tonen",
+      "refusedTitle": "Resultaat terzijde gelegd",
+      "refused": "Het resultaat veranderde je tekst (een getal, een datum, de taal of de betekenis), dus Nova stelt het niet voor."
     },
-    "original": "Origineel"
+    "original": "Origineel",
+    "generatedNote": "Gemaakt door AI: lees het na voordat je het gebruikt."
   },
   "home": {
     "hero": {

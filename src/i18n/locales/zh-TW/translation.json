@@ -1353,7 +1353,7 @@
       },
       "improve": {
         "name": "潤飾",
-        "description": "讓表達更清楚、更順。"
+        "description": "在不改變你用詞的情況下修正拼字和文法。"
       },
       "translate": {
         "name": "翻譯",
@@ -1388,9 +1388,12 @@
       "targetChangedTitle": "視窗已切換",
       "offlineTitle": "組織無法連線",
       "failedTitle": "指令失敗",
-      "emptyResultTitle": "沒有可顯示的內容"
+      "emptyResultTitle": "沒有可顯示的內容",
+      "refusedTitle": "結果已被捨棄",
+      "refused": "結果改變了你的文字（數字、日期、語言或含義），因此 Nova 不提供該結果。"
     },
-    "original": "原文"
+    "original": "原文",
+    "generatedNote": "由 AI 產生：使用前請再讀一遍。"
   },
   "home": {
     "hero": {
