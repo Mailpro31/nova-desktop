@@ -12,6 +12,7 @@ import {
   clientCommandMessage,
   commandMessage,
   isCommandRefusal,
+  refusalMessage,
   leavesDocumentUntouched,
   type ClientCommandError,
 } from "./errors";
@@ -39,6 +40,7 @@ const ALL_CLIENT_ERRORS: ClientCommandError[] = [
   "failed",
   "emptyResult",
   "refused",
+  "refusedFormula",
 ];
 
 function lookup(key: string): unknown {
@@ -228,5 +230,28 @@ describe("Améliorer suit la langue du texte (banc du RTX, 6112404)", () => {
     expect(looksFrench("Le partiel aura lieu le 15 novembre.")).toBe(true);
     expect(looksFrench("The report is due on Monday.")).toBe(false);
     expect(looksFrench("rho V L mu")).toBe(false);
+  });
+});
+
+describe("une formule déformée a son propre message (RTX, 06/10)", () => {
+  test("le motif formula-changed est reconnu", () => {
+    expect(
+      refusalMessage(
+        new Error(
+          'HTTP 422 Unprocessable Entity: {"detail":{"code":"COMMAND_REFUSED","reason":"formula-changed"}}',
+        ),
+      ),
+    ).toBe("refusedFormula");
+  });
+
+  test("les autres refus gardent le message général", () => {
+    expect(
+      refusalMessage(
+        new Error(
+          'HTTP 422 Unprocessable Entity: {"detail":{"code":"COMMAND_REFUSED","reason":"exam-lost"}}',
+        ),
+      ),
+    ).toBe("refused");
+    expect(refusalMessage(undefined)).toBe("refused");
   });
 });

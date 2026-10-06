@@ -1390,7 +1390,9 @@
       "failedTitle": "Comando falhou",
       "emptyResultTitle": "Nada para mostrar",
       "refusedTitle": "Resultado descartado",
-      "refused": "O resultado alterava o seu texto (um número, uma data, a língua ou o sentido), por isso o Nova não o propõe."
+      "refused": "O resultado alterava o seu texto (um número, uma data, a língua ou o sentido), por isso o Nova não o propõe.",
+      "refusedFormulaTitle": "Releia a fórmula no curso",
+      "refusedFormula": "Este texto contém uma fórmula que o Nova não conseguiu retomar sem a deformar. Releia-a tal como está no seu curso."
     },
     "original": "Original",
     "generatedNote": "Produzido por IA: releia antes de o utilizar."

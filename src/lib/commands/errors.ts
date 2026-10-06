@@ -24,7 +24,8 @@ export type ClientCommandError =
   | "offline"
   | "failed"
   | "emptyResult"
-  | "refused";
+  | "refused"
+  | "refusedFormula";
 
 const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
   offline: {
@@ -43,6 +44,10 @@ const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
     titleKey: "novaCommands.error.refusedTitle",
     bodyKey: "novaCommands.error.refused",
   },
+  refusedFormula: {
+    titleKey: "novaCommands.error.refusedFormulaTitle",
+    bodyKey: "novaCommands.error.refusedFormula",
+  },
 };
 
 /**
@@ -51,13 +56,27 @@ const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
  * pas une panne, et l'élève doit le savoir.
  */
 export function isCommandRefusal(error: unknown): boolean {
-  const message =
-    error instanceof Error
-      ? error.message
-      : typeof error === "string"
-        ? error
-        : "";
-  return message.includes("COMMAND_REFUSED");
+  return errorText(error).includes("COMMAND_REFUSED");
+}
+
+/**
+ * Le message à montrer pour un résultat écarté. Une formule déformée a le
+ * sien : sur le RTX (06/10), le petit modèle n'a jamais recopié « rho fois V
+ * fois L divisé par mu », même quand la consigne citait la phrase. L'élève
+ * doit savoir que c'est la formule, et où la retrouver.
+ */
+export function refusalMessage(error: unknown): ClientCommandError {
+  return /"reason"\s*:\s*"formula-changed"/u.test(errorText(error))
+    ? "refusedFormula"
+    : "refused";
+}
+
+function errorText(error: unknown): string {
+  return error instanceof Error
+    ? error.message
+    : typeof error === "string"
+      ? error
+      : "";
 }
 
 export function clientCommandMessage(

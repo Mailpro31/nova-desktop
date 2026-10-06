@@ -1390,7 +1390,9 @@
       "failedTitle": "Komut başarısız",
       "emptyResultTitle": "Gösterilecek bir şey yok",
       "refusedTitle": "Sonuç kenara bırakıldı",
-      "refused": "Sonuç metninizi değiştiriyordu (bir sayı, bir tarih, dil ya da anlam), bu yüzden Nova onu önermiyor."
+      "refused": "Sonuç metninizi değiştiriyordu (bir sayı, bir tarih, dil ya da anlam), bu yüzden Nova onu önermiyor.",
+      "refusedFormulaTitle": "Formülü derste kontrol edin",
+      "refusedFormula": "Bu metin, Nova'nın bozmadan aktaramadığı bir formül içeriyor. Formülü dersinizde yazıldığı gibi okuyun."
     },
     "original": "Özgün",
     "generatedNote": "Yapay zekâ tarafından üretildi: kullanmadan önce okuyun."

@@ -1390,7 +1390,9 @@
       "failedTitle": "Kommandot misslyckades",
       "emptyResultTitle": "Inget att visa",
       "refusedTitle": "Resultatet lades åt sidan",
-      "refused": "Resultatet ändrade din text (ett tal, ett datum, språket eller innebörden), så Nova föreslår det inte."
+      "refused": "Resultatet ändrade din text (ett tal, ett datum, språket eller innebörden), så Nova föreslår det inte.",
+      "refusedFormulaTitle": "Läs formeln i kursen",
+      "refusedFormula": "Texten innehåller en formel som Nova inte kunde återge utan att förvränga den. Läs den som den står i din kurs."
     },
     "original": "Original",
     "generatedNote": "Skapat av AI: läs igenom det innan du använder det."

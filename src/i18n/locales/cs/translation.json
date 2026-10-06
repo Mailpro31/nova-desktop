@@ -1390,7 +1390,9 @@
       "failedTitle": "Příkaz selhal",
       "emptyResultTitle": "Není co zobrazit",
       "refusedTitle": "Výsledek odložen",
-      "refused": "Výsledek měnil váš text (číslo, datum, jazyk nebo smysl), proto ho Nova nenabízí."
+      "refused": "Výsledek měnil váš text (číslo, datum, jazyk nebo smysl), proto ho Nova nenabízí.",
+      "refusedFormulaTitle": "Formuli si přečtěte v kurzu",
+      "refusedFormula": "Tento text obsahuje vzorec, který Nova nedokázala převzít bez zkreslení. Přečtěte si ho tak, jak je ve vašem kurzu."
     },
     "original": "Originál",
     "generatedNote": "Vytvořeno AI: před použitím si to přečtěte."

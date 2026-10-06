@@ -1390,7 +1390,9 @@
       "failedTitle": "Command failed",
       "emptyResultTitle": "Nothing to show",
       "refusedTitle": "Result set aside",
-      "refused": "The result changed your text (a number, a date, the language or the meaning), so Nova does not offer it."
+      "refused": "The result changed your text (a number, a date, the language or the meaning), so Nova does not offer it.",
+      "refusedFormulaTitle": "Check the formula in your course",
+      "refusedFormula": "This text contains a formula that Nova could not reuse without distorting it. Read it as it appears in your course."
     },
     "original": "Original",
     "generatedNote": "Produced by AI: read it over before you use it."

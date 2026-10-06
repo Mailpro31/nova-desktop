@@ -1390,7 +1390,9 @@
       "failedTitle": "Befehl fehlgeschlagen",
       "emptyResultTitle": "Nichts anzuzeigen",
       "refusedTitle": "Ergebnis verworfen",
-      "refused": "Das Ergebnis hat Ihren Text verändert (eine Zahl, ein Datum, die Sprache oder den Sinn), daher schlägt Nova es nicht vor."
+      "refused": "Das Ergebnis hat Ihren Text verändert (eine Zahl, ein Datum, die Sprache oder den Sinn), daher schlägt Nova es nicht vor.",
+      "refusedFormulaTitle": "Formel im Kurs nachlesen",
+      "refusedFormula": "Dieser Text enthält eine Formel, die Nova nicht unverfälscht übernehmen konnte. Lesen Sie sie so nach, wie sie in Ihrem Kurs steht."
     },
     "original": "Original",
     "generatedNote": "Von KI erstellt: Lesen Sie es durch, bevor Sie es verwenden."
