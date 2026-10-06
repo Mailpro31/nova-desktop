@@ -1740,5 +1740,26 @@
     "notInOrganization": "Det här Microsoft-kontot tillhör inte din institution.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Din skolas server"
+  },
+  "revisionSheet": {
+    "button": "Repetitionsblad",
+    "title": "Repetitionsblad — {{name}}",
+    "empty": "Inga markeringar i den här lektionen: säg ”Definition”, ”Att komma ihåg” eller ”Formel” i början av en diktering för att fylla bladet.",
+    "copied": "Bladet har kopierats: klistra in det i Word, OneNote eller ett dokument.",
+    "failed": "Bladet kunde inte kopieras.",
+    "sections": {
+      "important": "Viktigt",
+      "definitions": "Definitioner",
+      "theorems": "Satser och egenskaper",
+      "formulas": "Formler",
+      "methods": "Metoder",
+      "keyPoints": "Att komma ihåg",
+      "examples": "Exempel och övningar",
+      "remarks": "Anmärkningar",
+      "toReview": "Att repetera",
+      "questions": "Frågor att ställa",
+      "diagrams": "Figurer att göra om",
+      "lostTrack": "När jag tappade tråden"
+    }
   }
 }

@@ -1740,5 +1740,26 @@
     "notInOrganization": "この Microsoft アカウントは所属機関のものではありません。",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "学校のサーバー"
+  },
+  "revisionSheet": {
+    "button": "復習シート",
+    "title": "復習シート — {{name}}",
+    "empty": "この授業にはマークがありません。ディクテーションの最初に「定義」「要点」「公式」と言うと、シートに入ります。",
+    "copied": "シートをコピーしました。Word、OneNote、または文書に貼り付けてください。",
+    "failed": "シートをコピーできませんでした。",
+    "sections": {
+      "important": "重要",
+      "definitions": "定義",
+      "theorems": "定理と性質",
+      "formulas": "公式",
+      "methods": "方法",
+      "keyPoints": "要点",
+      "examples": "例題と演習",
+      "remarks": "補足",
+      "toReview": "復習する",
+      "questions": "質問すること",
+      "diagrams": "描き直す図",
+      "lostTrack": "ついていけなかった箇所"
+    }
   }
 }

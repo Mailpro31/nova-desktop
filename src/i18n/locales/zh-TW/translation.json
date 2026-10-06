@@ -1740,5 +1740,26 @@
     "notInOrganization": "此 Microsoft 帳戶不屬於您的機構。",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "你所在學校的伺服器"
+  },
+  "revisionSheet": {
+    "button": "複習單",
+    "title": "複習單 — {{name}}",
+    "empty": "這堂課沒有標記：在聽寫開頭說「定義」「重點」或「公式」，即可填入複習單。",
+    "copied": "複習單已複製：請貼到 Word、OneNote 或文件中。",
+    "failed": "無法複製複習單。",
+    "sections": {
+      "important": "重要",
+      "definitions": "定義",
+      "theorems": "定理與性質",
+      "formulas": "公式",
+      "methods": "方法",
+      "keyPoints": "重點",
+      "examples": "例題與練習",
+      "remarks": "備註",
+      "toReview": "待複習",
+      "questions": "要問的問題",
+      "diagrams": "要重畫的示意圖",
+      "lostTrack": "我跟不上的時候"
+    }
   }
 }

@@ -1740,5 +1740,26 @@
     "notInOrganization": "حساب Microsoft هذا لا ينتمي إلى مؤسستك.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "خادم مؤسستك التعليمية"
+  },
+  "revisionSheet": {
+    "button": "ورقة المراجعة",
+    "title": "ورقة المراجعة — {{name}}",
+    "empty": "لا توجد علامات في هذه الحصة: قل «تعريف» أو «للحفظ» أو «صيغة» في بداية الإملاء لملء الورقة.",
+    "copied": "نُسخت الورقة: الصقها في Word أو OneNote أو في مستند.",
+    "failed": "تعذّر نسخ الورقة.",
+    "sections": {
+      "important": "مهم",
+      "definitions": "تعريفات",
+      "theorems": "مبرهنات وخصائص",
+      "formulas": "صيغ",
+      "methods": "طرق",
+      "keyPoints": "للحفظ",
+      "examples": "أمثلة وتمارين",
+      "remarks": "ملاحظات",
+      "toReview": "للمراجعة",
+      "questions": "أسئلة للطرح",
+      "diagrams": "رسوم يجب إعادتها",
+      "lostTrack": "لحظات فقدت فيها التركيز"
+    }
   }
 }

@@ -1740,5 +1740,26 @@
     "notInOrganization": "Tài khoản Microsoft này không thuộc tổ chức của bạn.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Máy chủ của trường bạn"
+  },
+  "revisionSheet": {
+    "button": "Phiếu ôn tập",
+    "title": "Phiếu ôn tập — {{name}}",
+    "empty": "Buổi học này chưa có dấu nào: hãy nói “Định nghĩa”, “Cần nhớ” hoặc “Công thức” ở đầu một lần đọc để điền vào phiếu.",
+    "copied": "Đã sao chép phiếu: hãy dán vào Word, OneNote hoặc một tài liệu.",
+    "failed": "Không thể sao chép phiếu.",
+    "sections": {
+      "important": "Quan trọng",
+      "definitions": "Định nghĩa",
+      "theorems": "Định lý và tính chất",
+      "formulas": "Công thức",
+      "methods": "Phương pháp",
+      "keyPoints": "Cần nhớ",
+      "examples": "Ví dụ và bài tập",
+      "remarks": "Ghi chú",
+      "toReview": "Cần ôn lại",
+      "questions": "Câu hỏi cần hỏi",
+      "diagrams": "Sơ đồ cần vẽ lại",
+      "lostTrack": "Lúc tôi bị mất mạch"
+    }
   }
 }

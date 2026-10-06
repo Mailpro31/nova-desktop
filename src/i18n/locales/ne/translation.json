@@ -1740,5 +1740,26 @@
     "notInOrganization": "यो Microsoft खाता तपाईंको संस्थाको होइन।",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "तपाईंको शैक्षिक संस्थाको सर्भर"
+  },
+  "revisionSheet": {
+    "button": "दोहोर्याउने पाना",
+    "title": "दोहोर्याउने पाना — {{name}}",
+    "empty": "यो कक्षामा कुनै चिन्ह छैन: पाना भर्न डिक्टेसनको सुरुमा “परिभाषा”, “सम्झनुपर्ने” वा “सूत्र” भन्नुहोस्।",
+    "copied": "पाना प्रतिलिपि भयो: यसलाई Word, OneNote वा कागजातमा टाँस्नुहोस्।",
+    "failed": "पाना प्रतिलिपि गर्न सकिएन।",
+    "sections": {
+      "important": "महत्त्वपूर्ण",
+      "definitions": "परिभाषाहरू",
+      "theorems": "प्रमेय र गुणहरू",
+      "formulas": "सूत्रहरू",
+      "methods": "विधिहरू",
+      "keyPoints": "सम्झनुपर्ने",
+      "examples": "उदाहरण र अभ्यास",
+      "remarks": "टिप्पणीहरू",
+      "toReview": "दोहोर्याउनुपर्ने",
+      "questions": "सोध्नुपर्ने प्रश्नहरू",
+      "diagrams": "फेरि कोर्नुपर्ने चित्रहरू",
+      "lostTrack": "म अलमलिएका क्षणहरू"
+    }
   }
 }

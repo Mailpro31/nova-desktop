@@ -1740,5 +1740,26 @@
     "notInOrganization": "Questo account Microsoft non appartiene al tuo istituto.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Il server del tuo istituto"
+  },
+  "revisionSheet": {
+    "button": "Scheda di ripasso",
+    "title": "Scheda di ripasso — {{name}}",
+    "empty": "Nessun segno in questa lezione: di' «Definizione», «Da ricordare» o «Formula» all'inizio di una dettatura per riempire la scheda.",
+    "copied": "Scheda copiata: incollala in Word, OneNote o in un documento.",
+    "failed": "Non è stato possibile copiare la scheda.",
+    "sections": {
+      "important": "Importante",
+      "definitions": "Definizioni",
+      "theorems": "Teoremi e proprietà",
+      "formulas": "Formule",
+      "methods": "Metodi",
+      "keyPoints": "Da ricordare",
+      "examples": "Esempi ed esercizi",
+      "remarks": "Osservazioni",
+      "toReview": "Da ripassare",
+      "questions": "Domande da fare",
+      "diagrams": "Schemi da rifare",
+      "lostTrack": "Momenti in cui ho perso il filo"
+    }
   }
 }

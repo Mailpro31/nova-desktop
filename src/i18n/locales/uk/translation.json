@@ -1740,5 +1740,26 @@
     "notInOrganization": "Цей обліковий запис Microsoft не належить вашому закладу.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Сервер вашого навчального закладу"
+  },
+  "revisionSheet": {
+    "button": "Аркуш для повторення",
+    "title": "Аркуш для повторення — {{name}}",
+    "empty": "На цьому занятті немає позначок: скажіть «Означення», «Запам'ятати» або «Формула» на початку диктування, щоб заповнити аркуш.",
+    "copied": "Аркуш скопійовано: вставте його у Word, OneNote або документ.",
+    "failed": "Не вдалося скопіювати аркуш.",
+    "sections": {
+      "important": "Важливо",
+      "definitions": "Означення",
+      "theorems": "Теореми та властивості",
+      "formulas": "Формули",
+      "methods": "Методи",
+      "keyPoints": "Запам'ятати",
+      "examples": "Приклади та вправи",
+      "remarks": "Зауваження",
+      "toReview": "Повторити",
+      "questions": "Запитання викладачеві",
+      "diagrams": "Схеми, які треба перемалювати",
+      "lostTrack": "Де я загубив нитку"
+    }
   }
 }

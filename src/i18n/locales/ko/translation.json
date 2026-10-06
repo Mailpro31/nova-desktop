@@ -1740,5 +1740,26 @@
     "notInOrganization": "이 Microsoft 계정은 소속 기관의 계정이 아닙니다.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "학교 서버"
+  },
+  "revisionSheet": {
+    "button": "복습 시트",
+    "title": "복습 시트 — {{name}}",
+    "empty": "이 수업에는 표시가 없습니다. 받아쓰기 시작에 “정의”, “핵심” 또는 “공식”이라고 말하면 시트가 채워집니다.",
+    "copied": "시트를 복사했습니다. Word, OneNote 또는 문서에 붙여 넣으세요.",
+    "failed": "시트를 복사할 수 없습니다.",
+    "sections": {
+      "important": "중요",
+      "definitions": "정의",
+      "theorems": "정리와 성질",
+      "formulas": "공식",
+      "methods": "방법",
+      "keyPoints": "핵심",
+      "examples": "예제와 연습",
+      "remarks": "참고",
+      "toReview": "복습할 내용",
+      "questions": "물어볼 질문",
+      "diagrams": "다시 그릴 도식",
+      "lostTrack": "흐름을 놓친 순간"
+    }
   }
 }

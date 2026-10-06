@@ -25,6 +25,7 @@ import { AudioPlayer } from "../../ui/AudioPlayer";
 import { HistoryCorrection } from "./HistoryCorrection";
 import { HistorySnippet } from "./HistorySnippet";
 import { RevisionExport } from "./RevisionExport";
+import { RevisionSheetButton } from "./RevisionSheetButton";
 import {
   entriesForStyle,
   filterEntries,
@@ -268,10 +269,16 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
                 <h2 className="text-xs font-semibold uppercase tracking-wide text-text-secondary">
                   {t(BUCKET_LABEL[group.bucket])}
                 </h2>
-                <RevisionExport
-                  entries={group.entries}
-                  section={t(BUCKET_LABEL[group.bucket])}
-                />
+                <div className="flex flex-wrap items-center gap-1">
+                  <RevisionSheetButton
+                    entries={group.entries}
+                    section={t(BUCKET_LABEL[group.bucket])}
+                  />
+                  <RevisionExport
+                    entries={group.entries}
+                    section={t(BUCKET_LABEL[group.bucket])}
+                  />
+                </div>
               </div>
               {runsOf(group.entries).map((run) => (
                 <div key={`${run.course?.key ?? "none"}-${run.entries[0].id}`}>
@@ -288,11 +295,18 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
                           {`${clock(run.course.start)}–${clock(run.course.end)}`}
                         </span>
                       </h3>
-                      <RevisionExport
-                        entries={run.entries}
-                        section={run.course.summary}
-                        date={run.course.start}
-                      />
+                      <div className="flex flex-wrap items-center gap-1">
+                        <RevisionSheetButton
+                          entries={run.entries}
+                          section={run.course.summary}
+                          date={run.course.start}
+                        />
+                        <RevisionExport
+                          entries={run.entries}
+                          section={run.course.summary}
+                          date={run.course.start}
+                        />
+                      </div>
                     </div>
                   )}
                   <ul>

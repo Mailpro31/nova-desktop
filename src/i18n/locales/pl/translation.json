@@ -1740,5 +1740,26 @@
     "notInOrganization": "To konto Microsoft nie należy do Twojej instytucji.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Serwer twojej uczelni"
+  },
+  "revisionSheet": {
+    "button": "Ściąga do powtórki",
+    "title": "Ściąga do powtórki — {{name}}",
+    "empty": "Brak znaczników na tych zajęciach: powiedz „Definicja”, „Do zapamiętania” lub „Wzór” na początku dyktowania, aby wypełnić ściągę.",
+    "copied": "Ściąga skopiowana: wklej ją do Worda, OneNote lub dokumentu.",
+    "failed": "Nie udało się skopiować ściągi.",
+    "sections": {
+      "important": "Ważne",
+      "definitions": "Definicje",
+      "theorems": "Twierdzenia i własności",
+      "formulas": "Wzory",
+      "methods": "Metody",
+      "keyPoints": "Do zapamiętania",
+      "examples": "Przykłady i ćwiczenia",
+      "remarks": "Uwagi",
+      "toReview": "Do powtórzenia",
+      "questions": "Pytania do zadania",
+      "diagrams": "Schematy do poprawienia",
+      "lostTrack": "Momenty, w których się zgubiłem"
+    }
   }
 }

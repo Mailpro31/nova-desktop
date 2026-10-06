@@ -8,6 +8,15 @@ use specta::Type;
 use std::sync::Arc;
 use tauri::{AppHandle, State};
 
+/// Copie un texte avec sa mise en forme : une fiche de révision copiée arrive
+/// dans Word ou OneNote avec de vrais titres et de vraies listes, et en texte
+/// simple partout ailleurs (`rich_paste`).
+#[tauri::command]
+#[specta::specta]
+pub fn copy_formatted_text(app: AppHandle, text: String) -> Result<(), String> {
+    crate::clipboard::write_dictation(&app, &text)
+}
+
 /// Un terme qu'une correction de l'élève propose au vocabulaire : ce qu'il a
 /// écrit, à la place de ce que le moteur avait transcrit.
 #[derive(Debug, Clone, Serialize, Type)]

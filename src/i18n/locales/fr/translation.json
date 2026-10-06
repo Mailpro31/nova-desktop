@@ -1740,5 +1740,26 @@
     "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
     "codeForbidden": "L'accès est indisponible. Contactez votre administrateur.",
     "engineServer": "Le serveur de votre établissement"
+  },
+  "revisionSheet": {
+    "button": "Fiche de révision",
+    "title": "Fiche de révision — {{name}}",
+    "empty": "Aucun repère dans ce cours : dites « Définition », « À retenir » ou « Formule » au début d'une dictée pour remplir la fiche.",
+    "copied": "Fiche copiée : collez-la dans Word, OneNote ou un document.",
+    "failed": "La fiche n'a pas pu être copiée.",
+    "sections": {
+      "important": "Important",
+      "definitions": "Définitions",
+      "theorems": "Théorèmes et propriétés",
+      "formulas": "Formules",
+      "methods": "Méthodes",
+      "keyPoints": "À retenir",
+      "examples": "Exemples et exercices",
+      "remarks": "Remarques",
+      "toReview": "À revoir",
+      "questions": "Questions à poser",
+      "diagrams": "Schémas à reprendre",
+      "lostTrack": "Moments où j'ai décroché"
+    }
   }
 }

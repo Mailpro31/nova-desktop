@@ -1740,5 +1740,26 @@
     "notInOrganization": "Този акаунт в Microsoft не принадлежи на вашата институция.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Сървърът на вашето учебно заведение"
+  },
+  "revisionSheet": {
+    "button": "Лист за преговор",
+    "title": "Лист за преговор — {{name}}",
+    "empty": "Няма отметки в този час: кажете „Определение“, „Да се запомни“ или „Формула“ в началото на диктовка, за да попълните листа.",
+    "copied": "Листът е копиран: поставете го в Word, OneNote или документ.",
+    "failed": "Листът не можа да бъде копиран.",
+    "sections": {
+      "important": "Важно",
+      "definitions": "Определения",
+      "theorems": "Теореми и свойства",
+      "formulas": "Формули",
+      "methods": "Методи",
+      "keyPoints": "Да се запомни",
+      "examples": "Примери и упражнения",
+      "remarks": "Бележки",
+      "toReview": "За преговор",
+      "questions": "Въпроси за задаване",
+      "diagrams": "Схеми за преначертаване",
+      "lostTrack": "Когато изгубих нишката"
+    }
   }
 }

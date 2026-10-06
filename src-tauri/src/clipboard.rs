@@ -16,7 +16,7 @@ use crate::utils::{is_kde_wayland, is_wayland};
 /// forme en HTML quand elle en a une (titres, listes, gras, repères). Word,
 /// OneNote ou Google Docs collent le HTML ; toutes les autres applications
 /// collent le texte, exactement comme avant (`rich_paste`).
-fn write_dictation(app_handle: &AppHandle, text: &str) -> Result<(), String> {
+pub(crate) fn write_dictation(app_handle: &AppHandle, text: &str) -> Result<(), String> {
     let clipboard = app_handle.clipboard();
     match crate::rich_paste::to_html(text) {
         Some(html) => clipboard

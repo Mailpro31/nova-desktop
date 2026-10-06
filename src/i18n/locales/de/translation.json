@@ -1740,5 +1740,26 @@
     "notInOrganization": "Dieses Microsoft-Konto gehört nicht zu Ihrer Einrichtung.",
     "codeForbidden": "Seats or devices exhausted. Contact your institution administrator.",
     "engineServer": "Server Ihrer Bildungseinrichtung"
+  },
+  "revisionSheet": {
+    "button": "Lernzettel",
+    "title": "Lernzettel — {{name}}",
+    "empty": "Keine Markierungen in dieser Lehrveranstaltung: Sagen Sie „Definition“, „Merke“ oder „Formel“ am Anfang eines Diktats, um den Lernzettel zu füllen.",
+    "copied": "Lernzettel kopiert: Fügen Sie ihn in Word, OneNote oder ein Dokument ein.",
+    "failed": "Der Lernzettel konnte nicht kopiert werden.",
+    "sections": {
+      "important": "Wichtig",
+      "definitions": "Definitionen",
+      "theorems": "Sätze und Eigenschaften",
+      "formulas": "Formeln",
+      "methods": "Methoden",
+      "keyPoints": "Merke",
+      "examples": "Beispiele und Übungen",
+      "remarks": "Anmerkungen",
+      "toReview": "Zu wiederholen",
+      "questions": "Zu stellende Fragen",
+      "diagrams": "Neu zu zeichnende Skizzen",
+      "lostTrack": "Wo ich den Faden verloren habe"
+    }
   }
 }
