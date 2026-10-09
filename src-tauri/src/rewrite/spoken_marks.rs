@@ -97,6 +97,9 @@ const FORMULA_LABEL: &str = "🔢 Formule";
 pub struct PreparedDictation {
     pub marker: Option<StudyMarker>,
     pub body: String,
+    /// « À la ligne, … » dit en tête : la dictée commence sur une nouvelle
+    /// ligne. Le Style ne reçoit pas ce saut, qui revient à la fin.
+    pub starts_new_line: bool,
 }
 
 impl PreparedDictation {
@@ -110,6 +113,20 @@ impl PreparedDictation {
     /// Remet le repère devant le texte que le Style a rendu. Un exemple ou un
     /// exercice prend le numéro suivant du cours en cours.
     pub fn finish(&self, text: &str) -> String {
+        let finished = self.finish_marker(text);
+        if self.starts_new_line && !finished.starts_with('\n') {
+            format!("\n{finished}")
+        } else {
+            finished
+        }
+    }
+
+    /// Faut-il appeler `finish` ? Un repère, ou un saut de ligne de tête.
+    pub fn needs_finish(&self) -> bool {
+        self.marker.is_some() || self.starts_new_line
+    }
+
+    fn finish_marker(&self, text: &str) -> String {
         match self.marker {
             Some(marker) if marker.numbered => {
                 let number = NUMBERING
@@ -185,7 +202,14 @@ pub fn prepare(text: &str) -> PreparedDictation {
             .join("\n"),
         _ => apply_layout_commands(&body),
     };
-    PreparedDictation { marker, body }
+    // Seul un saut dit tout au début ouvre une ligne neuve. Après un repère
+    // (« Important. Point à la ligne. … »), il sépare le repère du contenu.
+    let starts_new_line = marker.is_none() && body.starts_with('\n');
+    PreparedDictation {
+        marker,
+        body: body.trim_start().to_string(),
+        starts_new_line,
+    }
 }
 
 /// Le repère dit en tête de dictée, et le reste. `None` si la dictée ne
@@ -449,10 +473,15 @@ pub fn apply_layout_commands(text: &str) -> String {
         Some(word) => format!("\n{}", capitalize_first(word.as_str())),
         None => "\n".to_string(),
     });
-    EXTRA_BLANK_LINES
-        .replace_all(&tidy, "\n\n")
-        .trim()
-        .to_string()
+    let lines = EXTRA_BLANK_LINES.replace_all(&tidy, "\n\n");
+    // « À la ligne, la conclusion… » dit en tête : la nouvelle ligne est
+    // gardée (test de Sash, 07/10 : elle disparaissait).
+    let lead = if lines.trim_start_matches([' ', '\t']).starts_with('\n') {
+        "\n"
+    } else {
+        ""
+    };
+    format!("{lead}{}", lines.trim())
 }
 
 fn new_line(caps: &Captures) -> String {
@@ -730,6 +759,29 @@ mod tests {
             prepared.finish("La masse se conserve."),
             "La masse se conserve."
         );
+    }
+
+    #[test]
+    fn a_new_line_said_first_opens_a_new_line_even_after_the_style() {
+        // Test de Sash, 07/10 : la nouvelle ligne disparaissait.
+        let prepared =
+            prepare("À la ligne, la conclusion de ce chapitre porte sur la stabilité du vol.");
+        assert!(prepared.starts_new_line);
+        assert!(prepared.needs_finish());
+        // Le Style ne reçoit pas le saut…
+        assert_eq!(
+            prepared.body,
+            "La conclusion de ce chapitre porte sur la stabilité du vol."
+        );
+        // … qui revient devant ce qu'il rend.
+        assert_eq!(
+            prepared.finish("La conclusion de ce chapitre porte sur la stabilité du vol."),
+            "\nLa conclusion de ce chapitre porte sur la stabilité du vol."
+        );
+        // Préparée à nouveau, la dictée finie ne gagne pas un second saut.
+        let again = prepare(&prepared.finish(&prepared.body));
+        assert_eq!(again.finish(&again.body), prepared.finish(&prepared.body));
+        assert!(!prepare("La conclusion du chapitre.").needs_finish());
     }
 
     #[test]

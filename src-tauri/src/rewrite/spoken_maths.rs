@@ -195,9 +195,19 @@ static DEGREES: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"(?iu)(\d)\s*\bdegrés?\b").expect("degrees"));
 static SPACES: Lazy<Regex> = Lazy::new(|| Regex::new(r"[ \t]+").expect("spaces"));
 
+/// « un demi-rho » : Whisper colle parfois « demi » au mot suivant (test de
+/// Sash, 07/10, « un demi-rot V au carré » devenu « 1/2 -rot V² »).
+static DEMI_HYPHEN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\bdemi-").expect("demi pattern"));
+/// La ponctuation que Whisper met autour d'un mot devenu symbole : « égale, un
+/// demi » donnait « =, 1/2 », et « L, divisé par mu » donnait « L,/μ ».
+static COMMA_BEFORE_OPERATOR: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"\s*,\s*([=+×/<>≤≥≠·])").expect("comma before operator"));
+static COMMA_AFTER_OPERATOR: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"([=+×/<>≤≥≠·])\s*,").expect("comma after operator"));
+
 /// Une formule dictée, écrite en symboles.
 pub fn to_symbols(text: &str) -> String {
-    let mut out = text.to_string();
+    let mut out = DEMI_HYPHEN.replace_all(text, "demi ").into_owned();
     for rule in PHRASE_RULES.iter() {
         out = rule.pattern.replace_all(&out, rule.symbol).into_owned();
     }
@@ -234,6 +244,8 @@ pub fn to_symbols(text: &str) -> String {
         .replace_all(&out, |caps: &Captures| subscript(&caps[1]))
         .into_owned();
     out = with_units(&out);
+    out = COMMA_BEFORE_OPERATOR.replace_all(&out, " $1").into_owned();
+    out = COMMA_AFTER_OPERATOR.replace_all(&out, "$1").into_owned();
     tidy(&out)
 }
 
@@ -449,5 +461,21 @@ mod tests {
     fn words_that_are_not_maths_stay_words() {
         assert_eq!(to_symbols("aire du disque"), "aire du disque");
         assert_eq!(to_symbols("le mètre étalon"), "le mètre étalon");
+    }
+
+    /// Test de Sash, 07/10 : la ponctuation de Whisper restait collée aux
+    /// symboles, et « demi » était collé au mot suivant.
+    #[test]
+    fn whisper_punctuation_around_symbols_is_dropped() {
+        assert_eq!(
+            to_symbols("la force de traînée égale, un demi-rot V au carré SCX."),
+            "la force de traînée = 1/2 rot V² SCX."
+        );
+        assert_eq!(
+            to_symbols("Le nombre de Reynolds, VORO, V, L, divisé par MU."),
+            "Le nombre de Reynolds, VORO, V, L/μ."
+        );
+        // Une virgule de liste, loin de tout symbole, reste.
+        assert_eq!(to_symbols("x, y et z"), "x, y et z");
     }
 }

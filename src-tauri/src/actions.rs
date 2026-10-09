@@ -2055,7 +2055,7 @@ pub(crate) async fn process_transcription_output(
         post_processed_text = Some(final_text.clone());
     }
 
-    if prepared.marker.is_some() {
+    if prepared.needs_finish() {
         final_text = prepared.finish(&final_text);
         post_processed_text = Some(final_text.clone());
     }
