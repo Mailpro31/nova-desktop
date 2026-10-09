@@ -594,7 +594,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 5;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 6;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -1595,7 +1595,9 @@ pub fn get_default_settings() -> AppSettings {
         week_chars_produced: 0,
         week_stat_week_start: 0,
         mute_while_recording: false,
-        append_trailing_space: false,
+        // Des notes dictées phrase après phrase : sans espace, elles se
+        // collaient bout à bout (test de Sash, 07/10).
+        append_trailing_space: true,
         app_language: default_app_language(),
         theme: default_theme(),
         experimental_enabled: false,
@@ -1819,6 +1821,13 @@ fn apply_settings_migrations(
         if settings.history_limit == 5 {
             settings.history_limit = default_history_limit();
         }
+        updated = true;
+    }
+    if stored_schema_version < 6 {
+        // Les dictées se collaient bout à bout, sans espace : vingt phrases de
+        // cours dans Word n'en faisaient qu'une (test de Sash, 07/10). L'ancien
+        // défaut, jamais proposé à l'élève, passe à l'espace.
+        settings.append_trailing_space = true;
         updated = true;
     }
     if stored_schema_version < CURRENT_SETTINGS_SCHEMA_VERSION as u64 {

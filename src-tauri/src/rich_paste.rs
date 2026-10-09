@@ -74,6 +74,11 @@ fn has_structure(text: &str) -> bool {
     })
 }
 
+/// Un paragraphe vide, que Word garde : collé au milieu d'une ligne, il la
+/// termine, et la suite part sur une ligne neuve. Un `<p></p>` sans contenu est
+/// ignoré par Word (mesuré par automatisation COM, 07/10).
+const LINE_BREAK_BEFORE: &str = "<p class=MsoNormal><o:p>&nbsp;</o:p></p>";
+
 /// Le HTML à coller à côté du texte, ou `None` si le texte n'a aucune
 /// structure : il se colle alors exactement comme avant.
 pub fn to_html(text: &str) -> Option<String> {
@@ -81,6 +86,9 @@ pub fn to_html(text: &str) -> Option<String> {
         return None;
     }
     let mut html = String::new();
+    if text.trim_start_matches([' ', '\t']).starts_with('\n') {
+        html.push_str(LINE_BREAK_BEFORE);
+    }
     let mut list = List::None;
     let close = |html: &mut String, list: &mut List| {
         match *list {
@@ -131,9 +139,41 @@ pub fn to_html(text: &str) -> Option<String> {
     Some(html)
 }
 
+/// Le texte à coller, séparé de la dictée précédente, et s'il s'arrête au
+/// milieu d'une ligne.
+///
+/// Test de Sash, 07/10 : vingt dictées collées dans Word se suivaient sans
+/// espace (« … égale à 2x.⚠ Important : … »), et un repère ne commençait pas
+/// une nouvelle ligne.
+///
+/// - Une dictée structurée (repère, titre, liste) commence sur une nouvelle
+///   ligne si la précédente s'est arrêtée au milieu d'une ligne, et se termine
+///   par un retour : la suivante repart sur une ligne neuve.
+/// - Une phrase simple est suivie d'une espace si le réglage le demande.
+pub fn separate(text: &str, previous_mid_line: bool, trailing_space: bool) -> (String, bool) {
+    if has_structure(text) {
+        let mut out = text.to_string();
+        if previous_mid_line && !text.starts_with('\n') {
+            out.insert(0, '\n');
+        }
+        if !out.ends_with('\n') {
+            out.push('\n');
+        }
+        return (out, false);
+    }
+    if text.ends_with('\n') {
+        return (text.to_string(), false);
+    }
+    if trailing_space {
+        (format!("{text} "), true)
+    } else {
+        (text.to_string(), true)
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use super::to_html;
+    use super::{separate, to_html};
 
     #[test]
     fn plain_dictation_has_no_html() {
@@ -164,6 +204,39 @@ mod tests {
             to_html("1. On isole x.\n2) On divise.").unwrap(),
             "<ol><li class=MsoListParagraph>On isole x.</li>\
              <li class=MsoListParagraph>On divise.</li></ol>"
+        );
+    }
+
+    #[test]
+    fn a_marker_after_a_sentence_starts_a_new_line() {
+        let (text, mid_line) = separate("⚠ Important : la dérivée.", true, true);
+        assert_eq!(text, "\n⚠ Important : la dérivée.\n");
+        assert!(!mid_line);
+        let html = to_html(&text).unwrap();
+        assert!(html.starts_with("<p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><b>"));
+        // Après un repère, on est déjà sur une ligne neuve : pas de ligne vide.
+        let (text, _) = separate("🔢 Formule : x²", false, true);
+        assert_eq!(text, "🔢 Formule : x²\n");
+        assert!(!to_html(&text).unwrap().contains("&nbsp;"));
+    }
+
+    #[test]
+    fn plain_sentences_are_separated_by_a_space() {
+        assert_eq!(
+            separate("La dérivée de x² est égale à 2x.", false, true),
+            ("La dérivée de x² est égale à 2x. ".to_string(), true)
+        );
+        assert_eq!(
+            separate("Bonjour.", true, false),
+            ("Bonjour.".to_string(), true)
+        );
+        // « À la ligne, … » dit en tête : déjà sur une ligne neuve.
+        assert_eq!(
+            separate("\nLa conclusion porte sur la stabilité du vol.", true, true),
+            (
+                "\nLa conclusion porte sur la stabilité du vol. ".to_string(),
+                true
+            )
         );
     }
 

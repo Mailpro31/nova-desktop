@@ -4,8 +4,10 @@ use crate::settings::TypingTool;
 use crate::settings::{get_settings, AutoSubmitKey, ClipboardHandling, PasteMethod};
 use enigo::{Direction, Enigo, Key, Keyboard};
 use log::{info, warn};
+use once_cell::sync::Lazy;
 use std::process::Command;
-use std::time::Duration;
+use std::sync::Mutex;
+use std::time::{Duration, Instant};
 use tauri::{AppHandle, Manager};
 use tauri_plugin_clipboard_manager::ClipboardExt;
 
@@ -601,18 +603,29 @@ fn should_send_auto_submit(auto_submit: bool, paste_method: PasteMethod) -> bool
     auto_submit && paste_method != PasteMethod::None
 }
 
+/// La dernière dictée collée : quand, et si elle s'arrêtait au milieu d'une
+/// ligne. Au-delà d'une demi-heure, ce n'est plus la même prise de notes.
+static LAST_PASTE: Lazy<Mutex<Option<(Instant, bool)>>> = Lazy::new(|| Mutex::new(None));
+const SAME_NOTE_TAKING: Duration = Duration::from_secs(30 * 60);
+
 pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
     let settings = get_settings(&app_handle);
     let paste_method = settings.paste_method;
     let paste_delay_ms = settings.paste_delay_ms;
     let paste_delay_after_ms = settings.paste_delay_after_ms;
 
-    // Append trailing space if setting is enabled
-    let text = if settings.append_trailing_space {
-        format!("{} ", text)
-    } else {
-        text
-    };
+    // Séparée de la dictée précédente : une espace après une phrase, une ligne
+    // neuve pour un repère (`rich_paste::separate`).
+    let previous_mid_line = LAST_PASTE
+        .lock()
+        .ok()
+        .and_then(|last| *last)
+        .is_some_and(|(at, mid_line)| mid_line && at.elapsed() < SAME_NOTE_TAKING);
+    let (text, ends_mid_line) =
+        crate::rich_paste::separate(&text, previous_mid_line, settings.append_trailing_space);
+    if let Ok(mut last) = LAST_PASTE.lock() {
+        *last = Some((Instant::now(), ends_mid_line));
+    }
 
     info!(
         "Using paste method: {:?}, delay before: {}ms, delay after: {}ms",
