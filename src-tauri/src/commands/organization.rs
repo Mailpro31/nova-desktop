@@ -2509,6 +2509,18 @@ pub async fn transcribe_organization(
         .map(|transcript| transcript.text)
 }
 
+/// L'attente avant de réessayer une dictée refusée par un serveur saturé : le
+/// `retry_after` qu'il donne, borné entre 1 et 3 s pour que l'élève n'attende
+/// pas plus longtemps qu'un repli local.
+fn busy_retry_delay(body: &str) -> std::time::Duration {
+    let seconds = serde_json::from_str::<serde_json::Value>(body)
+        .ok()
+        .and_then(|value| value.get("detail")?.get("retry_after")?.as_f64())
+        .unwrap_or(1.0)
+        .clamp(1.0, 3.0);
+    std::time::Duration::from_secs_f64(seconds)
+}
+
 /// Comme `transcribe_organization`, en disant aussi si le serveur a compris
 /// la dictée : une dictée incomprise n'est pas collée, et la bulle demande de
 /// parler plus fort.
@@ -2527,44 +2539,59 @@ pub async fn transcribe_organization_detailed(
     let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes);
     let audio_bytes = multipart.audio_bytes as u64;
     let declared = multipart.body.len() as u64;
-
-    #[cfg(feature = "lab")]
-    let counters = std::sync::Arc::new(body_meter::Counters::default());
-
-    #[cfg(feature = "lab")]
-    let body = reqwest::Body::wrap(body_meter::CountedBody::new(
-        multipart.body,
-        counters.clone(),
-    ));
-    #[cfg(not(feature = "lab"))]
-    let body = reqwest::Body::from(multipart.body);
-
-    let request = client
-        .post(transcribe_url(&base_url, language))
-        .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
-        .body(body)
-        .build()
-        .map_err(|e| OrganizationError::Other(format!("invalid request: {}", e)))?;
-    let response = send_traced(&client, request, Some(audio_bytes)).await;
-
-    // La mesure vaut aussi — et surtout — quand la requete echoue.
-    #[cfg(feature = "lab")]
-    {
-        let status = match &response {
-            Ok(response) => response.status().as_u16().to_string(),
-            Err(_) => "transport-error".to_string(),
-        };
-        log::info!(
-            "campus transcribe measurement content_length_declared={declared} \
-             body_bytes_consumed_by_transport={} frames={} http_status={status}",
-            counters.bytes(),
-            counters.frames(),
-        );
-    }
     #[cfg(not(feature = "lab"))]
     let _ = declared;
 
-    let response = response?;
+    // Un serveur saturé (429) est réessayé une fois. Sans cela, le poste
+    // passait en silence sur son moteur local et la qualité changeait sans que
+    // l'élève le sache (banc du RTX, 09/10 : 5 refus sur 10 dictées simultanées).
+    let mut retried = false;
+    let response = loop {
+        #[cfg(feature = "lab")]
+        let counters = std::sync::Arc::new(body_meter::Counters::default());
+
+        #[cfg(feature = "lab")]
+        let body = reqwest::Body::wrap(body_meter::CountedBody::new(
+            multipart.body.clone(),
+            counters.clone(),
+        ));
+        #[cfg(not(feature = "lab"))]
+        let body = reqwest::Body::from(multipart.body.clone());
+
+        let request = client
+            .post(transcribe_url(&base_url, language))
+            .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
+            .body(body)
+            .build()
+            .map_err(|e| OrganizationError::Other(format!("invalid request: {}", e)))?;
+        let response = send_traced(&client, request, Some(audio_bytes)).await;
+
+        // La mesure vaut aussi — et surtout — quand la requete echoue.
+        #[cfg(feature = "lab")]
+        {
+            let status = match &response {
+                Ok(response) => response.status().as_u16().to_string(),
+                Err(_) => "transport-error".to_string(),
+            };
+            log::info!(
+                "campus transcribe measurement content_length_declared={declared} \
+                 body_bytes_consumed_by_transport={} frames={} http_status={status}",
+                counters.bytes(),
+                counters.frames(),
+            );
+        }
+
+        let response = response?;
+        if !retried && response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+            let text = response.text().await.unwrap_or_default();
+            let delay = busy_retry_delay(&text);
+            log::warn!("Campus server busy, retrying the dictation in {delay:?}");
+            tokio::time::sleep(delay).await;
+            retried = true;
+            continue;
+        }
+        break response;
+    };
 
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
     let parsed: TranscribeResponse = handle_organization_response(response).await?;
@@ -2793,6 +2820,21 @@ pub fn invalidate_server_reachability_cache(base_url: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_busy_server_is_retried_after_the_delay_it_gives() {
+        use std::time::Duration;
+        assert_eq!(
+            busy_retry_delay(r#"{"detail":{"code":"AI_RUNTIME_BUSY","retry_after":2}}"#),
+            Duration::from_secs(2)
+        );
+        // Sans délai lisible, une seconde ; jamais plus de trois.
+        assert_eq!(busy_retry_delay("trop de requêtes"), Duration::from_secs(1));
+        assert_eq!(
+            busy_retry_delay(r#"{"detail":{"retry_after":60}}"#),
+            Duration::from_secs(3)
+        );
+    }
 
     #[test]
     fn an_unclear_dictation_is_read_from_the_server_reply() {
