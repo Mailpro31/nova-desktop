@@ -29,6 +29,20 @@ pub(crate) fn write_dictation(app_handle: &AppHandle, text: &str) -> Result<(), 
     .map_err(|e| format!("Failed to write to clipboard: {}", e))
 }
 
+/// Copie un bloc mis en forme que l'élève collera lui-même, où qu'il soit
+/// (la fiche de révision) : voir `rich_paste::block_html`. Le texte simple,
+/// lui, ne change pas.
+pub(crate) fn write_block(app_handle: &AppHandle, text: &str) -> Result<(), String> {
+    let clipboard = app_handle.clipboard();
+    match crate::rich_paste::block_html(text) {
+        Some(html) => clipboard
+            .write_html(html.as_str(), Some(text))
+            .or_else(|_| clipboard.write_text(text)),
+        None => clipboard.write_text(text),
+    }
+    .map_err(|e| format!("Failed to write to clipboard: {}", e))
+}
+
 /// Pastes text using the clipboard: saves current content, writes text, sends paste keystroke, restores clipboard.
 fn paste_via_clipboard(
     enigo: &mut Enigo,
