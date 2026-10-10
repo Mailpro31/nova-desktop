@@ -14,7 +14,7 @@ use tauri::{AppHandle, State};
 #[tauri::command]
 #[specta::specta]
 pub fn copy_formatted_text(app: AppHandle, text: String) -> Result<(), String> {
-    crate::clipboard::write_dictation(&app, &text)
+    crate::clipboard::write_block(&app, &text)
 }
 
 /// Un terme qu'une correction de l'élève propose au vocabulaire : ce qu'il a

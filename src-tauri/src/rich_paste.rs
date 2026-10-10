@@ -139,6 +139,21 @@ pub fn to_html(text: &str) -> Option<String> {
     Some(html)
 }
 
+/// Le HTML d'un bloc que l'élève colle où il veut, comme la fiche de
+/// révision : il commence toujours sur son propre paragraphe.
+///
+/// Mesuré dans Word (11/10, automatisation COM) : collée au milieu d'une
+/// ligne, la fiche fondait la phrase déjà écrite dans son premier titre, qui
+/// devenait « Titre 1 ». Le paragraphe vide de `LINE_BREAK_BEFORE` termine la
+/// ligne d'abord ; sur une ligne vide, il n'ajoute qu'une ligne blanche.
+pub fn block_html(text: &str) -> Option<String> {
+    to_html(&format!(
+        "
+{}",
+        text.trim_start()
+    ))
+}
+
 /// Le texte à coller, séparé de la dictée précédente, et s'il s'arrête au
 /// milieu d'une ligne.
 ///
@@ -173,7 +188,7 @@ pub fn separate(text: &str, previous_mid_line: bool, trailing_space: bool) -> (S
 
 #[cfg(test)]
 mod tests {
-    use super::{separate, to_html};
+    use super::{block_html, separate, to_html};
 
     #[test]
     fn plain_dictation_has_no_html() {
@@ -205,6 +220,19 @@ mod tests {
             "<ol><li class=MsoListParagraph>On isole x.</li>\
              <li class=MsoListParagraph>On divise.</li></ol>"
         );
+    }
+
+    #[test]
+    fn a_revision_sheet_starts_its_own_paragraph() {
+        let html = block_html(
+            "# Mécanique des fluides
+## Définitions
+- Fluide parfait",
+        )
+        .unwrap();
+        assert!(html.starts_with("<p class=MsoNormal><o:p>&nbsp;</o:p></p><h1>"));
+        // Un texte sans structure n'a toujours pas de HTML.
+        assert!(block_html("Une phrase.").is_none());
     }
 
     #[test]
