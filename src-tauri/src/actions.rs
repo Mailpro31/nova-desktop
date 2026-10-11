@@ -2575,6 +2575,19 @@ impl ShortcutAction for TranscribeAction {
                         }
                     };
 
+                    // Le moteur local n'a pas les filtres du serveur : des crédits
+                    // de sous-titres écrits sur un silence ou un bruit ne se
+                    // collent jamais, et la bulle demande de parler plus fort
+                    // (`hallucination`, banc du RTX du 11/10).
+                    let transcription_result = transcription_result.map(|text| {
+                        if !organization_used && crate::hallucination::is_invented(&text) {
+                            organization_unclear = true;
+                            String::new()
+                        } else {
+                            text
+                        }
+                    });
+
                     // Gestion des erreurs campus : 401 -> déconnexion ;
                     // autre erreur + pas de secours local -> notification.
                     if let Some(err) = organization_error {

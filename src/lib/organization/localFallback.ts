@@ -35,6 +35,21 @@ export function fallbackLanguage(
   return wantedLanguage(language) ?? wantedLanguage(uiLanguage);
 }
 
+/**
+ * Les modèles mesurés sur de vraies dictées, du meilleur au moins bon, par
+ * langue. Banc v2 du RTX (11/10, 21 dictées de Sash, voix réelle, vocabulaire
+ * de cours), erreurs normalisées : Cohere Transcribe 8,9 %, Whisper turbo
+ * 11,7 %. L'ordre éditorial du catalogue mettait devant eux des modèles jamais
+ * mesurés en français. Un modèle mesuré passe avant tout autre, même déjà sur
+ * le disque : la qualité de la dictée d'abord.
+ */
+const MEASURED_BEST: Record<string, string[]> = {
+  fr: [
+    "handy-computer/cohere-transcribe-03-2026-gguf",
+    "handy-computer/whisper-large-v3-turbo-gguf",
+  ],
+};
+
 export function chooseLocalFallbackModel(
   models: ModelInfo[],
   language: string,
@@ -46,6 +61,12 @@ export function chooseLocalFallbackModel(
   const eligible = models.filter(
     (model) => !model.is_custom && !isLegacySource(model),
   );
+
+  const measured = (wanted && MEASURED_BEST[wanted]) || [];
+  for (const id of measured) {
+    const best = eligible.find((model) => model.id === id);
+    if (best) return best;
+  }
 
   const installed = eligible.find(
     (model) => model.is_downloaded && speaks(model),

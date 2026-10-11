@@ -119,6 +119,52 @@ describe("chooseLocalFallbackModel", () => {
   });
 });
 
+describe("les modèles mesurés passent devant", () => {
+  /**
+   * Banc v2 du RTX (11/10) : Cohere Transcribe 8,9 % d'erreurs, Whisper turbo
+   * 11,7 %. L'ordre éditorial donnait à un élève francophone un modèle jamais
+   * mesuré en français.
+   */
+  const cohere = model({
+    id: "handy-computer/cohere-transcribe-03-2026-gguf",
+    is_recommended: true,
+    supported_languages: ["en", "fr"],
+  });
+  const turbo = model({
+    id: "handy-computer/whisper-large-v3-turbo-gguf",
+    supported_languages: ["en", "fr"],
+  });
+
+  test("un francophone reçoit le meilleur modèle mesuré", () => {
+    expect(
+      chooseLocalFallbackModel([...catalog, turbo, cohere], "fr")?.id,
+    ).toBe(cohere.id);
+  });
+
+  test("sans le premier, le suivant mesuré", () => {
+    expect(chooseLocalFallbackModel([...catalog, turbo], "fr")?.id).toBe(
+      turbo.id,
+    );
+  });
+
+  test("même un modèle non mesuré déjà sur le disque passe après", () => {
+    const installed = model({
+      id: "installed",
+      is_downloaded: true,
+      supported_languages: ["fr"],
+    });
+    expect(
+      chooseLocalFallbackModel([installed, ...catalog, cohere], "fr")?.id,
+    ).toBe(cohere.id);
+  });
+
+  test("une autre langue garde l'ordre éditorial", () => {
+    expect(chooseLocalFallbackModel([...catalog, cohere], "en")?.id).toBe(
+      "english-first",
+    );
+  });
+});
+
 describe("la langue « automatique »", () => {
   /**
    * Mesuré le 29/09 : langue de dictée sur « auto », un modèle anglais hérité
