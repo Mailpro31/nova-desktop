@@ -29,6 +29,19 @@ const HESITATIONS: &[&str] = &[
     "euh", "heu", "hum", "hm", "hmm", "mm", "mmh", "mhm", "uh", "um",
 ];
 
+/// Une syllabe d'une ou deux lettres répétée au moins trois fois, seule :
+/// « Lalalala. » écrit par turbo (transcribe.cpp) sur un « euh » (banc du RTX
+/// sur la carte, 11/10). Le moteur de regex de Rust n'a pas de références
+/// arrière : la répétition se vérifie à la main.
+fn repeated_syllable(word: &str) -> bool {
+    let letters: Vec<char> = word.chars().collect();
+    (1..=2).any(|size| {
+        letters.len() >= size * 3
+            && letters.len() % size == 0
+            && letters.chunks(size).all(|chunk| chunk == &letters[..size])
+    })
+}
+
 fn fold(text: &str) -> String {
     let lowered = text.to_lowercase();
     let mut words = String::with_capacity(lowered.len());
@@ -55,7 +68,10 @@ pub fn is_invented(text: &str) -> bool {
     if words.is_empty() {
         return false;
     }
-    if words.split(' ').all(|word| HESITATIONS.contains(&word)) {
+    if words
+        .split(' ')
+        .all(|word| HESITATIONS.contains(&word) || repeated_syllable(word))
+    {
         return true;
     }
     SUBTITLE_CREDITS.replace_all(&words, " ").trim().is_empty()
@@ -74,6 +90,8 @@ mod tests {
             "Merci d'avoir regardé cette vidéo !",
             "Euh...",
             "Hum, euh.",
+            "Lalalala.",
+            "nanana",
         ] {
             assert!(is_invented(heard), "{heard}");
         }
@@ -85,6 +103,8 @@ mod tests {
             "Les sous-titres de la vidéo sont en anglais.",
             "Euh, la portance augmente avec l'incidence.",
             "Merci pour le corrigé du TD.",
+            "Papa arrive.",
+            "ananas",
             "",
         ] {
             assert!(!is_invented(said), "{said}");
