@@ -136,13 +136,15 @@ describe("les modèles mesurés passent devant", () => {
   });
 
   test("un francophone reçoit le meilleur modèle mesuré", () => {
-    expect(chooseLocalFallbackModel([...catalog, turbo, cohere], "fr")?.id).toBe(
-      cohere.id,
-    );
+    expect(
+      chooseLocalFallbackModel([...catalog, turbo, cohere], "fr")?.id,
+    ).toBe(cohere.id);
   });
 
   test("sans le premier, le suivant mesuré", () => {
-    expect(chooseLocalFallbackModel([...catalog, turbo], "fr")?.id).toBe(turbo.id);
+    expect(chooseLocalFallbackModel([...catalog, turbo], "fr")?.id).toBe(
+      turbo.id,
+    );
   });
 
   test("même un modèle non mesuré déjà sur le disque passe après", () => {
@@ -151,9 +153,9 @@ describe("les modèles mesurés passent devant", () => {
       is_downloaded: true,
       supported_languages: ["fr"],
     });
-    expect(chooseLocalFallbackModel([installed, ...catalog, cohere], "fr")?.id).toBe(
-      cohere.id,
-    );
+    expect(
+      chooseLocalFallbackModel([installed, ...catalog, cohere], "fr")?.id,
+    ).toBe(cohere.id);
   });
 
   test("une autre langue garde l'ordre éditorial", () => {
