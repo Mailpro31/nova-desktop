@@ -37,7 +37,7 @@ fn repeated_syllable(word: &str) -> bool {
     let letters: Vec<char> = word.chars().collect();
     (1..=2).any(|size| {
         letters.len() >= size * 3
-            && letters.len() % size == 0
+            && letters.len().is_multiple_of(size)
             && letters.chunks(size).all(|chunk| chunk == &letters[..size])
     })
 }
@@ -61,6 +61,30 @@ fn fold(text: &str) -> String {
     words.split_whitespace().collect::<Vec<_>>().join(" ")
 }
 
+/// Sous ce niveau, au moment le plus fort de la dictée, personne n'a parlé :
+/// le même seuil que la porte de silence du serveur (nova-server #107). Les
+/// dictées de Sash culminent entre −21,5 et −12,9 dBFS.
+const SILENT_PEAK_DBFS: f32 = -58.0;
+/// Le niveau se mesure par tranches de 30 ms à 16 kHz.
+const LEVEL_WINDOW: usize = 480;
+
+/// Vrai si l'enregistrement est presque muet : rien ne doit en sortir.
+///
+/// Banc du RTX (11/10) : sur 6 s de silence numérique, Cohere Transcribe (le
+/// repli local d'un élève francophone) écrit « Le but est de ne pas avoir de
+/// mal à l'aise. », une phrase qu'aucun filtre de texte ne reconnaît.
+pub fn is_silent(samples: &[f32]) -> bool {
+    if samples.is_empty() {
+        return false;
+    }
+    let loudest = samples
+        .chunks(LEVEL_WINDOW)
+        .map(|window| window.iter().map(|s| s * s).sum::<f32>() / window.len() as f32)
+        .fold(0.0_f32, f32::max);
+    let threshold = 10_f32.powf(SILENT_PEAK_DBFS / 20.0);
+    loudest.sqrt() < threshold
+}
+
 /// Vrai si la transcription n'est faite que de crédits de sous-titres ou
 /// d'hésitations : rien de ce que l'élève a dit.
 pub fn is_invented(text: &str) -> bool {
@@ -79,7 +103,27 @@ pub fn is_invented(text: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::is_invented;
+    use super::{is_invented, is_silent};
+
+    fn tone(dbfs: f32, seconds: f32) -> Vec<f32> {
+        let amplitude = 2_f32.sqrt() * 10_f32.powf(dbfs / 20.0);
+        (0..(16_000.0 * seconds) as usize)
+            .map(|i| amplitude * (2.0 * std::f32::consts::PI * 440.0 * i as f32 / 16_000.0).sin())
+            .collect()
+    }
+
+    #[test]
+    fn a_silent_recording_is_recognised() {
+        assert!(is_silent(&vec![0.0; 96_000]));
+        assert!(is_silent(&tone(-70.0, 1.0)));
+        // Une voix basse, en classe, reste bien au-dessus.
+        assert!(!is_silent(&tone(-45.0, 1.0)));
+        // Un seul moment parlé suffit.
+        let mut mostly_silent = vec![0.0; 48_000];
+        mostly_silent.extend(tone(-30.0, 0.1));
+        assert!(!is_silent(&mostly_silent));
+        assert!(!is_silent(&[]));
+    }
 
     #[test]
     fn credits_and_hesitations_written_on_silence_are_invented() {
