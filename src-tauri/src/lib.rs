@@ -15,6 +15,7 @@ mod dictation_state;
 /// Découverte d'organisation : trouver son service sans taper une adresse.
 /// Voir `docs/architecture/organization-discovery.md`.
 mod email_discovery;
+mod hallucination;
 mod helpers;
 mod input;
 /// Enrôlement d'un poste dans un Lab local. Ce code est exclu des binaires
