@@ -2410,6 +2410,9 @@ impl ShortcutAction for TranscribeAction {
                 } else {
                     // Save WAV concurrently with transcription
                     let sample_count = samples.len();
+                    // Mesuré avant que le moteur ne prenne les échantillons : un
+                    // enregistrement presque muet ne donne rien en local.
+                    let local_silent = crate::hallucination::is_silent(&samples);
                     let file_name = format!("handy-{}.wav", chrono::Utc::now().timestamp());
                     let wav_path = hm.recordings_dir().join(&file_name);
                     let wav_path_for_verify = wav_path.clone();
@@ -2580,7 +2583,9 @@ impl ShortcutAction for TranscribeAction {
                     // collent jamais, et la bulle demande de parler plus fort
                     // (`hallucination`, banc du RTX du 11/10).
                     let transcription_result = transcription_result.map(|text| {
-                        if !organization_used && crate::hallucination::is_invented(&text) {
+                        if !organization_used
+                            && (local_silent || crate::hallucination::is_invented(&text))
+                        {
                             organization_unclear = true;
                             String::new()
                         } else {
