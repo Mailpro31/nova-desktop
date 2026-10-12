@@ -565,7 +565,10 @@ pub fn dates_in(text: &str) -> HashSet<String> {
 
 /// Mots qui annoncent une reprise : ce qui est dit juste avant peut être
 /// écarté.
-const CORRECTION_MARKERS: &[&str] = &["pardon", "plutot", "attends", "sorry", "rather"];
+/// « enfin » comme le serveur (`_REPAIR`) : « le 12 octobre, enfin le 19 »
+/// était accepté par le serveur et refusé ici, faute de reconnaître la reprise
+/// (banc de non-régression du RTX, 11/10).
+const CORRECTION_MARKERS: &[&str] = &["pardon", "plutot", "attends", "enfin", "sorry", "rather"];
 
 /// Nombre de mots, avant une reprise, que la reprise peut remplacer.
 const CORRECTION_WINDOW: usize = 6;
@@ -1333,6 +1336,22 @@ Cordialement",
             "default_improve_transcriptions"
         )
         .is_ok());
+    }
+
+    #[test]
+    fn a_repair_announced_by_enfin_drops_the_abandoned_date() {
+        assert!(check(
+            "On se retrouve le 12 octobre, enfin le 19 octobre, pour la soutenance.",
+            "Nous nous retrouvons le 19 octobre pour la soutenance.",
+            "default_improve_transcriptions"
+        )
+        .is_ok());
+        assert!(check(
+            "On se retrouve le 12 octobre, enfin le 19 octobre, pour la soutenance.",
+            "On se retrouve le 12 octobre pour la soutenance.",
+            "default_improve_transcriptions"
+        )
+        .is_err());
     }
 
     #[test]
