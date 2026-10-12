@@ -804,6 +804,41 @@ fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
     Ok(())
 }
 
+/// Le texte d'un Style, ses symboles relus en mots, pour le comparer à la
+/// dictée : « 20 % », « 340 m/s » étaient refusés en « dictation-not-kept »,
+/// alors que c'est la mise au propre attendue (sondage du 12/10, même règle que
+/// `as_dictated` côté serveur). Le texte collé ne change pas.
+fn as_dictated(output: &str) -> String {
+    static SYMBOLS: Lazy<Vec<(Regex, &'static str)>> = Lazy::new(|| {
+        [
+            (r"(?i)\bkm/h\b", " kilomètres par heure "),
+            (r"\bm/s\b", " mètres par seconde "),
+            (r"(?i)\bn[°º]\s?(\d)", " numéro $1"),
+            (r"\s?%", " pour cent "),
+            (r"\s?€", " euros "),
+        ]
+        .into_iter()
+        .map(|(pattern, words)| (Regex::new(pattern).expect("symbol pattern"), words))
+        .collect()
+    });
+    SYMBOLS
+        .iter()
+        .fold(output.to_string(), |text, (pattern, words)| {
+            pattern.replace_all(&text, *words).into_owned()
+        })
+}
+
+/// « le premier novembre » écrit « le 1er novembre » : le même jour.
+fn first_of_month(input: &str) -> String {
+    static FIRST: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(
+            r"(?i)\bpremi(?:er|ère|ere)\s+(janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[uû]t|septembre|octobre|novembre|d[ée]cembre)\b",
+        )
+        .expect("first of month pattern")
+    });
+    FIRST.replace_all(input, "1er $1").into_owned()
+}
+
 /// Les contrôles propres aux Styles intégrés. `Err` porte le motif du refus.
 ///
 /// « Réunion » résume : il échappe aux contrôles de langue, de mots repris et
@@ -845,21 +880,22 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
     // « Voici mon adresse : {{mon adresse}}. », qui ne reprend qu'un mot sur
     // trois. Le repère, dont la présence est déjà exigée, relie la sortie à la
     // dictée bien mieux qu'un compte de mots.
+    let spoken = as_dictated(output);
     if !has_personal_value_marker(input)
-        && kept_word_ratio(input, output).is_some_and(|ratio| ratio < MIN_KEPT_WORDS)
+        && kept_word_ratio(input, &spoken).is_some_and(|ratio| ratio < MIN_KEPT_WORDS)
     {
         return Err("dictation-not-kept");
     }
     if grouped_number_lost(input, output) {
         return Err("number-format-changed");
     }
-    if let Some(reason) = facts_refusal(input, output, true) {
+    if let Some(reason) = facts_refusal(&first_of_month(input), &spoken, true) {
         return Err(reason);
     }
     if FAITHFUL_STYLES.contains(&style_id)
         && !has_personal_value_marker(input)
         && course_words(output).len() >= FAITHFUL_MIN_WRITTEN_WORDS
-        && added_word_ratio(input, output).is_some_and(|ratio| ratio > FAITHFUL_MAX_ADDED_WORDS)
+        && added_word_ratio(input, &spoken).is_some_and(|ratio| ratio > FAITHFUL_MAX_ADDED_WORDS)
     {
         return Err("content-added");
     }
@@ -1665,6 +1701,39 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             ", en 1789".repeat(80)
         );
         assert_eq!(check(input, &output, COURSE), Err("output-runaway"));
+    }
+
+    #[test]
+    fn symbols_of_a_tidy_text_are_read_as_dictated() {
+        // Sondage du 12/10 : la mise au propre attendue était refusée.
+        let style = "default_improve_transcriptions";
+        for (said, wrote) in [
+            (
+                "la vitesse est de 340 mètres par seconde",
+                "La vitesse est de 340 m/s.",
+            ),
+            ("la remise est de 20 pour cent", "La remise est de 20 %."),
+            ("le TD numéro 3 est annulé", "Le TD n° 3 est annulé."),
+            ("ça coûte 15 euros", "Ça coûte 15 €."),
+            (
+                "le rendu est pour le premier novembre",
+                "Le rendu est pour le 1er novembre.",
+            ),
+        ] {
+            assert_eq!(check(said, wrote, style), Ok(()), "{said}");
+        }
+        assert!(check(
+            "la remise est de 20 pour cent",
+            "La remise est de 30 %.",
+            style
+        )
+        .is_err());
+        assert!(check(
+            "le rendu est pour le premier novembre",
+            "Le rendu est pour le 2 novembre.",
+            style
+        )
+        .is_err());
     }
 
     #[test]
