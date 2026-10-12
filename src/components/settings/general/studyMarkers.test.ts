@@ -37,8 +37,13 @@ describe("repères vocaux", () => {
   });
 
   test("chaque repère montré est un déclencheur, avec le texte écrit", () => {
+    // « Diapo 12 » et « Diapo suivante » montrent un exemple numéroté : la
+    // règle, elle, est écrite sans le numéro, qu'elle ajoute elle-même.
+    const withoutNumber = (value: string) => value.replace(/ \d+$/, "");
     for (const { said, written } of [...STUDY_MARKERS, ...COURSE_BLOCKS]) {
-      expect(rules).toContain(`("${said.toLowerCase()}", "${written}"`);
+      expect(rules).toContain(
+        `("${withoutNumber(said.toLowerCase())}", "${withoutNumber(written)}"`,
+      );
     }
   });
 
