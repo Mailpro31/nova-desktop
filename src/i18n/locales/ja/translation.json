@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "例：https://meet.google.com/abc-def-ghi",
       "add": "スニペットを追加",
       "tip": "ヒント：音声入力中に「{{trigger}}」と言うと、情報がすぐに挿入されます！",
-      "values": "挿入されるテキストでは、{{date}} と {{time}} が口述の日付と時刻になります。"
+      "values": "挿入されるテキストでは、{{date}} と {{time}} が口述の日付と時刻になります。",
+      "importFile": "テキストファイルを読み込む",
+      "fileNotText": "このファイルはテキストではありません。.txt または .md ファイルを選んでください。",
+      "fileTooLong": "このファイルは {{max}} 文字を超えています。"
     },
     "studyMarkers": {
       "title": "音声マーカー",

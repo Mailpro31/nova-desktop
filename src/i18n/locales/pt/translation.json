@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Ex.: https://meet.google.com/abc-def-ghi",
       "add": "Adicionar trecho",
       "tip": "Dica: diga “{{trigger}}” durante o ditado para inserir suas informações na hora!",
-      "values": "No texto inserido, {{date}} e {{time}} tornam-se a data e a hora do ditado."
+      "values": "No texto inserido, {{date}} e {{time}} tornam-se a data e a hora do ditado.",
+      "importFile": "Importar um arquivo de texto",
+      "fileNotText": "Este arquivo não é texto. Escolha um arquivo .txt ou .md.",
+      "fileTooLong": "Este arquivo ultrapassa {{max}} caracteres."
     },
     "studyMarkers": {
       "title": "Marcadores de voz",

@@ -101,55 +101,82 @@ export const OrganizationGeneralSettings: React.FC = () => {
   );
 };
 
+/** Les sections de ce que l'élève apporte à la dictée, une par onglet. */
+export type PersonalizationSection =
+  | "dictionary"
+  | "snippets"
+  | "studyMarkers"
+  | "timetable"
+  | "formatting";
+
+// Les clés restent écrites en entier : `organizationKeysUsed.test.ts` les
+// cherche dans le code.
+export const PERSONALIZATION_SECTIONS: Record<
+  PersonalizationSection,
+  {
+    icon: React.ElementType;
+    body: React.FC;
+    titleKey: string;
+    descriptionKey: string;
+  }
+> = {
+  dictionary: {
+    icon: BookA,
+    body: OrganizationDictionarySection,
+    titleKey: "organization.dictionary.title",
+    descriptionKey: "organization.dictionary.description",
+  },
+  snippets: {
+    icon: MessageSquare,
+    body: OrganizationSnippetsSection,
+    titleKey: "organization.snippets.title",
+    descriptionKey: "organization.snippets.description",
+  },
+  studyMarkers: {
+    icon: Bookmark,
+    body: StudyMarkersSection,
+    titleKey: "organization.studyMarkers.title",
+    descriptionKey: "organization.studyMarkers.description",
+  },
+  timetable: {
+    icon: CalendarDays,
+    body: TimetableSection,
+    titleKey: "organization.timetable.title",
+    descriptionKey: "organization.timetable.description",
+  },
+  formatting: {
+    icon: ListFilter,
+    body: OrganizationFormattingSection,
+    titleKey: "organization.formatting.title",
+    descriptionKey: "organization.formatting.description",
+  },
+};
+
 /**
  * Ce que l'utilisateur apporte à la dictée : son vocabulaire, ses raccourcis
- * vocaux, ses règles de formatage. Trois systèmes proches — la page les
- * nomme donc par ce qu'ils font, pas par leur table.
+ * vocaux, ses repères, son emploi du temps, ses règles de formatage. Chacun a
+ * son onglet : empilés sur une seule page, les snippets et les règles de
+ * formatage n'apparaissaient qu'après un long défilement (retour de Sash,
+ * 12/10).
  */
-export const OrganizationPersonalizationSections: React.FC = () => {
+export const OrganizationPersonalizationSection: React.FC<{
+  section: PersonalizationSection;
+}> = ({ section }) => {
   const { t } = useTranslation();
+  const {
+    icon,
+    body: Body,
+    titleKey,
+    descriptionKey,
+  } = PERSONALIZATION_SECTIONS[section];
   return (
-    <div className="space-y-5">
-      <SectionCard
-        icon={BookA}
-        title={t("organization.dictionary.title")}
-        description={t("organization.dictionary.description")}
-      >
-        <OrganizationDictionarySection />
-      </SectionCard>
-
-      <SectionCard
-        icon={MessageSquare}
-        title={t("organization.snippets.title")}
-        description={t("organization.snippets.description")}
-      >
-        <OrganizationSnippetsSection />
-      </SectionCard>
-
-      <SectionCard
-        icon={Bookmark}
-        title={t("organization.studyMarkers.title")}
-        description={t("organization.studyMarkers.description")}
-      >
-        <StudyMarkersSection />
-      </SectionCard>
-
-      <SectionCard
-        icon={CalendarDays}
-        title={t("organization.timetable.title")}
-        description={t("organization.timetable.description")}
-      >
-        <TimetableSection />
-      </SectionCard>
-
-      <SectionCard
-        icon={ListFilter}
-        title={t("organization.formatting.title")}
-        description={t("organization.formatting.description")}
-      >
-        <OrganizationFormattingSection />
-      </SectionCard>
-    </div>
+    <SectionCard
+      icon={icon}
+      title={t(titleKey)}
+      description={t(descriptionKey)}
+    >
+      <Body />
+    </SectionCard>
   );
 };
 

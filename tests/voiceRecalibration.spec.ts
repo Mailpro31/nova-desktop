@@ -44,7 +44,7 @@ test.describe("voice recalibration", () => {
     await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
 
     // Le micro vit sous l'onglet Voix : c'est là qu'on cherche sa voix.
-    await page.getByRole("tab", { name: "Voice" }).click();
+    await page.getByRole("tab", { name: "Voice", exact: true }).click();
     await page.getByRole("button", { name: "Recalibrate my voice" }).click();
     await expect(
       page.getByRole("heading", { name: "Let Nova learn your voice" }),

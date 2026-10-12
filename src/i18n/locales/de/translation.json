@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "z. B. https://meet.google.com/abc-def-ghi",
       "add": "Baustein hinzufügen",
       "tip": "Tipp: Sag beim Diktieren „{{trigger}}“, um deine Angaben sofort einzufügen!",
-      "values": "Im eingefügten Text werden {{date}} und {{time}} zu Datum und Uhrzeit des Diktats."
+      "values": "Im eingefügten Text werden {{date}} und {{time}} zu Datum und Uhrzeit des Diktats.",
+      "importFile": "Textdatei importieren",
+      "fileNotText": "Diese Datei ist kein Text. Wählen Sie eine .txt- oder .md-Datei.",
+      "fileTooLong": "Diese Datei ist länger als {{max}} Zeichen."
     },
     "studyMarkers": {
       "title": "Sprachmarker",

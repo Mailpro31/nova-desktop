@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Ex: https://meet.google.com/abc-def-ghi",
       "add": "Ajouter le snippet",
       "tip": "Astuce : Dites « {{trigger}} » lors d'une dictée pour insérer vos informations instantanément !",
-      "values": "Dans le texte inséré, {{date}} et {{time}} deviennent la date et l'heure de la dictée."
+      "values": "Dans le texte inséré, {{date}} et {{time}} deviennent la date et l'heure de la dictée.",
+      "importFile": "Importer un fichier texte",
+      "fileNotText": "Ce fichier n'est pas du texte. Choisissez un fichier .txt ou .md.",
+      "fileTooLong": "Ce fichier dépasse {{max}} caractères."
     },
     "studyMarkers": {
       "title": "Repères vocaux",

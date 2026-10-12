@@ -4,8 +4,10 @@ import { OrganizationConnectionSettings } from "../organization/OrganizationConn
 import { GeneralSettings } from "../general/GeneralSettings";
 import {
   OrganizationGeneralSettings,
-  OrganizationPersonalizationSections,
+  OrganizationPersonalizationSection,
   OrganizationAdvancedSections,
+  PERSONALIZATION_SECTIONS,
+  type PersonalizationSection,
 } from "../general/OrganizationGeneralSettings";
 import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ThemeSelector } from "../ThemeSelector";
@@ -22,7 +24,8 @@ type ConfigTab =
   | "voice"
   | "performance"
   | "advanced"
-  | "personalization";
+  | "personalization"
+  | PersonalizationSection;
 
 const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
   { id: "general", labelKey: "sidebar.general" },
@@ -31,10 +34,16 @@ const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
 ];
 
 /**
- * Quatre catégories nommées d'après ce que l'utilisateur cherche, pas d'après
- * l'architecture : Général (ce qui concerne l'application), Voix (tout ce qui
- * touche à la dictée), Personnalisation (ce qu'il apporte lui-même), Avancé
- * (ce qu'on n'ouvre qu'en cas de problème).
+ * Des catégories nommées d'après ce que l'utilisateur cherche, pas d'après
+ * l'architecture : Général (l'application et la bulle), Voix (le micro, les
+ * raccourcis, et ce qui sert pendant la dictée : repères vocaux, emploi du
+ * temps), puis le dictionnaire, les snippets vocaux et les règles de
+ * formatage, chacun à un clic, et Avancé (ce qu'on n'ouvre qu'en cas de
+ * problème). Six onglets : ils tiennent sur une ligne dans une fenêtre large.
+ *
+ * Retour de Sash (12/10) : rangés ensemble sous « Personnalisation », les
+ * snippets et les règles de formatage n'apparaissaient qu'après un long
+ * défilement, sous la bulle et le dictionnaire.
  *
  * L'identité campus et la déconnexion n'y figurent pas : elles ont leur
  * destination propre, atteinte par le bloc bas de la barre latérale.
@@ -42,7 +51,10 @@ const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
 const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
   { id: "general", labelKey: "sidebar.general" },
   { id: "voice", labelKey: "settingsNav.voice" },
-  { id: "personalization", labelKey: "sidebar.personalization" },
+  ...(["dictionary", "snippets", "formatting"] as const).map((id) => ({
+    id,
+    labelKey: PERSONALIZATION_SECTIONS[id].titleKey,
+  })),
   { id: "advanced", labelKey: "sidebar.advanced" },
 ];
 
@@ -101,7 +113,13 @@ export const ConfigurationSettings: React.FC = () => {
 
       {tab === "general" &&
         (organizationMode ? <OrganizationGeneralTab /> : <GeneralSettings />)}
-      {tab === "voice" && <OrganizationGeneralSettings />}
+      {tab === "voice" && (
+        <div className="space-y-5">
+          <OrganizationGeneralSettings />
+          <OrganizationPersonalizationSection section="studyMarkers" />
+          <OrganizationPersonalizationSection section="timetable" />
+        </div>
+      )}
       {tab === "performance" && <ModelsSettings />}
       {tab === "advanced" &&
         (organizationMode ? (
@@ -109,11 +127,11 @@ export const ConfigurationSettings: React.FC = () => {
         ) : (
           <AdvancedSettings />
         ))}
-      {tab === "personalization" && (
-        <>
-          <PersonalizationSettings />
-          {organizationMode && <OrganizationPersonalizationSections />}
-        </>
+      {tab === "personalization" && <PersonalizationSettings />}
+      {tab in PERSONALIZATION_SECTIONS && (
+        <OrganizationPersonalizationSection
+          section={tab as PersonalizationSection}
+        />
       )}
     </div>
   );
@@ -133,6 +151,8 @@ const OrganizationGeneralTab: React.FC = () => {
         <ThemeSelector descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
       <ReadingComfortSettings />
+      {/* La bulle : son apparence et quand elle s'affiche. */}
+      <PersonalizationSettings embedded />
       {/* Toujours rendu, lié ou non : c'est la seule surface d'où l'on peut
           rattacher un compte, et la cacher tant qu'aucune organisation
           n'existe la rendait inatteignable au moment où elle sert. */}

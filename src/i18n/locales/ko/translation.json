@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "예: https://meet.google.com/abc-def-ghi",
       "add": "스니펫 추가",
       "tip": "팁: 받아쓰기 중에 “{{trigger}}”라고 말하면 정보가 바로 삽입됩니다!",
-      "values": "삽입되는 텍스트에서 {{date}}와 {{time}}은 받아쓰기한 날짜와 시간이 됩니다."
+      "values": "삽입되는 텍스트에서 {{date}}와 {{time}}은 받아쓰기한 날짜와 시간이 됩니다.",
+      "importFile": "텍스트 파일 가져오기",
+      "fileNotText": "이 파일은 텍스트가 아닙니다. .txt 또는 .md 파일을 선택하세요.",
+      "fileTooLong": "이 파일은 {{max}}자를 넘습니다."
     },
     "studyMarkers": {
       "title": "음성 표시",

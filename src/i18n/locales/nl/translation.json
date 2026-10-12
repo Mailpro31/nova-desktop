@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Bijv. https://meet.google.com/abc-def-ghi",
       "add": "Fragment toevoegen",
       "tip": "Tip: zeg „{{trigger}}” tijdens het dicteren om je gegevens meteen in te voegen!",
-      "values": "In de ingevoegde tekst worden {{date}} en {{time}} de datum en tijd van het dictaat."
+      "values": "In de ingevoegde tekst worden {{date}} en {{time}} de datum en tijd van het dictaat.",
+      "importFile": "Tekstbestand importeren",
+      "fileNotText": "Dit bestand is geen tekst. Kies een .txt- of .md-bestand.",
+      "fileTooLong": "Dit bestand is langer dan {{max}} tekens."
     },
     "studyMarkers": {
       "title": "Spraakmarkeringen",

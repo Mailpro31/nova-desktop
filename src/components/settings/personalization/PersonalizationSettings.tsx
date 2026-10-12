@@ -50,7 +50,13 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
   </span>
 );
 
-export const PersonalizationSettings: React.FC = () => {
+/**
+ * `embedded` : la bulle seule, sans titre de page, dans l'onglet Général des
+ * réglages en campus.
+ */
+export const PersonalizationSettings: React.FC<{ embedded?: boolean }> = ({
+  embedded = false,
+}) => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
   const organizationMode = isOrganizationMode();
@@ -97,10 +103,12 @@ export const PersonalizationSettings: React.FC = () => {
   return (
     // Largeur héritée de l'app shell.
     <div className="space-y-6">
-      <PageHeader
-        title={t("sidebar.personalization")}
-        description={word("personalizationDescription")}
-      />
+      {!embedded && (
+        <PageHeader
+          title={t("sidebar.personalization")}
+          description={word("personalizationDescription")}
+        />
+      )}
 
       {/* En campus, langue et thème vivent dans « Général » : les répéter ici
           donnerait deux emplacements pour un même réglage. */}
