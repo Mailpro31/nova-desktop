@@ -159,9 +159,9 @@ test.describe("organization tools are reachable", () => {
     page,
   }) => {
     // Les onglets ne tiennent pas sur une ligne dans une fenêtre étroite : la
-    // barre défilait horizontalement et coupait le dernier onglet. Il en reste
-    // quatre depuis que Learn et les notes ont rejoint la barre latérale ; ils
-    // passent à la ligne à 600 px, là où six le faisaient dès 760 px.
+    // barre défilait horizontalement et coupait le dernier onglet. Il y en a
+    // six depuis que le dictionnaire, les snippets et les règles de formatage
+    // ont chacun le leur (12/10) ; ils passent à la ligne à 600 px.
     await page.setViewportSize({ width: 600, height: 600 });
     await mockTauri(page, {
       session,

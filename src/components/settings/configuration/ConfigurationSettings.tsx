@@ -35,10 +35,11 @@ const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
 
 /**
  * Des catégories nommées d'après ce que l'utilisateur cherche, pas d'après
- * l'architecture : Général (l'application et la bulle), Voix (tout ce qui
- * touche à la dictée), puis chacun de ce qu'il apporte lui-même — dictionnaire,
- * snippets vocaux, repères, emploi du temps, règles de formatage — à un clic,
- * et Avancé (ce qu'on n'ouvre qu'en cas de problème).
+ * l'architecture : Général (l'application et la bulle), Voix (le micro, les
+ * raccourcis, et ce qui sert pendant la dictée : repères vocaux, emploi du
+ * temps), puis le dictionnaire, les snippets vocaux et les règles de
+ * formatage, chacun à un clic, et Avancé (ce qu'on n'ouvre qu'en cas de
+ * problème). Six onglets : ils tiennent sur une ligne dans une fenêtre large.
  *
  * Retour de Sash (12/10) : rangés ensemble sous « Personnalisation », les
  * snippets et les règles de formatage n'apparaissaient qu'après un long
@@ -50,9 +51,10 @@ const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
 const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
   { id: "general", labelKey: "sidebar.general" },
   { id: "voice", labelKey: "settingsNav.voice" },
-  ...(Object.keys(PERSONALIZATION_SECTIONS) as PersonalizationSection[]).map(
-    (id) => ({ id, labelKey: PERSONALIZATION_SECTIONS[id].titleKey }),
-  ),
+  ...(["dictionary", "snippets", "formatting"] as const).map((id) => ({
+    id,
+    labelKey: PERSONALIZATION_SECTIONS[id].titleKey,
+  })),
   { id: "advanced", labelKey: "sidebar.advanced" },
 ];
 
@@ -111,7 +113,13 @@ export const ConfigurationSettings: React.FC = () => {
 
       {tab === "general" &&
         (organizationMode ? <OrganizationGeneralTab /> : <GeneralSettings />)}
-      {tab === "voice" && <OrganizationGeneralSettings />}
+      {tab === "voice" && (
+        <div className="space-y-5">
+          <OrganizationGeneralSettings />
+          <OrganizationPersonalizationSection section="studyMarkers" />
+          <OrganizationPersonalizationSection section="timetable" />
+        </div>
+      )}
       {tab === "performance" && <ModelsSettings />}
       {tab === "advanced" &&
         (organizationMode ? (
