@@ -1,9 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Sparkles, Plus, Trash2, RefreshCw, Lightbulb } from "lucide-react";
+import {
+  Sparkles,
+  Plus,
+  Trash2,
+  RefreshCw,
+  Lightbulb,
+  FileText,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
+import { Textarea } from "../../ui/Textarea";
 import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 import type { OrganizationSnippetEntry } from "@/lib/organizationApi";
@@ -31,6 +39,14 @@ export const snippetWays = (trigger: string): string[] => {
   return ways;
 };
 
+/** La longueur qu'un snippet peut avoir sur le serveur (`/api/snippets`). */
+export const SNIPPET_MAX_LENGTH = 4000;
+
+/** Un fichier qu'on lit comme du texte : son type, ou son extension. */
+export const isTextFile = (name: string, type: string): boolean =>
+  type.startsWith("text/") ||
+  /\.(txt|md|markdown|csv|tsv|html?|json|tex|rtf)$/i.test(name);
+
 export const OrganizationSnippetsSection: React.FC = () => {
   const { t } = useTranslation();
   const [snippets, setSnippets] = useState<OrganizationSnippetEntry[]>([]);
@@ -40,6 +56,25 @@ export const OrganizationSnippetsSection: React.FC = () => {
   const [trigger, setTrigger] = useState("");
   const [content, setContent] = useState("");
   const [adding, setAdding] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  // Le texte d'un fichier devient le texte collé (demande de Sash, 12/10).
+  const importFile = async (file: File | undefined) => {
+    if (!file) return;
+    if (!isTextFile(file.name, file.type)) {
+      toast.error(t("organization.snippets.fileNotText"));
+      return;
+    }
+    const text = (await file.text()).replace(/\r\n/g, "\n").trim();
+    if (text.length > SNIPPET_MAX_LENGTH) {
+      toast.error(
+        t("organization.snippets.fileTooLong", { max: SNIPPET_MAX_LENGTH }),
+      );
+      return;
+    }
+    setContent(text);
+  };
 
   const loadSnippets = useCallback(async () => {
     const session = await loadOrganizationSession();
@@ -114,7 +149,7 @@ export const OrganizationSnippetsSection: React.FC = () => {
 
       {/* Add form */}
       <form onSubmit={handleAdd} className="space-y-2 pt-1">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="space-y-2">
           <div>
             <label
               htmlFor="campus-snippet-trigger"
@@ -138,14 +173,47 @@ export const OrganizationSnippetsSection: React.FC = () => {
             >
               {t("organization.snippets.contentLabel")}
             </label>
-            <Input
-              type="text"
+            <Textarea
               id="campus-snippet-content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOver(true);
+              }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setDragOver(false);
+                void importFile(e.dataTransfer.files?.[0]);
+              }}
+              maxLength={SNIPPET_MAX_LENGTH}
+              rows={3}
+              variant="compact"
               placeholder={t("organization.snippets.contentPlaceholder")}
-              className="text-sm"
+              className={`w-full text-sm ${dragOver ? "border-accent" : ""}`}
             />
+            <input
+              ref={fileInput}
+              type="file"
+              accept=".txt,.md,.markdown,.csv,.tsv,.html,.htm,.json,.tex,text/*"
+              className="sr-only"
+              tabIndex={-1}
+              onChange={(e) => {
+                void importFile(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => fileInput.current?.click()}
+              className="mt-1.5 inline-flex items-center gap-1.5"
+            >
+              <FileText size={14} />
+              {t("organization.snippets.importFile")}
+            </Button>
           </div>
         </div>
 

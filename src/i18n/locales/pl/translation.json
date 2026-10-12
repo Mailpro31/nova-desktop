@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Np. https://meet.google.com/abc-def-ghi",
       "add": "Dodaj fragment",
       "tip": "Wskazówka: powiedz „{{trigger}}” podczas dyktowania, aby od razu wstawić swoje dane!",
-      "values": "We wstawianym tekście {{date}} i {{time}} zmieniają się w datę i godzinę dyktowania."
+      "values": "We wstawianym tekście {{date}} i {{time}} zmieniają się w datę i godzinę dyktowania.",
+      "importFile": "Importuj plik tekstowy",
+      "fileNotText": "Ten plik nie jest tekstem. Wybierz plik .txt lub .md.",
+      "fileTooLong": "Ten plik ma więcej niż {{max}} znaków."
     },
     "studyMarkers": {
       "title": "Znaczniki głosowe",

@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "T.ex. https://meet.google.com/abc-def-ghi",
       "add": "Lägg till snutt",
       "tip": "Tips: säg ”{{trigger}}” under dikteringen för att infoga din information direkt!",
-      "values": "I den infogade texten blir {{date}} och {{time}} dikteringens datum och tid."
+      "values": "I den infogade texten blir {{date}} och {{time}} dikteringens datum och tid.",
+      "importFile": "Importera en textfil",
+      "fileNotText": "Den här filen är inte text. Välj en .txt- eller .md-fil.",
+      "fileTooLong": "Den här filen är längre än {{max}} tecken."
     },
     "studyMarkers": {
       "title": "Röstmarkeringar",

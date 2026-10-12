@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Např. https://meet.google.com/abc-def-ghi",
       "add": "Přidat úryvek",
       "tip": "Tip: během diktování řekněte „{{trigger}}“ a informace se hned vloží!",
-      "values": "Ve vloženém textu se {{date}} a {{time}} změní na datum a čas diktátu."
+      "values": "Ve vloženém textu se {{date}} a {{time}} změní na datum a čas diktátu.",
+      "importFile": "Importovat textový soubor",
+      "fileNotText": "Tento soubor není text. Vyberte soubor .txt nebo .md.",
+      "fileTooLong": "Tento soubor má více než {{max}} znaků."
     },
     "studyMarkers": {
       "title": "Hlasové značky",
