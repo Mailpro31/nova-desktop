@@ -97,6 +97,12 @@ jobs:
       - name: The tutorial card must never stay loading
         run: bun test src/lib/tutorialPhase.test.ts
 
+      # Toute la suite de l'interface. Les tests de src/components ne tournaient
+      # nulle part : celui des repères vocaux échouait depuis le 05/10 (« Diapo
+      # 12 ») sans que personne le voie.
+      - name: All frontend tests
+        run: bun test src
+
   rust-lab-feature:
     runs-on: ubuntu-24.04
     # Sans cela, un test qui attend indefiniment occupe un runner jusqu'a la
