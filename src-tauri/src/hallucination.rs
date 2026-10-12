@@ -32,9 +32,13 @@ const HESITATIONS: &[&str] = &[
 /// Une syllabe d'une ou deux lettres répétée au moins trois fois, seule :
 /// « Lalalala. » écrit par turbo (transcribe.cpp) sur un « euh » (banc du RTX
 /// sur la carte, 11/10). Le moteur de regex de Rust n'a pas de références
-/// arrière : la répétition se vérifie à la main.
+/// arrière : la répétition se vérifie à la main. Un nombre n'en est pas une :
+/// « 111 » ou « 2222 », une réponse d'exercice, étaient jetés.
 fn repeated_syllable(word: &str) -> bool {
     let letters: Vec<char> = word.chars().collect();
+    if !letters.iter().all(|c| c.is_alphabetic()) {
+        return false;
+    }
     (1..=2).any(|size| {
         letters.len() >= size * 3
             && letters.len().is_multiple_of(size)
@@ -149,6 +153,10 @@ mod tests {
             "Merci pour le corrigé du TD.",
             "Papa arrive.",
             "ananas",
+            "111",
+            "2222.",
+            "121212",
+            "1 + 1 = 2",
             "",
         ] {
             assert!(!is_invented(said), "{said}");
