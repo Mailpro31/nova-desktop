@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Ví dụ: https://meet.google.com/abc-def-ghi",
       "add": "Thêm đoạn",
       "tip": "Mẹo: nói “{{trigger}}” khi đọc chính tả để chèn ngay thông tin của bạn!",
-      "values": "Trong văn bản được chèn, {{date}} và {{time}} trở thành ngày và giờ đọc chính tả."
+      "values": "Trong văn bản được chèn, {{date}} và {{time}} trở thành ngày và giờ đọc chính tả.",
+      "importFile": "Nhập tệp văn bản",
+      "fileNotText": "Tệp này không phải văn bản. Hãy chọn tệp .txt hoặc .md.",
+      "fileTooLong": "Tệp này dài hơn {{max}} ký tự."
     },
     "studyMarkers": {
       "title": "Dấu đánh dấu bằng giọng nói",

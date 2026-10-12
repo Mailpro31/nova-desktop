@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "例如：https://meet.google.com/abc-def-ghi",
       "add": "添加片段",
       "tip": "提示：听写时说“{{trigger}}”，即可立即插入你的信息！",
-      "values": "插入的文本中，{{date}} 和 {{time}} 会变成口述时的日期和时间。"
+      "values": "插入的文本中，{{date}} 和 {{time}} 会变成口述时的日期和时间。",
+      "importFile": "导入文本文件",
+      "fileNotText": "此文件不是文本。请选择 .txt 或 .md 文件。",
+      "fileTooLong": "此文件超过 {{max}} 个字符。"
     },
     "studyMarkers": {
       "title": "语音标记",

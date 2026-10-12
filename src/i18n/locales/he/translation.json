@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "לדוגמה https://meet.google.com/abc-def-ghi",
       "add": "הוספת קטע",
       "tip": "טיפ: אמרו „{{trigger}}” במהלך ההכתבה כדי להכניס את המידע שלכם מיד!",
-      "values": "בטקסט המוכנס, {{date}} ו-{{time}} הופכים לתאריך ולשעה של ההכתבה."
+      "values": "בטקסט המוכנס, {{date}} ו-{{time}} הופכים לתאריך ולשעה של ההכתבה.",
+      "importFile": "ייבוא קובץ טקסט",
+      "fileNotText": "הקובץ הזה אינו טקסט. בחרו קובץ ‎.txt או ‎.md.",
+      "fileTooLong": "הקובץ הזה ארוך מ-{{max}} תווים."
     },
     "studyMarkers": {
       "title": "סימונים קוליים",

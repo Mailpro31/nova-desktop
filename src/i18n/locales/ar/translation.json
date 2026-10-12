@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "مثال: https://meet.google.com/abc-def-ghi",
       "add": "إضافة مقتطف",
       "tip": "نصيحة: قل «{{trigger}}» أثناء الإملاء لإدراج معلوماتك فورًا!",
-      "values": "في النص المُدرج، يصبح {{date}} و{{time}} تاريخ الإملاء ووقته."
+      "values": "في النص المُدرج، يصبح {{date}} و{{time}} تاريخ الإملاء ووقته.",
+      "importFile": "استيراد ملف نصي",
+      "fileNotText": "هذا الملف ليس نصًا. اختر ملف ‎.txt أو ‎.md.",
+      "fileTooLong": "يتجاوز هذا الملف {{max}} حرف."
     },
     "studyMarkers": {
       "title": "العلامات الصوتية",

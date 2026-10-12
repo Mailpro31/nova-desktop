@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "E.g. https://meet.google.com/abc-def-ghi",
       "add": "Add snippet",
       "tip": "Tip: Say \"{{trigger}}\" during dictation to instantly insert your information!",
-      "values": "In the inserted text, {{date}} and {{time}} become the date and time of the dictation."
+      "values": "In the inserted text, {{date}} and {{time}} become the date and time of the dictation.",
+      "importFile": "Import a text file",
+      "fileNotText": "This file isn't text. Choose a .txt or .md file.",
+      "fileTooLong": "This file is longer than {{max}} characters."
     },
     "studyMarkers": {
       "title": "Voice markers",

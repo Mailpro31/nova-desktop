@@ -1153,7 +1153,10 @@
       "contentPlaceholder": "Örn. https://meet.google.com/abc-def-ghi",
       "add": "Parçacık ekle",
       "tip": "İpucu: Dikte sırasında “{{trigger}}” de, bilgilerin anında eklensin!",
-      "values": "Eklenen metinde {{date}} ve {{time}}, diktenin tarihi ve saati olur."
+      "values": "Eklenen metinde {{date}} ve {{time}}, diktenin tarihi ve saati olur.",
+      "importFile": "Metin dosyası içe aktar",
+      "fileNotText": "Bu dosya metin değil. Bir .txt veya .md dosyası seçin.",
+      "fileTooLong": "Bu dosya {{max}} karakterden uzun."
     },
     "studyMarkers": {
       "title": "Sesli işaretler",
