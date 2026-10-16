@@ -1156,7 +1156,10 @@
       "values": "挿入されるテキストでは、{{date}} と {{time}} が口述の日付と時刻になります。",
       "importFile": "テキストファイルを読み込む",
       "fileNotText": "このファイルはテキストではありません。.txt または .md ファイルを選んでください。",
-      "fileTooLong": "このファイルは {{max}} 文字を超えています。"
+      "fileTooLong": "このファイルは {{max}} 文字を超えています。",
+      "importImage": "画像を追加",
+      "imageTooLarge": "この画像は {{max}} MB を超えています。",
+      "imageFailed": "画像を保存できませんでした。PNG、JPEG、GIF、WebP の画像を使ってください。"
     },
     "studyMarkers": {
       "title": "音声マーカー",

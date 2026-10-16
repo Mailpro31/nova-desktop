@@ -30,6 +30,26 @@ static MARKER: Lazy<Regex> = Lazy::new(|| {
         .expect("marker pattern")
 });
 
+/// L'image d'un snippet vocal (`snippet_images`) : le repère que le texte du
+/// snippet porte à sa place.
+static IMAGE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"\{\{image:([a-f0-9]{16,64}\.(?:png|jpe?g|gif|webp))\}\}").expect("image pattern")
+});
+
+/// Le texte sans ses repères d'image : ce que reçoivent le Bloc-notes, un
+/// terminal ou une frappe directe, qui ne savent pas coller une image.
+pub fn without_images(text: &str) -> String {
+    if !IMAGE.is_match(text) {
+        return text.to_string();
+    }
+    let stripped = IMAGE.replace_all(text, "");
+    let lines: Vec<String> = stripped
+        .split('\n')
+        .map(|line| line.split_whitespace().collect::<Vec<_>>().join(" "))
+        .collect();
+    lines.join("\n").trim().to_string()
+}
+
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum List {
     None,
@@ -43,24 +63,35 @@ fn escape(text: &str) -> String {
         .replace('>', "&gt;")
 }
 
-/// Le gras dit en Markdown (`**…**`), après échappement.
-fn inline(text: &str) -> String {
-    BOLD.replace_all(&escape(text), "<b>$1</b>").into_owned()
+/// Le gras dit en Markdown (`**…**`), après échappement, et les images des
+/// snippets à la place de leur repère.
+fn inline(text: &str, images: &dyn Fn(&str) -> Option<String>) -> String {
+    let escaped = escape(text);
+    let bold = BOLD.replace_all(&escaped, "<b>$1</b>");
+    IMAGE
+        .replace_all(&bold, |found: &regex::Captures| match images(&found[1]) {
+            Some(uri) => format!("<img src=\"{uri}\">"),
+            None => String::new(),
+        })
+        .into_owned()
 }
 
 /// Une ligne qui commence par un repère : le repère en gras.
-fn paragraph(line: &str) -> String {
+fn paragraph(line: &str, images: &dyn Fn(&str) -> Option<String>) -> String {
     if let Some(found) = MARKER.captures(line) {
         let label = escape(found[1].trim());
         return match found.get(2) {
             Some(rest) => {
                 let rest = rest.as_str().trim_start().trim_start_matches(':').trim();
-                format!("<p class=MsoNormal><b>{label} :</b> {}</p>", inline(rest))
+                format!(
+                    "<p class=MsoNormal><b>{label} :</b> {}</p>",
+                    inline(rest, images)
+                )
             }
             None => format!("<p class=MsoNormal><b>{label}</b></p>"),
         };
     }
-    format!("<p class=MsoNormal>{}</p>", inline(line))
+    format!("<p class=MsoNormal>{}</p>", inline(line, images))
 }
 
 /// Vrai si le texte porte une mise en forme que le HTML rend mieux.
@@ -71,6 +102,7 @@ fn has_structure(text: &str) -> bool {
             || NUMBERED.is_match(line)
             || MARKER.is_match(line)
             || BOLD.is_match(line)
+            || IMAGE.is_match(line)
     })
 }
 
@@ -82,6 +114,12 @@ const LINE_BREAK_BEFORE: &str = "<p class=MsoNormal><o:p>&nbsp;</o:p></p>";
 /// Le HTML à coller à côté du texte, ou `None` si le texte n'a aucune
 /// structure : il se colle alors exactement comme avant.
 pub fn to_html(text: &str) -> Option<String> {
+    to_html_with(text, &|_| None)
+}
+
+/// Comme `to_html`, avec les images des snippets : `images` rend la `data:`
+/// URI d'un nom d'image, ou `None` si elle n'existe plus (le repère disparaît).
+pub fn to_html_with(text: &str, images: &dyn Fn(&str) -> Option<String>) -> Option<String> {
     if !has_structure(text) {
         return None;
     }
@@ -123,16 +161,19 @@ pub fn to_html(text: &str) -> Option<String> {
             }
             html.push_str(&format!(
                 "<li class=MsoListParagraph>{}</li>",
-                inline(&content)
+                inline(&content, images)
             ));
             continue;
         }
         close(&mut html, &mut list);
         if let Some(found) = HEADING.captures(line) {
             let level = found[1].len();
-            html.push_str(&format!("<h{level}>{}</h{level}>", inline(&found[2])));
+            html.push_str(&format!(
+                "<h{level}>{}</h{level}>",
+                inline(&found[2], images)
+            ));
         } else {
-            html.push_str(&paragraph(line));
+            html.push_str(&paragraph(line, images));
         }
     }
     close(&mut html, &mut list);
@@ -188,7 +229,27 @@ pub fn separate(text: &str, previous_mid_line: bool, trailing_space: bool) -> (S
 
 #[cfg(test)]
 mod tests {
-    use super::{block_html, separate, to_html};
+    use super::{block_html, separate, to_html, to_html_with, without_images};
+
+    #[test]
+    fn a_snippet_image_is_pasted_as_an_image() {
+        let text = "Voici le schéma : {{image:0123456789abcdef.png}} fin.";
+        let html = to_html_with(text, &|name| {
+            (name == "0123456789abcdef.png").then(|| "data:image/png;base64,AAAA".to_string())
+        })
+        .unwrap();
+        assert_eq!(
+            html,
+            "<p class=MsoNormal>Voici le schéma : <img src=\"data:image/png;base64,AAAA\"> fin.</p>"
+        );
+        // Le texte simple n'a jamais le repère.
+        assert_eq!(without_images(text), "Voici le schéma : fin.");
+        assert_eq!(without_images("{{image:0123456789abcdef.png}}"), "");
+        // Une image disparue : le repère part aussi du HTML.
+        assert!(!to_html(text).unwrap().contains("{{image"));
+        // Un texte sans image ne change pas.
+        assert_eq!(without_images("Une phrase."), "Une phrase.");
+    }
 
     #[test]
     fn plain_dictation_has_no_html() {

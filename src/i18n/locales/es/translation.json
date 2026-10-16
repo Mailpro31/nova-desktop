@@ -1156,7 +1156,10 @@
       "values": "En el texto insertado, {{date}} y {{time}} se convierten en la fecha y la hora del dictado.",
       "importFile": "Importar un archivo de texto",
       "fileNotText": "Este archivo no es texto. Elija un archivo .txt o .md.",
-      "fileTooLong": "Este archivo supera los {{max}} caracteres."
+      "fileTooLong": "Este archivo supera los {{max}} caracteres.",
+      "importImage": "Añadir una imagen",
+      "imageTooLarge": "Esta imagen supera los {{max}} MB.",
+      "imageFailed": "No se pudo guardar la imagen. Use una imagen PNG, JPEG, GIF o WebP."
     },
     "studyMarkers": {
       "title": "Marcadores de voz",

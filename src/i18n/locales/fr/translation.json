@@ -1156,7 +1156,10 @@
       "values": "Dans le texte inséré, {{date}} et {{time}} deviennent la date et l'heure de la dictée.",
       "importFile": "Importer un fichier texte",
       "fileNotText": "Ce fichier n'est pas du texte. Choisissez un fichier .txt ou .md.",
-      "fileTooLong": "Ce fichier dépasse {{max}} caractères."
+      "fileTooLong": "Ce fichier dépasse {{max}} caractères.",
+      "importImage": "Ajouter une image",
+      "imageTooLarge": "Cette image dépasse {{max}} Mo.",
+      "imageFailed": "L'image n'a pas pu être enregistrée. Utilisez une image PNG, JPEG, GIF ou WebP."
     },
     "studyMarkers": {
       "title": "Repères vocaux",

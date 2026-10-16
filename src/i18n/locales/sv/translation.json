@@ -1156,7 +1156,10 @@
       "values": "I den infogade texten blir {{date}} och {{time}} dikteringens datum och tid.",
       "importFile": "Importera en textfil",
       "fileNotText": "Den här filen är inte text. Välj en .txt- eller .md-fil.",
-      "fileTooLong": "Den här filen är längre än {{max}} tecken."
+      "fileTooLong": "Den här filen är längre än {{max}} tecken.",
+      "importImage": "Lägg till en bild",
+      "imageTooLarge": "Den här bilden är större än {{max}} MB.",
+      "imageFailed": "Bilden kunde inte sparas. Använd en PNG-, JPEG-, GIF- eller WebP-bild."
     },
     "studyMarkers": {
       "title": "Röstmarkeringar",

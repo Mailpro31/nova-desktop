@@ -1156,7 +1156,10 @@
       "values": "Im eingefügten Text werden {{date}} und {{time}} zu Datum und Uhrzeit des Diktats.",
       "importFile": "Textdatei importieren",
       "fileNotText": "Diese Datei ist kein Text. Wählen Sie eine .txt- oder .md-Datei.",
-      "fileTooLong": "Diese Datei ist länger als {{max}} Zeichen."
+      "fileTooLong": "Diese Datei ist länger als {{max}} Zeichen.",
+      "importImage": "Bild hinzufügen",
+      "imageTooLarge": "Dieses Bild ist größer als {{max}} MB.",
+      "imageFailed": "Das Bild konnte nicht gespeichert werden. Verwenden Sie ein PNG-, JPEG-, GIF- oder WebP-Bild."
     },
     "studyMarkers": {
       "title": "Sprachmarker",

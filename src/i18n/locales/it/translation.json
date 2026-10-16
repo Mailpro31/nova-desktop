@@ -1156,7 +1156,10 @@
       "values": "Nel testo inserito, {{date}} e {{time}} diventano la data e l'ora della dettatura.",
       "importFile": "Importa un file di testo",
       "fileNotText": "Questo file non è testo. Scegli un file .txt o .md.",
-      "fileTooLong": "Questo file supera i {{max}} caratteri."
+      "fileTooLong": "Questo file supera i {{max}} caratteri.",
+      "importImage": "Aggiungi un'immagine",
+      "imageTooLarge": "Questa immagine supera {{max}} MB.",
+      "imageFailed": "Impossibile salvare l'immagine. Usa un'immagine PNG, JPEG, GIF o WebP."
     },
     "studyMarkers": {
       "title": "Marcatori vocali",

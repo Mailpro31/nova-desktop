@@ -1156,7 +1156,10 @@
       "values": "We wstawianym tekście {{date}} i {{time}} zmieniają się w datę i godzinę dyktowania.",
       "importFile": "Importuj plik tekstowy",
       "fileNotText": "Ten plik nie jest tekstem. Wybierz plik .txt lub .md.",
-      "fileTooLong": "Ten plik ma więcej niż {{max}} znaków."
+      "fileTooLong": "Ten plik ma więcej niż {{max}} znaków.",
+      "importImage": "Dodaj obraz",
+      "imageTooLarge": "Ten obraz przekracza {{max}} MB.",
+      "imageFailed": "Nie udało się zapisać obrazu. Użyj obrazu PNG, JPEG, GIF lub WebP."
     },
     "studyMarkers": {
       "title": "Znaczniki głosowe",

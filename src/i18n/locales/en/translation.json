@@ -1156,7 +1156,10 @@
       "values": "In the inserted text, {{date}} and {{time}} become the date and time of the dictation.",
       "importFile": "Import a text file",
       "fileNotText": "This file isn't text. Choose a .txt or .md file.",
-      "fileTooLong": "This file is longer than {{max}} characters."
+      "fileTooLong": "This file is longer than {{max}} characters.",
+      "importImage": "Add an image",
+      "imageTooLarge": "This image is larger than {{max}} MB.",
+      "imageFailed": "The image couldn't be saved. Use a PNG, JPEG, GIF or WebP image."
     },
     "studyMarkers": {
       "title": "Voice markers",
