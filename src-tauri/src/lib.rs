@@ -60,6 +60,7 @@ mod screen_vlm;
 mod settings;
 mod shortcut;
 mod signal_handle;
+mod snippet_images;
 mod structured_notes;
 mod style_policy;
 mod telemetry;
@@ -729,6 +730,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::organization::format_organization_structured_notes,
                 structured_notes::format_structured_notes_locally,
                 commands::organization::transcribe_organization_audio_file,
+                snippet_images::save_snippet_image,
                 commands::get_lexicon_suggestions,
                 commands::accept_lexicon_suggestion,
                 commands::dismiss_lexicon_suggestion,

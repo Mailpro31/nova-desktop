@@ -1156,7 +1156,10 @@
       "values": "Trong văn bản được chèn, {{date}} và {{time}} trở thành ngày và giờ đọc chính tả.",
       "importFile": "Nhập tệp văn bản",
       "fileNotText": "Tệp này không phải văn bản. Hãy chọn tệp .txt hoặc .md.",
-      "fileTooLong": "Tệp này dài hơn {{max}} ký tự."
+      "fileTooLong": "Tệp này dài hơn {{max}} ký tự.",
+      "importImage": "Thêm hình ảnh",
+      "imageTooLarge": "Hình ảnh này lớn hơn {{max}} MB.",
+      "imageFailed": "Không thể lưu hình ảnh. Hãy dùng ảnh PNG, JPEG, GIF hoặc WebP."
     },
     "studyMarkers": {
       "title": "Dấu đánh dấu bằng giọng nói",

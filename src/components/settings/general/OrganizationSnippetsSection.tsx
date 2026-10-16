@@ -7,6 +7,7 @@ import {
   RefreshCw,
   Lightbulb,
   FileText,
+  ImageIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../../ui/Button";
@@ -15,6 +16,7 @@ import { Textarea } from "../../ui/Textarea";
 import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 import type { OrganizationSnippetEntry } from "@/lib/organizationApi";
+import { commands } from "@/bindings";
 
 /** Les façons de dire un snippet, comme le serveur les lit. */
 export const snippetWays = (trigger: string): string[] => {
@@ -47,6 +49,34 @@ export const isTextFile = (name: string, type: string): boolean =>
   type.startsWith("text/") ||
   /\.(txt|md|markdown|csv|tsv|html?|json|tex|rtf)$/i.test(name);
 
+/** La taille d'image que le poste accepte (`snippet_images.rs`). */
+export const SNIPPET_IMAGE_MAX_MB = 5;
+
+/** L'extension d'une image qu'un snippet peut coller, ou `null`. */
+export const imageExtension = (name: string, type: string): string | null => {
+  const byType: Record<string, string> = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/gif": "gif",
+    "image/webp": "webp",
+  };
+  if (byType[type]) return byType[type];
+  const ext = /\.(png|jpe?g|gif|webp)$/i.exec(name)?.[1].toLowerCase();
+  return ext === "jpeg" ? "jpg" : (ext ?? null);
+};
+
+/** Le texte d'un snippet tel qu'on le lit dans la liste : une image y est 🖼. */
+export const snippetPreview = (content: string): string =>
+  content.replace(/\{\{image:[a-f0-9]+\.[a-z]+\}\}/g, "🖼");
+
+const toBase64 = (bytes: Uint8Array): string => {
+  let binary = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(binary);
+};
+
 export const OrganizationSnippetsSection: React.FC = () => {
   const { t } = useTranslation();
   const [snippets, setSnippets] = useState<OrganizationSnippetEntry[]>([]);
@@ -58,6 +88,40 @@ export const OrganizationSnippetsSection: React.FC = () => {
   const [adding, setAdding] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
+  const imageInput = useRef<HTMLInputElement>(null);
+
+  // Une image : gardée sur ce poste, le snippet n'en porte que le repère
+  // (`snippet_images.rs`). Demande de Sash, 12/10.
+  const importImage = async (file: File, ext: string) => {
+    if (file.size > SNIPPET_IMAGE_MAX_MB * 1024 * 1024) {
+      toast.error(
+        t("organization.snippets.imageTooLarge", { max: SNIPPET_IMAGE_MAX_MB }),
+      );
+      return;
+    }
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
+    const hash = Array.from(digest.slice(0, 16), (b) =>
+      b.toString(16).padStart(2, "0"),
+    ).join("");
+    const saved = await commands.saveSnippetImage(
+      `${hash}.${ext}`,
+      toBase64(bytes),
+    );
+    if (saved.status !== "ok") {
+      toast.error(t("organization.snippets.imageFailed"));
+      return;
+    }
+    setContent((previous) =>
+      previous.trim() ? `${previous.trimEnd()} ${saved.data}` : saved.data,
+    );
+  };
+
+  const importAny = (file: File | undefined) => {
+    if (!file) return;
+    const ext = imageExtension(file.name, file.type);
+    void (ext ? importImage(file, ext) : importFile(file));
+  };
 
   // Le texte d'un fichier devient le texte collé (demande de Sash, 12/10).
   const importFile = async (file: File | undefined) => {
@@ -185,7 +249,7 @@ export const OrganizationSnippetsSection: React.FC = () => {
               onDrop={(e) => {
                 e.preventDefault();
                 setDragOver(false);
-                void importFile(e.dataTransfer.files?.[0]);
+                importAny(e.dataTransfer.files?.[0]);
               }}
               maxLength={SNIPPET_MAX_LENGTH}
               rows={3}
@@ -204,16 +268,39 @@ export const OrganizationSnippetsSection: React.FC = () => {
                 e.target.value = "";
               }}
             />
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              onClick={() => fileInput.current?.click()}
-              className="mt-1.5 inline-flex items-center gap-1.5"
-            >
-              <FileText size={14} />
-              {t("organization.snippets.importFile")}
-            </Button>
+            <input
+              ref={imageInput}
+              type="file"
+              accept="image/png,image/jpeg,image/gif,image/webp"
+              className="sr-only"
+              tabIndex={-1}
+              onChange={(e) => {
+                importAny(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => fileInput.current?.click()}
+                className="inline-flex items-center gap-1.5"
+              >
+                <FileText size={14} />
+                {t("organization.snippets.importFile")}
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => imageInput.current?.click()}
+                className="inline-flex items-center gap-1.5"
+              >
+                <ImageIcon size={14} />
+                {t("organization.snippets.importImage")}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -281,7 +368,7 @@ export const OrganizationSnippetsSection: React.FC = () => {
                         .join(" · ")}
                     </p>
                     <p className="text-xs text-text-secondary font-mono truncate mt-0.5">
-                      {snip.content}
+                      {snippetPreview(snip.content)}
                     </p>
                   </div>
                 </div>

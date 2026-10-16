@@ -1051,6 +1051,17 @@ async transcribeOrganizationAudioFile(fileBytes: number[], filename: string) : P
 }
 },
 /**
+ * Enregistre l'image d'un snippet et rend le repère à mettre dans son texte.
+ */
+async saveSnippetImage(name: string, base64: string) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("save_snippet_image", { name, base64 }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
  * Termes récurrents que l'apprentissage progressif propose d'ajouter au
  * lexique personnel. Vide tant qu'aucun candidat n'a atteint le seuil de
  * récurrence (ou si l'apprentissage est désactivé). Voir `lexicon_learning.rs`.

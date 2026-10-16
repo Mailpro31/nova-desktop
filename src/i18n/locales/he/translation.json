@@ -1156,7 +1156,10 @@
       "values": "בטקסט המוכנס, {{date}} ו-{{time}} הופכים לתאריך ולשעה של ההכתבה.",
       "importFile": "ייבוא קובץ טקסט",
       "fileNotText": "הקובץ הזה אינו טקסט. בחרו קובץ ‎.txt או ‎.md.",
-      "fileTooLong": "הקובץ הזה ארוך מ-{{max}} תווים."
+      "fileTooLong": "הקובץ הזה ארוך מ-{{max}} תווים.",
+      "importImage": "הוספת תמונה",
+      "imageTooLarge": "התמונה הזו גדולה מ-{{max}} MB.",
+      "imageFailed": "לא ניתן היה לשמור את התמונה. השתמשו בתמונת PNG,‏ JPEG,‏ GIF או WebP."
     },
     "studyMarkers": {
       "title": "סימונים קוליים",

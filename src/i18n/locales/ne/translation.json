@@ -1156,7 +1156,10 @@
       "values": "घुसाइएको पाठमा, {{date}} र {{time}} डिक्टेसनको मिति र समय बन्छन्।",
       "importFile": "पाठ फाइल आयात गर्नुहोस्",
       "fileNotText": "यो फाइल पाठ होइन। .txt वा .md फाइल छान्नुहोस्।",
-      "fileTooLong": "यो फाइल {{max}} अक्षरभन्दा लामो छ।"
+      "fileTooLong": "यो फाइल {{max}} अक्षरभन्दा लामो छ।",
+      "importImage": "छवि थप्नुहोस्",
+      "imageTooLarge": "यो छवि {{max}} MB भन्दा ठूलो छ।",
+      "imageFailed": "छवि सुरक्षित गर्न सकिएन। PNG, JPEG, GIF वा WebP छवि प्रयोग गर्नुहोस्।"
     },
     "studyMarkers": {
       "title": "आवाज चिन्हहरू",

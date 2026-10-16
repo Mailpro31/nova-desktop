@@ -1156,7 +1156,10 @@
       "values": "In de ingevoegde tekst worden {{date}} en {{time}} de datum en tijd van het dictaat.",
       "importFile": "Tekstbestand importeren",
       "fileNotText": "Dit bestand is geen tekst. Kies een .txt- of .md-bestand.",
-      "fileTooLong": "Dit bestand is langer dan {{max}} tekens."
+      "fileTooLong": "Dit bestand is langer dan {{max}} tekens.",
+      "importImage": "Afbeelding toevoegen",
+      "imageTooLarge": "Deze afbeelding is groter dan {{max}} MB.",
+      "imageFailed": "De afbeelding kon niet worden opgeslagen. Gebruik een PNG-, JPEG-, GIF- of WebP-afbeelding."
     },
     "studyMarkers": {
       "title": "Spraakmarkeringen",

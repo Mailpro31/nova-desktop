@@ -17,14 +17,18 @@ use crate::utils::{is_kde_wayland, is_wayland};
 /// La dictée dans le presse-papier : son texte exact, et à côté sa mise en
 /// forme en HTML quand elle en a une (titres, listes, gras, repères). Word,
 /// OneNote ou Google Docs collent le HTML ; toutes les autres applications
-/// collent le texte, exactement comme avant (`rich_paste`).
+/// collent le texte, exactement comme avant (`rich_paste`). L'image d'un
+/// snippet (`snippet_images`) n'existe que dans le HTML ; le texte n'a jamais
+/// son repère.
 pub(crate) fn write_dictation(app_handle: &AppHandle, text: &str) -> Result<(), String> {
     let clipboard = app_handle.clipboard();
-    match crate::rich_paste::to_html(text) {
+    let plain = crate::rich_paste::without_images(text);
+    let images = |name: &str| crate::snippet_images::data_uri(app_handle, name);
+    match crate::rich_paste::to_html_with(text, &images) {
         Some(html) => clipboard
-            .write_html(html.as_str(), Some(text))
-            .or_else(|_| clipboard.write_text(text)),
-        None => clipboard.write_text(text),
+            .write_html(html.as_str(), Some(plain.as_str()))
+            .or_else(|_| clipboard.write_text(plain.as_str())),
+        None => clipboard.write_text(plain.as_str()),
     }
     .map_err(|e| format!("Failed to write to clipboard: {}", e))
 }
@@ -646,8 +650,12 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
         paste_method, paste_delay_ms, paste_delay_after_ms
     );
 
+    // Une frappe ou un script ne savent pas coller une image : ils reçoivent
+    // le texte sans les repères d'image des snippets.
+    let plain = crate::rich_paste::without_images(&text);
+
     if !input::restore_text_target() {
-        let _ = app_handle.clipboard().write_text(&text);
+        let _ = write_dictation(&app_handle, &text);
         return Err("The original text insertion target is no longer available".to_string());
     }
 
@@ -670,14 +678,11 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
             info!(
                 "PasteMethod::None — dépôt du texte dans le presse-papier (pas de collage simulé)"
             );
-            app_handle
-                .clipboard()
-                .write_text(&text)
-                .map_err(|e| format!("Failed to copy to clipboard: {}", e))
+            write_dictation(&app_handle, &text)
         }
         PasteMethod::Direct => paste_direct(
             &mut enigo,
-            &text,
+            &plain,
             #[cfg(target_os = "linux")]
             settings.typing_tool,
         ),
@@ -696,7 +701,7 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
             .as_ref()
             .filter(|p| !p.is_empty())
         {
-            Some(script_path) => paste_via_external_script(&text, script_path),
+            Some(script_path) => paste_via_external_script(&plain, script_path),
             None => Err("External script path is not configured".to_string()),
         },
     };
@@ -705,7 +710,7 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
         // Repli universel : ne JAMAIS perdre la dictée — on la laisse dans le
         // presse-papier pour qu'elle reste collable à la main (Ctrl+V).
         warn!("Collage échoué ({e}) — dépôt du texte dans le presse-papier en repli");
-        let _ = app_handle.clipboard().write_text(&text);
+        let _ = write_dictation(&app_handle, &text);
         return Err(e);
     }
 
@@ -716,10 +721,7 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
 
     // After pasting, optionally copy to clipboard based on settings
     if settings.clipboard_handling == ClipboardHandling::CopyToClipboard {
-        let clipboard = app_handle.clipboard();
-        clipboard
-            .write_text(&text)
-            .map_err(|e| format!("Failed to copy to clipboard: {}", e))?;
+        write_dictation(&app_handle, &text)?;
     }
 
     Ok(())

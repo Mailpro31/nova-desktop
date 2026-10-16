@@ -1156,7 +1156,10 @@
       "values": "Eklenen metinde {{date}} ve {{time}}, diktenin tarihi ve saati olur.",
       "importFile": "Metin dosyası içe aktar",
       "fileNotText": "Bu dosya metin değil. Bir .txt veya .md dosyası seçin.",
-      "fileTooLong": "Bu dosya {{max}} karakterden uzun."
+      "fileTooLong": "Bu dosya {{max}} karakterden uzun.",
+      "importImage": "Görsel ekle",
+      "imageTooLarge": "Bu görsel {{max}} MB'tan büyük.",
+      "imageFailed": "Görsel kaydedilemedi. PNG, JPEG, GIF veya WebP görseli kullanın."
     },
     "studyMarkers": {
       "title": "Sesli işaretler",

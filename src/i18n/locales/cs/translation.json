@@ -1156,7 +1156,10 @@
       "values": "Ve vloženém textu se {{date}} a {{time}} změní na datum a čas diktátu.",
       "importFile": "Importovat textový soubor",
       "fileNotText": "Tento soubor není text. Vyberte soubor .txt nebo .md.",
-      "fileTooLong": "Tento soubor má více než {{max}} znaků."
+      "fileTooLong": "Tento soubor má více než {{max}} znaků.",
+      "importImage": "Přidat obrázek",
+      "imageTooLarge": "Tento obrázek je větší než {{max}} MB.",
+      "imageFailed": "Obrázek se nepodařilo uložit. Použijte obrázek PNG, JPEG, GIF nebo WebP."
     },
     "studyMarkers": {
       "title": "Hlasové značky",

@@ -20,3 +20,22 @@ describe("snippet importé d'un fichier", () => {
     expect(isTextFile("sujet.pdf", "application/pdf")).toBe(false);
   });
 });
+
+describe("snippet avec une image", () => {
+  test("une image se reconnaît par son type ou son extension", async () => {
+    const { imageExtension } = await import("./OrganizationSnippetsSection");
+    expect(imageExtension("schema.png", "image/png")).toBe("png");
+    expect(imageExtension("photo.JPEG", "")).toBe("jpg");
+    expect(imageExtension("anim", "image/gif")).toBe("gif");
+    expect(imageExtension("notes.txt", "text/plain")).toBeNull();
+    expect(imageExtension("dessin.svg", "image/svg+xml")).toBeNull();
+  });
+
+  test("dans la liste, une image se lit 🖼", async () => {
+    const { snippetPreview } = await import("./OrganizationSnippetsSection");
+    expect(snippetPreview("Le schéma : {{image:0123456789abcdef.png}}")).toBe(
+      "Le schéma : 🖼",
+    );
+    expect(snippetPreview("Sans image")).toBe("Sans image");
+  });
+});

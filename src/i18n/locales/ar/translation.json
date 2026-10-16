@@ -1156,7 +1156,10 @@
       "values": "في النص المُدرج، يصبح {{date}} و{{time}} تاريخ الإملاء ووقته.",
       "importFile": "استيراد ملف نصي",
       "fileNotText": "هذا الملف ليس نصًا. اختر ملف ‎.txt أو ‎.md.",
-      "fileTooLong": "يتجاوز هذا الملف {{max}} حرف."
+      "fileTooLong": "يتجاوز هذا الملف {{max}} حرف.",
+      "importImage": "إضافة صورة",
+      "imageTooLarge": "يتجاوز حجم هذه الصورة {{max}} ميغابايت.",
+      "imageFailed": "تعذّر حفظ الصورة. استخدم صورة PNG أو JPEG أو GIF أو WebP."
     },
     "studyMarkers": {
       "title": "العلامات الصوتية",

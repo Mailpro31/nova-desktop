@@ -1156,7 +1156,10 @@
       "values": "插入的文字中，{{date}} 和 {{time}} 會變成口述時的日期和時間。",
       "importFile": "匯入文字檔",
       "fileNotText": "此檔案不是文字。請選擇 .txt 或 .md 檔案。",
-      "fileTooLong": "此檔案超過 {{max}} 個字元。"
+      "fileTooLong": "此檔案超過 {{max}} 個字元。",
+      "importImage": "新增圖片",
+      "imageTooLarge": "此圖片超過 {{max}} MB。",
+      "imageFailed": "無法儲存圖片。請使用 PNG、JPEG、GIF 或 WebP 圖片。"
     },
     "studyMarkers": {
       "title": "語音標記",
