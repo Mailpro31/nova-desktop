@@ -568,7 +568,10 @@ pub fn dates_in(text: &str) -> HashSet<String> {
 /// « enfin » comme le serveur (`_REPAIR`) : « le 12 octobre, enfin le 19 »
 /// était accepté par le serveur et refusé ici, faute de reconnaître la reprise
 /// (banc de non-régression du RTX, 11/10).
-const CORRECTION_MARKERS: &[&str] = &["pardon", "plutot", "attends", "enfin", "sorry", "rather"];
+/// « oups » : « en salle B204, oups, C204 » (même liste que le serveur).
+const CORRECTION_MARKERS: &[&str] = &[
+    "pardon", "plutot", "attends", "enfin", "oups", "sorry", "rather",
+];
 
 /// Nombre de mots, avant une reprise, que la reprise peut remplacer.
 const CORRECTION_WINDOW: usize = 6;
@@ -604,7 +607,7 @@ pub(crate) fn without_abandoned(text: &str) -> String {
             3
         } else if matches!(
             words.get(i..i + 2).map(|w| w.join(" ")).as_deref(),
-            Some("i mean") | Some("no wait")
+            Some("i mean") | Some("no wait") | Some("je corrige") | Some("je rectifie")
         ) {
             2
         } else if matches!(words[i].as_str(), "non" | "no")
@@ -1701,6 +1704,33 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             ", en 1789".repeat(80)
         );
         assert_eq!(check(input, &output, COURSE), Err("output-runaway"));
+    }
+
+    #[test]
+    fn oups_and_je_rectifie_announce_a_repair() {
+        let style = "default_improve_transcriptions";
+        assert_eq!(
+            check(
+                "C'est en salle B204, oups, C204.",
+                "C'est en salle C204.",
+                style
+            ),
+            Ok(())
+        );
+        assert_eq!(
+            check(
+                "Le rendu est le 12, je rectifie, le 14 mars.",
+                "Le rendu est le 14 mars.",
+                style
+            ),
+            Ok(())
+        );
+        assert!(check(
+            "Le rendu est le 12, je rectifie, le 14 mars.",
+            "Le rendu est le 12 mars.",
+            style
+        )
+        .is_err());
     }
 
     #[test]
