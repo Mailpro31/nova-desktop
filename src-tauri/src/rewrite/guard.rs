@@ -796,6 +796,9 @@ fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
     if let Some(reason) = facts_refusal(&as_dictated(&first_of_month(input)), &spoken, true) {
         return Err(reason);
     }
+    if unit_changed(input, output) {
+        return Err("unit-changed");
+    }
     if added_word_ratio(input, &spoken).is_some_and(|ratio| ratio > COURSE_MAX_ADDED_WORDS) {
         return Err("content-added");
     }
@@ -861,7 +864,7 @@ fn as_dictated(output: &str) -> String {
             (r"(?i)\bun quart\b", " 1/4 "),
             (r"(?i)\bdeux tiers\b", " 2/3 "),
             (r"(?i)\btrois quarts\b", " 3/4 "),
-            (r"(\w)\s*/\s*(\w)", "$1 divisé par $2"),
+            (r"(\w)\s*/\s*(\w)", "$1 sur $2"),
             // Les tics de l'oral ne comptent pas dans les mots repris.
             (r"(?i)\b(?:comment dire|c'est tout)\b", " "),
         ]
@@ -874,6 +877,98 @@ fn as_dictated(output: &str) -> String {
         .fold(output.to_string(), |text, (pattern, words)| {
             pattern.replace_all(&text, *words).into_owned()
         })
+}
+
+/// Les unités dites en toutes lettres, et leur symbole. Même liste que le
+/// serveur (`FAITHFUL_UNIT_SYMBOLS`).
+const UNIT_WORDS: &[(&str, &str)] = &[
+    ("heure", "h"),
+    ("heures", "h"),
+    ("minute", "min"),
+    ("minutes", "min"),
+    ("seconde", "s"),
+    ("secondes", "s"),
+    ("metre", "m"),
+    ("metres", "m"),
+    ("kilometre", "km"),
+    ("kilometres", "km"),
+    ("centimetre", "cm"),
+    ("centimetres", "cm"),
+    ("millimetre", "mm"),
+    ("millimetres", "mm"),
+    ("gramme", "g"),
+    ("grammes", "g"),
+    ("kilogramme", "kg"),
+    ("kilogrammes", "kg"),
+    ("litre", "l"),
+    ("litres", "l"),
+    ("newton", "n"),
+    ("newtons", "n"),
+    ("kilonewton", "kn"),
+    ("kilonewtons", "kn"),
+    ("pascal", "pa"),
+    ("pascals", "pa"),
+    ("kilopascal", "kpa"),
+    ("kilopascals", "kpa"),
+    ("megapascal", "mpa"),
+    ("megapascals", "mpa"),
+    ("gigapascal", "gpa"),
+    ("gigapascals", "gpa"),
+    ("watt", "w"),
+    ("watts", "w"),
+    ("kilowatt", "kw"),
+    ("kilowatts", "kw"),
+    ("joule", "j"),
+    ("joules", "j"),
+    ("kilojoule", "kj"),
+    ("kilojoules", "kj"),
+    ("tour", "tr"),
+    ("tours", "tr"),
+    ("hertz", "hz"),
+    ("volt", "v"),
+    ("volts", "v"),
+    ("jour", "j"),
+    ("jours", "j"),
+];
+
+/// Les symboles d'unité écrits après un nombre (« 3 kN »), et la seconde
+/// unité d'une unité composée (« 2400 tr/min ») ; pas le « S » de « F/S »
+/// ni le « l' » de « le 2 l'après-midi ».
+fn units_after_numbers(text: &str) -> HashSet<String> {
+    static UNIT: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(r"\d\s?(\p{L}{1,3})(?:[/·](\p{L}{1,3}))?\b").expect("unit pattern")
+    });
+    let mut units = HashSet::new();
+    for caps in UNIT.captures_iter(text) {
+        let whole = caps.get(0).expect("whole match");
+        if text[whole.end()..].starts_with(['\'', '’']) {
+            continue;
+        }
+        for group in [caps.get(1), caps.get(2)].into_iter().flatten() {
+            units.insert(group.as_str().to_lowercase());
+        }
+    }
+    units
+}
+
+/// Une unité écrite que l'élève n'a pas dite : « 3 kilowatts » → « 3 kN ».
+/// Contre-épreuve du 17/10 : les notes de cours l'acceptaient (même règle
+/// que le serveur, `unit_changed`).
+fn unit_changed(input: &str, output: &str) -> bool {
+    let mut said: HashSet<String> = lowercase_words(input)
+        .iter()
+        .filter_map(|word| {
+            let folded = fold(word);
+            UNIT_WORDS
+                .iter()
+                .find(|(name, _)| *name == folded)
+                .map(|(_, symbol)| symbol.to_string())
+        })
+        .collect();
+    said.extend(units_after_numbers(input));
+    units_after_numbers(output)
+        .iter()
+        .any(|symbol| UNIT_WORDS.iter().any(|(_, known)| known == symbol) && !said.contains(symbol))
 }
 
 /// « le premier novembre » écrit « le 1er novembre » : le même jour.
@@ -941,6 +1036,9 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
     // d'un seul côté, et « cent » un nombre nouveau (banc v2 du RTX, 17/10).
     if let Some(reason) = facts_refusal(&as_dictated(&first_of_month(input)), &spoken, true) {
         return Err(reason);
+    }
+    if unit_changed(input, output) {
+        return Err("unit-changed");
     }
     if FAITHFUL_STYLES.contains(&style_id)
         && !has_personal_value_marker(input)
@@ -1829,6 +1927,49 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
                 style
             )
             .is_err());
+        }
+    }
+
+    #[test]
+    fn a_unit_changed_is_refused() {
+        for style in ["default_improve_transcriptions", COURSE_NOTES_STYLE] {
+            for (said, wrote) in [
+                (
+                    "La puissance est de 3 kilowatts.",
+                    "La puissance est de 3 kN.",
+                ),
+                (
+                    "La poussée est de 120 kilonewtons.",
+                    "La poussée est de 120 kW.",
+                ),
+                (
+                    "L'hélice tourne à 2400 tours par minute.",
+                    "L'hélice tourne à 2400 tr/s.",
+                ),
+            ] {
+                assert_eq!(
+                    check(said, wrote, style),
+                    Err("unit-changed"),
+                    "{style} {said}"
+                );
+            }
+            for (said, wrote) in [
+                (
+                    "La puissance est de 3 kilowatts.",
+                    "La puissance est de 3 kW.",
+                ),
+                (
+                    "On a 3 jours pour rendre le projet.",
+                    "On a 3 j pour rendre le projet.",
+                ),
+                (
+                    "L'hélice tourne à 2400 tours par minute.",
+                    "L'hélice tourne à 2400 tr/min.",
+                ),
+                ("Formule, sigma égale F sur S.", "Formule : σ = F/S."),
+            ] {
+                assert_eq!(check(said, wrote, style), Ok(()), "{style} {said}");
+            }
         }
     }
 
