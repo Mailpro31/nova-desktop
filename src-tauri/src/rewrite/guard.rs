@@ -603,8 +603,13 @@ pub(crate) fn without_abandoned(text: &str) -> String {
         let phrase = words.get(i..i + 3).map(|w| w.join(" ")).unwrap_or_default();
         let span = if CORRECTION_MARKERS.contains(&words[i].as_str()) {
             1
-        } else if phrase == "je veux dire" {
+        } else if phrase == "je veux dire" || phrase == "je me trompe" {
             3
+        } else if matches!(
+            words.get(i..i + 4).map(|w| w.join(" ")).as_deref(),
+            Some("je me suis trompe") | Some("je me suis trompee")
+        ) {
+            4
         } else if matches!(
             words.get(i..i + 2).map(|w| w.join(" ")).as_deref(),
             Some("i mean") | Some("no wait") | Some("je corrige") | Some("je rectifie")
@@ -819,6 +824,22 @@ fn as_dictated(output: &str) -> String {
             (r"(?i)\bn[°º]\s?(\d)", " numéro $1"),
             (r"\s?%", " pour cent "),
             (r"\s?€", " euros "),
+            // Une formule écrite en symboles, relue en mots (même règle que le
+            // serveur, nova-server#138) : « P = ρGH » se compare à « P égale rho GH ».
+            (r"±", " plus ou moins "),
+            (r"=", " égale "),
+            (r"²", " au carré "),
+            (r"³", " au cube "),
+            (r"√", " racine "),
+            (r"Δ", " delta "),
+            (r"ρ", " rho "),
+            (r"μ", " mu "),
+            (r"π", " pi "),
+            (r"σ", " sigma "),
+            (r"×", " fois "),
+            (r"(\w)\s*/\s*(\w)", "$1 divisé par $2"),
+            // Les tics de l'oral ne comptent pas dans les mots repris.
+            (r"(?i)\b(?:comment dire|c'est tout)\b", " "),
         ]
         .into_iter()
         .map(|(pattern, words)| (Regex::new(pattern).expect("symbol pattern"), words))
@@ -1706,6 +1727,26 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             ", en 1789".repeat(80)
         );
         assert_eq!(check(input, &output, COURSE), Err("output-runaway"));
+    }
+
+    #[test]
+    fn a_formula_written_in_symbols_is_kept() {
+        let style = "default_improve_transcriptions";
+        for (said, wrote) in [
+            ("Formule P égale rho GH.", "Formule : P = ρGH."),
+            (
+                "formule delta égale b au carré moins 4 a c",
+                "Formule : Δ = b² - 4ac.",
+            ),
+            ("R égale rho V L divisé par mu", "R = ρVL / μ."),
+            (
+                "le rendu est en salle 312, non, je me suis trompé, 315",
+                "Le rendu est en salle 315.",
+            ),
+        ] {
+            assert_eq!(check(said, wrote, style), Ok(()), "{said}");
+        }
+        assert!(check("formule P égale rho GH", "Formule : P = mv².", style).is_err());
     }
 
     #[test]
