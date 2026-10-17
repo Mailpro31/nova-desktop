@@ -892,7 +892,9 @@ pub fn check(input: &str, output: &str, style_id: &str) -> Result<(), &'static s
     if grouped_number_lost(input, output) {
         return Err("number-format-changed");
     }
-    if let Some(reason) = facts_refusal(&first_of_month(input), &spoken, true) {
+    // Les deux côtés relus de la même façon : « 50% » devenait « 50 pour cent »
+    // d'un seul côté, et « cent » un nombre nouveau (banc v2 du RTX, 17/10).
+    if let Some(reason) = facts_refusal(&as_dictated(&first_of_month(input)), &spoken, true) {
         return Err(reason);
     }
     if FAITHFUL_STYLES.contains(&style_id)
@@ -1704,6 +1706,22 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             ", en 1789".repeat(80)
         );
         assert_eq!(check(input, &output, COURSE), Err("output-runaway"));
+    }
+
+    #[test]
+    fn a_percentage_copied_as_said_is_kept() {
+        let style = "default_improve_transcriptions";
+        let said = "Le projet compte pour 50% de la note finale.";
+        assert_eq!(check(said, said, style), Ok(()));
+        assert_eq!(
+            check(
+                "la remise est de 20 pour cent",
+                "La remise est de 20 %.",
+                style
+            ),
+            Ok(())
+        );
+        assert!(check(said, "Le projet compte pour 40% de la note finale.", style).is_err());
     }
 
     #[test]
