@@ -837,6 +837,13 @@ fn as_dictated(output: &str) -> String {
             (r"π", " pi "),
             (r"σ", " sigma "),
             (r"×", " fois "),
+            // Une fraction dite en mots, relue en chiffres des deux côtés :
+            // « un tiers » écrit « 1/3 » (RTX, 17/10), « 1/4 » reste refusé.
+            (r"(?i)\bun demi\b", " 1/2 "),
+            (r"(?i)\bun tiers\b", " 1/3 "),
+            (r"(?i)\bun quart\b", " 1/4 "),
+            (r"(?i)\bdeux tiers\b", " 2/3 "),
+            (r"(?i)\btrois quarts\b", " 3/4 "),
             (r"(\w)\s*/\s*(\w)", "$1 divisé par $2"),
             // Les tics de l'oral ne comptent pas dans les mots repris.
             (r"(?i)\b(?:comment dire|c'est tout)\b", " "),
@@ -1747,6 +1754,15 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             assert_eq!(check(said, wrote, style), Ok(()), "{said}");
         }
         assert!(check("formule P égale rho GH", "Formule : P = mv².", style).is_err());
+        assert_eq!(
+            check(
+                "l'intégrale de x au carré vaut un tiers",
+                "L'intégrale de x² vaut 1/3.",
+                style
+            ),
+            Ok(())
+        );
+        assert!(check("l'intégrale vaut un tiers", "L'intégrale vaut 1/4.", style).is_err());
     }
 
     #[test]
