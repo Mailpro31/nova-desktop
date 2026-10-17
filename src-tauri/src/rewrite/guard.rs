@@ -790,16 +790,19 @@ fn check_course_notes(input: &str, output: &str) -> Result<(), &'static str> {
     // année d'histoire changée — est l'erreur la plus coûteuse : il la
     // révisera. Un nombre perdu vient juste après. Dit en chiffres ou en
     // lettres, c'est la même valeur qui est comparée.
-    if let Some(reason) = facts_refusal(input, output, true) {
+    // Les symboles relus en mots, des deux côtés, comme pour les autres
+    // Styles : « 2 pour cent » écrit « 2 % » était refusé (sondage du 17/10).
+    let spoken = as_dictated(output);
+    if let Some(reason) = facts_refusal(&as_dictated(&first_of_month(input)), &spoken, true) {
         return Err(reason);
     }
-    if added_word_ratio(input, output).is_some_and(|ratio| ratio > COURSE_MAX_ADDED_WORDS) {
+    if added_word_ratio(input, &spoken).is_some_and(|ratio| ratio > COURSE_MAX_ADDED_WORDS) {
         return Err("content-added");
     }
     if !has_personal_value_marker(input) {
         let dictated = course_words(input);
         if !dictated.is_empty() {
-            let written = course_words(output);
+            let written = course_words(&spoken);
             let kept = dictated.intersection(&written).count() as f32 / dictated.len() as f32;
             if kept < COURSE_MIN_KEPT_WORDS {
                 return Err("dictation-not-kept");
@@ -824,6 +827,20 @@ fn as_dictated(output: &str) -> String {
             (r"(?i)\bn[°º]\s?(\d)", " numéro $1"),
             (r"\s?%", " pour cent "),
             (r"\s?€", " euros "),
+            // Une unité composée après un nombre : « 2400 tr/min », « 5 L/s ».
+            (
+                r"(\d)\s?([[:alpha:]]{1,3})/([[:alpha:]]{1,3})\b",
+                "$1 $2 par $3 ",
+            ),
+            (r"\s?°C\b", " degrés Celsius "),
+            (r"\s?°", " degrés "),
+            // « -2 » se dit « moins 2 » ; « 2020-2021 » n'est pas concerné.
+            (r"(^|[^\w)])[-−]\s?(\d)", "$1 moins $2"),
+            (r"½", " 1/2 "),
+            (r"⅓", " 1/3 "),
+            (r"¼", " 1/4 "),
+            (r"⅔", " 2/3 "),
+            (r"¾", " 3/4 "),
             // Une formule écrite en symboles, relue en mots (même règle que le
             // serveur, nova-server#138) : « P = ρGH » se compare à « P égale rho GH ».
             (r"±", " plus ou moins "),
@@ -1763,6 +1780,56 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             Ok(())
         );
         assert!(check("l'intégrale vaut un tiers", "L'intégrale vaut 1/4.", style).is_err());
+    }
+
+    #[test]
+    fn ideal_notes_with_symbols_are_kept() {
+        for style in ["default_improve_transcriptions", COURSE_NOTES_STYLE] {
+            for (said, wrote) in [
+                (
+                    "Le profil a une cambrure maximale de 2 pour cent.",
+                    "Le profil a une cambrure maximale de 2 %.",
+                ),
+                (
+                    "Une aile de 30 mètres carrés à 70 mètres par seconde.",
+                    "Une aile de 30 m² à 70 m/s.",
+                ),
+                (
+                    "L'hélice tourne à 2400 tours par minute.",
+                    "L'hélice tourne à 2400 tr/min.",
+                ),
+                (
+                    "La valeur propre associée vaut moins 2.",
+                    "La valeur propre associée vaut -2.",
+                ),
+                (
+                    "La température est de moins 50 degrés Celsius en altitude.",
+                    "La température est de -50 °C en altitude.",
+                ),
+                (
+                    "Formule, l'énergie cinétique égale un demi m v au carré.",
+                    "Formule : l'énergie cinétique = ½mv².",
+                ),
+                (
+                    "Rendez-vous le premier décembre à 9 heures.",
+                    "Rendez-vous le 1er décembre à 9 h.",
+                ),
+            ] {
+                assert_eq!(check(said, wrote, style), Ok(()), "{style} {said}");
+            }
+            assert!(check(
+                "Le profil a une cambrure maximale de 2 pour cent.",
+                "Le profil a une cambrure maximale de 3 %.",
+                style
+            )
+            .is_err());
+            assert!(check(
+                "La valeur propre associée vaut moins 2.",
+                "La valeur propre associée vaut -3.",
+                style
+            )
+            .is_err());
+        }
     }
 
     #[test]
