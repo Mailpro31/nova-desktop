@@ -369,6 +369,14 @@ fn resolve_variable_tokens(text: &str, variables: &[crate::settings::CustomVaria
             // `i + 2` tombe sur une frontière de caractère (deux `{` ASCII).
             if let Some(rel) = text[i + 2..].find("}}") {
                 let inner = text[i + 2..i + 2 + rel].trim();
+                // L'image d'un snippet (`{{image:…}}`) reste un repère : c'est
+                // `rich_paste` qui la colle. Réduite à son texte, elle arrivait
+                // dans Word en « image:f6b6….png » (capture de Sash, 20/10).
+                if inner.starts_with("image:") {
+                    out.push_str(&text[i..i + 2 + rel + 2]);
+                    i = i + 2 + rel + 2;
+                    continue;
+                }
                 let needle = inner.to_lowercase();
                 match lookup.iter().find(|(k, _)| *k == needle) {
                     Some((key, value)) => push_value(&mut out, key, value),
@@ -3027,6 +3035,18 @@ mod tests {
             restore_lexicon(&protected, &restores),
             "écris à Mailpro31 demain"
         );
+    }
+
+    #[test]
+    fn an_image_marker_survives_the_personal_values() {
+        let vars = vec![crate::settings::CustomVariable {
+            key: "mon adresse".to_string(),
+            value: "12 rue de la Paix".to_string(),
+        }];
+        let text = "Voici mon planning : {{image:0123456789abcdef.png}}.";
+        assert_eq!(resolve_variable_tokens(text, &vars), text);
+        assert_eq!(substitute_personal_values(text, &vars, false), text);
+        assert_eq!(substitute_personal_values(text, &vars, true), text);
     }
 
     #[test]
