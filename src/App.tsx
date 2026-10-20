@@ -557,6 +557,10 @@ function App() {
             "bg-background border border-mid-gray/20 rounded-lg shadow-lg px-4 py-3 flex items-center gap-3 text-sm",
           title: "font-medium",
           description: "text-mid-gray",
+          // Sans style (`unstyled`), la croix de fermeture restait un carré
+          // noir par défaut (capture de Sash, 20/10).
+          closeButton:
+            "order-last ml-auto shrink-0 rounded border-0 bg-transparent p-1 text-mid-gray hover:text-text hover:bg-mid-gray/10 [&>svg]:size-3.5",
         },
       }}
     />
