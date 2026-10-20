@@ -108,6 +108,12 @@
 .ov-stage.top .scard.sidle {
   flex-direction: row;
 }
+/* Même exception pour la carte « Copier la dernière transcription » : en haut
+   de l'écran, elle s'affichait à l'envers, le bouton Copier au-dessus et le
+   titre en bas (capture de Sash, 20/10). */
+.ov-stage.top .scard.sfallback {
+  flex-direction: column;
+}
 .ov-stage.top .stext-cap {
   /* Mirror of the bottom overlay (top: 12 / bottom: 0): the first line sits flush
      under the pill and the breathing room moves below the text. The top fade is
