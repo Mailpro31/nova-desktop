@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova не смогла проанализировать это чтение. Прочитайте фразу ещё раз."
     }
   },
-  "modelSelector": {
-    "custom": "Пользовательская",
-    "streaming": "Потоковый",
-    "active": "Активный",
-    "switching": "Переключение...",
-    "noModelsAvailable": "Нет доступных моделей",
-    "verifying": "Проверка {{modelName}}...",
-    "verifyingGeneric": "Проверка...",
-    "extracting": "Извлечение {{modelName}}...",
-    "extractingMultiple": "Извлечение моделей {{count}}...",
-    "extractingGeneric": "Извлечение...",
-    "downloading": "Загрузка {{percentage}} %",
-    "downloadingMultiple": "Загрузка моделей {{count}}...",
-    "modelReady": "Модель готова",
-    "loading": "Загрузка {{modelName}}...",
-    "loadingGeneric": "Загрузка...",
-    "modelError": "Ошибка модели",
-    "modelUnloaded": "Модель выгружена",
-    "noModelDownloadRequired": "Нет модели – требуется загрузка",
-    "deleteModel": "Удалить {{modelName}}",
-    "downloadSpeed": "{{speed}} МБ/с",
-    "capabilities": {
-      "languageSelection": "Поддерживает несколько языков ввода",
-      "languageCount": "Языков: {{total}}",
-      "translation": "Может переводить на английский",
-      "translate": "Перевод на английский",
-      "singleLanguage": "Поддерживает только этот язык",
-      "languageOnly": "Только {{language}}",
-      "streaming": "Показывает транскрипцию в реальном времени во время речи"
-    },
-    "cancel": "Отмена",
-    "cancelDownload": "Отменить загрузку",
-    "legacy": "Устаревшее"
-  },
   "settings": {
     "modelSettings": {
       "title": "Настройки {{model}}"
@@ -883,74 +849,10 @@
     "view": "Посмотреть новинки",
     "title": "Новое в Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "Бесплатные переформулировки Turbo",
-    "count": "{{used}} / {{limit}} переформулировок",
-    "blockedInline": "Вы использовали все бесплатные переформулировки Turbo — диктовка остаётся безлимитной, текст вставляется как есть. Перейдите на безлимитный Turbo.",
-    "lifetimeNote": "Разовое предложение, не продлевается.",
-    "blockedTitle": "Бесплатные переформулировки Turbo исчерпаны",
-    "blockedDescription": "Вы использовали свои 20 бесплатных переформулировок Turbo. Диктовка остаётся безлимитной — ваш текст вставляется как есть. Перейдите на Nova Ultra для безлимитного Turbo.",
-    "upgrade": "Оформить подписку"
-  },
-  "weekStat": {
-    "minutes_one": "Сэкономлено времени на наборе: ≈ {{count}} мин",
-    "minutes_other": "Сэкономлено времени на наборе: ≈ {{count}} мин",
-    "words_one": "Слов надиктовано за неделю: {{count}}",
-    "words_other": "Слов надиктовано за неделю: {{count}}"
-  },
-  "performanceOptimizer": {
-    "title": "Автоматическая оптимизация",
-    "description": "Настройте Nova для этого компьютера и проверьте реальный процесс расшифровки.",
-    "autoLabel": "Автоматический режим производительности",
-    "autoDescription": "Подбирает безопасные настройки ускорения и памяти модели по объёму RAM, процессору и совместимым GPU.",
-    "diagnosticsDescription": "Проверьте микрофон, модель, сервис переформулирования, память и ускорение.",
-    "run": "Запустить диагностику",
-    "running": "Проверка…",
-    "profile": "Профиль",
-    "memory": "Память",
-    "cpu": "Потоки ЦП",
-    "acceleration": "Ускорение",
-    "latency": "Измеренная задержка",
-    "median": "медиана {{value}} мс",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Открыть настройки микрофона",
-    "retryGpu": "Повторить GPU после перезапуска",
-    "classes": {
-      "low_memory": "Мало памяти",
-      "balanced": "Сбалансированный",
-      "performance": "Производительность"
-    }
-  },
   "voiceCommands": {
     "title": "Голосовые команды",
     "description": "Понимает «новый абзац», «новая строка», «вопросительный знак» и явные команды Nova для заметок, списков, встреч или отмены текущей диктовки.",
     "added": "{{word}} добавлено в личный словарь"
-  },
-  "license": {
-    "remove": "Удалить",
-    "upgradeToUltra": "Перейти на Nova Ultra",
-    "requiresTier": "Требуется {{tier}}",
-    "active": "Лицензия активна",
-    "trial": {
-      "badge": "Пробный Pro",
-      "badgeDays": "Пробный Pro · {{count}} дн.",
-      "title": "Пробный период Nova Pro",
-      "description_one": "Остался {{count}} день пробного периода.",
-      "description_other": "Осталось {{count}} дней пробного периода.",
-      "subscribe": "Оформить подписку Nova Pro",
-      "expiredTitle": "Ваш пробный период Nova Pro завершён",
-      "expiredBody": "Вы вернулись на тариф Nova Free. Оформите подписку Nova Pro, чтобы вернуть все стили и профили мощности.",
-      "close": "Закрыть",
-      "toastTitle": "Пробный период Nova Pro активен",
-      "toastDescription_one": "Остался {{count}} день — Turbo и все стили включены.",
-      "toastDescription_other": "Осталось {{count}} дней — Turbo и все стили включены."
-    },
-    "manageSubscription": "Управление подпиской",
-    "comingSoon": "Скоро",
-    "featureColumn": "Функция",
-    "yourPlan": "Ваш тариф",
-    "onlineEngineLockedTitle": "Turbo требует подписки Nova",
-    "onlineEngineLocked": "Онлайн-движок доступен в Nova Pro и Ultra — текст вставлен без переформулировки."
   },
   "lexiconLearning": {
     "title": "Запоминать мой словарь",

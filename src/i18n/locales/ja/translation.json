@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova はこの読み上げを分析できませんでした。もう一度文を読んでください。"
     }
   },
-  "modelSelector": {
-    "custom": "カスタム",
-    "streaming": "ストリーミング",
-    "active": "アクティブ",
-    "switching": "切替中…",
-    "noModelsAvailable": "利用可能なモデルがありません",
-    "verifying": "{{modelName}}を検証中…",
-    "verifyingGeneric": "検証中…",
-    "extracting": "{{modelName}}を展開中…",
-    "extractingMultiple": "{{count}}個のモデルを展開中…",
-    "extractingGeneric": "展開中…",
-    "downloading": "ダウンロード中 {{percentage}}%",
-    "downloadingMultiple": "{{count}}個のモデルをダウンロード中…",
-    "modelReady": "モデル準備完了",
-    "loading": "{{modelName}}を読み込み中…",
-    "loadingGeneric": "読み込み中…",
-    "modelError": "モデルエラー",
-    "modelUnloaded": "モデルがアンロードされました",
-    "noModelDownloadRequired": "モデルなし - ダウンロードが必要",
-    "deleteModel": "{{modelName}}を削除",
-    "downloadSpeed": "{{speed}} MB/s",
-    "capabilities": {
-      "languageSelection": "複数の入力言語をサポート",
-      "languageCount": "{{total}}言語",
-      "translation": "英語への翻訳が可能",
-      "translate": "英語に翻訳",
-      "singleLanguage": "この言語のみ対応",
-      "languageOnly": "{{language}}のみ",
-      "streaming": "話しながらリアルタイムで文字起こしを表示"
-    },
-    "cancel": "キャンセル",
-    "cancelDownload": "ダウンロードをキャンセル",
-    "legacy": "旧式"
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}} の設定"
@@ -883,74 +849,10 @@
     "view": "新機能を見る",
     "title": "Nova v{{version}} の新機能"
   },
-  "quota": {
-    "lifetimeUsage": "無料 Turbo リライト",
-    "count": "{{used}} / {{limit}} 回のリライト",
-    "blockedInline": "無料の Turbo リライトをすべて使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限の Turbo にアップグレードしてください。",
-    "lifetimeNote": "一度限りの特典、更新されません。",
-    "blockedTitle": "無料の Turbo リライトを使い切りました",
-    "blockedDescription": "20回の無料 Turbo リライトを使い切りました。口述入力は引き続き無制限で、テキストはそのまま貼り付けられます。無制限の Turbo は Nova Ultra へのアップグレードで。",
-    "upgrade": "登録する"
-  },
-  "weekStat": {
-    "minutes_one": "入力時間を約 {{count}} 分節約",
-    "minutes_other": "入力時間を約 {{count}} 分節約",
-    "words_one": "今週の口述：{{count}} 語",
-    "words_other": "今週の口述：{{count}} 語"
-  },
-  "performanceOptimizer": {
-    "title": "自動最適化",
-    "description": "この PC に合わせて Nova を調整し、実際の文字起こしの流れを確認します。",
-    "autoLabel": "自動パフォーマンスモード",
-    "autoDescription": "RAM、CPU、対応 GPU に応じて、安全なアクセラレーションとモデルのメモリ設定を選びます。",
-    "diagnosticsDescription": "マイク、モデル、書き換えプロバイダー、メモリ、アクセラレーションを確認します。",
-    "run": "診断を実行",
-    "running": "確認しています…",
-    "profile": "プロファイル",
-    "memory": "メモリ",
-    "cpu": "CPU スレッド",
-    "acceleration": "アクセラレーション",
-    "latency": "計測したレイテンシ",
-    "median": "中央値 {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "マイク設定を開く",
-    "retryGpu": "再起動後に GPU を再試行",
-    "classes": {
-      "low_memory": "低メモリ",
-      "balanced": "バランス",
-      "performance": "パフォーマンス"
-    }
-  },
   "voiceCommands": {
     "title": "音声コマンド",
     "description": "「改段落」「改行」「疑問符」のほか、メモ、リスト、会議、現在の口述の取り消しに使う Nova の明示的なコマンドを理解します。",
     "added": "{{word}} を個人辞書に追加しました"
-  },
-  "license": {
-    "remove": "削除",
-    "upgradeToUltra": "Nova Ultra にアップグレード",
-    "requiresTier": "{{tier}} が必要",
-    "active": "ライセンス有効",
-    "trial": {
-      "badge": "Pro体験版",
-      "badgeDays": "Proトライアル · 残り{{count}}日",
-      "title": "Nova Pro 体験版",
-      "description_one": "体験版終了まで残り{{count}}日です。",
-      "description_other": "体験版終了まで残り{{count}}日です。",
-      "subscribe": "Nova Proに登録する",
-      "expiredTitle": "Nova Pro の体験版が終了しました",
-      "expiredBody": "Nova Free プランに戻りました。すべてのリライトスタイルとパワープロファイルを取り戻すには、Nova Pro に登録してください。",
-      "close": "閉じる",
-      "toastTitle": "Nova Pro 体験版が有効です",
-      "toastDescription_one": "残り{{count}}日 — Turbo とすべてのリライトスタイルが含まれます。",
-      "toastDescription_other": "残り{{count}}日 — Turbo とすべてのリライトスタイルが含まれます。"
-    },
-    "manageSubscription": "サブスクリプションを管理",
-    "comingSoon": "近日公開",
-    "featureColumn": "機能",
-    "yourPlan": "ご利用プラン",
-    "onlineEngineLockedTitle": "TurboにはNovaサブスクリプションが必要です",
-    "onlineEngineLocked": "オンラインエンジンはNova ProとUltra限定のため、リフォーミュレーションなしで貼り付けられました。"
   },
   "lexiconLearning": {
     "title": "よく使う語句を学習",

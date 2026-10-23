@@ -259,40 +259,6 @@
       "errorAnalysis": "تعذّر على Nova تحليل هذه القراءة. أعد قراءة الجملة."
     }
   },
-  "modelSelector": {
-    "custom": "مخصص",
-    "streaming": "البث",
-    "active": "نشط",
-    "noModelsAvailable": "لا توجد نماذج متاحة",
-    "verifying": "جارٍ التحقق من {{modelName}}...",
-    "verifyingGeneric": "جارٍ التحقق...",
-    "extracting": "...جاري استخراج {{modelName}}",
-    "extractingMultiple": "...جاري استخراج {{count}} من النماذج",
-    "extractingGeneric": "...جاري الاستخراج",
-    "downloading": "جاري التنزيل {{percentage}}%",
-    "downloadingMultiple": "جاري تنزيل {{count}} من النماذج...",
-    "modelReady": "النموذج جاهز",
-    "loading": "...جاري تحميل {{modelName}}",
-    "loadingGeneric": "...جاري التحميل",
-    "modelError": "خطأ في النموذج",
-    "modelUnloaded": "تم إلغاء تحميل النموذج",
-    "noModelDownloadRequired": "لا يوجد نموذج - التنزيل مطلوب",
-    "deleteModel": "حذف {{modelName}}",
-    "switching": "جارٍ التبديل...",
-    "downloadSpeed": "{{speed}} ميجابايت/ث",
-    "cancel": "إلغاء",
-    "cancelDownload": "إلغاء التنزيل",
-    "capabilities": {
-      "languageSelection": "يدعم اختيار اللغة",
-      "singleLanguage": "يدعم هذه اللغة فقط",
-      "languageCount": "اللغات: {{total}}",
-      "languageOnly": "{{language}} فقط",
-      "translation": "يدعم الترجمة",
-      "translate": "ترجمة",
-      "streaming": "يعرض النسخ المباشر أثناء التحدث"
-    },
-    "legacy": "قديم"
-  },
   "settings": {
     "general": {
       "title": "عام",
@@ -883,74 +849,10 @@
     "view": "عرض الجديد",
     "title": "الجديد في Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "إعادات صياغة Turbo المجانية",
-    "count": "{{used}} / {{limit}} إعادة صياغة",
-    "blockedInline": "لقد استخدمت جميع إعادات صياغة Turbo المجانية — يظل الإملاء بلا حدود، ويُلصق النص كما هو. قم بالترقية إلى Turbo غير المحدود.",
-    "lifetimeNote": "عرض لمرة واحدة، لا يتجدد.",
-    "blockedTitle": "تم استخدام إعادات صياغة Turbo المجانية بالكامل",
-    "blockedDescription": "لقد استخدمت إعادات صياغة Turbo المجانية العشرين. يظل الإملاء بلا حدود — يُلصق نصك كما هو. قم بالترقية إلى Nova Ultra للحصول على Turbo غير محدود.",
-    "upgrade": "اشترك"
-  },
-  "weekStat": {
-    "minutes_one": "وقت الكتابة الموفَّر: ≈ {{count}} دقيقة",
-    "minutes_other": "وقت الكتابة الموفَّر: ≈ {{count}} دقيقة",
-    "words_one": "الكلمات المُملاة هذا الأسبوع: {{count}}",
-    "words_other": "الكلمات المُملاة هذا الأسبوع: {{count}}"
-  },
-  "performanceOptimizer": {
-    "title": "التحسين التلقائي",
-    "description": "اضبط Nova لهذا الكمبيوتر وافحص مسار النسخ الفعلي.",
-    "autoLabel": "وضع الأداء التلقائي",
-    "autoDescription": "يختار إعدادات تسريع وذاكرة نموذج آمنة بناءً على ذاكرة RAM والمعالج ووحدات GPU المتوافقة.",
-    "diagnosticsDescription": "افحص الميكروفون والنموذج ومزوّد إعادة الصياغة والذاكرة والتسريع.",
-    "run": "تشغيل التشخيص",
-    "running": "جارٍ الفحص…",
-    "profile": "الملف",
-    "memory": "الذاكرة",
-    "cpu": "خيوط المعالج",
-    "acceleration": "التسريع",
-    "latency": "زمن الاستجابة المُقاس",
-    "median": "الوسيط {{value}} مللي ثانية",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "فتح إعدادات الميكروفون",
-    "retryGpu": "إعادة محاولة GPU بعد إعادة التشغيل",
-    "classes": {
-      "low_memory": "ذاكرة منخفضة",
-      "balanced": "متوازن",
-      "performance": "الأداء"
-    }
-  },
   "voiceCommands": {
     "title": "الأوامر الصوتية",
     "description": "يفهم «فقرة جديدة» و«سطر جديد» و«علامة استفهام»، وأوامر Nova الصريحة للملاحظات والقوائم والاجتماعات أو لإلغاء الإملاء الحالي.",
     "added": "تمت إضافة {{word}} إلى القاموس الشخصي"
-  },
-  "license": {
-    "remove": "إزالة",
-    "upgradeToUltra": "الترقية إلى Nova Ultra",
-    "requiresTier": "يتطلب {{tier}}",
-    "active": "الترخيص نشط",
-    "trial": {
-      "badge": "تجربة Pro",
-      "badgeDays": "تجربة Pro · {{count}} ي",
-      "title": "تجربة Nova Pro",
-      "description_one": "تبقى {{count}} يوم على انتهاء التجربة.",
-      "description_other": "تبقى {{count}} أيام على انتهاء التجربة.",
-      "subscribe": "الاشتراك في Nova Pro",
-      "expiredTitle": "انتهت تجربة Nova Pro الخاصة بك",
-      "expiredBody": "لقد عدت إلى باقة Nova Free. اشترك في Nova Pro لاستعادة جميع الأنماط وملفات الطاقة.",
-      "close": "إغلاق",
-      "toastTitle": "تجربة Nova Pro نشطة",
-      "toastDescription_one": "تبقى {{count}} يوم — Turbo وجميع الأنماط مشمولة.",
-      "toastDescription_other": "تبقى {{count}} أيام — Turbo وجميع الأنماط مشمولة."
-    },
-    "manageSubscription": "إدارة اشتراكي",
-    "comingSoon": "قريبًا",
-    "featureColumn": "الميزة",
-    "yourPlan": "خطتك",
-    "onlineEngineLockedTitle": "Turbo يتطلب اشتراك Nova",
-    "onlineEngineLocked": "المحرك عبر الإنترنت مخصص لـ Nova Pro وUltra — تم لصق النص دون إعادة صياغة."
   },
   "lexiconLearning": {
     "title": "تعلّم مفرداتي",

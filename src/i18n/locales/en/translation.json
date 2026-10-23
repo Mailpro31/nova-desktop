@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova could not analyse this reading. Read the sentence again."
     }
   },
-  "modelSelector": {
-    "custom": "Custom",
-    "legacy": "Legacy",
-    "streaming": "Streaming",
-    "active": "Active",
-    "switching": "Switching...",
-    "noModelsAvailable": "No models available",
-    "verifying": "Verifying {{modelName}}...",
-    "verifyingGeneric": "Verifying...",
-    "extracting": "Extracting {{modelName}}...",
-    "extractingMultiple": "Extracting {{count}} models...",
-    "extractingGeneric": "Extracting...",
-    "downloading": "Downloading {{percentage}}%",
-    "downloadingMultiple": "Downloading {{count}} models...",
-    "modelReady": "Model Ready",
-    "loading": "Loading {{modelName}}...",
-    "loadingGeneric": "Loading...",
-    "modelError": "Model Error",
-    "modelUnloaded": "Model Unloaded",
-    "noModelDownloadRequired": "No Model - Download Required",
-    "deleteModel": "Delete {{modelName}}",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "Cancel",
-    "cancelDownload": "Cancel download",
-    "capabilities": {
-      "languageSelection": "Supports multiple input languages",
-      "singleLanguage": "Supports this language only",
-      "languageCount": "{{total}} languages",
-      "languageOnly": "{{language}} only",
-      "translation": "Can translate to English",
-      "translate": "Translate",
-      "streaming": "Shows live transcription as you speak"
-    }
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}} Settings"
@@ -826,21 +792,6 @@
     "permissionsDescription": "Nova needs accessibility permissions to type transcribed text.",
     "openSettings": "Open System Settings"
   },
-  "quota": {
-    "lifetimeUsage": "Free Turbo rewrites",
-    "lifetimeNote": "One-time offer, not renewed.",
-    "count": "{{used}} / {{limit}} rewrites",
-    "blockedInline": "You've used all your free Turbo rewrites — dictation stays unlimited, your text is pasted as-is. Upgrade for unlimited Turbo.",
-    "blockedTitle": "Free Turbo rewrites used up",
-    "blockedDescription": "You've used your 20 free Turbo rewrites. Dictation stays unlimited — your text is pasted as-is. Upgrade to Nova Ultra for unlimited Turbo.",
-    "upgrade": "Subscribe"
-  },
-  "weekStat": {
-    "words_one": "{{count}} word dictated this week",
-    "words_other": "{{count}} words dictated this week",
-    "minutes_one": "≈ {{count}} minute of typing saved",
-    "minutes_other": "≈ {{count}} minutes of typing saved"
-  },
   "errors": {
     "privateEngineUnavailable": "Private Intelligence unavailable",
     "performanceReducedTitle": "Reduced performance",
@@ -898,59 +849,10 @@
     "dictationLimitWarning": "Stops in {{seconds}} s (organization limit)",
     "unclear": "I didn't hear that clearly, so nothing was pasted. Speak a little louder or closer to the microphone."
   },
-  "performanceOptimizer": {
-    "title": "Automatic optimization",
-    "description": "Tune Nova for this computer and inspect the real transcription pipeline.",
-    "autoLabel": "Auto performance mode",
-    "autoDescription": "Chooses safe acceleration and model memory settings from your RAM, CPU, and compatible GPUs.",
-    "diagnosticsDescription": "Check the microphone, model, rewrite provider, memory, and acceleration.",
-    "run": "Run diagnostic",
-    "running": "Checking…",
-    "profile": "Profile",
-    "memory": "Memory",
-    "cpu": "CPU threads",
-    "acceleration": "Acceleration",
-    "latency": "Measured latency",
-    "median": "median {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Open microphone settings",
-    "retryGpu": "Retry GPU after restart",
-    "classes": {
-      "low_memory": "Low memory",
-      "balanced": "Balanced",
-      "performance": "Performance"
-    }
-  },
   "voiceCommands": {
     "title": "Voice commands",
     "description": "Understands new paragraph, new line, question mark, and explicit Nova commands for notes, lists, meetings, or cancelling the current dictation.",
     "added": "{{word}} was added to the personal dictionary"
-  },
-  "license": {
-    "remove": "Remove",
-    "upgradeToUltra": "Upgrade to Nova Ultra",
-    "requiresTier": "Requires {{tier}}",
-    "active": "License active",
-    "trial": {
-      "badge": "Pro trial",
-      "badgeDays": "Pro trial · {{count}} d",
-      "title": "Nova Pro trial",
-      "description_one": "{{count}} day left in your trial.",
-      "description_other": "{{count}} days left in your trial.",
-      "subscribe": "Subscribe to Nova Pro",
-      "expiredTitle": "Your Nova Pro trial has ended",
-      "expiredBody": "You're back on the Nova Free tier. Subscribe to Nova Pro to get the full Styles and power profiles back.",
-      "close": "Close",
-      "toastTitle": "Nova Pro trial active",
-      "toastDescription_one": "{{count}} day left — Turbo and all Styles included.",
-      "toastDescription_other": "{{count}} days left — Turbo and all Styles included."
-    },
-    "manageSubscription": "Manage my subscription",
-    "comingSoon": "Coming soon",
-    "featureColumn": "Feature",
-    "yourPlan": "Your plan",
-    "onlineEngineLockedTitle": "Turbo requires a Nova subscription",
-    "onlineEngineLocked": "The online engine is reserved for Nova Pro and Ultra — your text was pasted without reformulation."
   },
   "lexiconLearning": {
     "title": "Learn my vocabulary",

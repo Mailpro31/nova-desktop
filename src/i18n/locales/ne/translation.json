@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova ले यो पढाइ विश्लेषण गर्न सकेन। वाक्य फेरि पढ्नुहोस्।"
     }
   },
-  "modelSelector": {
-    "custom": "कस्टम",
-    "legacy": "लिगेसी",
-    "streaming": "स्ट्रिमिङ",
-    "active": "सक्रिय",
-    "switching": "बदलिँदैछ...",
-    "noModelsAvailable": "कुनै मोडेल उपलब्ध छैन",
-    "verifying": "{{modelName}} प्रमाणित गरिँदैछ...",
-    "verifyingGeneric": "प्रमाणित गरिँदैछ...",
-    "extracting": "{{modelName}} एक्स्ट्र्याक्ट गरिँदैछ...",
-    "extractingMultiple": "{{count}} वटा मोडेल एक्स्ट्र्याक्ट गरिँदैछ...",
-    "extractingGeneric": "एक्स्ट्र्याक्ट गरिँदैछ...",
-    "downloading": "डाउनलोड गरिँदैछ {{percentage}}%",
-    "downloadingMultiple": "{{count}} वटा मोडेल डाउनलोड गरिँदैछ...",
-    "modelReady": "मोडेल तयार छ",
-    "loading": "{{modelName}} लोड गरिँदैछ...",
-    "loadingGeneric": "लोड गरिँदैछ...",
-    "modelError": "मोडेल त्रुटि",
-    "modelUnloaded": "मोडेल अनलोड गरियो",
-    "noModelDownloadRequired": "मोडेल छैन - डाउनलोड आवश्यक",
-    "deleteModel": "{{modelName}} मेटाउनुहोस्",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "रद्द गर्नुहोस्",
-    "cancelDownload": "डाउनलोड रद्द गर्नुहोस्",
-    "capabilities": {
-      "languageSelection": "धेरै इनपुट भाषाहरू समर्थन गर्छ",
-      "singleLanguage": "यो भाषा मात्र समर्थन गर्छ",
-      "languageCount": "{{total}} भाषाहरू",
-      "languageOnly": "{{language}} मात्र",
-      "translation": "अङ्ग्रेजीमा अनुवाद गर्न सक्छ",
-      "translate": "अनुवाद",
-      "streaming": "बोल्दै गर्दा लाइभ ट्रान्सक्रिप्सन देखाउँछ"
-    }
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}} सेटिङहरू"
@@ -883,74 +849,10 @@
     "dictationLimitWarning": "{{seconds}} सेकेन्डमा रोकिन्छ (संस्थाको सीमा)",
     "unclear": "स्पष्ट सुनिएन, त्यसैले केही टाँसिएन। अलि ठूलो स्वरमा वा माइक्रोफोन नजिकबाट बोल्नुहोस्।"
   },
-  "quota": {
-    "lifetimeUsage": "निःशुल्क Turbo पुनर्लेखन",
-    "count": "{{used}} / {{limit}} पुनर्लेखन",
-    "blockedInline": "तपाईंले आफ्ना सबै निःशुल्क Turbo पुनर्लेखन प्रयोग गरिसक्नुभयो — श्रुतलेखन असीमित नै रहन्छ, पाठ जस्ताको तस्तै टाँसिन्छ। असीमित Turbo का लागि अपग्रेड गर्नुहोस्।",
-    "lifetimeNote": "एकपटकको प्रस्ताव, नवीकरण हुँदैन।",
-    "blockedTitle": "निःशुल्क Turbo पुनर्लेखन सकियो",
-    "blockedDescription": "तपाईंले आफ्ना २० निःशुल्क Turbo पुनर्लेखन प्रयोग गरिसक्नुभयो। श्रुतलेखन असीमित नै रहन्छ — तपाईंको पाठ जस्ताको तस्तै टाँसिन्छ। असीमित Turbo का लागि Nova Ultra मा अपग्रेड गर्नुहोस्।",
-    "upgrade": "सदस्यता लिनुहोस्"
-  },
-  "weekStat": {
-    "minutes_one": "टाइपिङ समय ≈ {{count}} मिनेट बचत",
-    "minutes_other": "टाइपिङ समय ≈ {{count}} मिनेट बचत",
-    "words_one": "यो हप्ता {{count}} शब्द डिक्टेट गरियो",
-    "words_other": "यो हप्ता {{count}} शब्द डिक्टेट गरियो"
-  },
-  "performanceOptimizer": {
-    "title": "स्वचालित अनुकूलन",
-    "description": "यो कम्प्युटरका लागि Nova मिलाउनुहोस् र वास्तविक ट्रान्सक्रिप्सन प्रक्रिया जाँच्नुहोस्।",
-    "autoLabel": "स्वचालित कार्यसम्पादन मोड",
-    "autoDescription": "तपाईंको RAM, CPU र मिल्दो GPU अनुसार सुरक्षित एक्सेलेरेसन र मोडेल मेमोरी सेटिङ छान्छ।",
-    "diagnosticsDescription": "माइक्रोफोन, मोडेल, पुनर्लेखन प्रदायक, मेमोरी र एक्सेलेरेसन जाँच्नुहोस्।",
-    "run": "निदान चलाउनुहोस्",
-    "running": "जाँच्दै…",
-    "profile": "प्रोफाइल",
-    "memory": "मेमोरी",
-    "cpu": "CPU थ्रेड",
-    "acceleration": "एक्सेलेरेसन",
-    "latency": "मापन गरिएको ढिलाइ",
-    "median": "मध्यिका {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "माइक्रोफोन सेटिङ खोल्नुहोस्",
-    "retryGpu": "पुनः सुरु गरेपछि GPU फेरि प्रयास गर्नुहोस्",
-    "classes": {
-      "low_memory": "कम मेमोरी",
-      "balanced": "सन्तुलित",
-      "performance": "कार्यसम्पादन"
-    }
-  },
   "voiceCommands": {
     "title": "आवाज आदेश",
     "description": "नयाँ अनुच्छेद, नयाँ लाइन, प्रश्नचिह्न, र टिपोट, सूची, बैठक वा हालको डिक्टेसन रद्द गर्ने स्पष्ट Nova आदेशहरू बुझ्छ।",
     "added": "{{word}} व्यक्तिगत शब्दकोशमा थपियो"
-  },
-  "license": {
-    "remove": "हटाउनुहोस्",
-    "upgradeToUltra": "Nova Ultra मा अपग्रेड गर्नुहोस्",
-    "requiresTier": "{{tier}} आवश्यक",
-    "active": "इजाजतपत्र सक्रिय",
-    "trial": {
-      "badge": "Pro परीक्षण",
-      "badgeDays": "Pro परीक्षण · {{count}} दिन",
-      "title": "Nova Pro परीक्षण",
-      "description_one": "परीक्षण अवधि सकिन {{count}} दिन बाँकी।",
-      "description_other": "परीक्षण अवधि सकिन {{count}} दिन बाँकी।",
-      "subscribe": "Nova Pro सदस्यता लिनुहोस्",
-      "expiredTitle": "तपाईंको Nova Pro परीक्षण अवधि सकियो",
-      "expiredBody": "तपाईं Nova Free योजनामा फर्किनुभयो। सबै पुनर्लेखन शैली र शक्ति प्रोफाइलहरू फिर्ता पाउन Nova Pro मा सदस्यता लिनुहोस्।",
-      "close": "बन्द गर्नुहोस्",
-      "toastTitle": "Nova Pro परीक्षण सक्रिय छ",
-      "toastDescription_one": "{{count}} दिन बाँकी — Turbo र सबै शैलीहरू सामेल।",
-      "toastDescription_other": "{{count}} दिन बाँकी — Turbo र सबै शैलीहरू सामेल।"
-    },
-    "manageSubscription": "मेरो सदस्यता व्यवस्थापन गर्नुहोस्",
-    "comingSoon": "चाँडै आउँदैछ",
-    "featureColumn": "सुविधा",
-    "yourPlan": "तपाईंको योजना",
-    "onlineEngineLockedTitle": "Turbo को लागि Nova सदस्यता चाहिन्छ",
-    "onlineEngineLocked": "अनलाइन इन्जिन Nova Pro र Ultra मा सीमित छ — तपाईंको पाठ पुनःप्रणयन बिना टाँसियो।"
   },
   "lexiconLearning": {
     "title": "मेरो शब्दभण्डार सिक",

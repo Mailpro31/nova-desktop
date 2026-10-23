@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova nedokázala toto čtení vyhodnotit. Přečtěte větu znovu."
     }
   },
-  "modelSelector": {
-    "custom": "Vlastní",
-    "streaming": "Streaming",
-    "active": "Aktivní",
-    "noModelsAvailable": "Nejsou dostupné žádné modely",
-    "verifying": "Ověřování {{modelName}}...",
-    "verifyingGeneric": "Ověřování...",
-    "extracting": "Rozbaluji {{modelName}}...",
-    "extractingMultiple": "Rozbaluji {{count}} modelů...",
-    "extractingGeneric": "Rozbalování...",
-    "downloading": "Stahování {{percentage}}%",
-    "downloadingMultiple": "Stahování {{count}} modelů...",
-    "modelReady": "Model připraven",
-    "loading": "Načítám {{modelName}}...",
-    "loadingGeneric": "Načítání...",
-    "modelError": "Chyba modelu",
-    "modelUnloaded": "Model uvolněn",
-    "noModelDownloadRequired": "Žádný model - je nutné stáhnout",
-    "deleteModel": "Smazat {{modelName}}",
-    "switching": "Přepínání...",
-    "downloadSpeed": "{{speed}} MB/s",
-    "capabilities": {
-      "languageSelection": "Podporuje více vstupních jazyků",
-      "languageCount": "Jazyky: {{total}}",
-      "translation": "Umí překládat do angličtiny",
-      "translate": "Přeložit do angličtiny",
-      "singleLanguage": "Podporuje pouze tento jazyk",
-      "languageOnly": "Pouze {{language}}",
-      "streaming": "Zobrazuje přepis živě, jak mluvíte"
-    },
-    "cancel": "Zrušit",
-    "cancelDownload": "Zrušit stahování",
-    "legacy": "Zastaralé"
-  },
   "settings": {
     "modelSettings": {
       "title": "Nastavení {{model}}"
@@ -883,74 +849,10 @@
     "view": "Zobrazit novinky",
     "title": "Novinky v Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "Bezplatná přeformulování Turbo",
-    "count": "{{used}} / {{limit}} přeformulování",
-    "blockedInline": "Využili jste všechna svá bezplatná přeformulování Turbo — diktování zůstává neomezené, text se vloží tak, jak je. Přejděte na neomezený Turbo.",
-    "lifetimeNote": "Jednorázová nabídka, neobnovuje se.",
-    "blockedTitle": "Bezplatná přeformulování Turbo vyčerpána",
-    "blockedDescription": "Využili jste svých 20 bezplatných přeformulování Turbo. Diktování zůstává neomezené — váš text se vloží tak, jak je. Přejděte na Nova Ultra pro neomezený Turbo.",
-    "upgrade": "Předplatit"
-  },
-  "weekStat": {
-    "minutes_one": "Ušetřený čas psaní: ≈ {{count}} min",
-    "minutes_other": "Ušetřený čas psaní: ≈ {{count}} min",
-    "words_one": "Slova nadiktovaná tento týden: {{count}}",
-    "words_other": "Slova nadiktovaná tento týden: {{count}}"
-  },
-  "performanceOptimizer": {
-    "title": "Automatická optimalizace",
-    "description": "Vylaďte Nova pro tento počítač a prohlédněte si skutečný řetězec přepisu.",
-    "autoLabel": "Automatický výkonový režim",
-    "autoDescription": "Zvolí bezpečné nastavení akcelerace a paměti modelu podle vaší RAM, procesoru a kompatibilních GPU.",
-    "diagnosticsDescription": "Zkontrolujte mikrofon, model, poskytovatele přeformulování, paměť a akceleraci.",
-    "run": "Spustit diagnostiku",
-    "running": "Probíhá kontrola…",
-    "profile": "Profil",
-    "memory": "Paměť",
-    "cpu": "Vlákna CPU",
-    "acceleration": "Akcelerace",
-    "latency": "Naměřená latence",
-    "median": "medián {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Otevřít nastavení mikrofonu",
-    "retryGpu": "Po restartu znovu zkusit GPU",
-    "classes": {
-      "low_memory": "Málo paměti",
-      "balanced": "Vyvážený",
-      "performance": "Výkon"
-    }
-  },
   "voiceCommands": {
     "title": "Hlasové příkazy",
     "description": "Rozumí povelům nový odstavec, nový řádek, otazník a výslovným příkazům Nova pro poznámky, seznamy, schůzky nebo zrušení aktuálního diktování.",
     "added": "{{word}} bylo přidáno do osobního slovníku"
-  },
-  "license": {
-    "remove": "Odebrat",
-    "upgradeToUltra": "Přejít na Nova Ultra",
-    "requiresTier": "Vyžaduje {{tier}}",
-    "active": "Licence aktivní",
-    "trial": {
-      "badge": "Zkušební Pro",
-      "badgeDays": "Zkušební Pro · {{count}} d",
-      "title": "Zkušební verze Nova Pro",
-      "description_one": "Zbývá {{count}} den zkušební verze.",
-      "description_other": "Zbývá {{count}} dní zkušební verze.",
-      "subscribe": "Předplatit Nova Pro",
-      "expiredTitle": "Vaše zkušební verze Nova Pro skončila",
-      "expiredBody": "Jste zpět na úrovni Nova Free. Předplaťte si Nova Pro a získejte zpět všechny Styly a výkonové profily.",
-      "close": "Zavřít",
-      "toastTitle": "Zkušební verze Nova Pro aktivní",
-      "toastDescription_one": "Zbývá {{count}} den — Turbo a všechny Styly v ceně.",
-      "toastDescription_other": "Zbývá {{count}} dní — Turbo a všechny Styly v ceně."
-    },
-    "manageSubscription": "Spravovat předplatné",
-    "comingSoon": "Již brzy",
-    "featureColumn": "Funkce",
-    "yourPlan": "Váš plán",
-    "onlineEngineLockedTitle": "Turbo vyžaduje předplatné Nova",
-    "onlineEngineLocked": "Online engine je vyhrazen pro Nova Pro a Ultra — text byl vložen bez přeformulování."
   },
   "lexiconLearning": {
     "title": "Učit se moji slovní zásobu",

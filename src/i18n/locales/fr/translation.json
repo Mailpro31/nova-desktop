@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova n'a pas pu analyser cette lecture. Relisez la phrase."
     }
   },
-  "modelSelector": {
-    "custom": "Personnalisé",
-    "streaming": "Streaming",
-    "active": "Actif",
-    "switching": "Changement...",
-    "noModelsAvailable": "Aucun modèle disponible",
-    "verifying": "Vérification de {{modelName}}...",
-    "verifyingGeneric": "Vérification...",
-    "extracting": "Extraction de {{modelName}}...",
-    "extractingMultiple": "Extraction de {{count}} modèles...",
-    "extractingGeneric": "Extraction...",
-    "downloading": "Téléchargement {{percentage}}%",
-    "downloadingMultiple": "Téléchargement de {{count}} modèles...",
-    "modelReady": "Modèle Prêt",
-    "loading": "Chargement de {{modelName}}...",
-    "loadingGeneric": "Chargement...",
-    "modelError": "Erreur du Modèle",
-    "modelUnloaded": "Modèle Déchargé",
-    "noModelDownloadRequired": "Aucun Modèle - Téléchargement Requis",
-    "deleteModel": "Supprimer {{modelName}}",
-    "downloadSpeed": "{{speed}} Mo/s",
-    "capabilities": {
-      "languageSelection": "Prend en charge plusieurs langues d'entrée",
-      "languageCount": "{{total}} langues",
-      "translation": "Peut traduire en anglais",
-      "translate": "Traduire en anglais",
-      "singleLanguage": "Prend en charge uniquement cette langue",
-      "languageOnly": "{{language}} uniquement",
-      "streaming": "Affiche la transcription en direct pendant que vous parlez"
-    },
-    "cancel": "Annuler",
-    "cancelDownload": "Annuler le téléchargement",
-    "legacy": "Hérité"
-  },
   "settings": {
     "modelSettings": {
       "title": "Paramètres de {{model}}"
@@ -820,21 +786,6 @@
     "permissionsDescription": "Nova a besoin des autorisations d'accessibilité pour taper le texte transcrit.",
     "openSettings": "Ouvrir les Préférences Système"
   },
-  "quota": {
-    "lifetimeUsage": "Reformulations Turbo gratuites",
-    "lifetimeNote": "Offre unique, non renouvelée.",
-    "count": "{{used}} / {{limit}} reformulations",
-    "blockedInline": "Vous avez utilisé toutes vos reformulations Turbo gratuites — la dictée reste illimitée, le texte est collé tel quel. Passez à Ultra pour un Turbo sans limite.",
-    "blockedTitle": "Reformulations Turbo gratuites épuisées",
-    "blockedDescription": "Vous avez utilisé vos 20 reformulations Turbo gratuites. La dictée reste illimitée — votre texte est collé tel quel. Passez à Nova Ultra pour un Turbo sans limite.",
-    "upgrade": "S'abonner"
-  },
-  "weekStat": {
-    "words_one": "{{count}} mot dicté cette semaine",
-    "words_other": "{{count}} mots dictés cette semaine",
-    "minutes_one": "≈ {{count}} minute de frappe évitée",
-    "minutes_other": "≈ {{count}} minutes de frappe évitées"
-  },
   "errors": {
     "privateEngineUnavailable": "Intelligence privée indisponible",
     "performanceReducedTitle": "Performances réduites",
@@ -898,59 +849,10 @@
     "view": "Voir les nouveautés",
     "title": "Nouveautés de Nova v{{version}}"
   },
-  "performanceOptimizer": {
-    "title": "Optimisation automatique",
-    "description": "Adapte Nova à cet ordinateur et inspecte le vrai parcours de transcription.",
-    "autoLabel": "Mode performance Auto",
-    "autoDescription": "Choisit une accélération sûre et la gestion mémoire des modèles selon la RAM, le processeur et les GPU compatibles.",
-    "diagnosticsDescription": "Vérifie le micro, le modèle, la reformulation, la mémoire et l’accélération.",
-    "run": "Lancer le diagnostic",
-    "running": "Vérification…",
-    "profile": "Profil",
-    "memory": "Mémoire",
-    "cpu": "Threads CPU",
-    "acceleration": "Accélération",
-    "latency": "Latence mesurée",
-    "median": "médiane {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Ouvrir les réglages du micro",
-    "retryGpu": "Réessayer le GPU après redémarrage",
-    "classes": {
-      "low_memory": "Mémoire limitée",
-      "balanced": "Équilibré",
-      "performance": "Performance"
-    }
-  },
   "voiceCommands": {
     "title": "Commandes vocales",
     "description": "Comprend nouveau paragraphe, à la ligne, point d’interrogation et les commandes Nova explicites pour les notes, listes, réunions ou l’annulation de la dictée.",
     "added": "{{word}} a été ajouté au dictionnaire personnel"
-  },
-  "license": {
-    "remove": "Retirer",
-    "upgradeToUltra": "Passer à Nova Ultra",
-    "requiresTier": "Nécessite {{tier}}",
-    "active": "Licence active",
-    "trial": {
-      "badge": "Essai Pro",
-      "badgeDays": "Essai Pro · {{count}} j",
-      "title": "Essai Nova Pro",
-      "description_one": "Encore {{count}} jour avant la fin de l'essai.",
-      "description_other": "Encore {{count}} jours avant la fin de l'essai.",
-      "subscribe": "S'abonner à Nova Pro",
-      "expiredTitle": "Votre essai Nova Pro est terminé",
-      "expiredBody": "Vous êtes repassé au palier Nova Free. Abonnez-vous à Nova Pro pour retrouver les Styles complets et les profils de puissance.",
-      "close": "Fermer",
-      "toastTitle": "Essai Nova Pro actif",
-      "toastDescription_one": "Encore {{count}} jour — Turbo et tous les Styles inclus.",
-      "toastDescription_other": "Encore {{count}} jours — Turbo et tous les Styles inclus."
-    },
-    "manageSubscription": "Gérer mon abonnement",
-    "comingSoon": "Bientôt disponible",
-    "featureColumn": "Fonctionnalité",
-    "yourPlan": "Votre plan",
-    "onlineEngineLockedTitle": "Turbo nécessite un abonnement Nova",
-    "onlineEngineLocked": "Le moteur en ligne est réservé à Nova Pro et Ultra — votre texte a été collé sans reformulation."
   },
   "lexiconLearning": {
     "title": "Apprendre mon vocabulaire",

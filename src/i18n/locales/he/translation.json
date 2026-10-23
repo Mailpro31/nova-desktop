@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova לא הצליח לנתח את הקריאה הזו. קראו שוב את המשפט."
     }
   },
-  "modelSelector": {
-    "custom": "מותאם אישית",
-    "streaming": "סטרימינג",
-    "active": "פעיל",
-    "switching": "מחליף...",
-    "noModelsAvailable": "אין מודלים זמינים",
-    "verifying": "מאמת את {{modelName}}...",
-    "verifyingGeneric": "מאמת...",
-    "extracting": "מחלץ את {{modelName}}...",
-    "extractingMultiple": "מחלץ {{count}} מודלים...",
-    "extractingGeneric": "מחלץ...",
-    "downloading": "מוריד {{percentage}}%",
-    "downloadingMultiple": "מוריד {{count}} מודלים...",
-    "modelReady": "המודל מוכן",
-    "loading": "טוען את {{modelName}}...",
-    "loadingGeneric": "טוען...",
-    "modelError": "שגיאת מודל",
-    "modelUnloaded": "המודל נפרק",
-    "noModelDownloadRequired": "אין מודל, נדרשת הורדה",
-    "deleteModel": "מחק את {{modelName}}",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "ביטול",
-    "cancelDownload": "בטל הורדה",
-    "capabilities": {
-      "languageSelection": "תומך בכמה שפות קלט",
-      "singleLanguage": "תומך רק בשפה הזו",
-      "languageCount": "{{total}} שפות",
-      "languageOnly": "{{language}} בלבד",
-      "translation": "יכול לתרגם לאנגלית",
-      "translate": "תרגם לאנגלית",
-      "streaming": "מציג תמלול חי תוך כדי דיבור"
-    },
-    "legacy": "מדור קודם"
-  },
   "settings": {
     "modelSettings": {
       "title": "הגדרות עבור {{model}}"
@@ -883,74 +849,10 @@
     "view": "הצגת החידושים",
     "title": "חדש ב-Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "ניסוחים מחדש חינם ב-Turbo",
-    "count": "{{used}} / {{limit}} ניסוחים מחדש",
-    "blockedInline": "ניצלת את כל ניסוחי ה-Turbo החינמיים שלך — ההכתבה נשארת ללא הגבלה, הטקסט מודבק כפי שהוא. שדרג ל-Turbo ללא הגבלה.",
-    "lifetimeNote": "הצעה חד-פעמית, לא מתחדשת.",
-    "blockedTitle": "ניסוחי ה-Turbo החינמיים נוצלו",
-    "blockedDescription": "השתמשת ב-20 ניסוחי ה-Turbo החינמיים שלך. ההכתבה נשארת ללא הגבלה — הטקסט שלך מודבק כפי שהוא. שדרג ל-Nova Ultra ל-Turbo ללא הגבלה.",
-    "upgrade": "רכישת מנוי"
-  },
-  "weekStat": {
-    "minutes_one": "זמן הקלדה שנחסך: ≈ {{count}} דק׳",
-    "minutes_other": "זמן הקלדה שנחסך: ≈ {{count}} דק׳",
-    "words_one": "{{count}} מילה הוכתבה השבוע",
-    "words_other": "{{count}} מילים הוכתבו השבוע"
-  },
-  "performanceOptimizer": {
-    "title": "אופטימיזציה אוטומטית",
-    "description": "כווננו את Nova למחשב הזה ובדקו את תהליך התמלול בפועל.",
-    "autoLabel": "מצב ביצועים אוטומטי",
-    "autoDescription": "בוחר הגדרות האצה וזיכרון מודל בטוחות לפי ה-RAM, המעבד וה-GPU התואמים שלכם.",
-    "diagnosticsDescription": "בדקו את המיקרופון, המודל, ספק הניסוח מחדש, הזיכרון וההאצה.",
-    "run": "הפעלת בדיקה",
-    "running": "בודק…",
-    "profile": "פרופיל",
-    "memory": "זיכרון",
-    "cpu": "תהליכוני CPU",
-    "acceleration": "האצה",
-    "latency": "השהיה שנמדדה",
-    "median": "חציון {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "פתיחת הגדרות המיקרופון",
-    "retryGpu": "ניסיון חוזר של GPU אחרי הפעלה מחדש",
-    "classes": {
-      "low_memory": "זיכרון נמוך",
-      "balanced": "מאוזן",
-      "performance": "ביצועים"
-    }
-  },
   "voiceCommands": {
     "title": "פקודות קוליות",
     "description": "מבין „פסקה חדשה”, „שורה חדשה”, „סימן שאלה” ופקודות Nova מפורשות לפתקים, לרשימות, לפגישות או לביטול ההכתבה הנוכחית.",
     "added": "{{word}} נוסף למילון האישי"
-  },
-  "license": {
-    "remove": "הסרה",
-    "upgradeToUltra": "שדרוג ל-Nova Ultra",
-    "requiresTier": "דורש {{tier}}",
-    "active": "הרישיון פעיל",
-    "trial": {
-      "badge": "ניסיון Pro",
-      "badgeDays": "ניסיון Pro · {{count}} ימים",
-      "title": "ניסיון Nova Pro",
-      "description_one": "נותר {{count}} יום לניסיון.",
-      "description_other": "נותרו {{count}} ימים לניסיון.",
-      "subscribe": "רכישת מנוי ל-Nova Pro",
-      "expiredTitle": "תקופת הניסיון של Nova Pro הסתיימה",
-      "expiredBody": "חזרת לתוכנית Nova Free. הירשם למנוי Nova Pro כדי לקבל בחזרה את כל הניסוחים ופרופילי העוצמה.",
-      "close": "סגירה",
-      "toastTitle": "ניסיון Nova Pro פעיל",
-      "toastDescription_one": "נותר {{count}} יום — Turbo וכל הניסוחים כלולים.",
-      "toastDescription_other": "נותרו {{count}} ימים — Turbo וכל הניסוחים כלולים."
-    },
-    "manageSubscription": "ניהול המנוי שלי",
-    "comingSoon": "בקרוב",
-    "featureColumn": "תכונה",
-    "yourPlan": "המנוי שלך",
-    "onlineEngineLockedTitle": "Turbo דורש מנוי Nova",
-    "onlineEngineLocked": "המנוע המקוון שמור ל-Nova Pro ו-Ultra — הטקסט הודבק ללא ניסוח מחדש."
   },
   "lexiconLearning": {
     "title": "ללמוד את אוצר המילים שלי",

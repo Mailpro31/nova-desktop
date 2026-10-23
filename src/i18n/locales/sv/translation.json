@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova kunde inte analysera den här läsningen. Läs meningen igen."
     }
   },
-  "modelSelector": {
-    "custom": "Anpassad",
-    "streaming": "Streaming",
-    "active": "Aktiv",
-    "switching": "Byter...",
-    "noModelsAvailable": "Inga modeller tillgängliga",
-    "verifying": "Verifierar {{modelName}}...",
-    "verifyingGeneric": "Verifierar...",
-    "extracting": "Extraherar {{modelName}}...",
-    "extractingMultiple": "Extraherar {{count}} modeller...",
-    "extractingGeneric": "Extraherar...",
-    "downloading": "Laddar ner {{percentage}}%",
-    "downloadingMultiple": "Laddar ner {{count}} modeller...",
-    "modelReady": "Modell klar",
-    "loading": "Laddar {{modelName}}...",
-    "loadingGeneric": "Laddar...",
-    "modelError": "Modellfel",
-    "modelUnloaded": "Modell avlastad",
-    "noModelDownloadRequired": "Ingen modell - Nedladdning krävs",
-    "deleteModel": "Ta bort {{modelName}}",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "Avbryt",
-    "cancelDownload": "Avbryt nedladdning",
-    "capabilities": {
-      "languageSelection": "Stöder flera indataspråk",
-      "singleLanguage": "Stöder endast detta språk",
-      "languageCount": "{{total}} språk",
-      "languageOnly": "Endast {{language}}",
-      "translation": "Kan översätta till engelska",
-      "translate": "Översätt till engelska",
-      "streaming": "Visar transkription i realtid medan du talar"
-    },
-    "legacy": "Äldre"
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}}-inställningar"
@@ -883,74 +849,10 @@
     "view": "Visa nyheter",
     "title": "Nytt i Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "Gratis Turbo-omformuleringar",
-    "count": "{{used}} / {{limit}} omformuleringar",
-    "blockedInline": "Du har använt alla dina gratis Turbo-omformuleringar — diktering är fortfarande obegränsad, texten klistras in som den är. Uppgradera till obegränsad Turbo.",
-    "lifetimeNote": "Engångserbjudande, förnyas inte.",
-    "blockedTitle": "Gratis Turbo-omformuleringar slut",
-    "blockedDescription": "Du har använt dina 20 gratis Turbo-omformuleringar. Diktering är fortfarande obegränsad — din text klistras in som den är. Uppgradera till Nova Ultra för obegränsad Turbo.",
-    "upgrade": "Prenumerera"
-  },
-  "weekStat": {
-    "minutes_one": "≈ {{count}} minut skrivande sparad",
-    "minutes_other": "≈ {{count}} minuter skrivande sparade",
-    "words_one": "{{count}} ord dikterat den här veckan",
-    "words_other": "{{count}} ord dikterade den här veckan"
-  },
-  "performanceOptimizer": {
-    "title": "Automatisk optimering",
-    "description": "Anpassa Nova för den här datorn och granska den faktiska transkriptionskedjan.",
-    "autoLabel": "Automatiskt prestandaläge",
-    "autoDescription": "Väljer säkra inställningar för acceleration och modellminne utifrån ditt RAM, din processor och kompatibla GPU:er.",
-    "diagnosticsDescription": "Kontrollera mikrofon, modell, omformuleringstjänst, minne och acceleration.",
-    "run": "Kör diagnostik",
-    "running": "Kontrollerar…",
-    "profile": "Profil",
-    "memory": "Minne",
-    "cpu": "CPU-trådar",
-    "acceleration": "Acceleration",
-    "latency": "Uppmätt latens",
-    "median": "median {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Öppna mikrofoninställningar",
-    "retryGpu": "Försök med GPU igen efter omstart",
-    "classes": {
-      "low_memory": "Lite minne",
-      "balanced": "Balanserad",
-      "performance": "Prestanda"
-    }
-  },
   "voiceCommands": {
     "title": "Röstkommandon",
     "description": "Förstår ”nytt stycke”, ”ny rad”, ”frågetecken” och uttryckliga Nova-kommandon för anteckningar, listor, möten eller för att avbryta den pågående dikteringen.",
     "added": "{{word}} har lagts till i den personliga ordlistan"
-  },
-  "license": {
-    "remove": "Ta bort",
-    "upgradeToUltra": "Uppgradera till Nova Ultra",
-    "requiresTier": "Kräver {{tier}}",
-    "active": "Licens aktiv",
-    "trial": {
-      "badge": "Pro-provperiod",
-      "badgeDays": "Prova Pro · {{count}} d",
-      "title": "Nova Pro-provperiod",
-      "description_one": "{{count}} dag kvar av provperioden.",
-      "description_other": "{{count}} dagar kvar av provperioden.",
-      "subscribe": "Prenumerera på Nova Pro",
-      "expiredTitle": "Din Nova Pro-provperiod har avslutats",
-      "expiredBody": "Du är tillbaka på Nova Free-nivån. Prenumerera på Nova Pro för att få tillbaka alla Styles och effektprofiler.",
-      "close": "Stäng",
-      "toastTitle": "Nova Pro-provperiod aktiv",
-      "toastDescription_one": "{{count}} dag kvar — Turbo och alla Styles ingår.",
-      "toastDescription_other": "{{count}} dagar kvar — Turbo och alla Styles ingår."
-    },
-    "manageSubscription": "Hantera min prenumeration",
-    "comingSoon": "Kommer snart",
-    "featureColumn": "Funktion",
-    "yourPlan": "Din plan",
-    "onlineEngineLockedTitle": "Turbo kräver en Nova-prenumeration",
-    "onlineEngineLocked": "Onlinemotorn är reserverad för Nova Pro och Ultra — texten klistrades in utan omformulering."
   },
   "lexiconLearning": {
     "title": "Lär dig mitt ordförråd",
