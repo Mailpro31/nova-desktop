@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "Questi stili sono pubblicati dalla tua organizzazione. Non possono essere modificati qui.",
     "disabledByOrganization": "Disattivato dalla tua organizzazione",
-    "disabledByOrganizationHint": "Nova usa un altro stile per le tue dettature."
+    "disabledByOrganizationHint": "Nova usa un altro stile per le tue dettature.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Tutto ciò che hai dettato con Nova.",

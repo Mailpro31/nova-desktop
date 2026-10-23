@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "تنشر مؤسستك هذه الأنماط. لا يمكن تعديلها هنا.",
     "disabledByOrganization": "عطّلته مؤسستك",
-    "disabledByOrganizationHint": "يستخدم Nova نمطًا آخر لإملاءاتك."
+    "disabledByOrganizationHint": "يستخدم Nova نمطًا آخر لإملاءاتك.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "كل ما أمليته باستخدام Nova.",

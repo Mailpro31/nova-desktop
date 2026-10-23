@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "이 스타일은 조직에서 게시합니다. 여기서는 편집할 수 없습니다.",
     "disabledByOrganization": "조직에서 비활성화함",
-    "disabledByOrganizationHint": "Nova가 받아쓰기에 다른 스타일을 사용합니다."
+    "disabledByOrganizationHint": "Nova가 받아쓰기에 다른 스타일을 사용합니다.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Nova로 받아쓴 모든 내용.",

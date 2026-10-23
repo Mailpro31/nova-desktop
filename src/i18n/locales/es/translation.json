@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "Estos estilos los publica tu organización. No se pueden editar aquí.",
     "disabledByOrganization": "Desactivado por tu organización",
-    "disabledByOrganizationHint": "Nova usa otro estilo para tus dictados."
+    "disabledByOrganizationHint": "Nova usa otro estilo para tus dictados.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Todo lo que has dictado con Nova.",

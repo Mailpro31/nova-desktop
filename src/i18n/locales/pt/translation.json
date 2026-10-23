@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui.",
     "disabledByOrganization": "Desativado pela sua organização",
-    "disabledByOrganizationHint": "O Nova usa outro estilo para os seus ditados."
+    "disabledByOrganizationHint": "O Nova usa outro estilo para os seus ditados.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Tudo o que ditou com a Nova.",

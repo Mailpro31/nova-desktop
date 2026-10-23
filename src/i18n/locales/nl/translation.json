@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "Deze stijlen worden gepubliceerd door je organisatie. Ze kunnen hier niet worden bewerkt.",
     "disabledByOrganization": "Uitgeschakeld door je organisatie",
-    "disabledByOrganizationHint": "Nova gebruikt een andere stijl voor je dictaten."
+    "disabledByOrganizationHint": "Nova gebruikt een andere stijl voor je dictaten.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Alles wat u met Nova hebt gedicteerd.",

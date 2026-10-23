@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây.",
     "disabledByOrganization": "Đã bị tổ chức của bạn tắt",
-    "disabledByOrganizationHint": "Nova dùng một kiểu khác cho các bản đọc chính tả của bạn."
+    "disabledByOrganizationHint": "Nova dùng một kiểu khác cho các bản đọc chính tả của bạn.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Mọi thứ bạn đã đọc chính tả với Nova.",

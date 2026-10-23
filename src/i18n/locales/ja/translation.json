@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "これらのスタイルは組織が公開しています。ここでは編集できません。",
     "disabledByOrganization": "組織によって無効化されています",
-    "disabledByOrganizationHint": "Nova はディクテーションに別のスタイルを使用します。"
+    "disabledByOrganizationHint": "Nova はディクテーションに別のスタイルを使用します。",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Nova で音声入力したすべて。",

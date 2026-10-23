@@ -1391,7 +1391,8 @@
     },
     "organizationManaged": "Эти стили публикует ваша организация. Их нельзя изменить здесь.",
     "disabledByOrganization": "Отключено вашей организацией",
-    "disabledByOrganizationHint": "Для ваших диктовок Nova использует другой стиль."
+    "disabledByOrganizationHint": "Для ваших диктовок Nova использует другой стиль.",
+    "personalClosed": "Your organization does not allow creating Styles."
   },
   "history": {
     "subtitle": "Всё, что вы надиктовали в Nova.",
