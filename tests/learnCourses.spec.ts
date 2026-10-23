@@ -236,7 +236,7 @@ test.describe("Learn is where the courses live", () => {
 
     await expect(
       page.getByText(
-        "Ces leçons sont pour l'instant disponibles en anglais uniquement.",
+        "Ces leçons sont pour l’instant disponibles en anglais uniquement.",
       ),
     ).toBeVisible();
   });
