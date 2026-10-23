@@ -1392,7 +1392,7 @@
     "organizationManaged": "这些风格由您的组织发布，无法在此编辑。",
     "disabledByOrganization": "已被你的组织停用",
     "disabledByOrganizationHint": "Nova 会为你的听写使用其他风格。",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "你的组织不允许创建风格。"
   },
   "history": {
     "subtitle": "你用 Nova 语音输入的全部内容。",

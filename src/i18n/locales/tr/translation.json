@@ -1392,7 +1392,7 @@
     "organizationManaged": "Bu stiller kuruluşunuz tarafından yayınlanır. Burada düzenlenemez.",
     "disabledByOrganization": "Kuruluşunuz tarafından devre dışı bırakıldı",
     "disabledByOrganizationHint": "Nova, dikteleriniz için başka bir stil kullanır.",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "Kuruluşunuz biçem oluşturmaya izin vermiyor."
   },
   "history": {
     "subtitle": "Nova ile dikte ettiğiniz her şey.",

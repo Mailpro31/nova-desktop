@@ -1392,7 +1392,7 @@
     "organizationManaged": "Dessa stilar publiceras av din organisation. De kan inte redigeras här.",
     "disabledByOrganization": "Inaktiverad av din organisation",
     "disabledByOrganizationHint": "Nova använder en annan stil för dina dikteringar.",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "Din organisation tillåter inte att stilar skapas."
   },
   "history": {
     "subtitle": "Allt du har dikterat med Nova.",

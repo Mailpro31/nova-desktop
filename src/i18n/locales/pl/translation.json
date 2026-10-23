@@ -1392,7 +1392,7 @@
     "organizationManaged": "Te style są publikowane przez Twoją organizację. Nie można ich tu edytować.",
     "disabledByOrganization": "Wyłączony przez Twoją organizację",
     "disabledByOrganizationHint": "Nova używa innego stylu dla Twoich dyktowań.",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "Twoja organizacja nie pozwala na tworzenie stylów."
   },
   "history": {
     "subtitle": "Wszystko, co podyktowano w Novie.",

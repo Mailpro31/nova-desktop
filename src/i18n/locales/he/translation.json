@@ -1392,7 +1392,7 @@
     "organizationManaged": "סגנונות אלה מפורסמים על ידי הארגון שלך. לא ניתן לערוך אותם כאן.",
     "disabledByOrganization": "הושבת על ידי הארגון שלך",
     "disabledByOrganizationHint": "Nova משתמש בסגנון אחר להכתבות שלך.",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "הארגון שלך אינו מאפשר ליצור סגנונות."
   },
   "history": {
     "subtitle": "כל מה שהכתבתם ב־Nova.",

@@ -1392,7 +1392,7 @@
     "organizationManaged": "Tyto styly publikuje vaše organizace. Zde je nelze upravovat.",
     "disabledByOrganization": "Vypnuto vaší organizací",
     "disabledByOrganizationHint": "Nova pro vaše diktáty používá jiný styl.",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "Vaše organizace nepovoluje vytváření stylů."
   },
   "history": {
     "subtitle": "Vše, co jste s Novou nadiktovali.",

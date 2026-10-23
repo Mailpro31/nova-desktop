@@ -1392,7 +1392,7 @@
     "organizationManaged": "這些風格由您的組織發布，無法在此編輯。",
     "disabledByOrganization": "已由你的組織停用",
     "disabledByOrganizationHint": "Nova 會為你的聽寫使用其他風格。",
-    "personalClosed": "Your organization does not allow creating Styles."
+    "personalClosed": "你的組織不允許建立風格。"
   },
   "history": {
     "subtitle": "你用 Nova 語音輸入的全部內容。",
