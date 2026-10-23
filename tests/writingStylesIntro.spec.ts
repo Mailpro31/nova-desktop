@@ -12,8 +12,6 @@ import { mockTauri } from "./tauriMock";
  * le mode automatique, et trois Styles choisis, chacun avec sa description.
  */
 
-test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
 const campusConfig = {
   server_url: "https://campus.example.edu",
   organization_type: "education",

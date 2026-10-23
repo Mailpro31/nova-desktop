@@ -102,8 +102,6 @@ const openLearn = async (page: Page, name = "Learn") => {
 };
 
 test.describe("Learn is where the courses live", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("the four paths appear in the catalogue order", async ({ page }) => {
     await mockTauri(page, {
       session,

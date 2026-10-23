@@ -28,8 +28,6 @@ const school = {
 };
 
 test.describe("voice recalibration", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("a member can recalibrate their voice from Settings, and back out", async ({
     page,
   }) => {

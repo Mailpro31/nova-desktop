@@ -58,7 +58,7 @@ on:
       nova_mode:
         required: false
         type: string
-        default: "personal"
+        default: "campus"
       nova_lab:
         required: false
         type: boolean

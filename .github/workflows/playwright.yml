@@ -33,8 +33,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - edition: personal
-            nova_mode: ""
           - edition: organization
             nova_mode: campus
     steps:

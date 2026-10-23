@@ -14,7 +14,6 @@ on:
         type: choice
         options:
           - campus
-          - personal
           - lab
 
 jobs:
@@ -31,7 +30,7 @@ jobs:
       sign-binaries: false
       asset-prefix: ${{ inputs.nova_mode == 'lab' && 'Nova-Lab' || 'Nova' }}
       upload-artifacts: true
-      nova_mode: ${{ inputs.nova_mode == 'personal' && 'personal' || 'campus' }}
+      nova_mode: campus
       nova_lab: ${{ inputs.nova_mode == 'lab' }}
       windows-executable: ${{ inputs.nova_mode == 'lab' && 'Nova Lab.exe' || 'Nova.exe' }}
     secrets: inherit
