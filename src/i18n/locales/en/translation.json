@@ -1602,7 +1602,7 @@
     "loading": "Starting Nova…",
     "stalledTitle": "Nova is taking longer than expected to start",
     "stalledBody": "Some startup checks have not answered yet — audio devices, saved settings or the local model inventory. Nova has stopped waiting so this window does not stay empty.",
-    "logHint": "Details are recorded in handy.log, inside the Nova data folder.",
+    "logHint": "Details are recorded in nova.log, inside the Nova data folder.",
     "retry": "Restart Nova",
     "errorTitle": "Nova could not display its window",
     "errorBody": "An error occurred while starting. Restart Nova; if this screen comes back, send the message below."
@@ -1669,5 +1669,11 @@
       "diagrams": "Diagrams to redo",
       "lostTrack": "When I lost track"
     }
+  },
+  "keyboard": {
+    "left": "Left {{key}}",
+    "right": "Right {{key}}",
+    "shift": "Shift",
+    "space": "Space"
   }
 }

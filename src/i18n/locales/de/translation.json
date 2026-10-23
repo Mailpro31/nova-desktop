@@ -1602,7 +1602,7 @@
     "loading": "Nova wird gestartet…",
     "stalledTitle": "Nova startet länger als erwartet",
     "stalledBody": "Einige Startprüfungen haben noch nicht geantwortet — Audiogeräte, gespeicherte Einstellungen oder die Liste der lokalen Modelle. Nova wartet nicht länger, damit dieses Fenster nicht leer bleibt.",
-    "logHint": "Einzelheiten stehen in handy.log im Datenordner von Nova.",
+    "logHint": "Einzelheiten stehen in nova.log im Datenordner von Nova.",
     "retry": "Nova neu starten",
     "errorTitle": "Nova konnte sein Fenster nicht anzeigen",
     "errorBody": "Beim Start ist ein Fehler aufgetreten. Starten Sie Nova neu; kehrt dieser Bildschirm zurück, senden Sie die untenstehende Meldung."
@@ -1669,5 +1669,11 @@
       "diagrams": "Neu zu zeichnende Skizzen",
       "lostTrack": "Wo ich den Faden verloren habe"
     }
+  },
+  "keyboard": {
+    "left": "{{key}} links",
+    "right": "{{key}} rechts",
+    "shift": "Umschalt",
+    "space": "Leertaste"
   }
 }

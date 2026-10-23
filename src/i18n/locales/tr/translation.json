@@ -1602,7 +1602,7 @@
     "loading": "Nova başlatılıyor…",
     "stalledTitle": "Nova beklenenden uzun sürede başlıyor",
     "stalledBody": "Bazı başlangıç denetimleri henüz yanıt vermedi — ses aygıtları, kayıtlı ayarlar ya da yerel model listesi. Bu pencere boş kalmasın diye Nova beklemeyi bıraktı.",
-    "logHint": "Ayrıntılar Nova veri klasöründeki handy.log dosyasına yazılır.",
+    "logHint": "Ayrıntılar Nova veri klasöründeki nova.log dosyasına yazılır.",
     "retry": "Nova uygulamasını yeniden başlat",
     "errorTitle": "Nova penceresini gösteremedi",
     "errorBody": "Başlatma sırasında bir hata oluştu. Nova uygulamasını yeniden başlatın; bu ekran yine gelirse aşağıdaki iletiyi gönderin."
@@ -1669,5 +1669,11 @@
       "diagrams": "Yeniden çizilecek şemalar",
       "lostTrack": "Konuyu kaçırdığım anlar"
     }
+  },
+  "keyboard": {
+    "left": "Sol {{key}}",
+    "right": "Sağ {{key}}",
+    "shift": "Shift",
+    "space": "Boşluk"
   }
 }
