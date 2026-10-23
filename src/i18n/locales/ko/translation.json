@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "분석 시작",
       "analyzeSuccess": "새 용어 {{count}}개를 추출해 추가했습니다!",
       "analyzeEmpty": "문서에서 새 용어를 찾지 못했습니다.",
-      "analyzing": "AI로 어휘를 분석하는 중…"
+      "analyzing": "AI로 어휘를 분석하는 중…",
+      "chooseDocument": "문서 선택(PDF, Word, PowerPoint)",
+      "foundTerms": "찾은 용어: 제외할 항목의 선택을 해제하세요",
+      "addKept": "선택한 용어 추가({{count}})",
+      "learnedHint": "수정 내용에서 학습했습니다. 휴지통으로 삭제하세요."
     },
     "snippets": {
       "title": "음성 스니펫",

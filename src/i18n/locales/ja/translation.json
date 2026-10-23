@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "分析を開始",
       "analyzeSuccess": "新しい用語を {{count}} 件抽出して追加しました！",
       "analyzeEmpty": "文書から新しい用語は見つかりませんでした。",
-      "analyzing": "AI で語彙を分析しています…"
+      "analyzing": "AI で語彙を分析しています…",
+      "chooseDocument": "文書を選ぶ（PDF、Word、PowerPoint）",
+      "foundTerms": "見つかった用語：不要なもののチェックを外してください",
+      "addKept": "チェックした用語を追加（{{count}}）",
+      "learnedHint": "修正から学習しました。ごみ箱で削除できます。"
     },
     "snippets": {
       "title": "音声スニペット",

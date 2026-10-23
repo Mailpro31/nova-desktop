@@ -1036,11 +1036,15 @@
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
       "analyzeDocDescription": "Send a text document to your institution's server to extract vocabulary and proper names. Only the extracted terms are saved — the document itself is not stored.",
-      "analyzeDocPlaceholder": "Paste document text or drop a text file...",
+      "analyzeDocPlaceholder": "Paste document text here…",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
       "analyzeEmpty": "No new terms found in the document.",
-      "analyzing": "Analyzing vocabulary with AI…"
+      "analyzing": "Analyzing vocabulary with AI…",
+      "chooseDocument": "Choose a document (PDF, Word, PowerPoint)",
+      "foundTerms": "Terms found: untick the ones to leave out",
+      "addKept": "Add the ticked terms ({{count}})",
+      "learnedHint": "Learned from your corrections. Remove it with the bin."
     },
     "snippets": {
       "title": "Voice snippets",

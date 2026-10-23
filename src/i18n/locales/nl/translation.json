@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Analyse starten",
       "analyzeSuccess": "{{count}} nieuwe term(en) gevonden en toegevoegd!",
       "analyzeEmpty": "Geen nieuwe termen gevonden in het document.",
-      "analyzing": "Woordenschat wordt met AI geanalyseerd…"
+      "analyzing": "Woordenschat wordt met AI geanalyseerd…",
+      "chooseDocument": "Kies een document (pdf, Word, PowerPoint)",
+      "foundTerms": "Gevonden termen: vink uit wat u niet wilt",
+      "addKept": "Aangevinkte termen toevoegen ({{count}})",
+      "learnedHint": "Geleerd van uw correcties. Verwijder het met de prullenbak."
     },
     "snippets": {
       "title": "Spraakfragmenten",

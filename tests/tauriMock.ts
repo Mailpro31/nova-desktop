@@ -39,6 +39,8 @@ interface MockOptions {
    * calcul réel est testé côté Rust (`voice_calibration::corrected_terms`).
    */
   correctionTerms?: Array<{ expected: string; heard: string }>;
+  /** Termes proposés par « Analyser un document ». */
+  documentTerms?: string[];
   /**
    * Catalogue Learn servi par `fetch_learning_catalog`. Absent, la commande
    * répond `null` comme avant, et la progression aussi.
@@ -252,6 +254,16 @@ export async function mockTauri(page: Page, options: MockOptions = {}) {
         case "correct_history_entry":
           localStorage.setItem("nova.test.correction", JSON.stringify(args));
           return settings.correctionTerms ?? [];
+        case "analyze_organization_document":
+          return { terms: settings.documentTerms ?? [] };
+        case "add_organization_dictionary_entry": {
+          const added = JSON.parse(
+            localStorage.getItem("nova.test.dictionary") ?? "[]",
+          ) as unknown[];
+          added.push(args);
+          localStorage.setItem("nova.test.dictionary", JSON.stringify(added));
+          return { id: added.length };
+        }
         case "learn_organization_dictionary": {
           const learned = JSON.parse(
             localStorage.getItem("nova.test.learned") ?? "[]",

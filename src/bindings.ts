@@ -855,9 +855,9 @@ async importOrganizationDictionary(csvContent: string) : Promise<Result<Organiza
     else return { status: "error", error: e  as any };
 }
 },
-async analyzeOrganizationDocument(textContent: string, filename: string | null) : Promise<Result<OrganizationAnalyzeResponse, string>> {
+async analyzeOrganizationDocument(content: number[], filename: string | null) : Promise<Result<OrganizationAnalyzeResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("analyze_organization_document", { textContent, filename }) };
+    return { status: "ok", data: await TAURI_INVOKE("analyze_organization_document", { content, filename }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1990,7 +1990,11 @@ heard: string; misheard: MisheardWord[] }
 export type OrganizationAiSkill = { id: string; title: string; summary: string; practice: string; duration_minutes: number }
 export type OrganizationAiSkillsPolicyConfig = { enabled?: boolean | null; required?: boolean | null; trackProgress?: boolean | null }
 export type OrganizationAiSkillsResponse = { skills: OrganizationAiSkill[] }
-export type OrganizationAnalyzeResponse = { terms_added: number }
+export type OrganizationAnalyzeResponse = { 
+/**
+ * Les termes proposés, que l'élève coche avant tout ajout (n° 69).
+ */
+terms?: string[] }
 export type OrganizationAuthRequestResponse = { sent: boolean }
 export type OrganizationBrandingConfig = { logoUrl?: string | null; accentColor?: string | null }
 export type OrganizationCapabilitiesConfig = { dictation?: boolean | null; rewrite?: boolean | null; styles?: boolean | null; fileTranscription?: boolean | null; commands?: boolean | null; dictionary?: boolean | null; snippets?: boolean | null; formattingRules?: boolean | null; screenContext?: boolean | null; cloudInference?: boolean | null; engineeringNotes?: boolean | null; aiSkills?: boolean | null; personalization?: boolean | null }

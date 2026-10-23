@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "התחלת ניתוח",
       "analyzeSuccess": "{{count}} מונחים חדשים חולצו ונוספו!",
       "analyzeEmpty": "לא נמצאו מונחים חדשים במסמך.",
-      "analyzing": "מנתח את אוצר המילים באמצעות AI…"
+      "analyzing": "מנתח את אוצר המילים באמצעות AI…",
+      "chooseDocument": "בחרו מסמך (PDF, Word, PowerPoint)",
+      "foundTerms": "מונחים שנמצאו: בטלו את הסימון של אלה שלא תרצו",
+      "addKept": "הוסיפו את המונחים המסומנים ({{count}})",
+      "learnedHint": "נלמד מהתיקונים שלכם. הסירו אותו עם הפח."
     },
     "snippets": {
       "title": "קטעים קוליים",

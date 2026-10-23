@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Iniciar análise",
       "analyzeSuccess": "{{count}} novo(s) termo(s) extraído(s) e adicionado(s)!",
       "analyzeEmpty": "Nenhum termo novo encontrado no documento.",
-      "analyzing": "Analisando o vocabulário com IA…"
+      "analyzing": "Analisando o vocabulário com IA…",
+      "chooseDocument": "Escolher um documento (PDF, Word, PowerPoint)",
+      "foundTerms": "Termos encontrados: desmarque os que quer excluir",
+      "addKept": "Adicionar os termos marcados ({{count}})",
+      "learnedHint": "Aprendido com as suas correções. Remova-o com o caixote."
     },
     "snippets": {
       "title": "Trechos de voz",

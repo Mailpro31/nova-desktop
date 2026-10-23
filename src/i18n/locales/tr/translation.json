@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Analizi başlat",
       "analyzeSuccess": "{{count}} yeni terim çıkarıldı ve eklendi!",
       "analyzeEmpty": "Belgede yeni terim bulunamadı.",
-      "analyzing": "Kelime dağarcığı yapay zekâyla analiz ediliyor…"
+      "analyzing": "Kelime dağarcığı yapay zekâyla analiz ediliyor…",
+      "chooseDocument": "Bir belge seçin (PDF, Word, PowerPoint)",
+      "foundTerms": "Bulunan terimler: istemediklerinizin işaretini kaldırın",
+      "addKept": "İşaretli terimleri ekle ({{count}})",
+      "learnedHint": "Düzeltmelerinizden öğrenildi. Çöp kutusuyla kaldırın."
     },
     "snippets": {
       "title": "Sesli parçacıklar",

@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Spustit analýzu",
       "analyzeSuccess": "Nově vytěžené a přidané termíny: {{count}}!",
       "analyzeEmpty": "V dokumentu nebyly nalezeny žádné nové termíny.",
-      "analyzing": "Analýza slovní zásoby pomocí AI…"
+      "analyzing": "Analýza slovní zásoby pomocí AI…",
+      "chooseDocument": "Vyberte dokument (PDF, Word, PowerPoint)",
+      "foundTerms": "Nalezené pojmy: zrušte zaškrtnutí těch, které nechcete",
+      "addKept": "Přidat zaškrtnuté pojmy ({{count}})",
+      "learnedHint": "Naučeno z vašich oprav. Odstraňte ho košem."
     },
     "snippets": {
       "title": "Hlasové úryvky",
