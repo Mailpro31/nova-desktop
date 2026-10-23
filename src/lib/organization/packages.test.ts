@@ -6,7 +6,7 @@ import {
   mergeVocabulary,
   PACKAGE_CONTENT_SCHEMA_VERSION,
   parseOrganizationCatalog,
-  personalCapabilities,
+  unknownOrganizationCapabilities,
   resolveOrganizationContext,
   usablePackages,
 } from "./index";
@@ -35,7 +35,7 @@ function catalog(packages: Record<string, unknown>[] = [serverPackage()]) {
 
 function capabilities(overrides: Record<string, boolean> = {}): CapabilityMap {
   return {
-    ...personalCapabilities(),
+    ...unknownOrganizationCapabilities(),
     writingStyles: true,
     aiSkills: true,
     organizationVocabulary: true,
@@ -236,15 +236,7 @@ describe("Vocabulary precedence", () => {
   });
 });
 
-describe("Personal is never governed", () => {
-  test("Personal carries no organization and consumes no catalog", () => {
-    const context = resolveOrganizationContext({ edition: "personal" });
-    expect(context.organization).toBeNull();
-    // Les surfaces d'organisation restent fermées : rien à consommer.
-    expect(context.capabilities.organizationVocabulary).toBe(false);
-    expect(context.capabilities.organizationStyles).toBe(false);
-  });
-
+describe("Without an organization", () => {
   test("a catalog has no effect without an organization", () => {
     expect(catalogFor(catalog(), null).packages).toHaveLength(0);
   });

@@ -1,5 +1,4 @@
 import {
-  currentEdition,
   currentOrganizationType,
   isOrganizationMode,
 } from "@/lib/organization/edition";
@@ -33,10 +32,7 @@ export { isOrganizationMode };
  * fermer et qu'un test peut poser. Voir `@/lib/organization`.
  */
 export function isCampusMode(): boolean {
-  return (
-    currentEdition() === "organization" &&
-    currentOrganizationType() === "education"
-  );
+  return currentOrganizationType() === "education";
 }
 
 /**
@@ -48,8 +44,5 @@ export function isCampusMode(): boolean {
  * organisation ne peut gouverner.
  */
 export function isBusinessMode(): boolean {
-  return (
-    currentEdition() === "organization" &&
-    currentOrganizationType() === "business"
-  );
+  return currentOrganizationType() === "business";
 }

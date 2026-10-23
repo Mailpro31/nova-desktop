@@ -46,7 +46,6 @@ export interface ProviderConfigView {
 export function organizationSignInButtons(
   input: SignInOptionsInput,
 ): ProviderConfigView[] {
-  if (input.edition !== "organization") return [];
   const configs = input.providers.configs ?? [];
   if (configs.length > 0) {
     // Le serveur a la forme détaillée : on lui fait confiance telle quelle.
@@ -112,8 +111,6 @@ export interface SignInOptionsInput {
 export function organizationSignInOptions(
   input: SignInOptionsInput,
 ): SignInOption[] {
-  if (input.edition !== "organization") return [];
-
   const options: SignInOption[] = [];
   // Microsoft reste proposé si le serveur l'annonce, ou si la configuration
   // d'établissement déclare `entra` — c'est le cas d'un serveur qui ne connaît

@@ -24,7 +24,6 @@ const coldStart: StartupProbes = {
   isLabBuild: false,
   labEnrolled: false,
   isFirstRun: null,
-  editionSettled: false,
   readinessLoaded: false,
   flowInitialized: false,
   elapsedMs: 0,
@@ -55,7 +54,6 @@ describe("écran de démarrage", () => {
       isLabBuild: true,
       labEnrolled: true,
       isFirstRun: false,
-      editionSettled: true,
       readinessLoaded: true,
       flowInitialized: true,
     });
@@ -74,18 +72,11 @@ describe("écran de démarrage", () => {
       startupScreen({
         ...coldStart,
         isFirstRun: true,
-        editionSettled: true,
         readinessLoaded: false,
         flowInitialized: false,
         elapsedMs: STARTUP_STALL_MS,
       }),
     ).toBe("stalled");
-  });
-
-  it("pose la question de l'édition avant le parcours", () => {
-    expect(
-      startupScreen({ ...coldStart, isFirstRun: true, editionSettled: false }),
-    ).toBe("edition");
   });
 
   it("ne renvoie jamais « rien à afficher », quelles que soient les sondes", () => {
@@ -94,31 +85,26 @@ describe("écran de démarrage", () => {
     for (const isLabBuild of booleans) {
       for (const labEnrolled of booleans) {
         for (const isFirstRun of [null, false, true]) {
-          for (const editionSettled of booleans) {
-            for (const readinessLoaded of booleans) {
-              for (const flowInitialized of booleans) {
-                for (const elapsedMs of [0, STARTUP_STALL_MS]) {
-                  const screen = startupScreen({
-                    isLabBuild,
-                    labEnrolled,
-                    isFirstRun,
-                    editionSettled,
-                    readinessLoaded,
-                    flowInitialized,
-                    elapsedMs,
-                  });
-                  expect(screen).toBeTruthy();
-                  screens.add(screen);
-                }
+          for (const readinessLoaded of booleans) {
+            for (const flowInitialized of booleans) {
+              for (const elapsedMs of [0, STARTUP_STALL_MS]) {
+                const screen = startupScreen({
+                  isLabBuild,
+                  labEnrolled,
+                  isFirstRun,
+                  readinessLoaded,
+                  flowInitialized,
+                  elapsedMs,
+                });
+                expect(screen).toBeTruthy();
+                screens.add(screen);
               }
             }
           }
         }
       }
     }
-    // Et les cinq écrans sont atteignables : aucun n'est du code mort.
-    expect(screens).toEqual(
-      new Set(["lab", "edition", "loading", "stalled", "app"]),
-    );
+    // Et les quatre écrans sont atteignables : aucun n'est du code mort.
+    expect(screens).toEqual(new Set(["lab", "loading", "stalled", "app"]));
   });
 });

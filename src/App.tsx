@@ -23,7 +23,6 @@ import AppShell from "./components/shell/AppShell";
 import NovaCommandsHost from "./components/commands/NovaCommandsHost";
 import Onboarding, {
   AccessibilityOnboarding,
-  EditionChoice,
   WritingStylesIntroStep,
   OrganizationOnboarding,
   CustomizeStep,
@@ -67,7 +66,6 @@ import {
   StartupLoading,
   StartupStalled,
 } from "./components/startup/StartupScreen";
-import { chosenEdition, declaresEdition } from "@/lib/organization";
 import { clearOrganizationSession } from "@/lib/organizationSession";
 
 // Le parcours de première ouverture n'est plus une suite figée : il est
@@ -114,15 +112,6 @@ function App() {
           : i18n.language,
   });
 
-  // Un paquet unifié doit savoir s'il est personnel ou d'organisation avant
-  // que quoi que ce soit d'autre ne soit calculé : le parcours d'accueil fige
-  // sa liste d'étapes, et l'étape de connexion Organization n'y entrerait plus
-  // après coup. `editionSettled` ne bouge qu'une fois, quand l'utilisateur
-  // répond. Un paquet qui déclare son édition est déjà réglé, donc ne voit
-  // jamais cet écran.
-  const [editionSettled, setEditionSettled] = useState(
-    () => declaresEdition() || chosenEdition() !== null,
-  );
   // Le paquet Lab n'a qu'une porte d'entrée, et elle ne dépend d'aucune sonde.
   // L'état est lu de façon synchrone : l'écran doit exister à la première
   // frame, pas après un aller-retour asynchrone.
@@ -577,7 +566,6 @@ function App() {
     isLabBuild: IS_LAB_BUILD,
     labEnrolled,
     isFirstRun,
-    editionSettled,
     readinessLoaded: readiness.loaded,
     flowInitialized: flow.initialized,
     elapsedMs: startupStalled ? STARTUP_STALL_MS : 0,
@@ -619,23 +607,6 @@ function App() {
             (isFirstRun === null ? "getAppSettings" : "useSystemReadiness")
           }
         />
-      </>
-    );
-  }
-
-  // Première ouverture d'un paquet qui ne déclare pas son édition : personnel
-  // ou d'organisation ? La question précède le parcours, elle n'en fait pas
-  // partie, et choisir « Personnel » n'émet aucune requête.
-  //
-  // Elle n'est jamais posée à quelqu'un qui utilisait déjà Nova. Sans cette
-  // condition, une mise à jour ferait apparaître un écran de choix devant un
-  // utilisateur installé, pour une question dont la réponse est déjà connue :
-  // il utilisait un poste personnel, et c'est le repli.
-  if (screen === "edition") {
-    return (
-      <>
-        <EditionChoice onChosen={() => setEditionSettled(true)} />
-        {toaster}
       </>
     );
   }
