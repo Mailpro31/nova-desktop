@@ -2,6 +2,8 @@
  * Keyboard utility functions for handling keyboard events
  */
 
+import i18next from "i18next";
+
 export type OSType = "macos" | "windows" | "linux" | "unknown";
 
 /**
@@ -164,6 +166,8 @@ const capitalizeKey = (key: string): string => {
   if (/^f\d+$/.test(key)) return key.toUpperCase();
   // Single char: a -> A
   if (key.length === 1) return key.toUpperCase();
+  // Les noms écrits différemment selon la langue : « Maj », « Espace ».
+  if (key === "shift" || key === "space") return i18next.t(`keyboard.${key}`);
   // Multi-word: capitalize first letter of each word
   return key.replace(/\b\w/g, (c) => c.toUpperCase());
 };
@@ -171,19 +175,19 @@ const capitalizeKey = (key: string): string => {
 /**
  * Format a single key part for display.
  * Handles _left/_right suffixes and capitalizes names.
- * e.g. "shift_left" -> "Left Shift", "option" -> "Option", "space" -> "Space"
+ * e.g. "shift_left" -> "Left Shift" (« Maj gauche »), "option" -> "Option"
  */
-const formatKeyPart = (part: string): string => {
+export const formatKeyPart = (part: string): string => {
   const trimmed = part.trim();
   if (!trimmed) return "";
 
   if (trimmed.endsWith("_left")) {
     const name = trimmed.slice(0, -5);
-    return `Left ${capitalizeKey(name)}`;
+    return i18next.t("keyboard.left", { key: capitalizeKey(name) });
   }
   if (trimmed.endsWith("_right")) {
     const name = trimmed.slice(0, -6);
-    return `Right ${capitalizeKey(name)}`;
+    return i18next.t("keyboard.right", { key: capitalizeKey(name) });
   }
 
   return capitalizeKey(trimmed);

@@ -1,5 +1,7 @@
 import React from "react";
 
+import { formatKeyPart } from "@/lib/utils/keyboard";
+
 interface KeyboardShortcutProps {
   /** Raccourci tel que stocké dans les réglages, par ex. `Ctrl+Space`. */
   binding: string;
@@ -14,8 +16,8 @@ interface KeyboardShortcutProps {
  * clavier, pas une chaîne de caractères. Le rendu est identique partout, ce qui
  * évite les trois variantes qui coexistaient auparavant dans le produit.
  *
- * Les libellés viennent des réglages et ne sont pas traduits : ce sont les noms
- * réels des touches, tels que l'utilisateur les a enregistrés.
+ * Les touches sont nommées comme sur le clavier, dans la langue de l'interface :
+ * « ctrl_right » enregistré s'affiche « Ctrl droit ».
  */
 export const KeyboardShortcut: React.FC<KeyboardShortcutProps> = ({
   binding,
@@ -65,7 +67,8 @@ function splitBinding(binding: string): string[] {
   return binding
     .split(/[+\s]+/)
     .map((part) => part.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map(formatKeyPart);
 }
 
 export default KeyboardShortcut;
