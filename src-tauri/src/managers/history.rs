@@ -716,7 +716,9 @@ mod tests {
         assert!(!dir.path().join("handy-100.wav").exists());
         assert!(dir.path().join("handy-900.wav").exists());
         let texts: i64 = conn
-            .query_row("SELECT COUNT(*) FROM transcription_history", [], |row| row.get(0))
+            .query_row("SELECT COUNT(*) FROM transcription_history", [], |row| {
+                row.get(0)
+            })
             .expect("count");
         assert_eq!(texts, 2);
     }
