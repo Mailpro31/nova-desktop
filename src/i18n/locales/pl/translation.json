@@ -540,7 +540,6 @@
         "cancel": "Anuluj",
         "selectToEdit": "Wybierz prompt powyżej, aby zobaczyć i edytować jego szczegóły.",
         "createFirst": "Kliknij 'Utwórz nowy prompt' powyżej, aby utworzyć pierwszy prompt postprocessingu.",
-        "ultraOnly": "Tworzenie i edytowanie Stylów wymaga Nova Ultra.",
         "badgeAuto": "Automatyczny",
         "badgeBuiltin": "Wbudowany",
         "badgeCustom": "Własny",

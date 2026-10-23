@@ -540,7 +540,6 @@
         "cancel": "İptal",
         "selectToEdit": "Ayrıntılarını görüntülemek ve düzenlemek için yukarıdan bir prompt seçin.",
         "createFirst": "İlk son işlem prompt'unuzu oluşturmak için yukarıdaki “Yeni Prompt Oluştur” seçeneğine tıklayın.",
-        "ultraOnly": "Stil oluşturmak ve düzenlemek için Nova Ultra gerekir.",
         "badgeAuto": "Otomatik",
         "badgeBuiltin": "Yerleşik",
         "badgeCustom": "Özel",

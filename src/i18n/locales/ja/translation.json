@@ -540,7 +540,6 @@
         "cancel": "キャンセル",
         "selectToEdit": "上からプロンプトを選択して、詳細を表示・編集します。",
         "createFirst": "上の「新しいプロンプトを作成」をクリックして、最初の後処理プロンプトを作成してください。",
-        "ultraOnly": "スタイルの作成と編集には Nova Ultra が必要です。",
         "badgeAuto": "自動",
         "badgeBuiltin": "内蔵",
         "badgeCustom": "カスタム",

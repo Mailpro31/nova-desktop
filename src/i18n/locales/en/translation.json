@@ -542,7 +542,6 @@
         "noPrompts": "No style available",
         "selectPrompt": "Select a style",
         "createNew": "Create a style",
-        "ultraOnly": "Creating and editing styles requires Nova Ultra.",
         "promptLabel": "Prompt Label",
         "promptLabelPlaceholder": "Enter prompt name",
         "promptInstructions": "Prompt Instructions",
@@ -691,7 +690,7 @@
       },
       "sourceCode": {
         "title": "Official website",
-        "description": "Discover Nova and manage your subscription",
+        "description": "Discover Nova",
         "button": "Visit novaspeak.app"
       },
       "supportDevelopment": {
