@@ -42,7 +42,6 @@ describe("moteur utilisé", () => {
   test("une organisation passe par son serveur quand elle ouvre la fonction", () => {
     expect(
       structuredNotesEngine({
-        organizationMode: true,
         signedIn: true,
         capabilityOpen: true,
       }),
@@ -52,7 +51,6 @@ describe("moteur utilisé", () => {
   test("une organisation qui ferme la fonction ne la propose pas", () => {
     expect(
       structuredNotesEngine({
-        organizationMode: true,
         signedIn: true,
         capabilityOpen: false,
       }),
@@ -62,21 +60,10 @@ describe("moteur utilisé", () => {
   test("sans session d'organisation, rien n'est envoyé", () => {
     expect(
       structuredNotesEngine({
-        organizationMode: true,
         signedIn: false,
         capabilityOpen: true,
       }),
     ).toBe("unavailable");
-  });
-
-  test("Nova Personal utilise le moteur de réécriture choisi", () => {
-    expect(
-      structuredNotesEngine({
-        organizationMode: false,
-        signedIn: false,
-        capabilityOpen: false,
-      }),
-    ).toBe("personal");
   });
 });
 

@@ -3,7 +3,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
 import { commands } from "@/bindings";
-import { isOrganizationMode } from "@/lib/mode";
 import { useOrganizationStore } from "@/stores/organizationStore";
 
 /** Émis par le backend quand il refuse une dictée faute de connexion. */
@@ -33,7 +32,6 @@ export function useOrganizationSignInRequired(): boolean {
   );
 
   useEffect(() => {
-    if (!isOrganizationMode()) return;
     let active = true;
 
     invoke<DeploymentPolicy>("get_deployment_state")
@@ -55,5 +53,5 @@ export function useOrganizationSignInRequired(): boolean {
     };
   }, []);
 
-  return isOrganizationMode() && !fallbackAllowed && signedOut;
+  return !fallbackAllowed && signedOut;
 }

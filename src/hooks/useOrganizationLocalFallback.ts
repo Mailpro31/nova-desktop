@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { commands } from "@/bindings";
-import { isOrganizationMode } from "@/lib/mode";
 import {
   chooseLocalFallbackModel,
   fallbackLanguage,
@@ -30,7 +29,6 @@ export function useOrganizationLocalFallback({ signedIn, language }: Options) {
 
   useEffect(() => {
     if (started.current || !signedIn || language === null) return;
-    if (!isOrganizationMode()) return;
     started.current = true;
 
     void (async () => {

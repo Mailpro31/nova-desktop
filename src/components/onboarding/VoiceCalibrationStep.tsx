@@ -5,7 +5,6 @@ import OnboardingStepShell from "./OnboardingStepShell";
 import { Button } from "../ui/Button";
 import { commands, type MisheardWord } from "@/bindings";
 import { useSettings } from "@/hooks/useSettings";
-import { isOrganizationMode } from "@/lib/mode";
 import {
   CALIBRATION_PHRASES,
   calibrationTerms,
@@ -122,20 +121,10 @@ export const VoiceCalibrationStep: React.FC<VoiceCalibrationStepProps> = ({
     const accepted = summary.corrections.filter(
       (word) => !rejected.has(correctionKey(word)),
     );
-    if (isOrganizationMode()) {
-      // Le vocabulaire de l'organisation sert aussi d'amorce au moteur de
-      // transcription : la correction aide avant même d'être appliquée.
-      for (const word of accepted) {
-        await commands.learnOrganizationDictionary(word.heard, word.expected);
-      }
-    } else if (accepted.length > 0) {
-      const existing = getSetting("custom_words") ?? [];
-      const additions = accepted
-        .map((word) => word.expected)
-        .filter((term) => !existing.includes(term));
-      if (additions.length > 0) {
-        await updateSetting("custom_words", [...existing, ...additions]);
-      }
+    // Le vocabulaire de l'organisation sert aussi d'amorce au moteur de
+    // transcription : la correction aide avant même d'être appliquée.
+    for (const word of accepted) {
+      await commands.learnOrganizationDictionary(word.heard, word.expected);
     }
     onDone();
   };

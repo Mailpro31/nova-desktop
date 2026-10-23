@@ -6,7 +6,6 @@ import PreviewBadge from "./PreviewBadge";
 import { useSettings } from "../../../hooks/useSettings";
 import { useOrganizationStatus } from "../../../hooks/useOrganizationStatus";
 import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
-import { isOrganizationMode } from "@/lib/mode";
 import {
   ASK_NOVA,
   NOVA_COMMAND_SKILLS,
@@ -42,8 +41,7 @@ export const AiSkillsSettings: React.FC = () => {
   const { getSetting } = useSettings();
   const { connection } = useOrganizationStatus();
 
-  const organizationMode = isOrganizationMode();
-  const offline = organizationMode && connection === "local";
+  const offline = connection === "local";
 
   return (
     <>

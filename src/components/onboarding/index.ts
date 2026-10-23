@@ -1,4 +1,3 @@
-export { default } from "./Onboarding";
 export { default as AccessibilityOnboarding } from "./AccessibilityOnboarding";
 export { default as OrganizationOnboarding } from "./OrganizationOnboarding";
 export { default as TutorialOnboarding } from "./TutorialOnboarding";

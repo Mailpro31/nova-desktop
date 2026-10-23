@@ -4,7 +4,6 @@ import { listen } from "@tauri-apps/api/event";
 
 import { commands } from "@/bindings";
 import { showAttentionToast } from "@/lib/attentionNotifications";
-import { isOrganizationMode } from "@/lib/mode";
 import {
   refreshOrganizationConfig,
   useOrganizationStore,
@@ -31,8 +30,6 @@ export function useOrganizationSuspension(): boolean {
   const suspended = useOrganizationStore((state) => state.suspended);
 
   useEffect(() => {
-    if (!isOrganizationMode()) return;
-
     const unlisten = listen(ACCESS_FORBIDDEN_EVENT, () => {
       void refreshOrganizationConfig();
     });
@@ -60,5 +57,5 @@ export function useOrganizationSuspension(): boolean {
     };
   }, [t]);
 
-  return isOrganizationMode() && suspended;
+  return suspended;
 }

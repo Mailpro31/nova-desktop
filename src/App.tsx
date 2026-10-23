@@ -21,7 +21,7 @@ import "./App.css";
 import AccessibilityPermissions from "./components/AccessibilityPermissions";
 import AppShell from "./components/shell/AppShell";
 import NovaCommandsHost from "./components/commands/NovaCommandsHost";
-import Onboarding, {
+import {
   AccessibilityOnboarding,
   WritingStylesIntroStep,
   OrganizationOnboarding,
@@ -48,7 +48,6 @@ import {
   markAttentionSeen,
   showAttentionToast,
 } from "@/lib/attentionNotifications";
-import { isOrganizationMode } from "@/lib/mode";
 import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
 import { useOrganizationSuspension } from "@/hooks/useOrganizationSuspension";
 import { OrganizationSuspended } from "@/components/organization/OrganizationSuspended";
@@ -184,7 +183,6 @@ function App() {
   // parcours de connexion ne se remonte pas, donc c'est l'application qui doit
   // amorcer l'identité, les policies et le catalogue de packages partagés.
   useEffect(() => {
-    if (!isOrganizationMode()) return;
     void refreshOrganizationConfig();
   }, []);
 
@@ -201,11 +199,9 @@ function App() {
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
-    if (isOrganizationMode()) {
-      commands.setOrganizationMode(true).catch((e) => {
-        console.warn("Failed to set campus mode:", e);
-      });
-    }
+    commands.setOrganizationMode(true).catch((e) => {
+      console.warn("Failed to set campus mode:", e);
+    });
   }, []);
 
   // Initialize RTL direction when language changes
@@ -384,48 +380,12 @@ function App() {
     };
   }, []);
 
-  // Le moteur en ligne est réservé à Nova Ultra : la reformulation a été
-  // ignorée silencieusement côté Rust — on explique au lieu de laisser croire
-  // à un bug. Inutile en mode campus (tout est débloqué par l'établissement).
-  useEffect(() => {
-    if (isOrganizationMode()) return;
-    const unlisten = listen("online-engine-locked", () => {
-      showAttentionToast("info", t("license.onlineEngineLockedTitle"), {
-        description: t("license.onlineEngineLocked"),
-      });
-    });
-    return () => {
-      unlisten.then((fn) => fn());
-    };
-  }, [t]);
-
   // Le micro choisi dans les réglages n'existe plus : le micro par défaut est
   // utilisé à la place. Sans ce toast, le repli était invisible.
   useEffect(() => {
     const unlisten = listen<string>("microphone-not-found", (event) => {
       showAttentionToast("warning", t("errors.microphoneNotFoundTitle"), {
         description: t("errors.microphoneNotFound", { name: event.payload }),
-      });
-    });
-    return () => {
-      unlisten.then((fn) => fn());
-    };
-  }, [t]);
-
-  // Quota gratuit de reformulations épuisé : le texte a été collé brut côté
-  // Rust. On informe et on propose de passer à un palier supérieur. Inutile en
-  // mode campus (pas de quota).
-  useEffect(() => {
-    if (isOrganizationMode()) return;
-    const unlisten = listen("quota-blocked", () => {
-      showAttentionToast("error", t("quota.blockedTitle"), {
-        description: t("quota.blockedDescription"),
-        action: {
-          label: t("quota.upgrade"),
-          onClick: () => {
-            void openUrl("https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09");
-          },
-        },
       });
     });
     return () => {
@@ -622,15 +582,6 @@ function App() {
         flowContext="onboarding"
         onComplete={() => {
           refreshOrganizationStatus();
-          flow.next();
-        }}
-      />
-    );
-  } else if (flow.current === "model") {
-    content = (
-      <Onboarding
-        onModelSelected={() => {
-          readiness.refresh();
           flow.next();
         }}
       />

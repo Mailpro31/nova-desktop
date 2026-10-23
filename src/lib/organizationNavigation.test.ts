@@ -151,11 +151,7 @@ describe("Already linked", () => {
     expect(source).toContain(
       'import { refreshOrganizationConfig } from "./stores/organizationStore"',
     );
-    // `isOrganizationMode()` et non `isCampusMode()` : l'amorçage du contexte
-    // vaut pour toute organisation, entreprise comprise.
-    expect(source.replace(/\s+/g, " ")).toContain(
-      "if (!isOrganizationMode()) return; void refreshOrganizationConfig();",
-    );
+    expect(source).toContain("void refreshOrganizationConfig();");
   });
 
   test("the organization is shown instead of a second connect action", () => {

@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { Button } from "../../ui/Button";
 import { commands, type LearnableTerm } from "@/bindings";
 import { useSettings } from "@/hooks/useSettings";
-import { isOrganizationMode } from "@/lib/mode";
 
 interface HistoryCorrectionProps {
   entryId: number;
@@ -55,18 +54,8 @@ export const HistoryCorrection: React.FC<HistoryCorrectionProps> = ({
 
   const learn = async () => {
     const accepted = terms.filter((term) => !rejected.has(termKey(term)));
-    if (isOrganizationMode()) {
-      for (const term of accepted) {
-        await commands.learnOrganizationDictionary(term.heard, term.expected);
-      }
-    } else if (accepted.length > 0) {
-      const existing = getSetting("custom_words") ?? [];
-      const additions = accepted
-        .map((term) => term.expected)
-        .filter((word) => !existing.includes(word));
-      if (additions.length > 0) {
-        await updateSetting("custom_words", [...existing, ...additions]);
-      }
+    for (const term of accepted) {
+      await commands.learnOrganizationDictionary(term.heard, term.expected);
     }
     setTerms([]);
     if (accepted.length > 0)

@@ -11,7 +11,6 @@ import {
   loadOrganizationSession,
   type OrganizationSession,
 } from "@/lib/organizationSession";
-import { isOrganizationMode } from "@/lib/mode";
 
 /** Intervalle de re-vérification de la joignabilité du serveur. */
 const POLL_MS = 30_000;
@@ -97,8 +96,6 @@ export function useOrganizationStatus(): OrganizationStatus {
   const [local, setLocal] = useState<Snapshot>(snapshot);
 
   useEffect(() => {
-    if (!isOrganizationMode()) return;
-
     subscribers.add(setLocal);
     // Le premier abonné amorce ; les suivants héritent de l'état courant.
     if (subscribers.size === 1) {

@@ -13,7 +13,6 @@ import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
 import { BUILTIN_STYLE_IDS, STYLE_ORDER } from "@/lib/builtinStyles";
 import { useCapability } from "../../../hooks/useOrganizationContext";
-import { isOrganizationMode } from "@/lib/mode";
 import { disabledStyleSet } from "@/lib/organization/disabledStyles";
 
 /**
@@ -47,7 +46,6 @@ interface StyleItem {
 export const StylesList: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, refreshSettings } = useSettings();
-  const organizationMode = isOrganizationMode();
 
   const [editing, setEditing] = useState<string | null>(null);
   const [draftName, setDraftName] = useState("");
@@ -83,9 +81,7 @@ export const StylesList: React.FC = () => {
   );
 
   const { builtins, personal } = useMemo(() => {
-    const visible = prompts.filter(
-      (p) => !(organizationMode && CAMPUS_HIDDEN.has(p.id)),
-    );
+    const visible = prompts.filter((p) => !CAMPUS_HIDDEN.has(p.id));
     const toItem = (p: LLMPrompt): StyleItem => {
       const isBuiltin = BUILTIN_STYLE_IDS.includes(p.id);
       return {
@@ -106,7 +102,7 @@ export const StylesList: React.FC = () => {
         .sort((a, b) => STYLE_ORDER.indexOf(a.id) - STYLE_ORDER.indexOf(b.id)),
       personal: items.filter((i) => i.kind === "personal"),
     };
-  }, [prompts, organizationMode, t, disabled]);
+  }, [prompts, t, disabled]);
 
   // L'organisation peut fermer la création de Styles personnels (capacité
   // `personalStyles`).

@@ -16,10 +16,9 @@ export const NOTE_TYPES = [
 
 export type NoteType = (typeof NOTE_TYPES)[number];
 
-export type StructuredNotesEngine = "organization" | "personal" | "unavailable";
+export type StructuredNotesEngine = "organization" | "unavailable";
 
 export interface StructuredNotesEngineInput {
-  organizationMode: boolean;
   signedIn: boolean;
   capabilityOpen: boolean;
 }
@@ -29,12 +28,10 @@ export interface StructuredNotesEngineInput {
  *
  * Une organisation garde la main : sans session ou avec la fonction fermée,
  * rien ne part — pas même vers le moteur local, qui contournerait sa décision.
- * Nova Personal passe par le moteur de réécriture choisi dans Styles.
  */
 export function structuredNotesEngine(
   input: StructuredNotesEngineInput,
 ): StructuredNotesEngine {
-  if (!input.organizationMode) return "personal";
   return input.signedIn && input.capabilityOpen
     ? "organization"
     : "unavailable";

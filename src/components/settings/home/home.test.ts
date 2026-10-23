@@ -9,7 +9,6 @@ const HEALTHY = {
   loaded: true,
   permissions: "ready",
   microphoneName: "Built-in Microphone",
-  needsModelDownload: false,
   shortcut: "Ctrl+Space",
   organizationLocal: false,
   organizationSignedOut: false,
@@ -56,9 +55,6 @@ describe("situation du héros", () => {
     );
     expect(deriveSituation({ ...HEALTHY, microphoneName: null })).toBe(
       "microphoneMissing",
-    );
-    expect(deriveSituation({ ...HEALTHY, needsModelDownload: true })).toBe(
-      "modelMissing",
     );
     expect(deriveSituation({ ...HEALTHY, shortcut: null })).toBe(
       "shortcutMissing",

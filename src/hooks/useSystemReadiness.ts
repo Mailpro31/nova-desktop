@@ -6,7 +6,6 @@ import {
 } from "tauri-plugin-macos-permissions-api";
 
 import { commands } from "@/bindings";
-import { isOrganizationMode } from "@/lib/mode";
 import { useSettings } from "./useSettings";
 import { useSettingsStore } from "@/stores/settingsStore";
 import { useOrganizationStatus } from "./useOrganizationStatus";
@@ -28,8 +27,6 @@ export interface SystemReadiness {
   /** Moteur de transcription : serveur d'établissement ou modèle local. */
   engine: ReadinessState;
   engineLabel: string | null;
-  /** `true` quand un modèle local doit être téléchargé avant de dicter. */
-  needsModelDownload: boolean;
   /**
    * L'organisation a suspendu ce membre : la dictée passe par Nova Local, en
    * Personal, jusqu'à ce que le serveur le rétablisse.
@@ -69,9 +66,6 @@ export function useSystemReadiness(): SystemReadiness {
   const [permissions, setPermissions] = useState<ReadinessState>("checking");
   const [hasDictated, setHasDictated] = useState(false);
   const [lastDictationAt, setLastDictationAt] = useState<number | null>(null);
-  const [models, setModels] = useState<
-    { id: string; is_downloaded: boolean }[] | null
-  >(null);
   const [tick, setTick] = useState(0);
 
   const refresh = useCallback(() => setTick((n) => n + 1), []);
@@ -147,82 +141,45 @@ export function useSystemReadiness(): SystemReadiness {
     };
   }, [tick]);
 
-  // ── Modèles locaux : pertinent hors campus uniquement.
-  useEffect(() => {
-    if (isOrganizationMode()) {
-      setModels([]);
-      return;
-    }
-    let cancelled = false;
-    commands
-      .getAvailableModels()
-      .then((result) => {
-        if (cancelled) return;
-        if (result.status === "ok") setModels(result.data);
-      })
-      .catch(() => {
-        if (!cancelled) setModels([]);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [tick]);
-
-  const organizationMode = isOrganizationMode();
   const selectedMicrophone = getSetting("selected_microphone") ?? null;
   const microphoneName = selectedMicrophone ?? audioDevices[0]?.name ?? null;
-
-  const hasDownloadedModel = (models ?? []).some((m) => m.is_downloaded);
-  const needsModelDownload =
-    !organizationMode && models !== null && !hasDownloadedModel;
 
   // Suspendu, le serveur répond encore mais ne sert plus ce membre : la dictée
   // passe par Nova Local, exactement comme hors ligne.
   const suspended = useOrganizationStore((state) => state.suspended);
-  const organizationSuspended = organizationMode && suspended;
+  const organizationSuspended = suspended;
   // Tranché par le store une fois la session relue, jamais avant : au premier
   // rendu, l'absence de session ne prouve encore rien.
   const signedOut = useOrganizationStore(
     (state) => state.connectionStatus === "signed_out",
   );
-  const organizationSignedOut = organizationMode && signedOut;
+  const organizationSignedOut = signedOut;
   const servedByOrganization =
     connection === "connected" && !organizationSuspended;
 
-  const engine: ReadinessState = organizationMode
-    ? servedByOrganization
-      ? "ready"
-      : connection === "local" || organizationSuspended
-        ? "degraded"
-        : "checking"
-    : models === null
-      ? "checking"
-      : hasDownloadedModel
-        ? "ready"
-        : "action-needed";
+  const engine: ReadinessState = servedByOrganization
+    ? "ready"
+    : connection === "local" || organizationSuspended
+      ? "degraded"
+      : "checking";
 
-  const engineLabel = organizationMode
-    ? session
-      ? servedByOrganization
-        ? "campus"
-        : "local-fallback"
-      : null
-    : hasDownloadedModel
-      ? "local"
-      : "local-missing";
+  const engineLabel = session
+    ? servedByOrganization
+      ? "campus"
+      : "local-fallback"
+    : null;
 
   const bindings = getSetting("bindings") as
     | Record<string, { current_binding?: string }>
     | undefined;
 
   return {
-    loaded: settings !== null && permissions !== "checking" && models !== null,
+    loaded: settings !== null && permissions !== "checking",
     permissions,
     microphoneName,
     microphone: audioDevices.length > 0 ? "ready" : "action-needed",
     engine,
     engineLabel,
-    needsModelDownload,
     organizationSuspended,
     organizationSignedOut,
     shortcut: bindings?.["transcribe"]?.current_binding ?? null,
