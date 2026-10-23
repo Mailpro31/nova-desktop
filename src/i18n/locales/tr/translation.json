@@ -3,8 +3,6 @@
     "settings": "Ayarlar...",
     "checkUpdates": "Güncellemeleri Kontrol Et...",
     "copyLastTranscript": "Son transkripti kopyala",
-    "unloadModel": "Modeli boşalt",
-    "model": "Model",
     "quit": "Çıkış",
     "cancel": "İptal"
   },
@@ -617,7 +615,8 @@
         "saved": "Snippet kaydedildi: “{{trigger}}” deyin.",
         "error": "Snippet kaydedilemedi."
       },
-      "pastedVersion": "Nova'nın yapıştırdığı sürüm"
+      "pastedVersion": "Nova'nın yapıştırdığı sürüm",
+      "replayVoice": "Sesimi yeniden dinle"
     },
     "debug": {
       "logDirectory": {

@@ -3,8 +3,6 @@
     "settings": "Настройки...",
     "checkUpdates": "Проверка за актуализации...",
     "copyLastTranscript": "Копиране на последния транскрипт",
-    "unloadModel": "Разтоварване на модела",
-    "model": "Модел",
     "quit": "Изход",
     "cancel": "Отказ"
   },
@@ -617,7 +615,8 @@
         "saved": "Снипетът е запазен: кажете „{{trigger}}“.",
         "error": "Снипетът не можа да бъде запазен."
       },
-      "pastedVersion": "Версия, поставена от Nova"
+      "pastedVersion": "Версия, поставена от Nova",
+      "replayVoice": "Чуй гласа си отново"
     },
     "debug": {
       "logDirectory": {

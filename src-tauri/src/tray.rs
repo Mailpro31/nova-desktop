@@ -1,13 +1,11 @@
 use crate::managers::history::{HistoryEntry, HistoryManager};
-use crate::managers::model::ModelManager;
-use crate::managers::transcription::TranscriptionManager;
 use crate::settings;
 use crate::tray_i18n::get_tray_translations;
 use log::{debug, error, info, warn};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use tauri::image::Image;
-use tauri::menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu};
+use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
 use tauri::tray::TrayIcon;
 use tauri::{AppHandle, Manager, Theme};
 use tauri_plugin_clipboard_manager::ClipboardExt;
@@ -280,44 +278,7 @@ fn try_update_tray_menu(app: &AppHandle, locale: Option<&str>) -> tauri::Result<
         true,
         None::<&str>,
     )?;
-    let model_loaded = app.state::<Arc<TranscriptionManager>>().is_model_loaded();
     let quit_i = MenuItem::with_id(app, "quit", &strings.quit, true, quit_accelerator)?;
-
-    // Build model submenu — label is the active model name
-    let model_manager = app.state::<Arc<ModelManager>>();
-    let models = model_manager.get_available_models();
-    let current_model_id = &settings.selected_model;
-
-    let mut downloaded: Vec<_> = models.into_iter().filter(|m| m.is_downloaded).collect();
-    downloaded.sort_by(|a, b| a.name.cmp(&b.name));
-
-    let submenu_label = downloaded
-        .iter()
-        .find(|m| m.id == *current_model_id)
-        .map(|m| m.name.clone())
-        .unwrap_or_else(|| strings.model.clone());
-
-    let model_submenu = {
-        let submenu = Submenu::with_id(app, "model_submenu", &submenu_label, true)?;
-
-        for model in &downloaded {
-            let is_active = model.id == *current_model_id;
-            let item_id = format!("model_select:{}", model.id);
-            let item =
-                CheckMenuItem::with_id(app, &item_id, &model.name, true, is_active, None::<&str>)?;
-            let _ = submenu.append(&item);
-        }
-
-        submenu
-    };
-
-    let unload_model_i = MenuItem::with_id(
-        app,
-        "unload_model",
-        &strings.unload_model,
-        model_loaded,
-        None::<&str>,
-    )?;
 
     let menu = match state {
         TrayIconState::Recording | TrayIconState::Transcribing => {
@@ -344,9 +305,6 @@ fn try_update_tray_menu(app: &AppHandle, locale: Option<&str>) -> tauri::Result<
                 &version_i,
                 &PredefinedMenuItem::separator(app)?,
                 &copy_last_transcript_i,
-                &PredefinedMenuItem::separator(app)?,
-                &model_submenu,
-                &unload_model_i,
                 &PredefinedMenuItem::separator(app)?,
                 &settings_i,
                 &check_updates_i,

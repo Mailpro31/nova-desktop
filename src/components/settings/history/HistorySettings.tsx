@@ -5,7 +5,6 @@ import {
   CalendarDays,
   Check,
   Copy,
-  FolderOpen,
   RotateCcw,
   Search,
   Star,
@@ -47,6 +46,7 @@ import { useOsType } from "@/hooks/useOsType";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { readFile } from "@tauri-apps/plugin-fs";
 
+const AUDIO_KEPT_SECONDS = 7 * 24 * 60 * 60;
 const BUCKET_LABEL: Record<HistoryBucket, string> = {
   today: "history.group.today",
   yesterday: "history.group.yesterday",
@@ -196,20 +196,6 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
       <PageHeader
         title={prompts ? t("sidebar.prompts") : t("settings.history.title")}
         description={prompts ? t("prompts.subtitle") : t("history.subtitle")}
-        actions={
-          // Le dossier des enregistrements concerne l'audio de l'historique,
-          // pas les prompts.
-          prompts ? undefined : (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => void commands.openRecordingsFolder()}
-            >
-              <FolderOpen size={15} strokeWidth={1.75} aria-hidden="true" />
-              {t("settings.history.openFolder")}
-            </Button>
-          )
-        }
       />
 
       {/* La recherche n'apparaît que lorsqu'il y a matière à chercher : un
@@ -372,6 +358,8 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
   const text = entry.transcription_text.trim();
   const hasText = text.length > 0;
+  // L'audio est supprimé après 7 jours (`AUDIO_KEPT_SECONDS`, history.rs).
+  const hasRecording = Date.now() / 1000 - entry.timestamp < AUDIO_KEPT_SECONDS;
   // Ce que Nova a collé, quand ce n'est pas mot pour mot ce que l'élève a
   // dit : vérifier la fidélité d'un coup d'œil, sans rouvrir le document.
   const pasted = (entry.post_processed_text ?? "").trim();
@@ -531,18 +519,25 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
               </p>
             </div>
           )}
-          <AudioPlayer onLoadRequest={loadAudio} className="w-full" />
-          <div>
-            <Button
-              variant="ghost"
-              size="sm"
-              disabled={retrying}
-              onClick={() => void retranscribe()}
-            >
-              <RotateCcw size={14} strokeWidth={2} aria-hidden="true" />
-              {t("settings.history.retranscribe")}
-            </Button>
-          </div>
+          {hasRecording && (
+            <>
+              <p className="text-xs font-medium text-text-secondary">
+                {t("settings.history.replayVoice")}
+              </p>
+              <AudioPlayer onLoadRequest={loadAudio} className="w-full" />
+              <div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={retrying}
+                  onClick={() => void retranscribe()}
+                >
+                  <RotateCcw size={14} strokeWidth={2} aria-hidden="true" />
+                  {t("settings.history.retranscribe")}
+                </Button>
+              </div>
+            </>
+          )}
           {hasText && (
             <HistoryCorrection
               entryId={entry.id}

@@ -3,8 +3,6 @@
     "settings": "Настройки...",
     "checkUpdates": "Проверить обновления...",
     "copyLastTranscript": "Скопировать последнюю транскрипцию",
-    "unloadModel": "Выгрузить модель",
-    "model": "Модель",
     "quit": "Выход",
     "cancel": "Отмена"
   },
@@ -617,7 +615,8 @@
         "saved": "Сниппет сохранён: скажите «{{trigger}}».",
         "error": "Не удалось сохранить сниппет."
       },
-      "pastedVersion": "Версия, вставленная Nova"
+      "pastedVersion": "Версия, вставленная Nova",
+      "replayVoice": "Прослушать мой голос"
     },
     "debug": {
       "logDirectory": {

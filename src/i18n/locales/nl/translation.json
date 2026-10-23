@@ -3,8 +3,6 @@
     "settings": "Instellingen...",
     "checkUpdates": "Controleren op updates...",
     "copyLastTranscript": "Laatste transcriptie kopiëren",
-    "unloadModel": "Model ontladen",
-    "model": "Model",
     "quit": "Afsluiten",
     "cancel": "Annuleren"
   },
@@ -617,7 +615,8 @@
         "saved": "Snippet opgeslagen: zeg “{{trigger}}”.",
         "error": "Het snippet kon niet worden opgeslagen."
       },
-      "pastedVersion": "Door Nova geplakte versie"
+      "pastedVersion": "Door Nova geplakte versie",
+      "replayVoice": "Mijn stem opnieuw beluisteren"
     },
     "debug": {
       "logDirectory": {
