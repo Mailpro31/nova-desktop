@@ -1208,7 +1208,7 @@
       "intro": "Reliez votre emploi du temps : chaque dictée est rangée sous le cours où vous l’avez faite.",
       "linkLabel": "Lien d’abonnement de votre emploi du temps",
       "connect": "Relier",
-      "linkHelp": "Le lien se trouve dans votre emploi du temps en ligne (ADE, Hyperplanning…), sous « Exporter » ou « S’abonner ».",
+      "linkHelp": "Le lien se trouve dans votre emploi du temps en ligne (ADE, Hyperplanning…), sous « Exporter » ou « S’abonner ». Un lien Moodle ne donne que les échéances, pas les cours.",
       "importFile": "Importer un fichier .ics",
       "importOther": "Importer un autre fichier",
       "fileFilter": "Calendrier",
