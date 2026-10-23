@@ -13,7 +13,6 @@ import type { SystemReadiness } from "./useSystemReadiness";
 export type OnboardingStepId =
   | "permissions"
   | "campus"
-  | "welcome"
   | "model"
   | "smartSetup"
   | "voiceCalibration"
@@ -96,12 +95,9 @@ export function useOnboardingFlow({
     // Le reste n'appartient qu'à la première ouverture.
     if (!isFirstRun) return pending;
 
-    // La connexion Organization vient déjà de présenter l'organisation puis
-    // de confirmer le compte. Le second accueil ne reste utile qu'en Personal.
-    if (!organizationMode) pending.push("welcome");
     pending.push("smartSetup");
 
-    if (organizationMode) {
+    {
       // Le calibrage avant la première dictée : c'est lui qui règle le gain et
       // apprend les mots mal entendus, donc la première dictée en profite.
       // Facultatif — un élève pressé dicte tout de suite et calibre plus tard.
@@ -112,11 +108,6 @@ export function useOnboardingFlow({
         pending.push("firstDictation");
       }
       if (!isSkipped("writingStyles")) pending.push("writingStyles");
-    } else {
-      if (!isSkipped("writingStyles")) pending.push("writingStyles");
-      if (!readiness.hasDictated && !isSkipped("firstDictation")) {
-        pending.push("firstDictation");
-      }
     }
 
     return pending;

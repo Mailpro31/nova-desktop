@@ -183,15 +183,14 @@ describe("Already linked", () => {
 });
 
 describe("Personal is untouched", () => {
-  test("the surface is only rendered in the Campus tab", () => {
+  test("the surface is rendered in the General tab", () => {
     const source = code(CONFIGURATION);
     const organizationTab = source.slice(
       source.indexOf("const OrganizationGeneralTab"),
     );
     expect(organizationTab).toContain("<OrganizationConnectionSettings />");
-    // La branche personnelle rend `GeneralSettings`, qui ne la connaît pas.
     expect(source).toContain(
-      "organizationMode ? <OrganizationGeneralTab /> : <GeneralSettings />",
+      '{tab === "general" && <OrganizationGeneralTab />}',
     );
   });
 });
@@ -226,7 +225,7 @@ describe("Organization navigation", () => {
     // exactement comme un établissement.
     const source = code(SIDEBAR).replace(/\s+/g, " ");
     expect(source).toContain(
-      "component: OrganizationAiSkills, enabled: () => isOrganizationMode(),",
+      "component: OrganizationAiSkills, enabled: always,",
     );
   });
 
@@ -237,9 +236,7 @@ describe("Organization navigation", () => {
     // l'application. Une entreprise avait donc les commandes qui fonctionnent
     // et aucun écran pour les documenter.
     const source = code(SIDEBAR).replace(/\s+/g, " ");
-    expect(source).toContain(
-      "component: AiSkillsSettings, enabled: () => isOrganizationMode(),",
-    );
+    expect(source).toContain("component: AiSkillsSettings, enabled: always,");
   });
 
   test("the sidebar no longer asks what kind of organization this is", () => {

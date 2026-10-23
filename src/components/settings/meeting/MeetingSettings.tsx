@@ -5,12 +5,7 @@ import { Radio, RefreshCw, Square, Users } from "lucide-react";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
-import { TierBadge, getStatus } from "../license/TierBadge";
-
-// Fonctionnalité réservée à Nova Ultra (miroir de `feature_min_tier`, Rust). Le
-// backend reste l'autorité : la commande refuse aussi le démarrage sans le
-// palier. Ici on grise l'UI pour ne pas « mentir » (convention CLAUDE.md).
-const MEETING_FEATURE = "meeting_mode";
+import { useCapability } from "../../../hooks/useOrganizationContext";
 
 // Le consentement des participants n'est demandé qu'UNE fois (décision produit) ;
 // ce drapeau local mémorise que l'utilisateur l'a acquitté.
@@ -65,25 +60,14 @@ export const MeetingSettings: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [consentOpen, setConsentOpen] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
-  // `null` tant que le statut n'est pas chargé : on ne grise pas avant de savoir.
-  const [locked, setLocked] = useState<boolean | null>(null);
+  // Le mode réunion est suspendu tant que l'organisation ne l'ouvre pas.
+  const locked = !useCapability("meeting");
 
   // Applications de réunion détectées + celle choisie (PID) + l'app captée.
   const [apps, setApps] = useState<MeetingApp[]>([]);
   const [detecting, setDetecting] = useState(false);
   const [selectedPid, setSelectedPid] = useState<number | null>(null);
   const [capturedApp, setCapturedApp] = useState<MeetingApp | null>(null);
-
-  useEffect(() => {
-    let alive = true;
-    getStatus().then((s) => {
-      if (alive)
-        setLocked(s ? !(s.features?.[MEETING_FEATURE] ?? true) : false);
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
 
   // Détecte les applications de réunion ouvertes. Une seule → sélectionnée
   // d'office ; plusieurs → l'utilisateur choisit ; le PID choisi est conservé
@@ -176,16 +160,11 @@ export const MeetingSettings: React.FC = () => {
         title={t("meeting.title")}
         description={t("meeting.description")}
       >
-        {/* Bloc gaté : grisé et inerte tant que le palier manque — l'UI ne
-            « ment » pas (convention CLAUDE.md). Le badge indique le palier. */}
+        {/* Grisé et inerte tant que l'organisation n'ouvre pas le mode
+            réunion : l'interface ne promet pas une fonction fermée. */}
         <div
           className={`p-4 space-y-4 ${locked ? "opacity-40 pointer-events-none select-none" : ""}`}
         >
-          {locked && (
-            <div className="flex justify-start">
-              <TierBadge feature={MEETING_FEATURE} />
-            </div>
-          )}
 
           {/* Bandeau de capture active — visible tant que la réunion tourne. */}
           {recording && capturedApp && (

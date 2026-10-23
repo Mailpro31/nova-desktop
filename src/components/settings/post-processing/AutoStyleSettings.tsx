@@ -5,7 +5,6 @@ import { Plus, Trash2 } from "lucide-react";
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
 import { Dropdown } from "../../ui/Dropdown";
-import { TierBadge } from "../license/TierBadge";
 import { useSettings } from "../../../hooks/useSettings";
 import { styleColor } from "../../../lib/styleColors";
 
@@ -27,7 +26,6 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
   const { settings, refreshSettings } = useSettings();
   const [blocklist, setBlocklist] = useState("");
   const [rules, setRules] = useState<Rule[]>([]);
-  const [canCustomize, setCanCustomize] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const styleOptions = useMemo(
@@ -48,12 +46,6 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
     setRules(flat);
   }, [settings]);
 
-  useEffect(() => {
-    invoke<{ features: Record<string, boolean> }>("get_license_status")
-      .then((s) => setCanCustomize(s.features?.custom_auto_rules ?? true))
-      .catch(() => setCanCustomize(true));
-  }, []);
-
   const addRule = () =>
     setRules((r) => [
       ...r,
@@ -70,13 +62,11 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
     setSaving(true);
     try {
       const grouped: Record<string, string[]> = {};
-      if (canCustomize) {
-        rules.forEach(({ style, keyword }) => {
-          const k = keyword.trim();
-          if (!style || !k) return;
-          (grouped[style] ??= []).push(k);
-        });
-      }
+      rules.forEach(({ style, keyword }) => {
+        const k = keyword.trim();
+        if (!style || !k) return;
+        (grouped[style] ??= []).push(k);
+      });
       const bl = blocklist
         .split(/[,\n]/)
         .map((s) => s.trim())
@@ -113,62 +103,55 @@ export const AutoStyleSettings: React.FC<{ prompts: PromptLite[] }> = ({
         </p>
       </div>
 
-      {/* Règles personnalisées — Nova Ultra */}
+      {/* Règles personnalisées */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <label className="text-sm font-semibold">
             {t("settings.postProcessing.autoStyle.rulesLabel")}
           </label>
-          <TierBadge feature="custom_auto_rules" />
         </div>
 
-        {canCustomize ? (
-          <>
-            <div className="flex flex-col gap-2">
-              {rules.map((row, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <Input
-                    type="text"
-                    value={row.keyword}
-                    onChange={(e) => updateRule(i, { keyword: e.target.value })}
-                    placeholder={t(
-                      "settings.postProcessing.autoStyle.keywordPlaceholder",
-                    )}
-                    variant="compact"
-                    className="flex-1 min-w-0"
-                  />
-                  <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
-                    style={{ background: styleColor(row.style) }}
-                    aria-hidden="true"
-                  />
-                  <Dropdown
-                    selectedValue={row.style}
-                    options={styleOptions}
-                    onSelect={(v) => updateRule(i, { style: v ?? row.style })}
-                    className="w-40 shrink-0"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeRule(i)}
-                    aria-label={t("common.remove", "Supprimer")}
-                    className="shrink-0 w-9 h-9 flex items-center justify-center rounded-md text-text-secondary hover:bg-mid-gray/10"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <Button variant="secondary" size="sm" onClick={addRule}>
-              <Plus className="w-4 h-4 mr-1" />
-              {t("settings.postProcessing.autoStyle.addRule")}
-            </Button>
-          </>
-        ) : (
-          <p className="text-xs text-text-secondary">
-            {t("settings.postProcessing.prompts.ultraOnly")}
-          </p>
-        )}
+        <>
+          <div className="flex flex-col gap-2">
+            {rules.map((row, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <Input
+                  type="text"
+                  value={row.keyword}
+                  onChange={(e) => updateRule(i, { keyword: e.target.value })}
+                  placeholder={t(
+                    "settings.postProcessing.autoStyle.keywordPlaceholder",
+                  )}
+                  variant="compact"
+                  className="flex-1 min-w-0"
+                />
+                <span
+                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  style={{ background: styleColor(row.style) }}
+                  aria-hidden="true"
+                />
+                <Dropdown
+                  selectedValue={row.style}
+                  options={styleOptions}
+                  onSelect={(v) => updateRule(i, { style: v ?? row.style })}
+                  className="w-40 shrink-0"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeRule(i)}
+                  aria-label={t("common.remove", "Supprimer")}
+                  className="shrink-0 w-9 h-9 flex items-center justify-center rounded-md text-text-secondary hover:bg-mid-gray/10"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+          <Button variant="secondary" size="sm" onClick={addRule}>
+            <Plus className="w-4 h-4 mr-1" />
+            {t("settings.postProcessing.autoStyle.addRule")}
+          </Button>
+        </>
       </div>
 
       <Button variant="primary" size="md" onClick={save} disabled={saving}>

@@ -29,7 +29,6 @@ import Onboarding, {
   SmartSetupStep,
   TutorialOnboarding,
   VoiceCalibrationStep,
-  WelcomeStep,
 } from "./components/onboarding";
 import { SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
@@ -627,8 +626,6 @@ function App() {
         }}
       />
     );
-  } else if (flow.current === "welcome") {
-    content = <WelcomeStep onContinue={flow.next} />;
   } else if (flow.current === "model") {
     content = (
       <Onboarding

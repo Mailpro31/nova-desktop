@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
-import { TierBadge } from "../license/TierBadge";
-import { ThemeSelector } from "../ThemeSelector";
-import { ReadingComfortSettings } from "../ReadingComfortSettings";
-import { AppLanguageSelector } from "../AppLanguageSelector";
 import { ShowOverlay } from "../ShowOverlay";
-import { isOrganizationMode } from "@/lib/mode";
-import { CustomVariablesSettings } from "./CustomVariablesSettings";
 import { useSettings } from "../../../hooks/useSettings";
-import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
 import {
   ORB_THEMES,
   DEFAULT_ORB_ID,
@@ -54,28 +46,11 @@ const OrbSwatch: React.FC<{ theme: OrbTheme; size?: number }> = ({
  * `embedded` : la bulle seule, sans titre de page, dans l'onglet Général des
  * réglages en campus.
  */
-export const PersonalizationSettings: React.FC<{ embedded?: boolean }> = ({
-  embedded = false,
-}) => {
+export const PersonalizationSettings: React.FC = () => {
   const { t } = useTranslation();
-  const word = useOrganizationWording();
-  const organizationMode = isOrganizationMode();
   const [selected, setSelected] = useState<string>(getOrbThemeId());
-  const [canCustomize, setCanCustomize] = useState(true);
   const { settings, refreshSettings } = useSettings();
   const [persistentOverlay, setPersistentOverlay] = useState(true);
-
-  useEffect(() => {
-    if (organizationMode) {
-      setCanCustomize(true);
-      return;
-    }
-    void invoke<{ features: Record<string, boolean> }>("get_license_status")
-      .then((status) =>
-        setCanCustomize(status.features?.orb_customization ?? true),
-      )
-      .catch(() => setCanCustomize(true));
-  }, [organizationMode]);
 
   useEffect(() => {
     const value = (
@@ -95,7 +70,6 @@ export const PersonalizationSettings: React.FC<{ embedded?: boolean }> = ({
   };
 
   const choose = (id: string) => {
-    if (id !== DEFAULT_ORB_ID && !canCustomize) return;
     setSelected(id);
     setOrbThemeId(id);
   };
@@ -103,23 +77,6 @@ export const PersonalizationSettings: React.FC<{ embedded?: boolean }> = ({
   return (
     // Largeur héritée de l'app shell.
     <div className="space-y-6">
-      {!embedded && (
-        <PageHeader
-          title={t("sidebar.personalization")}
-          description={word("personalizationDescription")}
-        />
-      )}
-
-      {/* En campus, langue et thème vivent dans « Général » : les répéter ici
-          donnerait deux emplacements pour un même réglage. */}
-      {!organizationMode && (
-        <SettingsGroup title={t("personalization.appearance")}>
-          <ThemeSelector descriptionMode="tooltip" grouped={true} />
-          <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
-        </SettingsGroup>
-      )}
-      {!organizationMode && <ReadingComfortSettings />}
-
       <SettingsGroup title={t("personalization.orb")}>
         <SettingContainer
           title={t("organization.personalization.orbColor")}
@@ -128,24 +85,21 @@ export const PersonalizationSettings: React.FC<{ embedded?: boolean }> = ({
           grouped={true}
         >
           <div className="space-y-3">
-            {!organizationMode && <TierBadge feature="orb_customization" />}
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {ORB_THEMES.map((theme) => {
                 const active = selected === theme.id;
-                const locked = theme.id !== DEFAULT_ORB_ID && !canCustomize;
                 return (
                   <button
                     key={theme.id}
                     type="button"
                     onClick={() => choose(theme.id)}
-                    disabled={locked}
                     aria-pressed={active}
                     title={theme.label}
                     className={`flex flex-col items-center gap-1.5 rounded-lg border p-2.5 transition-colors duration-150 motion-reduce:transition-none ${
                       active
                         ? "border-accent bg-accent/10"
                         : "border-hairline hover:bg-inset"
-                    } ${locked ? "cursor-not-allowed opacity-40" : ""}`}
+                    }`}
                   >
                     <OrbSwatch theme={theme} />
                     <span className="text-center text-[11px] leading-tight text-text-secondary">
@@ -172,8 +126,6 @@ export const PersonalizationSettings: React.FC<{ embedded?: boolean }> = ({
         />
         <ShowOverlay descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
-
-      {!organizationMode && <CustomVariablesSettings />}
     </div>
   );
 };

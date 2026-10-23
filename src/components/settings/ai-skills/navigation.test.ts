@@ -42,7 +42,7 @@ function sidebarSection(id: string, nextId: string): string {
 describe("entrée Nova Commands", () => {
   test("elle existe pour toute organisation, pas pour une nature d'organisation", () => {
     const section = sidebarSection("aiskills", "aiskilltools");
-    expect(section).toContain("enabled: () => isOrganizationMode()");
+    expect(section).toContain("enabled: always");
     expect(section).not.toContain("isCampusMode");
     expect(section).not.toContain("isBusinessMode");
   });
@@ -50,9 +50,7 @@ describe("entrée Nova Commands", () => {
   test("elle se ferme sur la capacité que l'organisation gouverne", () => {
     const code = source(SIDEBAR);
     expect(code).toContain('useCapability("commands")');
-    expect(code).toContain(
-      '(id !== "aiskills" || !organizationMode || commandsOpen)',
-    );
+    expect(code).toContain('(id !== "aiskills" || commandsOpen)');
   });
 
   test("elle reste alignée sur les AI Skills exécutables d'à côté", () => {
@@ -60,8 +58,8 @@ describe("entrée Nova Commands", () => {
     // conditionner différemment est ce qui avait produit l'écart.
     const commands = sidebarSection("aiskills", "aiskilltools");
     const tools = sidebarSection("aiskilltools", "configuration");
-    expect(commands).toContain("enabled: () => isOrganizationMode()");
-    expect(tools).toContain("enabled: () => isOrganizationMode()");
+    expect(commands).toContain("enabled: always");
+    expect(tools).toContain("enabled: always");
   });
 
   test("la barre latérale ne consulte plus la nature de l'organisation", () => {
