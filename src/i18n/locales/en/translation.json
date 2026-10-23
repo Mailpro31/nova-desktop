@@ -840,13 +840,13 @@
     "processing": "Thinking",
     "chooseStyle": "Choose a Style",
     "openSettings": "Open settings",
-    "micHearing": "I can hear you",
-    "micTooLow": "Speak a little louder",
+    "micHearing": "Nova can hear you",
+    "micTooLow": "Move the microphone closer",
     "styleSuggestion": "You often dictate in {{app}} — try the {{style}} Style",
     "styleSuggestionApply": "Try it",
     "styleSuggestionDismiss": "Don't show again",
     "dictationLimitWarning": "Stops in {{seconds}} s (organization limit)",
-    "unclear": "I didn't hear that clearly, so nothing was pasted. Speak a little louder or closer to the microphone."
+    "unclear": "Nova didn’t hear that clearly, so nothing was pasted. Move the microphone closer, then try again."
   },
   "voiceCommands": {
     "title": "Voice commands",
