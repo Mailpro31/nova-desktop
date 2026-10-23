@@ -4,6 +4,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./RecordingOverlay.css";
 import { commands, events } from "@/bindings";
+import { pickableStyles } from "@/lib/builtinStyles";
 import type {
   StreamPhase,
   StreamPhaseEvent,
@@ -139,7 +140,7 @@ const RecordingOverlay: React.FC = () => {
         };
         const styleItems = [
           autoItem,
-          ...(s.data.post_process_prompts ?? []).map((p) => ({
+          ...pickableStyles(s.data.post_process_prompts ?? []).map((p) => ({
             id: p.id,
             name: p.name,
           })),
