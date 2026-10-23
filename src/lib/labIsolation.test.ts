@@ -77,9 +77,9 @@ describe("Nova Lab ne fait rien de ce qu'il n'a pas à faire", () => {
   });
 
   it("ne réclame aucun jeton gratuit", () => {
-    expect(gateAbove("license::fetch_and_store_free_token")).toContain(
-      '#[cfg(not(feature = "lab"))]',
-    );
+    // Plus aucun build ne contacte le serveur d'essai de Nova personnel : un
+    // poste d'école n'envoie pas son identifiant de machine à un tiers.
+    expect(libRs).not.toContain("fetch_and_store_free_token");
   });
 
   it("n'embarque pas le greffon de mise à jour", () => {
