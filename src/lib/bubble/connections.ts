@@ -414,5 +414,10 @@ export function launchFor(
       : url.split("?")[0];
     return { url: home, clipboard: full };
   }
-  return { url: url.replace("{q}", encodeURIComponent(value)) };
+  return {
+    url: url.replace("{q}", encodeURIComponent(value)),
+    // Une IA demande souvent de se connecter d'abord, et la question de
+    // l'adresse se perd alors : elle reste à coller (test de Sash, 24/10).
+    clipboard: connection.group === "ai" ? full : undefined,
+  };
 }
