@@ -85,6 +85,7 @@ export const SelectionBubble: React.FC = () => {
       stopSpeaking();
       setSpeaking(false);
       setCopied(false);
+      fitToScreen();
       setSelection(event.payload);
       setView({ name: "pill" });
     });
@@ -256,7 +257,7 @@ export const SelectionBubble: React.FC = () => {
                 {text}
               </p>
             </header>
-            <div className="max-h-[360px] overflow-y-auto px-3 pb-3">
+            <div className="max-h-[min(360px,var(--bubble-max-h))] overflow-y-auto px-3 pb-3">
               <GroupTitle>{t("bubble.withNova")}</GroupTitle>
               <div className="grid grid-cols-4 gap-1">
                 {NOVA_ACTIONS.map((action) => {
@@ -351,7 +352,7 @@ export const SelectionBubble: React.FC = () => {
         {view.name === "result" && (
           <Card wide>
             {cardHeader(view.action)}
-            <div className="max-h-[300px] overflow-y-auto px-4 py-3">
+            <div className="max-h-[min(300px,var(--bubble-max-h))] overflow-y-auto px-4 py-3">
               <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-text">
                 {view.result}
               </p>
@@ -482,6 +483,24 @@ export const SelectionBubble: React.FC = () => {
   }
 };
 
+/**
+ * La bulle suit l'écran où elle s'ouvre (demande de Sash, 24/10) : un peu plus
+ * grande sur un grand écran, jamais plus large ni plus haute qu'un petit.
+ */
+function fitToScreen(): void {
+  const root = document.documentElement;
+  const zoom = Math.min(1.25, Math.max(1, screen.availWidth / 1600));
+  root.style.zoom = String(zoom);
+  root.style.setProperty(
+    "--bubble-max-w",
+    `${screen.availWidth / zoom - 48}px`,
+  );
+  root.style.setProperty(
+    "--bubble-max-h",
+    `${(screen.availHeight / zoom) * 0.45}px`,
+  );
+}
+
 const Pill: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="bubble-in flex items-center gap-0.5 rounded-full border border-hairline bg-surface p-1 shadow-floating">
     {children}
@@ -493,7 +512,7 @@ const Card: React.FC<{ children: React.ReactNode; wide?: boolean }> = ({
   wide,
 }) => (
   <div
-    className={`bubble-in flex flex-col overflow-hidden rounded-panel border border-hairline bg-surface shadow-floating ${
+    className={`bubble-in flex max-w-[var(--bubble-max-w)] flex-col overflow-hidden rounded-panel border border-hairline bg-surface shadow-floating ${
       wide ? "w-[400px]" : "w-[360px]"
     }`}
   >
