@@ -95,7 +95,8 @@ describe("connexions", () => {
     expect(launch.url).toBe(
       `https://chatgpt.com/?q=${encodeURIComponent("Explique :\n\nBernoulli")}`,
     );
-    expect(launch.clipboard).toBeUndefined();
+    // Copiée aussi : après une connexion, l'IA a perdu la question de l'adresse.
+    expect(launch.clipboard).toBe("Explique :\n\nBernoulli");
   });
 
   test("un texte trop long passe par le presse-papiers, jamais coupé", () => {
