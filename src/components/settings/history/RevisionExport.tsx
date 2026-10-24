@@ -120,7 +120,7 @@ export const RevisionExport: React.FC<RevisionExportProps> = ({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-1">
+    <div className="flex flex-col items-start gap-1">
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -130,30 +130,36 @@ export const RevisionExport: React.FC<RevisionExportProps> = ({
         <Download size={13} aria-hidden="true" />
         {t("history.export.button")}
       </button>
-      {open &&
-        (["markdown", "anki", "mindmap"] as Format[]).map((format) => (
+      {/* Un choix par ligne, dans une carte : une rangée de boutons en vrac
+          était illisible (n° 24). */}
+      {open && (
+        <div className="flex w-full max-w-xs flex-col rounded-card border border-hairline p-1">
+          {(["markdown", "anki", "mindmap"] as Format[]).map((format) => (
+            <button
+              key={format}
+              type="button"
+              disabled={busy}
+              onClick={() => void exportAs(format)}
+              className={EXPORT_OPTION}
+            >
+              {t(`history.export.${format}`)}
+            </button>
+          ))}
           <button
-            key={format}
             type="button"
             disabled={busy}
-            onClick={() => void exportAs(format)}
-            className="cursor-pointer rounded-chip border border-hairline px-2 py-0.5 text-xs text-text transition-colors duration-[140ms] hover:bg-mid-gray/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-35"
+            onClick={() => void sendToAnki()}
+            className={EXPORT_OPTION}
           >
-            {t(`history.export.${format}`)}
+            {t("history.export.ankiSend")}
           </button>
-        ))}
-      {open && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void sendToAnki()}
-          className="cursor-pointer rounded-chip border border-hairline px-2 py-0.5 text-xs text-text transition-colors duration-[140ms] hover:bg-mid-gray/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-35"
-        >
-          {t("history.export.ankiSend")}
-        </button>
+        </div>
       )}
     </div>
   );
 };
+
+const EXPORT_OPTION =
+  "cursor-pointer rounded-chip px-2 py-1.5 text-left text-sm text-text transition-colors duration-[140ms] hover:bg-mid-gray/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-35";
 
 export default RevisionExport;

@@ -1415,9 +1415,9 @@
     "export": {
       "button": "Exporter pour réviser",
       "title": "Nova — {{section}} — {{date}}",
-      "markdown": "Notes (Markdown)",
-      "anki": "Cartes de révision (Anki)",
-      "mindmap": "Carte mentale (OPML)",
+      "markdown": "Fiche de révision (texte)",
+      "anki": "Cartes Anki (fichier)",
+      "mindmap": "Carte mentale",
       "saved": "Fichier enregistré.",
       "failed": "Le fichier n’a pas pu être enregistré.",
       "noCards": "Aucun bloc à réviser ici : dites « Définition », « Théorème » ou « À retenir » au début d’une dictée pour créer des cartes.",

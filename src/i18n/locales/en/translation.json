@@ -1415,9 +1415,9 @@
     "export": {
       "button": "Export to revise",
       "title": "Nova — {{section}} — {{date}}",
-      "markdown": "Notes (Markdown)",
-      "anki": "Flashcards (Anki)",
-      "mindmap": "Mind map (OPML)",
+      "markdown": "Revision sheet (text)",
+      "anki": "Anki cards (file)",
+      "mindmap": "Mind map",
       "saved": "File saved.",
       "failed": "The file could not be saved.",
       "noCards": "Nothing to revise here: say “Definition”, “Theorem” or “Key point” at the start of a dictation to create cards.",
