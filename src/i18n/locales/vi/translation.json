@@ -1602,7 +1602,7 @@
     "loading": "Đang khởi động Nova…",
     "stalledTitle": "Nova khởi động lâu hơn dự kiến",
     "stalledBody": "Một số kiểm tra khi khởi động vẫn chưa phản hồi — thiết bị âm thanh, cài đặt đã lưu hoặc danh sách mô hình cục bộ. Nova đã ngừng chờ để cửa sổ này không bị trống.",
-    "logHint": "Chi tiết được ghi vào handy.log, trong thư mục dữ liệu của Nova.",
+    "logHint": "Chi tiết được ghi vào nova.log, trong thư mục dữ liệu của Nova.",
     "retry": "Khởi động lại Nova",
     "errorTitle": "Nova không thể hiển thị cửa sổ",
     "errorBody": "Đã xảy ra lỗi khi khởi động. Hãy khởi động lại Nova; nếu màn hình này quay lại, hãy gửi thông báo bên dưới."
@@ -1669,5 +1669,11 @@
       "diagrams": "Sơ đồ cần vẽ lại",
       "lostTrack": "Lúc tôi bị mất mạch"
     }
+  },
+  "keyboard": {
+    "left": "{{key}} trái",
+    "right": "{{key}} phải",
+    "shift": "Shift",
+    "space": "Phím cách"
   }
 }

@@ -1602,7 +1602,7 @@
     "loading": "Iniciando Nova…",
     "stalledTitle": "Nova está tardando más de lo previsto en iniciarse",
     "stalledBody": "Algunas comprobaciones de inicio aún no han respondido: dispositivos de audio, ajustes guardados o el inventario de modelos locales. Nova ha dejado de esperar para que esta ventana no se quede vacía.",
-    "logHint": "Los detalles se registran en handy.log, dentro de la carpeta de datos de Nova.",
+    "logHint": "Los detalles se registran en nova.log, dentro de la carpeta de datos de Nova.",
     "retry": "Reiniciar Nova",
     "errorTitle": "Nova no ha podido mostrar su ventana",
     "errorBody": "Se produjo un error al iniciar. Reinicia Nova; si esta pantalla vuelve, envía el mensaje de abajo."
@@ -1669,5 +1669,11 @@
       "diagrams": "Esquemas por rehacer",
       "lostTrack": "Momentos en que me perdí"
     }
+  },
+  "keyboard": {
+    "left": "{{key}} izquierdo",
+    "right": "{{key}} derecho",
+    "shift": "Mayús",
+    "space": "Espacio"
   }
 }

@@ -1602,7 +1602,7 @@
     "loading": "正在啟動 Nova…",
     "stalledTitle": "Nova 啟動時間比預期更長",
     "stalledBody": "部分啟動檢查尚未回應——音訊裝置、已儲存的設定或本機模型清單。為了不讓此視窗保持空白，Nova 已停止等待。",
-    "logHint": "詳細資訊記錄在 Nova 資料夾中的 handy.log 內。",
+    "logHint": "詳細資訊記錄在 Nova 資料夾中的 nova.log 內。",
     "retry": "重新啟動 Nova",
     "errorTitle": "Nova 無法顯示視窗",
     "errorBody": "啟動時發生錯誤。請重新啟動 Nova；如果此畫面再次出現，請傳送下方訊息。"
@@ -1669,5 +1669,11 @@
       "diagrams": "要重畫的示意圖",
       "lostTrack": "我跟不上的時候"
     }
+  },
+  "keyboard": {
+    "left": "左{{key}}",
+    "right": "右{{key}}",
+    "shift": "上檔",
+    "space": "空白鍵"
   }
 }

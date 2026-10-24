@@ -2,6 +2,7 @@
   "reason": "Text the translation review accepts as identical to English. `keys`: names that stay identical in every language (model names, key combinations, example addresses, Nova product names). `byLanguage`: words that are also correct in one language, such as Version in French or Auto in German. `*` matches one key segment.",
   "keys": [
     "onboarding.models.*.name",
+    "keyboard.shift",
     "onboarding.models.parakeet-tdt-0.6b-v2.name",
     "onboarding.models.parakeet-tdt-0.6b-v3.name",
     "aiSkills.title",

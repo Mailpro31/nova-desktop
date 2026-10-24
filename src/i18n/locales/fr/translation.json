@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "Paramètres...",
-    "checkUpdates": "Rechercher des mises à jour...",
+    "settings": "Réglages…",
+    "checkUpdates": "Rechercher des mises à jour…",
     "copyLastTranscript": "Copier la dernière transcription",
     "unloadModel": "Décharger le modèle",
     "model": "Modèle",
@@ -84,7 +84,7 @@
       },
       "breeze-asr": {
         "name": "Breeze ASR",
-        "description": "Optimisé pour le mandarin taïwanais. Prise en charge de l'alternance codique."
+        "description": "Optimisé pour le mandarin taïwanais. Prise en charge de l’alternance codique."
       },
       "sense-voice-int8": {
         "name": "SenseVoice",
@@ -117,24 +117,24 @@
     },
     "style": {
       "title": "Choisissez votre Style",
-      "subtitle": "Nova peut adapter automatiquement le Style à l'application active, ou toujours utiliser le même.",
+      "subtitle": "Nova peut adapter automatiquement le Style à l’application active, ou toujours utiliser le même.",
       "recommended": "Recommandé",
       "auto": {
         "title": "Automatique",
-        "description": "Nova détecte l'application active et choisit le Style le plus adapté à votre place."
+        "description": "Nova détecte l’application active et choisit le Style le plus adapté à votre place."
       },
       "manual": {
         "title": "Un Style précis",
-        "description": "Nova applique toujours le même Style, quelle que soit l'application."
+        "description": "Nova applique toujours le même Style, quelle que soit l’application."
       },
       "errors": {
-        "save": "Échec de l'enregistrement du Style choisi. Vous pourrez le changer plus tard dans les réglages."
+        "save": "Échec de l’enregistrement du Style choisi. Vous pourrez le changer plus tard dans les réglages."
       }
     },
     "variables": {
       "title": "Ajoutez vos raccourcis personnels",
-      "subtitle": "Associez un mot-clé à une information que vous dictez souvent : Nova insère la valeur exacte pendant la reformulation. Vous pourrez toujours les modifier plus tard dans les réglages.",
-      "hint": "Facultatif — laissez vide pour passer. Rien n'est enregistré tant qu'une valeur n'est pas renseignée.",
+      "subtitle": "Associez un mot-clé à une information que vous dictez souvent : Nova insère la valeur exacte. Vous pourrez les modifier plus tard dans les Réglages.",
+      "hint": "Facultatif — laissez vide pour passer. Rien n’est enregistré tant qu’une valeur n’est pas renseignée.",
       "presets": {
         "fullName": {
           "key": "mon nom complet",
@@ -150,19 +150,19 @@
         }
       },
       "errors": {
-        "save": "Échec de l'enregistrement de vos raccourcis. Vous pourrez les ajouter plus tard dans les réglages."
+        "save": "Échec de l’enregistrement de vos raccourcis. Vous pourrez les ajouter plus tard dans les réglages."
       }
     },
     "tutorial": {
       "title": "Essayez Nova",
-      "subtitle": "Un test rapide pour voir Nova à l'œuvre avant de terminer.",
+      "subtitle": "Un test rapide pour voir Nova à l’œuvre avant de terminer.",
       "instructionsPushToTalk": "Maintenez {{shortcut}} enfoncé pendant que vous parlez, puis relâchez.",
       "instructionsToggle": "Appuyez sur {{shortcut}} pour démarrer, parlez, puis appuyez à nouveau pour arrêter.",
       "suggestion": "Essayez de dire par exemple : « {{sentence}} »",
       "awaiting": "En attente de votre dictée…",
       "polishing": "Application du Style…",
       "success": "Ça marche !",
-      "originalWas": "Dicté à l'origine : {{text}}",
+      "originalWas": "Dicté à l’origine : {{text}}",
       "hint": "Vous pouvez réessayer autant de fois que vous voulez.",
       "skip": "Passer cette étape",
       "finishAnyway": "Terminer la configuration",
@@ -178,16 +178,16 @@
         "description": "Nécessaire pour entendre votre voix pour la transcription."
       },
       "accessibility": {
-        "title": "Accès à l'accessibilité",
+        "title": "Accès à l’accessibilité",
         "description": "Nécessaire pour taper le texte transcrit dans vos applications."
       },
-      "grant": "Accorder l'autorisation",
+      "grant": "Accorder l’autorisation",
       "granted": "Accordé",
-      "waiting": "En attente...",
+      "waiting": "En attente…",
       "allGranted": "Tout est prêt !",
       "errors": {
         "checkFailed": "Échec de la vérification des autorisations. Veuillez réessayer.",
-        "requestFailed": "Échec de la demande d'autorisation. Veuillez réessayer."
+        "requestFailed": "Échec de la demande d’autorisation. Veuillez réessayer."
       }
     },
     "back": "Retour",
@@ -219,44 +219,44 @@
     },
     "writingStyles": {
       "introTitle": "Nova ne fait pas que transcrire",
-      "introSubtitle": "Parlez, et Nova écrit dans le style adapté à ce que vous faites.",
-      "unavailable": "Aucun style d'écriture n'est disponible pour l'instant.",
+      "introSubtitle": "Parlez, et Nova écrit dans le Style adapté à ce que vous faites.",
+      "unavailable": "Aucun Style n’est disponible pour l’instant.",
       "saidLabel": "Vous dites",
       "said": "« euh, rendez-vous lundi, non attends, mardi à la bibliothèque »",
       "writtenLabel": "Nova écrit",
       "written": "Rendez-vous mardi à la bibliothèque.",
-      "automatic": "Nova choisit le style pour vous selon l'application : votre texte mis au propre dans Word ou sur l'ENT, un e-mail dans votre messagerie.",
-      "stylesLabel": "Styles d'écriture",
-      "changeLater": "Vous pouvez changer de style à tout moment depuis la bulle ou dans les Réglages."
+      "automatic": "Nova choisit le Style pour vous selon l’application : votre texte mis au propre dans Word ou sur l’ENT, un e-mail dans votre messagerie.",
+      "stylesLabel": "Styles d’écriture",
+      "changeLater": "Vous pouvez changer de Style à tout moment depuis la bulle ou dans les Réglages."
     },
     "voiceCalibration": {
       "title": "Apprenons votre voix",
-      "subtitle": "Lisez quelques phrases de cours. Nova mesure votre micro et repère les mots qu'il comprend mal chez vous. Rien n'est appliqué sans votre accord.",
-      "tipQuiet": "Parlez comme en classe, à voix basse : c'est cette voix-là que Nova doit entendre.",
+      "subtitle": "Lisez quelques phrases de cours. Nova mesure votre micro et repère les mots qu’il comprend mal chez vous. Rien n’est appliqué sans votre accord.",
+      "tipQuiet": "Parlez comme en classe, à voix basse : c’est cette voix-là que Nova doit entendre.",
       "tipPlace": "Installez-vous là où vous travaillez, avec le micro que vous utiliserez.",
       "tipDuration": "{{count}} phrases, environ deux minutes.",
       "start": "Commencer",
       "readTitle": "Phrase {{current}} sur {{total}}",
-      "readSubtitle": "Appuyez sur « Lire », dites la phrase, puis appuyez sur « J'ai fini ».",
+      "readSubtitle": "Appuyez sur « Lire », dites la phrase, puis appuyez sur « J’ai fini ».",
       "record": "Lire",
-      "stop": "J'ai fini",
+      "stop": "J’ai fini",
       "retry": "Relire cette phrase",
       "listening": "Nova vous écoute…",
-      "analysing": "Nova analyse ce qu'il a entendu…",
+      "analysing": "Nova analyse ce qu’il a entendu…",
       "heardLabel": "Nova a compris :",
-      "heardNothing": "Rien d'audible. Rapprochez-vous du micro et relisez la phrase.",
+      "heardNothing": "Rien d’audible. Rapprochez-vous du micro et relisez la phrase.",
       "next": "Phrase suivante",
       "finish": "Voir le résultat",
       "summaryTitle": "Votre voix est calibrée",
       "gainRaised": "Nova relèvera votre voix de {{db}} dB, sans la faire saturer.",
-      "gainUnchanged": "Votre voix arrive déjà au bon niveau : aucun réglage n'est nécessaire.",
+      "gainUnchanged": "Votre voix arrive déjà au bon niveau : aucun réglage n’est nécessaire.",
       "tooNoisy": "Votre voix ressort mal du bruit ambiant. Rapprochez le micro ou changez de place : un réglage ne suffira pas.",
       "noCorrection": "Nova a bien compris les termes de cours. Aucune correction à ajouter.",
       "correctionsIntro": "Nova a mal compris ces termes. Cochés, ils seront corrigés dans vos prochaines dictées :",
       "correction": "« {{expected}} » (Nova entendait « {{heard}} »)",
       "save": "Enregistrer",
-      "errorMicrophone": "Le micro n'a pas pu démarrer. Vérifiez qu'aucune dictée n'est en cours, puis réessayez.",
-      "errorAnalysis": "Nova n'a pas pu analyser cette lecture. Relisez la phrase."
+      "errorMicrophone": "Le micro n’a pas pu démarrer. Vérifiez qu’aucune dictée n’est en cours, puis réessayez.",
+      "errorAnalysis": "Nova n’a pas pu analyser cette lecture. Relisez la phrase."
     }
   },
   "settings": {
@@ -265,9 +265,9 @@
     },
     "models": {
       "title": "Performance de la transcription",
-      "description": "Choisissez l'équilibre précision/vitesse de la transcription, ou téléchargez d'autres options. Les options les plus précises demandent plus de puissance à votre appareil.",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer {{modelName}} ? Vous devrez le télécharger à nouveau pour l'utiliser.",
-      "deleteActiveConfirm": "{{modelName}} est votre modèle actif. Le supprimer arrêtera les transcriptions jusqu'à ce que vous sélectionniez un nouveau modèle. Êtes-vous sûr ?",
+      "description": "Choisissez l’équilibre précision/vitesse de la transcription, ou téléchargez d’autres options. Les options les plus précises demandent plus de puissance à votre appareil.",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer {{modelName}} ? Vous devrez le télécharger à nouveau pour l’utiliser.",
+      "deleteActiveConfirm": "{{modelName}} est votre modèle actif. Le supprimer arrêtera les transcriptions jusqu’à ce que vous sélectionniez un nouveau modèle. Êtes-vous sûr ?",
       "deleteTitle": "Supprimer le modèle",
       "filters": {
         "allLanguages": "Toutes les langues"
@@ -285,35 +285,35 @@
       "title": "Général",
       "shortcut": {
         "title": "Raccourcis Nova",
-        "description": "Configurer les raccourcis clavier pour déclencher l'enregistrement de la reconnaissance vocale",
-        "loading": "Chargement des raccourcis...",
+        "description": "Les touches pour dicter et pour annuler.",
+        "loading": "Chargement des raccourcis…",
         "none": "Aucun raccourci configuré",
         "notFound": "Raccourci non trouvé",
-        "pressKeys": "Appuyez sur les touches...",
+        "pressKeys": "Appuyez sur les touches…",
         "bindings": {
           "transcribe": {
-            "name": "Raccourci de Transcription",
+            "name": "Raccourci de dictée",
             "description": "Le raccourci clavier pour enregistrer et transcrire votre voix."
           },
           "cancel": {
-            "name": "Raccourci d'Annulation",
-            "description": "Le raccourci clavier pour annuler l'enregistrement en cours."
+            "name": "Raccourci d’annulation",
+            "description": "Le raccourci clavier pour annuler l’enregistrement en cours."
           },
           "transcribe_with_post_process": {
             "name": "Dictée avec Style",
-            "description": "Enregistre et applique le Style choisi, même si la reformulation est désactivée."
+            "description": "Dicte et applique le Style choisi, même si la mise au propre est désactivée."
           }
         },
         "errors": {
           "restore": "Échec de la restauration du raccourci original",
           "set": "Échec de la définition du raccourci : {{error}}",
-          "reset": "Échec de la réinitialisation du raccourci à sa valeur d'origine"
+          "reset": "Échec de la réinitialisation du raccourci à sa valeur d’origine"
         }
       },
       "language": {
         "title": "Langue",
         "description": "Sélectionnez la langue pour la reconnaissance vocale. Auto déterminera automatiquement la langue, tandis que sélectionner une langue spécifique peut améliorer la précision pour cette langue.",
-        "searchPlaceholder": "Rechercher des langues...",
+        "searchPlaceholder": "Rechercher des langues…",
         "noResults": "Aucune langue trouvée",
         "auto": "Auto"
       },
@@ -326,19 +326,19 @@
       "title": "Son",
       "microphone": {
         "title": "Microphone",
-        "description": "Sélectionnez votre périphérique d'entrée audio",
-        "placeholder": "Sélectionner un microphone...",
-        "loading": "Chargement..."
+        "description": "Sélectionnez votre périphérique d’entrée audio",
+        "placeholder": "Sélectionner un microphone…",
+        "loading": "Chargement…"
       },
       "audioFeedback": {
         "label": "Signal sonore",
-        "description": "Jouer un son au début et à la fin de l'enregistrement"
+        "description": "Jouer un son au début et à la fin de l’enregistrement"
       },
       "outputDevice": {
         "title": "Périphérique de sortie",
         "description": "Sélectionnez votre périphérique de sortie audio pour le signal sonore",
-        "placeholder": "Sélectionner un périphérique de sortie...",
-        "loading": "Chargement..."
+        "placeholder": "Sélectionner un périphérique de sortie…",
+        "loading": "Chargement…"
       },
       "volume": {
         "title": "Volume",
@@ -354,17 +354,17 @@
         "experimental": "Expérimental"
       },
       "experimentalToggle": {
-        "label": "Fonctionnalités Expérimentales",
+        "label": "Fonctionnalités expérimentales",
         "description": "Activer les fonctionnalités expérimentales encore en développement."
       },
       "lazyStreamClose": {
         "label": "Garder le micro ouvert entre les transcriptions",
-        "description": "Maintient le flux du microphone ouvert pendant 30 secondes après l'arrêt de l'enregistrement, réduisant la latence pour les transcriptions consécutives. Peut dégrader la qualité audio Bluetooth."
+        "description": "Maintient le flux du microphone ouvert pendant 30 secondes après l’arrêt de l’enregistrement, réduisant la latence pour les transcriptions consécutives. Peut dégrader la qualité audio Bluetooth."
       },
       "acceleration": {
         "cpuOnly": {
           "title": "Mode CPU forcé",
-          "description": "Le pilote graphique a bloqué un lancement précédent : l'accélération GPU est désactivée. Après avoir mis à jour le pilote, réessayez le GPU — l'effet a lieu au prochain démarrage de Nova.",
+          "description": "Le pilote graphique a bloqué un lancement précédent : l’accélération GPU est désactivée. Après avoir mis à jour le pilote, réessayez le GPU — l’effet a lieu au prochain démarrage de Nova.",
           "retry": "Réessayer le GPU au prochain démarrage",
           "retryDone": "Réessai prévu au prochain démarrage ✓"
         },
@@ -389,22 +389,22 @@
         "description": "Démarrer automatiquement Nova lorsque vous vous connectez à votre ordinateur."
       },
       "showTrayIcon": {
-        "label": "Afficher l'icône de la barre",
-        "description": "Afficher l'icône de Nova dans la barre système."
+        "label": "Afficher l’icône de la barre",
+        "description": "Afficher l’icône de Nova dans la barre système."
       },
       "overlay": {
         "style": {
-          "title": "Indicateur d'enregistrement",
-          "description": "Choisissez l'indicateur d'enregistrement : « Aucune » le masque, « Minimal » affiche une pastille compacte, « En direct » affiche la transcription en temps réel pendant que vous parlez (modèles compatibles streaming uniquement — repérez le badge « Streaming » dans le sélecteur de modèle). Sous Linux, « Aucune » est recommandé.",
+          "title": "Indicateur d’enregistrement",
+          "description": "« Minimal » affiche une pastille, « En direct » le texte pendant que vous parlez.",
           "options": {
-            "none": "Aucune",
+            "none": "Aucun",
             "minimal": "Minimal",
             "live": "En direct"
           }
         },
         "position": {
-          "title": "Position de la fenêtre d'enregistrement",
-          "description": "Afficher un retour visuel pendant l'enregistrement et la transcription. Sur Linux, 'Aucune' est recommandé.",
+          "title": "Position de la fenêtre d’enregistrement",
+          "description": "En haut ou en bas de l’écran.",
           "options": {
             "bottom": "Bas",
             "top": "Haut"
@@ -413,7 +413,7 @@
       },
       "pasteMethod": {
         "title": "Méthode de collage",
-        "description": "Choisissez comment le texte est inséré. Direct : simule la frappe via l'entrée système. Aucun : ignore le collage, met uniquement à jour l'historique/presse-papiers.",
+        "description": "Choisissez comment le texte est inséré. Direct : simule la frappe via l’entrée système. Aucun : ignore le collage, met uniquement à jour l’historique/presse-papiers.",
         "options": {
           "clipboard": "Presse-papiers ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Presse-papiers (Ctrl+Shift+V)",
@@ -441,7 +441,7 @@
       },
       "autoSubmit": {
         "title": "Envoi automatique",
-        "description": "Envoie automatiquement la combinaison de touches sélectionnée après l'insertion du texte. Cmd+Enter s'applique sur macOS, tandis que Windows/Linux utilisent Super+Enter.",
+        "description": "Envoie automatiquement la combinaison de touches sélectionnée après l’insertion du texte. Cmd+Enter s’applique sur macOS, tandis que Windows/Linux utilisent Super+Enter.",
         "options": {
           "off": "Désactivé",
           "enter": "Entrée",
@@ -452,11 +452,11 @@
       },
       "translateToEnglish": {
         "label": "Traduire en anglais",
-        "description": "Traduire automatiquement la parole d'autres langues vers l'anglais pendant la transcription."
+        "description": "Traduire automatiquement la parole d’autres langues vers l’anglais pendant la transcription."
       },
       "modelUnload": {
         "title": "Décharger le modèle",
-        "description": "Libérer automatiquement la mémoire GPU/CPU lorsque le modèle n'a pas été utilisé pendant le temps spécifié",
+        "description": "Libérer automatiquement la mémoire GPU/CPU lorsque le modèle n’a pas été utilisé pendant le temps spécifié",
         "options": {
           "never": "Jamais",
           "immediately": "Immédiatement",
@@ -474,11 +474,11 @@
         "placeholder": "Ajouter un mot ou un terme",
         "add": "Ajouter",
         "remove": "Supprimer {{word}}",
-        "duplicate": "\"{{word}}\" existe déjà"
+        "duplicate": "« {{word}} » existe déjà"
       },
       "voiceActivityDetection": {
-        "title": "Détection d'activité vocale",
-        "description": "Filtre les silences des enregistrements. Les modèles compatibles streaming utilisent une traîne VAD plus longue ; désactiver la VAD enregistre l'audio brut."
+        "title": "Détection d’activité vocale",
+        "description": "Filtre les silences des enregistrements. Les modèles compatibles streaming utilisent une traîne VAD plus longue ; désactiver la VAD enregistre l’audio brut."
       }
     },
     "postProcessing": {
@@ -495,28 +495,28 @@
           "description": "Choisissez le moteur : Turbo (en ligne) ou Intelligence privée (Ollama, 100 % local)."
         },
         "appleIntelligence": {
-          "unavailable": "Apple Intelligence n'est pas disponible sur cet appareil. Nécessite un Mac Apple Silicon exécutant macOS Tahoe (26.0) ou une version ultérieure avec Apple Intelligence activé dans les Préférences Système."
+          "unavailable": "Apple Intelligence n’est pas disponible sur cet appareil. Nécessite un Mac Apple Silicon exécutant macOS Tahoe (26.0) ou une version ultérieure avec Apple Intelligence activé dans les Préférences Système."
         },
         "turbo": {
           "managed": "Turbo est géré par Nova : votre licence sert de clé, aucune configuration nécessaire.",
           "confirmTitle": "Activer Turbo ?",
-          "confirmDescription": "Turbo envoie votre dictée à Nova pour la reformuler en ligne — un peu moins privé que l'Intelligence privée, qui reste 100 % locale. Vous pouvez repasser à l'Intelligence privée à tout moment.",
+          "confirmDescription": "Turbo envoie votre dictée à Nova pour la reformuler en ligne — un peu moins privé que l’Intelligence privée, qui reste 100 % locale. Vous pouvez repasser à l’Intelligence privée à tout moment.",
           "confirmEnable": "Activer Turbo",
           "cancel": "Annuler"
         },
         "baseUrl": {
           "title": "URL de base",
-          "description": "URL de base de l'API pour le fournisseur sélectionné. Seul le fournisseur personnalisé peut être modifié.",
+          "description": "URL de base de l’API pour le fournisseur sélectionné. Seul le fournisseur personnalisé peut être modifié.",
           "placeholder": "https://api.openai.com/v1"
         },
         "apiKey": {
           "title": "Clé API",
           "description": "Clé API pour le fournisseur sélectionné.",
-          "placeholder": "sk-..."
+          "placeholder": "sk-…"
         },
         "model": {
           "title": "Modèle",
-          "descriptionCustom": "Fournissez l'identifiant du modèle attendu par votre point de terminaison personnalisé.",
+          "descriptionCustom": "Fournissez l’identifiant du modèle attendu par votre point de terminaison personnalisé.",
           "descriptionDefault": "Choisissez un modèle exposé par le fournisseur sélectionné.",
           "placeholderWithOptions": "Rechercher ou sélectionner un modèle",
           "placeholderNoOptions": "Tapez un nom de modèle",
@@ -525,11 +525,11 @@
       },
       "autoStyle": {
         "option": "Automatique",
-        "description": "Nova choisit le Style tout seul selon l'application au premier plan (messagerie → E-mail, ChatGPT → Prompt, etc.). La fenêtre est lue au moment où vous dictez, puis oubliée — rien n'est enregistré.",
+        "description": "Nova choisit le Style tout seul selon l’application au premier plan (messagerie → E-mail, ChatGPT → Prompt, etc.). La fenêtre est lue au moment où vous dictez, puis oubliée — rien n’est enregistré.",
         "blocklistLabel": "Applications ignorées (confidentialité)",
         "blocklistTip": "Séparez par des virgules. Ces applications ne sont jamais inspectées (ex. banque, gestionnaire de mots de passe). Les gestionnaires courants le sont déjà par défaut.",
         "rulesLabel": "Règles personnalisées",
-        "keywordPlaceholder": "Mot-clé (nom d'app ou d'onglet)",
+        "keywordPlaceholder": "Mot-clé (nom d’app ou d’onglet)",
         "addRule": "Ajouter une règle",
         "save": "Enregistrer"
       },
@@ -566,41 +566,41 @@
         "downloaded": "téléchargé",
         "downloadingModel": "Téléchargement du modèle…",
         "downloadingEngine": "Téléchargement du moteur…",
-        "sameOnAllTiers": "La qualité et la rapidité de l'Intelligence privée — le moteur 100 % local — sont identiques sur toutes les offres : Nova Free, Pro et Ultra. Votre offre ne change que l'accès à Turbo, le moteur en ligne."
+        "sameOnAllTiers": "La qualité et la rapidité de l’Intelligence privée — le moteur 100 % local — sont identiques sur toutes les offres : Nova Free, Pro et Ultra. Votre offre ne change que l’accès à Turbo, le moteur en ligne."
       },
       "contextReading": {
         "title": "Lecture de contexte",
         "description": "Nova lit ce qui est affiché — le mail auquel vous répondez, la conversation — pour rédiger une réponse en situation. Lu au moment de la dictée, puis oublié.",
-        "enableLabel": "Lire le contexte à l'écran",
+        "enableLabel": "Lire le contexte à l’écran",
         "enableDescription": "Autorise Nova à lire le texte de la fenêtre active pour ancrer sa réponse. Rapide, et reste sur votre machine.",
         "visualLabel": "Lecture visuelle avancée",
-        "visualDescription": "Quand le texte ne suffit pas, Nova analyse une image de l'écran via le moteur en ligne pour comprendre la situation.",
+        "visualDescription": "Quand le texte ne suffit pas, Nova analyse une image de l’écran via le moteur en ligne pour comprendre la situation.",
         "privacyNote": "Les apps de votre liste noire de confidentialité ne sont jamais lues — pas même leur contenu.",
         "experimentalNote": "Expérimental — désactivé par défaut."
       },
-      "subtitle": "Ce que l'IA écrit selon le contexte."
+      "subtitle": "Ce que l’IA écrit selon le contexte."
     },
     "history": {
       "copied": "Copié",
       "title": "Historique",
       "openFolder": "Ouvrir le dossier des enregistrements",
-      "loading": "Chargement de l'historique...",
+      "loading": "Chargement de l’historique…",
       "empty": "Pas encore de transcriptions. Commencez à enregistrer pour créer votre historique !",
       "copyToClipboard": "Copier la transcription dans le presse-papiers",
       "copyError": "Échec de la copie dans le presse-papiers.",
-      "save": "Enregistrer la transcription",
+      "save": "Ajouter aux favoris",
       "unsave": "Retirer des favoris",
-      "delete": "Supprimer l'entrée",
-      "deleteError": "Échec de la suppression de l'entrée. Veuillez réessayer.",
-      "retranscribe": "Re-transcrire",
+      "delete": "Supprimer l’entrée",
+      "deleteError": "Échec de la suppression de l’entrée. Veuillez réessayer.",
+      "retranscribe": "Retranscrire",
       "retranscribeError": "Impossible de re-transcrire. Veuillez réessayer.",
-      "transcribing": "Transcription en cours...",
-      "transcriptionFailed": "La transcription a échoué. Vous pouvez re-transcrire en utilisant l'icône de réessai.",
+      "transcribing": "Transcription en cours…",
+      "transcriptionFailed": "La transcription a échoué. Vous pouvez retranscrire avec l’icône de réessai.",
       "correction": {
         "start": "Corriger le texte",
         "field": "Texte corrigé",
         "save": "Enregistrer la correction",
-        "error": "La correction n'a pas pu être enregistrée.",
+        "error": "La correction n’a pas pu être enregistrée.",
         "proposal": "Nova a peut-être mal entendu ces termes. Cochés, ils seront mieux reconnus dans vos prochaines dictées :",
         "term": "« {{expected}} » (Nova entendait « {{heard}} »)",
         "learn": "Ajouter à mon vocabulaire",
@@ -609,13 +609,13 @@
       },
       "readAloud": "Écouter",
       "stopReading": "Arrêter la lecture",
-      "readAloudUnavailable": "La lecture à voix haute n'est pas disponible sur ce poste.",
+      "readAloudUnavailable": "La lecture à voix haute n’est pas disponible sur ce poste.",
       "snippet": {
         "start": "En faire un snippet",
         "trigger": "Ce que vous direz pour insérer ce texte",
         "save": "Enregistrer le snippet",
         "saved": "Snippet enregistré : dites « {{trigger}} ».",
-        "error": "Le snippet n'a pas pu être enregistré."
+        "error": "Le snippet n’a pas pu être enregistré."
       },
       "pastedVersion": "Version collée par Nova"
     },
@@ -629,19 +629,19 @@
         "description": "Vérifier automatiquement les nouvelles versions de Nova"
       },
       "historyLimit": {
-        "title": "Limite d'historique",
-        "description": "Nombre maximum d'entrées d'historique à conserver",
+        "title": "Limite d’historique",
+        "description": "Nombre maximum d’entrées d’historique à conserver",
         "entries": "entrées"
       },
       "recordingRetention": {
         "title": "Suppression automatique des enregistrements",
-        "description": "Supprimer automatiquement les anciens enregistrements pour économiser de l'espace",
+        "description": "Supprimer automatiquement les anciens enregistrements pour économiser de l’espace",
         "never": "Jamais",
         "preserveLimit": "Conserver les {{count}} plus récents",
         "days3": "Après 3 jours",
         "weeks2": "Après 2 semaines",
         "months3": "Après 3 mois",
-        "placeholder": "Sélectionner la période de conservation..."
+        "placeholder": "Sélectionner la période de conservation…"
       },
       "alwaysOnMicrophone": {
         "label": "Microphone toujours actif",
@@ -653,11 +653,11 @@
       },
       "postProcessingToggle": {
         "label": "Reformulation par IA (Styles)",
-        "description": "Activer l'affinage du texte par IA après la transcription"
+        "description": "Activer l’affinage du texte par IA après la transcription"
       },
       "muteWhileRecording": {
-        "label": "Muet pendant l'enregistrement",
-        "description": "Couper le son du système pendant l'enregistrement"
+        "label": "Muet pendant l’enregistrement",
+        "description": "Couper le son du système pendant l’enregistrement"
       },
       "appendTrailingSpace": {
         "label": "Ajouter une espace final",
@@ -669,7 +669,7 @@
         "bindingsReset": "Raccourcis clavier étaient incompatibles et ont été réinitialisés aux valeurs par défaut"
       },
       "paths": {
-        "appData": "Données de l'application :",
+        "appData": "Données de l’application :",
         "models": "Modèles :",
         "settings": "Paramètres :"
       }
@@ -681,7 +681,7 @@
         "description": "Version actuelle de Nova"
       },
       "appDataDirectory": {
-        "title": "Emplacement des données de l'application",
+        "title": "Emplacement des données de l’application",
         "description": "Emplacement où Nova stocke ses données"
       },
       "sourceCode": {
@@ -698,7 +698,7 @@
         "title": "Remerciements",
         "ggml": {
           "title": "ggml",
-          "description": "Inférence haute performance du modèle de reconnaissance vocale automatique Whisper d'OpenAI",
+          "description": "Inférence haute performance du modèle de reconnaissance vocale automatique Whisper d’OpenAI",
           "details": "Nova utilise ggml pour un traitement rapide et local de la parole en texte. Merci au travail incroyable de Georgi Gerganov et des contributeurs."
         }
       },
@@ -708,7 +708,7 @@
       },
       "restart": {
         "title": "Redémarrer Nova",
-        "description": "Ferme et rouvre l'application. Utile après une publication de votre organisation.",
+        "description": "Ferme et rouvre Nova. Utile si votre organisation vient de changer les réglages.",
         "button": "Redémarrer"
       }
     },
@@ -733,13 +733,13 @@
       },
       "font": {
         "title": "Police",
-        "description": "Aucune police n'a montré d'effet sur la lecture avec une dyslexie : choisissez celle qui vous semble la plus confortable.",
+        "description": "Aucune police n’a montré d’effet sur la lecture avec une dyslexie : choisissez celle qui vous semble la plus confortable.",
         "system": "Nova",
         "readable": "Verdana (lettres larges)"
       },
       "speechRate": {
         "title": "Vitesse de lecture",
-        "description": "Pour la lecture à voix haute de vos notes, depuis l'historique.",
+        "description": "Pour la lecture à voix haute de vos notes, depuis l’historique.",
         "slow": "Lente",
         "normal": "Normale",
         "fast": "Rapide",
@@ -756,13 +756,13 @@
     }
   },
   "footer": {
-    "checkingUpdates": "Recherche de mises à jour...",
+    "checkingUpdates": "Recherche de mises à jour…",
     "updateAvailableShort": "Mise à jour disponible",
     "upToDate": "À jour",
     "updateCheckingDisabled": "Vérification des mises à jour désactivée",
-    "downloading": "Téléchargement... {{progress}}%",
-    "installing": "Installation...",
-    "preparing": "Préparation...",
+    "downloading": "Téléchargement… {{progress}}%",
+    "installing": "Installation…",
+    "preparing": "Préparation…",
     "checkForUpdates": "Rechercher des mises à jour",
     "portableUpdateTitle": "Mise à jour manuelle requise",
     "portableUpdateMessage": "Les installations portables ne peuvent pas être mises à jour automatiquement. Pour mettre à jour : téléchargez le dernier installateur NSIS depuis GitHub Releases, installez-le dans le même dossier, puis copiez votre dossier Data/ (paramètres, modèles, enregistrements) de l’ancienne version vers la nouvelle.",
@@ -770,7 +770,7 @@
     "updateFailed": "Échec de la mise à jour — réessayer"
   },
   "common": {
-    "loading": "Chargement...",
+    "loading": "Chargement…",
     "delete": "Supprimer",
     "close": "Fermer",
     "open": "Ouvrir",
@@ -782,7 +782,7 @@
     "back": "Retour"
   },
   "accessibility": {
-    "permissionsDescription": "Nova a besoin des autorisations d'accessibilité pour taper le texte transcrit.",
+    "permissionsDescription": "Nova a besoin des autorisations d’accessibilité pour taper le texte transcrit.",
     "openSettings": "Ouvrir les Préférences Système"
   },
   "errors": {
@@ -790,37 +790,37 @@
     "performanceReducedTitle": "Performances réduites",
     "performanceReduced": "Nova utilise un mode compatible avec cet ordinateur. Vous pouvez réessayer l’accélération dans Réglages → Configuration → Avancé.",
     "recordingUnavailableTitle": "Enregistrement indisponible",
-    "postProcessFallbackTitle": "Reformulation indisponible",
+    "postProcessFallbackTitle": "Mise au propre indisponible",
     "postProcessFallback": "Votre texte original a été collé.",
     "cpuOnlyModeTitle": "Accélération GPU désactivée",
-    "cpuOnlyMode": "Le pilote graphique a bloqué le moteur de Nova lors d'un lancement précédent : la transcription fonctionne désormais sur le processeur (CPU), plus lentement. Mettez à jour votre pilote graphique, puis réactivez le GPU dans Réglages → Configuration → Avancé.",
+    "cpuOnlyMode": "Le pilote graphique a bloqué le moteur de Nova lors d’un lancement précédent : la transcription fonctionne désormais sur le processeur (CPU), plus lentement. Mettez à jour votre pilote graphique, puis réactivez le GPU dans Réglages → Configuration → Avancé.",
     "loadDirectory": "Erreur lors du chargement du répertoire : {{error}}",
     "micPermissionDeniedTitle": "Accès au microphone refusé",
     "micPermissionDenied": {
-      "generic": "L'accès au microphone a été refusé par le système d'exploitation. Veuillez accorder l'autorisation du microphone dans les paramètres système.",
-      "windows": "Activez l'accès au microphone dans Paramètres → Confidentialité et sécurité → Microphone (y compris l'accès des applications de bureau).",
-      "macos": "Accordez l'accès au microphone dans Réglages du système → Confidentialité et sécurité → Microphone.",
-      "linux": "Accordez l'accès au microphone dans les paramètres de son ou de confidentialité de votre système."
+      "generic": "L’accès au microphone a été refusé par le système d’exploitation. Veuillez accorder l’autorisation du microphone dans les paramètres système.",
+      "windows": "Activez l’accès au microphone dans Paramètres → Confidentialité et sécurité → Microphone (y compris l’accès des applications de bureau).",
+      "macos": "Accordez l’accès au microphone dans Réglages du système → Confidentialité et sécurité → Microphone.",
+      "linux": "Accordez l’accès au microphone dans les paramètres de son ou de confidentialité de votre système."
     },
     "noInputDeviceTitle": "Aucun microphone trouvé",
-    "noInputDevice": "Aucun périphérique d'entrée audio n'a été détecté. Veuillez connecter un microphone ou un casque et réessayer.",
-    "recordingFailed": "Échec du démarrage de l'enregistrement : {{error}}",
+    "noInputDevice": "Aucun périphérique d’entrée audio n’a été détecté. Veuillez connecter un microphone ou un casque et réessayer.",
+    "recordingFailed": "Échec du démarrage de l’enregistrement : {{error}}",
     "modelLoadFailed": "Échec du chargement du modèle : {{model}}",
     "modelLoadFailedUnknown": "modèle inconnu",
     "pasteFailedTitle": "Collage impossible — texte copié",
-    "pasteFailed": "Le texte n'a pas pu être collé automatiquement. Il est dans votre presse-papier : collez-le avec Ctrl+V. Si cela se répète, vérifiez que votre raccourci de dictée ne recouvre pas Ctrl+V.",
+    "pasteFailed": "Le texte n’a pas pu être collé automatiquement. Il est dans votre presse-papier : collez-le avec Ctrl+V. Si cela se répète, vérifiez que votre raccourci de dictée ne recouvre pas Ctrl+V.",
     "transcriptionFailedTitle": "Échec de la transcription",
-    "postProcessTimeoutTitle": "Reformulation trop longue",
-    "postProcessTimeout": "L'IA a mis trop de temps — votre texte brut a été collé à la place.",
+    "postProcessTimeoutTitle": "Mise au propre trop longue",
+    "postProcessTimeout": "L’IA a mis trop de temps — votre texte brut a été collé à la place.",
     "microphoneNotFoundTitle": "Micro introuvable",
-    "microphoneNotFound": "« {name} » n'est pas disponible — le micro par défaut est utilisé à la place."
+    "microphoneNotFound": "« {name} » n’est pas disponible — le micro par défaut est utilisé à la place."
   },
   "appLanguage": {
-    "title": "Langue de l'application",
-    "description": "Changer la langue de l'interface de Nova"
+    "title": "Langue de l’application",
+    "description": "Changer la langue de l’interface de Nova"
   },
   "theme": {
-    "title": "Thème de l'application",
+    "title": "Thème de l’application",
     "description": "Choisissez si Nova suit le thème du système ou reste clair ou sombre",
     "options": {
       "system": "Système",
@@ -830,8 +830,8 @@
   },
   "overlay": {
     "preparing": "Nova se prépare…",
-    "transcribing": "Transcription...",
-    "processing": "Réflexion",
+    "transcribing": "Transcription…",
+    "processing": "Mise au propre…",
     "chooseStyle": "Choisir un Style",
     "openSettings": "Ouvrir les réglages",
     "micHearing": "Je vous entends",
@@ -839,8 +839,8 @@
     "styleSuggestion": "Vous dictez souvent dans {{app}} — essayez le Style {{style}}",
     "styleSuggestionApply": "Essayer",
     "styleSuggestionDismiss": "Ne plus afficher",
-    "dictationLimitWarning": "Arrêt dans {{seconds}} s (limite de l'organisation)",
-    "unclear": "Je n'ai pas bien entendu, rien n'a été collé. Parlez un peu plus fort ou plus près du micro."
+    "dictationLimitWarning": "Arrêt dans {{seconds}} s (limite de l’organisation)",
+    "unclear": "Je n’ai pas bien entendu, rien n’a été collé. Parlez un peu plus fort ou plus près du micro."
   },
   "whatsNew": {
     "updatedNotice": "Nova a été mis à jour",
@@ -864,7 +864,7 @@
   },
   "meeting": {
     "title": "Mode réunion",
-    "description": "Transforme une réunion en compte rendu écrit. Nova capte votre micro et le son des autres participants, puis produit une synthèse qui distingue ce que vous avez dit de ce qu'ils ont dit.",
+    "description": "Transforme une réunion en compte rendu écrit. Nova capte votre micro et le son des autres participants, puis produit une synthèse qui distingue ce que vous avez dit de ce qu’ils ont dit.",
     "start": "Démarrer la réunion",
     "starting": "Démarrage…",
     "finish": "Terminer",
@@ -875,13 +875,13 @@
     "speakerOthers": "Autres",
     "reportTitle": "Compte rendu",
     "reportMeta": "{{transcribed}} passages transcrits, {{skipped}} ignorés",
-    "reportEmpty": "Rien n'a été capté — personne n'a été entendu pendant la réunion.",
-    "reportNotTranscribed": "Nova a capté du son mais n'a pas pu le transcrire. Vérifiez que le modèle d'intelligence est bien téléchargé et que quelqu'un parlait, puis réessayez.",
+    "reportEmpty": "Rien n’a été capté — personne n’a été entendu pendant la réunion.",
+    "reportNotTranscribed": "Nova a capté du son mais n’a pas pu le transcrire. Vérifiez que le modèle d’intelligence est bien téléchargé et que quelqu’un parlait, puis réessayez.",
     "showTranscript": "Afficher la transcription brute",
     "consent": {
       "title": "Avant de commencer",
       "subtitle": "Ceci concerne les autres personnes présentes à votre réunion.",
-      "body": "Une fois démarré, Nova enregistre aussi la voix des autres participants — pas seulement la vôtre — pendant que l'application de réunion détectée est au premier plan. Selon où vous vous trouvez, la loi peut vous demander de les prévenir avant. Nova ne peut pas le faire à votre place.",
+      "body": "Une fois démarré, Nova enregistre aussi la voix des autres participants — pas seulement la vôtre — pendant que l’application de réunion détectée est au premier plan. Selon où vous vous trouvez, la loi peut vous demander de les prévenir avant. Nova ne peut pas le faire à votre place.",
       "checkbox": "Je préviendrai les autres participants avant chaque réunion captée.",
       "cancel": "Annuler",
       "confirm": "Démarrer la capture"
@@ -889,12 +889,12 @@
     "errors": {
       "no_meeting_app": "Aucune application de réunion au premier plan. Ouvrez votre réunion, laissez sa fenêtre active, puis relancez.",
       "already_running": "Une réunion est déjà en cours de capture.",
-      "no_active_meeting": "Aucune réunion n'est en cours de capture.",
-      "unavailable": "Cet ordinateur ne sait pas capter le son d'une seule application. Windows 10 version 2004 ou plus récent est nécessaire.",
-      "no_audio": "Le flux s'est ouvert mais n'a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
-      "stream_error": "La capture s'est interrompue de façon inattendue.",
+      "no_active_meeting": "Aucune réunion n’est en cours de capture.",
+      "unavailable": "Cet ordinateur ne sait pas capter le son d’une seule application. Windows 10 version 2004 ou plus récent est nécessaire.",
+      "no_audio": "Le flux s’est ouvert mais n’a produit aucun son. Vérifiez que la réunion joue bien du son sur cet ordinateur.",
+      "stream_error": "La capture s’est interrompue de façon inattendue.",
       "requires_ultra": "Le mode réunion nécessite Nova Ultra.",
-      "internal": "La réunion n'a pas pu démarrer."
+      "internal": "La réunion n’a pas pu démarrer."
     },
     "noApp": "Aucune application de réunion détectée. Ouvrez votre réunion (Zoom, Teams, Google Meet…), puis actualisez.",
     "pickApp": "Choisissez la réunion à capter.",
@@ -921,33 +921,33 @@
       "email": {
         "serverLabel": "Le serveur de votre établissement",
         "serverPlaceholder": "https://nova.ecole.fr",
-        "emailLabel": "Email école",
+        "emailLabel": "E-mail de l’école",
         "emailPlaceholder": "prenom.nom@ecole.fr",
-        "serverHelp": "Saisissez cette adresse uniquement si votre DSI n'a pas configuré Nova pour vous.",
-        "discoveryLabel": "Votre adresse e-mail d'organisation",
+        "serverHelp": "Saisissez cette adresse uniquement si votre DSI n’a pas configuré Nova pour vous.",
+        "discoveryLabel": "Votre adresse e-mail d’organisation",
         "discoveryPlaceholder": "prenom.nom@organisation.fr",
-        "discoveryHelp": "Nova trouve votre organisation à partir du domaine de votre adresse. Vous ne saisissez jamais d'adresse de serveur.",
+        "discoveryHelp": "Nova trouve votre organisation à partir du domaine de votre adresse. Vous ne saisissez jamais d’adresse de serveur.",
         "discoveryAction": "Continuer",
         "discoveryBusy": "Recherche de votre organisation…",
         "advanced": "Options avancées",
         "discoveryErrors": {
           "EMAIL_INVALID": "Saisissez une adresse e-mail complète, par exemple prenom.nom@organisation.fr.",
           "DNS_UNAVAILABLE": "Impossible de vérifier le domaine de votre organisation. Vérifiez votre connexion et réessayez.",
-          "RECORD_NOT_FOUND": "Ce domaine ne publie pas encore d'adresse Nova. Demandez à votre service informatique, ou saisissez l'adresse du serveur dans les options avancées.",
-          "ENDPOINT_INVALID": "L'adresse publiée pour ce domaine n'est pas utilisable. Demandez à votre service informatique de la vérifier.",
-          "ENDPOINT_OUTSIDE_DOMAIN": "L'adresse publiée pour ce domaine mène ailleurs. Nova refuse d'y envoyer votre connexion.",
-          "SERVER_UNREACHABLE": "Le serveur de votre organisation n'a pas répondu. Réessayez dans un instant.",
-          "DOMAIN_NOT_SERVED": "Ce serveur ne sert pas ce domaine d'adresses. Demandez à votre service informatique."
+          "RECORD_NOT_FOUND": "Ce domaine ne publie pas encore d’adresse Nova. Demandez à votre service informatique, ou saisissez l’adresse du serveur dans les options avancées.",
+          "ENDPOINT_INVALID": "L’adresse publiée pour ce domaine n’est pas utilisable. Demandez à votre service informatique de la vérifier.",
+          "ENDPOINT_OUTSIDE_DOMAIN": "L’adresse publiée pour ce domaine mène ailleurs. Nova refuse d’y envoyer votre connexion.",
+          "SERVER_UNREACHABLE": "Le serveur de votre organisation n’a pas répondu. Réessayez dans un instant.",
+          "DOMAIN_NOT_SERVED": "Ce serveur ne sert pas ce domaine d’adresses. Demandez à votre service informatique."
         }
       },
       "code": {
-        "title": "Consultez votre boîte mail",
+        "title": "Consultez votre boîte de réception",
         "subtitle": "Nous avons envoyé un code à 6 chiffres à {{email}}.",
         "resend": "Renvoyer le code",
         "resent": "Code renvoyé",
         "resendCooldown": "Renvoyer dans {{seconds}} s",
         "invalid": "Ce code est incorrect ou a expiré.",
-        "forbidden": "L'accès est indisponible. Contactez votre administrateur.",
+        "forbidden": "L’accès est indisponible. Contactez votre administrateur.",
         "digitLabel": "Chiffre {{position}} du code"
       },
       "ready": {
@@ -962,7 +962,7 @@
       "label": "Nova",
       "errors": {
         "network": "Le serveur est injoignable. Vérifiez votre connexion et réessayez.",
-        "authMethodUnavailable": "Cet établissement exige une méthode d'authentification non prise en charge par cette version."
+        "authMethodUnavailable": "Cet établissement exige une méthode d’authentification non prise en charge par cette version."
       }
     },
     "account": {
@@ -971,7 +971,7 @@
       "role": "Rôle",
       "access": "Administration",
       "securityRoles": {
-        "organization_admin": "Administrateur de l'organisation",
+        "organization_admin": "Administrateur de l’organisation",
         "it_admin": "Administrateur informatique"
       },
       "cohort": "Cohorte",
@@ -984,7 +984,7 @@
       "checking": "Vérification de la connexion…"
     },
     "errors": {
-      "network": "Impossible de joindre le serveur. Vérifiez l'adresse et votre connexion."
+      "network": "Impossible de joindre le serveur. Vérifiez l’adresse et votre connexion."
     },
     "settings": {
       "aboutSubtitle": "Informations et outils de diagnostic pour Nova.",
@@ -998,48 +998,48 @@
       }
     },
     "styles": {
-      "subtitle": "Choisissez ou personnalisez le style d'écriture appliqué à vos dictées.",
+      "subtitle": "Choisissez ou personnalisez le Style appliqué à vos dictées.",
       "descriptions": {
         "auto": "Laissez Nova choisir automatiquement la meilleure mise en forme pour votre dictée.",
         "default_improve_transcriptions": "Nettoyez votre texte dicté : ponctuation, fautes et phrases fluides.",
         "nova_style_everyday": "Mettez au propre tout ce que vous écrivez au quotidien, en texte simple : orthographe et grammaire corrigées, vos mots gardés.",
-        "nova_style_course_notes": "Mettez en forme vos notes de cours dans l'ordre dicté : rien d'ajouté, aucun chiffre changé.",
-        "nova_style_email": "Mettez en forme votre dictée sous la forme d'un email clair et poli.",
-        "nova_style_messages": "Transformez votre voix en messages concis prêts à l'envoi.",
+        "nova_style_course_notes": "Mettez en forme vos notes de cours dans l’ordre dicté : rien d’ajouté, aucun chiffre changé.",
+        "nova_style_email": "Mettez en forme votre dictée sous la forme d’un e-mail clair et poli.",
+        "nova_style_messages": "Transformez votre voix en messages concis prêts à l’envoi.",
         "nova_style_prompt": "Transformez votre dictée en consigne structurée pour outils IA.",
         "nova_style_todo": "Extrayez des tâches et listes de contrôle actionnables de votre dictée.",
         "nova_style_notes": "Restructurez votre dictée en notes claires et organisées.",
         "nova_style_meeting": "Résumez et mettez en forme vos notes et points de réunion.",
-        "nova_style_voice_to_text": "Votre dictée mot pour mot : seules la ponctuation, les majuscules et l'orthographe sont corrigées."
+        "nova_style_voice_to_text": "Votre dictée mot pour mot : seules la ponctuation, les majuscules et l’orthographe sont corrigées."
       },
-      "title": "Styles d'écriture"
+      "title": "Styles d’écriture"
     },
     "dictionary": {
       "title": "Dictionnaire",
-      "description": "Vocabulaire partagé par l'organisation et lexique personnel.",
-      "sharedTitle": "Vocabulaire de l'organisation",
+      "description": "Vocabulaire partagé par l’organisation et lexique personnel.",
+      "sharedTitle": "Vocabulaire de l’organisation",
       "sharedDescription": "Termes et orthographes recommandés par votre organisation (lecture seule).",
-      "sharedEmpty": "Aucun terme partagé par l'organisation.",
+      "sharedEmpty": "Aucun terme partagé par l’organisation.",
       "sharedBadge": "Organisation",
       "personalTitle": "Vocabulaire personnel",
-      "personalDescription": "Vos acronymes, noms propres ou jargon métier.",
+      "personalDescription": "Les sigles, noms propres et termes de vos cours.",
       "personalEmpty": "Aucun terme personnalisé. Ajoutez vos expressions ci-dessous.",
       "learnedBadge": "Appris",
       "manualBadge": "Personnel",
       "termLabel": "Terme",
-      "termPlaceholder": "Ex: IPSA",
+      "termPlaceholder": "Ex. : navier stokes",
       "replacementLabel": "Correction / Remplacement (optionnel)",
-      "replacementPlaceholder": "Ex: Institut Polytechnique des Sciences Avancées",
+      "replacementPlaceholder": "Ex. : Navier-Stokes",
       "addTerm": "Ajouter le terme",
       "exportCsv": "Exporter CSV",
       "importCsv": "Importer CSV",
-      "importSuccess": "{{count}} terme(s) importé(s) avec succès.",
+      "importSuccess": "Termes importés : {{count}}.",
       "analyzeDoc": "Analyser un document",
       "analyzeDocTitle": "Analyser un document existant",
-      "analyzeDocDescription": "Envoyez un document texte au serveur de votre établissement pour en extraire le vocabulaire et les noms propres. Seuls les termes extraits sont enregistrés — le document lui-même n'est pas conservé.",
-      "analyzeDocPlaceholder": "Collez le texte d'un document ou glissez un fichier texte...",
-      "analyzeDocButton": "Lancer l'analyse",
-      "analyzeSuccess": "{{count}} nouveau(x) terme(s) extrait(s) et ajouté(s) !",
+      "analyzeDocDescription": "Envoyez un document texte au serveur de votre établissement pour en extraire le vocabulaire et les noms propres. Seuls les termes extraits sont enregistrés — le document lui-même n’est pas conservé.",
+      "analyzeDocPlaceholder": "Collez le texte d’un document ou glissez un fichier texte…",
+      "analyzeDocButton": "Lancer l’analyse",
+      "analyzeSuccess": "Nouveaux termes ajoutés : {{count}}.",
       "analyzeEmpty": "Aucun nouveau terme trouvé dans le document.",
       "analyzing": "Analyse du vocabulaire en cours…"
     },
@@ -1048,42 +1048,42 @@
       "description": "Associez une expression orale courte à un texte long ou récurrent.",
       "empty": "Aucun snippet vocal configuré.",
       "triggerLabel": "Expression prononcée",
-      "triggerPlaceholder": "Ex: mon lien visio",
+      "triggerPlaceholder": "Ex. : mon lien visio",
       "aliases": "Plusieurs façons de le dire ? Séparez-les par une virgule : « {{example}} ».",
       "contentLabel": "Texte inséré",
-      "contentPlaceholder": "Ex: https://meet.google.com/abc-def-ghi",
+      "contentPlaceholder": "Ex. : https://meet.google.com/abc-def-ghi",
       "add": "Ajouter le snippet",
-      "tip": "Astuce : Dites « {{trigger}} » lors d'une dictée pour insérer vos informations instantanément !",
-      "values": "Dans le texte inséré, {{date}} et {{time}} deviennent la date et l'heure de la dictée.",
+      "tip": "Astuce : Dites « {{trigger}} » lors d’une dictée pour insérer vos informations instantanément !",
+      "values": "Dans le texte inséré, {{date}} et {{time}} deviennent la date et l’heure de la dictée.",
       "importFile": "Importer un fichier texte",
-      "fileNotText": "Ce fichier n'est pas du texte. Choisissez un fichier .txt ou .md.",
+      "fileNotText": "Ce fichier n’est pas du texte. Choisissez un fichier .txt ou .md.",
       "fileTooLong": "Ce fichier dépasse {{max}} caractères.",
       "importImage": "Ajouter une image",
       "imageTooLarge": "Cette image dépasse {{max}} Mo.",
-      "imageFailed": "L'image n'a pas pu être enregistrée. Utilisez une image PNG, JPEG, GIF ou WebP."
+      "imageFailed": "L’image n’a pas pu être enregistrée. Utilisez une image PNG, JPEG, GIF ou WebP."
     },
     "studyMarkers": {
       "title": "Repères vocaux",
       "description": "Marquez ce qui compte pendant le cours, simplement en le disant.",
-      "rule": "Dites le repère tout au début de la dictée, puis marquez une courte pause : « {{example}} » Nova le place en tête de la note, sans le reformuler.",
+      "rule": "Dites le repère tout au début de la dictée, puis marquez une courte pause : « {{example}} » Nova le place en tête de la note, sans le modifier.",
       "blocksTitle": "Blocs de cours",
       "numbering": "Les exemples et les exercices se numérotent seuls pendant un cours. Dites « {{example}} » pour choisir le numéro.",
       "formulaTitle": "Formules",
-      "formula": "Commencez par « Formule », puis dictez-la : « {{said}} » donne {{written}}. Nova l'écrit en symboles, sans la reformuler. Les mots compris :",
+      "formula": "Commencez par « Formule », puis dictez-la : « {{said}} » donne {{written}}. Nova l’écrit en symboles, sans la modifier. Les mots compris :",
       "layoutTitle": "Mise en page dictée",
-      "search": "Pour retrouver vos repères, cherchez « {{marker}} » dans l'historique.",
+      "search": "Pour retrouver vos repères, cherchez « {{marker}} » dans l’historique.",
       "english": "En anglais : {{phrases}}."
     },
     "formatting": {
       "title": "Règles de formatage",
-      "description": "Règles appliquées automatiquement lors de la reformulation de vos dictées.",
-      "sharedTitle": "Règles de l'organisation",
+      "description": "Règles appliquées automatiquement à la mise au propre de vos dictées.",
+      "sharedTitle": "Règles de l’organisation",
       "sharedDescription": "Règles imposées par la charte de votre organisation (lecture seule).",
-      "sharedEmpty": "Aucune règle partagée par l'organisation.",
+      "sharedEmpty": "Aucune règle partagée par l’organisation.",
       "personalTitle": "Règles personnelles",
       "personalDescription": "Vos propres consignes de mise en forme.",
       "personalEmpty": "Aucune règle personnelle configurée.",
-      "rulePlaceholder": "Ex: Écrire les pourcentages en chiffres suivis du symbole %",
+      "rulePlaceholder": "Ex. : écrire les pourcentages en chiffres suivis du symbole %",
       "addRule": "Ajouter la règle"
     },
     "files": {
@@ -1093,7 +1093,7 @@
       "dropzone": "Glissez un enregistrement audio ici ou cliquez pour choisir",
       "supportedFormats": "Formats supportés : WAV, MP3, M4A, OGG",
       "transcribing": "Transcription du fichier par le serveur en cours…",
-      "copiedToClipboard": "Transcription copiée dans le presse-papiers et archivée dans l'Historique !",
+      "copiedToClipboard": "Transcription copiée dans le presse-papiers et archivée dans l’Historique !",
       "error": "Échec de la transcription du fichier audio."
     },
     "sessionExpiredTitle": "Session expirée",
@@ -1117,24 +1117,24 @@
     "microsoft": {
       "browserHelp": "Terminez la connexion dans votre navigateur. Utilisez ce code si Microsoft le demande.",
       "expired": "La demande de connexion Microsoft a expiré. Recommencez.",
-      "failed": "La connexion n'a pas abouti. Réessayez.",
+      "failed": "La connexion n’a pas abouti. Réessayez.",
       "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre organisation.",
-      "accessRevoked": "Votre accès n'est plus disponible. Contactez votre administrateur."
+      "accessRevoked": "Votre accès n’est plus disponible. Contactez votre administrateur."
     },
     "sso": {
       "connect": "Continuer avec {{provider}}"
     },
     "personalization": {
-      "description": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre organisation.",
+      "description": "Adaptez l’apparence et l’interaction de Nova sans modifier les règles de votre organisation.",
       "orb": "Orbe Nova",
-      "orbColor": "Teinte de l'orbe",
-      "orbDescription": "Choisissez la teinte utilisée par le dock Nova et l'indicateur d'enregistrement.",
+      "orbColor": "Teinte de l’orbe",
+      "orbDescription": "Choisissez la teinte utilisée par le dock Nova et l’indicateur d’enregistrement.",
       "alwaysVisible": "Toujours afficher la bulle",
-      "alwaysVisibleDescription": "Gardez l'indicateur compact de Nova visible. Il ne capte les clics que lorsque la souris le survole."
+      "alwaysVisibleDescription": "Gardez l’indicateur compact de Nova visible. Il ne capte les clics que lorsque la souris le survole."
     },
     "organization": {
       "title": "Organisation",
-      "subtitle": "Votre organisation, ce qu'elle fournit, et où vont vos données.",
+      "subtitle": "Votre organisation, ce qu’elle fournit, et où vont vos données.",
       "connection": "Connexion",
       "managedBy": "Géré par {{organization}}",
       "identityTitle": "Identité"
@@ -1146,22 +1146,22 @@
         "description": "Votre enregistrement est envoyé au serveur de votre organisation, qui le transforme en texte."
       },
       "rewriting": {
-        "title": "Styles d'écriture",
-        "description": "Votre texte et le style choisi sont envoyés au serveur de votre organisation, qui le reformule."
+        "title": "Styles d’écriture",
+        "description": "Votre texte et le Style choisi sont envoyés au serveur de votre organisation, qui le met au propre."
       },
       "vocabulary": {
         "title": "Vocabulaire partagé",
-        "description": "Les termes ajoutés par votre organisation, et les vôtres, aident la reconnaissance et la reformulation à les écrire correctement."
+        "description": "Les termes ajoutés par votre organisation, et les vôtres, aident la reconnaissance et la mise au propre à les écrire correctement."
       },
       "formatting": {
         "title": "Règles de formatage",
-        "description": "Les règles fixées par votre organisation, et les vôtres, s'appliquent à chaque reformulation."
+        "description": "Les règles fixées par votre organisation, et les vôtres, s’appliquent à chaque mise au propre."
       },
       "paused": "Actuellement en pause — le serveur de votre organisation est injoignable."
     },
     "offline": {
       "title": "Quand le serveur est injoignable",
-      "body": "La dictée continue de fonctionner sur cet appareil. La reconnaissance vocale s'exécute localement, et les styles d'écriture, le vocabulaire partagé, les règles de formatage et les AI Skills reviennent avec la connexion."
+      "body": "La dictée continue sur cet appareil. Les Styles, le vocabulaire partagé et les règles reviennent avec la connexion."
     },
     "data": {
       "title": "Où vont vos données",
@@ -1170,14 +1170,14 @@
       "vocabulary": "Vocabulaire, raccourcis et règles",
       "history": "Historique",
       "recordings": "Enregistrements",
-      "appName": "Nom de l'application au premier plan",
+      "appName": "Nom de l’application au premier plan",
       "onDevice": "Cet appareil",
-      "note": "Le serveur de votre organisation compte le nombre de transcriptions et de reformulations effectuées chaque jour. Il n'en conserve pas le contenu.",
-      "onServer": "Serveur de l'organisation"
+      "note": "Le serveur de votre organisation compte le nombre de transcriptions et de mises au propre effectuées chaque jour. Il n’en conserve pas le contenu.",
+      "onServer": "Serveur de l’organisation"
     },
     "updates": {
       "title": "Nouveautés de votre organisation",
-      "description": "{{what}} vient d'être publié. C'est déjà disponible.",
+      "description": "{{what}} vient d’être publié. C’est déjà disponible.",
       "packages": "Du contenu",
       "lessons": "Des leçons",
       "separator": " et "
@@ -1194,18 +1194,18 @@
     },
     "diagnostic": {
       "title": "Rapport de diagnostic",
-      "description": "Un fichier à remettre à votre administrateur. Il décrit la version, la machine, la liaison au serveur et les temps mesurés. Il ne contient aucune dictée, aucun historique, aucune valeur personnelle et aucun jeton de session.",
+      "description": "Un fichier pour votre administrateur. Il ne contient aucune dictée ni donnée personnelle.",
       "save": "Enregistrer le rapport",
       "saved": "Rapport enregistré.",
-      "failed": "Le rapport n'a pas pu être enregistré."
+      "failed": "Le rapport n’a pas pu être enregistré."
     },
     "timetable": {
       "title": "Emploi du temps",
-      "description": "Rangez chaque dictée sous le cours où vous l'avez faite.",
-      "intro": "Reliez votre emploi du temps : dans l'historique, chaque dictée est rangée sous le cours pendant lequel vous l'avez faite, et l'export prend le nom du cours. Les dictées déjà faites sont rangées aussi.",
-      "linkLabel": "Lien d'abonnement de votre emploi du temps",
+      "description": "Rangez chaque dictée sous le cours où vous l’avez faite.",
+      "intro": "Reliez votre emploi du temps : chaque dictée est rangée sous le cours où vous l’avez faite.",
+      "linkLabel": "Lien d’abonnement de votre emploi du temps",
       "connect": "Relier",
-      "linkHelp": "Ce lien se trouve dans votre emploi du temps en ligne (ADE, Hyperplanning, Outlook, Google Agenda…), souvent sous « Exporter », « S'abonner » ou « Synchroniser ». Il commence par webcal:// ou https://.",
+      "linkHelp": "Le lien se trouve dans votre emploi du temps en ligne (ADE, Hyperplanning…), sous « Exporter » ou « S’abonner ».",
       "importFile": "Importer un fichier .ics",
       "importOther": "Importer un autre fichier",
       "fileFilter": "Calendrier",
@@ -1219,15 +1219,15 @@
       "noCourse": "Aucun cours à venir",
       "refresh": "Actualiser",
       "remove": "Retirer",
-      "privacy": "Le lien et l'emploi du temps restent sur cet ordinateur : ils ne sont envoyés à aucun serveur, pas même à celui de votre établissement. Un lien d'abonnement est relu toutes les six heures.",
+      "privacy": "Le lien et l’emploi du temps restent sur cet ordinateur : ils ne sont envoyés à aucun serveur, pas même à celui de votre établissement. Un lien d’abonnement est relu toutes les six heures.",
       "errors": {
-        "invalid_link": "Ce lien n'est pas un lien d'abonnement valide. Il doit commencer par webcal:// ou https://.",
-        "unreachable": "L'emploi du temps n'a pas pu être lu. Vérifiez votre connexion et le lien.",
-        "unreadable": "Ce fichier n'a pas pu être lu.",
-        "not_calendar": "Ce lien ou ce fichier n'est pas un emploi du temps au format ICS. Un lien expiré renvoie souvent une page de connexion.",
+        "invalid_link": "Ce lien n’est pas un lien d’abonnement valide. Il doit commencer par webcal:// ou https://.",
+        "unreachable": "L’emploi du temps n’a pas pu être lu. Vérifiez votre connexion et le lien.",
+        "unreadable": "Ce fichier n’a pas pu être lu.",
+        "not_calendar": "Ce lien ou ce fichier n’est pas un emploi du temps au format ICS. Un lien expiré renvoie souvent une page de connexion.",
         "too_large": "Ce calendrier est trop volumineux (plus de 5 Mo).",
-        "keyring": "Le lien n'a pas pu être rangé dans le stockage sécurisé du système.",
-        "storage": "L'emploi du temps n'a pas pu être enregistré sur cet ordinateur."
+        "keyring": "Le lien n’a pas pu être rangé dans le stockage sécurisé du système.",
+        "storage": "L’emploi du temps n’a pas pu être enregistré sur cet ordinateur."
       }
     }
   },
@@ -1236,10 +1236,10 @@
     "subtitle": "Agissez sur le texte que vous sélectionnez.",
     "preview": "Aperçu",
     "previewHint": "Les Nova Commands sont en cours de test.",
-    "essentials": "L'essentiel",
+    "essentials": "L’essentiel",
     "howItWorks": "Comment ça marche",
     "how": {
-      "select": "Sélectionnez du texte dans n'importe quelle application",
+      "select": "Sélectionnez du texte dans n’importe quelle application",
       "open": "Ouvrez Nova avec votre raccourci",
       "choose": "Choisissez une commande",
       "review": "Relisez le résultat avant toute modification"
@@ -1260,7 +1260,7 @@
       },
       "improve": {
         "name": "Améliorer",
-        "description": "Corriger l'orthographe et la grammaire, sans changer vos mots."
+        "description": "Corriger l’orthographe et la grammaire, sans changer vos mots."
       },
       "translate": {
         "name": "Traduire",
@@ -1282,11 +1282,11 @@
     "error": {
       "busy": "Une commande est déjà en cours.",
       "nonTextClipboard": "Votre presse-papiers contient autre chose que du texte, et Nova ne saurait pas le restituer. Copiez-le ailleurs avant de réessayer.",
-      "noSelection": "Sélectionnez du texte avant d'ouvrir Nova.",
-      "unsupported": "Nova Commands n'est disponible que sur Windows pour l'instant.",
-      "targetChanged": "L'application d'origine n'est plus active. Copiez le résultat à la place.",
+      "noSelection": "Sélectionnez du texte avant d’ouvrir Nova.",
+      "unsupported": "Nova Commands n’est disponible que sur Windows pour l’instant.",
+      "targetChanged": "L’application d’origine n’est plus active. Copiez le résultat à la place.",
       "offline": "Les Nova Commands demandent une connexion à votre organisation.",
-      "failed": "Nova n'a pas pu traiter cette demande.",
+      "failed": "Nova n’a pas pu traiter cette demande.",
       "emptyResult": "Nova a renvoyé un résultat vide.",
       "busyTitle": "Déjà en cours",
       "nonTextClipboardTitle": "Presse-papiers non restituable",
@@ -1299,10 +1299,10 @@
       "refusedTitle": "Résultat écarté",
       "refused": "Le résultat changeait votre texte (un nombre, une date, la langue ou le sens) : Nova ne le propose pas.",
       "refusedFormulaTitle": "Formule à relire dans le cours",
-      "refusedFormula": "Ce texte contient une formule que Nova n'a pas su reprendre sans la déformer. Relisez-la telle qu'elle est dans votre cours."
+      "refusedFormula": "Ce texte contient une formule que Nova n’a pas su reprendre sans la déformer. Relisez-la telle qu’elle est dans votre cours."
     },
     "original": "Original",
-    "generatedNote": "Produit par l'IA : relisez-le avant de vous en servir."
+    "generatedNote": "Produit par l’IA : relisez-le avant de vous en servir."
   },
   "home": {
     "hero": {
@@ -1310,7 +1310,7 @@
         "title": "Vérification…"
       },
       "ready": {
-        "title": "Nova est prêt."
+        "title": "Nova est prêt"
       },
       "permissionsNeeded": {
         "title": "Accès au microphone requis",
@@ -1352,7 +1352,7 @@
     },
     "active": {
       "title": "Actif",
-      "style": "Style d'écriture",
+      "style": "Style d’écriture",
       "styleAutomatic": "Automatique",
       "engine": "Moteur",
       "microphone": "Microphone",
@@ -1367,37 +1367,37 @@
       "title": "Premiers pas",
       "voice": "Voix prête",
       "firstDictation": "Première dictée",
-      "style": "Essayer un style d'écriture",
+      "style": "Essayer un Style",
       "aiSkill": "Utiliser un premier AI Skill",
       "done": "Fait",
       "todo": "À faire",
-      "organization": "Compte d'organisation lié"
+      "organization": "Compte d’organisation lié"
     }
   },
   "styles": {
     "section": {
       "automatic": "Automatique",
       "builtin": "Styles",
-      "personal": "Vos styles",
+      "personal": "Vos Styles",
       "organization": "De votre organisation"
     },
-    "automaticHow": "Nova lit le nom de l'application au premier plan et applique le style correspondant. Les applications que vous bloquez ne sont jamais inspectées.",
+    "automaticHow": "Nova lit le nom de l’application au premier plan et applique le Style correspondant. Les applications que vous bloquez ne sont jamais inspectées.",
     "active": "Actif",
-    "emptyPersonal": "Vous n'avez pas encore créé de style.",
-    "rowActions": "Actions du style",
+    "emptyPersonal": "Vous n’avez pas encore créé de Style.",
+    "rowActions": "Actions du Style",
     "error": {
-      "save": "Le style n'a pas pu être enregistré.",
-      "delete": "Le style n'a pas pu être supprimé."
+      "save": "Le Style n’a pas pu être enregistré.",
+      "delete": "Le Style n’a pas pu être supprimé."
     },
     "organizationManaged": "Ces Styles sont publiés par votre organisation. Ils ne peuvent pas être modifiés ici.",
     "disabledByOrganization": "Désactivé par votre organisation",
-    "disabledByOrganizationHint": "Nova utilise un autre style pour vos dictées.",
+    "disabledByOrganizationHint": "Nova utilise un autre Style pour vos dictées.",
     "personalClosed": "Votre organisation ne permet pas de créer des Styles."
   },
   "history": {
     "subtitle": "Tout ce que vous avez dicté avec Nova.",
     "group": {
-      "today": "Aujourd'hui",
+      "today": "Aujourd’hui",
       "yesterday": "Hier",
       "week": "Cette semaine",
       "older": "Plus ancien"
@@ -1414,15 +1414,15 @@
       "anki": "Cartes de révision (Anki)",
       "mindmap": "Carte mentale (OPML)",
       "saved": "Fichier enregistré.",
-      "failed": "Le fichier n'a pas pu être enregistré.",
-      "noCards": "Aucun bloc à réviser ici : dites « Définition », « Théorème » ou « À retenir » au début d'une dictée pour créer des cartes.",
+      "failed": "Le fichier n’a pas pu être enregistré.",
+      "noCards": "Aucun bloc à réviser ici : dites « Définition », « Théorème » ou « À retenir » au début d’une dictée pour créer des cartes.",
       "notes": "Notes",
       "ankiSend": "Envoyer dans Anki",
       "ankiSent": "Cartes ajoutées dans Anki : {{count}} (paquet « {{deck}} »).",
       "ankiSentSkipped": "Cartes ajoutées dans Anki : {{count}}, déjà présentes : {{skipped}} (paquet « {{deck}} »).",
       "ankiNotRunning": "Anki ne répond pas. Ouvrez Anki avec le module AnkiConnect (code 2055492159), puis réessayez.",
       "ankiTooOld": "Le module AnkiConnect est trop ancien. Mettez-le à jour dans Anki, puis réessayez.",
-      "ankiNoModel": "Anki n'a pas de type de note « Basique ». Ajoutez-le dans Outils › Gérer les types de notes, puis réessayez.",
+      "ankiNoModel": "Anki n’a pas de type de note « Basique ». Ajoutez-le dans Outils › Gérer les types de notes, puis réessayez.",
       "ankiFailed": "Anki a refusé les cartes. Réessayez, ou utilisez « Cartes de révision (Anki) » pour les importer."
     }
   },
@@ -1448,8 +1448,8 @@
     "working": "Structuration…",
     "result": "Note structurée",
     "copied": "Note copiée",
-    "error": "Nova n'a pas pu structurer ces notes. Réessayez dans un instant.",
-    "errorTooLong": "Ce texte est trop long pour être structuré d'un coup. Découpez-le en plusieurs notes.",
+    "error": "Nova n’a pas pu structurer ces notes. Réessayez dans un instant.",
+    "errorTooLong": "Ce texte est trop long pour être structuré d’un coup. Découpez-le en plusieurs notes.",
     "errorSlow": "Le serveur a mis trop de temps à structurer ces notes. Réessayez avec un texte plus court.",
     "errorBusy": "Le serveur est occupé. Réessayez dans quelques secondes.",
     "errorOffline": "Le serveur est injoignable. Vérifiez votre connexion, puis réessayez.",
@@ -1459,24 +1459,24 @@
     "exampleAfter": "Après",
     "examples": {
       "meeting": {
-        "before": "appel avec Léa et Tom, lancement décalé au 12 mars, Tom envoie le budget d'ici vendredi, lieu toujours pas fixé",
-        "after": "Résumé\n- Point lancement avec Léa et Tom\n\nDécisions\n- Lancement décalé au 12 mars\n\nActions\n- Tom : envoyer le budget d'ici vendredi\n\nQuestions ouvertes\n- Lieu pas encore fixé"
+        "before": "appel avec Léa et Tom, lancement décalé au 12 mars, Tom envoie le budget d’ici vendredi, lieu toujours pas fixé",
+        "after": "Résumé\n- Point lancement avec Léa et Tom\n\nDécisions\n- Lancement décalé au 12 mars\n\nActions\n- Tom : envoyer le budget d’ici vendredi\n\nQuestions ouvertes\n- Lieu pas encore fixé"
       },
       "lecture": {
-        "before": "cours de thermo, premier principe = conservation de l'énergie, dU = Q - W, exemple : gaz chauffé dans un piston, revoir le signe de W",
-        "after": "Résumé\n- Thermodynamique : le premier principe\n\nNotions clés\n- L'énergie se conserve\n\nDéfinitions et formules\n- dU = Q − W\n\nExemples\n- Gaz chauffé dans un piston\n\nÀ revoir\n- Convention de signe de W"
+        "before": "cours de thermo, premier principe = conservation de l’énergie, dU = Q - W, exemple : gaz chauffé dans un piston, revoir le signe de W",
+        "after": "Résumé\n- Thermodynamique : le premier principe\n\nNotions clés\n- L’énergie se conserve\n\nDéfinitions et formules\n- dU = Q − W\n\nExemples\n- Gaz chauffé dans un piston\n\nÀ revoir\n- Convention de signe de W"
       },
       "observation": {
         "before": "éprouvette B fissurée à 42 kN, essai à 20 °C, peut-être la soudure, refaire avec une nouvelle soudure la semaine prochaine",
-        "after": "Observation\n- Éprouvette B fissurée à 42 kN (20 °C)\n\nHypothèse\n- La soudure pourrait être en cause (incertain)\n\nRésultat\n- Rupture à 42 kN\n\nAction\n- Refaire l'essai avec une nouvelle soudure la semaine prochaine"
+        "after": "Observation\n- Éprouvette B fissurée à 42 kN (20 °C)\n\nHypothèse\n- La soudure pourrait être en cause (incertain)\n\nRésultat\n- Rupture à 42 kN\n\nAction\n- Refaire l’essai avec une nouvelle soudure la semaine prochaine"
       },
       "ideas": {
-        "before": "idée newsletter : astuces chaque mois, peut-être des vidéos courtes, demander aux utilisateurs ce qu'ils veulent, commencer petit",
-        "after": "Idées\n- Une newsletter d'astuces mensuelle\n- Des vidéos courtes\n\nPourquoi c'est utile\n- Garder les utilisateurs impliqués\n\nQuestions ouvertes\n- Qu'attendent les utilisateurs ?\n\nProchaines étapes\n- Demander aux utilisateurs, puis commencer petit"
+        "before": "idée newsletter : astuces chaque mois, peut-être des vidéos courtes, demander aux utilisateurs ce qu’ils veulent, commencer petit",
+        "after": "Idées\n- Une newsletter d’astuces mensuelle\n- Des vidéos courtes\n\nPourquoi c’est utile\n- Garder les utilisateurs impliqués\n\nQuestions ouvertes\n- Qu’attendent les utilisateurs ?\n\nProchaines étapes\n- Demander aux utilisateurs, puis commencer petit"
       },
       "free": {
-        "before": "dentiste mardi 9h, acheter de l'encre, appeler la banque pour la carte, sport jeudi peut-être",
-        "after": "Résumé\n- Rendez-vous et courses de la semaine\n\nPoints clés\n- Dentiste mardi à 9 h\n- Appeler la banque pour la carte\n\nDétails\n- Acheter de l'encre pour l'imprimante\n\nProchaines étapes\n- Sport jeudi (à confirmer)"
+        "before": "dentiste mardi 9h, acheter de l’encre, appeler la banque pour la carte, sport jeudi peut-être",
+        "after": "Résumé\n- Rendez-vous et courses de la semaine\n\nPoints clés\n- Dentiste mardi à 9 h\n- Appeler la banque pour la carte\n\nDétails\n- Acheter de l’encre pour l’imprimante\n\nProchaines étapes\n- Sport jeudi (à confirmer)"
       }
     }
   },
@@ -1490,34 +1490,34 @@
   },
   "aiSkillTools": {
     "title": "AI Skills",
-    "subtitle": "Des actions IA prêtes à l'emploi, applicables à n'importe quel texte.",
+    "subtitle": "Des actions IA prêtes à l’emploi, applicables à n’importe quel texte.",
     "builtin": "Intégrées",
-    "noBuiltin": "Aucune AI Skill intégrée pour l'instant.",
+    "noBuiltin": "Aucune AI Skill intégrée pour l’instant.",
     "builtinInCommands": "Les actions intégrées de Nova sont dans Nova Commands.",
     "organization": "De votre organisation",
-    "noOrganization": "Votre organisation n'a publié aucune AI Skill.",
+    "noOrganization": "Votre organisation n’a publié aucune AI Skill.",
     "fromOrganization": "De votre organisation",
-    "howToUse": "Comment l'utiliser",
+    "howToUse": "Comment l’utiliser",
     "inputPlaceholder": "Collez ou saisissez le texte à traiter",
     "run": "Exécuter",
-    "running": "Exécution...",
-    "error": "Impossible d'exécuter cette AI Skill.",
+    "running": "Exécution…",
+    "error": "Impossible d’exécuter cette AI Skill.",
     "signedOut": "Connectez-vous pour utiliser les AI Skills."
   },
   "organizationConnection": {
     "title": "Organisation",
-    "description": "Connectez Nova à votre organisation pour utiliser le contenu et les réglages qu'elle fournit.",
-    "connect": "Connecter l'organisation",
+    "description": "Connectez Nova à votre organisation pour utiliser le contenu et les réglages qu’elle fournit.",
+    "connect": "Connecter l’organisation",
     "connected": "Connecté",
     "local": "Hors ligne, avec les derniers réglages connus",
     "signedOut": "Déconnecté"
   },
   "learn": {
     "title": "Apprendre",
-    "subtitle": "Progressez avec l'IA, quelques minutes à la fois.",
+    "subtitle": "Progressez avec l’IA, quelques minutes à la fois.",
     "loading": "Chargement…",
-    "empty": "Aucune leçon n'est encore disponible.",
-    "languageNote": "Ces leçons sont pour l'instant disponibles en {{language}} uniquement.",
+    "empty": "Aucune leçon n’est encore disponible.",
+    "languageNote": "Ces leçons sont pour l’instant disponibles en {{language}} uniquement.",
     "continue": "Continuer",
     "recommended": "Recommandé pour vous",
     "start": "Commencer",
@@ -1538,7 +1538,7 @@
       "continue": "Continuer",
       "finish": "Terminer la leçon",
       "answerFirst": "Répondez pour continuer.",
-      "languageNote": "Cette leçon est pour l'instant disponible en {{language}} uniquement."
+      "languageNote": "Cette leçon est pour l’instant disponible en {{language}} uniquement."
     },
     "quiz": {
       "correct": "Correct",
@@ -1550,11 +1550,11 @@
     },
     "exercise": {
       "compare": "Comparer avec un exemple",
-      "sample": "Une façon de l'écrire",
+      "sample": "Une façon de l’écrire",
       "askNova": "Demander à Nova",
       "running": "Réflexion…",
       "feedback": "Retour",
-      "unavailable": "Nova n'a pas pu répondre pour le moment. Le reste de la leçon fonctionne."
+      "unavailable": "Nova n’a pas pu répondre pour le moment. Le reste de la leçon fonctionne."
     },
     "block": {
       "tip": "Astuce",
@@ -1582,10 +1582,10 @@
       },
       "organization": {
         "title": "Organisation",
-        "description": "Rejoignez une école ou une entreprise qui déploie Nova. Vous vous connecterez avec votre compte d'organisation."
+        "description": "Rejoignez une école ou une entreprise qui déploie Nova. Vous vous connecterez avec votre compte d’organisation."
       },
       "kind": {
-        "title": "Quel type d'organisation ?",
+        "title": "Quel type d’organisation ?",
         "subtitle": "Ce choix décide seulement de ce que nous affichons. Votre organisation confirme le reste à la connexion.",
         "campus": {
           "title": "École ou université",
@@ -1602,18 +1602,18 @@
     "loading": "Démarrage de Nova…",
     "stalledTitle": "Nova met plus de temps que prévu à démarrer",
     "stalledBody": "Des vérifications de démarrage n’ont pas encore répondu — périphériques audio, réglages enregistrés ou inventaire des modèles locaux. Nova a cessé d’attendre pour ne pas laisser cette fenêtre vide.",
-    "logHint": "Le détail est consigné dans handy.log, dans le dossier de données de Nova.",
+    "logHint": "Le détail est consigné dans nova.log, dans le dossier de données de Nova.",
     "retry": "Relancer Nova",
     "errorTitle": "Nova n’a pas réussi à afficher sa fenêtre",
     "errorBody": "Une erreur est survenue au démarrage. Relancez Nova ; si l’écran revient, transmettez le message ci-dessous."
   },
   "organizationOnboarding": {
-    "label": "Nova Organization",
+    "label": "Nova Organisation",
     "title": "Connectez-vous à votre organisation",
     "subtitle": "Utilisez le compte fourni par votre organisation.",
     "emailAlternative": "Utiliser un code par e-mail à la place",
     "server": "Serveur de votre organisation",
-    "email": "Adresse professionnelle",
+    "email": "Adresse e-mail",
     "emailPlaceholder": "prenom.nom@exemple.fr",
     "organizationEmail": "Adresse e-mail de votre organisation",
     "serverPlaceholder": "https://nova.example.com",
@@ -1623,7 +1623,7 @@
     "retry": "Réessayer",
     "errors": {
       "managedConfiguration": "Nova ne peut pas lire la configuration gérée de cet ordinateur. Contactez votre équipe informatique.",
-      "organizationUnavailable": "Cette organisation n'est pas disponible. Contactez votre équipe informatique.",
+      "organizationUnavailable": "Cette organisation n’est pas disponible. Contactez votre équipe informatique.",
       "discovery": "Nova ne trouve pas le serveur de votre organisation. Vérifiez votre connexion et réessayez.",
       "authMethodUnavailable": "Votre organisation exige une méthode de connexion non prise en charge par cette version."
     }
@@ -1633,28 +1633,28 @@
     "logoutConfirmTitle": "Se déconnecter de Nova ?",
     "logoutConfirmDescription": "Vous devrez vous reconnecter pour utiliser Nova. Êtes-vous sûr ?",
     "aboutSubtitle": "Informations et outils de diagnostic pour Nova.",
-    "personalizationDescription": "Adaptez l'apparence et l'interaction de Nova sans modifier les règles de votre établissement.",
-    "organizationSubtitle": "Votre établissement, ce qu'il fournit, et où vont vos données.",
+    "personalizationDescription": "Adaptez l’apparence et l’interaction de Nova sans modifier les règles de votre établissement.",
+    "organizationSubtitle": "Votre établissement, ce qu’il fournit, et où vont vos données.",
     "statusConnected": "Connecté à votre établissement",
     "providesTitle": "Ce que votre établissement fournit",
     "providesPaused": "Actuellement en pause — le serveur de votre établissement est injoignable.",
     "transcriptionDescription": "Votre enregistrement est envoyé au serveur de votre établissement, qui le transforme en texte.",
-    "rewritingDescription": "Votre texte et le style choisi sont envoyés au serveur de votre établissement, qui le réécrit.",
+    "rewritingDescription": "Votre texte et le Style choisi sont envoyés au serveur de votre établissement, qui le met au propre.",
     "vocabularyDescription": "Les termes ajoutés par votre établissement, et les vôtres, aident la reconnaissance et la réécriture à les orthographier correctement.",
     "formattingDescription": "Les règles définies par votre établissement, et les vôtres, sont appliquées à chaque réécriture.",
-    "dataOnServer": "Serveur de l'établissement",
-    "dataNote": "Le serveur de votre établissement compte le nombre de transcriptions et de réécritures effectuées chaque jour. Il n'en conserve pas le contenu.",
+    "dataOnServer": "Serveur de l’établissement",
+    "dataNote": "Le serveur de votre établissement compte le nombre de transcriptions et de réécritures effectuées chaque jour. Il n’en conserve pas le contenu.",
     "aiSkillsPrivacyOffline": "Les Nova Commands passent par le serveur de votre établissement, actuellement injoignable.",
     "notInOrganization": "Ce compte Microsoft ne fait pas partie de votre établissement.",
-    "codeForbidden": "L'accès est indisponible. Contactez votre administrateur.",
+    "codeForbidden": "L’accès est indisponible. Contactez votre administrateur.",
     "engineServer": "Le serveur de votre établissement"
   },
   "revisionSheet": {
     "button": "Fiche de révision",
     "title": "Fiche de révision — {{name}}",
-    "empty": "Aucun repère dans ce cours : dites « Définition », « À retenir » ou « Formule » au début d'une dictée pour remplir la fiche.",
+    "empty": "Aucun repère dans ce cours : dites « Définition », « À retenir » ou « Formule » au début d’une dictée pour remplir la fiche.",
     "copied": "Fiche copiée : collez-la dans Word, OneNote ou un document.",
-    "failed": "La fiche n'a pas pu être copiée.",
+    "failed": "La fiche n’a pas pu être copiée.",
     "sections": {
       "important": "Important",
       "definitions": "Définitions",
@@ -1667,7 +1667,13 @@
       "toReview": "À revoir",
       "questions": "Questions à poser",
       "diagrams": "Schémas à reprendre",
-      "lostTrack": "Moments où j'ai décroché"
+      "lostTrack": "Moments où j’ai décroché"
     }
+  },
+  "keyboard": {
+    "left": "{{key}} gauche",
+    "right": "{{key}} droit",
+    "shift": "Maj",
+    "space": "Espace"
   }
 }

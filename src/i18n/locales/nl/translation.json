@@ -1602,7 +1602,7 @@
     "loading": "Nova wordt gestart…",
     "stalledTitle": "Nova start langer op dan verwacht",
     "stalledBody": "Sommige starttests hebben nog niet geantwoord — audioapparaten, opgeslagen instellingen of de lijst met lokale modellen. Nova wacht niet langer, zodat dit venster niet leeg blijft.",
-    "logHint": "Details worden vastgelegd in handy.log, in de gegevensmap van Nova.",
+    "logHint": "Details worden vastgelegd in nova.log, in de gegevensmap van Nova.",
     "retry": "Nova opnieuw starten",
     "errorTitle": "Nova kon zijn venster niet tonen",
     "errorBody": "Er is een fout opgetreden bij het starten. Start Nova opnieuw; komt dit scherm terug, stuur dan het onderstaande bericht."
@@ -1669,5 +1669,11 @@
       "diagrams": "Schema's om opnieuw te maken",
       "lostTrack": "Waar ik de draad kwijt was"
     }
+  },
+  "keyboard": {
+    "left": "Linker-{{key}}",
+    "right": "Rechter-{{key}}",
+    "shift": "Hoofdletter",
+    "space": "Spatie"
   }
 }

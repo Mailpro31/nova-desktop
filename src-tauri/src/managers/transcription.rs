@@ -1483,7 +1483,7 @@ impl TranscriptionManager {
             info!("Transcription result is empty");
         } else {
             // Vie privée : le niveau fichier par défaut est Debug — le texte
-            // dicté ne doit JAMAIS finir dans handy.log (une dictée peut
+            // dicté ne doit JAMAIS finir dans nova.log (une dictée peut
             // contenir mot de passe, données de santé…). On logue la longueur
             // ; le texte intégral n'existe qu'en Trace, réservé au --debug
             // explicite (qui force déjà le niveau Trace).

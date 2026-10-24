@@ -1602,7 +1602,7 @@
     "loading": "Spouštění Nova…",
     "stalledTitle": "Spuštění Nova trvá déle, než se čekalo",
     "stalledBody": "Některé kontroly při spuštění zatím neodpověděly — zvuková zařízení, uložená nastavení nebo přehled místních modelů. Nova přestala čekat, aby toto okno nezůstalo prázdné.",
-    "logHint": "Podrobnosti se zapisují do handy.log ve složce s daty Nova.",
+    "logHint": "Podrobnosti se zapisují do nova.log ve složce s daty Nova.",
     "retry": "Restartovat Nova",
     "errorTitle": "Nova nedokázala zobrazit své okno",
     "errorBody": "Při spouštění došlo k chybě. Restartujte Nova; pokud se obrazovka vrátí, pošlete zprávu níže."
@@ -1669,5 +1669,11 @@
       "diagrams": "Schémata k překreslení",
       "lostTrack": "Kdy jsem se ztratil"
     }
+  },
+  "keyboard": {
+    "left": "Levý {{key}}",
+    "right": "Pravý {{key}}",
+    "shift": "Shift",
+    "space": "Mezerník"
   }
 }

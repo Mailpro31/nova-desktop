@@ -1602,7 +1602,7 @@
     "loading": "Uruchamianie Nova…",
     "stalledTitle": "Uruchamianie Nova trwa dłużej niż zwykle",
     "stalledBody": "Część kontroli startowych jeszcze nie odpowiedziała — urządzenia audio, zapisane ustawienia lub spis modeli lokalnych. Nova przestała czekać, aby to okno nie pozostało puste.",
-    "logHint": "Szczegóły są zapisywane w handy.log, w folderze danych Nova.",
+    "logHint": "Szczegóły są zapisywane w nova.log, w folderze danych Nova.",
     "retry": "Uruchom Nova ponownie",
     "errorTitle": "Nova nie zdołała wyświetlić swojego okna",
     "errorBody": "Podczas uruchamiania wystąpił błąd. Uruchom Nova ponownie; jeśli ten ekran wróci, prześlij poniższy komunikat."
@@ -1669,5 +1669,11 @@
       "diagrams": "Schematy do poprawienia",
       "lostTrack": "Momenty, w których się zgubiłem"
     }
+  },
+  "keyboard": {
+    "left": "Lewy {{key}}",
+    "right": "Prawy {{key}}",
+    "shift": "Shift",
+    "space": "Spacja"
   }
 }
