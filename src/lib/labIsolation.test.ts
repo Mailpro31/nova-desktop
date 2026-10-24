@@ -82,6 +82,14 @@ describe("Nova Lab ne fait rien de ce qu'il n'a pas à faire", () => {
     expect(libRs).not.toContain("fetch_and_store_free_token");
   });
 
+  it("n'envoie jamais une image de l'écran", () => {
+    // Le relais de vision cloud de Nova personnel est retiré (lot 1c).
+    expect(read("src-tauri/src/screen_vision.rs")).not.toContain("supabase.co");
+    expect(read("src-tauri/src/actions.rs")).not.toContain(
+      "screen_vision::describe_focused_window",
+    );
+  });
+
   it("n'envoie jamais une dictée d'école à Turbo, même serveur injoignable", () => {
     // Sans licence, le palier gratuit ouvrait Turbo : un élève hors ligne
     // voyait sa dictée partir vers un service tiers (lot 1c, 24/10).
