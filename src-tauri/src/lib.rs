@@ -1302,23 +1302,6 @@ pub fn run(cli_args: CliArgs) {
                 });
             }
 
-            // Récupère le jeton gratuit signé (NOVAF1) auprès de trial-check :
-            // sans licence, c'est lui qui authentifie les reformulations Turbo
-            // du palier Gratuit. Défensif — un échec retente au prochain
-            // lancement, la dictée locale n'est jamais impactée.
-            //
-            // Le Lab n'a pas de palier a authentifier : ses reformulations
-            // passent par le serveur de test. Reclamer un jeton d'essai depuis
-            // un artefact de demonstration melangerait son identite a celle de
-            // Nova, dont il est justement separe.
-            #[cfg(not(feature = "lab"))]
-            {
-                let token_handle = app_handle.clone();
-                tauri::async_runtime::spawn(async move {
-                    crate::commands::license::fetch_and_store_free_token(&token_handle).await;
-                });
-            }
-
             // Un poste deja enrole dans un Lab doit repartir enrole. Sans cette
             // restauration, le certificat epingle et le jeton du peripherique
             // disparaissaient a la fermeture, la liaison TLS echouait au
