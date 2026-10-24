@@ -241,6 +241,8 @@ const CLOSABLE_CORE_CAPABILITIES: Readonly<Record<string, CapabilityId>> =
   Object.freeze({
     learning: "learning",
     styles: "writingStyles",
+    // Création de Styles personnels, fermée par une règle de l’école (n° 64).
+    personalStyles: "personalStyles",
     prompts: "prompts",
     history: "history",
     meeting: "meeting",

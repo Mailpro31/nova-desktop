@@ -48,6 +48,14 @@ describe("catégories fermées par l'organisation", () => {
     expect(capabilities.dictation).toBe(true);
   });
 
+  test("l'école ferme la création de Styles personnels (n° 64)", () => {
+    const { capabilities } = context(
+      me({ closed_capabilities: ["personalStyles"] }),
+    );
+    expect(capabilities.personalStyles).toBe(false);
+    expect(capabilities.writingStyles).toBe(true);
+  });
+
   test("sans annonce, rien ne se ferme — même absent de `capabilities`", () => {
     const { capabilities } = context(me());
     expect(capabilities.learning).toBe(true);
