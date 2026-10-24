@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Die mit Nova verbundenen Apps. Der Stundenplan ordnet Ihre Diktate nach Kurs."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Erklären",
+      "summarize": "Zusammenfassen",
+      "simplify": "Vereinfachen",
+      "words": "Schwierige Wörter",
+      "improve": "Korrigieren",
+      "translate": "Übersetzen",
+      "quiz": "Abfragen"
+    },
+    "ask": {
+      "explain": "Erkläre mir diesen Text einfach und definiere dann die schwierigen Wörter:",
+      "summarize": "Fasse diesen Text in wenigen Sätzen zusammen:",
+      "simplify": "Schreibe diesen Text leicht lesbar um, ohne Informationen zu verlieren:",
+      "words": "Liste die schwierigen Wörter dieses Textes auf und erkläre sie einfach:",
+      "improve": "Korrigiere Rechtschreibung und Grammatik dieses Textes, ohne meine Wörter zu ändern:",
+      "translate": "Übersetze diesen Text:",
+      "quiz": "Stelle mir 3 Fragen, um zu prüfen, ob ich diesen Text verstanden habe:"
+    },
+    "read": "Vorlesen",
+    "stop": "Stopp",
+    "more": "Weitere Aktionen",
+    "back": "Zurück",
+    "withNova": "Mit Nova",
+    "running": "Nova bereitet die Antwort vor…",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "replace": "Ersetzen",
+    "close": "Schließen",
+    "continueIn": "In {{app}} fortsetzen",
+    "askIn": "{{app}} fragen",
+    "pasted": "Text kopiert: Mit Strg+V in {{app}} einfügen",
+    "group": {
+      "ai": "Eine KI fragen",
+      "translate": "Übersetzen",
+      "search": "Suchen",
+      "words": "Wörterbücher",
+      "math": "Mathe",
+      "agenda": "Kalender",
+      "notes": "Meine Notizen",
+      "share": "Teilen"
+    },
+    "settings": {
+      "title": "Auswahlblase",
+      "description": "Markieren Sie überall Text: Nova bietet an, ihn zu erklären, vorzulesen oder an eine App zu senden.",
+      "enabled": "Blase beim Markieren von Text anzeigen",
+      "enabledDescription": "Die Blase erscheint neben dem markierten Text und verschwindet beim ersten Klick daneben.",
+      "preferredAi": "Meine bevorzugte KI",
+      "preferredAiDescription": "Die KI, die sich öffnet, wenn Sie eine Antwort im Browser fortsetzen."
+    }
   }
 }

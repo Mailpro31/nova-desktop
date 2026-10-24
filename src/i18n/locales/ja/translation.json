@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Nova と連携するアプリ。時間割で口述を授業ごとに整理します。"
+  },
+  "bubble": {
+    "action": {
+      "explain": "説明",
+      "summarize": "要約",
+      "simplify": "やさしく",
+      "words": "難しい言葉",
+      "improve": "校正",
+      "translate": "翻訳",
+      "quiz": "確認テスト"
+    },
+    "ask": {
+      "explain": "このテキストをわかりやすく説明し、難しい言葉を定義してください：",
+      "summarize": "このテキストを数文で要約してください：",
+      "simplify": "情報を失わずに、このテキストを読みやすく書き直してください：",
+      "words": "このテキストの難しい言葉を挙げ、簡単に説明してください：",
+      "improve": "私の言葉を変えずに、このテキストの誤字と文法を直してください：",
+      "translate": "このテキストを翻訳してください：",
+      "quiz": "このテキストを理解できたか確かめる質問を3つ出してください："
+    },
+    "read": "読み上げ",
+    "stop": "停止",
+    "more": "その他の操作",
+    "back": "戻る",
+    "withNova": "Novaで",
+    "running": "Novaが回答を準備しています…",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "replace": "置き換え",
+    "close": "閉じる",
+    "continueIn": "{{app}}で続ける",
+    "askIn": "{{app}}に聞く",
+    "pasted": "テキストをコピーしました：Ctrl+Vで{{app}}に貼り付けてください",
+    "group": {
+      "ai": "AIに聞く",
+      "translate": "翻訳",
+      "search": "検索",
+      "words": "辞書",
+      "math": "数学",
+      "agenda": "カレンダー",
+      "notes": "マイノート",
+      "share": "共有"
+    },
+    "settings": {
+      "title": "選択バブル",
+      "description": "どこでもテキストを選択すると、Novaが説明・読み上げ・アプリへの送信を提案します。",
+      "enabled": "テキストを選択したらバブルを表示する",
+      "enabledDescription": "バブルは選択したテキストの横に現れ、他の場所を最初にクリックすると消えます。",
+      "preferredAi": "お気に入りのAI",
+      "preferredAiDescription": "ブラウザーで回答を続けるときに開くAI。"
+    }
   }
 }

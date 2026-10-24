@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Aplikacje połączone z Nova. Plan zajęć porządkuje dyktowania według zajęć."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Wyjaśnij",
+      "summarize": "Streść",
+      "simplify": "Uprość",
+      "words": "Trudne słowa",
+      "improve": "Popraw",
+      "translate": "Przetłumacz",
+      "quiz": "Sprawdź mnie"
+    },
+    "ask": {
+      "explain": "Wyjaśnij mi prosto ten tekst, a potem zdefiniuj trudne słowa:",
+      "summarize": "Streść ten tekst w kilku zdaniach:",
+      "simplify": "Przepisz ten tekst tak, aby był łatwy do czytania, bez utraty informacji:",
+      "words": "Wypisz trudne słowa z tego tekstu i wyjaśnij je prosto:",
+      "improve": "Popraw pisownię i gramatykę tego tekstu, nie zmieniając moich słów:",
+      "translate": "Przetłumacz ten tekst:",
+      "quiz": "Zadaj mi 3 pytania, aby sprawdzić, czy zrozumiałem ten tekst:"
+    },
+    "read": "Czytaj",
+    "stop": "Zatrzymaj",
+    "more": "Więcej działań",
+    "back": "Wstecz",
+    "withNova": "Z Nova",
+    "running": "Nova przygotowuje odpowiedź…",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano",
+    "replace": "Zastąp",
+    "close": "Zamknij",
+    "continueIn": "Kontynuuj w {{app}}",
+    "askIn": "Zapytaj {{app}}",
+    "pasted": "Tekst skopiowany: wklej go w {{app}} skrótem Ctrl+V",
+    "group": {
+      "ai": "Zapytaj AI",
+      "translate": "Tłumaczenie",
+      "search": "Szukaj",
+      "words": "Słowniki",
+      "math": "Matematyka",
+      "agenda": "Kalendarz",
+      "notes": "Moje notatki",
+      "share": "Udostępnij"
+    },
+    "settings": {
+      "title": "Dymek zaznaczenia",
+      "description": "Zaznacz tekst w dowolnym miejscu: Nova zaproponuje wyjaśnienie, odczytanie lub wysłanie go do aplikacji.",
+      "enabled": "Pokazuj dymek po zaznaczeniu tekstu",
+      "enabledDescription": "Dymek pojawia się obok zaznaczonego tekstu i znika po pierwszym kliknięciu w innym miejscu.",
+      "preferredAi": "Moja ulubiona AI",
+      "preferredAiDescription": "AI, która otwiera się, gdy kontynuujesz odpowiedź w przeglądarce."
+    }
   }
 }

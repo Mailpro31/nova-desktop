@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "与 Nova 关联的应用。课程表按课程整理你的听写。"
+  },
+  "bubble": {
+    "action": {
+      "explain": "解释",
+      "summarize": "总结",
+      "simplify": "简化",
+      "words": "难词",
+      "improve": "纠正",
+      "translate": "翻译",
+      "quiz": "考考我"
+    },
+    "ask": {
+      "explain": "请用简单的话给我解释这段文字，然后解释其中的难词：",
+      "summarize": "请用几句话总结这段文字：",
+      "simplify": "请在不丢失信息的前提下，把这段文字改写得通俗易读：",
+      "words": "请列出这段文字中的难词并简单解释：",
+      "improve": "请纠正这段文字的拼写和语法，不要改动我的用词：",
+      "translate": "请翻译这段文字：",
+      "quiz": "请问我 3 个问题，检查我是否理解了这段文字："
+    },
+    "read": "朗读",
+    "stop": "停止",
+    "more": "更多操作",
+    "back": "返回",
+    "withNova": "用 Nova",
+    "running": "Nova 正在准备回答…",
+    "copy": "复制",
+    "copied": "已复制",
+    "replace": "替换",
+    "close": "关闭",
+    "continueIn": "在 {{app}} 中继续",
+    "askIn": "询问 {{app}}",
+    "pasted": "文字已复制：按 Ctrl+V 粘贴到 {{app}}",
+    "group": {
+      "ai": "询问 AI",
+      "translate": "翻译",
+      "search": "搜索",
+      "words": "词典",
+      "math": "数学",
+      "agenda": "日历",
+      "notes": "我的笔记",
+      "share": "分享"
+    },
+    "settings": {
+      "title": "选区气泡",
+      "description": "在任何地方选中文字：Nova 会提供解释、朗读或发送到应用的选项。",
+      "enabled": "选中文字时显示气泡",
+      "enabledDescription": "气泡出现在选中文字旁边，在别处第一次点击时消失。",
+      "preferredAi": "我偏好的 AI",
+      "preferredAiDescription": "在浏览器中继续回答时打开的 AI。"
+    }
   }
 }

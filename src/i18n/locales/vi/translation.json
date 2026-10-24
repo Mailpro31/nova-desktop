@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Các ứng dụng liên kết với Nova. Thời khóa biểu sắp xếp bài đọc chép theo tiết học."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Giải thích",
+      "summarize": "Tóm tắt",
+      "simplify": "Đơn giản hóa",
+      "words": "Từ khó",
+      "improve": "Sửa lỗi",
+      "translate": "Dịch",
+      "quiz": "Kiểm tra tôi"
+    },
+    "ask": {
+      "explain": "Hãy giải thích đơn giản đoạn văn này cho tôi, rồi định nghĩa các từ khó:",
+      "summarize": "Hãy tóm tắt đoạn văn này trong vài câu:",
+      "simplify": "Hãy viết lại đoạn văn này cho dễ đọc mà không mất thông tin:",
+      "words": "Hãy liệt kê các từ khó trong đoạn văn này và giải thích đơn giản:",
+      "improve": "Hãy sửa chính tả và ngữ pháp của đoạn văn này mà không thay đổi từ ngữ của tôi:",
+      "translate": "Hãy dịch đoạn văn này:",
+      "quiz": "Hãy hỏi tôi 3 câu để kiểm tra xem tôi đã hiểu đoạn văn này chưa:"
+    },
+    "read": "Đọc to",
+    "stop": "Dừng",
+    "more": "Thêm thao tác",
+    "back": "Quay lại",
+    "withNova": "Với Nova",
+    "running": "Nova đang chuẩn bị câu trả lời…",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "replace": "Thay thế",
+    "close": "Đóng",
+    "continueIn": "Tiếp tục trong {{app}}",
+    "askIn": "Hỏi {{app}}",
+    "pasted": "Đã sao chép văn bản: dán vào {{app}} bằng Ctrl+V",
+    "group": {
+      "ai": "Hỏi một AI",
+      "translate": "Dịch",
+      "search": "Tìm kiếm",
+      "words": "Từ điển",
+      "math": "Toán",
+      "agenda": "Lịch",
+      "notes": "Ghi chú của tôi",
+      "share": "Chia sẻ"
+    },
+    "settings": {
+      "title": "Bong bóng chọn văn bản",
+      "description": "Chọn văn bản ở bất cứ đâu: Nova đề nghị giải thích, đọc to hoặc gửi nó đến một ứng dụng.",
+      "enabled": "Hiện bong bóng khi tôi chọn văn bản",
+      "enabledDescription": "Bong bóng xuất hiện cạnh văn bản đã chọn và biến mất khi nhấp lần đầu ở nơi khác.",
+      "preferredAi": "AI yêu thích của tôi",
+      "preferredAiDescription": "AI được mở khi bạn tiếp tục câu trả lời trong trình duyệt."
+    }
   }
 }

@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Apparna som är kopplade till Nova. Schemat sorterar dina dikteringar per lektion."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Förklara",
+      "summarize": "Sammanfatta",
+      "simplify": "Förenkla",
+      "words": "Svåra ord",
+      "improve": "Rätta",
+      "translate": "Översätt",
+      "quiz": "Förhör mig"
+    },
+    "ask": {
+      "explain": "Förklara den här texten enkelt för mig och definiera sedan de svåra orden:",
+      "summarize": "Sammanfatta den här texten med några få meningar:",
+      "simplify": "Skriv om den här texten så att den blir lättläst, utan att förlora information:",
+      "words": "Lista de svåra orden i den här texten och förklara dem enkelt:",
+      "improve": "Rätta stavning och grammatik i den här texten utan att ändra mina ord:",
+      "translate": "Översätt den här texten:",
+      "quiz": "Ställ 3 frågor till mig för att kontrollera att jag har förstått texten:"
+    },
+    "read": "Läs upp",
+    "stop": "Stoppa",
+    "more": "Fler åtgärder",
+    "back": "Tillbaka",
+    "withNova": "Med Nova",
+    "running": "Nova förbereder svaret…",
+    "copy": "Kopiera",
+    "copied": "Kopierat",
+    "replace": "Ersätt",
+    "close": "Stäng",
+    "continueIn": "Fortsätt i {{app}}",
+    "askIn": "Fråga {{app}}",
+    "pasted": "Texten kopierad: klistra in den i {{app}} med Ctrl+V",
+    "group": {
+      "ai": "Fråga en AI",
+      "translate": "Översätt",
+      "search": "Sök",
+      "words": "Ordböcker",
+      "math": "Matte",
+      "agenda": "Kalender",
+      "notes": "Mina anteckningar",
+      "share": "Dela"
+    },
+    "settings": {
+      "title": "Markeringsbubbla",
+      "description": "Markera text var som helst: Nova erbjuder att förklara den, läsa upp den eller skicka den till en app.",
+      "enabled": "Visa bubblan när jag markerar text",
+      "enabledDescription": "Bubblan visas bredvid den markerade texten och försvinner vid första klicket någon annanstans.",
+      "preferredAi": "Min favorit-AI",
+      "preferredAiDescription": "Den AI som öppnas när du fortsätter ett svar i webbläsaren."
+    }
   }
 }

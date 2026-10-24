@@ -1076,6 +1076,76 @@ fn read_focused_context_impl(
     Some(trimmed.chars().take(max_chars).collect())
 }
 
+/// Le texte sélectionné, et si le champ qui le contient est modifiable (le
+/// texte de l'élève), pour la bulle de sélection. Sans presse-papiers : rien
+/// n'est copié, rien n'est simulé. Même barrière de confidentialité que la
+/// lecture de contexte ; jamais un champ de mot de passe ; `None` au moindre
+/// doute.
+#[cfg(target_os = "windows")]
+pub fn read_selection(
+    user_blocklist: &[String],
+    max_chars: usize,
+    x: i32,
+    y: i32,
+) -> Option<(String, bool)> {
+    use uiautomation::patterns::{UITextPattern, UIValuePattern};
+    use uiautomation::types::Point;
+    use uiautomation::UIAutomation;
+
+    let (_title, process) = current_foreground(user_blocklist);
+    if process.is_empty() {
+        return None;
+    }
+    let automation = UIAutomation::new().ok()?;
+    let walker = automation.get_control_view_walker().ok()?;
+    let cap = max_chars.min(i32::MAX as usize) as i32;
+
+    // L'élément focalisé d'abord (un éditeur), puis ce qui est sous la souris
+    // et ses parents (une page web, un PDF) : le premier qui a une sélection.
+    let mut candidates = Vec::new();
+    if let Ok(focused) = automation.get_focused_element() {
+        candidates.push(focused);
+    }
+    if let Ok(mut element) = automation.element_from_point(Point::new(x, y)) {
+        for _ in 0..6 {
+            let parent = walker.get_parent(&element).ok();
+            candidates.push(element);
+            match parent {
+                Some(next) => element = next,
+                None => break,
+            }
+        }
+    }
+
+    for element in candidates {
+        if element.is_password().unwrap_or(false) {
+            return None;
+        }
+        let Ok(pattern) = element.get_pattern::<UITextPattern>() else {
+            continue;
+        };
+        let Ok(ranges) = pattern.get_selection() else {
+            continue;
+        };
+        let text = ranges
+            .iter()
+            .filter_map(|range| range.get_text(cap).ok())
+            .collect::<Vec<_>>()
+            .join("\n");
+        let text = text.trim();
+        if text.is_empty() {
+            continue;
+        }
+        let editable = element
+            .get_pattern::<UIValuePattern>()
+            .and_then(|value| value.is_readonly())
+            .map(|readonly| !readonly)
+            .unwrap_or(false);
+        return Some((text.chars().take(max_chars).collect(), editable));
+    }
+    None
+}
+
 #[cfg(not(target_os = "windows"))]
 pub fn read_focused_context(_user_blocklist: &[String], _max_chars: usize) -> Option<String> {
     None

@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "De apps die met Nova werken. Het rooster sorteert je dictaten per les."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Uitleggen",
+      "summarize": "Samenvatten",
+      "simplify": "Vereenvoudigen",
+      "words": "Moeilijke woorden",
+      "improve": "Verbeteren",
+      "translate": "Vertalen",
+      "quiz": "Overhoor me"
+    },
+    "ask": {
+      "explain": "Leg deze tekst eenvoudig uit en geef daarna de betekenis van de moeilijke woorden:",
+      "summarize": "Vat deze tekst samen in een paar zinnen:",
+      "simplify": "Herschrijf deze tekst zodat hij makkelijk te lezen is, zonder informatie te verliezen:",
+      "words": "Noem de moeilijke woorden in deze tekst en leg ze eenvoudig uit:",
+      "improve": "Verbeter de spelling en grammatica van deze tekst zonder mijn woorden te veranderen:",
+      "translate": "Vertaal deze tekst:",
+      "quiz": "Stel me 3 vragen om te controleren of ik deze tekst begrepen heb:"
+    },
+    "read": "Voorlezen",
+    "stop": "Stoppen",
+    "more": "Meer acties",
+    "back": "Terug",
+    "withNova": "Met Nova",
+    "running": "Nova bereidt het antwoord voor…",
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd",
+    "replace": "Vervangen",
+    "close": "Sluiten",
+    "continueIn": "Verder in {{app}}",
+    "askIn": "Vraag het {{app}}",
+    "pasted": "Tekst gekopieerd: plak hem in {{app}} met Ctrl+V",
+    "group": {
+      "ai": "Vraag het een AI",
+      "translate": "Vertalen",
+      "search": "Zoeken",
+      "words": "Woordenboeken",
+      "math": "Wiskunde",
+      "agenda": "Agenda",
+      "notes": "Mijn notities",
+      "share": "Delen"
+    },
+    "settings": {
+      "title": "Selectiebel",
+      "description": "Selecteer overal tekst: Nova biedt aan hem uit te leggen, voor te lezen of naar een app te sturen.",
+      "enabled": "De bel tonen als ik tekst selecteer",
+      "enabledDescription": "De bel verschijnt naast de geselecteerde tekst en verdwijnt bij de eerste klik ergens anders.",
+      "preferredAi": "Mijn favoriete AI",
+      "preferredAiDescription": "De AI die opent als je een antwoord verder zet in je browser."
+    }
   }
 }
