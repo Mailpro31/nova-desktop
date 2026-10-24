@@ -1239,67 +1239,6 @@ async activateLocalLlmProfile(profileId: string) : Promise<Result<null, string>>
 }
 },
 /**
- * Statut d'abonnement courant.
- */
-async getLicenseStatus() : Promise<LicenseStatus> {
-    return await TAURI_INVOKE("get_license_status");
-},
-/**
- * Ancienne commande conservée pour les bindings existants. Aucun essai actif.
- */
-async acknowledgeTrialExpired() : Promise<LicenseStatus> {
-    return await TAURI_INVOKE("acknowledge_trial_expired");
-},
-/**
- * Active une clé de licence (jeton NOVA1). Rejette une clé invalide/expirée.
- */
-async activateLicense(key: string) : Promise<Result<LicenseStatus, string>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("activate_license", { key }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-/**
- * Active une licence à partir du CODE d'achat (format NOVA-xxxx) : calcule
- * l'empreinte machine, échange le code contre un jeton signé via la fonction
- * edge, le vérifie localement, puis le stocke. Complète (sans remplacer)
- * l'activation par jeton collé. Défensive : messages FR, jamais de panique.
- */
-async activateLicenseCode(code: string) : Promise<Result<LicenseStatus, string>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("activate_license_code", { code }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-/**
- * Décision produit : une licence activée ne peut plus être retirée depuis
- * l'app (protège contre un retour au palier Free non désiré). Reste
- * disponible pour compat des bindings existants ; renvoie le statut
- * INCHANGÉ sans jamais effacer `license_key`. Remplacer par une nouvelle
- * clé reste possible via `activate_license`/`activate_license_code`.
- */
-async clearLicense() : Promise<LicenseStatus> {
-    return await TAURI_INVOKE("clear_license");
-},
-/**
- * Ouvre le portail client Stripe (résiliation, changement de palier avec
- * prorata, moyen de paiement, factures) dans le navigateur. L'app envoie son
- * jeton de licence — jamais la clé d'achat — ; le serveur résout le client
- * Stripe et renvoie une URL de session éphémère.
- */
-async openBillingPortal() : Promise<Result<null, string>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("open_billing_portal") };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-/**
  * Statut du quota pour le frontend (barre de progression des reformulations).
  */
 async getQuotaStatus() : Promise<QuotaStatus> {
@@ -2260,35 +2199,6 @@ export type LexiconCandidate = { term: string; count: number; dismissed?: boolea
 /**
  * Statut d'abonnement renvoyé au frontend.
  */
-export type LicenseStatus = { 
-/**
- * Palier courant (free / pro / ultra / business).
- */
-tier: Tier; 
-/**
- * Le système de licence est-il actif (clé publique configurée) ?
- */
-active: boolean; 
-/**
- * E-mail associé à la licence (si valide), sinon vide.
- */
-email: string; 
-/**
- * Une clé est-elle enregistrée et valide ?
- */
-licensed: boolean; 
-/**
- * Fonctionnalité → accessible au palier courant.
- */
-features: Partial<{ [key in string]: boolean }>; 
-/**
- * Champ de compatibilité frontend, toujours égal à 0.
- */
-trial_days_remaining: number; 
-/**
- * Champ de compatibilité frontend, toujours faux.
- */
-trial_just_expired: boolean }
 export type LlmProfileStatus = { id: string; approx_size_mb: number; required_ram_gb: number; is_downloaded: boolean; is_recommended: boolean; is_supported: boolean }
 export type LogLevel = "trace" | "debug" | "info" | "warn" | "error"
 /**
