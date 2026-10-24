@@ -25,7 +25,8 @@
     "settings": "Cài đặt",
     "organization": "Tổ chức",
     "learn": "Học",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Kết nối"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -1679,5 +1680,8 @@
     "right": "{{key}} phải",
     "shift": "Shift",
     "space": "Phím cách"
+  },
+  "connections": {
+    "description": "Các ứng dụng liên kết với Nova. Thời khóa biểu sắp xếp bài đọc chép theo tiết học."
   }
 }

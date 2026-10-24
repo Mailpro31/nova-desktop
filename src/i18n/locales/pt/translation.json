@@ -25,7 +25,8 @@
     "settings": "Definições",
     "organization": "Organização",
     "learn": "Aprender",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Ligações"
   },
   "onboarding": {
     "subtitle": "Para começar, escolha um modelo de transcrição",
@@ -1679,5 +1680,8 @@
     "right": "{{key}} direito",
     "shift": "Maiúsculas",
     "space": "Espaço"
+  },
+  "connections": {
+    "description": "As aplicações ligadas ao Nova. O horário organiza os ditados por aula."
   }
 }

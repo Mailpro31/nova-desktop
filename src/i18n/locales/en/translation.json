@@ -25,7 +25,8 @@
     "settings": "Settings",
     "organization": "Organization",
     "learn": "Learn",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Connections"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -1679,5 +1680,8 @@
     "right": "Right {{key}}",
     "shift": "Shift",
     "space": "Space"
+  },
+  "connections": {
+    "description": "The apps Nova works with. Your timetable sorts your dictations by class."
   }
 }

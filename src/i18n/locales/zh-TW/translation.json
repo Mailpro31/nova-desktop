@@ -25,7 +25,8 @@
     "settings": "設定",
     "organization": "組織",
     "learn": "學習",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "連結"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -1679,5 +1680,8 @@
     "right": "右{{key}}",
     "shift": "上檔",
     "space": "空白鍵"
+  },
+  "connections": {
+    "description": "與 Nova 連結的應用程式。課表依課程整理你的聽寫。"
   }
 }

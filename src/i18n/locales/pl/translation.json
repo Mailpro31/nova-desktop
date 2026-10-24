@@ -25,7 +25,8 @@
     "settings": "Ustawienia",
     "organization": "Organizacja",
     "learn": "Nauka",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Połączenia"
   },
   "onboarding": {
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
@@ -1679,5 +1680,8 @@
     "right": "Prawy {{key}}",
     "shift": "Shift",
     "space": "Spacja"
+  },
+  "connections": {
+    "description": "Aplikacje połączone z Nova. Plan zajęć porządkuje dyktowania według zajęć."
   }
 }

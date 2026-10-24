@@ -25,7 +25,8 @@
     "settings": "הגדרות",
     "organization": "ארגון",
     "learn": "למידה",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "חיבורים"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -1679,5 +1680,8 @@
     "right": "{{key}} ימני",
     "shift": "Shift",
     "space": "רווח"
+  },
+  "connections": {
+    "description": "האפליקציות המחוברות ל-Nova. מערכת השעות ממיינת את ההכתבות לפי שיעור."
   }
 }

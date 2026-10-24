@@ -25,7 +25,8 @@
     "settings": "Настройки",
     "organization": "Организация",
     "learn": "Обучение",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Подключения"
   },
   "onboarding": {
     "subtitle": "Для начала выберите модель транскрипции",
@@ -1679,5 +1680,8 @@
     "right": "Правый {{key}}",
     "shift": "Shift",
     "space": "Пробел"
+  },
+  "connections": {
+    "description": "Приложения, связанные с Nova. Расписание сортирует диктовки по занятиям."
   }
 }

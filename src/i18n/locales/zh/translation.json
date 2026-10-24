@@ -25,7 +25,8 @@
     "settings": "设置",
     "organization": "组织",
     "learn": "学习",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "连接"
   },
   "onboarding": {
     "subtitle": "请选择一个转录模型以开始使用",
@@ -1679,5 +1680,8 @@
     "right": "右{{key}}",
     "shift": "上档",
     "space": "空格"
+  },
+  "connections": {
+    "description": "与 Nova 关联的应用。课程表按课程整理你的听写。"
   }
 }

@@ -25,7 +25,8 @@
     "settings": "Inställningar",
     "organization": "Organisation",
     "learn": "Lär dig",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Anslutningar"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -1679,5 +1680,8 @@
     "right": "Höger {{key}}",
     "shift": "Skift",
     "space": "Mellanslag"
+  },
+  "connections": {
+    "description": "Apparna som är kopplade till Nova. Schemat sorterar dina dikteringar per lektion."
   }
 }

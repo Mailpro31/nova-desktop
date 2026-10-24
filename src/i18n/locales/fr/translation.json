@@ -25,7 +25,8 @@
     "settings": "Réglages",
     "organization": "Organisation",
     "learn": "Apprendre",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Connexions"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -1679,5 +1680,8 @@
     "right": "{{key}} droit",
     "shift": "Maj",
     "space": "Espace"
+  },
+  "connections": {
+    "description": "Les applications reliées à Nova. L’emploi du temps range vos dictées par cours."
   }
 }

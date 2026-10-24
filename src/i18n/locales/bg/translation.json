@@ -25,7 +25,8 @@
     "settings": "Настройки",
     "organization": "Организация",
     "learn": "Обучение",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Връзки"
   },
   "onboarding": {
     "subtitle": "За да започнете, изберете модел за транскрипция",
@@ -1679,5 +1680,8 @@
     "right": "Десен {{key}}",
     "shift": "Shift",
     "space": "Интервал"
+  },
+  "connections": {
+    "description": "Приложенията, свързани с Nova. Разписанието подрежда диктовките по часове."
   }
 }

@@ -25,7 +25,8 @@
     "settings": "설정",
     "organization": "조직",
     "learn": "학습",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "연결"
   },
   "onboarding": {
     "subtitle": "시작하려면 음성 인식 모델을 선택하세요",
@@ -1679,5 +1680,8 @@
     "right": "오른쪽 {{key}}",
     "shift": "Shift",
     "space": "스페이스"
+  },
+  "connections": {
+    "description": "Nova와 연결된 앱입니다. 시간표가 받아쓰기를 수업별로 정리합니다."
   }
 }
