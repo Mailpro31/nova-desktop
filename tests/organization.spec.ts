@@ -363,14 +363,11 @@ test.describe("Nova Campus", () => {
 
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "Home" })).toBeFocused();
+    // Accueil, Historique, Styles, Connexions, puis le reste (n° 96).
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("button", { name: "Learn" })).toBeFocused();
-    await page.keyboard.press("Tab");
-    await expect(page.getByRole("button", { name: "AI Skills" })).toBeFocused();
+    await expect(page.getByRole("button", { name: "History" })).toBeFocused();
     await page.keyboard.press("Enter");
-    await expect(
-      page.getByRole("heading", { name: "AI Skills" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "History" })).toBeVisible();
 
     await page.getByRole("button", { name: "Home" }).click();
     const fileButton = page.getByRole("button", { name: "Transcribe a file" });
