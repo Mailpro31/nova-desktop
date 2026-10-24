@@ -861,9 +861,9 @@ fn default_post_process_selected_prompt_id() -> Option<String> {
 /// Lot S1 (23/10, test réel des Styles) : une proposition devenait une
 /// décision (n° 4), Notes écrivait l'e-mail ou répondait à la question (n° 6,
 /// 11), To-do tournait une phrase en verbe sans la rendre lisible (n° 5).
-const NOTES_KEEPS_INTENT: &str = " Une proposition reste une proposition, avec la personne qui la fait : n'en fais une décision que si la dictée la valide (« on valide »). Si la dictée demande d'écrire un e-mail ou pose une question, note la demande ou la question telle quelle : n'écris pas l'e-mail et n'y réponds pas.";
-const MEETING_KEEPS_PROPOSALS: &str = " Une proposition reste une proposition, avec la personne qui la fait : elle ne va dans ## Décisions que si la transcription dit qu'elle est validée.";
-const TODO_READABLE_LINES: &str = " Chaque ligne se lit comme une phrase française correcte, verbe puis complément dans l'ordre naturel. Une phrase qui n'est pas une tâche (une définition, un fait) reste telle qu'elle a été dictée.";
+const NOTES_KEEPS_INTENT: &str = " Une proposition reste une proposition, avec la personne qui la fait : n'en fais une décision que si la dictée la valide (« on valide »), et garde alors qui l'a proposée. Si la dictée demande d'écrire un e-mail ou pose une question, note la demande ou la question telle quelle : n'écris pas l'e-mail et n'y réponds pas.";
+const MEETING_KEEPS_PROPOSALS: &str = " Une proposition reste une proposition, avec la personne qui la fait : elle ne va dans ## Décisions que si la transcription dit qu'elle est validée, et garde alors qui l'a proposée.";
+const TODO_READABLE_LINES: &str = " Chaque ligne se lit comme une phrase française correcte, avec les mots dictés dans leur ordre naturel : ne remplace pas un nom dicté par un verbe (« rendez-vous » reste « rendez-vous »). Une phrase qui n'est pas une tâche (une définition, un fait) reste telle qu'elle a été dictée.";
 
 /// Les défauts d'avant le lot S1, déduits des actuels en retirant les trois
 /// ajouts : la génération v5 reproduite à l'identique, sans recopie.
