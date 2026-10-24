@@ -11,15 +11,13 @@ import { Textarea } from "../../ui/Textarea";
 import { useOrganizationStore } from "@/stores/organizationStore";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
-import { BUILTIN_STYLE_IDS, STYLE_ORDER } from "@/lib/builtinStyles";
+import {
+  BUILTIN_STYLE_IDS,
+  pickableStyles,
+  STYLE_ORDER,
+} from "@/lib/builtinStyles";
 import { useCapability } from "../../../hooks/useOrganizationContext";
 import { disabledStyleSet } from "@/lib/organization/disabledStyles";
-
-/**
- * « Réunion » pilote le mode réunion, absent de la distribution campus : l'y
- * proposer donnerait accès à un Style dont le contexte n'existe pas.
- */
-const CAMPUS_HIDDEN = new Set(["nova_style_meeting"]);
 
 interface StyleItem {
   id: string;
@@ -81,7 +79,7 @@ export const StylesList: React.FC = () => {
   );
 
   const { builtins, personal } = useMemo(() => {
-    const visible = prompts.filter((p) => !CAMPUS_HIDDEN.has(p.id));
+    const visible = pickableStyles(prompts);
     const toItem = (p: LLMPrompt): StyleItem => {
       const isBuiltin = BUILTIN_STYLE_IDS.includes(p.id);
       return {

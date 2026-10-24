@@ -2,7 +2,11 @@ import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { BUILTIN_STYLE_IDS, STYLE_ORDER } from "./builtinStyles";
+import {
+  BUILTIN_STYLE_IDS,
+  pickableStyles,
+  STYLE_ORDER,
+} from "./builtinStyles";
 
 /**
  * Un Style intégré se présente comme les autres : à sa place dans la liste,
@@ -41,5 +45,18 @@ describe("Styles intégrés", () => {
         }).toEqual({ locale, id, ok: true });
       }
     }
+  });
+});
+
+describe("Styles proposés à l'élève", () => {
+  // Lot 3 (20/10) : « Réunion » n'a plus de mode réunion, et « Transcription
+  // améliorée » double « Au quotidien ». La bulle les proposait encore.
+  test("ni Réunion ni Transcription améliorée ne se choisissent", () => {
+    const shown = pickableStyles(BUILTIN_STYLE_IDS.map((id) => ({ id }))).map(
+      (style) => style.id,
+    );
+    expect(shown).not.toContain("nova_style_meeting");
+    expect(shown).not.toContain("default_improve_transcriptions");
+    expect(shown).toContain("nova_style_everyday");
   });
 });

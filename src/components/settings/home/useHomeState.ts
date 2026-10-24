@@ -143,14 +143,6 @@ export function useHomeState(): HomeState {
       labelKey: "home.checklist.firstDictation",
       done: readiness.hasDictated,
     },
-    {
-      // Dérivé, non stocké : le style par défaut est « auto », donc en avoir
-      // choisi un autre *est* l'accomplissement. Aucun jalon à écrire.
-      id: "style_chosen",
-      labelKey: "home.checklist.style",
-      done: selectedPromptId !== "auto",
-      target: "postprocessing",
-    },
   );
   if (commandsAvailable) {
     checklist.push({

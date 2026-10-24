@@ -31,6 +31,20 @@ export const STYLE_ORDER: readonly string[] = [
   "nova_style_meeting",
 ];
 
+/**
+ * Styles qu'aucun écran ne propose : « Réunion » n'a plus de mode réunion
+ * (suspendu le 01/10), « Transcription améliorée » double « Au quotidien »
+ * (lot 3, 20/10). L'automatique peut encore appliquer le second.
+ */
+const HIDDEN_STYLE_IDS = new Set([
+  "nova_style_meeting",
+  "default_improve_transcriptions",
+]);
+
+export function pickableStyles<T extends { id: string }>(styles: T[]): T[] {
+  return styles.filter((style) => !HIDDEN_STYLE_IDS.has(style.id));
+}
+
 // Styles inclus dans le palier Free — doit rester synchronisé avec
 // `licensing::FREE_STYLE_IDS` côté Rust. Exactement trois : « Transcription
 // améliorée », « E-mail » et « Notes ». Les autres presets intégrés
