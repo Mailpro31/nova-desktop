@@ -78,7 +78,9 @@ describe("navigation", () => {
     expect(list.indexOf('"notes"')).toBeGreaterThan(list.indexOf('"prompts"'));
     // Les fonctions optionnelles suivent Accueil, Historique, Styles et
     // Connexions (n° 96).
-    expect(list.indexOf('"notes"')).toBeGreaterThan(list.indexOf('"connections"'));
+    expect(list.indexOf('"notes"')).toBeGreaterThan(
+      list.indexOf('"connections"'),
+    );
   });
 
   test("la catégorie suit Prompts dans la barre Personal", () => {
