@@ -3,8 +3,6 @@
     "settings": "설정...",
     "checkUpdates": "업데이트 확인...",
     "copyLastTranscript": "마지막 녹음 내용 복사",
-    "unloadModel": "모델 언로드",
-    "model": "모델",
     "quit": "종료",
     "cancel": "취소"
   },
@@ -617,7 +615,8 @@
         "saved": "스니펫을 저장했습니다: \"{{trigger}}\"라고 말하세요.",
         "error": "스니펫을 저장할 수 없습니다."
       },
-      "pastedVersion": "Nova가 붙여 넣은 버전"
+      "pastedVersion": "Nova가 붙여 넣은 버전",
+      "replayVoice": "내 목소리 다시 듣기"
     },
     "debug": {
       "logDirectory": {

@@ -3,8 +3,6 @@
     "settings": "Налаштування...",
     "checkUpdates": "Перевірити оновлення...",
     "copyLastTranscript": "Скопіювати останню транскрипцію",
-    "unloadModel": "Вивантажити модель",
-    "model": "Модель",
     "quit": "Вийти",
     "cancel": "Скасувати"
   },
@@ -617,7 +615,8 @@
         "saved": "Сніпет збережено: скажіть «{{trigger}}».",
         "error": "Не вдалося зберегти сніпет."
       },
-      "pastedVersion": "Версія, вставлена Nova"
+      "pastedVersion": "Версія, вставлена Nova",
+      "replayVoice": "Прослухати мій голос"
     },
     "debug": {
       "logDirectory": {

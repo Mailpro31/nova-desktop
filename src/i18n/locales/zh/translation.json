@@ -3,8 +3,6 @@
     "settings": "设置...",
     "checkUpdates": "检查更新...",
     "copyLastTranscript": "复制最新转录",
-    "unloadModel": "卸载模型",
-    "model": "模型",
     "quit": "退出",
     "cancel": "取消"
   },
@@ -617,7 +615,8 @@
         "saved": "片段已保存：说“{{trigger}}”。",
         "error": "无法保存片段。"
       },
-      "pastedVersion": "Nova 粘贴的版本"
+      "pastedVersion": "Nova 粘贴的版本",
+      "replayVoice": "重听我的声音"
     },
     "debug": {
       "logDirectory": {

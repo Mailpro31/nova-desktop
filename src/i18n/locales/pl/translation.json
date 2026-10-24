@@ -3,8 +3,6 @@
     "settings": "Ustawienia...",
     "checkUpdates": "Sprawdź aktualizacje...",
     "copyLastTranscript": "Kopiuj ostatnią transkrypcję",
-    "unloadModel": "Zwolnij model",
-    "model": "Model",
     "quit": "Zamknij",
     "cancel": "Anuluj"
   },
@@ -617,7 +615,8 @@
         "saved": "Snippet zapisany: powiedz „{{trigger}}”.",
         "error": "Nie udało się zapisać snippetu."
       },
-      "pastedVersion": "Wersja wklejona przez Nova"
+      "pastedVersion": "Wersja wklejona przez Nova",
+      "replayVoice": "Odsłuchaj mój głos"
     },
     "debug": {
       "logDirectory": {

@@ -3,8 +3,6 @@
     "settings": "Cài đặt...",
     "checkUpdates": "Kiểm tra cập nhật...",
     "copyLastTranscript": "Sao chép bản chép lời mới nhất",
-    "unloadModel": "Dỡ mô hình",
-    "model": "Mô hình",
     "quit": "Thoát",
     "cancel": "Hủy"
   },
@@ -617,7 +615,8 @@
         "saved": "Đã lưu đoạn mẫu: hãy nói “{{trigger}}”.",
         "error": "Không thể lưu đoạn mẫu."
       },
-      "pastedVersion": "Phiên bản Nova đã dán"
+      "pastedVersion": "Phiên bản Nova đã dán",
+      "replayVoice": "Nghe lại giọng của tôi"
     },
     "debug": {
       "logDirectory": {

@@ -3,8 +3,6 @@
     "settings": "Impostazioni...",
     "checkUpdates": "Verifica aggiornamenti...",
     "copyLastTranscript": "Copia l'ultima trascrizione",
-    "unloadModel": "Rilascia modello",
-    "model": "Modello",
     "quit": "Esci",
     "cancel": "Annulla"
   },
@@ -617,7 +615,8 @@
         "saved": "Snippet salvato: di' «{{trigger}}».",
         "error": "Impossibile salvare lo snippet."
       },
-      "pastedVersion": "Versione incollata da Nova"
+      "pastedVersion": "Versione incollata da Nova",
+      "replayVoice": "Riascolta la mia voce"
     },
     "debug": {
       "logDirectory": {

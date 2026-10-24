@@ -111,7 +111,7 @@ test.describe("reading comfort", () => {
     await page.goto("/");
     await page.getByRole("button", { name: "History", exact: true }).click();
 
-    await page.getByRole("button", { name: "Read aloud" }).click();
+    await page.getByRole("button", { name: "Read the text aloud" }).click();
 
     await expect
       .poll(() =>

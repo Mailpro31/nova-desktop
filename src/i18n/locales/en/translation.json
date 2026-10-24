@@ -3,8 +3,6 @@
     "settings": "Settings...",
     "checkUpdates": "Check for Updates...",
     "copyLastTranscript": "Copy Last Transcript",
-    "unloadModel": "Unload Model",
-    "model": "Model",
     "quit": "Quit",
     "cancel": "Cancel"
   },
@@ -592,7 +590,7 @@
       "unsave": "Remove from saved",
       "delete": "Delete entry",
       "deleteError": "Failed to delete entry. Please try again.",
-      "retranscribe": "Re-transcribe",
+      "retranscribe": "Retranscribe offline",
       "retranscribeError": "Failed to re-transcribe. Please try again.",
       "transcribing": "Transcribing...",
       "transcriptionFailed": "Transcription failed. You can re-transcribe using the retry icon.",
@@ -607,7 +605,7 @@
         "skip": "Not now",
         "learned": "Added to your vocabulary."
       },
-      "readAloud": "Read aloud",
+      "readAloud": "Read the text aloud",
       "stopReading": "Stop reading",
       "readAloudUnavailable": "Read aloud is not available on this computer.",
       "snippet": {
@@ -617,7 +615,8 @@
         "saved": "Snippet saved: say “{{trigger}}”.",
         "error": "The snippet could not be saved."
       },
-      "pastedVersion": "Version pasted by Nova"
+      "pastedVersion": "Formatted by AI",
+      "replayVoice": "Replay my voice"
     },
     "debug": {
       "logDirectory": {
@@ -1359,7 +1358,7 @@
       "lastDictation": "Last dictation"
     },
     "engine": {
-      "local-fallback": "This computer",
+      "local-fallback": "This computer (server unreachable)",
       "local": "This computer",
       "organization": "Your organization's server"
     },

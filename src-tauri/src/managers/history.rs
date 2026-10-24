@@ -6,7 +6,7 @@ use rusqlite_migration::{Migrations, M};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use tauri::AppHandle;
 use tauri_specta::Event;
 
@@ -328,6 +328,12 @@ impl HistoryManager {
     }
 
     pub fn cleanup_old_entries(&self) -> Result<()> {
+        let cutoff = Utc::now().timestamp() - AUDIO_KEPT_SECONDS;
+        let removed = delete_audio_before(&self.get_connection()?, &self.recordings_dir, cutoff)?;
+        if removed > 0 {
+            debug!("Deleted {} recordings older than 7 days", removed);
+        }
+
         let retention_period = crate::settings::get_recording_retention_period(&self.app_handle);
 
         match retention_period {
@@ -663,10 +669,59 @@ impl HistoryManager {
     }
 }
 
+/// L'audio d'une dictée est gardé 7 jours, le texte reste (n° 47, décision du
+/// 23/10) : le micro capte aussi le professeur et les camarades.
+const AUDIO_KEPT_SECONDS: i64 = 7 * 24 * 60 * 60;
+
+/// Supprime les enregistrements des dictées antérieures à `cutoff`, sans
+/// toucher à leur texte. Rend le nombre de fichiers supprimés.
+fn delete_audio_before(conn: &Connection, recordings_dir: &Path, cutoff: i64) -> Result<usize> {
+    let mut stmt =
+        conn.prepare("SELECT file_name FROM transcription_history WHERE timestamp < ?1")?;
+    let names = stmt
+        .query_map(params![cutoff], |row| row.get::<_, String>(0))?
+        .collect::<rusqlite::Result<Vec<String>>>()?;
+    let mut removed = 0;
+    for name in names {
+        let path = recordings_dir.join(&name);
+        if path.exists() {
+            match fs::remove_file(&path) {
+                Ok(()) => removed += 1,
+                Err(e) => error!("Failed to delete recording {}: {}", name, e),
+            }
+        }
+    }
+    Ok(removed)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use rusqlite::{params, Connection};
+
+    #[test]
+    fn old_recordings_are_deleted_and_their_text_kept() {
+        let conn = setup_conn();
+        let dir = tempfile::tempdir().expect("temp dir");
+        insert_entry(&conn, 100, "ancienne dictée", None);
+        insert_entry(&conn, 900, "dictée récente", None);
+        for timestamp in [100, 900] {
+            fs::write(dir.path().join(format!("handy-{}.wav", timestamp)), b"wav")
+                .expect("write wav");
+        }
+
+        let removed = delete_audio_before(&conn, dir.path(), 500).expect("delete audio");
+
+        assert_eq!(removed, 1);
+        assert!(!dir.path().join("handy-100.wav").exists());
+        assert!(dir.path().join("handy-900.wav").exists());
+        let texts: i64 = conn
+            .query_row("SELECT COUNT(*) FROM transcription_history", [], |row| {
+                row.get(0)
+            })
+            .expect("count");
+        assert_eq!(texts, 2);
+    }
 
     fn setup_conn() -> Connection {
         let conn = Connection::open_in_memory().expect("open in-memory db");

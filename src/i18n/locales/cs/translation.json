@@ -3,8 +3,6 @@
     "settings": "Nastavení...",
     "checkUpdates": "Zkontrolovat aktualizace...",
     "copyLastTranscript": "Zkopírovat poslední přepis",
-    "unloadModel": "Uvolnit model",
-    "model": "Model",
     "quit": "Ukončit",
     "cancel": "Zrušit"
   },
@@ -617,7 +615,8 @@
         "saved": "Snippet uložen: řekněte „{{trigger}}“.",
         "error": "Snippet se nepodařilo uložit."
       },
-      "pastedVersion": "Verze vložená Novou"
+      "pastedVersion": "Verze vložená Novou",
+      "replayVoice": "Přehrát můj hlas"
     },
     "debug": {
       "logDirectory": {

@@ -3,8 +3,6 @@
     "settings": "Inställningar...",
     "checkUpdates": "Sök efter uppdateringar...",
     "copyLastTranscript": "Kopiera senaste transkriptionen",
-    "unloadModel": "Avlasta modell",
-    "model": "Modell",
     "quit": "Avsluta",
     "cancel": "Avbryt"
   },
@@ -617,7 +615,8 @@
         "saved": "Snippet sparat: säg ”{{trigger}}”.",
         "error": "Det gick inte att spara snippetet."
       },
-      "pastedVersion": "Version inklistrad av Nova"
+      "pastedVersion": "Version inklistrad av Nova",
+      "replayVoice": "Lyssna på min röst igen"
     },
     "debug": {
       "logDirectory": {

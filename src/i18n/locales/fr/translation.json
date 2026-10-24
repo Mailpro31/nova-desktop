@@ -3,8 +3,6 @@
     "settings": "Réglages…",
     "checkUpdates": "Rechercher des mises à jour…",
     "copyLastTranscript": "Copier la dernière transcription",
-    "unloadModel": "Décharger le modèle",
-    "model": "Modèle",
     "quit": "Quitter",
     "cancel": "Annuler"
   },
@@ -592,7 +590,7 @@
       "unsave": "Retirer des favoris",
       "delete": "Supprimer l’entrée",
       "deleteError": "Échec de la suppression de l’entrée. Veuillez réessayer.",
-      "retranscribe": "Retranscrire",
+      "retranscribe": "Retranscrire hors ligne",
       "retranscribeError": "Impossible de re-transcrire. Veuillez réessayer.",
       "transcribing": "Transcription en cours…",
       "transcriptionFailed": "La transcription a échoué. Vous pouvez retranscrire avec l’icône de réessai.",
@@ -607,7 +605,7 @@
         "skip": "Pas maintenant",
         "learned": "Ajouté à votre vocabulaire."
       },
-      "readAloud": "Écouter",
+      "readAloud": "Lire le texte",
       "stopReading": "Arrêter la lecture",
       "readAloudUnavailable": "La lecture à voix haute n’est pas disponible sur ce poste.",
       "snippet": {
@@ -617,7 +615,8 @@
         "saved": "Snippet enregistré : dites « {{trigger}} ».",
         "error": "Le snippet n’a pas pu être enregistré."
       },
-      "pastedVersion": "Version collée par Nova"
+      "pastedVersion": "Mise en forme par l’IA",
+      "replayVoice": "Réécouter ma voix"
     },
     "debug": {
       "logDirectory": {
@@ -1359,7 +1358,7 @@
       "lastDictation": "Dernière dictée"
     },
     "engine": {
-      "local-fallback": "Ce poste",
+      "local-fallback": "Ce poste (serveur injoignable)",
       "local": "Ce poste",
       "organization": "Le serveur de votre organisation"
     },
