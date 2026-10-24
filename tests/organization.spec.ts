@@ -202,6 +202,11 @@ test.describe("Nova Campus", () => {
       page.getByRole("heading", { name: "Nova does more than transcribe" }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Skip" }).click();
+    // La bulle de sélection et une application par usage (24/10), facultatif.
+    await expect(
+      page.getByRole("heading", { name: "Your apps" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Skip" }).click();
     await expect(
       page.getByRole("heading", { name: "Nova is ready." }),
     ).toBeVisible();
@@ -229,6 +234,11 @@ test.describe("Nova Campus", () => {
     await page.getByRole("button", { name: "Skip this step" }).click();
     await expect(
       page.getByRole("heading", { name: "Nova does more than transcribe" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Skip" }).click();
+    // La bulle de sélection et une application par usage (24/10), facultatif.
+    await expect(
+      page.getByRole("heading", { name: "Your apps" }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Skip" }).click();
     await expect(
