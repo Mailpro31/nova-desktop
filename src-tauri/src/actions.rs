@@ -767,8 +767,7 @@ fn screen_context(
     // Cascade privacy-first : palier A (accessibilité) → palier B (OCR local),
     // tous deux dans read_focused_context. Si rien n'est lisible localement :
     // palier C (VLM local, inerte tant qu'aucun serveur vision local n'est
-    // configuré) → palier D (vision cloud, seulement si « Vision cloud » est
-    // activée ; réservé Nova Ultra, image jamais conservée).
+    // configuré). Plus de vision cloud : aucune image d'écran ne sort (lot 1c).
     // Le contexte enrichit la reformulation, mais ne doit pas saturer le petit
     // contexte du profil Air ni monopoliser le CPU d'une machine de 8 Go.
     const FAST_CONTEXT_CHARS: usize = 600;
@@ -784,14 +783,7 @@ fn screen_context(
     };
     let ctx = match accessible {
         Some(ctx) if !ctx.trim().is_empty() => Some(ctx),
-        _ if !is_air => crate::screen_vlm::describe_focused_window_local(FAST_CONTEXT_CHARS)
-            .or_else(|| {
-                if settings.context_visual_enabled {
-                    crate::screen_vision::describe_focused_window(license_key, FAST_CONTEXT_CHARS)
-                } else {
-                    None
-                }
-            }),
+        _ if !is_air => crate::screen_vlm::describe_focused_window_local(FAST_CONTEXT_CHARS),
         _ => None,
     };
     debug!(
