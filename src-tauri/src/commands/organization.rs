@@ -1596,7 +1596,9 @@ pub struct OrganizationImportResponse {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct OrganizationAnalyzeResponse {
-    pub terms_added: i64,
+    /// Les termes proposés, que l'élève coche avant tout ajout (n° 69).
+    #[serde(default)]
+    pub terms: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -1785,7 +1787,7 @@ pub async fn import_organization_dictionary(
 #[specta::specta]
 pub async fn analyze_organization_document(
     app: AppHandle,
-    text_content: String,
+    content: Vec<u8>,
     filename: Option<String>,
 ) -> Result<OrganizationAnalyzeResponse, String> {
     let credentials = load_organization_credentials(&app)?
@@ -1797,15 +1799,16 @@ pub async fn analyze_organization_document(
     );
 
     let fname = filename.unwrap_or_else(|| "document.txt".to_string());
-    let part = reqwest::multipart::Part::bytes(text_content.into_bytes())
+    // Un PDF, un Word ou un PowerPoint : le serveur en lit le texte.
+    let part = reqwest::multipart::Part::bytes(content)
         .file_name(fname)
-        .mime_str("text/plain")
+        .mime_str("application/octet-stream")
         .map_err(|e| format!("invalid mime: {}", e))?;
 
     let form = reqwest::multipart::Form::new().part("file", part);
 
     let response = client
-        .post(format!("{}/api/dictionary/analyze", base_url))
+        .post(format!("{}/api/dictionary/analyze?preview=1", base_url))
         .multipart(form)
         .send()
         .await

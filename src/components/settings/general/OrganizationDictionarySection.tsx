@@ -37,6 +37,9 @@ export const OrganizationDictionarySection: React.FC = () => {
   // Analyze doc modal/state
   const [showAnalyze, setShowAnalyze] = useState(false);
   const [analyzeText, setAnalyzeText] = useState("");
+  // Les termes proposés par l'analyse ; l'élève décoche ceux qu'il écarte.
+  const [foundTerms, setFoundTerms] = useState<string[] | null>(null);
+  const [kept, setKept] = useState<Set<string>>(new Set());
   const [analyzing, setAnalyzing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const docFileInputRef = useRef<HTMLInputElement>(null);
@@ -148,50 +151,67 @@ export const OrganizationDictionarySection: React.FC = () => {
     }
   };
 
+  // Un PDF, un Word ou un PowerPoint part tel quel : le serveur en lit le texte.
   const handleDocFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
+    if (docFileInputRef.current) docFileInputRef.current.value = "";
     if (!file) return;
-
-    try {
-      const text = await file.text();
-      setAnalyzeText(text);
-    } catch (err) {
-      console.error("Failed to read document:", err);
-    } finally {
-      if (docFileInputRef.current) docFileInputRef.current.value = "";
-    }
+    await analyze(new Uint8Array(await file.arrayBuffer()), file.name);
   };
 
-  const handleAnalyze = async () => {
-    if (!analyzeText.trim()) return;
-
+  const analyze = async (content: Uint8Array, filename: string) => {
     const session = await loadOrganizationSession();
     if (!session) return;
 
     setAnalyzing(true);
     try {
       const api = new OrganizationApi(session.server_url);
-      const res = await api.analyzeDocument(analyzeText.trim());
-      await loadVocabulary();
-      setShowAnalyze(false);
-      setAnalyzeText("");
-      if (res.terms_added > 0) {
-        toast.success(
-          t("organization.dictionary.analyzeSuccess", {
-            count: res.terms_added,
-          }),
-        );
-      } else {
+      const terms = (await api.analyzeDocument(content, filename)).terms ?? [];
+      if (terms.length === 0) {
         toast.info(t("organization.dictionary.analyzeEmpty"));
+        return;
       }
+      setFoundTerms(terms);
+      setKept(new Set(terms));
     } catch (err) {
       console.error("Failed to analyze document:", err);
       const msg = campusErrorText(err, t("organization.errors.network"));
       if (msg) toast.error(msg);
     } finally {
       setAnalyzing(false);
+    }
+  };
+
+  const handleAnalyze = () =>
+    analyze(new TextEncoder().encode(analyzeText.trim()), "document.txt");
+
+  const toggleKept = (term: string) =>
+    setKept((current) => {
+      const next = new Set(current);
+      if (next.has(term)) next.delete(term);
+      else next.add(term);
+      return next;
+    });
+
+  const addKept = async () => {
+    const session = await loadOrganizationSession();
+    if (!session) return;
+    const api = new OrganizationApi(session.server_url);
+    try {
+      for (const term of kept) await api.addDictionaryEntry(term, term);
+      toast.success(
+        t("organization.dictionary.analyzeSuccess", { count: kept.size }),
+      );
+      setFoundTerms(null);
+      setShowAnalyze(false);
+      setAnalyzeText("");
+    } catch (err) {
+      const msg = campusErrorText(err, t("organization.errors.network"));
+      if (msg) toast.error(msg);
+    } finally {
+      await loadVocabulary();
     }
   };
 
@@ -260,7 +280,7 @@ export const OrganizationDictionarySection: React.FC = () => {
 
       {/* Document Analysis Box */}
       {showAnalyze && (
-        <div className="space-y-3 border-s-2 border-accent bg-accent/5 px-4 py-3">
+        <div className="space-y-3 rounded-card border border-hairline px-4 py-3">
           <div className="flex flex-wrap items-center gap-2">
             <Sparkles size={16} className="text-accent" />
             <h4
@@ -288,7 +308,7 @@ export const OrganizationDictionarySection: React.FC = () => {
               type="file"
               ref={docFileInputRef}
               onChange={handleDocFileUpload}
-              accept=".txt,.md,.text"
+              accept=".pdf,.docx,.pptx,.txt,.md"
               className="hidden"
             />
             <Button
@@ -297,7 +317,7 @@ export const OrganizationDictionarySection: React.FC = () => {
               onClick={() => docFileInputRef.current?.click()}
               className="text-xs"
             >
-              {t("organization.files.dropzone")}
+              {t("organization.dictionary.chooseDocument")}
             </Button>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -333,6 +353,37 @@ export const OrganizationDictionarySection: React.FC = () => {
               </Button>
             </div>
           </div>
+
+          {foundTerms && (
+            <fieldset className="space-y-2 border-t border-hairline pt-3">
+              <legend className="text-sm font-medium text-text">
+                {t("organization.dictionary.foundTerms")}
+              </legend>
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {foundTerms.map((term) => (
+                  <label
+                    key={term}
+                    className="inline-flex items-center gap-1.5 text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={kept.has(term)}
+                      onChange={() => toggleKept(term)}
+                    />
+                    {term}
+                  </label>
+                ))}
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => void addKept()}
+                disabled={kept.size === 0}
+              >
+                {t("organization.dictionary.addKept", { count: kept.size })}
+              </Button>
+            </fieldset>
+          )}
         </div>
       )}
 
@@ -445,6 +496,11 @@ export const OrganizationDictionarySection: React.FC = () => {
                 >
                   <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span
+                      title={
+                        isLearned
+                          ? t("organization.dictionary.learnedHint")
+                          : undefined
+                      }
                       className={`shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium ${
                         isLearned
                           ? "bg-accent/10 text-accent"

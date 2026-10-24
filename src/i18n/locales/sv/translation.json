@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Starta analys",
       "analyzeSuccess": "{{count}} ny(a) term(er) extraherades och lades till!",
       "analyzeEmpty": "Inga nya termer hittades i dokumentet.",
-      "analyzing": "Analyserar ordförrådet med AI…"
+      "analyzing": "Analyserar ordförrådet med AI…",
+      "chooseDocument": "Välj ett dokument (PDF, Word, PowerPoint)",
+      "foundTerms": "Hittade termer: avmarkera dem du inte vill ha",
+      "addKept": "Lägg till markerade termer ({{count}})",
+      "learnedHint": "Inlärt från dina rättelser. Ta bort med papperskorgen."
     },
     "snippets": {
       "title": "Röstsnuttar",

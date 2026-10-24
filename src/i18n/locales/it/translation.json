@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Avvia l'analisi",
       "analyzeSuccess": "{{count}} nuovo/i termine/i estratto/i e aggiunto/i!",
       "analyzeEmpty": "Nessun nuovo termine trovato nel documento.",
-      "analyzing": "Analisi del vocabolario con l'IA…"
+      "analyzing": "Analisi del vocabolario con l'IA…",
+      "chooseDocument": "Scegli un documento (PDF, Word, PowerPoint)",
+      "foundTerms": "Termini trovati: togli la spunta a quelli da escludere",
+      "addKept": "Aggiungi i termini selezionati ({{count}})",
+      "learnedHint": "Appreso dalle tue correzioni. Rimuovilo con il cestino."
     },
     "snippets": {
       "title": "Frammenti vocali",

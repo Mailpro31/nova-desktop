@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Analyse starten",
       "analyzeSuccess": "{{count}} neue(r) Begriff(e) extrahiert und hinzugefügt!",
       "analyzeEmpty": "Im Dokument wurden keine neuen Begriffe gefunden.",
-      "analyzing": "Wortschatz wird mit KI analysiert…"
+      "analyzing": "Wortschatz wird mit KI analysiert…",
+      "chooseDocument": "Dokument auswählen (PDF, Word, PowerPoint)",
+      "foundTerms": "Gefundene Begriffe: Haken bei den unerwünschten entfernen",
+      "addKept": "Markierte Begriffe hinzufügen ({{count}})",
+      "learnedHint": "Aus Ihren Korrekturen gelernt. Mit dem Papierkorb entfernen."
     },
     "snippets": {
       "title": "Sprachbausteine",

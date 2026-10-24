@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Rozpocznij analizę",
       "analyzeSuccess": "Wyodrębniono i dodano nowe terminy: {{count}}!",
       "analyzeEmpty": "W dokumencie nie znaleziono nowych terminów.",
-      "analyzing": "Analizowanie słownictwa za pomocą AI…"
+      "analyzing": "Analizowanie słownictwa za pomocą AI…",
+      "chooseDocument": "Wybierz dokument (PDF, Word, PowerPoint)",
+      "foundTerms": "Znalezione terminy: odznacz te, których nie chcesz",
+      "addKept": "Dodaj zaznaczone terminy ({{count}})",
+      "learnedHint": "Nauczone z Twoich poprawek. Usuń je koszem."
     },
     "snippets": {
       "title": "Fragmenty głosowe",

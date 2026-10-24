@@ -273,15 +273,16 @@ export class OrganizationApi {
     }
   }
 
+  /** Les termes d'un document, à cocher avant tout ajout (n° 69). */
   async analyzeDocument(
-    textContent: string,
-    filename?: string,
+    content: Uint8Array,
+    filename: string,
   ): Promise<OrganizationAnalyzeResponse> {
     try {
       return await invoke<OrganizationAnalyzeResponse>(
         "analyze_organization_document",
         {
-          textContent,
+          content: Array.from(content),
           filename,
         },
       );
@@ -467,7 +468,7 @@ export interface OrganizationImportResponse {
 }
 
 export interface OrganizationAnalyzeResponse {
-  terms_added: number;
+  terms?: string[];
 }
 
 export interface OrganizationRuleEntry {

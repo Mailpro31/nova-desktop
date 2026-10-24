@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "開始分析",
       "analyzeSuccess": "已擷取並新增 {{count}} 個新詞條！",
       "analyzeEmpty": "文件中沒有找到新詞條。",
-      "analyzing": "正在以 AI 分析詞彙…"
+      "analyzing": "正在以 AI 分析詞彙…",
+      "chooseDocument": "選擇文件（PDF、Word、PowerPoint）",
+      "foundTerms": "找到的術語：取消勾選不需要的",
+      "addKept": "加入已勾選的術語（{{count}}）",
+      "learnedHint": "從你的更正中學到。用垃圾桶刪除。"
     },
     "snippets": {
       "title": "語音片段",

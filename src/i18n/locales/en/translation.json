@@ -1036,11 +1036,15 @@
       "analyzeDoc": "Analyze document",
       "analyzeDocTitle": "Analyze an existing document",
       "analyzeDocDescription": "Send a text document to your institution's server to extract vocabulary and proper names. Only the extracted terms are saved — the document itself is not stored.",
-      "analyzeDocPlaceholder": "Paste document text or drop a text file...",
+      "analyzeDocPlaceholder": "Paste document text here…",
       "analyzeDocButton": "Start analysis",
       "analyzeSuccess": "{{count}} new term(s) extracted and added!",
       "analyzeEmpty": "No new terms found in the document.",
-      "analyzing": "Analyzing vocabulary with AI…"
+      "analyzing": "Analyzing vocabulary with AI…",
+      "chooseDocument": "Choose a document (PDF, Word, PowerPoint)",
+      "foundTerms": "Terms found: untick the ones to leave out",
+      "addKept": "Add the ticked terms ({{count}})",
+      "learnedHint": "Learned from your corrections. Remove it with the bin."
     },
     "snippets": {
       "title": "Voice snippets",
@@ -1204,7 +1208,7 @@
       "intro": "Connect your timetable: in your history, each dictation is filed under the class during which you made it, and exports are named after the class. Dictations you have already made are filed too.",
       "linkLabel": "Your timetable's subscription link",
       "connect": "Connect",
-      "linkHelp": "You will find this link in your online timetable (ADE, Hyperplanning, Outlook, Google Calendar…), often under “Export”, “Subscribe” or “Sync”. It starts with webcal:// or https://.",
+      "linkHelp": "You will find this link in your online timetable (ADE, Hyperplanning, Outlook, Google Calendar…), often under “Export”, “Subscribe” or “Sync”. It starts with webcal:// or https://. A Moodle link only gives deadlines, not classes.",
       "importFile": "Import an .ics file",
       "importOther": "Import another file",
       "fileFilter": "Calendar",

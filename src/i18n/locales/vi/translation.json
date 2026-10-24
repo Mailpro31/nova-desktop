@@ -1040,7 +1040,11 @@
       "analyzeDocButton": "Bắt đầu phân tích",
       "analyzeSuccess": "Đã trích xuất và thêm {{count}} thuật ngữ mới!",
       "analyzeEmpty": "Không tìm thấy thuật ngữ mới trong tài liệu.",
-      "analyzing": "Đang phân tích từ vựng bằng AI…"
+      "analyzing": "Đang phân tích từ vựng bằng AI…",
+      "chooseDocument": "Chọn tài liệu (PDF, Word, PowerPoint)",
+      "foundTerms": "Thuật ngữ tìm thấy: bỏ chọn những mục không cần",
+      "addKept": "Thêm các thuật ngữ đã chọn ({{count}})",
+      "learnedHint": "Học từ các chỉnh sửa của bạn. Xóa bằng thùng rác."
     },
     "snippets": {
       "title": "Đoạn giọng nói",
