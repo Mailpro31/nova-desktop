@@ -865,6 +865,23 @@ const NOTES_KEEPS_INTENT: &str = " Une proposition reste une proposition, avec l
 const MEETING_KEEPS_PROPOSALS: &str = " Une proposition reste une proposition, avec la personne qui la fait : elle ne va dans ## Décisions que si la transcription dit qu'elle est validée, et garde alors qui l'a proposée.";
 const TODO_READABLE_LINES: &str = " Chaque ligne se lit comme une phrase française correcte, avec les mots dictés dans leur ordre naturel : ne remplace pas un nom dicté par un verbe (« rendez-vous » reste « rendez-vous »). Une phrase qui n'est pas une tâche (une définition, un fait) reste telle qu'elle a été dictée.";
 
+/// Mesure du PC fixe (24/10) : « explique-moi la différence… » devenait un
+/// simple titre, la demande perdue.
+const COURSE_NOTES_KEEPS_QUESTION: &str = " Une question dictée reste une question, écrite comme telle avec son point d'interrogation : n'y réponds pas et ne la réduis pas à un titre.";
+
+/// Les Notes de cours d'avant cette règle (génération v6), déduites des
+/// actuelles comme la v5.
+fn legacy_prompts_v6() -> Vec<LLMPrompt> {
+    default_post_process_prompts()
+        .into_iter()
+        .filter(|prompt| prompt.id == "nova_style_course_notes")
+        .map(|mut prompt| {
+            prompt.prompt = prompt.prompt.replacen(COURSE_NOTES_KEEPS_QUESTION, "", 1);
+            prompt
+        })
+        .collect()
+}
+
 /// Les défauts d'avant le lot S1, déduits des actuels en retirant les trois
 /// ajouts : la génération v5 reproduite à l'identique, sans recopie.
 fn legacy_prompts_v5() -> Vec<LLMPrompt> {
@@ -949,7 +966,7 @@ Il a mangé à la cantine.
         style(
             "nova_style_course_notes",
             "Notes de cours",
-            "Mets en forme les notes de cours qu'un élève dicte pendant un cours. Ce sont SES notes : garde tous les faits, dans l'ordre où il les a dictés, avec ses mots ; tu ne fais que les rendre lisibles. Écris en texte simple, sans Markdown (ni #, ni **, ni >), pour que les notes restent propres dans Word, OneNote ou n'importe quel éditeur. Mise en forme : une idée par ligne, et une ligne vide entre deux blocs. Un titre UNIQUEMENT quand l'élève l'annonce (« chapitre », « partie », « titre », « nouveau cours »…), sur une ligne seule : « Chapitre 3 : La photosynthèse ». Quand l'élève définit un terme (« X c'est… », « définition… »), écris le terme défini, deux-points, puis sa définition : « le contrat c'est un accord de volontés » → « Contrat : accord de volontés ». Quand il signale un point important (« important », « à retenir », « attention », « le prof insiste »), écris une ligne « À retenir : … ». Une énumération dictée devient une ligne par élément, préfixée de « - ». Formules, unités, nombres, dates et noms propres : exactement comme dictés, les nombres en chiffres. N'écris un symbole (², √, ≤, →) que si la dictée le dit sans ambiguïté (« x au carré » → x²) ; dans le doute, garde les mots. Chaque passage reste dans la langue où il a été dicté : une citation anglaise, en cours d'anglais, reste en anglais. Interdits absolus : ajouter un exemple, une explication, une définition, une conclusion, un résumé ou un titre que l'élève n'a pas dit ; changer l'ordre ; compléter une phrase coupée ; corriger un fait, une formule ou une date, même s'ils te semblent faux — c'est au professeur et à l'élève d'en juger. Exemple — dictée : « chapitre trois la photosynthèse, définition la photosynthèse c'est la transformation du dioxyde de carbone en glucose grâce à la lumière, à retenir elle produit du dioxygène, les deux étapes sont la phase claire et la phase sombre » → notes :
+            &format!("{}{COURSE_NOTES_KEEPS_QUESTION}", "Mets en forme les notes de cours qu'un élève dicte pendant un cours. Ce sont SES notes : garde tous les faits, dans l'ordre où il les a dictés, avec ses mots ; tu ne fais que les rendre lisibles. Écris en texte simple, sans Markdown (ni #, ni **, ni >), pour que les notes restent propres dans Word, OneNote ou n'importe quel éditeur. Mise en forme : une idée par ligne, et une ligne vide entre deux blocs. Un titre UNIQUEMENT quand l'élève l'annonce (« chapitre », « partie », « titre », « nouveau cours »…), sur une ligne seule : « Chapitre 3 : La photosynthèse ». Quand l'élève définit un terme (« X c'est… », « définition… »), écris le terme défini, deux-points, puis sa définition : « le contrat c'est un accord de volontés » → « Contrat : accord de volontés ». Quand il signale un point important (« important », « à retenir », « attention », « le prof insiste »), écris une ligne « À retenir : … ». Une énumération dictée devient une ligne par élément, préfixée de « - ». Formules, unités, nombres, dates et noms propres : exactement comme dictés, les nombres en chiffres. N'écris un symbole (², √, ≤, →) que si la dictée le dit sans ambiguïté (« x au carré » → x²) ; dans le doute, garde les mots. Chaque passage reste dans la langue où il a été dicté : une citation anglaise, en cours d'anglais, reste en anglais. Interdits absolus : ajouter un exemple, une explication, une définition, une conclusion, un résumé ou un titre que l'élève n'a pas dit ; changer l'ordre ; compléter une phrase coupée ; corriger un fait, une formule ou une date, même s'ils te semblent faux — c'est au professeur et à l'élève d'en juger. Exemple — dictée : « chapitre trois la photosynthèse, définition la photosynthèse c'est la transformation du dioxyde de carbone en glucose grâce à la lumière, à retenir elle produit du dioxygène, les deux étapes sont la phase claire et la phase sombre » → notes :
 
 Chapitre 3 : La photosynthèse
 
@@ -957,7 +974,7 @@ Photosynthèse : transformation du dioxyde de carbone en glucose grâce à la lu
 À retenir : elle produit du dioxygène.
 Les deux étapes :
 - la phase claire
-- la phase sombre",
+- la phase sombre"),
         ),
         // Libre : peut restructurer et reformuler pour la clarté.
         style(
@@ -1324,6 +1341,7 @@ fn refresh_outdated_builtin_prompts(settings: &mut AppSettings) -> bool {
         .chain(legacy_prompts_v3())
         .chain(legacy_prompts_v4())
         .chain(legacy_prompts_v5())
+        .chain(legacy_prompts_v6())
     {
         previous.entry(p.id).or_default().push(p.prompt);
     }
@@ -2453,6 +2471,7 @@ mod tests {
             legacy_prompts_v3(),
             legacy_prompts_v4(),
             legacy_prompts_v5(),
+            legacy_prompts_v6(),
         ] {
             let mut any_diff = false;
             for l in &leg {
@@ -2482,6 +2501,7 @@ mod tests {
             legacy_prompts_v3(),
             legacy_prompts_v4(),
             legacy_prompts_v5(),
+            legacy_prompts_v6(),
         ] {
             let mut settings = get_default_settings();
             settings.post_process_prompts = legacy;
