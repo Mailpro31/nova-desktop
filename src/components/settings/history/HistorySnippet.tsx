@@ -5,7 +5,6 @@ import { toast } from "sonner";
 
 import { Button } from "../../ui/Button";
 import { Input } from "../../ui/Input";
-import { isOrganizationMode } from "@/lib/mode";
 import { loadOrganizationSession } from "@/lib/organizationSession";
 import { OrganizationApi, campusErrorText } from "@/lib/organizationApi";
 
@@ -31,8 +30,6 @@ export const HistorySnippet: React.FC<HistorySnippetProps> = ({
   const [trigger, setTrigger] = useState("");
   const [content, setContent] = useState(text);
   const [saving, setSaving] = useState(false);
-
-  if (!isOrganizationMode()) return null;
 
   const save = async () => {
     const session = await loadOrganizationSession();

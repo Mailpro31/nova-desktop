@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova не змогла проаналізувати це читання. Прочитайте речення ще раз."
     }
   },
-  "modelSelector": {
-    "custom": "Користувацька",
-    "streaming": "Потокове",
-    "active": "Активна",
-    "noModelsAvailable": "Немає доступних моделей",
-    "verifying": "Перевірка {{modelName}}...",
-    "verifyingGeneric": "Перевірка...",
-    "extracting": "Розпакування {{modelName}}...",
-    "extractingMultiple": "Розпакування {{count}} моделей...",
-    "extractingGeneric": "Розпакування...",
-    "downloading": "Завантаження {{percentage}}%",
-    "downloadingMultiple": "Завантаження {{count}} моделей...",
-    "modelReady": "Модель готова",
-    "loading": "Завантаження {{modelName}}...",
-    "loadingGeneric": "Завантаження...",
-    "modelError": "Помилка моделі",
-    "modelUnloaded": "Модель вивантажена",
-    "noModelDownloadRequired": "Немає моделі - потрібно завантажити",
-    "deleteModel": "Видалити {{modelName}}",
-    "switching": "Перемикання...",
-    "downloadSpeed": "{{speed}} MB/s",
-    "capabilities": {
-      "languageSelection": "Підтримує кілька мов введення",
-      "languageCount": "Мов: {{total}}",
-      "translation": "Може перекладати на англійську",
-      "translate": "Перекласти на англійську",
-      "singleLanguage": "Підтримує лише цю мову",
-      "languageOnly": "Лише {{language}}",
-      "streaming": "Показує транскрипцію в реальному часі під час мовлення"
-    },
-    "cancel": "Скасувати",
-    "cancelDownload": "Скасувати завантаження",
-    "legacy": "Застаріле"
-  },
   "settings": {
     "modelSettings": {
       "title": "Налаштування {{model}}"
@@ -574,7 +540,6 @@
         "cancel": "Скасувати",
         "selectToEdit": "Оберіть промпт вище для перегляду та редагування його деталей.",
         "createFirst": "Натисніть «Створити новий промпт» вище, щоб створити ваш перший промпт постобробки.",
-        "ultraOnly": "Для створення й редагування Стилів потрібна Nova Ultra.",
         "badgeAuto": "Автоматично",
         "badgeBuiltin": "Вбудований",
         "badgeCustom": "Власний",
@@ -883,74 +848,10 @@
     "view": "Переглянути новинки",
     "title": "Нове в Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "Безкоштовні переформулювання Turbo",
-    "count": "{{used}} / {{limit}} переформулювань",
-    "blockedInline": "Ви використали всі безкоштовні переформулювання Turbo — диктування залишається необмеженим, текст вставляється як є. Перейдіть на необмежений Turbo.",
-    "lifetimeNote": "Одноразова пропозиція, не поновлюється.",
-    "blockedTitle": "Безкоштовні переформулювання Turbo вичерпано",
-    "blockedDescription": "Ви використали свої 20 безкоштовних переформулювань Turbo. Диктування залишається необмеженим — ваш текст вставляється як є. Перейдіть на Nova Ultra для необмеженого Turbo.",
-    "upgrade": "Підписатися"
-  },
-  "weekStat": {
-    "minutes_one": "Зекономлено часу на наборі: ≈ {{count}} хв",
-    "minutes_other": "Зекономлено часу на наборі: ≈ {{count}} хв",
-    "words_one": "Слів надиктовано за тиждень: {{count}}",
-    "words_other": "Слів надиктовано за тиждень: {{count}}"
-  },
-  "performanceOptimizer": {
-    "title": "Автоматична оптимізація",
-    "description": "Налаштуйте Nova для цього комп'ютера й перевірте реальний процес розшифрування.",
-    "autoLabel": "Автоматичний режим продуктивності",
-    "autoDescription": "Підбирає безпечні налаштування прискорення та пам'яті моделі відповідно до RAM, процесора й сумісних GPU.",
-    "diagnosticsDescription": "Перевірте мікрофон, модель, сервіс переформулювання, пам'ять і прискорення.",
-    "run": "Запустити діагностику",
-    "running": "Перевірка…",
-    "profile": "Профіль",
-    "memory": "Пам'ять",
-    "cpu": "Потоки ЦП",
-    "acceleration": "Прискорення",
-    "latency": "Виміряна затримка",
-    "median": "медіана {{value}} мс",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Відкрити налаштування мікрофона",
-    "retryGpu": "Повторити GPU після перезапуску",
-    "classes": {
-      "low_memory": "Мало пам'яті",
-      "balanced": "Збалансований",
-      "performance": "Продуктивність"
-    }
-  },
   "voiceCommands": {
     "title": "Голосові команди",
     "description": "Розуміє «новий абзац», «новий рядок», «знак питання» та явні команди Nova для нотаток, списків, зустрічей або скасування поточного диктування.",
     "added": "{{word}} додано до особистого словника"
-  },
-  "license": {
-    "remove": "Видалити",
-    "upgradeToUltra": "Перейти на Nova Ultra",
-    "requiresTier": "Потрібна {{tier}}",
-    "active": "Ліцензія активна",
-    "trial": {
-      "badge": "Пробний Pro",
-      "badgeDays": "Пробний Pro · {{count}} дн.",
-      "title": "Пробний період Nova Pro",
-      "description_one": "Залишився {{count}} день пробного періоду.",
-      "description_other": "Залишилося {{count}} днів пробного періоду.",
-      "subscribe": "Оформити підписку Nova Pro",
-      "expiredTitle": "Ваш пробний період Nova Pro завершився",
-      "expiredBody": "Ви повернулися до плану Nova Free. Оформіть підписку Nova Pro, щоб повернути всі стилі та профілі потужності.",
-      "close": "Закрити",
-      "toastTitle": "Пробний період Nova Pro активний",
-      "toastDescription_one": "Залишився {{count}} день — Turbo і всі стилі включені.",
-      "toastDescription_other": "Залишилося {{count}} днів — Turbo і всі стилі включені."
-    },
-    "manageSubscription": "Керувати підпискою",
-    "comingSoon": "Незабаром",
-    "featureColumn": "Функція",
-    "yourPlan": "Ваш тариф",
-    "onlineEngineLockedTitle": "Turbo потребує підписки Nova",
-    "onlineEngineLocked": "Онлайн-рушій доступний у Nova Pro і Ultra — текст вставлено без переформулювання."
   },
   "lexiconLearning": {
     "title": "Запам'ятовувати мій словник",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "Ці стилі публікує ваша організація. Їх не можна редагувати тут.",
     "disabledByOrganization": "Вимкнено вашою організацією",
-    "disabledByOrganizationHint": "Для ваших диктувань Nova використовує інший стиль."
+    "disabledByOrganizationHint": "Для ваших диктувань Nova використовує інший стиль.",
+    "personalClosed": "Ваша організація не дозволяє створювати стилі."
   },
   "history": {
     "subtitle": "Усе, що ви надиктували в Nova.",

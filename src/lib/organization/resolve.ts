@@ -3,10 +3,7 @@ import type {
   OrganizationRole,
 } from "@/lib/organizationConfig";
 import { DEFAULT_ORGANIZATION } from "@/lib/organizationConfig";
-import {
-  personalCapabilities,
-  unknownOrganizationCapabilities,
-} from "./capabilities";
+import { unknownOrganizationCapabilities } from "./capabilities";
 import type { ServerIdentitySnapshot } from "./identity";
 import type { OrganizationPolicy } from "./policy";
 import {
@@ -286,27 +283,11 @@ export interface ResolveOrganizationContextInput {
 
 /**
  * Contexte d'organisation courant.
- *
- * En édition Personal, ni organisation ni membre : renvoyer un établissement
- * vide serait une donnée fictive, et l'interface personnelle finirait par
- * l'afficher.
+
  */
 export function resolveOrganizationContext(
   input: ResolveOrganizationContextInput,
 ): OrganizationContext {
-  if (input.edition === "personal") {
-    // Aucune policy n'est appliquée ici, et `input.policy` est délibérément
-    // ignoré : Nova Personal ne dépend d'aucun plan de contrôle. Lui laisser
-    // subir une gouvernance d'organisation ferait dépendre le produit
-    // individuel d'un serveur qu'il n'a pas.
-    return {
-      edition: "personal",
-      organization: null,
-      member: null,
-      capabilities: personalCapabilities(),
-    };
-  }
-
   const organizationType: OrganizationType =
     input.organizationType ?? "education";
   const campus = input.campus ?? null;

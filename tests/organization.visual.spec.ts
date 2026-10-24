@@ -45,7 +45,6 @@ async function capture(page: Page, testInfo: TestInfo, name: string) {
 }
 
 test.describe("Nova Campus visual reference", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
   test.use({
     viewport: { width: 1180, height: 760 },
     colorScheme: "light",

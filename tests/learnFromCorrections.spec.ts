@@ -32,8 +32,6 @@ const HEARD = "je transmets le dossier à l'ipsa";
 const CORRECTED = "je transmets le dossier à l'IPSA";
 
 test.describe("learning from corrections", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("a corrected term is offered to the vocabulary, and added only on request", async ({
     page,
   }) => {

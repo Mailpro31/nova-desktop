@@ -118,12 +118,4 @@ describe("capacité du mode réunion", () => {
     expect(capabilities.dictation).toBe(true);
     expect(capabilities.history).toBe(true);
   });
-
-  test("Nova Personal la garde, quoi qu'un serveur annonce", () => {
-    const personal = resolveOrganizationContext({
-      edition: "personal",
-      server: parseServerIdentity(me({ closed_capabilities: ["meeting"] })),
-    });
-    expect(personal.capabilities.meeting).toBe(true);
-  });
 });

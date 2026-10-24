@@ -7,7 +7,6 @@ import { PageHeader } from "../../shell/PageHeader";
 import { Button, Input, Textarea } from "@/components/ui";
 import { commands } from "@/bindings";
 import { useCapability } from "@/hooks/useOrganizationContext";
-import { isOrganizationMode } from "@/lib/mode";
 import {
   NOTE_TYPES,
   structuredNotesEngine,
@@ -27,7 +26,6 @@ export const StructuredNotesSettings: React.FC = () => {
   const session = useOrganizationStore((state) => state.session);
   const capabilityOpen = useCapability("engineeringNotes");
   const engine = structuredNotesEngine({
-    organizationMode: isOrganizationMode(),
     signedIn: Boolean(session),
     capabilityOpen,
   });
@@ -142,11 +140,6 @@ export const StructuredNotesSettings: React.FC = () => {
               ? t("structuredNotes.working")
               : t("structuredNotes.action")}
           </Button>
-          {engine === "unavailable" && !isOrganizationMode() && (
-            <p className="text-xs text-text-secondary">
-              {t("structuredNotes.unavailable")}
-            </p>
-          )}
         </div>
 
         {result && (

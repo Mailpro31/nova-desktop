@@ -1,14 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Ban,
-  Check,
-  Lock,
-  MoreVertical,
-  Pencil,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { Ban, Check, MoreVertical, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { AutoStyleSettings } from "./AutoStyleSettings";
@@ -16,16 +8,11 @@ import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";
 import { Input } from "../../ui/Input";
 import { Textarea } from "../../ui/Textarea";
-import { getStatus, TIER_FOR_FEATURE } from "../license/TierBadge";
 import { useOrganizationStore } from "@/stores/organizationStore";
 import { useSettings } from "../../../hooks/useSettings";
 import { commands, type LLMPrompt } from "@/bindings";
-import {
-  BUILTIN_STYLE_IDS,
-  STYLE_ORDER,
-  styleLockFeature,
-} from "@/lib/builtinStyles";
-import { isOrganizationMode } from "@/lib/mode";
+import { BUILTIN_STYLE_IDS, STYLE_ORDER } from "@/lib/builtinStyles";
+import { useCapability } from "../../../hooks/useOrganizationContext";
 import { disabledStyleSet } from "@/lib/organization/disabledStyles";
 
 /**
@@ -38,14 +25,7 @@ interface StyleItem {
   id: string;
   name: string;
   description: string;
-  /**
-   * Provenance, et non simple catégorie d'affichage : elle décide aussi de
-   * l'autorisation. Un Style d'organisation n'exige aucun palier personnel —
-   * l'établissement paie déjà son déploiement.
-   */
   kind: "builtin" | "organization" | "personal";
-  /** Fonctionnalité de palier manquante, `null` si le Style est accessible. */
-  lockedBy: string | null;
   /** Désactivé par l'organisation : affiché, jamais choisi ni appliqué. */
   disabledByOrganization: boolean;
 }
@@ -53,9 +33,8 @@ interface StyleItem {
 /**
  * Le choix du Style d'écriture — comment Nova rédige une dictée.
  *
- * Surface partagée par les deux distributions : la liste, les verrous de palier
- * et la gestion des Styles personnels y vivent une seule fois. Les pages ne
- * font qu'ajouter ce qui leur est propre.
+ * La liste et la gestion des Styles personnels y vivent une seule fois. Les
+ * pages ne font qu'ajouter ce qui leur est propre.
  *
  * Le mot « prompt » n'apparaît nulle part : c'est le nom interne du champ, pas
  * une notion que l'utilisateur a à connaître. Il choisit une manière d'écrire.
@@ -67,32 +46,14 @@ interface StyleItem {
 export const StylesList: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, refreshSettings } = useSettings();
-  const organizationMode = isOrganizationMode();
 
-  const [features, setFeatures] = useState<Record<string, boolean> | null>(
-    null,
-  );
   const [editing, setEditing] = useState<string | null>(null);
   const [draftName, setDraftName] = useState("");
   const [draftText, setDraftText] = useState("");
   const [pendingDelete, setPendingDelete] = useState<StyleItem | null>(null);
 
-  useEffect(() => {
-    void getStatus().then((status) => setFeatures(status?.features ?? {}));
-  }, []);
-
   const prompts = (getSetting("post_process_prompts") ?? []) as LLMPrompt[];
   const activeId = getSetting("post_process_selected_prompt_id") ?? "auto";
-
-  // En campus, l'établissement fournit l'accès : aucun palier ne s'applique.
-  const lockFor = useMemo(
-    () => (id: string) => {
-      if (organizationMode || features === null) return null;
-      const feature = styleLockFeature(id);
-      return feature && !features[feature] ? feature : null;
-    },
-    [organizationMode, features],
-  );
 
   // Publiés par l'organisation, et distincts des réglages de l'utilisateur :
   // ils ne s'y écrivent pas, ne s'y modifient pas, et disparaissent avec la
@@ -114,18 +75,13 @@ export const StylesList: React.FC = () => {
         name: style.name,
         description: "",
         kind: "organization" as const,
-        // Jamais verrouillé par un palier : l'autorisation vient de
-        // l'appartenance à l'organisation et des policies, pas d'Ultra.
-        lockedBy: null,
         disabledByOrganization: disabled.has(style.id),
       })),
     [organizationStyles, disabled],
   );
 
   const { builtins, personal } = useMemo(() => {
-    const visible = prompts.filter(
-      (p) => !(organizationMode && CAMPUS_HIDDEN.has(p.id)),
-    );
+    const visible = prompts.filter((p) => !CAMPUS_HIDDEN.has(p.id));
     const toItem = (p: LLMPrompt): StyleItem => {
       const isBuiltin = BUILTIN_STYLE_IDS.includes(p.id);
       return {
@@ -135,7 +91,6 @@ export const StylesList: React.FC = () => {
           ? t(`organization.styles.descriptions.${p.id}`, "")
           : "",
         kind: isBuiltin ? "builtin" : "personal",
-        lockedBy: lockFor(p.id),
         disabledByOrganization: disabled.has(p.id),
       };
     };
@@ -147,11 +102,11 @@ export const StylesList: React.FC = () => {
         .sort((a, b) => STYLE_ORDER.indexOf(a.id) - STYLE_ORDER.indexOf(b.id)),
       personal: items.filter((i) => i.kind === "personal"),
     };
-  }, [prompts, organizationMode, lockFor, t, disabled]);
+  }, [prompts, t, disabled]);
 
-  // Créer un Style demande Nova Ultra en personnel ; en campus c'est ouvert.
-  const canEdit = organizationMode || (features?.custom_styles ?? false);
-  const autoLock = lockFor("auto");
+  // L'organisation peut fermer la création de Styles personnels (capacité
+  // `personalStyles`).
+  const canEdit = useCapability("personalStyles");
 
   const select = (id: string) => {
     void updateSetting("post_process_selected_prompt_id", id).catch(() => {
@@ -200,7 +155,6 @@ export const StylesList: React.FC = () => {
           name={t("settings.postProcessing.autoStyle.option")}
           description={t("organization.styles.descriptions.auto", "")}
           active={activeId === "auto"}
-          lockedBy={autoLock}
           disabledByOrganization={false}
           onSelect={() => select("auto")}
         />
@@ -211,10 +165,8 @@ export const StylesList: React.FC = () => {
         </p>
 
         {/* Les réglages d'« Automatique » n'apparaissent que lorsqu'il est
-            actif — et désormais dans les deux distributions. Ils vivaient
-            auparavant dans l'éditeur de Styles personnel, donc invisibles en
-            campus : la liste noire de confidentialité y était inatteignable. */}
-        {activeId === "auto" && !autoLock && (
+            actif. */}
+        {activeId === "auto" && (
           <div className="mt-4">
             <AutoStyleSettings
               prompts={prompts.map((p) => ({ id: p.id, name: p.name }))}
@@ -234,7 +186,6 @@ export const StylesList: React.FC = () => {
                 name={item.name}
                 description={item.description}
                 active={activeId === item.id}
-                lockedBy={item.lockedBy}
                 disabledByOrganization={item.disabledByOrganization}
                 onSelect={() => select(item.id)}
               />
@@ -255,7 +206,6 @@ export const StylesList: React.FC = () => {
                   name={item.name}
                   description={item.description}
                   active={activeId === item.id}
-                  lockedBy={item.lockedBy}
                   disabledByOrganization={item.disabledByOrganization}
                   onSelect={() => select(item.id)}
                 />
@@ -290,7 +240,6 @@ export const StylesList: React.FC = () => {
                     name={item.name}
                     description={item.description}
                     active={activeId === item.id}
-                    lockedBy={item.lockedBy}
                     disabledByOrganization={item.disabledByOrganization}
                     onSelect={() => select(item.id)}
                     onEdit={
@@ -331,7 +280,7 @@ export const StylesList: React.FC = () => {
 
           {!canEdit && personal.length === 0 && (
             <p className="mt-2 px-2 text-xs text-text-secondary">
-              {t("settings.postProcessing.prompts.ultraOnly")}
+              {t("styles.personalClosed")}
             </p>
           )}
 
@@ -438,7 +387,6 @@ interface StyleRowProps {
   name: string;
   description: string;
   active: boolean;
-  lockedBy: string | null;
   /** Désactivé par l'organisation : bandeau rouge, et le choix est refusé. */
   disabledByOrganization: boolean;
   onSelect: () => void;
@@ -454,7 +402,6 @@ const StyleRow: React.FC<StyleRowProps> = ({
   name,
   description,
   active,
-  lockedBy,
   disabledByOrganization,
   onSelect,
   onEdit,
@@ -471,15 +418,11 @@ const StyleRow: React.FC<StyleRowProps> = ({
     >
       <button
         type="button"
-        onClick={lockedBy || disabledByOrganization ? undefined : onSelect}
-        disabled={lockedBy !== null || disabledByOrganization}
+        onClick={disabledByOrganization ? undefined : onSelect}
+        disabled={disabledByOrganization}
         aria-pressed={active}
         className={`flex min-w-0 flex-1 items-start gap-3 px-2 py-2.5 text-start focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
-          lockedBy
-            ? "cursor-not-allowed opacity-55"
-            : disabledByOrganization
-              ? "cursor-not-allowed"
-              : "cursor-pointer"
+          disabledByOrganization ? "cursor-not-allowed" : "cursor-pointer"
         }`}
       >
         {/* L'état actif ne repose pas sur la couleur seule : une coche le
@@ -493,14 +436,6 @@ const StyleRow: React.FC<StyleRowProps> = ({
               aria-label={t("styles.active")}
             />
           )}
-          {lockedBy && (
-            <Lock
-              size={13}
-              strokeWidth={2}
-              className="text-text-secondary"
-              aria-hidden="true"
-            />
-          )}
         </span>
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-baseline gap-x-2">
@@ -509,11 +444,6 @@ const StyleRow: React.FC<StyleRowProps> = ({
             >
               {name}
             </span>
-            {lockedBy && (
-              <span className="text-[11px] uppercase tracking-wide text-text-secondary">
-                {TIER_FOR_FEATURE[lockedBy]}
-              </span>
-            )}
           </span>
           {description && (
             <span className="mt-0.5 block text-xs leading-relaxed text-text-secondary">

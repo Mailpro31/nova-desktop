@@ -10,17 +10,6 @@ import {
 const none = { microsoft_entra: false, google_workspace: false, oidc: false };
 
 describe("Fournisseurs de connexion proposés", () => {
-  test("Personal n'affiche aucun fournisseur d'organisation", () => {
-    // Pas même désactivé : la notion d'organisation n'existe pas ici.
-    expect(
-      organizationSignInOptions({
-        edition: "personal",
-        providers: { microsoft_entra: true, google_workspace: true },
-        authMethods: ["entra", "email_code"],
-      }),
-    ).toEqual([]);
-  });
-
   test("Microsoft seul", () => {
     expect(
       organizationSignInOptions({
@@ -104,19 +93,6 @@ describe("Fournisseurs de connexion proposés", () => {
     ]);
   });
 
-  test("Personal n'affiche aucun OIDC non plus", () => {
-    expect(
-      organizationSignInOptions({
-        edition: "personal",
-        providers: {
-          microsoft_entra: true,
-          google_workspace: true,
-          oidc: true,
-        },
-      }),
-    ).toEqual([]);
-  });
-
   test("le libellé OIDC vient du serveur, avec un repli propre", () => {
     expect(oidcLabel({ ...none, oidc_display_name: "IPSA SSO" })).toBe(
       "IPSA SSO",
@@ -158,18 +134,6 @@ describe("Fournisseurs de connexion proposés", () => {
     ]);
     // Le code par adresse n'est pas un bouton de fournisseur.
     expect(buttons.map((b) => b.type)).not.toContain("legacy_email_code");
-  });
-
-  test("Personal n'a aucun bouton, même avec des configurations", () => {
-    expect(
-      organizationSignInButtons({
-        edition: "personal",
-        providers: {
-          ...none,
-          configs: [{ id: "cfg-1", type: "oidc", display_name: "Okta" }],
-        },
-      }),
-    ).toEqual([]);
   });
 
   test("aucune configuration annoncée, aucun bouton", () => {

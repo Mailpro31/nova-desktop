@@ -45,7 +45,6 @@ async function openOrganization(page: import("@playwright/test").Page) {
 test.describe("a member sees their groups", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
-      localStorage.setItem("nova.editionChoice", "organization");
       localStorage.setItem("nova.organizationKindIntent", "school");
     });
   });

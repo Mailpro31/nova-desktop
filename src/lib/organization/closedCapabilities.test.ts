@@ -63,15 +63,6 @@ describe("catégories fermées par l'organisation", () => {
     expect(capabilities.dictation).toBe(true);
     expect(capabilities.history).toBe(true);
   });
-
-  test("Nova Personal garde toutes ses catégories", () => {
-    const personal = resolveOrganizationContext({
-      edition: "personal",
-      server: parseServerIdentity(me({ closed_capabilities: ["history"] })),
-    });
-    expect(personal.capabilities.history).toBe(true);
-    expect(personal.capabilities.prompts).toBe(true);
-  });
 });
 
 describe("lecture de /api/me", () => {

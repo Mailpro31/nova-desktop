@@ -55,10 +55,6 @@ const UNKNOWN_ORGANIZATION_CAPABILITIES: CapabilityMap = Object.freeze({
   cloudInference: false,
 });
 
-export function personalCapabilities(): CapabilityMap {
-  return PERSONAL_CAPABILITIES;
-}
-
 export function unknownOrganizationCapabilities(): CapabilityMap {
   return UNKNOWN_ORGANIZATION_CAPABILITIES;
 }

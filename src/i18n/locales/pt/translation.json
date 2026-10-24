@@ -259,40 +259,6 @@
       "errorAnalysis": "O Nova não conseguiu analisar esta leitura. Leia a frase novamente."
     }
   },
-  "modelSelector": {
-    "custom": "Personalizado",
-    "streaming": "Streaming",
-    "active": "Ativo",
-    "noModelsAvailable": "Nenhum modelo disponível",
-    "verifying": "Verificando {{modelName}}...",
-    "verifyingGeneric": "Verificando...",
-    "extracting": "Extraindo {{modelName}}...",
-    "extractingMultiple": "Extraindo {{count}} modelos...",
-    "extractingGeneric": "Extraindo...",
-    "downloading": "Baixando {{percentage}}%",
-    "downloadingMultiple": "Baixando {{count}} modelos...",
-    "modelReady": "Modelo Pronto",
-    "loading": "Carregando {{modelName}}...",
-    "loadingGeneric": "Carregando...",
-    "modelError": "Erro no Modelo",
-    "modelUnloaded": "Modelo Descarregado",
-    "noModelDownloadRequired": "Sem Modelo - Download Necessário",
-    "deleteModel": "Excluir {{modelName}}",
-    "switching": "Alternando...",
-    "downloadSpeed": "{{speed}} MB/s",
-    "capabilities": {
-      "languageSelection": "Suporta vários idiomas de entrada",
-      "languageCount": "{{total}} idiomas",
-      "translation": "Pode traduzir para inglês",
-      "translate": "Traduzir para inglês",
-      "singleLanguage": "Suporta apenas este idioma",
-      "languageOnly": "Apenas {{language}}",
-      "streaming": "Mostra a transcrição ao vivo enquanto você fala"
-    },
-    "cancel": "Cancelar",
-    "cancelDownload": "Cancelar download",
-    "legacy": "Legado"
-  },
   "settings": {
     "modelSettings": {
       "title": "Configurações de {{model}}"
@@ -574,7 +540,6 @@
         "cancel": "Cancelar",
         "selectToEdit": "Selecione um prompt acima para visualizar e editar seus detalhes.",
         "createFirst": "Clique em 'Criar Novo Prompt' acima para criar seu primeiro prompt de pós-processamento.",
-        "ultraOnly": "Criar e editar Estilos requer o Nova Ultra.",
         "badgeAuto": "Automático",
         "badgeBuiltin": "Integrado",
         "badgeCustom": "Personal",
@@ -883,74 +848,10 @@
     "view": "Ver novidades",
     "title": "Novidades no Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "Reformulações Turbo gratuitas",
-    "count": "{{used}} / {{limit}} reformulações",
-    "blockedInline": "Você usou todas as suas reformulações Turbo gratuitas — o ditado continua ilimitado, o texto é colado tal como está. Faça upgrade para Turbo ilimitado.",
-    "lifetimeNote": "Oferta única, não renovada.",
-    "blockedTitle": "Reformulações Turbo gratuitas esgotadas",
-    "blockedDescription": "Você usou suas 20 reformulações Turbo gratuitas. O ditado continua ilimitado — seu texto é colado tal como está. Assine o Nova Ultra para Turbo ilimitado.",
-    "upgrade": "Assinar"
-  },
-  "weekStat": {
-    "minutes_one": "≈ {{count}} minuto de escrita poupado",
-    "minutes_other": "≈ {{count}} minutos de escrita poupados",
-    "words_one": "{{count}} palavra ditada esta semana",
-    "words_other": "{{count}} palavras ditadas esta semana"
-  },
-  "performanceOptimizer": {
-    "title": "Otimização automática",
-    "description": "Ajuste o Nova a este computador e inspecione a cadeia de transcrição real.",
-    "autoLabel": "Modo de desempenho automático",
-    "autoDescription": "Escolhe definições seguras de aceleração e memória do modelo com base na RAM, na CPU e nas GPU compatíveis.",
-    "diagnosticsDescription": "Verifique o microfone, o modelo, o fornecedor de reformulação, a memória e a aceleração.",
-    "run": "Executar diagnóstico",
-    "running": "A verificar…",
-    "profile": "Perfil",
-    "memory": "Memória",
-    "cpu": "Threads da CPU",
-    "acceleration": "Aceleração",
-    "latency": "Latência medida",
-    "median": "mediana {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Abrir definições do microfone",
-    "retryGpu": "Tentar a GPU de novo após reiniciar",
-    "classes": {
-      "low_memory": "Pouca memória",
-      "balanced": "Equilibrado",
-      "performance": "Desempenho"
-    }
-  },
   "voiceCommands": {
     "title": "Comandos de voz",
     "description": "Compreende «novo parágrafo», «nova linha», «ponto de interrogação» e comandos explícitos do Nova para notas, listas, reuniões ou para cancelar o ditado atual.",
     "added": "{{word}} foi adicionado ao dicionário pessoal"
-  },
-  "license": {
-    "remove": "Remover",
-    "upgradeToUltra": "Atualizar para o Nova Ultra",
-    "requiresTier": "Requer {{tier}}",
-    "active": "Licença ativa",
-    "trial": {
-      "badge": "Teste Pro",
-      "badgeDays": "Teste Pro · {{count}} d",
-      "title": "Teste do Nova Pro",
-      "description_one": "Falta {{count}} dia para o fim do teste.",
-      "description_other": "Faltam {{count}} dias para o fim do teste.",
-      "subscribe": "Assinar o Nova Pro",
-      "expiredTitle": "Seu teste do Nova Pro terminou",
-      "expiredBody": "Você voltou para o plano Nova Free. Assine o Nova Pro para recuperar todos os Estilos e os perfis de potência.",
-      "close": "Fechar",
-      "toastTitle": "Teste do Nova Pro ativo",
-      "toastDescription_one": "Falta {{count}} dia — Turbo e todos os Estilos incluídos.",
-      "toastDescription_other": "Faltam {{count}} dias — Turbo e todos os Estilos incluídos."
-    },
-    "manageSubscription": "Gerir a minha subscrição",
-    "comingSoon": "Brevemente",
-    "featureColumn": "Funcionalidade",
-    "yourPlan": "O seu plano",
-    "onlineEngineLockedTitle": "Turbo requer uma assinatura Nova",
-    "onlineEngineLocked": "O motor online é reservado ao Nova Pro e Ultra — o texto foi colado sem reformulação."
   },
   "lexiconLearning": {
     "title": "Aprender o meu vocabulário",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "Estes estilos são publicados pela sua organização. Não podem ser editados aqui.",
     "disabledByOrganization": "Desativado pela sua organização",
-    "disabledByOrganizationHint": "O Nova usa outro estilo para os seus ditados."
+    "disabledByOrganizationHint": "O Nova usa outro estilo para os seus ditados.",
+    "personalClosed": "A sua organização não permite criar estilos."
   },
   "history": {
     "subtitle": "Tudo o que ditou com a Nova.",

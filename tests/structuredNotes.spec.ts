@@ -34,8 +34,6 @@ const school = (engineeringNotes: boolean) => ({
 });
 
 test.describe("Structured notes", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("sits after Prompts and structures notes by type", async ({ page }) => {
     await mockTauri(page, {
       session,

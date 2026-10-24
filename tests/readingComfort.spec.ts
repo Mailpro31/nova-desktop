@@ -52,8 +52,6 @@ async function recordSpeech(page: Page) {
 }
 
 test.describe("reading comfort", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("wider spacing applies to the whole app and survives a restart", async ({
     page,
   }) => {

@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova bu okumayı analiz edemedi. Cümleyi yeniden okuyun."
     }
   },
-  "modelSelector": {
-    "custom": "Özel",
-    "streaming": "Akış",
-    "active": "Aktif",
-    "noModelsAvailable": "Kullanılabilir model yok",
-    "verifying": "{{modelName}} doğrulanıyor...",
-    "verifyingGeneric": "Doğrulanıyor...",
-    "extracting": "{{modelName}} çıkarılıyor...",
-    "extractingMultiple": "{{count}} model çıkarılıyor...",
-    "extractingGeneric": "Çıkarılıyor...",
-    "downloading": "%{{percentage}} indiriliyor",
-    "downloadingMultiple": "{{count}} model indiriliyor...",
-    "modelReady": "Model Hazır",
-    "loading": "{{modelName}} yükleniyor...",
-    "loadingGeneric": "Yükleniyor...",
-    "modelError": "Model Hatası",
-    "modelUnloaded": "Model Boşaltıldı",
-    "noModelDownloadRequired": "Model Yok – İndirme Gerekli",
-    "deleteModel": "{{modelName}} Sil",
-    "switching": "Değiştiriliyor...",
-    "downloadSpeed": "{{speed}} MB/s",
-    "capabilities": {
-      "languageSelection": "Birden fazla giriş dilini destekler",
-      "languageCount": "{{total}} dil",
-      "translation": "İngilizce'ye çevirebilir",
-      "translate": "İngilizce'ye çevir",
-      "singleLanguage": "Yalnızca bu dili destekler",
-      "languageOnly": "Yalnızca {{language}}",
-      "streaming": "Konuşurken canlı transkripsiyon gösterir"
-    },
-    "cancel": "İptal",
-    "cancelDownload": "İndirmeyi iptal et",
-    "legacy": "Eski"
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}} Ayarları"
@@ -574,7 +540,6 @@
         "cancel": "İptal",
         "selectToEdit": "Ayrıntılarını görüntülemek ve düzenlemek için yukarıdan bir prompt seçin.",
         "createFirst": "İlk son işlem prompt'unuzu oluşturmak için yukarıdaki “Yeni Prompt Oluştur” seçeneğine tıklayın.",
-        "ultraOnly": "Stil oluşturmak ve düzenlemek için Nova Ultra gerekir.",
         "badgeAuto": "Otomatik",
         "badgeBuiltin": "Yerleşik",
         "badgeCustom": "Özel",
@@ -883,74 +848,10 @@
     "view": "Yenilikleri gör",
     "title": "Nova v{{version}} yenilikleri"
   },
-  "quota": {
-    "lifetimeUsage": "Ücretsiz Turbo yeniden yazımlar",
-    "count": "{{used}} / {{limit}} yeniden yazım",
-    "blockedInline": "Tüm ücretsiz Turbo yeniden yazımlarınızı kullandınız — dikte sınırsız kalır, metin olduğu gibi yapıştırılır. Sınırsız Turbo'ya yükseltin.",
-    "lifetimeNote": "Tek seferlik teklif, yenilenmez.",
-    "blockedTitle": "Ücretsiz Turbo yeniden yazımlar tükendi",
-    "blockedDescription": "20 ücretsiz Turbo yeniden yazımınızı kullandınız. Dikte sınırsız kalır — metniniz olduğu gibi yapıştırılır. Sınırsız Turbo için Nova Ultra'ya geçin.",
-    "upgrade": "Abone ol"
-  },
-  "weekStat": {
-    "minutes_one": "≈ {{count}} dakika yazma süresi kazanıldı",
-    "minutes_other": "≈ {{count}} dakika yazma süresi kazanıldı",
-    "words_one": "Bu hafta {{count}} kelime dikte edildi",
-    "words_other": "Bu hafta {{count}} kelime dikte edildi"
-  },
-  "performanceOptimizer": {
-    "title": "Otomatik iyileştirme",
-    "description": "Nova'yı bu bilgisayar için ayarlayın ve gerçek yazıya dökme sürecini inceleyin.",
-    "autoLabel": "Otomatik performans modu",
-    "autoDescription": "RAM'inize, işlemcinize ve uyumlu GPU'larınıza göre güvenli hızlandırma ve model belleği ayarlarını seçer.",
-    "diagnosticsDescription": "Mikrofonu, modeli, yeniden yazma sağlayıcısını, belleği ve hızlandırmayı denetleyin.",
-    "run": "Tanılamayı çalıştır",
-    "running": "Denetleniyor…",
-    "profile": "Profil",
-    "memory": "Bellek",
-    "cpu": "CPU iş parçacıkları",
-    "acceleration": "Hızlandırma",
-    "latency": "Ölçülen gecikme",
-    "median": "ortanca {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Mikrofon ayarlarını aç",
-    "retryGpu": "Yeniden başlattıktan sonra GPU'yu tekrar dene",
-    "classes": {
-      "low_memory": "Düşük bellek",
-      "balanced": "Dengeli",
-      "performance": "Performans"
-    }
-  },
   "voiceCommands": {
     "title": "Sesli komutlar",
     "description": "“Yeni paragraf”, “yeni satır”, “soru işareti” ile notlar, listeler, toplantılar veya geçerli dikteyi iptal etmek için açık Nova komutlarını anlar.",
     "added": "{{word}} kişisel sözlüğe eklendi"
-  },
-  "license": {
-    "remove": "Kaldır",
-    "upgradeToUltra": "Nova Ultra'ya yükselt",
-    "requiresTier": "{{tier}} gerekir",
-    "active": "Lisans etkin",
-    "trial": {
-      "badge": "Pro deneme",
-      "badgeDays": "Pro deneme · {{count}} g",
-      "title": "Nova Pro deneme sürümü",
-      "description_one": "Deneme süresinin bitmesine {{count}} gün kaldı.",
-      "description_other": "Deneme süresinin bitmesine {{count}} gün kaldı.",
-      "subscribe": "Nova Pro'ya abone ol",
-      "expiredTitle": "Nova Pro deneme sürümünüz sona erdi",
-      "expiredBody": "Nova Free planına geri döndünüz. Tüm Stilleri ve güç profillerini geri almak için Nova Pro'ya abone olun.",
-      "close": "Kapat",
-      "toastTitle": "Nova Pro deneme sürümü etkin",
-      "toastDescription_one": "{{count}} gün kaldı — Turbo ve tüm Stiller dahil.",
-      "toastDescription_other": "{{count}} gün kaldı — Turbo ve tüm Stiller dahil."
-    },
-    "manageSubscription": "Aboneliğimi yönet",
-    "comingSoon": "Yakında",
-    "featureColumn": "Özellik",
-    "yourPlan": "Planınız",
-    "onlineEngineLockedTitle": "Turbo, Nova aboneliği gerektirir",
-    "onlineEngineLocked": "Çevrimiçi motor Nova Pro ve Ultra'ya özeldir — metniniz yeniden biçimlendirilmeden yapıştırıldı."
   },
   "lexiconLearning": {
     "title": "Kelime dağarcığımı öğren",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "Bu stiller kuruluşunuz tarafından yayınlanır. Burada düzenlenemez.",
     "disabledByOrganization": "Kuruluşunuz tarafından devre dışı bırakıldı",
-    "disabledByOrganizationHint": "Nova, dikteleriniz için başka bir stil kullanır."
+    "disabledByOrganizationHint": "Nova, dikteleriniz için başka bir stil kullanır.",
+    "personalClosed": "Kuruluşunuz biçem oluşturmaya izin vermiyor."
   },
   "history": {
     "subtitle": "Nova ile dikte ettiğiniz her şey.",

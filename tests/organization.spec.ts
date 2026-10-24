@@ -33,8 +33,6 @@ const campusConfig = {
 };
 
 test.describe("Nova Campus", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("IT configuration hides the server field", async ({ page }) => {
     await mockTauri(page, {
       session: null,

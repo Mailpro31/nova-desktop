@@ -11,7 +11,6 @@ import type {
 } from "@/bindings";
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
-import { styleLockFeature } from "@/lib/builtinStyles";
 import {
   IDLE_COLLAPSE_DELAY_MS,
   IDLE_PILL_HEIGHT,
@@ -128,36 +127,12 @@ const RecordingOverlay: React.FC = () => {
     }, IDLE_COLLAPSE_DELAY_MS);
   };
   useEffect(() => cancelCollapse, []);
-  // Fonctionnalités du palier courant : décide quels Styles sont verrouillés.
-  // Défensif : licence dormante → `has()` vrai partout → aucune fonctionnalité
-  // absente → rien n'est verrouillé (bulle inchangée pour tous aujourd'hui).
-  const [features, setFeatures] = useState<Record<string, boolean>>({});
-
-  // Un Style est verrouillé si sa fonctionnalité de palier n'est pas accessible.
-  // `?? true` = fonctionnalité inconnue → jamais de verrou par défaut.
-  const styleLock = (id: string): { locked: boolean; tier: string } => {
-    const feature = styleLockFeature(id);
-    if (!feature) return { locked: false, tier: "" };
-    const locked = !(features[feature] ?? true);
-    const tier = feature === "custom_styles" ? "NOVA ULTRA" : "NOVA PRO";
-    return { locked, tier };
-  };
-
-  // Auto mode is locked for Free users (requires Pro for automatic resolution)
-  const isAutoLocked = features["all_styles"] === false;
-
   const fetchStyles = async () => {
     try {
-      const st = await invoke<{ features: Record<string, boolean> }>(
-        "get_license_status",
-      );
-      setFeatures(st.features ?? {});
       const s = await commands.getAppSettings();
       if (s.status === "ok") {
-        // Le mode « Automatique » requiert Pro. Il ne vit pas dans
-        // `post_process_prompts`, on l'ajoute donc en tête pour qu'il apparaisse
-        // dans la bulle et le menu (mais grisé si Free).
-        const hasAutoAccess = st.features?.["all_styles"] ?? false;
+        // « Automatique » ne vit pas dans `post_process_prompts` : on l'ajoute
+        // en tête pour qu'il apparaisse dans la bulle et le menu.
         const autoItem: StyleItem = {
           id: "auto",
           name: t("settings.postProcessing.autoStyle.option"),
@@ -170,14 +145,7 @@ const RecordingOverlay: React.FC = () => {
           })),
         ];
         setStyles(styleItems);
-        // Default to auto if Pro and currently set to auto, otherwise preserve
-        // or fall back to default style (improved transcriptions)
-        const currentId = s.data.post_process_selected_prompt_id ?? "auto";
-        let nextId = currentId;
-        if (currentId === "auto" && !hasAutoAccess) {
-          nextId = "default_improve_transcriptions";
-        }
-        setSelectedStyleId(nextId);
+        setSelectedStyleId(s.data.post_process_selected_prompt_id ?? "auto");
       }
     } catch {
       // Bulle purement décorative si les réglages ne se lisent pas.
@@ -205,9 +173,6 @@ const RecordingOverlay: React.FC = () => {
   };
 
   const chooseStyle = async (id: string) => {
-    // Un Style verrouillé (au-delà du palier) n'est pas sélectionnable : on
-    // laisse le menu ouvert plutôt que d'appliquer un Style interdit.
-    if (styleLock(id).locked) return;
     setSelectedStyleId(id);
     setMenuOpen(false);
     await resizeForMenu(false, 0);
@@ -286,9 +251,9 @@ const RecordingOverlay: React.FC = () => {
   }, [levels, listeningCompact]);
 
   // ---- Suggestion de Style contextuelle (point 5) ----
-  // Paire (app, Style qui collerait) en attente d'affichage. La validation de
-  // palier et l'existence du Style sont re-vérifiées à l'affichage (features à
-  // jour). Persistance (comptes + « ne plus afficher ») dans le localStorage.
+  // Paire (app, Style qui collerait) en attente d'affichage. L'existence du
+  // Style est re-vérifiée à l'affichage. Persistance (comptes + « ne plus
+  // afficher ») dans le localStorage.
   const [suggestion, setSuggestion] = useState<{
     process: string;
     styleId: string;
@@ -324,8 +289,7 @@ const RecordingOverlay: React.FC = () => {
   const suggestionStyle = suggestion
     ? styles.find((s) => s.id === suggestion.styleId)
     : undefined;
-  const suggestionVisible =
-    !!suggestion && !!suggestionStyle && !styleLock(suggestion.styleId).locked;
+  const suggestionVisible = !!suggestion && !!suggestionStyle;
 
   // Au repos (menu fermé), agrandit la fenêtre overlay pour loger la carte —
   // même canal que le menu des Styles. Réinitialise à la hauteur de repos sinon.
@@ -721,42 +685,29 @@ const RecordingOverlay: React.FC = () => {
           {menuOpen && (
             <div className={`smenu ${position}`}>
               {styles.map((s) => {
-                const { locked, tier } = styleLock(s.id);
                 return (
                   <button
                     key={s.id}
-                    className={`smenu-item ${s.id === selectedStyleId ? "active" : ""} ${
-                      locked ? "locked" : ""
-                    }`}
+                    className={`smenu-item ${s.id === selectedStyleId ? "active" : ""}`}
                     onClick={() => chooseStyle(s.id)}
-                    disabled={locked}
-                    aria-disabled={locked}
                   >
                     <span className="smenu-dot" aria-hidden="true" />
                     <span className="smenu-name">{s.name}</span>
-                    {locked ? (
-                      <span
-                        className={`smenu-lock ${tier.includes("ULTRA") ? "ultra" : ""}`}
+                    {s.id === selectedStyleId && (
+                      <svg
+                        className="smenu-check"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
                       >
-                        {t("license.requiresTier", { tier })}
-                      </span>
-                    ) : (
-                      s.id === selectedStyleId && (
-                        <svg
-                          className="smenu-check"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M20 6 9 17l-5-5"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )
+                        <path
+                          d="M20 6 9 17l-5-5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     )}
                   </button>
                 );

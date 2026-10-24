@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova가 이 읽기를 분석하지 못했습니다. 문장을 다시 읽어 주세요."
     }
   },
-  "modelSelector": {
-    "custom": "사용자 정의",
-    "streaming": "스트리밍",
-    "active": "활성",
-    "switching": "전환 중...",
-    "noModelsAvailable": "사용 가능한 모델이 없습니다",
-    "verifying": "{{modelName}} 검증 중...",
-    "verifyingGeneric": "검증 중...",
-    "extracting": "{{modelName}} 압축 해제 중...",
-    "extractingMultiple": "{{count}}개 모델 압축 해제 중...",
-    "extractingGeneric": "압축 해제 중...",
-    "downloading": "다운로드 중 {{percentage}}%",
-    "downloadingMultiple": "{{count}}개 모델 다운로드 중...",
-    "modelReady": "모델 준비 완료",
-    "loading": "{{modelName}} 로딩 중...",
-    "loadingGeneric": "로딩 중...",
-    "modelError": "모델 오류",
-    "modelUnloaded": "모델 언로드됨",
-    "noModelDownloadRequired": "모델 없음 - 다운로드 필요",
-    "deleteModel": "{{modelName}} 삭제",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "취소",
-    "cancelDownload": "다운로드 취소",
-    "capabilities": {
-      "languageSelection": "여러 입력 언어를 지원합니다",
-      "singleLanguage": "이 언어만 지원합니다",
-      "languageCount": "{{total}}개 언어",
-      "languageOnly": "{{language}} 전용",
-      "translation": "영어로 번역 가능",
-      "translate": "영어로 번역",
-      "streaming": "말하는 동안 실시간으로 음성 인식 결과를 표시"
-    },
-    "legacy": "레거시"
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}} 설정"
@@ -574,7 +540,6 @@
         "cancel": "취소",
         "selectToEdit": "세부 정보를 보고 편집하려면 위에서 프롬프트를 선택하세요.",
         "createFirst": "첫 번째 후처리 프롬프트를 만들려면 위의 '새 프롬프트 만들기'를 클릭하세요.",
-        "ultraOnly": "스타일을 만들고 편집하려면 Nova Ultra가 필요합니다.",
         "badgeAuto": "자동",
         "badgeBuiltin": "기본 제공",
         "badgeCustom": "사용자 지정",
@@ -883,74 +848,10 @@
     "view": "새로운 기능 보기",
     "title": "Nova v{{version}}의 새 소식"
   },
-  "quota": {
-    "lifetimeUsage": "무료 Turbo 다시 쓰기",
-    "count": "{{used}} / {{limit}} 회 다시 쓰기",
-    "blockedInline": "무료 Turbo 다시 쓰기를 모두 사용했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 Turbo로 업그레이드하세요.",
-    "lifetimeNote": "일회성 혜택, 갱신되지 않습니다.",
-    "blockedTitle": "무료 Turbo 다시 쓰기 소진",
-    "blockedDescription": "무료 Turbo 다시 쓰기 20회를 모두 사용했습니다. 받아쓰기는 계속 무제한이며 텍스트는 그대로 붙여넣기됩니다. 무제한 Turbo를 원하면 Nova Ultra로 업그레이드하세요.",
-    "upgrade": "구독하기"
-  },
-  "weekStat": {
-    "minutes_one": "타이핑 시간 약 {{count}}분 절약",
-    "minutes_other": "타이핑 시간 약 {{count}}분 절약",
-    "words_one": "이번 주에 받아쓴 단어 {{count}}개",
-    "words_other": "이번 주에 받아쓴 단어 {{count}}개"
-  },
-  "performanceOptimizer": {
-    "title": "자동 최적화",
-    "description": "이 컴퓨터에 맞게 Nova를 조정하고 실제 받아쓰기 과정을 점검합니다.",
-    "autoLabel": "자동 성능 모드",
-    "autoDescription": "RAM, CPU, 호환 GPU를 바탕으로 안전한 가속 및 모델 메모리 설정을 선택합니다.",
-    "diagnosticsDescription": "마이크, 모델, 다시 쓰기 제공자, 메모리, 가속을 점검합니다.",
-    "run": "진단 실행",
-    "running": "확인하는 중…",
-    "profile": "프로필",
-    "memory": "메모리",
-    "cpu": "CPU 스레드",
-    "acceleration": "가속",
-    "latency": "측정된 지연 시간",
-    "median": "중앙값 {{value}}ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "마이크 설정 열기",
-    "retryGpu": "다시 시작 후 GPU 재시도",
-    "classes": {
-      "low_memory": "낮은 메모리",
-      "balanced": "균형",
-      "performance": "성능"
-    }
-  },
   "voiceCommands": {
     "title": "음성 명령",
     "description": "‘새 문단’, ‘줄 바꿈’, ‘물음표’와 메모, 목록, 회의, 현재 받아쓰기 취소를 위한 Nova 명령을 이해합니다.",
     "added": "{{word}}이(가) 개인 사전에 추가되었습니다"
-  },
-  "license": {
-    "remove": "제거",
-    "upgradeToUltra": "Nova Ultra로 업그레이드",
-    "requiresTier": "{{tier}} 필요",
-    "active": "라이선스 활성",
-    "trial": {
-      "badge": "Pro 체험",
-      "badgeDays": "Pro 체험 · {{count}}일",
-      "title": "Nova Pro 체험판",
-      "description_one": "체험판 종료까지 {{count}}일 남았습니다.",
-      "description_other": "체험판 종료까지 {{count}}일 남았습니다.",
-      "subscribe": "Nova Pro 구독하기",
-      "expiredTitle": "Nova Pro 체험판이 종료되었습니다",
-      "expiredBody": "Nova Free 요금제로 돌아왔습니다. 모든 다시 쓰기 스타일과 파워 프로필을 되찾으려면 Nova Pro를 구독하세요.",
-      "close": "닫기",
-      "toastTitle": "Nova Pro 체험판 활성화됨",
-      "toastDescription_one": "{{count}}일 남음 — Turbo와 모든 스타일 포함.",
-      "toastDescription_other": "{{count}}일 남음 — Turbo와 모든 스타일 포함."
-    },
-    "manageSubscription": "구독 관리",
-    "comingSoon": "출시 예정",
-    "featureColumn": "기능",
-    "yourPlan": "내 요금제",
-    "onlineEngineLockedTitle": "Turbo는 Nova 구독이 필요합니다",
-    "onlineEngineLocked": "온라인 엔진은 Nova Pro와 Ultra 전용이라 리포뮬레이션 없이 붙여넣어졌습니다."
   },
   "lexiconLearning": {
     "title": "내 어휘 학습",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "이 스타일은 조직에서 게시합니다. 여기서는 편집할 수 없습니다.",
     "disabledByOrganization": "조직에서 비활성화함",
-    "disabledByOrganizationHint": "Nova가 받아쓰기에 다른 스타일을 사용합니다."
+    "disabledByOrganizationHint": "Nova가 받아쓰기에 다른 스타일을 사용합니다.",
+    "personalClosed": "조직에서 스타일 만들기를 허용하지 않습니다."
   },
   "history": {
     "subtitle": "Nova로 받아쓴 모든 내용.",

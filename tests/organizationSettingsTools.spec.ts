@@ -58,8 +58,6 @@ const openSettings = async (page: import("@playwright/test").Page) => {
 };
 
 test.describe("organization tools are reachable", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("a school member reaches Learn and structured notes from the sidebar", async ({
     page,
   }) => {

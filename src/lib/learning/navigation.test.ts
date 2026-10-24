@@ -51,14 +51,11 @@ describe("navigation Learn", () => {
     expect(section).not.toContain("isCampusMode");
   });
 
-  test("le filtre s'applique aux deux barres, pas seulement à l'une", () => {
-    // Une seule des deux filtrées laisserait Learn visible dans l'autre après
-    // qu'une organisation l'a fermé.
+  test("le filtre s'applique à la barre latérale", () => {
     const code = source(SIDEBAR);
     expect(code.replace(/\s+/g, " ")).toContain(
       "ORGANIZATION_PRIMARY.filter( (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),",
     );
-    expect(code).toContain("visible(id as SidebarSection)");
   });
 
   test("aucune entrée ne porte deux fois le même libellé", () => {

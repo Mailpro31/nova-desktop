@@ -4,7 +4,6 @@ import {
   BookOpen,
   Building2,
   Cog,
-  CreditCard,
   GraduationCap,
   History,
   House,
@@ -16,12 +15,10 @@ import {
   Palette,
   Users,
 } from "lucide-react";
-import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
 import { useOrganizationStatus } from "../hooks/useOrganizationStatus";
 import { useOrganization } from "../hooks/useOrganization";
-import { isOrganizationMode } from "@/lib/mode";
 import { useCapability } from "../hooks/useOrganizationContext";
 
 const HomeSettings = lazy(() =>
@@ -35,23 +32,11 @@ const ConfigurationSettings = lazy(() =>
   })),
 );
 const PostProcessingSettings = lazy(() =>
-  import("./settings/post-processing/PostProcessingSettings").then(
+  import("./settings/post-processing/OrganizationStylesSettings").then(
     (module) => ({
-      default: module.PostProcessingSettings,
+      default: module.OrganizationStylesSettings,
     }),
   ),
-);
-const PersonalizationSettings = lazy(() =>
-  import("./settings/personalization/PersonalizationSettings").then(
-    (module) => ({
-      default: module.PersonalizationSettings,
-    }),
-  ),
-);
-const AccountSettings = lazy(() =>
-  import("./settings/account/AccountSettings").then((module) => ({
-    default: module.AccountSettings,
-  })),
 );
 const HistorySettings = lazy(() =>
   import("./settings/history/HistorySettings").then((module) => ({
@@ -74,8 +59,8 @@ const MeetingSettings = lazy(() =>
   })),
 );
 const AboutSettings = lazy(() =>
-  import("./settings/about/AboutSettings").then((module) => ({
-    default: module.AboutSettings,
+  import("./settings/about/OrganizationAboutSettings").then((module) => ({
+    default: module.OrganizationAboutSettings,
   })),
 );
 const OrganizationAiSkills = lazy(() =>
@@ -136,9 +121,7 @@ export const SECTIONS_CONFIG = {
   learn: {
     // Learn — les trois piliers, les micro-leçons, la progression.
     //
-    // `enabled` ne demande pas quelle édition est installée : Learn appartient
-    // au Nova Core et vaut pour Personal comme pour une organisation. C'est la
-    // capacité `learning` qui décide, et une policy peut la fermer.
+    // C'est la capacité `learning` qui décide, et une policy peut la fermer.
     labelKey: "sidebar.learn",
     campusLabelKey: undefined,
     icon: GraduationCap,
@@ -160,7 +143,7 @@ export const SECTIONS_CONFIG = {
     // l'entrée à l'éducation laissait une entreprise avec des commandes qui
     // fonctionnent et aucun écran pour les documenter. Ce qui la ferme est la
     // capacité `commands`, que l'organisation gouverne.
-    enabled: () => isOrganizationMode(),
+    enabled: always,
   },
   aiskilltools: {
     // Les vraies actions IA, exécutables. Distinctes de l'apprentissage :
@@ -172,7 +155,7 @@ export const SECTIONS_CONFIG = {
     component: OrganizationAiSkills,
     // Toute organisation : le catalogue vient des Organization Packages, qu'une
     // école et une entreprise publient de la même façon.
-    enabled: () => isOrganizationMode(),
+    enabled: always,
   },
   configuration: {
     labelKey: "sidebar.configuration",
@@ -215,22 +198,6 @@ export const SECTIONS_CONFIG = {
     campusLabelKey: undefined,
     icon: Users,
     component: MeetingSettings,
-    enabled: always,
-  },
-  personalization: {
-    labelKey: "sidebar.personalization",
-    campusLabelKey: undefined,
-    icon: Palette,
-    component: PersonalizationSettings,
-    enabled: always,
-    // En campus, la personnalisation vit dans Réglages (onglet dédié) :
-    // la navigation principale reste à quatre destinations.
-  },
-  account: {
-    labelKey: "sidebar.account",
-    campusLabelKey: undefined,
-    icon: CreditCard,
-    component: AccountSettings,
     enabled: always,
   },
   organization: {
@@ -335,24 +302,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // La barre latérale gérée vaut pour toute organisation — école comme
   // entreprise. Ce qui reste propre à l'une ou l'autre se décide entrée par
   // entrée, dans `SECTIONS_CONFIG.enabled`.
-  const organizationMode = isOrganizationMode();
   const organization = useOrganization();
   const { connection } = useOrganizationStatus();
-  // Learn se masque quand la capacité est fermée. La question posée est « cette
-  // capacité est-elle ouverte ? », pas « quelle édition est installée ? » : une
-  // organisation qui ferme Learn le ferme pour tout le monde, et Personal le
-  // garde sans qu'aucune condition d'édition n'ait à l'énoncer.
+  // Chaque entrée se masque quand l'organisation ferme la capacité qui la porte.
   const learningOpen = useCapability("learning");
-  // Même règle pour les Notes structurées : une organisation qui ferme la
-  // fonction la retire ; Nova Personal la garde.
   const notesOpen = useCapability("engineeringNotes");
-  // Styles, Prompts et Historique : du Core, fermés seulement quand
-  // l'organisation l'annonce. Nova Personal les garde toujours.
   const stylesOpen = useCapability("writingStyles");
   const promptsOpen = useCapability("prompts");
   const historyOpen = useCapability("history");
-  // Mode réunion : même règle. Une organisation qui n'en veut pas le ferme ;
-  // Nova Personal le garde, et le palier de licence y répond seul.
   const meetingOpen = useCapability("meeting");
   // Nova Commands et AI Skills : fermés quand l'organisation ferme la capacité
   // correspondante. Le serveur refusait déjà de les exécuter ; les laisser dans
@@ -361,141 +318,40 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const aiSkillsOpen = useCapability("aiSkills");
   const visible = (id: SidebarSection) =>
     (id !== "learn" || learningOpen) &&
-    (id !== "meeting" || !organizationMode || meetingOpen) &&
-    (id !== "notes" || !organizationMode || notesOpen) &&
-    (id !== "postprocessing" || !organizationMode || stylesOpen) &&
-    (id !== "prompts" || !organizationMode || promptsOpen) &&
-    (id !== "history" || !organizationMode || historyOpen) &&
-    (id !== "aiskills" || !organizationMode || commandsOpen) &&
-    (id !== "aiskilltools" || !organizationMode || aiSkillsOpen);
+    (id !== "meeting" || meetingOpen) &&
+    (id !== "notes" || notesOpen) &&
+    (id !== "postprocessing" || stylesOpen) &&
+    (id !== "prompts" || promptsOpen) &&
+    (id !== "history" || historyOpen) &&
+    (id !== "aiskills" || commandsOpen) &&
+    (id !== "aiskilltools" || aiSkillsOpen);
 
-  if (organizationMode) {
-    return (
-      <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
-        <div className="flex items-center gap-2.5 px-2.5 pb-4">
-          <HandyHand width={24} height={24} />
-          {/* eslint-disable-next-line i18next/no-literal-string */}
-          <span className="text-[15px] font-semibold tracking-[-0.01em] text-text">
-            Nova
-          </span>
-        </div>
+  return (
+    <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
+      <div className="flex items-center gap-2.5 px-2.5 pb-4">
+        <HandyHand width={24} height={24} />
+        {/* eslint-disable-next-line i18next/no-literal-string */}
+        <span className="text-[15px] font-semibold tracking-[-0.01em] text-text">
+          Nova
+        </span>
+      </div>
 
-        {/* Deux filtres, deux questions distinctes. `enabled` dit si l'entree
+      {/* Deux filtres, deux questions distinctes. `enabled` dit si l'entree
             existe pour ce poste — une ecole, une entreprise, toute
             organisation ; `visible` dit si la capacite qui la porte est
             ouverte. Learn passe le premier partout et se ferme sur le second
             quand la policy le decide. */}
-        {ORGANIZATION_PRIMARY.filter(
-          (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),
-        ).map((id) => {
-          const config = SECTIONS_CONFIG[id];
-          const Icon = config.icon;
-          return (
-            <NavItem
-              key={id}
-              label={t(config.campusLabelKey ?? config.labelKey)}
-              active={activeSection === id}
-              onClick={() => onSectionChange(id)}
-            >
-              <Icon
-                size={ICON_SIZE}
-                strokeWidth={ICON_STROKE}
-                className="shrink-0"
-              />
-            </NavItem>
-          );
-        })}
-
-        <div className="flex-1" />
-
-        {/* Bloc bas : établissement puis réglages, séparés des destinations
-            produit par un filet. Deux lignes compactes, jamais une carte. */}
-        <div className="pt-3 mt-1 border-t border-hairline flex flex-col gap-1">
-          {organization && (
-            <button
-              type="button"
-              onClick={() => onSectionChange("organization")}
-              aria-current={
-                activeSection === "organization" ? "page" : undefined
-              }
-              className={`flex w-full items-start gap-2.5 px-2.5 py-2 rounded-chip text-left transition-colors duration-[120ms] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                activeSection === "organization"
-                  ? "bg-mid-gray/12"
-                  : "hover:bg-mid-gray/8"
-              }`}
-            >
-              <Building2
-                size={ICON_SIZE}
-                strokeWidth={ICON_STROKE}
-                className="shrink-0 mt-0.5 text-text-secondary"
-              />
-              <span className="min-w-0 flex-1">
-                <span className="flex items-center gap-1.5">
-                  <span className="truncate text-[13px] font-medium text-text">
-                    {organization.name}
-                  </span>
-                  {/* Représentation unique du statut dans toute l'app. */}
-                  <span
-                    aria-hidden="true"
-                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                      connection === "connected"
-                        ? "bg-success"
-                        : connection === "local"
-                          ? "bg-warning"
-                          : "bg-mid-gray/50"
-                    }`}
-                  />
-                </span>
-                <span className="block truncate text-[11px] text-text-secondary mt-0.5">
-                  {connection === "local"
-                    ? t("organization.status.localActive")
-                    : t("organization.organization.managedBy", {
-                        organization: organization.shortName,
-                      })}
-                </span>
-              </span>
-            </button>
-          )}
-
-          <NavItem
-            label={t("sidebar.settings")}
-            active={activeSection === "configuration"}
-            onClick={() => onSectionChange("configuration")}
-          >
-            <Settings
-              size={ICON_SIZE}
-              strokeWidth={ICON_STROKE}
-              className="shrink-0"
-            />
-          </NavItem>
-        </div>
-      </nav>
-    );
-  }
-
-  // ── Mode personnel : liste et ordre inchangés, seule la présentation suit
-  // la planche de fondation (état actif sobre, tokens, icônes homogènes).
-  const availableSections = Object.entries(SECTIONS_CONFIG)
-    .filter(
-      ([id, config]) =>
-        config.enabled(settings) && visible(id as SidebarSection),
-    )
-    .map(([id, config]) => ({ id: id as SidebarSection, ...config }));
-
-  return (
-    <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
-      <div className="px-2.5 pb-4">
-        <HandyTextLogo width={110} />
-      </div>
-
-      {availableSections.map((section) => {
-        const Icon = section.icon;
+      {ORGANIZATION_PRIMARY.filter(
+        (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),
+      ).map((id) => {
+        const config = SECTIONS_CONFIG[id];
+        const Icon = config.icon;
         return (
           <NavItem
-            key={section.id}
-            label={t(section.labelKey)}
-            active={activeSection === section.id}
-            onClick={() => onSectionChange(section.id)}
+            key={id}
+            label={t(config.campusLabelKey ?? config.labelKey)}
+            active={activeSection === id}
+            onClick={() => onSectionChange(id)}
           >
             <Icon
               size={ICON_SIZE}
@@ -505,6 +361,68 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </NavItem>
         );
       })}
+
+      <div className="flex-1" />
+
+      {/* Bloc bas : établissement puis réglages, séparés des destinations
+            produit par un filet. Deux lignes compactes, jamais une carte. */}
+      <div className="pt-3 mt-1 border-t border-hairline flex flex-col gap-1">
+        {organization && (
+          <button
+            type="button"
+            onClick={() => onSectionChange("organization")}
+            aria-current={activeSection === "organization" ? "page" : undefined}
+            className={`flex w-full items-start gap-2.5 px-2.5 py-2 rounded-chip text-left transition-colors duration-[120ms] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+              activeSection === "organization"
+                ? "bg-mid-gray/12"
+                : "hover:bg-mid-gray/8"
+            }`}
+          >
+            <Building2
+              size={ICON_SIZE}
+              strokeWidth={ICON_STROKE}
+              className="shrink-0 mt-0.5 text-text-secondary"
+            />
+            <span className="min-w-0 flex-1">
+              <span className="flex items-center gap-1.5">
+                <span className="truncate text-[13px] font-medium text-text">
+                  {organization.name}
+                </span>
+                {/* Représentation unique du statut dans toute l'app. */}
+                <span
+                  aria-hidden="true"
+                  className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                    connection === "connected"
+                      ? "bg-success"
+                      : connection === "local"
+                        ? "bg-warning"
+                        : "bg-mid-gray/50"
+                  }`}
+                />
+              </span>
+              <span className="block truncate text-[11px] text-text-secondary mt-0.5">
+                {connection === "local"
+                  ? t("organization.status.localActive")
+                  : t("organization.organization.managedBy", {
+                      organization: organization.shortName,
+                    })}
+              </span>
+            </span>
+          </button>
+        )}
+
+        <NavItem
+          label={t("sidebar.settings")}
+          active={activeSection === "configuration"}
+          onClick={() => onSectionChange("configuration")}
+        >
+          <Settings
+            size={ICON_SIZE}
+            strokeWidth={ICON_STROKE}
+            className="shrink-0"
+          />
+        </NavItem>
+      </div>
     </nav>
   );
 };

@@ -21,16 +21,14 @@ import "./App.css";
 import AccessibilityPermissions from "./components/AccessibilityPermissions";
 import AppShell from "./components/shell/AppShell";
 import NovaCommandsHost from "./components/commands/NovaCommandsHost";
-import Onboarding, {
+import {
   AccessibilityOnboarding,
-  EditionChoice,
   WritingStylesIntroStep,
   OrganizationOnboarding,
   CustomizeStep,
   SmartSetupStep,
   TutorialOnboarding,
   VoiceCalibrationStep,
-  WelcomeStep,
 } from "./components/onboarding";
 import { SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
@@ -50,7 +48,6 @@ import {
   markAttentionSeen,
   showAttentionToast,
 } from "@/lib/attentionNotifications";
-import { isOrganizationMode } from "@/lib/mode";
 import { useOrganizationLocalFallback } from "@/hooks/useOrganizationLocalFallback";
 import { useOrganizationSuspension } from "@/hooks/useOrganizationSuspension";
 import { OrganizationSuspended } from "@/components/organization/OrganizationSuspended";
@@ -67,7 +64,6 @@ import {
   StartupLoading,
   StartupStalled,
 } from "./components/startup/StartupScreen";
-import { chosenEdition, declaresEdition } from "@/lib/organization";
 import { clearOrganizationSession } from "@/lib/organizationSession";
 
 // Le parcours de première ouverture n'est plus une suite figée : il est
@@ -114,15 +110,6 @@ function App() {
           : i18n.language,
   });
 
-  // Un paquet unifié doit savoir s'il est personnel ou d'organisation avant
-  // que quoi que ce soit d'autre ne soit calculé : le parcours d'accueil fige
-  // sa liste d'étapes, et l'étape de connexion Organization n'y entrerait plus
-  // après coup. `editionSettled` ne bouge qu'une fois, quand l'utilisateur
-  // répond. Un paquet qui déclare son édition est déjà réglé, donc ne voit
-  // jamais cet écran.
-  const [editionSettled, setEditionSettled] = useState(
-    () => declaresEdition() || chosenEdition() !== null,
-  );
   // Le paquet Lab n'a qu'une porte d'entrée, et elle ne dépend d'aucune sonde.
   // L'état est lu de façon synchrone : l'écran doit exister à la première
   // frame, pas après un aller-retour asynchrone.
@@ -196,7 +183,6 @@ function App() {
   // parcours de connexion ne se remonte pas, donc c'est l'application qui doit
   // amorcer l'identité, les policies et le catalogue de packages partagés.
   useEffect(() => {
-    if (!isOrganizationMode()) return;
     void refreshOrganizationConfig();
   }, []);
 
@@ -213,11 +199,9 @@ function App() {
 
   // En mode campus, on informe le backend pour qu'il route les dictées vers le serveur.
   useEffect(() => {
-    if (isOrganizationMode()) {
-      commands.setOrganizationMode(true).catch((e) => {
-        console.warn("Failed to set campus mode:", e);
-      });
-    }
+    commands.setOrganizationMode(true).catch((e) => {
+      console.warn("Failed to set campus mode:", e);
+    });
   }, []);
 
   // Initialize RTL direction when language changes
@@ -396,48 +380,12 @@ function App() {
     };
   }, []);
 
-  // Le moteur en ligne est réservé à Nova Ultra : la reformulation a été
-  // ignorée silencieusement côté Rust — on explique au lieu de laisser croire
-  // à un bug. Inutile en mode campus (tout est débloqué par l'établissement).
-  useEffect(() => {
-    if (isOrganizationMode()) return;
-    const unlisten = listen("online-engine-locked", () => {
-      showAttentionToast("info", t("license.onlineEngineLockedTitle"), {
-        description: t("license.onlineEngineLocked"),
-      });
-    });
-    return () => {
-      unlisten.then((fn) => fn());
-    };
-  }, [t]);
-
   // Le micro choisi dans les réglages n'existe plus : le micro par défaut est
   // utilisé à la place. Sans ce toast, le repli était invisible.
   useEffect(() => {
     const unlisten = listen<string>("microphone-not-found", (event) => {
       showAttentionToast("warning", t("errors.microphoneNotFoundTitle"), {
         description: t("errors.microphoneNotFound", { name: event.payload }),
-      });
-    });
-    return () => {
-      unlisten.then((fn) => fn());
-    };
-  }, [t]);
-
-  // Quota gratuit de reformulations épuisé : le texte a été collé brut côté
-  // Rust. On informe et on propose de passer à un palier supérieur. Inutile en
-  // mode campus (pas de quota).
-  useEffect(() => {
-    if (isOrganizationMode()) return;
-    const unlisten = listen("quota-blocked", () => {
-      showAttentionToast("error", t("quota.blockedTitle"), {
-        description: t("quota.blockedDescription"),
-        action: {
-          label: t("quota.upgrade"),
-          onClick: () => {
-            void openUrl("https://buy.stripe.com/9B68wO1Wif1g3Kfg7YefC09");
-          },
-        },
       });
     });
     return () => {
@@ -577,7 +525,6 @@ function App() {
     isLabBuild: IS_LAB_BUILD,
     labEnrolled,
     isFirstRun,
-    editionSettled,
     readinessLoaded: readiness.loaded,
     flowInitialized: flow.initialized,
     elapsedMs: startupStalled ? STARTUP_STALL_MS : 0,
@@ -623,23 +570,6 @@ function App() {
     );
   }
 
-  // Première ouverture d'un paquet qui ne déclare pas son édition : personnel
-  // ou d'organisation ? La question précède le parcours, elle n'en fait pas
-  // partie, et choisir « Personnel » n'émet aucune requête.
-  //
-  // Elle n'est jamais posée à quelqu'un qui utilisait déjà Nova. Sans cette
-  // condition, une mise à jour ferait apparaître un écran de choix devant un
-  // utilisateur installé, pour une question dont la réponse est déjà connue :
-  // il utilisait un poste personnel, et c'est le repli.
-  if (screen === "edition") {
-    return (
-      <>
-        <EditionChoice onChosen={() => setEditionSettled(true)} />
-        {toaster}
-      </>
-    );
-  }
-
   // Select the content for the current step. The Toaster is rendered once, in a
   // stable wrapper around this node, so crossing between onboarding steps and
   // the main app never remounts it (which would drop any in-flight toast).
@@ -652,17 +582,6 @@ function App() {
         flowContext="onboarding"
         onComplete={() => {
           refreshOrganizationStatus();
-          flow.next();
-        }}
-      />
-    );
-  } else if (flow.current === "welcome") {
-    content = <WelcomeStep onContinue={flow.next} />;
-  } else if (flow.current === "model") {
-    content = (
-      <Onboarding
-        onModelSelected={() => {
-          readiness.refresh();
           flow.next();
         }}
       />

@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova không thể phân tích lần đọc này. Hãy đọc lại câu."
     }
   },
-  "modelSelector": {
-    "custom": "Tùy chỉnh",
-    "streaming": "Truyền trực tiếp",
-    "active": "Đang hoạt động",
-    "switching": "Đang chuyển...",
-    "noModelsAvailable": "Không có mô hình nào",
-    "verifying": "Đang xác minh {{modelName}}...",
-    "verifyingGeneric": "Đang xác minh...",
-    "extracting": "Đang giải nén {{modelName}}...",
-    "extractingMultiple": "Đang giải nén {{count}} mô hình...",
-    "extractingGeneric": "Đang giải nén...",
-    "downloading": "Đang tải xuống {{percentage}}%",
-    "downloadingMultiple": "Đang tải xuống {{count}} mô hình...",
-    "modelReady": "Mô Hình Sẵn Sàng",
-    "loading": "Đang tải {{modelName}}...",
-    "loadingGeneric": "Đang tải...",
-    "modelError": "Lỗi Mô Hình",
-    "modelUnloaded": "Mô Hình Đã Gỡ",
-    "noModelDownloadRequired": "Chưa Có Mô Hình - Cần Tải Xuống",
-    "deleteModel": "Xóa {{modelName}}",
-    "downloadSpeed": "{{speed}} MB/s",
-    "capabilities": {
-      "languageSelection": "Hỗ trợ nhiều ngôn ngữ đầu vào",
-      "languageCount": "{{total}} ngôn ngữ",
-      "translation": "Có thể dịch sang tiếng Anh",
-      "translate": "Dịch sang tiếng Anh",
-      "singleLanguage": "Chỉ hỗ trợ ngôn ngữ này",
-      "languageOnly": "Chỉ {{language}}",
-      "streaming": "Hiển thị phiên âm trực tiếp khi bạn nói"
-    },
-    "cancel": "Hủy",
-    "cancelDownload": "Hủy tải xuống",
-    "legacy": "Cũ"
-  },
   "settings": {
     "modelSettings": {
       "title": "Cài đặt {{model}}"
@@ -574,7 +540,6 @@
         "cancel": "Hủy",
         "selectToEdit": "Chọn một prompt ở trên để xem và chỉnh sửa chi tiết.",
         "createFirst": "Nhấn 'Tạo Prompt mới' ở trên để tạo prompt xử lý sau đầu tiên của bạn.",
-        "ultraOnly": "Tạo và chỉnh sửa Phong cách yêu cầu Nova Ultra.",
         "badgeAuto": "Tự động",
         "badgeBuiltin": "Tích hợp",
         "badgeCustom": "Tùy chỉnh",
@@ -883,74 +848,10 @@
     "view": "Xem điểm mới",
     "title": "Điểm mới trong Nova v{{version}}"
   },
-  "quota": {
-    "lifetimeUsage": "Lượt viết lại Turbo miễn phí",
-    "count": "{{used}} / {{limit}} lượt viết lại",
-    "blockedInline": "Bạn đã dùng hết tất cả lượt viết lại Turbo miễn phí — đọc chính tả vẫn không giới hạn, văn bản được dán nguyên trạng. Nâng cấp lên Turbo không giới hạn.",
-    "lifetimeNote": "Ưu đãi một lần, không gia hạn.",
-    "blockedTitle": "Đã dùng hết lượt viết lại Turbo miễn phí",
-    "blockedDescription": "Bạn đã dùng hết 20 lượt viết lại Turbo miễn phí. Đọc chính tả vẫn không giới hạn — văn bản của bạn được dán nguyên trạng. Nâng cấp lên Nova Ultra để có Turbo không giới hạn.",
-    "upgrade": "Đăng ký"
-  },
-  "weekStat": {
-    "minutes_one": "Tiết kiệm ≈ {{count}} phút gõ phím",
-    "minutes_other": "Tiết kiệm ≈ {{count}} phút gõ phím",
-    "words_one": "Đã đọc chính tả {{count}} từ trong tuần này",
-    "words_other": "Đã đọc chính tả {{count}} từ trong tuần này"
-  },
-  "performanceOptimizer": {
-    "title": "Tối ưu tự động",
-    "description": "Tinh chỉnh Nova cho máy tính này và kiểm tra quy trình chép lời thực tế.",
-    "autoLabel": "Chế độ hiệu năng tự động",
-    "autoDescription": "Chọn thiết lập tăng tốc và bộ nhớ mô hình an toàn dựa trên RAM, CPU và GPU tương thích của bạn.",
-    "diagnosticsDescription": "Kiểm tra micrô, mô hình, nhà cung cấp viết lại, bộ nhớ và tăng tốc.",
-    "run": "Chạy chẩn đoán",
-    "running": "Đang kiểm tra…",
-    "profile": "Hồ sơ",
-    "memory": "Bộ nhớ",
-    "cpu": "Luồng CPU",
-    "acceleration": "Tăng tốc",
-    "latency": "Độ trễ đo được",
-    "median": "trung vị {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Mở cài đặt micrô",
-    "retryGpu": "Thử lại GPU sau khi khởi động lại",
-    "classes": {
-      "low_memory": "Ít bộ nhớ",
-      "balanced": "Cân bằng",
-      "performance": "Hiệu năng"
-    }
-  },
   "voiceCommands": {
     "title": "Lệnh giọng nói",
     "description": "Hiểu “đoạn mới”, “dòng mới”, “dấu hỏi” và các lệnh Nova rõ ràng cho ghi chú, danh sách, cuộc họp hoặc hủy lượt đọc chính tả hiện tại.",
     "added": "Đã thêm {{word}} vào từ điển cá nhân"
-  },
-  "license": {
-    "remove": "Gỡ bỏ",
-    "upgradeToUltra": "Nâng cấp lên Nova Ultra",
-    "requiresTier": "Yêu cầu {{tier}}",
-    "active": "Giấy phép đang hoạt động",
-    "trial": {
-      "badge": "Dùng thử Pro",
-      "badgeDays": "Dùng thử Pro · {{count}} ng",
-      "title": "Dùng thử Nova Pro",
-      "description_one": "Còn {{count}} ngày dùng thử.",
-      "description_other": "Còn {{count}} ngày dùng thử.",
-      "subscribe": "Đăng ký Nova Pro",
-      "expiredTitle": "Thời gian dùng thử Nova Pro đã kết thúc",
-      "expiredBody": "Bạn đã quay lại gói Nova Free. Đăng ký Nova Pro để lấy lại đầy đủ các Kiểu viết lại và hồ sơ hiệu năng.",
-      "close": "Đóng",
-      "toastTitle": "Đang dùng thử Nova Pro",
-      "toastDescription_one": "Còn {{count}} ngày — Bao gồm Turbo và tất cả các Kiểu.",
-      "toastDescription_other": "Còn {{count}} ngày — Bao gồm Turbo và tất cả các Kiểu."
-    },
-    "manageSubscription": "Quản lý gói đăng ký của tôi",
-    "comingSoon": "Sắp ra mắt",
-    "featureColumn": "Tính năng",
-    "yourPlan": "Gói của bạn",
-    "onlineEngineLockedTitle": "Turbo yêu cầu gói Nova",
-    "onlineEngineLocked": "Công cụ trực tuyến dành riêng cho Nova Pro và Ultra — văn bản đã được dán mà không diễn đạt lại."
   },
   "lexiconLearning": {
     "title": "Học từ vựng của tôi",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "Các kiểu này do tổ chức của bạn phát hành. Không thể chỉnh sửa tại đây.",
     "disabledByOrganization": "Đã bị tổ chức của bạn tắt",
-    "disabledByOrganizationHint": "Nova dùng một kiểu khác cho các bản đọc chính tả của bạn."
+    "disabledByOrganizationHint": "Nova dùng một kiểu khác cho các bản đọc chính tả của bạn.",
+    "personalClosed": "Tổ chức của bạn không cho phép tạo lối viết."
   },
   "history": {
     "subtitle": "Mọi thứ bạn đã đọc chính tả với Nova.",

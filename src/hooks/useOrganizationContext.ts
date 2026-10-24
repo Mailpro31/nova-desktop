@@ -34,10 +34,10 @@ export function useOrganizationContext(): OrganizationContext {
         organizationType,
         // Tant que la première lecture n'a pas eu lieu, on ne présente pas la
         // politique par défaut comme si elle venait de l'établissement.
-        campus: edition === "organization" && initialized ? campus : null,
+        campus: initialized ? campus : null,
         // Ordre de priorité : identité annoncée par le serveur, puis
         // compatibilité Campus, puis repli d'affichage. Jamais l'inverse.
-        server: edition === "organization" ? serverIdentity : null,
+        server: serverIdentity,
       }),
     [edition, organizationType, initialized, campus, serverIdentity],
   );

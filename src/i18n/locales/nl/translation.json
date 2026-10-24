@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova kon deze lezing niet analyseren. Lees de zin opnieuw."
     }
   },
-  "modelSelector": {
-    "custom": "Aangepast",
-    "legacy": "Klassiek",
-    "streaming": "Streaming",
-    "active": "Actief",
-    "switching": "Wisselen...",
-    "noModelsAvailable": "Geen modellen beschikbaar",
-    "verifying": "Verifiëren van {{modelName}}...",
-    "verifyingGeneric": "Verifiëren...",
-    "extracting": "Uitpakken van {{modelName}}...",
-    "extractingMultiple": "Uitpakken van {{count}} modellen...",
-    "extractingGeneric": "Uitpakken...",
-    "downloading": "Downloaden {{percentage}}%",
-    "downloadingMultiple": "Downloaden van {{count}} modellen...",
-    "modelReady": "Model gereed",
-    "loading": "Laden van {{modelName}}...",
-    "loadingGeneric": "Laden...",
-    "modelError": "Modelfout",
-    "modelUnloaded": "Model ontladen",
-    "noModelDownloadRequired": "Geen model - Download vereist",
-    "deleteModel": "{{modelName}} verwijderen",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "Annuleren",
-    "cancelDownload": "Download annuleren",
-    "capabilities": {
-      "languageSelection": "Ondersteunt meerdere invoertalen",
-      "singleLanguage": "Ondersteunt alleen deze taal",
-      "languageCount": "{{total}} talen",
-      "languageOnly": "Alleen {{language}}",
-      "translation": "Kan vertalen naar het Engels",
-      "translate": "Vertalen",
-      "streaming": "Toont live transcriptie tijdens het spreken"
-    }
-  },
   "settings": {
     "modelSettings": {
       "title": "Instellingen voor {{model}}"
@@ -574,7 +540,6 @@
         "cancel": "Annuleren",
         "selectToEdit": "Selecteer hierboven een prompt om de details te bekijken en te bewerken.",
         "createFirst": "Klik hierboven op 'Nieuwe prompt maken' om je eerste naverwerkingsprompt aan te maken.",
-        "ultraOnly": "Voor het maken en bewerken van Stijlen is Nova Ultra vereist.",
         "badgeAuto": "Automatisch",
         "badgeBuiltin": "Ingebouwd",
         "badgeCustom": "Eigen",
@@ -883,74 +848,10 @@
     "dictationLimitWarning": "Stopt over {{seconds}} s (limiet van de organisatie)",
     "unclear": "Ik heb het niet goed gehoord, dus er is niets geplakt. Spreek iets luider of dichter bij de microfoon."
   },
-  "quota": {
-    "lifetimeUsage": "Gratis Turbo-herformuleringen",
-    "count": "{{used}} / {{limit}} herformuleringen",
-    "blockedInline": "Je hebt al je gratis Turbo-herformuleringen gebruikt — dicteren blijft onbeperkt, de tekst wordt ongewijzigd geplakt. Upgrade naar onbeperkte Turbo.",
-    "lifetimeNote": "Eenmalig aanbod, wordt niet vernieuwd.",
-    "blockedTitle": "Gratis Turbo-herformuleringen op",
-    "blockedDescription": "Je hebt je 20 gratis Turbo-herformuleringen gebruikt. Dicteren blijft onbeperkt — je tekst wordt ongewijzigd geplakt. Ga over op Nova Ultra voor onbeperkte Turbo.",
-    "upgrade": "Abonneren"
-  },
-  "weekStat": {
-    "minutes_one": "≈ {{count}} minuut typen bespaard",
-    "minutes_other": "≈ {{count}} minuten typen bespaard",
-    "words_one": "{{count}} woord gedicteerd deze week",
-    "words_other": "{{count}} woorden gedicteerd deze week"
-  },
-  "performanceOptimizer": {
-    "title": "Automatische optimalisatie",
-    "description": "Stem Nova af op deze computer en bekijk de werkelijke transcriptieketen.",
-    "autoLabel": "Automatische prestatiemodus",
-    "autoDescription": "Kiest veilige instellingen voor versnelling en modelgeheugen op basis van uw RAM, CPU en compatibele GPU's.",
-    "diagnosticsDescription": "Controleer de microfoon, het model, de herformuleringsprovider, het geheugen en de versnelling.",
-    "run": "Diagnose uitvoeren",
-    "running": "Bezig met controleren…",
-    "profile": "Profiel",
-    "memory": "Geheugen",
-    "cpu": "CPU-threads",
-    "acceleration": "Versnelling",
-    "latency": "Gemeten latentie",
-    "median": "mediaan {{value}} ms",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "Microfooninstellingen openen",
-    "retryGpu": "GPU opnieuw proberen na herstart",
-    "classes": {
-      "low_memory": "Weinig geheugen",
-      "balanced": "Gebalanceerd",
-      "performance": "Prestaties"
-    }
-  },
   "voiceCommands": {
     "title": "Spraakopdrachten",
     "description": "Begrijpt ‘nieuwe alinea’, ‘nieuwe regel’, ‘vraagteken’ en expliciete Nova-opdrachten voor notities, lijsten, vergaderingen of het annuleren van het huidige dictaat.",
     "added": "{{word}} is toegevoegd aan het persoonlijke woordenboek"
-  },
-  "license": {
-    "remove": "Verwijderen",
-    "upgradeToUltra": "Upgraden naar Nova Ultra",
-    "requiresTier": "Vereist {{tier}}",
-    "active": "Licentie actief",
-    "trial": {
-      "badge": "Pro-proefperiode",
-      "badgeDays": "Pro-proef · {{count}} d",
-      "title": "Nova Pro-proefperiode",
-      "description_one": "Nog {{count}} dag tot het einde van de proefperiode.",
-      "description_other": "Nog {{count}} dagen tot het einde van de proefperiode.",
-      "subscribe": "Abonneren op Nova Pro",
-      "expiredTitle": "Uw Nova Pro-proefperiode is afgelopen",
-      "expiredBody": "U bent terug op het Nova Free-niveau. Abonneer u op Nova Pro om alle Styles en vermogensprofielen terug te krijgen.",
-      "close": "Sluiten",
-      "toastTitle": "Nova Pro-proefperiode actief",
-      "toastDescription_one": "Nog {{count}} dag — Turbo en alle Styles inbegrepen.",
-      "toastDescription_other": "Nog {{count}} dagen — Turbo en alle Styles inbegrepen."
-    },
-    "manageSubscription": "Mijn abonnement beheren",
-    "comingSoon": "Binnenkort beschikbaar",
-    "featureColumn": "Functie",
-    "yourPlan": "Je abonnement",
-    "onlineEngineLockedTitle": "Turbo vereist een Nova-abonnement",
-    "onlineEngineLocked": "De online engine is voorbehouden aan Nova Pro en Ultra — je tekst is zonder herformulering geplakt."
   },
   "lexiconLearning": {
     "title": "Mijn woordenschat leren",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "Deze stijlen worden gepubliceerd door je organisatie. Ze kunnen hier niet worden bewerkt.",
     "disabledByOrganization": "Uitgeschakeld door je organisatie",
-    "disabledByOrganizationHint": "Nova gebruikt een andere stijl voor je dictaten."
+    "disabledByOrganizationHint": "Nova gebruikt een andere stijl voor je dictaten.",
+    "personalClosed": "Uw organisatie staat het maken van stijlen niet toe."
   },
   "history": {
     "subtitle": "Alles wat u met Nova hebt gedicteerd.",

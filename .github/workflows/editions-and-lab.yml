@@ -39,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        edition: [personal, campus]
+        edition: [campus]
     steps:
       - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2

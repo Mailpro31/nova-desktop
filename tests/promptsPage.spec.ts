@@ -68,8 +68,6 @@ const open = async (
 };
 
 test.describe("the Prompts page", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("lists the prompts Nova wrote, and nothing else", async ({ page }) => {
     await open(page, [
       dictation(

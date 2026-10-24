@@ -58,33 +58,6 @@ const ORGANIZATION_ONLY: CapabilityId[] = [
 // qu'une policy peut fermer. Personal la garde toujours ; une organisation la
 // reçoit ouverte et peut la refermer.
 
-describe("Édition Personal", () => {
-  const context = resolveOrganizationContext({ edition: "personal" });
-
-  test("ne fabrique aucune organisation", () => {
-    expect(context.edition).toBe("personal");
-    expect(context.organization).toBeNull();
-    expect(context.member).toBeNull();
-  });
-
-  test("garde tout le Nova Core", () => {
-    for (const capability of CORE_CAPABILITIES) {
-      expect(can(context, capability)).toBe(true);
-    }
-  });
-
-  test("n'ouvre aucune surface d'organisation", () => {
-    for (const capability of ORGANIZATION_ONLY) {
-      expect(can(context, capability)).toBe(false);
-    }
-  });
-
-  test("garde Learn, qui appartient au Core", () => {
-    // Learn n'est pas une surface d'organisation : il vaut sans serveur.
-    expect(can(context, "learning")).toBe(true);
-  });
-});
-
 describe("Campus hérité", () => {
   test("est une organisation de type éducation", () => {
     const context = campusOrganizationContext();

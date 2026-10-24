@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { commands } from "@/bindings";
-import { isOrganizationMode } from "@/lib/mode";
 import { showAttentionToast } from "@/lib/attentionNotifications";
 import {
   changesBetween,
@@ -93,8 +92,6 @@ export function useOrganizationUpdates(): void {
   const lastChanges = useRef<ChangeMarkers | null>(null);
 
   useEffect(() => {
-    if (!isOrganizationMode()) return;
-
     let stopped = false;
 
     const announce = (changes: OrganizationChange[]) => {

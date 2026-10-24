@@ -7,7 +7,6 @@ import { useHomeState, type HeroSituation } from "./useHomeState";
 import { OrganizationFileTranscribeModal } from "./OrganizationFileTranscribeModal";
 import { Button } from "../../ui/Button";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
-import { isOrganizationMode } from "@/lib/mode";
 import { announcedTypeFrom } from "@/lib/organization/wording";
 import { useOrganizationStore } from "@/stores/organizationStore";
 import { homeEngineLabelKey } from "./engineLabel";
@@ -47,7 +46,6 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
     ),
   );
   const [fileModalOpen, setFileModalOpen] = useState(false);
-  const organizationMode = isOrganizationMode();
 
   const compact = !home.isNewUser;
 
@@ -153,31 +151,29 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
       {/* Transcription de fichier : seule porte d'entrée de cette capacité
           dans tout le produit, donc elle reste ici — ce n'est pas un raccourci
           redondant vers une destination de la barre latérale. */}
-      {organizationMode && (
-        <section className="mt-[32px] border-t border-hairline pt-[20px]">
-          <button
-            type="button"
-            onClick={() => setFileModalOpen(true)}
-            className="flex w-full items-center gap-3 rounded-chip px-2 py-2 text-start transition-colors duration-[140ms] cursor-pointer hover:bg-mid-gray/8 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            <FileAudio
-              size={17}
-              strokeWidth={1.75}
-              className="shrink-0 text-text-secondary"
-              aria-hidden="true"
-            />
-            <span className="flex-1 text-sm text-text">
-              {t("organization.files.actionButton")}
-            </span>
-            <ChevronRight
-              size={15}
-              strokeWidth={2}
-              className="shrink-0 text-text-secondary"
-              aria-hidden="true"
-            />
-          </button>
-        </section>
-      )}
+      <section className="mt-[32px] border-t border-hairline pt-[20px]">
+        <button
+          type="button"
+          onClick={() => setFileModalOpen(true)}
+          className="flex w-full items-center gap-3 rounded-chip px-2 py-2 text-start transition-colors duration-[140ms] cursor-pointer hover:bg-mid-gray/8 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <FileAudio
+            size={17}
+            strokeWidth={1.75}
+            className="shrink-0 text-text-secondary"
+            aria-hidden="true"
+          />
+          <span className="flex-1 text-sm text-text">
+            {t("organization.files.actionButton")}
+          </span>
+          <ChevronRight
+            size={15}
+            strokeWidth={2}
+            className="shrink-0 text-text-secondary"
+            aria-hidden="true"
+          />
+        </button>
+      </section>
 
       <OrganizationFileTranscribeModal
         isOpen={fileModalOpen}

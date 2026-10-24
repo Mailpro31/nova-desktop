@@ -34,8 +34,6 @@ export const STARTUP_STALL_MS = 8_000;
 export type StartupScreen =
   /** Écran d'invitation Lab : immédiat, sans aucune sonde. */
   | "lab"
-  /** Choix personnel / organisation, pour un paquet qui ne déclare rien. */
-  | "edition"
   /** Sondes en cours, dans les temps. */
   | "loading"
   /** Sondes silencieuses trop longtemps : message compréhensible. */
@@ -50,8 +48,6 @@ export interface StartupProbes {
   labEnrolled: boolean;
   /** `null` tant qu'on ignore s'il s'agit d'une première ouverture. */
   isFirstRun: boolean | null;
-  /** Le paquet déclare son édition, ou l'utilisateur a répondu. */
-  editionSettled: boolean;
   /** Toutes les sondes système ont répondu. */
   readinessLoaded: boolean;
   /** La liste des étapes du parcours est arrêtée. */
@@ -74,7 +70,6 @@ function waiting(elapsedMs: number): StartupScreen {
 export function startupScreen(probes: StartupProbes): StartupScreen {
   if (probes.isLabBuild && !probes.labEnrolled) return "lab";
   if (probes.isFirstRun === null) return waiting(probes.elapsedMs);
-  if (probes.isFirstRun && !probes.editionSettled) return "edition";
   if (!probes.readinessLoaded || !probes.flowInitialized) {
     return waiting(probes.elapsedMs);
   }

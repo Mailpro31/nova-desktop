@@ -30,8 +30,6 @@ const nav = (page: import("@playwright/test").Page) =>
   page.getByRole("navigation");
 
 test.describe("app categories follow the organization", () => {
-  test.skip(process.env.VITE_NOVA_MODE !== "campus", "Campus build only");
-
   test("closed categories leave the sidebar", async ({ page }) => {
     await mockTauri(page, {
       session,

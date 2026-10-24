@@ -21,8 +21,8 @@
  * déduit un `SecurityRole` d'un `MemberType`, d'un groupe ou d'une adresse.
  */
 
-/** Ce que le produit est pour cet utilisateur : un outil personnel, ou l'outil d'une organisation. */
-export type Edition = "personal" | "organization";
+/** Nova n'existe plus qu'en édition d'organisation (Nova personnel supprimé le 21/10/2026). */
+export type Edition = "organization";
 
 /** Nature de l'organisation. `business` est déclaré mais aucune UI ne l'expose encore. */
 export type OrganizationType = "education" | "business";

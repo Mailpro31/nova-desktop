@@ -4,7 +4,6 @@ import NovaCommandPalette from "./NovaCommandPalette";
 import { useOrganizationStatus } from "../../hooks/useOrganizationStatus";
 import { useSettings } from "../../hooks/useSettings";
 import { events, type SelectionCapture } from "@/bindings";
-import { isOrganizationMode } from "@/lib/mode";
 import {
   clientCommandMessage,
   commandMessage,
@@ -37,8 +36,7 @@ export const NovaCommandsHost: React.FC = () => {
   const { session, connection } = useOrganizationStatus();
   const [state, setState] = useState<PaletteState | null>(null);
 
-  const enabled =
-    isOrganizationMode() && (getSetting("nova_commands_enabled") ?? false);
+  const enabled = getSetting("nova_commands_enabled") ?? false;
 
   useEffect(() => {
     if (!enabled) return;

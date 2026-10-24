@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { OrganizationConnectionSettings } from "../organization/OrganizationConnectionSettings";
-import { GeneralSettings } from "../general/GeneralSettings";
 import {
   OrganizationGeneralSettings,
   OrganizationPersonalizationSection,
@@ -14,24 +13,9 @@ import { ThemeSelector } from "../ThemeSelector";
 import { ReadingComfortSettings } from "../ReadingComfortSettings";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { PageHeader } from "../../shell/PageHeader";
-import { ModelsSettings } from "../models/ModelsSettings";
-import { AdvancedSettings } from "../advanced/AdvancedSettings";
 import { PersonalizationSettings } from "../personalization/PersonalizationSettings";
-import { isOrganizationMode } from "@/lib/mode";
 
-type ConfigTab =
-  | "general"
-  | "voice"
-  | "performance"
-  | "advanced"
-  | "personalization"
-  | PersonalizationSection;
-
-const ALL_TABS: { id: ConfigTab; labelKey: string }[] = [
-  { id: "general", labelKey: "sidebar.general" },
-  { id: "performance", labelKey: "sidebar.models" },
-  { id: "advanced", labelKey: "sidebar.advanced" },
-];
+type ConfigTab = "general" | "voice" | "advanced" | PersonalizationSection;
 
 /**
  * Des catégories nommées d'après ce que l'utilisateur cherche, pas d'après
@@ -66,8 +50,7 @@ const CAMPUS_TABS: { id: ConfigTab; labelKey: string }[] = [
  */
 export const ConfigurationSettings: React.FC = () => {
   const { t } = useTranslation();
-  const organizationMode = isOrganizationMode();
-  const tabs = organizationMode ? CAMPUS_TABS : ALL_TABS;
+  const tabs = CAMPUS_TABS;
   const [selectedTab, setTab] = useState<ConfigTab>("general");
   // Une fonction que l'organisation referme pendant qu'on la consulte ne reste
   // pas affichée : on revient sur Général.
@@ -111,8 +94,7 @@ export const ConfigurationSettings: React.FC = () => {
         </div>
       )}
 
-      {tab === "general" &&
-        (organizationMode ? <OrganizationGeneralTab /> : <GeneralSettings />)}
+      {tab === "general" && <OrganizationGeneralTab />}
       {tab === "voice" && (
         <div className="space-y-5">
           <OrganizationGeneralSettings />
@@ -120,14 +102,7 @@ export const ConfigurationSettings: React.FC = () => {
           <OrganizationPersonalizationSection section="timetable" />
         </div>
       )}
-      {tab === "performance" && <ModelsSettings />}
-      {tab === "advanced" &&
-        (organizationMode ? (
-          <OrganizationAdvancedSections />
-        ) : (
-          <AdvancedSettings />
-        ))}
-      {tab === "personalization" && <PersonalizationSettings />}
+      {tab === "advanced" && <OrganizationAdvancedSections />}
       {tab in PERSONALIZATION_SECTIONS && (
         <OrganizationPersonalizationSection
           section={tab as PersonalizationSection}
@@ -152,7 +127,7 @@ const OrganizationGeneralTab: React.FC = () => {
       </SettingsGroup>
       <ReadingComfortSettings />
       {/* La bulle : son apparence et quand elle s'affiche. */}
-      <PersonalizationSettings embedded />
+      <PersonalizationSettings />
       {/* Toujours rendu, lié ou non : c'est la seule surface d'où l'on peut
           rattacher un compte, et la cacher tant qu'aucune organisation
           n'existe la rendait inatteignable au moment où elle sert. */}

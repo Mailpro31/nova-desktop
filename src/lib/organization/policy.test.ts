@@ -235,26 +235,6 @@ describe("Unknown schema version", () => {
   });
 });
 
-describe("Personal is never governed", () => {
-  test("a policy has no effect on Personal", () => {
-    const withPolicy = resolveOrganizationContext({
-      edition: "personal",
-      policy: policy(false),
-    });
-    const without = resolveOrganizationContext({ edition: "personal" });
-    expect(withPolicy.capabilities).toEqual(without.capabilities);
-  });
-
-  test("Personal carries no organization and no member", () => {
-    const context = resolveOrganizationContext({
-      edition: "personal",
-      policy: policy(false),
-    });
-    expect(context.organization).toBeNull();
-    expect(context.member).toBeNull();
-  });
-});
-
 describe("Organization context", () => {
   const campus = {
     edition: "organization" as const,

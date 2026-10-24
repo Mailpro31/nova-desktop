@@ -42,44 +42,23 @@ afterEach(() => {
   forgetOrganizationType();
 });
 
-describe("Édition déclarée par le build", () => {
-  test("aucun mode déclaré signifie Personal", () => {
-    withBuild(undefined);
-    expect(currentEdition()).toBe("personal");
-    expect(isOrganizationMode()).toBe(false);
-  });
-
-  test("`campus` reste l'alias historique d'Organization", () => {
-    // Les paquets signés et la CI Windows validée emploient cette valeur.
-    withBuild("campus");
-    expect(currentEdition()).toBe("organization");
-    expect(isOrganizationMode()).toBe(true);
-  });
-
-  test("`organization` est la valeur cible, et désigne le même produit", () => {
-    withBuild("organization");
-    expect(currentEdition()).toBe("organization");
-    expect(isOrganizationMode()).toBe(true);
-  });
-
-  test("une valeur inconnue ne fait entrer personne dans une organisation", () => {
-    withBuild("business");
-    expect(currentEdition()).toBe("personal");
-    expect(isOrganizationMode()).toBe(false);
+describe("Édition", () => {
+  test("Nova n'a qu'une édition, Organization, quel que soit le build", () => {
+    for (const mode of [
+      undefined,
+      "campus",
+      "organization",
+      "personal",
+      "business",
+    ]) {
+      withBuild(mode);
+      expect(currentEdition()).toBe("organization");
+      expect(isOrganizationMode()).toBe(true);
+    }
   });
 });
 
 describe("Nature de l'organisation", () => {
-  test("Personal n'a pas de nature d'organisation", () => {
-    withBuild(undefined);
-    rememberOrganizationType("business");
-    // Même mémorisée, la nature ne fabrique pas d'organisation : un poste
-    // personnel reste personnel.
-    expect(currentOrganizationType()).toBeNull();
-    expect(isCampusMode()).toBe(false);
-    expect(isBusinessMode()).toBe(false);
-  });
-
   test("sans annonce, le repli est éducation — le parc déployé", () => {
     withBuild("campus");
     expect(currentOrganizationType()).toBe("education");
@@ -177,12 +156,6 @@ describe("Contexte d'organisation résolu", () => {
     expect(context.organization?.type).toBe("education");
     expect(context.member?.memberType).toBe("student");
     expect(context.member?.groups[0]?.label).toBe("AERO2");
-  });
-
-  test("Personal ne fabrique jamais d'organisation", () => {
-    const context = resolveOrganizationContext({ edition: "personal" });
-    expect(context.organization).toBeNull();
-    expect(context.member).toBeNull();
   });
 
   test("le type annoncé par le serveur prime sur celui du build", () => {

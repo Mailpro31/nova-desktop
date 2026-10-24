@@ -259,40 +259,6 @@
       "errorAnalysis": "Nova 無法分析這次朗讀。請重新朗讀這句。"
     }
   },
-  "modelSelector": {
-    "custom": "自訂",
-    "streaming": "串流",
-    "active": "使用中",
-    "switching": "切換中...",
-    "noModelsAvailable": "沒有可用的模型",
-    "verifying": "正在驗證 {{modelName}}...",
-    "verifyingGeneric": "正在驗證...",
-    "extracting": "正在解壓 {{modelName}}...",
-    "extractingMultiple": "正在解壓 {{count}} 個模型...",
-    "extractingGeneric": "解壓中...",
-    "downloading": "下載中 {{percentage}}%",
-    "downloadingMultiple": "正在下載 {{count}} 個模型...",
-    "modelReady": "模型已就緒",
-    "loading": "正在載入 {{modelName}}...",
-    "loadingGeneric": "載入中...",
-    "modelError": "模型錯誤",
-    "modelUnloaded": "模型已卸載",
-    "noModelDownloadRequired": "無模型 - 需要下載",
-    "deleteModel": "刪除 {{modelName}}",
-    "downloadSpeed": "{{speed}} MB/s",
-    "cancel": "取消",
-    "cancelDownload": "取消下載",
-    "capabilities": {
-      "languageSelection": "支援多種輸入語言",
-      "singleLanguage": "僅支援此語言",
-      "languageCount": "{{total}} 種語言",
-      "languageOnly": "僅 {{language}}",
-      "translation": "可翻譯為英語",
-      "translate": "翻譯為英語",
-      "streaming": "在您說話時即時顯示轉錄"
-    },
-    "legacy": "舊版"
-  },
   "settings": {
     "modelSettings": {
       "title": "{{model}} 設定"
@@ -574,7 +540,6 @@
         "cancel": "取消",
         "selectToEdit": "選擇上方的提示詞以檢視和編輯其詳細資訊",
         "createFirst": "點選上方的「建立新提示詞」來建立您的第一個後處理提示詞",
-        "ultraOnly": "建立與編輯風格需要 Nova Ultra。",
         "badgeAuto": "自動",
         "badgeBuiltin": "內建",
         "badgeCustom": "自訂",
@@ -883,74 +848,10 @@
     "view": "查看新功能",
     "title": "Nova v{{version}} 新功能"
   },
-  "quota": {
-    "lifetimeUsage": "免費 Turbo 改寫",
-    "count": "{{used}} / {{limit}} 次改寫",
-    "blockedInline": "您已用完所有免費 Turbo 改寫——聽寫仍然無限制，文字將原樣貼上。升級至無限 Turbo。",
-    "lifetimeNote": "一次性優惠，不會重置。",
-    "blockedTitle": "免費 Turbo 改寫已用完",
-    "blockedDescription": "您已用完 20 次免費 Turbo 改寫。聽寫仍然無限制——您的文字將原樣貼上。升級至 Nova Ultra 即可享受無限 Turbo。",
-    "upgrade": "訂閱"
-  },
-  "weekStat": {
-    "minutes_one": "節省約 {{count}} 分鐘打字時間",
-    "minutes_other": "節省約 {{count}} 分鐘打字時間",
-    "words_one": "本週已聽寫 {{count}} 個字詞",
-    "words_other": "本週已聽寫 {{count}} 個字詞"
-  },
-  "performanceOptimizer": {
-    "title": "自動最佳化",
-    "description": "為這台電腦調整 Nova，並檢查實際的轉寫流程。",
-    "autoLabel": "自動效能模式",
-    "autoDescription": "依你的記憶體、CPU 與相容的 GPU，選擇安全的加速與模型記憶體設定。",
-    "diagnosticsDescription": "檢查麥克風、模型、改寫服務、記憶體與加速。",
-    "run": "執行診斷",
-    "running": "正在檢查…",
-    "profile": "設定檔",
-    "memory": "記憶體",
-    "cpu": "CPU 執行緒",
-    "acceleration": "加速",
-    "latency": "實測延遲",
-    "median": "中位數 {{value}} 毫秒",
-    "p95": "p95 {{value}} ms",
-    "openMicrophone": "開啟麥克風設定",
-    "retryGpu": "重新啟動後重試 GPU",
-    "classes": {
-      "low_memory": "低記憶體",
-      "balanced": "平衡",
-      "performance": "效能"
-    }
-  },
   "voiceCommands": {
     "title": "語音指令",
     "description": "能聽懂「新段落」「換行」「問號」，以及用於筆記、清單、會議或取消目前聽寫的明確 Nova 指令。",
     "added": "已將 {{word}} 加入個人字典"
-  },
-  "license": {
-    "remove": "移除",
-    "upgradeToUltra": "升級到 Nova Ultra",
-    "requiresTier": "需要 {{tier}}",
-    "active": "授權已啟用",
-    "trial": {
-      "badge": "Pro 試用",
-      "badgeDays": "Pro 試用 · {{count}} 天",
-      "title": "Nova Pro 試用",
-      "description_one": "試用還剩 {{count}} 天。",
-      "description_other": "試用還剩 {{count}} 天。",
-      "subscribe": "訂閱 Nova Pro",
-      "expiredTitle": "您的 Nova Pro 試用已結束",
-      "expiredBody": "您已回到 Nova Free 版本。訂閱 Nova Pro 即可恢復全部改寫風格與效能設定檔。",
-      "close": "關閉",
-      "toastTitle": "Nova Pro 試用已啟用",
-      "toastDescription_one": "還剩 {{count}} 天 — 包含 Turbo 和全部改寫風格。",
-      "toastDescription_other": "還剩 {{count}} 天 — 包含 Turbo 和全部改寫風格。"
-    },
-    "manageSubscription": "管理我的訂閱",
-    "comingSoon": "即將推出",
-    "featureColumn": "功能",
-    "yourPlan": "您的方案",
-    "onlineEngineLockedTitle": "Turbo 需要 Nova 訂閱",
-    "onlineEngineLocked": "線上引擎僅限 Nova Pro 和 Ultra——文字未經改寫即被貼上。"
   },
   "lexiconLearning": {
     "title": "學習我的詞彙",
@@ -1490,7 +1391,8 @@
     },
     "organizationManaged": "這些風格由您的組織發布，無法在此編輯。",
     "disabledByOrganization": "已由你的組織停用",
-    "disabledByOrganizationHint": "Nova 會為你的聽寫使用其他風格。"
+    "disabledByOrganizationHint": "Nova 會為你的聽寫使用其他風格。",
+    "personalClosed": "你的組織不允許建立風格。"
   },
   "history": {
     "subtitle": "你用 Nova 語音輸入的全部內容。",

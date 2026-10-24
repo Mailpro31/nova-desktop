@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { isOrganizationMode } from "@/lib/mode";
 import { advanceFrom } from "@/lib/onboarding/advance";
 import {
   isSkipped,
@@ -13,15 +12,13 @@ import type { SystemReadiness } from "./useSystemReadiness";
 export type OnboardingStepId =
   | "permissions"
   | "campus"
-  | "welcome"
-  | "model"
   | "smartSetup"
   | "voiceCalibration"
   | "writingStyles"
   | "firstDictation";
 
 /** Étapes qu'on ne peut pas ignorer : sans elles, Nova ne fonctionne pas. */
-const REQUIRED: OnboardingStepId[] = ["permissions", "campus", "model"];
+const REQUIRED: OnboardingStepId[] = ["permissions", "campus"];
 
 export interface OnboardingFlow {
   /** `false` tant que la liste n'est pas arrêtée : ne rien rendre avant. */
@@ -68,8 +65,6 @@ export function useOnboardingFlow({
   isFirstRun,
   onFinished,
 }: Options): OnboardingFlow {
-  const organizationMode = isOrganizationMode();
-
   // La liste est **figée** dès que l'état système est connu. La recalculer en
   // continu ferait disparaître l'écran courant au moment précis où
   // l'utilisateur vient d'en satisfaire la condition : accorder la permission
@@ -89,19 +84,14 @@ export function useOnboardingFlow({
     // Personal : l'imposer ici fermait Nova entière derrière un écran de
     // connexion, dictée locale comprise. L'accueil dit qu'il est déconnecté,
     // et la reconnexion reste dans les réglages.
-    if (organizationMode && !hasOrganizationSession && isFirstRun)
-      pending.push("campus");
-    if (readiness.needsModelDownload) pending.push("model");
+    if (!hasOrganizationSession && isFirstRun) pending.push("campus");
 
     // Le reste n'appartient qu'à la première ouverture.
     if (!isFirstRun) return pending;
 
-    // La connexion Organization vient déjà de présenter l'organisation puis
-    // de confirmer le compte. Le second accueil ne reste utile qu'en Personal.
-    if (!organizationMode) pending.push("welcome");
     pending.push("smartSetup");
 
-    if (organizationMode) {
+    {
       // Le calibrage avant la première dictée : c'est lui qui règle le gain et
       // apprend les mots mal entendus, donc la première dictée en profite.
       // Facultatif — un élève pressé dicte tout de suite et calibre plus tard.
@@ -112,15 +102,10 @@ export function useOnboardingFlow({
         pending.push("firstDictation");
       }
       if (!isSkipped("writingStyles")) pending.push("writingStyles");
-    } else {
-      if (!isSkipped("writingStyles")) pending.push("writingStyles");
-      if (!readiness.hasDictated && !isSkipped("firstDictation")) {
-        pending.push("firstDictation");
-      }
     }
 
     return pending;
-  }, [readiness, isFirstRun, organizationMode, hasOrganizationSession]);
+  }, [readiness, isFirstRun, hasOrganizationSession]);
 
   useEffect(() => {
     if (frozen === null && readiness.loaded && isFirstRun !== null) {
