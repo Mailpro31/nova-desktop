@@ -1682,7 +1682,7 @@
     "space": "Space"
   },
   "connections": {
-    "description": "The apps Nova works with. Your timetable sorts your dictations by class."
+    "description": "Apps linked to Nova: the selection bubble sends text to them, and your timetable sorts your dictations by class."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "The bubble appears next to the selected text and disappears at the first click elsewhere.",
       "preferredAi": "My preferred AI",
       "preferredAiDescription": "The AI that opens when you continue an answer in your browser."
+    },
+    "apps": {
+      "title": "Linked apps",
+      "description": "Click an app to open it and sign in once. The bubble then sends your selected text to it in one click."
     }
   }
 }

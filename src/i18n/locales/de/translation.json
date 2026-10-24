@@ -1682,7 +1682,7 @@
     "space": "Leertaste"
   },
   "connections": {
-    "description": "Die mit Nova verbundenen Apps. Der Stundenplan ordnet Ihre Diktate nach Kurs."
+    "description": "Mit Nova verbundene Apps: Die Auswahlblase sendet Text an sie, und der Stundenplan ordnet Ihre Diktate nach Kurs."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "Die Blase erscheint neben dem markierten Text und verschwindet beim ersten Klick daneben.",
       "preferredAi": "Meine bevorzugte KI",
       "preferredAiDescription": "Die KI, die sich öffnet, wenn Sie eine Antwort im Browser fortsetzen."
+    },
+    "apps": {
+      "title": "Verbundene Apps",
+      "description": "Klicken Sie auf eine App, um sie zu öffnen und sich einmal anzumelden. Danach sendet die Blase markierten Text mit einem Klick dorthin."
     }
   }
 }

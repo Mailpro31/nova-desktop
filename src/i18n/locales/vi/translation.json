@@ -1682,7 +1682,7 @@
     "space": "Phím cách"
   },
   "connections": {
-    "description": "Các ứng dụng liên kết với Nova. Thời khóa biểu sắp xếp bài đọc chép theo tiết học."
+    "description": "Các ứng dụng liên kết với Nova: bong bóng chọn văn bản gửi văn bản đến chúng, và thời khóa biểu sắp xếp bài đọc chính tả theo môn."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "Bong bóng xuất hiện cạnh văn bản đã chọn và biến mất khi nhấp lần đầu ở nơi khác.",
       "preferredAi": "AI yêu thích của tôi",
       "preferredAiDescription": "AI được mở khi bạn tiếp tục câu trả lời trong trình duyệt."
+    },
+    "apps": {
+      "title": "Ứng dụng đã liên kết",
+      "description": "Nhấp vào một ứng dụng để mở và đăng nhập một lần. Sau đó bong bóng sẽ gửi văn bản đã chọn đến đó chỉ bằng một cú nhấp."
     }
   }
 }

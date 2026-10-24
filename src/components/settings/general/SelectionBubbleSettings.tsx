@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { useSettings } from "../../../hooks/useSettings";
+import { AppLogo } from "@/components/shared/AppLogo";
 import { CONNECTIONS } from "@/lib/bubble/connections";
 import {
   loadBubblePreferences,
@@ -57,23 +58,7 @@ export const SelectionBubbleSettings: React.FC = () => {
                     : "border-hairline text-text-secondary hover:border-accent/40"
                 }`}
               >
-                {connection.logo ? (
-                  <img
-                    src={connection.logo}
-                    alt=""
-                    width={18}
-                    height={18}
-                    className="rounded-[4px]"
-                  />
-                ) : (
-                  <span
-                    aria-hidden="true"
-                    style={{ background: connection.color }}
-                    className="flex h-[18px] w-[18px] items-center justify-center rounded-[4px] text-[11px] font-semibold text-white"
-                  >
-                    {connection.name.charAt(0)}
-                  </span>
-                )}
+                <AppLogo connection={connection} size={18} />
                 {connection.name}
               </button>
             );

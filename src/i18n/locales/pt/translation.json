@@ -1682,7 +1682,7 @@
     "space": "Espaço"
   },
   "connections": {
-    "description": "As aplicações ligadas ao Nova. O horário organiza os ditados por aula."
+    "description": "As aplicações ligadas ao Nova: a bolha de seleção envia-lhes texto e o horário organiza os seus ditados por aula."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "A bolha aparece junto ao texto selecionado e desaparece ao primeiro clique noutro sítio.",
       "preferredAi": "A minha IA preferida",
       "preferredAiDescription": "A IA que abre quando continua uma resposta no navegador."
+    },
+    "apps": {
+      "title": "Aplicações ligadas",
+      "description": "Clique numa aplicação para a abrir e iniciar sessão uma vez. Depois, a bolha envia-lhe o texto selecionado num clique."
     }
   }
 }

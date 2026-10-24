@@ -9,7 +9,6 @@ import {
   ListFilter,
   Bookmark,
   CalendarDays,
-  TextSelect,
 } from "lucide-react";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -28,7 +27,6 @@ import { OrganizationSnippetsSection } from "./OrganizationSnippetsSection";
 import { OrganizationFormattingSection } from "./OrganizationFormattingSection";
 import { StudyMarkersSection } from "./StudyMarkersSection";
 import { TimetableSection } from "./TimetableSection";
-import { SelectionBubbleSettings } from "./SelectionBubbleSettings";
 import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
@@ -42,7 +40,7 @@ interface SectionCardProps {
   children: React.ReactNode;
 }
 
-const SectionCard: React.FC<SectionCardProps> = ({
+export const SectionCard: React.FC<SectionCardProps> = ({
   icon: Icon,
   title,
   description,
@@ -98,14 +96,6 @@ export const OrganizationGeneralSettings: React.FC = () => {
         {!isLinux && !pushToTalk && (
           <ShortcutInput shortcutId="cancel" grouped={true} />
         )}
-      </SectionCard>
-
-      <SectionCard
-        icon={TextSelect}
-        title={t("bubble.settings.title")}
-        description={t("bubble.settings.description")}
-      >
-        <SelectionBubbleSettings />
       </SectionCard>
     </div>
   );

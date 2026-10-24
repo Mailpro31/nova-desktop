@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { commands, type TargetWindow } from "@/bindings";
+import { AppLogo } from "@/components/shared/AppLogo";
 import { NOVA_ACTION_DEFS, translationTarget } from "@/lib/bubble/actions";
 import {
   CONNECTIONS,
@@ -542,33 +543,5 @@ const FooterButton: React.FC<{
     {children}
   </button>
 );
-
-/** Le logo officiel, ou une pastille à l'initiale dans la couleur de la marque. */
-const AppLogo: React.FC<{ connection: Connection; size: number }> = ({
-  connection,
-  size,
-}) =>
-  connection.logo ? (
-    <img
-      src={connection.logo}
-      alt=""
-      width={size}
-      height={size}
-      className="shrink-0 rounded-[4px] object-contain"
-    />
-  ) : (
-    <span
-      aria-hidden="true"
-      style={{
-        width: size,
-        height: size,
-        background: connection.color,
-        fontSize: size * 0.62,
-      }}
-      className="flex shrink-0 items-center justify-center rounded-[4px] font-semibold leading-none text-white"
-    >
-      {connection.name.charAt(0)}
-    </span>
-  );
 
 export default SelectionBubble;

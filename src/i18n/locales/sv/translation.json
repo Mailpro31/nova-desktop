@@ -1682,7 +1682,7 @@
     "space": "Mellanslag"
   },
   "connections": {
-    "description": "Apparna som är kopplade till Nova. Schemat sorterar dina dikteringar per lektion."
+    "description": "Appar kopplade till Nova: markeringsbubblan skickar text till dem, och schemat sorterar dina dikteringar per lektion."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "Bubblan visas bredvid den markerade texten och försvinner vid första klicket någon annanstans.",
       "preferredAi": "Min favorit-AI",
       "preferredAiDescription": "Den AI som öppnas när du fortsätter ett svar i webbläsaren."
+    },
+    "apps": {
+      "title": "Kopplade appar",
+      "description": "Klicka på en app för att öppna den och logga in en gång. Sedan skickar bubblan markerad text dit med ett klick."
     }
   }
 }

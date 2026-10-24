@@ -1682,7 +1682,7 @@
     "space": "スペース"
   },
   "connections": {
-    "description": "Nova と連携するアプリ。時間割で口述を授業ごとに整理します。"
+    "description": "Novaと連携するアプリ：選択バブルがテキストを送り、時間割が口述を授業ごとに整理します。"
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "バブルは選択したテキストの横に現れ、他の場所を最初にクリックすると消えます。",
       "preferredAi": "お気に入りのAI",
       "preferredAiDescription": "ブラウザーで回答を続けるときに開くAI。"
+    },
+    "apps": {
+      "title": "連携アプリ",
+      "description": "アプリをクリックして開き、一度サインインしてください。その後はバブルが選択したテキストをワンクリックで送ります。"
     }
   }
 }
