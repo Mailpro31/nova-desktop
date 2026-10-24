@@ -867,7 +867,7 @@ const TODO_READABLE_LINES: &str = " Chaque ligne se lit comme une phrase frança
 
 /// Mesure du PC fixe (24/10) : « explique-moi la différence… » devenait un
 /// simple titre, la demande perdue.
-const COURSE_NOTES_KEEPS_QUESTION: &str = " Une question dictée se note comme une question, sans y répondre : dicté « explique-moi la différence entre A et B », noté « Différence entre A et B ? ». Si tu passes à la ligne, chaque ligne reste une phrase correcte.";
+const COURSE_NOTES_KEEPS_QUESTION: &str = " Une question dictée se note comme une question, sans y répondre : dicté « explique-moi la différence entre A et B », noté « Différence entre A et B ? ». Si tu passes à la ligne, chaque ligne reste une phrase correcte : dicté « il faut que je révise X, que je rende Y », noté « Il faut que je révise X. » puis « Il faut que je rende Y. ».";
 
 /// Les Notes de cours d'avant cette règle (génération v6), déduites des
 /// actuelles comme la v5.
