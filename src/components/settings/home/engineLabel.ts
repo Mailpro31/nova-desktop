@@ -17,7 +17,11 @@ export type HomeEngineKey = "campus" | "local-fallback" | "local";
 export function homeEngineLabelKey(
   engine: HomeEngineKey,
   organizationType: OrganizationType | null,
+  externalAi = false,
 ): string {
+  // Le texte part aussi chez un fournisseur d'IA en ligne : l'élève le lit (n° 59).
+  if (engine === "campus" && externalAi)
+    return "home.engine.organizationWithOnlineAi";
   if (engine === "campus") return wordingKey("engineServer", organizationType);
   return `home.engine.${engine}`;
 }

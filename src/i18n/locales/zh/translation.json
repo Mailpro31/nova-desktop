@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "此电脑",
       "local": "此电脑",
-      "organization": "您所在组织的服务器"
+      "organization": "您所在组织的服务器",
+      "organizationWithOnlineAi": "组织服务器 + 在线 AI"
     },
     "checklist": {
       "title": "开始使用",

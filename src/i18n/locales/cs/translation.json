@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "Tento počítač",
       "local": "Tento počítač",
-      "organization": "Server vaší organizace"
+      "organization": "Server vaší organizace",
+      "organizationWithOnlineAi": "Server vaší organizace + online AI"
     },
     "checklist": {
       "title": "Začínáme",

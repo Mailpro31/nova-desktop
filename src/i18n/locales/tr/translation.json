@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "Bu bilgisayar",
       "local": "Bu bilgisayar",
-      "organization": "Kuruluşunuzun sunucusu"
+      "organization": "Kuruluşunuzun sunucusu",
+      "organizationWithOnlineAi": "Kuruluşunuzun sunucusu + çevrimiçi yapay zekâ"
     },
     "checklist": {
       "title": "Başlarken",

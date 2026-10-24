@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "Deze computer",
       "local": "Deze computer",
-      "organization": "De server van uw organisatie"
+      "organization": "De server van uw organisatie",
+      "organizationWithOnlineAi": "Server van uw organisatie + online AI"
     },
     "checklist": {
       "title": "Aan de slag",

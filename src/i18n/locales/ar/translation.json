@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "هذا الحاسوب",
       "local": "هذا الحاسوب",
-      "organization": "خادم مؤسستك"
+      "organization": "خادم مؤسستك",
+      "organizationWithOnlineAi": "خادم مؤسستك + ذكاء اصطناعي عبر الإنترنت"
     },
     "checklist": {
       "title": "البداية",

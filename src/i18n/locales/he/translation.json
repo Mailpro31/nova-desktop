@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "המחשב הזה",
       "local": "המחשב הזה",
-      "organization": "השרת של הארגון שלך"
+      "organization": "השרת של הארגון שלך",
+      "organizationWithOnlineAi": "השרת של הארגון + בינה מלאכותית מקוונת"
     },
     "checklist": {
       "title": "צעדים ראשונים",

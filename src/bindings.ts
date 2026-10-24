@@ -1961,7 +1961,12 @@ bootstrap_mode?: string | null;
  * fois le membre connecté. Absent d'un serveur plus ancien, et le repli
  * historique `education` s'applique alors côté poste.
  */
-organization_type?: string | null; organization?: ConfiguredOrganization | null; capabilities?: OrganizationCapabilitiesConfig | null; education_mode?: string | null; ai_skills?: OrganizationAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: OrganizationPrivacyConfig | null }
+organization_type?: string | null; organization?: ConfiguredOrganization | null; capabilities?: OrganizationCapabilitiesConfig | null; education_mode?: string | null; 
+/**
+ * `external_ai_provider` quand le serveur passe par une IA en ligne : le
+ * poste le dit à l'élève (n° 59).
+ */
+processing_location?: string | null; ai_skills?: OrganizationAiSkillsPolicyConfig | null; auth_methods?: string[] | null; privacy?: OrganizationPrivacyConfig | null }
 export type OrganizationEntraPollResponse = { status: string; email: string | null; retry_after: number | null }
 export type OrganizationEntraStartResponse = { flow_id: string; user_code: string; verification_uri: string; verification_uri_complete: string | null; expires_in: number; interval: number; message: string }
 export type OrganizationFormattingRulesResponse = { shared: OrganizationRuleEntry[]; personal: OrganizationRuleEntry[] }

@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "Ce poste (serveur injoignable)",
       "local": "Ce poste",
-      "organization": "Le serveur de votre organisation"
+      "organization": "Le serveur de votre organisation",
+      "organizationWithOnlineAi": "Serveur de votre école + IA en ligne"
     },
     "checklist": {
       "title": "Premiers pas",

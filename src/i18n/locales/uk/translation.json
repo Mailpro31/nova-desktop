@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "Цей комп'ютер",
       "local": "Цей комп'ютер",
-      "organization": "Сервер вашої організації"
+      "organization": "Сервер вашої організації",
+      "organizationWithOnlineAi": "Сервер організації + онлайн-ШІ"
     },
     "checklist": {
       "title": "Перші кроки",

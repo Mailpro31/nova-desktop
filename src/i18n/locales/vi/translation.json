@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "Máy tính này",
       "local": "Máy tính này",
-      "organization": "Máy chủ của tổ chức bạn"
+      "organization": "Máy chủ của tổ chức bạn",
+      "organizationWithOnlineAi": "Máy chủ của tổ chức + AI trực tuyến"
     },
     "checklist": {
       "title": "Bắt đầu",

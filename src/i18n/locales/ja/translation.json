@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "このコンピューター",
       "local": "このコンピューター",
-      "organization": "組織のサーバー"
+      "organization": "組織のサーバー",
+      "organizationWithOnlineAi": "組織のサーバー＋オンラインAI"
     },
     "checklist": {
       "title": "はじめに",

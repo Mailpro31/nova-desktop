@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "This computer (server unreachable)",
       "local": "This computer",
-      "organization": "Your organization's server"
+      "organization": "Your organization's server",
+      "organizationWithOnlineAi": "Your organization's server + online AI"
     },
     "checklist": {
       "title": "Getting started",

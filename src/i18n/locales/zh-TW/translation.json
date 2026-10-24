@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "這台電腦",
       "local": "這台電腦",
-      "organization": "您所屬組織的伺服器"
+      "organization": "您所屬組織的伺服器",
+      "organizationWithOnlineAi": "組織伺服器 + 線上 AI"
     },
     "checklist": {
       "title": "開始使用",

@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "यो कम्प्युटर",
       "local": "यो कम्प्युटर",
-      "organization": "तपाईंको संस्थाको सर्भर"
+      "organization": "तपाईंको संस्थाको सर्भर",
+      "organizationWithOnlineAi": "तपाईंको संस्थाको सर्भर + अनलाइन एआई"
     },
     "checklist": {
       "title": "सुरुवात",

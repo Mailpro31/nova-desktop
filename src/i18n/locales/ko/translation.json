@@ -1364,7 +1364,8 @@
     "engine": {
       "local-fallback": "이 컴퓨터",
       "local": "이 컴퓨터",
-      "organization": "조직의 서버"
+      "organization": "조직의 서버",
+      "organizationWithOnlineAi": "조직 서버 + 온라인 AI"
     },
     "checklist": {
       "title": "시작하기",
