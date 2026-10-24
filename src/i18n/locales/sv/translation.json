@@ -1731,12 +1731,23 @@
       "description": "Markera text var som helst: Nova erbjuder att förklara den, läsa upp den eller skicka den till en app.",
       "enabled": "Visa bubblan när jag markerar text",
       "enabledDescription": "Bubblan visas bredvid den markerade texten och försvinner vid första klicket någon annanstans.",
-      "preferredAi": "Min favorit-AI",
-      "preferredAiDescription": "Den AI som öppnas när du fortsätter ett svar i webbläsaren."
+      "blocked": "Appar utan bubbla",
+      "blockedDescription": "Bubblan visas inte i de här apparna. Klicka på en för att visa den igen.",
+      "unblock": "Visa bubblan igen i {{app}}"
     },
     "apps": {
       "title": "Kopplade appar",
       "description": "Klicka på en app för att öppna den och logga in en gång. Sedan skickar bubblan markerad text dit med ett klick."
+    },
+    "blockApp": "Visa inte bubblan i den här appen",
+    "setup": {
+      "title": "Dina appar",
+      "description": "Välj en app för varje användning och logga in en gång. Sedan skickar bubblan text dit med ett klick.",
+      "signIn": "Logga in på {{app}}",
+      "connected": "Klart",
+      "demoText": "En vinges lyftkraft beror på anfallsvinkeln.",
+      "demoCaption": "Markera text var som helst: den här bubblan visas bredvid.",
+      "later": "Du kan ändra allt senare under Anslutningar."
     }
   }
 }

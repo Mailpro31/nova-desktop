@@ -15,6 +15,7 @@ export type OnboardingStepId =
   | "smartSetup"
   | "voiceCalibration"
   | "writingStyles"
+  | "apps"
   | "firstDictation";
 
 /** Étapes qu'on ne peut pas ignorer : sans elles, Nova ne fonctionne pas. */
@@ -102,6 +103,8 @@ export function useOnboardingFlow({
         pending.push("firstDictation");
       }
       if (!isSkipped("writingStyles")) pending.push("writingStyles");
+      // La bulle de sélection et une application par usage (24/10).
+      if (!isSkipped("apps")) pending.push("apps");
     }
 
     return pending;

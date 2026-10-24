@@ -1731,12 +1731,23 @@
       "description": "在任何地方选中文字：Nova 会提供解释、朗读或发送到应用的选项。",
       "enabled": "选中文字时显示气泡",
       "enabledDescription": "气泡出现在选中文字旁边，在别处第一次点击时消失。",
-      "preferredAi": "我偏好的 AI",
-      "preferredAiDescription": "在浏览器中继续回答时打开的 AI。"
+      "blocked": "不显示气泡的应用",
+      "blockedDescription": "这些应用中不会出现气泡。点击某个应用即可恢复。",
+      "unblock": "在 {{app}} 中重新显示气泡"
     },
     "apps": {
       "title": "关联的应用",
       "description": "点击应用即可打开并登录一次。之后，气泡一键就能把选中的文字发送过去。"
+    },
+    "blockApp": "不在此应用中显示气泡",
+    "setup": {
+      "title": "你的应用",
+      "description": "为每种用途选一个应用并登录一次。之后，气泡一键就能把文字发送过去。",
+      "signIn": "登录 {{app}}",
+      "connected": "完成",
+      "demoText": "机翼的升力取决于迎角。",
+      "demoCaption": "在任何地方选中文字：旁边会出现这个气泡。",
+      "later": "之后可以在“连接”中更改。"
     }
   }
 }

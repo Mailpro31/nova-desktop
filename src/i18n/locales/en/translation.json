@@ -1731,12 +1731,23 @@
       "description": "Select text anywhere: Nova offers to explain it, read it aloud or send it to an app.",
       "enabled": "Show the bubble when I select text",
       "enabledDescription": "The bubble appears next to the selected text and disappears at the first click elsewhere.",
-      "preferredAi": "My preferred AI",
-      "preferredAiDescription": "The AI that opens when you continue an answer in your browser."
+      "blocked": "Apps without the bubble",
+      "blockedDescription": "The bubble doesn't appear in these apps. Click one to bring it back.",
+      "unblock": "Show the bubble again in {{app}}"
     },
     "apps": {
       "title": "Linked apps",
       "description": "Click an app to open it and sign in once. The bubble then sends your selected text to it in one click."
+    },
+    "blockApp": "Don't show the bubble in this app",
+    "setup": {
+      "title": "Your apps",
+      "description": "Choose one app for each use and sign in to it once. The bubble will then send text to it in one click.",
+      "signIn": "Sign in to {{app}}",
+      "connected": "Done",
+      "demoText": "The lift of a wing depends on its angle of attack.",
+      "demoCaption": "Select text anywhere: this bubble appears next to it.",
+      "later": "You can change all of this later in Connections."
     }
   }
 }

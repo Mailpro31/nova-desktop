@@ -691,6 +691,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 selection_bubble::selection_bubble_layout,
                 selection_bubble::selection_bubble_hide,
                 selection_bubble::selection_bubble_replace,
+                selection_bubble::change_selection_bubble_blocklist_setting,
                 selection_bubble::change_selection_bubble_enabled_setting,
                 commands::organization::get_organization_config,
                 commands::organization::fetch_organization_server_config,

@@ -534,6 +534,9 @@ pub struct AppSettings {
     /// défaut ; l'élève peut l'éteindre.
     #[serde(default = "default_selection_bubble_enabled")]
     pub selection_bubble_enabled: bool,
+    /// Les applications où l'élève a choisi « Ne plus afficher la bulle ».
+    #[serde(default)]
+    pub selection_bubble_blocklist: Vec<String>,
     #[serde(default)]
     pub lazy_stream_close: bool,
     #[serde(default)]
@@ -1656,6 +1659,7 @@ pub fn get_default_settings() -> AppSettings {
         experimental_enabled: false,
         nova_commands_enabled: false,
         selection_bubble_enabled: default_selection_bubble_enabled(),
+        selection_bubble_blocklist: Vec::new(),
         lazy_stream_close: false,
         keyboard_implementation: KeyboardImplementation::default(),
         show_tray_icon: default_show_tray_icon(),

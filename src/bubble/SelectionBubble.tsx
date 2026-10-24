@@ -178,6 +178,7 @@ export const SelectionBubble: React.FC = () => {
       text,
       t(`bubble.ask.${action}`),
       translationTarget(ui, text),
+      preferences.connected.includes(connection.id),
     );
     if (launch.clipboard) {
       await writeText(launch.clipboard);
@@ -213,7 +214,22 @@ export const SelectionBubble: React.FC = () => {
 
   const preferences = loadBubblePreferences();
   const preferredAi =
-    connectionById(preferences.ai) ?? connectionById("chatgpt")!;
+    connectionById(preferences.apps.ai) ?? connectionById("copilot")!;
+
+  // « Ne plus afficher dans cette application » : la liste vit dans les
+  // réglages, où l'élève peut la défaire (page Connexions).
+  const blockApp = async () => {
+    const settings = await commands.getAppSettings();
+    const current =
+      settings.status === "ok"
+        ? (settings.data.selection_bubble_blocklist ?? [])
+        : [];
+    await commands.changeSelectionBubbleBlocklistSetting([
+      ...current,
+      selection.target.process,
+    ]);
+    void commands.selectionBubbleHide();
+  };
 
   return (
     // La marge laisse la place à l'ombre ; elle fait partie de la fenêtre mesurée.
@@ -225,6 +241,7 @@ export const SelectionBubble: React.FC = () => {
               text,
               traits(text, selection.editable),
               preferences.habits,
+              preferences.apps.agenda,
             ).map((id) => (
               <React.Fragment key={id}>{actionButton(id)}</React.Fragment>
             ))}
@@ -323,6 +340,15 @@ export const SelectionBubble: React.FC = () => {
                   </section>
                 );
               })}
+              {selection.target.process && (
+                <button
+                  type="button"
+                  onClick={() => void blockApp()}
+                  className="mt-4 w-full rounded-chip px-2 py-1.5 text-start text-xs text-text-secondary transition-colors duration-[120ms] hover:bg-mid-gray/10 hover:text-text cursor-pointer"
+                >
+                  {t("bubble.blockApp")}
+                </button>
+              )}
             </div>
           </Card>
         )}
@@ -377,7 +403,11 @@ export const SelectionBubble: React.FC = () => {
                 <FooterButton
                   onClick={() => {
                     void commands
-                      .selectionBubbleReplace(view.result, selection.target)
+                      .selectionBubbleReplace(
+                        view.result,
+                        selection.text,
+                        selection.target,
+                      )
                       .then((outcome) => {
                         if (outcome.status === "error") {
                           setView({

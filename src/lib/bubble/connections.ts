@@ -398,6 +398,8 @@ export function launchFor(
   text: string,
   prompt: string,
   lang: string,
+  /** L'élève s'y est connecté : la question de l'adresse arrivera, rien à copier. */
+  connected = false,
 ): Launch {
   const full =
     connection.group === "ai" && prompt
@@ -418,6 +420,6 @@ export function launchFor(
     url: url.replace("{q}", encodeURIComponent(value)),
     // Une IA demande souvent de se connecter d'abord, et la question de
     // l'adresse se perd alors : elle reste à coller (test de Sash, 24/10).
-    clipboard: connection.group === "ai" ? full : undefined,
+    clipboard: connection.group === "ai" && !connected ? full : undefined,
   };
 }

@@ -1731,12 +1731,23 @@
       "description": "Zaznacz tekst w dowolnym miejscu: Nova zaproponuje wyjaśnienie, odczytanie lub wysłanie go do aplikacji.",
       "enabled": "Pokazuj dymek po zaznaczeniu tekstu",
       "enabledDescription": "Dymek pojawia się obok zaznaczonego tekstu i znika po pierwszym kliknięciu w innym miejscu.",
-      "preferredAi": "Moja ulubiona AI",
-      "preferredAiDescription": "AI, która otwiera się, gdy kontynuujesz odpowiedź w przeglądarce."
+      "blocked": "Aplikacje bez dymka",
+      "blockedDescription": "Dymek nie pojawia się w tych aplikacjach. Kliknij jedną, aby go przywrócić.",
+      "unblock": "Przywróć dymek w {{app}}"
     },
     "apps": {
       "title": "Połączone aplikacje",
       "description": "Kliknij aplikację, aby ją otworzyć i raz się zalogować. Potem dymek wyśle do niej zaznaczony tekst jednym kliknięciem."
+    },
+    "blockApp": "Nie pokazuj dymka w tej aplikacji",
+    "setup": {
+      "title": "Twoje aplikacje",
+      "description": "Wybierz aplikację do każdego zastosowania i zaloguj się raz. Potem dymek wyśle do niej tekst jednym kliknięciem.",
+      "signIn": "Zaloguj się do {{app}}",
+      "connected": "Gotowe",
+      "demoText": "Siła nośna skrzydła zależy od kąta natarcia.",
+      "demoCaption": "Zaznacz tekst w dowolnym miejscu: obok pojawi się ten dymek.",
+      "later": "Wszystko możesz później zmienić w Połączeniach."
     }
   }
 }

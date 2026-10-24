@@ -641,9 +641,20 @@ async selectionBubbleHide() : Promise<void> {
  * La bulle n'a jamais pris le focus : la sélection est toujours active dans
  * l'application, et le collage la remplace. Refusé si la fenêtre a changé.
  */
-async selectionBubbleReplace(result: string, target: TargetWindow) : Promise<Result<null, CommandError>> {
+async selectionBubbleReplace(result: string, original: string, target: TargetWindow) : Promise<Result<null, CommandError>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("selection_bubble_replace", { result, target }) };
+    return { status: "ok", data: await TAURI_INVOKE("selection_bubble_replace", { result, original, target }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Les applications sans bulle (« Ne plus afficher dans cette application »).
+ */
+async changeSelectionBubbleBlocklistSetting(blocklist: string[]) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_selection_bubble_blocklist_setting", { blocklist }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1911,7 +1922,11 @@ nova_commands_enabled?: boolean;
  * de l'expliquer, le lire ou l'envoyer vers une application. Active par
  * défaut ; l'élève peut l'éteindre.
  */
-selection_bubble_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
+selection_bubble_enabled?: boolean;
+/**
+ * Les applications où l'élève a choisi « Ne plus afficher la bulle ».
+ */
+selection_bubble_blocklist?: string[]; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
 /**
  * Which recording overlay to show: None / Minimal / Live. Streaming mode is
  * not gated on this — that follows model capability. Migrated from the old

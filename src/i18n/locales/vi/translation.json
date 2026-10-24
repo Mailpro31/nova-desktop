@@ -1731,12 +1731,23 @@
       "description": "Chọn văn bản ở bất cứ đâu: Nova đề nghị giải thích, đọc to hoặc gửi nó đến một ứng dụng.",
       "enabled": "Hiện bong bóng khi tôi chọn văn bản",
       "enabledDescription": "Bong bóng xuất hiện cạnh văn bản đã chọn và biến mất khi nhấp lần đầu ở nơi khác.",
-      "preferredAi": "AI yêu thích của tôi",
-      "preferredAiDescription": "AI được mở khi bạn tiếp tục câu trả lời trong trình duyệt."
+      "blocked": "Ứng dụng không có bong bóng",
+      "blockedDescription": "Bong bóng không xuất hiện trong các ứng dụng này. Nhấp vào một ứng dụng để bật lại.",
+      "unblock": "Hiện lại bong bóng trong {{app}}"
     },
     "apps": {
       "title": "Ứng dụng đã liên kết",
       "description": "Nhấp vào một ứng dụng để mở và đăng nhập một lần. Sau đó bong bóng sẽ gửi văn bản đã chọn đến đó chỉ bằng một cú nhấp."
+    },
+    "blockApp": "Không hiện bong bóng trong ứng dụng này",
+    "setup": {
+      "title": "Ứng dụng của bạn",
+      "description": "Chọn một ứng dụng cho mỗi mục đích và đăng nhập một lần. Sau đó bong bóng sẽ gửi văn bản đến đó chỉ bằng một cú nhấp.",
+      "signIn": "Đăng nhập {{app}}",
+      "connected": "Xong",
+      "demoText": "Lực nâng của cánh phụ thuộc vào góc tấn.",
+      "demoCaption": "Chọn văn bản ở bất cứ đâu: bong bóng này xuất hiện bên cạnh.",
+      "later": "Bạn có thể thay đổi tất cả sau trong Kết nối."
     }
   }
 }
