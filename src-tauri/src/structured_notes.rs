@@ -109,7 +109,8 @@ pub async fn format_structured_notes_locally(
         let free_turbo = crate::licensing::effective_tier(license_key, 0)
             == crate::licensing::Tier::Free
             && !crate::quota::is_rewrite_blocked(&app);
-        if paid_turbo || free_turbo {
+        // Jamais pour une école, comme la réécriture des dictées (lot 1c).
+        if (paid_turbo || free_turbo) && !crate::licensing::is_organization_enabled() {
             candidates.push(selected.clone());
         }
     } else {

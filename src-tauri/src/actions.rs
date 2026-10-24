@@ -1023,7 +1023,9 @@ pub(crate) async fn post_process_transcription(
     let free_turbo = crate::licensing::effective_tier(license_key, 0)
         == crate::licensing::Tier::Free
         && !crate::quota::is_rewrite_blocked(app);
-    let turbo_allowed = paid_turbo || free_turbo;
+    // Jamais pour une école : sa dictée ne quitte pas son serveur, même
+    // quand il est injoignable (lot 1c).
+    let turbo_allowed = (paid_turbo || free_turbo) && !crate::licensing::is_organization_enabled();
     let local_id = crate::local_llm::PROVIDER_ID;
     let local_profile = settings
         .post_process_models

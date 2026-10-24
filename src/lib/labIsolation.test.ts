@@ -82,6 +82,17 @@ describe("Nova Lab ne fait rien de ce qu'il n'a pas à faire", () => {
     expect(libRs).not.toContain("fetch_and_store_free_token");
   });
 
+  it("n'envoie jamais une dictée d'école à Turbo, même serveur injoignable", () => {
+    // Sans licence, le palier gratuit ouvrait Turbo : un élève hors ligne
+    // voyait sa dictée partir vers un service tiers (lot 1c, 24/10).
+    expect(read("src-tauri/src/actions.rs")).toContain(
+      "let turbo_allowed = (paid_turbo || free_turbo) && !crate::licensing::is_organization_enabled();",
+    );
+    expect(read("src-tauri/src/structured_notes.rs")).toContain(
+      "if (paid_turbo || free_turbo) && !crate::licensing::is_organization_enabled() {",
+    );
+  });
+
   it("n'embarque pas le greffon de mise à jour", () => {
     const at = libRs.indexOf("tauri_plugin_updater::Builder::new()");
     expect(at).toBeGreaterThan(-1);
