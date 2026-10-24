@@ -42,6 +42,7 @@ import {
 import { formatDateTime } from "@/utils/dateFormat";
 import { courseAt, courseRuns, type CourseRun } from "@/lib/timetable";
 import { useTimetableStore } from "@/stores/timetableStore";
+import { styleColor } from "@/lib/styleColors";
 import { useOsType } from "@/hooks/useOsType";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { readFile } from "@tauri-apps/plugin-fs";
@@ -164,10 +165,15 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
         filterEntries(
           visibleEntries,
           query,
-          (entry) => courseAt(courses, entry.timestamp)?.summary ?? null,
+          // Le cours et le Style : chercher « E-mail » filtre par Style (n° 23).
+          (entry) =>
+            [
+              courseAt(courses, entry.timestamp)?.summary,
+              historyStyleLabel(entry.post_process_prompt, styles),
+            ].join(" "),
         ),
       ),
-    [visibleEntries, query, courses],
+    [visibleEntries, query, courses, styles],
   );
   const runsOf = (list: HistoryEntry[]): CourseRun[] =>
     prompts ? [{ course: null, entries: list }] : courseRuns(list, courses);
@@ -447,7 +453,19 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
               {time}
             </span>
             {styleName && (
-              <span className="text-xs text-text-secondary">{styleName}</span>
+              // Un badge par Style, son nom écrit dedans : jamais la couleur seule (n° 23).
+              <span
+                className="rounded-chip px-1.5 text-xs font-medium"
+                style={{
+                  backgroundColor: styleColor(
+                    styles.find((style) => style.name === styleName)?.id ??
+                      styleName,
+                  ),
+                  color: "#1d1d1f",
+                }}
+              >
+                {styleName}
+              </span>
             )}
           </span>
           <span
