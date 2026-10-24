@@ -7,6 +7,7 @@ import {
   Suspense,
 } from "react";
 import { toast, Toaster } from "sonner";
+import { NOTICE_DURATION_MS } from "@/lib/notifications";
 import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
@@ -491,6 +492,7 @@ function App() {
   // unreachable) are silently swallowed and the wizard just appears to "blink".
   const toaster = (
     <Toaster
+      duration={NOTICE_DURATION_MS}
       theme="system"
       icons={{
         success: <CircleCheck size={18} strokeWidth={2} aria-hidden="true" />,

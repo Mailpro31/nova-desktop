@@ -199,7 +199,7 @@ export const OrganizationDictionarySection: React.FC = () => {
     <div className="space-y-6 px-4 py-3">
       {/* Top action buttons */}
       <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-hairline">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             type="file"
             ref={fileInputRef}
@@ -228,7 +228,7 @@ export const OrganizationDictionarySection: React.FC = () => {
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="secondary"
             size="sm"
@@ -261,7 +261,7 @@ export const OrganizationDictionarySection: React.FC = () => {
       {/* Document Analysis Box */}
       {showAnalyze && (
         <div className="space-y-3 border-s-2 border-accent bg-accent/5 px-4 py-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Sparkles size={16} className="text-accent" />
             <h4
               id="campus-document-analysis-title"
@@ -283,7 +283,7 @@ export const OrganizationDictionarySection: React.FC = () => {
             className="w-full p-2.5 font-mono text-xs"
           />
 
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <input
               type="file"
               ref={docFileInputRef}
@@ -300,7 +300,7 @@ export const OrganizationDictionarySection: React.FC = () => {
               {t("organization.files.dropzone")}
             </Button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 variant="secondary"
                 size="sm"
@@ -338,7 +338,7 @@ export const OrganizationDictionarySection: React.FC = () => {
 
       {/* Shared vocabulary (Organization - read-only) */}
       <div className="space-y-2">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Building size={16} className="text-text-secondary" />
           <h3 className="text-sm font-semibold text-text">
             {t("organization.dictionary.sharedTitle")}
@@ -379,7 +379,7 @@ export const OrganizationDictionarySection: React.FC = () => {
 
       {/* Personal vocabulary */}
       <div className="space-y-3 pt-2 border-t border-hairline">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <User size={16} className="text-text-secondary" />
           <h3 className="text-sm font-semibold text-text">
             {t("organization.dictionary.personalTitle")}

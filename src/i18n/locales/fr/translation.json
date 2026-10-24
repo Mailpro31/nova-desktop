@@ -394,7 +394,7 @@
       },
       "overlay": {
         "style": {
-          "title": "Indicateur d’enregistrement",
+          "title": "Bulle de dictée",
           "description": "« Minimal » affiche une pastille, « En direct » le texte pendant que vous parlez.",
           "options": {
             "none": "Aucun",
@@ -403,7 +403,7 @@
           }
         },
         "position": {
-          "title": "Position de la fenêtre d’enregistrement",
+          "title": "Position de la bulle",
           "description": "En haut ou en bas de l’écran.",
           "options": {
             "bottom": "Bas",
@@ -834,13 +834,13 @@
     "processing": "Mise au propre…",
     "chooseStyle": "Choisir un Style",
     "openSettings": "Ouvrir les réglages",
-    "micHearing": "Je vous entends",
-    "micTooLow": "Parlez un peu plus fort",
+    "micHearing": "Nova vous entend",
+    "micTooLow": "Rapprochez le micro",
     "styleSuggestion": "Vous dictez souvent dans {{app}} — essayez le Style {{style}}",
     "styleSuggestionApply": "Essayer",
     "styleSuggestionDismiss": "Ne plus afficher",
     "dictationLimitWarning": "Arrêt dans {{seconds}} s (limite de l’organisation)",
-    "unclear": "Je n’ai pas bien entendu, rien n’a été collé. Parlez un peu plus fort ou plus près du micro."
+    "unclear": "Nova n’a pas bien entendu : rien n’a été collé. Rapprochez le micro, puis réessayez."
   },
   "whatsNew": {
     "updatedNotice": "Nova a été mis à jour",
@@ -1126,9 +1126,9 @@
     },
     "personalization": {
       "description": "Adaptez l’apparence et l’interaction de Nova sans modifier les règles de votre organisation.",
-      "orb": "Orbe Nova",
-      "orbColor": "Teinte de l’orbe",
-      "orbDescription": "Choisissez la teinte utilisée par le dock Nova et l’indicateur d’enregistrement.",
+      "orb": "Bulle Nova",
+      "orbColor": "Couleur de la bulle",
+      "orbDescription": "La couleur de la bulle de dictée.",
       "alwaysVisible": "Toujours afficher la bulle",
       "alwaysVisibleDescription": "Gardez l’indicateur compact de Nova visible. Il ne capte les clics que lorsque la souris le survole."
     },
@@ -1485,7 +1485,7 @@
   },
   "personalization": {
     "appearance": "Apparence",
-    "orb": "Orbe",
+    "orb": "Bulle",
     "overlay": "Bulle"
   },
   "aiSkillTools": {
