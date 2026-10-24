@@ -1731,12 +1731,23 @@
       "description": "Selecteer overal tekst: Nova biedt aan hem uit te leggen, voor te lezen of naar een app te sturen.",
       "enabled": "De bel tonen als ik tekst selecteer",
       "enabledDescription": "De bel verschijnt naast de geselecteerde tekst en verdwijnt bij de eerste klik ergens anders.",
-      "preferredAi": "Mijn favoriete AI",
-      "preferredAiDescription": "De AI die opent als je een antwoord verder zet in je browser."
+      "blocked": "Apps zonder bel",
+      "blockedDescription": "In deze apps verschijnt de bel niet. Klik op een app om hem terug te zetten.",
+      "unblock": "De bel weer tonen in {{app}}"
     },
     "apps": {
       "title": "Gekoppelde apps",
       "description": "Klik op een app om hem te openen en één keer in te loggen. Daarna stuurt de bel geselecteerde tekst er met één klik naartoe."
+    },
+    "blockApp": "De bel niet meer tonen in deze app",
+    "setup": {
+      "title": "Je apps",
+      "description": "Kies voor elk gebruik een app en log er één keer in. Daarna stuurt de bel er met één klik tekst naartoe.",
+      "signIn": "Inloggen bij {{app}}",
+      "connected": "Klaar",
+      "demoText": "De lift van een vleugel hangt af van de invalshoek.",
+      "demoCaption": "Selecteer overal tekst: deze bel verschijnt ernaast.",
+      "later": "Je kunt dit later allemaal wijzigen bij Verbindingen."
     }
   }
 }

@@ -65,8 +65,9 @@ export function suggest(
   text: string,
   t: TextTraits,
   habits: Record<string, number> = {},
+  agenda = "outlook-calendar",
 ): string[] {
-  const base = baseSuggestions(t);
+  const base = baseSuggestions(t, agenda);
   const favourite = Object.entries(habits)
     .filter(
       ([id, count]) => count >= 3 && !base.includes(id) && applies(id, text),
@@ -75,7 +76,7 @@ export function suggest(
   return favourite ? [base[0], base[1], favourite[0]] : base;
 }
 
-function baseSuggestions(t: TextTraits): string[] {
+function baseSuggestions(t: TextTraits, agenda: string): string[] {
   if (t.editable) return ["improve", "simplify", "translate"];
   if (t.formula) return ["explain", "open:wolfram", "open:youtube"];
   if (t.words <= 3) {
@@ -84,7 +85,7 @@ function baseSuggestions(t: TextTraits): string[] {
       : ["explain", "open:synonyms", "open:larousse"];
   }
   if (t.foreign) return ["translate", "explain", "summarize"];
-  if (t.date) return ["open:outlook-calendar", "explain", "simplify"];
+  if (t.date) return [`open:${agenda}`, "explain", "simplify"];
   if (t.long) return ["summarize", "explain", "quiz"];
   return ["explain", "simplify", "words"];
 }

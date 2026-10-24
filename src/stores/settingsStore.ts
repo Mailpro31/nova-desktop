@@ -159,6 +159,8 @@ const settingUpdaters: {
     commands.changeExperimentalEnabledSetting(value as boolean),
   selection_bubble_enabled: (value) =>
     commands.changeSelectionBubbleEnabledSetting(value as boolean),
+  selection_bubble_blocklist: (value) =>
+    commands.changeSelectionBubbleBlocklistSetting(value as string[]),
   lazy_stream_close: (value) =>
     commands.changeLazyStreamCloseSetting(value as boolean),
   overlay_style: (value) => commands.changeOverlayStyleSetting(value as string),

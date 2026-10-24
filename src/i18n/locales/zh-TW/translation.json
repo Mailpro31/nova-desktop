@@ -1731,12 +1731,23 @@
       "description": "在任何地方選取文字：Nova 會提供解釋、朗讀或傳送到應用程式的選項。",
       "enabled": "選取文字時顯示泡泡",
       "enabledDescription": "泡泡會出現在選取的文字旁，在其他地方第一次點擊時消失。",
-      "preferredAi": "我偏好的 AI",
-      "preferredAiDescription": "在瀏覽器中繼續回答時開啟的 AI。"
+      "blocked": "不顯示泡泡的應用程式",
+      "blockedDescription": "這些應用程式中不會出現泡泡。點選即可恢復。",
+      "unblock": "在 {{app}} 中重新顯示泡泡"
     },
     "apps": {
       "title": "連結的應用程式",
       "description": "點選應用程式即可開啟並登入一次。之後，泡泡一鍵就能把選取的文字傳送過去。"
+    },
+    "blockApp": "不在此應用程式中顯示泡泡",
+    "setup": {
+      "title": "你的應用程式",
+      "description": "為每種用途選一個應用程式並登入一次。之後，泡泡一鍵就能把文字傳送過去。",
+      "signIn": "登入 {{app}}",
+      "connected": "完成",
+      "demoText": "機翼的升力取決於攻角。",
+      "demoCaption": "在任何地方選取文字：旁邊會出現這個泡泡。",
+      "later": "之後可以在「連結」中變更。"
     }
   }
 }

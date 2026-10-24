@@ -25,6 +25,7 @@ import NovaCommandsHost from "./components/commands/NovaCommandsHost";
 import {
   AccessibilityOnboarding,
   WritingStylesIntroStep,
+  AppsSetupStep,
   OrganizationOnboarding,
   CustomizeStep,
   SmartSetupStep,
@@ -622,6 +623,16 @@ function App() {
   } else if (flow.current === "writingStyles") {
     content = (
       <WritingStylesIntroStep
+        stepIndex={flow.displayIndex}
+        stepCount={flow.displayCount}
+        onBack={flow.back}
+        onContinue={flow.next}
+        onSkip={flow.skip}
+      />
+    );
+  } else if (flow.current === "apps") {
+    content = (
+      <AppsSetupStep
         stepIndex={flow.displayIndex}
         stepCount={flow.displayCount}
         onBack={flow.back}

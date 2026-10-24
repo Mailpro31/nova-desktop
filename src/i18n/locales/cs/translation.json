@@ -1731,12 +1731,23 @@
       "description": "Vyberte text kdekoli: Nova nabídne jeho vysvětlení, přečtení nebo odeslání do aplikace.",
       "enabled": "Zobrazit bublinu při výběru textu",
       "enabledDescription": "Bublina se objeví vedle vybraného textu a zmizí při prvním kliknutí jinam.",
-      "preferredAi": "Moje oblíbená AI",
-      "preferredAiDescription": "AI, která se otevře, když pokračujete v odpovědi v prohlížeči."
+      "blocked": "Aplikace bez bubliny",
+      "blockedDescription": "V těchto aplikacích se bublina nezobrazuje. Klepnutím ji obnovíte.",
+      "unblock": "Znovu zobrazit bublinu v {{app}}"
     },
     "apps": {
       "title": "Propojené aplikace",
       "description": "Klepnutím aplikaci otevřete a jednou se přihlásíte. Bublina do ní pak pošle vybraný text jedním klepnutím."
+    },
+    "blockApp": "Nezobrazovat bublinu v této aplikaci",
+    "setup": {
+      "title": "Vaše aplikace",
+      "description": "Vyberte aplikaci pro každé použití a jednou se přihlaste. Bublina do ní pak pošle text jedním klepnutím.",
+      "signIn": "Přihlásit se do {{app}}",
+      "connected": "Hotovo",
+      "demoText": "Vztlak křídla závisí na úhlu náběhu.",
+      "demoCaption": "Vyberte text kdekoli: vedle se objeví tato bublina.",
+      "later": "Vše můžete později změnit v Propojeních."
     }
   }
 }

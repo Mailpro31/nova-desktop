@@ -1731,12 +1731,23 @@
       "description": "Sélectionnez un texte n'importe où : Nova propose de l'expliquer, de le lire ou de l'envoyer vers une application.",
       "enabled": "Afficher la bulle quand je sélectionne un texte",
       "enabledDescription": "La bulle apparaît à côté du texte sélectionné et disparaît au premier clic ailleurs.",
-      "preferredAi": "Mon IA préférée",
-      "preferredAiDescription": "L'IA qui s'ouvre quand vous continuez une réponse dans votre navigateur."
+      "blocked": "Applications sans bulle",
+      "blockedDescription": "La bulle ne s'affiche pas dans ces applications. Cliquez sur l'une d'elles pour la rétablir.",
+      "unblock": "Rétablir la bulle dans {{app}}"
     },
     "apps": {
       "title": "Applications reliées",
       "description": "Cliquez sur une application pour l'ouvrir et vous y connecter une fois. La bulle y enverra ensuite le texte sélectionné en un clic."
+    },
+    "blockApp": "Ne plus afficher la bulle dans cette application",
+    "setup": {
+      "title": "Vos applications",
+      "description": "Choisissez une application pour chaque usage et connectez-vous-y une fois. La bulle y enverra ensuite le texte en un clic.",
+      "signIn": "Me connecter à {{app}}",
+      "connected": "C'est fait",
+      "demoText": "La portance d'une aile dépend de son angle d'incidence.",
+      "demoCaption": "Sélectionnez un texte n'importe où : cette bulle apparaît à côté.",
+      "later": "Vous pourrez tout changer plus tard dans Connexions."
     }
   }
 }

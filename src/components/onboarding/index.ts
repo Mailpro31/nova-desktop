@@ -4,4 +4,5 @@ export { default as TutorialOnboarding } from "./TutorialOnboarding";
 export { default as SmartSetupStep } from "./SmartSetupStep";
 export { default as CustomizeStep } from "./CustomizeStep";
 export { default as WritingStylesIntroStep } from "./WritingStylesIntroStep";
+export { default as AppsSetupStep } from "./AppsSetupStep";
 export { default as VoiceCalibrationStep } from "./VoiceCalibrationStep";

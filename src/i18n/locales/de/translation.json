@@ -1731,12 +1731,23 @@
       "description": "Markieren Sie überall Text: Nova bietet an, ihn zu erklären, vorzulesen oder an eine App zu senden.",
       "enabled": "Blase beim Markieren von Text anzeigen",
       "enabledDescription": "Die Blase erscheint neben dem markierten Text und verschwindet beim ersten Klick daneben.",
-      "preferredAi": "Meine bevorzugte KI",
-      "preferredAiDescription": "Die KI, die sich öffnet, wenn Sie eine Antwort im Browser fortsetzen."
+      "blocked": "Apps ohne Blase",
+      "blockedDescription": "In diesen Apps erscheint die Blase nicht. Klicken Sie auf eine, um sie wieder einzuschalten.",
+      "unblock": "Blase in {{app}} wieder anzeigen"
     },
     "apps": {
       "title": "Verbundene Apps",
       "description": "Klicken Sie auf eine App, um sie zu öffnen und sich einmal anzumelden. Danach sendet die Blase markierten Text mit einem Klick dorthin."
+    },
+    "blockApp": "Blase in dieser App nicht mehr anzeigen",
+    "setup": {
+      "title": "Ihre Apps",
+      "description": "Wählen Sie für jeden Zweck eine App und melden Sie sich einmal an. Die Blase sendet dann Text mit einem Klick dorthin.",
+      "signIn": "Bei {{app}} anmelden",
+      "connected": "Erledigt",
+      "demoText": "Der Auftrieb eines Flügels hängt vom Anstellwinkel ab.",
+      "demoCaption": "Markieren Sie überall Text: Diese Blase erscheint daneben.",
+      "later": "Sie können alles später unter Verbindungen ändern."
     }
   }
 }

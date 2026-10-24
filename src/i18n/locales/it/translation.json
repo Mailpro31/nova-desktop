@@ -1731,12 +1731,23 @@
       "description": "Seleziona un testo ovunque: Nova propone di spiegarlo, leggerlo o inviarlo a un'app.",
       "enabled": "Mostra la bolla quando seleziono un testo",
       "enabledDescription": "La bolla compare accanto al testo selezionato e scompare al primo clic altrove.",
-      "preferredAi": "La mia IA preferita",
-      "preferredAiDescription": "L'IA che si apre quando continui una risposta nel browser."
+      "blocked": "App senza bolla",
+      "blockedDescription": "La bolla non compare in queste app. Fai clic su una per riattivarla.",
+      "unblock": "Mostra di nuovo la bolla in {{app}}"
     },
     "apps": {
       "title": "App collegate",
       "description": "Fai clic su un'app per aprirla e accedere una volta. La bolla vi invierà poi il testo selezionato con un clic."
+    },
+    "blockApp": "Non mostrare la bolla in questa app",
+    "setup": {
+      "title": "Le tue app",
+      "description": "Scegli un'app per ogni uso e accedi una volta. La bolla vi invierà poi il testo con un clic.",
+      "signIn": "Accedi a {{app}}",
+      "connected": "Fatto",
+      "demoText": "La portanza di un'ala dipende dal suo angolo di incidenza.",
+      "demoCaption": "Seleziona un testo ovunque: questa bolla compare accanto.",
+      "later": "Potrai cambiare tutto più tardi in Connessioni."
     }
   }
 }

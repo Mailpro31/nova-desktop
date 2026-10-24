@@ -23,6 +23,7 @@ export type OnboardingStatus = "not_started" | "in_progress" | "completed";
 /** Étapes facultatives : celles qui peuvent être ignorées sans casser Nova. */
 export type SkippableStep =
   | "writingStyles"
+  | "apps"
   | "style"
   | "variables"
   | "voiceCalibration"

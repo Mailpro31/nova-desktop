@@ -1,27 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { X } from "lucide-react";
 
 import { ToggleSwitch } from "../../ui/ToggleSwitch";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { useSettings } from "../../../hooks/useSettings";
-import { AppLogo } from "@/components/shared/AppLogo";
-import { CONNECTIONS } from "@/lib/bubble/connections";
-import {
-  loadBubblePreferences,
-  saveBubblePreferences,
-} from "@/lib/bubble/preferences";
 
-/** La bulle de sélection : l'allumer, et choisir l'IA qu'elle ouvre. */
+/** La bulle de sélection : l'allumer, et les applications où elle se tait. */
 export const SelectionBubbleSettings: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, isUpdating } = useSettings();
-  const [ai, setAi] = useState(() => loadBubblePreferences().ai);
   const enabled = getSetting("selection_bubble_enabled") ?? true;
-
-  const choose = (id: string) => {
-    setAi(id);
-    saveBubblePreferences({ ...loadBubblePreferences(), ai: id });
-  };
+  const blocklist = getSetting("selection_bubble_blocklist") ?? [];
 
   return (
     <>
@@ -34,37 +24,35 @@ export const SelectionBubbleSettings: React.FC = () => {
         descriptionMode="tooltip"
         grouped={true}
       />
-      <SettingContainer
-        title={t("bubble.settings.preferredAi")}
-        description={t("bubble.settings.preferredAiDescription")}
-        layout="stacked"
-        grouped={true}
-        disabled={!enabled}
-      >
-        <div role="radiogroup" className="mt-2 flex flex-wrap gap-1.5">
-          {CONNECTIONS.filter((c) => c.group === "ai").map((connection) => {
-            const selected = connection.id === ai;
-            return (
+      {blocklist.length > 0 && (
+        <SettingContainer
+          title={t("bubble.settings.blocked")}
+          description={t("bubble.settings.blockedDescription")}
+          layout="stacked"
+          grouped={true}
+        >
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {blocklist.map((process) => (
               <button
-                key={connection.id}
+                key={process}
                 type="button"
-                role="radio"
-                aria-checked={selected}
-                disabled={!enabled}
-                onClick={() => choose(connection.id)}
-                className={`flex items-center gap-2 rounded-full border py-1.5 pe-3 ps-2 text-sm transition-colors duration-[120ms] cursor-pointer disabled:cursor-default disabled:opacity-60 ${
-                  selected
-                    ? "border-accent bg-accent/10 text-text"
-                    : "border-hairline text-text-secondary hover:border-accent/40"
-                }`}
+                aria-label={t("bubble.settings.unblock", { app: process })}
+                title={t("bubble.settings.unblock", { app: process })}
+                onClick={() =>
+                  updateSetting(
+                    "selection_bubble_blocklist",
+                    blocklist.filter((p) => p !== process),
+                  )
+                }
+                className="flex items-center gap-1.5 rounded-full border border-hairline py-1 pe-2 ps-3 text-sm text-text transition-colors duration-[120ms] hover:border-accent/40 cursor-pointer"
               >
-                <AppLogo connection={connection} size={18} />
-                {connection.name}
+                {process}
+                <X size={14} className="text-text-secondary" />
               </button>
-            );
-          })}
-        </div>
-      </SettingContainer>
+            ))}
+          </div>
+        </SettingContainer>
+      )}
     </>
   );
 };

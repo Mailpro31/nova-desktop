@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Blocks, TextSelect } from "lucide-react";
+import { Blocks, Star, TextSelect } from "lucide-react";
 
 import { PageHeader } from "../../shell/PageHeader";
 import {
@@ -8,12 +8,13 @@ import {
   SectionCard,
 } from "../general/OrganizationGeneralSettings";
 import { SelectionBubbleSettings } from "../general/SelectionBubbleSettings";
+import { AppsSetup } from "./AppsSetup";
 import { ConnectedApps } from "./ConnectedApps";
 
 /**
  * Ce que Nova relie à d'autres applications, en un seul endroit (n° 25, 33) :
- * la bulle de sélection, les applications qu'elle atteint, et l'emploi du
- * temps, venu des Réglages avec le lien déjà enregistré.
+ * la bulle de sélection, les applications choisies pour chaque usage, toutes
+ * celles qu'elle atteint, et l'emploi du temps.
  */
 export const ConnectionsSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -30,6 +31,13 @@ export const ConnectionsSettings: React.FC = () => {
           description={t("bubble.settings.description")}
         >
           <SelectionBubbleSettings />
+        </SectionCard>
+        <SectionCard
+          icon={Star}
+          title={t("bubble.setup.title")}
+          description={t("bubble.setup.description")}
+        >
+          <AppsSetup />
         </SectionCard>
         <SectionCard
           icon={Blocks}

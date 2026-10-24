@@ -1731,12 +1731,23 @@
       "description": "Selecione texto em qualquer lado: o Nova propõe explicá-lo, lê-lo ou enviá-lo para uma aplicação.",
       "enabled": "Mostrar a bolha quando seleciono texto",
       "enabledDescription": "A bolha aparece junto ao texto selecionado e desaparece ao primeiro clique noutro sítio.",
-      "preferredAi": "A minha IA preferida",
-      "preferredAiDescription": "A IA que abre quando continua uma resposta no navegador."
+      "blocked": "Aplicações sem bolha",
+      "blockedDescription": "A bolha não aparece nestas aplicações. Clique numa para a repor.",
+      "unblock": "Voltar a mostrar a bolha no {{app}}"
     },
     "apps": {
       "title": "Aplicações ligadas",
       "description": "Clique numa aplicação para a abrir e iniciar sessão uma vez. Depois, a bolha envia-lhe o texto selecionado num clique."
+    },
+    "blockApp": "Não mostrar a bolha nesta aplicação",
+    "setup": {
+      "title": "As suas aplicações",
+      "description": "Escolha uma aplicação para cada uso e inicie sessão uma vez. Depois, a bolha envia-lhe o texto num clique.",
+      "signIn": "Iniciar sessão no {{app}}",
+      "connected": "Feito",
+      "demoText": "A sustentação de uma asa depende do seu ângulo de ataque.",
+      "demoCaption": "Selecione um texto em qualquer lado: esta bolha aparece ao lado.",
+      "later": "Pode mudar tudo mais tarde em Ligações."
     }
   }
 }

@@ -25,7 +25,7 @@ use crate::nova_commands::{CommandError, TargetWindow};
 
 #[cfg(target_os = "windows")]
 mod platform {
-    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
     use std::sync::{mpsc, Mutex};
     use std::time::{Duration, Instant};
 
@@ -58,6 +58,8 @@ mod platform {
     static VISIBLE: AtomicBool = AtomicBool::new(false);
     /// Le dernier texte montré : un clic qui le laisse sélectionné ne le remontre pas.
     static LAST_TEXT: Mutex<String> = Mutex::new(String::new());
+    /// Le processus d'où vient la sélection affichée.
+    static TARGET_PID: AtomicU32 = AtomicU32::new(0);
 
     enum Signal {
         Press(i32, i32),
@@ -160,11 +162,12 @@ mod platform {
         for signal in rx {
             match signal {
                 Signal::Press(x, y) => {
-                    if VISIBLE.load(Ordering::Relaxed)
-                        && !PINNED.load(Ordering::Relaxed)
-                        && !inside(&app, x, y)
-                    {
-                        hide(&app);
+                    if VISIBLE.load(Ordering::Relaxed) && !inside(&app, x, y) {
+                        if PINNED.load(Ordering::Relaxed) {
+                            hide_if_app_changed(&app);
+                        } else {
+                            hide(&app);
+                        }
                     }
                 }
                 Signal::Selected { x, y, deliberate } => {
@@ -175,9 +178,13 @@ mod platform {
                     if !settings.selection_bubble_enabled {
                         continue;
                     }
-                    // Nova lui-même : la sélection dans ses propres fenêtres n'appelle pas la bulle.
-                    let (_process, pid) = crate::auto_style::foreground_window_identity();
-                    if pid == std::process::id() {
+                    // Nova lui-même, une application écartée par l'élève, ou un plein
+                    // écran (un jeu, une présentation) : pas de bulle.
+                    let (process, pid) = crate::auto_style::foreground_window_identity();
+                    if pid == std::process::id()
+                        || settings.selection_bubble_blocklist.contains(&process)
+                        || foreground_is_fullscreen()
+                    {
                         continue;
                     }
                     // L'application met sa sélection à jour juste après le relâchement.
@@ -202,7 +209,7 @@ mod platform {
                         *anchor = (x, y);
                     }
                     PINNED.store(false, Ordering::Relaxed);
-                    let (process, pid) = crate::auto_style::foreground_window_identity();
+                    TARGET_PID.store(pid, Ordering::Relaxed);
                     let payload = ShowPayload {
                         text,
                         editable,
@@ -214,10 +221,14 @@ mod platform {
                     }
                 }
                 Signal::Key { escape } => {
-                    if VISIBLE.load(Ordering::Relaxed)
-                        && (escape || !PINNED.load(Ordering::Relaxed))
-                    {
+                    if !VISIBLE.load(Ordering::Relaxed) {
+                        continue;
+                    }
+                    if escape || !PINNED.load(Ordering::Relaxed) {
                         hide(&app);
+                    } else {
+                        // Alt+Tab vers une autre application.
+                        hide_if_app_changed(&app);
                     }
                 }
                 Signal::Wheel => {
@@ -227,6 +238,52 @@ mod platform {
                 }
             }
         }
+    }
+
+    /// Une réponse affichée suit l'application d'où vient la sélection : elle
+    /// se cache quand l'élève passe à une autre (elle restait par-dessus tout).
+    fn hide_if_app_changed(app: &AppHandle) {
+        std::thread::sleep(Duration::from_millis(150));
+        let (_process, pid) = crate::auto_style::foreground_window_identity();
+        if pid != 0 && pid != TARGET_PID.load(Ordering::Relaxed) && pid != std::process::id() {
+            hide(app);
+        }
+    }
+
+    /// La fenêtre au premier plan couvre-t-elle tout son écran ? Un plein écran
+    /// de lecture (PDF en F11) perd aussi la bulle : le prix d'un jeu tranquille.
+    fn foreground_is_fullscreen() -> bool {
+        use windows::Win32::Foundation::RECT;
+        use windows::Win32::Graphics::Gdi::{
+            GetMonitorInfoW, MonitorFromWindow, MONITORINFO, MONITOR_DEFAULTTONEAREST,
+        };
+        use windows::Win32::UI::WindowsAndMessaging::{GetForegroundWindow, GetWindowRect};
+
+        unsafe {
+            let window = GetForegroundWindow();
+            if window.is_invalid() {
+                return false;
+            }
+            let mut rect = RECT::default();
+            if GetWindowRect(window, &mut rect).is_err() {
+                return false;
+            }
+            let mut info = MONITORINFO {
+                cbSize: std::mem::size_of::<MONITORINFO>() as u32,
+                ..Default::default()
+            };
+            let monitor = MonitorFromWindow(window, MONITOR_DEFAULTTONEAREST);
+            GetMonitorInfoW(monitor, &mut info).as_bool() && rect == info.rcMonitor
+        }
+    }
+
+    /// Le texte d'origine est-il toujours sélectionné ? Sinon « Remplacer »
+    /// collerait au nouvel endroit du curseur.
+    pub fn still_selected(app: &AppHandle, original: &str) -> bool {
+        let (x, y) = ANCHOR.lock().map(|a| *a).unwrap_or((0, 0));
+        let settings = crate::settings::get_settings(app);
+        crate::auto_style::read_selection(&settings.auto_style_blocklist, MAX_CHARS, x, y)
+            .is_some_and(|(text, _)| text == original.trim())
     }
 
     fn inside(app: &AppHandle, x: i32, y: i32) -> bool {
@@ -314,6 +371,10 @@ mod platform {
 
     pub fn hide(_app: &AppHandle) {}
 
+    pub fn still_selected(_app: &AppHandle, _original: &str) -> bool {
+        true
+    }
+
     pub fn layout(
         _app: &AppHandle,
         _width: f64,
@@ -353,10 +414,27 @@ pub fn selection_bubble_hide(app: AppHandle) {
 pub fn selection_bubble_replace(
     app: AppHandle,
     result: String,
+    original: String,
     target: TargetWindow,
 ) -> Result<(), CommandError> {
+    if !platform::still_selected(&app, &original) {
+        return Err(CommandError::TargetChanged);
+    }
     selection_bubble_hide(app.clone());
     crate::nova_commands::paste_preserving_clipboard(&app, &result, &target)
+}
+
+/// Les applications sans bulle (« Ne plus afficher dans cette application »).
+#[tauri::command]
+#[specta::specta]
+pub fn change_selection_bubble_blocklist_setting(
+    app: AppHandle,
+    blocklist: Vec<String>,
+) -> Result<(), String> {
+    let mut settings = crate::settings::get_settings(&app);
+    settings.selection_bubble_blocklist = blocklist;
+    crate::settings::write_settings(&app, settings);
+    Ok(())
 }
 
 #[tauri::command]

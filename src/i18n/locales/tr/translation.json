@@ -1731,12 +1731,23 @@
       "description": "Herhangi bir yerde metin seçin: Nova onu açıklamayı, sesli okumayı veya bir uygulamaya göndermeyi önerir.",
       "enabled": "Metin seçtiğimde balonu göster",
       "enabledDescription": "Balon seçilen metnin yanında görünür ve başka bir yere ilk tıklamada kaybolur.",
-      "preferredAi": "Tercih ettiğim yapay zekâ",
-      "preferredAiDescription": "Bir yanıta tarayıcınızda devam ettiğinizde açılan yapay zekâ."
+      "blocked": "Balonsuz uygulamalar",
+      "blockedDescription": "Balon bu uygulamalarda görünmez. Geri getirmek için birine tıklayın.",
+      "unblock": "Balonu {{app}} içinde yeniden göster"
     },
     "apps": {
       "title": "Bağlı uygulamalar",
       "description": "Bir uygulamayı açmak ve bir kez oturum açmak için tıklayın. Ardından balon, seçilen metni tek tıkla oraya gönderir."
+    },
+    "blockApp": "Bu uygulamada balonu gösterme",
+    "setup": {
+      "title": "Uygulamalarınız",
+      "description": "Her kullanım için bir uygulama seçin ve bir kez oturum açın. Ardından balon metni tek tıkla oraya gönderir.",
+      "signIn": "{{app}} oturumu aç",
+      "connected": "Tamam",
+      "demoText": "Bir kanadın taşıma kuvveti hücum açısına bağlıdır.",
+      "demoCaption": "Herhangi bir yerde metin seçin: bu balon yanında görünür.",
+      "later": "Hepsini daha sonra Bağlantılar'dan değiştirebilirsiniz."
     }
   }
 }

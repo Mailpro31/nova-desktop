@@ -99,6 +99,24 @@ describe("connexions", () => {
     expect(launch.clipboard).toBe("Explique :\n\nBernoulli");
   });
 
+  test("une IA où l'élève est connecté ne touche pas au presse-papiers", () => {
+    const launch = launchFor(
+      connectionById("chatgpt")!,
+      "Bernoulli",
+      "Explique :",
+      "fr",
+      true,
+    );
+    expect(launch.clipboard).toBeUndefined();
+  });
+
+  test("la date de rendu va dans l'agenda choisi", () => {
+    const text = "Le TP est à rendre le 12/11.";
+    expect(suggest(text, traits(text, false), {}, "google-calendar")[0]).toBe(
+      "open:google-calendar",
+    );
+  });
+
   test("un texte trop long passe par le presse-papiers, jamais coupé", () => {
     const long = "mot ".repeat(600);
     const launch = launchFor(connectionById("deepl")!, long, "", "en");

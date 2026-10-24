@@ -1731,12 +1731,23 @@
       "description": "Seleccione un texto en cualquier lugar: Nova le propone explicarlo, leerlo o enviarlo a una aplicación.",
       "enabled": "Mostrar la burbuja al seleccionar un texto",
       "enabledDescription": "La burbuja aparece junto al texto seleccionado y desaparece al primer clic en otro lugar.",
-      "preferredAi": "Mi IA preferida",
-      "preferredAiDescription": "La IA que se abre cuando continúa una respuesta en su navegador."
+      "blocked": "Aplicaciones sin burbuja",
+      "blockedDescription": "La burbuja no aparece en estas aplicaciones. Haga clic en una para recuperarla.",
+      "unblock": "Volver a mostrar la burbuja en {{app}}"
     },
     "apps": {
       "title": "Aplicaciones conectadas",
       "description": "Haga clic en una aplicación para abrirla e iniciar sesión una vez. Después, la burbuja le enviará el texto seleccionado con un clic."
+    },
+    "blockApp": "No mostrar la burbuja en esta aplicación",
+    "setup": {
+      "title": "Sus aplicaciones",
+      "description": "Elija una aplicación para cada uso e inicie sesión una vez. Después, la burbuja le enviará el texto con un clic.",
+      "signIn": "Iniciar sesión en {{app}}",
+      "connected": "Hecho",
+      "demoText": "La sustentación de un ala depende de su ángulo de ataque.",
+      "demoCaption": "Seleccione un texto en cualquier lugar: esta burbuja aparece al lado.",
+      "later": "Podrá cambiarlo todo más tarde en Conexiones."
     }
   }
 }
