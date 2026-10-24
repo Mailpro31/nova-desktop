@@ -1682,7 +1682,7 @@
     "space": "Mezerník"
   },
   "connections": {
-    "description": "Aplikace propojené s Nova. Rozvrh řadí diktáty podle hodin."
+    "description": "Aplikace propojené s Novou: bublina výběru do nich posílá text a rozvrh řadí vaše diktáty podle hodin."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "Bublina se objeví vedle vybraného textu a zmizí při prvním kliknutí jinam.",
       "preferredAi": "Moje oblíbená AI",
       "preferredAiDescription": "AI, která se otevře, když pokračujete v odpovědi v prohlížeči."
+    },
+    "apps": {
+      "title": "Propojené aplikace",
+      "description": "Klepnutím aplikaci otevřete a jednou se přihlásíte. Bublina do ní pak pošle vybraný text jedním klepnutím."
     }
   }
 }

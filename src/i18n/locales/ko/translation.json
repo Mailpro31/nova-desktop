@@ -1682,7 +1682,7 @@
     "space": "스페이스"
   },
   "connections": {
-    "description": "Nova와 연결된 앱입니다. 시간표가 받아쓰기를 수업별로 정리합니다."
+    "description": "Nova와 연결된 앱: 선택 말풍선이 텍스트를 보내고, 시간표가 받아쓰기를 수업별로 정리합니다."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "말풍선은 선택한 텍스트 옆에 나타나고 다른 곳을 처음 클릭하면 사라집니다.",
       "preferredAi": "내가 선호하는 AI",
       "preferredAiDescription": "브라우저에서 답을 이어 갈 때 열리는 AI입니다."
+    },
+    "apps": {
+      "title": "연결된 앱",
+      "description": "앱을 클릭해 열고 한 번 로그인하세요. 그다음부터 말풍선이 선택한 텍스트를 한 번의 클릭으로 보냅니다."
     }
   }
 }

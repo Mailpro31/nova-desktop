@@ -1682,7 +1682,7 @@
     "space": "Espace"
   },
   "connections": {
-    "description": "Les applications reliées à Nova. L’emploi du temps range vos dictées par cours."
+    "description": "Les applications reliées à Nova : la bulle de sélection leur envoie un texte, et l'emploi du temps range vos dictées par cours."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "La bulle apparaît à côté du texte sélectionné et disparaît au premier clic ailleurs.",
       "preferredAi": "Mon IA préférée",
       "preferredAiDescription": "L'IA qui s'ouvre quand vous continuez une réponse dans votre navigateur."
+    },
+    "apps": {
+      "title": "Applications reliées",
+      "description": "Cliquez sur une application pour l'ouvrir et vous y connecter une fois. La bulle y enverra ensuite le texte sélectionné en un clic."
     }
   }
 }

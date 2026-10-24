@@ -1682,7 +1682,7 @@
     "space": "空格"
   },
   "connections": {
-    "description": "与 Nova 关联的应用。课程表按课程整理你的听写。"
+    "description": "与 Nova 关联的应用：选区气泡把文字发送给它们，课表按课程整理你的听写。"
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "气泡出现在选中文字旁边，在别处第一次点击时消失。",
       "preferredAi": "我偏好的 AI",
       "preferredAiDescription": "在浏览器中继续回答时打开的 AI。"
+    },
+    "apps": {
+      "title": "关联的应用",
+      "description": "点击应用即可打开并登录一次。之后，气泡一键就能把选中的文字发送过去。"
     }
   }
 }

@@ -1682,7 +1682,7 @@
     "space": "Boşluk"
   },
   "connections": {
-    "description": "Nova ile bağlı uygulamalar. Ders programı dikteleri derse göre sıralar."
+    "description": "Nova'ya bağlı uygulamalar: seçim balonu onlara metin gönderir, ders programı da dikte kayıtlarınızı derse göre sıralar."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "Balon seçilen metnin yanında görünür ve başka bir yere ilk tıklamada kaybolur.",
       "preferredAi": "Tercih ettiğim yapay zekâ",
       "preferredAiDescription": "Bir yanıta tarayıcınızda devam ettiğinizde açılan yapay zekâ."
+    },
+    "apps": {
+      "title": "Bağlı uygulamalar",
+      "description": "Bir uygulamayı açmak ve bir kez oturum açmak için tıklayın. Ardından balon, seçilen metni tek tıkla oraya gönderir."
     }
   }
 }

@@ -1682,7 +1682,7 @@
     "space": "空白鍵"
   },
   "connections": {
-    "description": "與 Nova 連結的應用程式。課表依課程整理你的聽寫。"
+    "description": "與 Nova 連結的應用程式：選取泡泡把文字傳送給它們，課表依課程整理你的聽寫。"
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "泡泡會出現在選取的文字旁，在其他地方第一次點擊時消失。",
       "preferredAi": "我偏好的 AI",
       "preferredAiDescription": "在瀏覽器中繼續回答時開啟的 AI。"
+    },
+    "apps": {
+      "title": "連結的應用程式",
+      "description": "點選應用程式即可開啟並登入一次。之後，泡泡一鍵就能把選取的文字傳送過去。"
     }
   }
 }

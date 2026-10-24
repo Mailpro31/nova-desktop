@@ -1682,7 +1682,7 @@
     "space": "Spazio"
   },
   "connections": {
-    "description": "Le app collegate a Nova. L’orario ordina le dettature per lezione."
+    "description": "Le app collegate a Nova: la bolla di selezione invia loro il testo e l'orario ordina le tue dettature per corso."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "La bolla compare accanto al testo selezionato e scompare al primo clic altrove.",
       "preferredAi": "La mia IA preferita",
       "preferredAiDescription": "L'IA che si apre quando continui una risposta nel browser."
+    },
+    "apps": {
+      "title": "App collegate",
+      "description": "Fai clic su un'app per aprirla e accedere una volta. La bolla vi invierà poi il testo selezionato con un clic."
     }
   }
 }

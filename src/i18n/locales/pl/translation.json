@@ -1682,7 +1682,7 @@
     "space": "Spacja"
   },
   "connections": {
-    "description": "Aplikacje połączone z Nova. Plan zajęć porządkuje dyktowania według zajęć."
+    "description": "Aplikacje połączone z Nova: dymek zaznaczenia wysyła do nich tekst, a plan zajęć porządkuje dyktowania według zajęć."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "Dymek pojawia się obok zaznaczonego tekstu i znika po pierwszym kliknięciu w innym miejscu.",
       "preferredAi": "Moja ulubiona AI",
       "preferredAiDescription": "AI, która otwiera się, gdy kontynuujesz odpowiedź w przeglądarce."
+    },
+    "apps": {
+      "title": "Połączone aplikacje",
+      "description": "Kliknij aplikację, aby ją otworzyć i raz się zalogować. Potem dymek wyśle do niej zaznaczony tekst jednym kliknięciem."
     }
   }
 }

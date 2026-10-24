@@ -1682,7 +1682,7 @@
     "space": "Spatie"
   },
   "connections": {
-    "description": "De apps die met Nova werken. Het rooster sorteert je dictaten per les."
+    "description": "Apps gekoppeld aan Nova: de selectiebel stuurt er tekst naartoe, en het rooster ordent je dictaten per les."
   },
   "bubble": {
     "action": {
@@ -1733,6 +1733,10 @@
       "enabledDescription": "De bel verschijnt naast de geselecteerde tekst en verdwijnt bij de eerste klik ergens anders.",
       "preferredAi": "Mijn favoriete AI",
       "preferredAiDescription": "De AI die opent als je een antwoord verder zet in je browser."
+    },
+    "apps": {
+      "title": "Gekoppelde apps",
+      "description": "Klik op een app om hem te openen en één keer in te loggen. Daarna stuurt de bel geselecteerde tekst er met één klik naartoe."
     }
   }
 }
