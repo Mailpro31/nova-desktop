@@ -529,6 +529,11 @@ pub struct AppSettings {
     /// être validée sur applications Windows réelles avant toute activation.
     #[serde(default)]
     pub nova_commands_enabled: bool,
+    /// Bulle de sélection (24/10) : un texte sélectionné n'importe où propose
+    /// de l'expliquer, le lire ou l'envoyer vers une application. Active par
+    /// défaut ; l'élève peut l'éteindre.
+    #[serde(default = "default_selection_bubble_enabled")]
+    pub selection_bubble_enabled: bool,
     #[serde(default)]
     pub lazy_stream_close: bool,
     #[serde(default)]
@@ -731,6 +736,10 @@ fn default_app_language() -> String {
     tauri_plugin_os::locale()
         .map(|l| l.replace('_', "-"))
         .unwrap_or_else(|| "en".to_string())
+}
+
+fn default_selection_bubble_enabled() -> bool {
+    true
 }
 
 fn default_show_tray_icon() -> bool {
@@ -1646,6 +1655,7 @@ pub fn get_default_settings() -> AppSettings {
         theme: default_theme(),
         experimental_enabled: false,
         nova_commands_enabled: false,
+        selection_bubble_enabled: default_selection_bubble_enabled(),
         lazy_stream_close: false,
         keyboard_implementation: KeyboardImplementation::default(),
         show_tray_icon: default_show_tray_icon(),

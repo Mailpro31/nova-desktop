@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "As aplicações ligadas ao Nova. O horário organiza os ditados por aula."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Explicar",
+      "summarize": "Resumir",
+      "simplify": "Simplificar",
+      "words": "Palavras difíceis",
+      "improve": "Corrigir",
+      "translate": "Traduzir",
+      "quiz": "Testar-me"
+    },
+    "ask": {
+      "explain": "Explica-me este texto de forma simples e depois define as palavras difíceis:",
+      "summarize": "Resume este texto em poucas frases:",
+      "simplify": "Reescreve este texto para ser fácil de ler, sem perder informação:",
+      "words": "Lista as palavras difíceis deste texto e define-as de forma simples:",
+      "improve": "Corrige a ortografia e a gramática deste texto sem mudar as minhas palavras:",
+      "translate": "Traduz este texto:",
+      "quiz": "Faz-me 3 perguntas para verificar se percebi este texto:"
+    },
+    "read": "Ler",
+    "stop": "Parar",
+    "more": "Mais ações",
+    "back": "Voltar",
+    "withNova": "Com o Nova",
+    "running": "O Nova está a preparar a resposta…",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "replace": "Substituir",
+    "close": "Fechar",
+    "continueIn": "Continuar no {{app}}",
+    "askIn": "Perguntar ao {{app}}",
+    "pasted": "Texto copiado: cole-o no {{app}} com Ctrl+V",
+    "group": {
+      "ai": "Perguntar a uma IA",
+      "translate": "Traduzir",
+      "search": "Pesquisar",
+      "words": "Dicionários",
+      "math": "Matemática",
+      "agenda": "Agenda",
+      "notes": "As minhas notas",
+      "share": "Partilhar"
+    },
+    "settings": {
+      "title": "Bolha de seleção",
+      "description": "Selecione texto em qualquer lado: o Nova propõe explicá-lo, lê-lo ou enviá-lo para uma aplicação.",
+      "enabled": "Mostrar a bolha quando seleciono texto",
+      "enabledDescription": "A bolha aparece junto ao texto selecionado e desaparece ao primeiro clique noutro sítio.",
+      "preferredAi": "A minha IA preferida",
+      "preferredAiDescription": "A IA que abre quando continua uma resposta no navegador."
+    }
   }
 }

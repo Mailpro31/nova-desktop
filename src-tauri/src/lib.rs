@@ -57,6 +57,7 @@ mod rich_paste;
 mod screen_ocr;
 mod screen_vision;
 mod screen_vlm;
+mod selection_bubble;
 mod settings;
 mod shortcut;
 mod signal_handle;
@@ -379,6 +380,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
 
     // Create the recording overlay window (hidden by default)
     utils::create_recording_overlay(app_handle);
+    selection_bubble::start(app_handle);
 }
 
 #[tauri::command]
@@ -686,6 +688,10 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 nova_commands::nova_command_capture_selection,
                 nova_commands::nova_command_replace,
                 nova_commands::nova_command_diagnostics,
+                selection_bubble::selection_bubble_layout,
+                selection_bubble::selection_bubble_hide,
+                selection_bubble::selection_bubble_replace,
+                selection_bubble::change_selection_bubble_enabled_setting,
                 commands::organization::get_organization_config,
                 commands::organization::fetch_organization_server_config,
                 commands::organization::set_organization_mode,

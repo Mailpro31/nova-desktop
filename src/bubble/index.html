@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nova</title>
+    <style>
+      /* La fenêtre est transparente : seule la bulle se voit. */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: transparent !important;
+        overflow: hidden;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .bubble-in {
+          animation: bubble-in 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+      }
+      @keyframes bubble-in {
+        from {
+          opacity: 0;
+          transform: translateY(4px) scale(0.98);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/bubble/main.tsx"></script>
+  </body>
+</html>

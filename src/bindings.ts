@@ -622,6 +622,42 @@ async novaCommandDiagnostics() : Promise<CommandsDiagnostics> {
     return await TAURI_INVOKE("nova_command_diagnostics");
 },
 /**
+ * La bulle a mesuré son contenu : la placer et la montrer.
+ */
+async selectionBubbleLayout(width: number, height: number, pinned: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("selection_bubble_layout", { width, height, pinned }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async selectionBubbleHide() : Promise<void> {
+    await TAURI_INVOKE("selection_bubble_hide");
+},
+/**
+ * Remplace la sélection de l'élève par `result` (Corriger, Simplifier).
+ * 
+ * La bulle n'a jamais pris le focus : la sélection est toujours active dans
+ * l'application, et le collage la remplace. Refusé si la fenêtre a changé.
+ */
+async selectionBubbleReplace(result: string, target: TargetWindow) : Promise<Result<null, CommandError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("selection_bubble_replace", { result, target }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async changeSelectionBubbleEnabledSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_selection_bubble_enabled_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
  * Lit la configuration Organization déposée par l'IT. Voir `resolve_organization_config_path`.
  */
 async getOrganizationConfig() : Promise<Result<OrganizationConfig | null, string>> {
@@ -1869,7 +1905,13 @@ week_stat_week_start?: number; mute_while_recording?: boolean; append_trailing_s
  * désactivé par défaut** : la couche native clavier + presse-papiers doit
  * être validée sur applications Windows réelles avant toute activation.
  */
-nova_commands_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
+nova_commands_enabled?: boolean; 
+/**
+ * Bulle de sélection (24/10) : un texte sélectionné n'importe où propose
+ * de l'expliquer, le lire ou l'envoyer vers une application. Active par
+ * défaut ; l'élève peut l'éteindre.
+ */
+selection_bubble_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; typing_tool?: TypingTool; external_script_path?: string | null; custom_filler_words?: string[] | null; transcribe_accelerator?: TranscribeAcceleratorSetting; ort_accelerator?: OrtAcceleratorSetting; transcribe_gpu_device?: number; extra_recording_buffer_ms?: number; vad_enabled?: boolean; 
 /**
  * Which recording overlay to show: None / Minimal / Live. Streaming mode is
  * not gated on this — that follows model capability. Migrated from the old

@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Aplikace propojené s Nova. Rozvrh řadí diktáty podle hodin."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Vysvětlit",
+      "summarize": "Shrnout",
+      "simplify": "Zjednodušit",
+      "words": "Těžká slova",
+      "improve": "Opravit",
+      "translate": "Přeložit",
+      "quiz": "Vyzkoušej mě"
+    },
+    "ask": {
+      "explain": "Vysvětli mi jednoduše tento text a pak definuj jeho těžká slova:",
+      "summarize": "Shrň tento text v několika větách:",
+      "simplify": "Přepiš tento text tak, aby se snadno četl, bez ztráty informací:",
+      "words": "Vypiš těžká slova z tohoto textu a jednoduše je vysvětli:",
+      "improve": "Oprav pravopis a gramatiku tohoto textu, aniž bys měnil má slova:",
+      "translate": "Přelož tento text:",
+      "quiz": "Polož mi 3 otázky, abys ověřil, že jsem tomuto textu porozuměl:"
+    },
+    "read": "Přečíst",
+    "stop": "Zastavit",
+    "more": "Další akce",
+    "back": "Zpět",
+    "withNova": "S Novou",
+    "running": "Nova připravuje odpověď…",
+    "copy": "Kopírovat",
+    "copied": "Zkopírováno",
+    "replace": "Nahradit",
+    "close": "Zavřít",
+    "continueIn": "Pokračovat v {{app}}",
+    "askIn": "Zeptat se {{app}}",
+    "pasted": "Text zkopírován: vložte ho do {{app}} pomocí Ctrl+V",
+    "group": {
+      "ai": "Zeptat se AI",
+      "translate": "Překlad",
+      "search": "Hledat",
+      "words": "Slovníky",
+      "math": "Matematika",
+      "agenda": "Kalendář",
+      "notes": "Moje poznámky",
+      "share": "Sdílet"
+    },
+    "settings": {
+      "title": "Bublina výběru",
+      "description": "Vyberte text kdekoli: Nova nabídne jeho vysvětlení, přečtení nebo odeslání do aplikace.",
+      "enabled": "Zobrazit bublinu při výběru textu",
+      "enabledDescription": "Bublina se objeví vedle vybraného textu a zmizí při prvním kliknutí jinam.",
+      "preferredAi": "Moje oblíbená AI",
+      "preferredAiDescription": "AI, která se otevře, když pokračujete v odpovědi v prohlížeči."
+    }
   }
 }

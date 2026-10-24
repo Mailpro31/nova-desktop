@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Nova ile bağlı uygulamalar. Ders programı dikteleri derse göre sıralar."
+  },
+  "bubble": {
+    "action": {
+      "explain": "Açıkla",
+      "summarize": "Özetle",
+      "simplify": "Basitleştir",
+      "words": "Zor kelimeler",
+      "improve": "Düzelt",
+      "translate": "Çevir",
+      "quiz": "Beni sına"
+    },
+    "ask": {
+      "explain": "Bu metni bana basitçe açıkla, sonra zor kelimelerini tanımla:",
+      "summarize": "Bu metni birkaç cümleyle özetle:",
+      "simplify": "Bu metni bilgi kaybetmeden kolay okunur biçimde yeniden yaz:",
+      "words": "Bu metindeki zor kelimeleri listele ve basitçe tanımla:",
+      "improve": "Bu metnin yazım ve dilbilgisini kelimelerimi değiştirmeden düzelt:",
+      "translate": "Bu metni çevir:",
+      "quiz": "Bu metni anladığımı kontrol etmek için bana 3 soru sor:"
+    },
+    "read": "Sesli oku",
+    "stop": "Durdur",
+    "more": "Daha fazla işlem",
+    "back": "Geri",
+    "withNova": "Nova ile",
+    "running": "Nova yanıtı hazırlıyor…",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "replace": "Değiştir",
+    "close": "Kapat",
+    "continueIn": "{{app}} içinde devam et",
+    "askIn": "{{app}} uygulamasına sor",
+    "pasted": "Metin kopyalandı: Ctrl+V ile {{app}} içine yapıştırın",
+    "group": {
+      "ai": "Bir yapay zekâya sor",
+      "translate": "Çeviri",
+      "search": "Ara",
+      "words": "Sözlükler",
+      "math": "Matematik",
+      "agenda": "Takvim",
+      "notes": "Notlarım",
+      "share": "Paylaş"
+    },
+    "settings": {
+      "title": "Seçim balonu",
+      "description": "Herhangi bir yerde metin seçin: Nova onu açıklamayı, sesli okumayı veya bir uygulamaya göndermeyi önerir.",
+      "enabled": "Metin seçtiğimde balonu göster",
+      "enabledDescription": "Balon seçilen metnin yanında görünür ve başka bir yere ilk tıklamada kaybolur.",
+      "preferredAi": "Tercih ettiğim yapay zekâ",
+      "preferredAiDescription": "Bir yanıta tarayıcınızda devam ettiğinizde açılan yapay zekâ."
+    }
   }
 }

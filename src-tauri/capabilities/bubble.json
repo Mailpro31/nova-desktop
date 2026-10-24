@@ -1,0 +1,11 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "bubble",
+  "description": "Bulle de sélection : ouvrir une application connectée (opener) et copier le texte à coller (presse-papiers). Rien d'autre.",
+  "windows": ["selection_bubble"],
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "clipboard-manager:allow-write-text"
+  ]
+}

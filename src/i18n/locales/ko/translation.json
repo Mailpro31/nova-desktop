@@ -1683,5 +1683,56 @@
   },
   "connections": {
     "description": "Nova와 연결된 앱입니다. 시간표가 받아쓰기를 수업별로 정리합니다."
+  },
+  "bubble": {
+    "action": {
+      "explain": "설명",
+      "summarize": "요약",
+      "simplify": "쉽게 쓰기",
+      "words": "어려운 단어",
+      "improve": "교정",
+      "translate": "번역",
+      "quiz": "퀴즈"
+    },
+    "ask": {
+      "explain": "이 글을 쉽게 설명하고 어려운 단어의 뜻을 알려 줘:",
+      "summarize": "이 글을 몇 문장으로 요약해 줘:",
+      "simplify": "정보를 잃지 않고 이 글을 읽기 쉽게 다시 써 줘:",
+      "words": "이 글의 어려운 단어를 나열하고 쉽게 설명해 줘:",
+      "improve": "내 단어는 바꾸지 말고 이 글의 맞춤법과 문법을 고쳐 줘:",
+      "translate": "이 글을 번역해 줘:",
+      "quiz": "내가 이 글을 이해했는지 확인하는 질문 3개를 내 줘:"
+    },
+    "read": "읽어 주기",
+    "stop": "중지",
+    "more": "더 보기",
+    "back": "뒤로",
+    "withNova": "Nova로",
+    "running": "Nova가 답을 준비하고 있습니다…",
+    "copy": "복사",
+    "copied": "복사됨",
+    "replace": "바꾸기",
+    "close": "닫기",
+    "continueIn": "{{app}}에서 계속",
+    "askIn": "{{app}}에 묻기",
+    "pasted": "텍스트가 복사되었습니다: Ctrl+V로 {{app}}에 붙여 넣으세요",
+    "group": {
+      "ai": "AI에게 묻기",
+      "translate": "번역",
+      "search": "검색",
+      "words": "사전",
+      "math": "수학",
+      "agenda": "캘린더",
+      "notes": "내 노트",
+      "share": "공유"
+    },
+    "settings": {
+      "title": "선택 말풍선",
+      "description": "어디서든 텍스트를 선택하면 Nova가 설명, 읽어 주기, 앱으로 보내기를 제안합니다.",
+      "enabled": "텍스트를 선택하면 말풍선 표시",
+      "enabledDescription": "말풍선은 선택한 텍스트 옆에 나타나고 다른 곳을 처음 클릭하면 사라집니다.",
+      "preferredAi": "내가 선호하는 AI",
+      "preferredAiDescription": "브라우저에서 답을 이어 갈 때 열리는 AI입니다."
+    }
   }
 }

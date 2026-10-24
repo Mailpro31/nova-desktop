@@ -23,6 +23,7 @@ export default defineConfig(async () => ({
       input: {
         main: resolve(__dirname, "index.html"),
         overlay: resolve(__dirname, "src/overlay/index.html"),
+        bubble: resolve(__dirname, "src/bubble/index.html"),
       },
     },
   },
