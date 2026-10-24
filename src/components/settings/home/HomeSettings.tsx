@@ -45,6 +45,9 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
       state.config?.organization_type,
     ),
   );
+  const externalAi = useOrganizationStore(
+    (state) => state.config?.processing_location === "external_ai_provider",
+  );
   const [fileModalOpen, setFileModalOpen] = useState(false);
 
   const compact = !home.isNewUser;
@@ -99,7 +102,13 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
           {home.engineKey && (
             <ActiveRow
               label={t("home.active.engine")}
-              value={t(homeEngineLabelKey(home.engineKey, organizationType))}
+              value={t(
+                homeEngineLabelKey(
+                  home.engineKey,
+                  organizationType,
+                  externalAi,
+                ),
+              )}
             />
           )}
           {home.microphoneName && (

@@ -25,7 +25,8 @@
     "settings": "設定",
     "organization": "組織",
     "learn": "学ぶ",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "連携"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "このコンピューター",
       "local": "このコンピューター",
-      "organization": "組織のサーバー"
+      "organization": "組織のサーバー",
+      "organizationWithOnlineAi": "組織のサーバー＋オンラインAI"
     },
     "checklist": {
       "title": "はじめに",
@@ -1678,5 +1680,8 @@
     "right": "右{{key}}",
     "shift": "Shift",
     "space": "スペース"
+  },
+  "connections": {
+    "description": "Nova と連携するアプリ。時間割で口述を授業ごとに整理します。"
   }
 }

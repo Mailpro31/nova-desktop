@@ -25,7 +25,8 @@
     "settings": "الإعدادات",
     "organization": "المؤسسة",
     "learn": "تعلّم",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "الاتصالات"
   },
   "onboarding": {
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "هذا الحاسوب",
       "local": "هذا الحاسوب",
-      "organization": "خادم مؤسستك"
+      "organization": "خادم مؤسستك",
+      "organizationWithOnlineAi": "خادم مؤسستك + ذكاء اصطناعي عبر الإنترنت"
     },
     "checklist": {
       "title": "البداية",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} الأيمن",
     "shift": "Shift",
     "space": "مسافة"
+  },
+  "connections": {
+    "description": "التطبيقات المرتبطة بـ Nova. يرتب الجدول الزمني إملاءاتك حسب الحصة."
   }
 }

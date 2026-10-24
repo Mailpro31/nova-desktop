@@ -25,7 +25,8 @@
     "settings": "Definições",
     "organization": "Organização",
     "learn": "Aprender",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Ligações"
   },
   "onboarding": {
     "subtitle": "Para começar, escolha um modelo de transcrição",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Este computador",
       "local": "Este computador",
-      "organization": "O servidor da sua organização"
+      "organization": "O servidor da sua organização",
+      "organizationWithOnlineAi": "Servidor da sua organização + IA online"
     },
     "checklist": {
       "title": "Primeiros passos",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} direito",
     "shift": "Maiúsculas",
     "space": "Espaço"
+  },
+  "connections": {
+    "description": "As aplicações ligadas ao Nova. O horário organiza os ditados por aula."
   }
 }

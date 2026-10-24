@@ -25,7 +25,8 @@
     "settings": "Settings",
     "organization": "Organization",
     "learn": "Learn",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Connections"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -738,7 +739,7 @@
       },
       "speechRate": {
         "title": "Reading speed",
-        "description": "For reading your notes aloud from the history.",
+        "description": "For reading your texts aloud.",
         "slow": "Slow",
         "normal": "Normal",
         "fast": "Fast",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "This computer (server unreachable)",
       "local": "This computer",
-      "organization": "Your organization's server"
+      "organization": "Your organization's server",
+      "organizationWithOnlineAi": "Your organization's server + online AI"
     },
     "checklist": {
       "title": "Getting started",
@@ -1413,9 +1415,9 @@
     "export": {
       "button": "Export to revise",
       "title": "Nova — {{section}} — {{date}}",
-      "markdown": "Notes (Markdown)",
-      "anki": "Flashcards (Anki)",
-      "mindmap": "Mind map (OPML)",
+      "markdown": "Revision sheet (text)",
+      "anki": "Anki cards (file)",
+      "mindmap": "Mind map",
       "saved": "File saved.",
       "failed": "The file could not be saved.",
       "noCards": "Nothing to revise here: say “Definition”, “Theorem” or “Key point” at the start of a dictation to create cards.",
@@ -1678,5 +1680,8 @@
     "right": "Right {{key}}",
     "shift": "Shift",
     "space": "Space"
+  },
+  "connections": {
+    "description": "The apps Nova works with. Your timetable sorts your dictations by class."
   }
 }

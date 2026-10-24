@@ -25,7 +25,8 @@
     "settings": "Ayarlar",
     "organization": "Kuruluş",
     "learn": "Öğren",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Bağlantılar"
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Bu bilgisayar",
       "local": "Bu bilgisayar",
-      "organization": "Kuruluşunuzun sunucusu"
+      "organization": "Kuruluşunuzun sunucusu",
+      "organizationWithOnlineAi": "Kuruluşunuzun sunucusu + çevrimiçi yapay zekâ"
     },
     "checklist": {
       "title": "Başlarken",
@@ -1678,5 +1680,8 @@
     "right": "Sağ {{key}}",
     "shift": "Shift",
     "space": "Boşluk"
+  },
+  "connections": {
+    "description": "Nova ile bağlı uygulamalar. Ders programı dikteleri derse göre sıralar."
   }
 }

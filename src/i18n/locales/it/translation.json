@@ -25,7 +25,8 @@
     "settings": "Impostazioni",
     "organization": "Organizzazione",
     "learn": "Impara",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Connessioni"
   },
   "onboarding": {
     "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Questo computer",
       "local": "Questo computer",
-      "organization": "Il server della tua organizzazione"
+      "organization": "Il server della tua organizzazione",
+      "organizationWithOnlineAi": "Server della tua organizzazione + IA online"
     },
     "checklist": {
       "title": "Per iniziare",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} destro",
     "shift": "Maiusc",
     "space": "Spazio"
+  },
+  "connections": {
+    "description": "Le app collegate a Nova. L’orario ordina le dettature per lezione."
   }
 }

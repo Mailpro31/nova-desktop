@@ -246,7 +246,7 @@ pub fn to_symbols(text: &str) -> String {
     out = with_units(&out);
     out = COMMA_BEFORE_OPERATOR.replace_all(&out, " $1").into_owned();
     out = COMMA_AFTER_OPERATOR.replace_all(&out, "$1").into_owned();
-    tidy(&out)
+    plus_minus_numerator(&tidy(&out))
 }
 
 /// Les unités simples juste après un nombre, séparées par une espace
@@ -346,6 +346,21 @@ fn is_atom(token: &str) -> bool {
 
 /// Les espaces d'une formule : « 4 a c » s'écrit « 4ac », « √ x » s'écrit
 /// « √x », « ( x + 1 ) » s'écrit « (x + 1) », « a / b » s'écrit « a/b ».
+/// Avec « plus ou moins », tout ce qui précède « sur » est le numérateur :
+/// « moins b plus ou moins racine carrée de delta sur 2 a » donne
+/// « (−b ± √Δ)/2a », la formule du second degré, et non « −b ± √Δ/2a » (n° 14).
+fn plus_minus_numerator(text: &str) -> String {
+    text.split(" = ")
+        .map(|side| match (side.find('±'), side.rfind('/')) {
+            (Some(pm), Some(slash)) if pm < slash && !side.starts_with('(') => {
+                format!("({}){}", side[..slash].trim_end(), &side[slash..])
+            }
+            _ => side.to_string(),
+        })
+        .collect::<Vec<_>>()
+        .join(" = ")
+}
+
 fn tidy(text: &str) -> String {
     let spaced = SPACES.replace_all(text.trim(), " ");
     let tokens: Vec<&str> = spaced
@@ -427,6 +442,10 @@ mod tests {
     fn powers_roots_and_fractions() {
         assert_eq!(to_symbols("x au carré plus 2 x plus 1"), "x² + 2x + 1");
         assert_eq!(to_symbols("racine carrée de x sur 2"), "√x/2");
+        assert_eq!(
+            to_symbols("x égale moins b plus ou moins racine carrée de delta sur 2 a"),
+            "x = (−b ± √Δ)/2a"
+        );
         assert_eq!(to_symbols("e puissance moins 1"), "e⁻¹");
         assert_eq!(to_symbols("x puissance n"), "xⁿ");
         assert_eq!(to_symbols("u indice n plus 1"), "uₙ + 1");

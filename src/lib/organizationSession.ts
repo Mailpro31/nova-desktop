@@ -67,6 +67,8 @@ export interface OrganizationConfig {
   organization?: unknown;
   capabilities?: unknown;
   education_mode?: string | null;
+  /** `external_ai_provider` : le texte part aussi chez une IA en ligne (n° 59). */
+  processing_location?: string | null;
   ai_skills?: unknown;
   auth_methods?: string[] | null;
   privacy?: unknown;

@@ -25,7 +25,8 @@
     "settings": "Réglages",
     "organization": "Organisation",
     "learn": "Apprendre",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Connexions"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -738,7 +739,7 @@
       },
       "speechRate": {
         "title": "Vitesse de lecture",
-        "description": "Pour la lecture à voix haute de vos notes, depuis l’historique.",
+        "description": "Pour la lecture à voix haute de vos textes.",
         "slow": "Lente",
         "normal": "Normale",
         "fast": "Rapide",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Ce poste (serveur injoignable)",
       "local": "Ce poste",
-      "organization": "Le serveur de votre organisation"
+      "organization": "Le serveur de votre organisation",
+      "organizationWithOnlineAi": "Serveur de votre école + IA en ligne"
     },
     "checklist": {
       "title": "Premiers pas",
@@ -1413,9 +1415,9 @@
     "export": {
       "button": "Exporter pour réviser",
       "title": "Nova — {{section}} — {{date}}",
-      "markdown": "Notes (Markdown)",
-      "anki": "Cartes de révision (Anki)",
-      "mindmap": "Carte mentale (OPML)",
+      "markdown": "Fiche de révision (texte)",
+      "anki": "Cartes Anki (fichier)",
+      "mindmap": "Carte mentale",
       "saved": "Fichier enregistré.",
       "failed": "Le fichier n’a pas pu être enregistré.",
       "noCards": "Aucun bloc à réviser ici : dites « Définition », « Théorème » ou « À retenir » au début d’une dictée pour créer des cartes.",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} droit",
     "shift": "Maj",
     "space": "Espace"
+  },
+  "connections": {
+    "description": "Les applications reliées à Nova. L’emploi du temps range vos dictées par cours."
   }
 }

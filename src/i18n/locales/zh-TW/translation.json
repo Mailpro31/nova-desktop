@@ -25,7 +25,8 @@
     "settings": "設定",
     "organization": "組織",
     "learn": "學習",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "連結"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "這台電腦",
       "local": "這台電腦",
-      "organization": "您所屬組織的伺服器"
+      "organization": "您所屬組織的伺服器",
+      "organizationWithOnlineAi": "組織伺服器 + 線上 AI"
     },
     "checklist": {
       "title": "開始使用",
@@ -1678,5 +1680,8 @@
     "right": "右{{key}}",
     "shift": "上檔",
     "space": "空白鍵"
+  },
+  "connections": {
+    "description": "與 Nova 連結的應用程式。課表依課程整理你的聽寫。"
   }
 }

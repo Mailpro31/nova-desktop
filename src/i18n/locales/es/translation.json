@@ -25,7 +25,8 @@
     "settings": "Ajustes",
     "organization": "Organización",
     "learn": "Aprender",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Conexiones"
   },
   "onboarding": {
     "subtitle": "Para comenzar, elige un modelo de transcripción",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Este equipo",
       "local": "Este equipo",
-      "organization": "El servidor de su organización"
+      "organization": "El servidor de su organización",
+      "organizationWithOnlineAi": "Servidor de tu organización + IA en línea"
     },
     "checklist": {
       "title": "Primeros pasos",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} derecho",
     "shift": "Mayús",
     "space": "Espacio"
+  },
+  "connections": {
+    "description": "Las aplicaciones conectadas a Nova. El horario ordena tus dictados por clase."
   }
 }

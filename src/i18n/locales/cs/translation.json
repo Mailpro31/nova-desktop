@@ -25,7 +25,8 @@
     "settings": "Nastavení",
     "organization": "Organizace",
     "learn": "Učit se",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Propojení"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Tento počítač",
       "local": "Tento počítač",
-      "organization": "Server vaší organizace"
+      "organization": "Server vaší organizace",
+      "organizationWithOnlineAi": "Server vaší organizace + online AI"
     },
     "checklist": {
       "title": "Začínáme",
@@ -1678,5 +1680,8 @@
     "right": "Pravý {{key}}",
     "shift": "Shift",
     "space": "Mezerník"
+  },
+  "connections": {
+    "description": "Aplikace propojené s Nova. Rozvrh řadí diktáty podle hodin."
   }
 }

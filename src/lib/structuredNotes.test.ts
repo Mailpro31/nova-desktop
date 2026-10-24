@@ -76,7 +76,11 @@ describe("navigation", () => {
     );
     const list = primary.slice(0, primary.indexOf("];"));
     expect(list.indexOf('"notes"')).toBeGreaterThan(list.indexOf('"prompts"'));
-    expect(list.indexOf('"notes"')).toBeLessThan(list.indexOf('"history"'));
+    // Les fonctions optionnelles suivent Accueil, Historique, Styles et
+    // Connexions (n° 96).
+    expect(list.indexOf('"notes"')).toBeGreaterThan(
+      list.indexOf('"connections"'),
+    );
   });
 
   test("la catégorie suit Prompts dans la barre Personal", () => {

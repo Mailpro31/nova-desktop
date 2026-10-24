@@ -25,7 +25,8 @@
     "settings": "设置",
     "organization": "组织",
     "learn": "学习",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "连接"
   },
   "onboarding": {
     "subtitle": "请选择一个转录模型以开始使用",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "此电脑",
       "local": "此电脑",
-      "organization": "您所在组织的服务器"
+      "organization": "您所在组织的服务器",
+      "organizationWithOnlineAi": "组织服务器 + 在线 AI"
     },
     "checklist": {
       "title": "开始使用",
@@ -1678,5 +1680,8 @@
     "right": "右{{key}}",
     "shift": "上档",
     "space": "空格"
+  },
+  "connections": {
+    "description": "与 Nova 关联的应用。课程表按课程整理你的听写。"
   }
 }

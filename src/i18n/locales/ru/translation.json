@@ -25,7 +25,8 @@
     "settings": "Настройки",
     "organization": "Организация",
     "learn": "Обучение",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Подключения"
   },
   "onboarding": {
     "subtitle": "Для начала выберите модель транскрипции",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Этот компьютер",
       "local": "Этот компьютер",
-      "organization": "Сервер вашей организации"
+      "organization": "Сервер вашей организации",
+      "organizationWithOnlineAi": "Сервер организации + онлайн-ИИ"
     },
     "checklist": {
       "title": "Первые шаги",
@@ -1678,5 +1680,8 @@
     "right": "Правый {{key}}",
     "shift": "Shift",
     "space": "Пробел"
+  },
+  "connections": {
+    "description": "Приложения, связанные с Nova. Расписание сортирует диктовки по занятиям."
   }
 }

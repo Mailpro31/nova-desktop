@@ -25,7 +25,8 @@
     "settings": "Налаштування",
     "organization": "Організація",
     "learn": "Навчання",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Підключення"
   },
   "onboarding": {
     "subtitle": "Для початку оберіть модель транскрипції",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Цей комп'ютер",
       "local": "Цей комп'ютер",
-      "organization": "Сервер вашої організації"
+      "organization": "Сервер вашої організації",
+      "organizationWithOnlineAi": "Сервер організації + онлайн-ШІ"
     },
     "checklist": {
       "title": "Перші кроки",
@@ -1678,5 +1680,8 @@
     "right": "Правий {{key}}",
     "shift": "Shift",
     "space": "Пробіл"
+  },
+  "connections": {
+    "description": "Застосунки, пов’язані з Nova. Розклад сортує диктування за заняттями."
   }
 }

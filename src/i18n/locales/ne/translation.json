@@ -25,7 +25,8 @@
     "settings": "सेटिङहरू",
     "organization": "संगठन",
     "learn": "सिक्नुहोस्",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "जडानहरू"
   },
   "onboarding": {
     "subtitle": "सुरु गर्न, एउटा ट्रान्सक्रिप्सन मोडेल छान्नुहोस्",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "यो कम्प्युटर",
       "local": "यो कम्प्युटर",
-      "organization": "तपाईंको संस्थाको सर्भर"
+      "organization": "तपाईंको संस्थाको सर्भर",
+      "organizationWithOnlineAi": "तपाईंको संस्थाको सर्भर + अनलाइन एआई"
     },
     "checklist": {
       "title": "सुरुवात",
@@ -1678,5 +1680,8 @@
     "right": "दायाँ {{key}}",
     "shift": "Shift",
     "space": "स्पेस"
+  },
+  "connections": {
+    "description": "Nova सँग जोडिएका एपहरू। समय तालिकाले डिक्टेसनलाई कक्षाअनुसार मिलाउँछ।"
   }
 }

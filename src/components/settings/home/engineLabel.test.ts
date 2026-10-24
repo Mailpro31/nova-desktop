@@ -58,3 +58,12 @@ describe("la rangée Moteur de l'accueil", () => {
     }
   });
 });
+
+test("une IA en ligne est nommée sur l'accueil (n° 59)", () => {
+  expect(homeEngineLabelKey("campus", "education", true)).toBe(
+    "home.engine.organizationWithOnlineAi",
+  );
+  expect(homeEngineLabelKey("local", "education", true)).toBe(
+    "home.engine.local",
+  );
+});

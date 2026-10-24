@@ -8,6 +8,7 @@ import {
   History,
   House,
   Info,
+  Link2,
   MessageSquareText,
   NotebookPen,
   Settings,
@@ -21,6 +22,11 @@ import { useOrganizationStatus } from "../hooks/useOrganizationStatus";
 import { useOrganization } from "../hooks/useOrganization";
 import { useCapability } from "../hooks/useOrganizationContext";
 
+const ConnectionsSettings = lazy(() =>
+  import("./settings/connections/ConnectionsSettings").then((module) => ({
+    default: module.ConnectionsSettings,
+  })),
+);
 const HomeSettings = lazy(() =>
   import("./settings/home/HomeSettings").then((module) => ({
     default: module.HomeSettings,
@@ -210,6 +216,14 @@ export const SECTIONS_CONFIG = {
     // de premier plan.
     enabled: () => false,
   },
+  connections: {
+    // Les applications reliées à Nova : l'emploi du temps d'abord (n° 25, 33).
+    labelKey: "sidebar.connections",
+    campusLabelKey: undefined,
+    icon: Link2,
+    component: ConnectionsSettings,
+    enabled: always,
+  },
   history: {
     labelKey: "sidebar.history",
     campusLabelKey: undefined,
@@ -239,17 +253,20 @@ export const SECTIONS_CONFIG = {
 // L'ordre est fixe ; la visibilite de chaque entree reste decidee par son
 // `enabled`, ce qui retire « Learn » a une organisation qui n'est pas un
 // etablissement sans qu'une seconde liste ait a etre tenue a jour.
+// Accueil, Historique, Styles, Connexions : une tâche, un endroit (n° 96).
+// Les fonctions optionnelles suivent, quand l'école les ouvre.
 const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "home",
+  "history",
+  "postprocessing",
+  "connections",
   "learn",
   "aiskilltools",
   "aiskills",
-  "postprocessing",
   "prompts",
   "notes",
   // « meeting » : suspendu dans Nova Organisation (décision du 01/10). La
   // section reste déclarée, et le poste refuse de démarrer une réunion.
-  "history",
 ];
 
 /** Taille et graisse d'icône uniques dans toute la navigation. */

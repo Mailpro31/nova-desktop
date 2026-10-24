@@ -60,10 +60,16 @@ pub fn restore_text_target() -> bool {
         // return `true` on the strength of `SetForegroundWindow`'s return value
         // alone: only a confirmed equality lets us paste.
         let _ = SetForegroundWindow(target);
-        for _ in 0..6 {
+        // 150 ms ne suffisaient pas toujours : « Collage impossible » sur une
+        // dictée courte (n° 8 ter, 20/10). Jusqu'à 500 ms, avec une seconde
+        // demande à mi-chemin.
+        for attempt in 0..20 {
             std::thread::sleep(std::time::Duration::from_millis(25));
             if GetForegroundWindow() == target {
                 return true;
+            }
+            if attempt == 8 {
+                let _ = SetForegroundWindow(target);
             }
         }
         // Couldn't confirm the target is in front → refuse to paste into the

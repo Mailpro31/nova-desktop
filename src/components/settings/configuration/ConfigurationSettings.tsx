@@ -99,7 +99,6 @@ export const ConfigurationSettings: React.FC = () => {
         <div className="space-y-5">
           <OrganizationGeneralSettings />
           <OrganizationPersonalizationSection section="studyMarkers" />
-          <OrganizationPersonalizationSection section="timetable" />
         </div>
       )}
       {tab === "advanced" && <OrganizationAdvancedSections />}

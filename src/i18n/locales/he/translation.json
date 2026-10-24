@@ -25,7 +25,8 @@
     "settings": "הגדרות",
     "organization": "ארגון",
     "learn": "למידה",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "חיבורים"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "המחשב הזה",
       "local": "המחשב הזה",
-      "organization": "השרת של הארגון שלך"
+      "organization": "השרת של הארגון שלך",
+      "organizationWithOnlineAi": "השרת של הארגון + בינה מלאכותית מקוונת"
     },
     "checklist": {
       "title": "צעדים ראשונים",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} ימני",
     "shift": "Shift",
     "space": "רווח"
+  },
+  "connections": {
+    "description": "האפליקציות המחוברות ל-Nova. מערכת השעות ממיינת את ההכתבות לפי שיעור."
   }
 }

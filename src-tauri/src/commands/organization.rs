@@ -71,6 +71,10 @@ pub struct OrganizationConfig {
     pub capabilities: Option<OrganizationCapabilitiesConfig>,
     #[serde(default)]
     pub education_mode: Option<String>,
+    /// `external_ai_provider` quand le serveur passe par une IA en ligne : le
+    /// poste le dit à l'élève (n° 59).
+    #[serde(default)]
+    pub processing_location: Option<String>,
     #[serde(default)]
     pub ai_skills: Option<OrganizationAiSkillsPolicyConfig>,
     #[serde(default)]

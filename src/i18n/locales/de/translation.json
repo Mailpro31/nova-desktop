@@ -25,7 +25,8 @@
     "settings": "Einstellungen",
     "organization": "Organisation",
     "learn": "Lernen",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Verbindungen"
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Dieser Computer",
       "local": "Dieser Computer",
-      "organization": "Der Server Ihrer Organisation"
+      "organization": "Der Server Ihrer Organisation",
+      "organizationWithOnlineAi": "Server Ihrer Organisation + Online-KI"
     },
     "checklist": {
       "title": "Erste Schritte",
@@ -1678,5 +1680,8 @@
     "right": "{{key}} rechts",
     "shift": "Umschalt",
     "space": "Leertaste"
+  },
+  "connections": {
+    "description": "Die mit Nova verbundenen Apps. Der Stundenplan ordnet Ihre Diktate nach Kurs."
   }
 }

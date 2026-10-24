@@ -25,7 +25,8 @@
     "settings": "Ustawienia",
     "organization": "Organizacja",
     "learn": "Nauka",
-    "novaCommands": "Nova Commands"
+    "novaCommands": "Nova Commands",
+    "connections": "Połączenia"
   },
   "onboarding": {
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
@@ -1364,7 +1365,8 @@
     "engine": {
       "local-fallback": "Ten komputer",
       "local": "Ten komputer",
-      "organization": "Serwer Twojej organizacji"
+      "organization": "Serwer Twojej organizacji",
+      "organizationWithOnlineAi": "Serwer organizacji + AI online"
     },
     "checklist": {
       "title": "Na początek",
@@ -1678,5 +1680,8 @@
     "right": "Prawy {{key}}",
     "shift": "Shift",
     "space": "Spacja"
+  },
+  "connections": {
+    "description": "Aplikacje połączone z Nova. Plan zajęć porządkuje dyktowania według zajęć."
   }
 }
