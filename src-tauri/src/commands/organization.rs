@@ -1173,6 +1173,12 @@ fn organization_request_client_with_timeout(
             .expect("valid bearer header");
         headers.insert(reqwest::header::AUTHORIZATION, auth_value);
     }
+    // La version du poste, que le serveur journalise : savoir qui a reçu une
+    // mise à jour (25/10). Ce n'est pas une donnée personnelle.
+    headers.insert(
+        "X-Nova-Version",
+        reqwest::header::HeaderValue::from_static(env!("CARGO_PKG_VERSION")),
+    );
 
     // Le Lab parle rustls, avec un verificateur d'identite epinglee — voir
     // `crate::lab_tls`. Ce n'est pas une preference de bibliotheque : les
