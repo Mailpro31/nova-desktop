@@ -56,11 +56,21 @@ mod platform {
     /// Une réponse est affichée : la bulle reste jusqu'à Échap ou sa croix.
     static PINNED: AtomicBool = AtomicBool::new(false);
     static VISIBLE: AtomicBool = AtomicBool::new(false);
+    /// Le dernier texte montré : un clic qui le laisse sélectionné ne le remontre pas.
+    static LAST_TEXT: Mutex<String> = Mutex::new(String::new());
 
     enum Signal {
         Press(i32, i32),
-        Selected(i32, i32),
-        Key { escape: bool },
+        /// `deliberate` : un vrai geste de sélection (double-clic, ou glisser
+        /// de 20 px), pas un clic qui a un peu bougé.
+        Selected {
+            x: i32,
+            y: i32,
+            deliberate: bool,
+        },
+        Key {
+            escape: bool,
+        },
         Wheel,
     }
 
@@ -96,7 +106,11 @@ mod platform {
                         Some(Signal::Press(pos.0 as i32, pos.1 as i32))
                     }
                     EventType::ButtonRelease(Button::Left) => (double || !near(press, pos, 6.0))
-                        .then(|| Signal::Selected(pos.0 as i32, pos.1 as i32)),
+                        .then(|| Signal::Selected {
+                            x: pos.0 as i32,
+                            y: pos.1 as i32,
+                            deliberate: double || !near(press, pos, 20.0),
+                        }),
                     EventType::KeyPress(key) => Some(Signal::Key {
                         escape: key == Key::Escape,
                     }),
@@ -153,7 +167,7 @@ mod platform {
                         hide(&app);
                     }
                 }
-                Signal::Selected(x, y) => {
+                Signal::Selected { x, y, deliberate } => {
                     if inside(&app, x, y) {
                         continue;
                     }
@@ -176,6 +190,14 @@ mod platform {
                     ) else {
                         continue;
                     };
+                    // Test de Sash (24/10) : cliquer ailleurs dans une page dont le
+                    // texte restait sélectionné déplaçait la bulle sous le clic.
+                    if let Ok(mut last) = LAST_TEXT.lock() {
+                        if !deliberate && *last == text {
+                            continue;
+                        }
+                        last.clone_from(&text);
+                    }
                     if let Ok(mut anchor) = ANCHOR.lock() {
                         *anchor = (x, y);
                     }
