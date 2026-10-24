@@ -738,7 +738,7 @@
       },
       "speechRate": {
         "title": "Vitesse de lecture",
-        "description": "Pour la lecture à voix haute de vos notes, depuis l’historique.",
+        "description": "Pour la lecture à voix haute de vos textes.",
         "slow": "Lente",
         "normal": "Normale",
         "fast": "Rapide",

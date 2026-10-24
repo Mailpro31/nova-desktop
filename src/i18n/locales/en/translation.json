@@ -738,7 +738,7 @@
       },
       "speechRate": {
         "title": "Reading speed",
-        "description": "For reading your notes aloud from the history.",
+        "description": "For reading your texts aloud.",
         "slow": "Slow",
         "normal": "Normal",
         "fast": "Fast",
