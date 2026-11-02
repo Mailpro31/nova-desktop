@@ -26,7 +26,8 @@
     "organization": "Organisation",
     "learn": "Lernen",
     "novaCommands": "Nova Commands",
-    "connections": "Verbindungen"
+    "connections": "Verbindungen",
+    "reader": "Vorleser"
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Markieren Sie überall Text: Diese Blase erscheint daneben.",
       "later": "Sie können alles später unter Verbindungen ändern."
     }
+  },
+  "reader": {
+    "description": "Öffnen Sie ein Kurs-PDF oder fügen Sie einen Text ein: Nova liest ihn mit den Windows-Stimmen vor und markiert das gelesene Wort. Nichts verlässt diesen Computer.",
+    "open": "PDF öffnen",
+    "placeholder": "Fügen Sie hier einen Text ein oder öffnen Sie ein PDF.",
+    "read": "Vorlesen",
+    "stop": "Stoppen",
+    "clear": "Neuer Text",
+    "fromHere": "Klicken Sie auf einen Absatz, um ab dort zu lesen.",
+    "noText": "Dieses PDF enthält keinen lesbaren Text (ein gescanntes Dokument?).",
+    "openError": "Dieses Dokument konnte nicht geöffnet werden."
   }
 }

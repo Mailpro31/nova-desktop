@@ -26,7 +26,8 @@
     "organization": "組織",
     "learn": "学ぶ",
     "novaCommands": "Nova Commands",
-    "connections": "連携"
+    "connections": "連携",
+    "reader": "リーダー"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -1759,5 +1760,16 @@
       "demoCaption": "どこでもテキストを選択すると、横にこのバブルが表示されます。",
       "later": "あとで「接続」からすべて変更できます。"
     }
+  },
+  "reader": {
+    "description": "授業のPDFを開くか、テキストを貼り付けてください。NovaがWindowsの音声で読み上げ、読んでいる単語を強調表示します。このパソコンの外には何も送られません。",
+    "open": "PDFを開く",
+    "placeholder": "ここにテキストを貼り付けるか、PDFを開いてください。",
+    "read": "読み上げ",
+    "stop": "停止",
+    "clear": "新しいテキスト",
+    "fromHere": "段落をクリックすると、そこから読み上げます。",
+    "noText": "このPDFには読み上げるテキストがありません（スキャンした文書ですか？）。",
+    "openError": "この文書を開けませんでした。"
   }
 }

@@ -26,7 +26,8 @@
     "organization": "Organisation",
     "learn": "Apprendre",
     "novaCommands": "Nova Commands",
-    "connections": "Connexions"
+    "connections": "Connexions",
+    "reader": "Lecteur"
   },
   "onboarding": {
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Sélectionnez un texte n'importe où : cette bulle apparaît à côté.",
       "later": "Vous pourrez tout changer plus tard dans Connexions."
     }
+  },
+  "reader": {
+    "description": "Ouvrez un PDF de cours ou collez un texte : Nova le lit avec les voix de Windows et surligne le mot lu. Rien ne quitte le poste.",
+    "open": "Ouvrir un PDF",
+    "placeholder": "Collez un texte ici, ou ouvrez un PDF.",
+    "read": "Lire",
+    "stop": "Arrêter",
+    "clear": "Nouveau texte",
+    "fromHere": "Cliquez sur un paragraphe pour lire à partir de là.",
+    "noText": "Ce PDF ne contient pas de texte à lire (un document scanné ?).",
+    "openError": "Ce document n'a pas pu être ouvert."
   }
 }

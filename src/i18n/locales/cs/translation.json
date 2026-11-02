@@ -26,7 +26,8 @@
     "organization": "Organizace",
     "learn": "Učit se",
     "novaCommands": "Nova Commands",
-    "connections": "Propojení"
+    "connections": "Propojení",
+    "reader": "Čtečka"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Vyberte text kdekoli: vedle se objeví tato bublina.",
       "later": "Vše můžete později změnit v Propojeních."
     }
+  },
+  "reader": {
+    "description": "Otevřete PDF z kurzu nebo vložte text: Nova ho přečte hlasy Windows a zvýrazní čtené slovo. Nic neopustí tento počítač.",
+    "open": "Otevřít PDF",
+    "placeholder": "Sem vložte text nebo otevřete PDF.",
+    "read": "Číst",
+    "stop": "Zastavit",
+    "clear": "Nový text",
+    "fromHere": "Klikněte na odstavec a čtěte od něj.",
+    "noText": "Toto PDF neobsahuje text ke čtení (naskenovaný dokument?).",
+    "openError": "Tento dokument nelze otevřít."
   }
 }

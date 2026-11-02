@@ -26,7 +26,8 @@
     "organization": "Organization",
     "learn": "Learn",
     "novaCommands": "Nova Commands",
-    "connections": "Connections"
+    "connections": "Connections",
+    "reader": "Reader"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Select text anywhere: this bubble appears next to it.",
       "later": "You can change all of this later in Connections."
     }
+  },
+  "reader": {
+    "description": "Open a course PDF or paste a text: Nova reads it with the Windows voices and highlights the word being read. Nothing leaves this computer.",
+    "open": "Open a PDF",
+    "placeholder": "Paste a text here, or open a PDF.",
+    "read": "Read",
+    "stop": "Stop",
+    "clear": "New text",
+    "fromHere": "Click a paragraph to read from there.",
+    "noText": "This PDF has no text to read (a scanned document?).",
+    "openError": "This document could not be opened."
   }
 }
