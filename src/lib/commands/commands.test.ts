@@ -210,6 +210,8 @@ describe("Améliorer suit la langue du texte (banc du RTX, 6112404)", () => {
     expect(instruction).toContain("Corrige seulement l'orthographe");
     expect(instruction).toContain("ne change rien d'autre");
     expect(instruction).toContain("la même personne");
+    // 1.3 : un élève dys écrit les mots comme ils se prononcent.
+    expect(instruction).toContain("comme il se prononce");
   });
 
   test("un texte anglais, court ou mêlé garde la consigne anglaise", () => {

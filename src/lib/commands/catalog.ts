@@ -143,9 +143,11 @@ export const NOVA_COMMAND_SKILLS: NovaCommandSkill[] = [
     // consigne courte en français « Corrige seulement l'orthographe, ne change
     // rien d'autre » corrigeait juste, deux fois sur deux. Le petit modèle
     // tient mieux une consigne dans la langue du texte.
+    // 1.3 : l'écriture phonétique d'un élève dys est nommée ; le serveur
+    // accepte une correction dont chaque mot s'entend encore (`heard_word_ratio`).
     instruction: (_targetLanguage, text = "") =>
       looksFrench(text)
-        ? "Corrige seulement l'orthographe, la grammaire et la ponctuation de ce texte, et ne change rien d'autre : garde chaque mot bien écrit, dans le même ordre, et la même personne. Renvoie seulement le texte corrigé."
+        ? "Corrige seulement l'orthographe, la grammaire et la ponctuation de ce texte, et ne change rien d'autre : garde chaque mot bien écrit, dans le même ordre, et la même personne. Un mot écrit comme il se prononce (« sa marche pa ») est une faute : écris le mot voulu. Renvoie seulement le texte corrigé."
         : "Correct the spelling, grammar and punctuation of the following text. Keep every word that is correctly spelled, in the same order; do not add, remove or reword ideas, and keep who the text is addressed to. Keep the same language. Return only the corrected text.",
   },
   {
