@@ -4,7 +4,8 @@
 //!
 //! # Quand la bulle apparaît
 //!
-//! Après un glisser de la souris ou un double-clic, **seulement si Windows
+//! Après un glisser de la souris, un double ou triple clic, Ctrl + A, ou une
+//! sélection au clavier (Maj + flèches, relâchée), **seulement si Windows
 //! confirme une sélection** par l'accessibilité (`auto_style::read_selection`).
 //! Un glisser de fenêtre, de fichier ou de barre de défilement n'a pas de
 //! sélection : rien n'apparaît. Le presse-papiers n'est jamais touché.
@@ -22,6 +23,47 @@
 use tauri::AppHandle;
 
 use crate::nova_commands::{CommandError, TargetWindow};
+
+/// Les sélections faites au clavier, lues dans le crochet clavier (bugs 0.6 et
+/// 0.8, 26/10) : Ctrl + A, et Maj + une touche de déplacement, au relâchement
+/// de Maj. Sans état système : de simples booléens, testables partout.
+#[derive(Default)]
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+struct KeyTracker {
+    ctrl: bool,
+    shift: bool,
+    /// Une touche de déplacement a été pressée pendant que Maj était tenue.
+    extended: bool,
+}
+
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+impl KeyTracker {
+    /// Une touche pressée. `true` quand c'est Ctrl + A.
+    fn press(&mut self, ctrl: bool, shift: bool, letter_a: bool, navigation: bool) -> bool {
+        if ctrl {
+            self.ctrl = true;
+        }
+        if shift {
+            self.shift = true;
+        }
+        if self.shift && navigation {
+            self.extended = true;
+        }
+        self.ctrl && letter_a
+    }
+
+    /// Une touche relâchée. `true` quand Maj se relâche après avoir étendu une sélection.
+    fn release(&mut self, ctrl: bool, shift: bool) -> bool {
+        if ctrl {
+            self.ctrl = false;
+        }
+        if shift {
+            self.shift = false;
+            return std::mem::take(&mut self.extended);
+        }
+        false
+    }
+}
 
 #[cfg(target_os = "windows")]
 mod platform {
@@ -69,6 +111,9 @@ mod platform {
             x: i32,
             y: i32,
             deliberate: bool,
+            /// Ctrl + A ou Maj + flèches. shortcut: la bulle se place sous la
+            /// souris, pas près du champ actif ; à revoir si les élèves la cherchent.
+            keyboard: bool,
         },
         Key {
             escape: bool,
@@ -88,6 +133,7 @@ mod platform {
             let mut press = (0.0_f64, 0.0_f64);
             let mut last_press: Option<((f64, f64), Instant)> = None;
             let mut double = false;
+            let mut keys = super::KeyTracker::default();
             let near = |a: (f64, f64), b: (f64, f64), d: f64| {
                 (a.0 - b.0).abs() <= d && (a.1 - b.1).abs() <= d
             };
@@ -112,10 +158,46 @@ mod platform {
                             x: pos.0 as i32,
                             y: pos.1 as i32,
                             deliberate: double || !near(press, pos, 20.0),
+                            keyboard: false,
                         }),
-                    EventType::KeyPress(key) => Some(Signal::Key {
-                        escape: key == Key::Escape,
-                    }),
+                    EventType::KeyPress(key) => {
+                        let ctrl_a = keys.press(
+                            matches!(key, Key::ControlLeft | Key::ControlRight),
+                            matches!(key, Key::ShiftLeft | Key::ShiftRight),
+                            key == Key::KeyA,
+                            matches!(
+                                key,
+                                Key::LeftArrow
+                                    | Key::RightArrow
+                                    | Key::UpArrow
+                                    | Key::DownArrow
+                                    | Key::Home
+                                    | Key::End
+                                    | Key::PageUp
+                                    | Key::PageDown
+                            ),
+                        );
+                        let _ = tx.send(Signal::Key {
+                            escape: key == Key::Escape,
+                        });
+                        ctrl_a.then_some(Signal::Selected {
+                            x: pos.0 as i32,
+                            y: pos.1 as i32,
+                            deliberate: true,
+                            keyboard: true,
+                        })
+                    }
+                    EventType::KeyRelease(key) => keys
+                        .release(
+                            matches!(key, Key::ControlLeft | Key::ControlRight),
+                            matches!(key, Key::ShiftLeft | Key::ShiftRight),
+                        )
+                        .then_some(Signal::Selected {
+                            x: pos.0 as i32,
+                            y: pos.1 as i32,
+                            deliberate: true,
+                            keyboard: true,
+                        }),
                     EventType::Wheel { .. } => Some(Signal::Wheel),
                     _ => None,
                 };
@@ -170,7 +252,12 @@ mod platform {
                         }
                     }
                 }
-                Signal::Selected { x, y, deliberate } => {
+                Signal::Selected {
+                    x,
+                    y,
+                    deliberate,
+                    keyboard,
+                } => {
                     if inside(&app, x, y) {
                         continue;
                     }
@@ -187,20 +274,31 @@ mod platform {
                     {
                         continue;
                     }
-                    // L'application met sa sélection à jour juste après le relâchement.
-                    std::thread::sleep(Duration::from_millis(60));
-                    let Some((text, editable)) = crate::auto_style::read_selection(
-                        &settings.auto_style_blocklist,
-                        MAX_CHARS,
-                        x,
-                        y,
-                    ) else {
+                    // L'application met sa sélection à jour juste après le geste ;
+                    // certaines (Chrome, lecteurs PDF) plus lentement : un second
+                    // essai plutôt qu'une bulle manquée (bug 0.6 d).
+                    let read = || {
+                        crate::auto_style::read_selection(
+                            &settings.auto_style_blocklist,
+                            MAX_CHARS,
+                            x,
+                            y,
+                        )
+                    };
+                    std::thread::sleep(Duration::from_millis(if keyboard { 100 } else { 60 }));
+                    let Some((text, editable)) = read().or_else(|| {
+                        std::thread::sleep(Duration::from_millis(150));
+                        read()
+                    }) else {
+                        debug!("Bulle : aucune sélection lue dans {process} (clavier : {keyboard})");
                         continue;
                     };
                     // Test de Sash (24/10) : cliquer ailleurs dans une page dont le
                     // texte restait sélectionné déplaçait la bulle sous le clic.
+                    // Seulement si la bulle est encore là : bulle fermée, resélectionner
+                    // le même texte doit la rouvrir (bug 0.6 a).
                     if let Ok(mut last) = LAST_TEXT.lock() {
-                        if !deliberate && *last == text {
+                        if !deliberate && VISIBLE.load(Ordering::Relaxed) && *last == text {
                             continue;
                         }
                         last.clone_from(&text);
@@ -450,4 +548,40 @@ pub fn change_selection_bubble_enabled_setting(
         selection_bubble_hide(app);
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::KeyTracker;
+
+    #[test]
+    fn ctrl_a_is_detected_while_ctrl_is_held() {
+        let mut keys = KeyTracker::default();
+        assert!(!keys.press(true, false, false, false));
+        assert!(keys.press(false, false, true, false));
+        keys.release(true, false);
+        assert!(
+            !keys.press(false, false, true, false),
+            "A seul n'est pas Ctrl + A"
+        );
+    }
+
+    #[test]
+    fn shift_selection_fires_once_on_release() {
+        let mut keys = KeyTracker::default();
+        keys.press(false, true, false, false);
+        keys.press(false, false, false, true);
+        keys.press(false, false, false, true);
+        assert!(keys.release(false, true));
+        assert!(!keys.release(false, true));
+    }
+
+    #[test]
+    fn shift_alone_or_arrows_alone_select_nothing() {
+        let mut keys = KeyTracker::default();
+        keys.press(false, true, false, false);
+        assert!(!keys.release(false, true), "Maj seule (une majuscule)");
+        keys.press(false, false, false, true);
+        assert!(!keys.release(false, false), "une flèche sans Maj");
+    }
 }
