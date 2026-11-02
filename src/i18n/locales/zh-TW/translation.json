@@ -767,7 +767,10 @@
     "portableUpdateTitle": "需要手動更新",
     "portableUpdateMessage": "可攜式安裝無法自動更新。更新方法：從 GitHub Releases 下載最新的 NSIS 安裝程式，安裝到相同資料夾，然後將舊版本的 Data/ 資料夾（設定、模型、錄音）複製到新版本。",
     "portableUpdateButton": "開啟 GitHub Releases",
-    "updateFailed": "更新失敗 — 重試"
+    "updateFailed": "更新失敗 — 重試",
+    "updatesManaged": "更新由你的學校管理",
+    "updateNotificationTitle": "Nova 有可用更新",
+    "updateNotificationBody": "版本 {{version}} 已就緒。開啟 Nova 並點選「有可用更新」。"
   },
   "common": {
     "loading": "載入中...",

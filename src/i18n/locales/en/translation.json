@@ -767,7 +767,10 @@
     "portableUpdateTitle": "Manual update required",
     "portableUpdateMessage": "Portable installs cannot be updated automatically. To update: download the latest NSIS installer from GitHub Releases, install it to the same folder, then copy your Data/ folder (settings, models, recordings) from the old version to the new one.",
     "portableUpdateButton": "Open GitHub Releases",
-    "updateFailed": "Update failed — retry"
+    "updateFailed": "Update failed — retry",
+    "updatesManaged": "Updates managed by your school",
+    "updateNotificationTitle": "Nova update available",
+    "updateNotificationBody": "Version {{version}} is ready. Open Nova and click “Update available”."
   },
   "whatsNew": {
     "updatedNotice": "Nova has been updated",

@@ -767,7 +767,10 @@
     "portableUpdateTitle": "म्यानुअल अपडेट आवश्यक",
     "portableUpdateMessage": "पोर्टेबल इन्स्टलहरू स्वतः अपडेट गर्न सकिँदैन। अपडेट गर्न: GitHub Releases बाट पछिल्लो NSIS इन्स्टलर डाउनलोड गर्नुहोस्, उही फोल्डरमा इन्स्टल गर्नुहोस्, अनि पुरानो संस्करणबाट आफ्नो Data/ फोल्डर (सेटिङ, मोडेल, रेकर्डिङ) नयाँमा कपी गर्नुहोस्।",
     "portableUpdateButton": "GitHub Releases खोल्नुहोस्",
-    "updateFailed": "अद्यावधिक असफल — पुनः प्रयास"
+    "updateFailed": "अद्यावधिक असफल — पुनः प्रयास",
+    "updatesManaged": "अपडेटहरू तपाईंको विद्यालयले व्यवस्थापन गर्छ",
+    "updateNotificationTitle": "Nova अपडेट उपलब्ध छ",
+    "updateNotificationBody": "संस्करण {{version}} तयार छ। Nova खोल्नुहोस् र “अपडेट उपलब्ध” मा क्लिक गर्नुहोस्।"
   },
   "whatsNew": {
     "updatedNotice": "Nova अद्यावधिक भयो",

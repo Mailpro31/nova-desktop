@@ -767,7 +767,10 @@
     "portableUpdateTitle": "Actualización manual necesaria",
     "portableUpdateMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Para actualizar: descarga el instalador NSIS más reciente desde GitHub Releases, instálalo en la misma carpeta y luego copia tu carpeta Data/ (ajustes, modelos, grabaciones) de la versión anterior a la nueva.",
     "portableUpdateButton": "Abrir GitHub Releases",
-    "updateFailed": "Error de actualización — reintentar"
+    "updateFailed": "Error de actualización — reintentar",
+    "updatesManaged": "Actualizaciones gestionadas por tu centro",
+    "updateNotificationTitle": "Actualización de Nova disponible",
+    "updateNotificationBody": "La versión {{version}} está lista. Abre Nova y haz clic en «Actualización disponible»."
   },
   "common": {
     "loading": "Cargando...",

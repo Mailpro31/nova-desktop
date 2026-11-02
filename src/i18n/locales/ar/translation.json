@@ -767,7 +767,10 @@
     "portableUpdateTitle": "التحديث اليدوي مطلوب",
     "portableUpdateMessage": "لا يمكن تحديث التثبيتات المحمولة تلقائيًا. للتحديث: نزّل أحدث مثبّت NSIS من GitHub Releases، وثبّته في المجلد نفسه، ثم انسخ مجلد Data/ (الإعدادات والنماذج والتسجيلات) من الإصدار القديم إلى الجديد.",
     "portableUpdateButton": "فتح GitHub Releases",
-    "updateFailed": "فشل التحديث — إعادة المحاولة"
+    "updateFailed": "فشل التحديث — إعادة المحاولة",
+    "updatesManaged": "تدير مدرستك التحديثات",
+    "updateNotificationTitle": "يتوفر تحديث لـ Nova",
+    "updateNotificationBody": "الإصدار {{version}} جاهز. افتح Nova وانقر على «يتوفر تحديث»."
   },
   "common": {
     "loading": "...جاري التحميل",

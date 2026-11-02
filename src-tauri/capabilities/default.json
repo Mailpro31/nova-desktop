@@ -12,6 +12,7 @@
     },
     "store:default",
     "updater:default",
+    "notification:default",
     "process:default",
     "dialog:default",
     "global-shortcut:allow-is-registered",
