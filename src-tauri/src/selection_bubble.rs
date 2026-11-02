@@ -290,7 +290,9 @@ mod platform {
                         std::thread::sleep(Duration::from_millis(150));
                         read()
                     }) else {
-                        debug!("Bulle : aucune sélection lue dans {process} (clavier : {keyboard})");
+                        debug!(
+                            "Bulle : aucune sélection lue dans {process} (clavier : {keyboard})"
+                        );
                         continue;
                     };
                     // Test de Sash (24/10) : cliquer ailleurs dans une page dont le
