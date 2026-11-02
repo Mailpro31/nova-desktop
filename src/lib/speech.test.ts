@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { pickVoice, speechChunks, speechLanguage } from "./speech";
+import { pickVoice, speechChunks, speechLanguage, wordAt } from "./speech";
 
 /**
  * La lecture à voix haute des notes — l'aide la mieux établie pour un élève
@@ -47,6 +47,28 @@ describe("les morceaux lus par la voix de l'école", () => {
 
   test("un texte court reste en un morceau", () => {
     expect(speechChunks("Bonjour à tous.")).toEqual(["Bonjour à tous."]);
+  });
+});
+
+describe("le mot surligné pendant la lecture", () => {
+  const text = "La dérivée d'une constante, c'est zéro.";
+
+  test("le mot entier, apostrophes et accents compris", () => {
+    const [start, end] = wordAt(text, 5);
+    expect(text.slice(start, end)).toBe("dérivée");
+    const [s2, e2] = wordAt(text, text.indexOf("une"));
+    expect(text.slice(s2, e2)).toBe("d'une");
+  });
+
+  test("rien sur une espace ou une ponctuation isolée", () => {
+    const [start, end] = wordAt("a , b", 2);
+    expect(end).toBe(start);
+  });
+
+  test("une position hors du texte reste dans le texte", () => {
+    const [start, end] = wordAt(text, 999);
+    expect(text.slice(start, end)).toBe("");
+    expect(wordAt(text, -3)).toEqual([0, 2]);
   });
 });
 
