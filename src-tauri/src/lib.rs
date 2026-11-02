@@ -725,6 +725,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::organization::add_organization_formatting_rule,
                 commands::organization::delete_organization_formatting_rule,
                 commands::organization::execute_organization_command,
+                commands::organization::organization_speech,
                 commands::organization::get_organization_ai_skills,
                 commands::organization::refresh_organization_packages,
                 commands::organization::fetch_organization_changes,

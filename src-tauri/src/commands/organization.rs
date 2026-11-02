@@ -1953,6 +1953,47 @@ pub async fn execute_organization_command(
         .map_err(|e| format!("invalid response: {}", e))
 }
 
+/// La voix naturelle de l'école (1.1) : le texte lu en MP3, en adresse `data:`.
+/// `None` quand le serveur n'a pas de voix (pas de session, ancien serveur,
+/// aucun moteur configuré) : le poste garde alors la voix Windows.
+#[tauri::command]
+#[specta::specta]
+pub async fn organization_speech(
+    app: AppHandle,
+    text: String,
+    speed: f64,
+) -> Result<Option<String>, String> {
+    use base64::Engine as _;
+
+    let Some(credentials) = load_organization_credentials(&app)? else {
+        return Ok(None);
+    };
+    let base_url = normalize_base_url(&credentials.session.server_url);
+    let client =
+        organization_request_client_with_timeout(Some(&credentials.token), Duration::from_secs(60));
+    let response = client
+        .post(format!("{base_url}/api/speech"))
+        .json(&serde_json::json!({ "text": text, "speed": speed.clamp(0.5, 2.0) }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {e}"))?;
+    if matches!(
+        response.status(),
+        reqwest::StatusCode::NOT_FOUND | reqwest::StatusCode::SERVICE_UNAVAILABLE
+    ) {
+        return Ok(None);
+    }
+    let response = handle_authed_response(&app, response).await?;
+    let audio = response
+        .bytes()
+        .await
+        .map_err(|e| format!("invalid response: {e}"))?;
+    Ok(Some(format!(
+        "data:audio/mpeg;base64,{}",
+        base64::engine::general_purpose::STANDARD.encode(audio)
+    )))
+}
+
 /// Charge le contenu publié par l'organisation et le rend disponible au poste.
 ///
 /// Le catalogue reçu **remplace** le précédent : garder des morceaux de l'ancien

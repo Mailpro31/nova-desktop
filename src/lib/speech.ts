@@ -2,10 +2,14 @@
  * La lecture à voix haute : l'aide la mieux établie pour un élève dyslexique
  * (méta-analyse Wood et al. 2018, 22 études).
  *
- * Elle passe par la synthèse vocale du système — les voix Windows, sans
- * connexion et sans rien envoyer : une note de cours n'a pas à quitter le
- * poste pour être lue.
+ * En français, elle passe d'abord par la voix naturelle du serveur de l'école
+ * (1.1), quand l'école en a une : le texte ne va pas plus loin que ce
+ * serveur. Sinon, la synthèse vocale du système — les voix Windows, sans
+ * connexion et sans rien envoyer. Jamais les voix en ligne d'Edge, qui
+ * envoient le texte chez Microsoft.
  */
+
+import { commands } from "@/bindings";
 
 const FRENCH = new Set(
   "le la les des une un est et que qui pour dans sur avec pas vous nous je tu il elle on de du au aux ce cette".split(
@@ -57,13 +61,96 @@ export function pickVoice(
   return [...matching].sort((a, b) => rank(a) - rank(b))[0];
 }
 
-/** Lit un texte ; arrête toute lecture en cours d'abord. */
-export function speak(
+/**
+ * Le texte en morceaux d'au plus `max` caractères, coupés après une phrase
+ * quand c'est possible : la voix de l'école lit le premier pendant qu'elle
+ * prépare le suivant, et la lecture commence sans attendre tout le texte.
+ */
+export function speechChunks(text: string, max = 900): string[] {
+  const sentences = text.match(/[^.!?…\n]+[.!?…]*\s*|\n+/g) ?? [];
+  const chunks: string[] = [];
+  let current = "";
+  for (const sentence of sentences) {
+    for (let start = 0; start < sentence.length; start += max) {
+      const piece = sentence.slice(start, start + max);
+      if (current.length + piece.length > max && current.trim()) {
+        chunks.push(current.trim());
+        current = "";
+      }
+      current += piece;
+    }
+  }
+  if (current.trim()) chunks.push(current.trim());
+  return chunks;
+}
+
+type SpeakOptions = { uiLanguage: string; rate: number; onEnd?: () => void };
+
+/** Faux dès que le serveur dit ne pas avoir de voix : inutile de redemander. */
+let schoolVoice = true;
+/** Chaque lecture a son numéro ; une lecture arrêtée ne joue plus rien. */
+let reading = 0;
+let finishCurrent: (() => void) | null = null;
+
+async function schoolAudio(text: string, rate: number): Promise<string | null> {
+  const result = await commands
+    .organizationSpeech(text, rate)
+    .catch(() => null);
+  if (result?.status !== "ok") return null;
+  if (result.data === null) schoolVoice = false;
+  return result.data;
+}
+
+function play(source: string): Promise<void> {
+  return new Promise((resolve) => {
+    const audio = new Audio(source);
+    finishCurrent = () => {
+      audio.pause();
+      resolve();
+    };
+    audio.onended = () => resolve();
+    audio.onerror = () => resolve();
+    audio.play().catch(() => resolve());
+  });
+}
+
+async function speakWithSchool(
   text: string,
-  options: { uiLanguage: string; rate: number; onEnd?: () => void },
-): boolean {
+  options: SpeakOptions,
+  run: number,
+) {
+  const chunks = speechChunks(text);
+  let next = schoolAudio(chunks[0], options.rate);
+  for (let index = 0; index < chunks.length; index++) {
+    const audio = await next;
+    if (run !== reading) return;
+    if (!audio) {
+      // Voix de l'école absente ou en panne : la voix Windows lit la suite.
+      speakWithSystem(chunks.slice(index).join(" "), options);
+      return;
+    }
+    if (index + 1 < chunks.length)
+      next = schoolAudio(chunks[index + 1], options.rate);
+    await play(audio);
+    if (run !== reading) return;
+  }
+  options.onEnd?.();
+}
+
+/** Lit un texte ; arrête toute lecture en cours d'abord. */
+export function speak(text: string, options: SpeakOptions): boolean {
+  if (!text.trim()) return false;
+  stopSpeaking();
+  if (schoolVoice && speechLanguage(text, options.uiLanguage) === "fr") {
+    void speakWithSchool(text, options, reading);
+    return true;
+  }
+  return speakWithSystem(text, options);
+}
+
+function speakWithSystem(text: string, options: SpeakOptions): boolean {
   const synthesis = window.speechSynthesis;
-  if (!synthesis || !text.trim()) return false;
+  if (!synthesis) return false;
   synthesis.cancel();
   const language = speechLanguage(text, options.uiLanguage);
   const utterance = new SpeechSynthesisUtterance(text);
@@ -80,5 +167,8 @@ export function speak(
 }
 
 export function stopSpeaking(): void {
+  reading++;
+  finishCurrent?.();
+  finishCurrent = null;
   window.speechSynthesis?.cancel();
 }
