@@ -93,9 +93,25 @@ type SpeakOptions = {
   uiLanguage: string;
   rate: number;
   onEnd?: () => void;
-  /** Début du mot que la voix prononce, dans `text` (voix Windows seulement). */
-  onWord?: (charIndex: number) => void;
+  /** Le mot en cours de lecture, en positions dans le texte lu (1.2). */
+  onWord?: (start: number, end: number) => void;
 };
+
+const WORD_CHARACTER = /[\p{L}\p{N}'’-]/u;
+
+/** Le mot qui contient la position `index` ; vide sur une espace. */
+export function wordAt(text: string, index: number): [number, number] {
+  let start = Math.max(0, Math.min(index, text.length));
+  let end = start;
+  while (start > 0 && WORD_CHARACTER.test(text[start - 1])) start--;
+  while (end < text.length && WORD_CHARACTER.test(text[end])) end++;
+  return [start, end];
+}
+
+function announceWord(options: SpeakOptions, text: string, index: number) {
+  const [start, end] = wordAt(text, index);
+  if (end > start) options.onWord?.(start, end);
+}
 
 /** Faux dès que le serveur dit ne pas avoir de voix : inutile de redemander. */
 let schoolVoice = true;
@@ -112,9 +128,15 @@ async function schoolAudio(text: string, rate: number): Promise<string | null> {
   return result.data;
 }
 
-function play(source: string): Promise<void> {
+function play(
+  source: string,
+  onProgress: (fraction: number) => void,
+): Promise<void> {
   return new Promise((resolve) => {
     const audio = new Audio(source);
+    audio.ontimeupdate = () => {
+      if (audio.duration) onProgress(audio.currentTime / audio.duration);
+    };
     finishCurrent = () => {
       audio.pause();
       resolve();
@@ -131,22 +153,33 @@ async function speakWithSchool(
   run: number,
 ) {
   const chunks = speechChunks(text);
+  // Où commence chaque morceau dans le texte, pour surligner le bon mot.
+  const offsets: number[] = [];
+  for (const chunk of chunks) {
+    const from = offsets.length ? offsets[offsets.length - 1] : 0;
+    offsets.push(text.indexOf(chunk, from));
+  }
   let next = schoolAudio(chunks[0], options.rate);
   for (let index = 0; index < chunks.length; index++) {
     const audio = await next;
     if (run !== reading) return;
     if (!audio) {
       // Voix de l'école absente ou en panne : la voix Windows lit la suite.
-      // Sans surlignage : ses indices ne porteraient que sur la suite du texte.
-      speakWithSystem(chunks.slice(index).join(" "), {
-        ...options,
-        onWord: undefined,
-      });
+      speakWithSystem(text.slice(offsets[index]), options, offsets[index]);
       return;
     }
     if (index + 1 < chunks.length)
       next = schoolAudio(chunks[index + 1], options.rate);
-    await play(audio);
+    // shortcut: le mot lu est estimé à la proportion du temps écoulé, le MP3
+    // ne dit pas où en est la voix ; à revoir si le décalage gêne les élèves.
+    const chunk = chunks[index];
+    await play(audio, (fraction) =>
+      announceWord(
+        options,
+        text,
+        offsets[index] + Math.floor(fraction * chunk.length),
+      ),
+    );
     if (run !== reading) return;
   }
   options.onEnd?.();
@@ -163,7 +196,11 @@ export function speak(text: string, options: SpeakOptions): boolean {
   return speakWithSystem(text, options);
 }
 
-function speakWithSystem(text: string, options: SpeakOptions): boolean {
+function speakWithSystem(
+  text: string,
+  options: SpeakOptions,
+  offset = 0,
+): boolean {
   const synthesis = window.speechSynthesis;
   if (!synthesis) return false;
   synthesis.cancel();
@@ -173,15 +210,14 @@ function speakWithSystem(text: string, options: SpeakOptions): boolean {
   if (voice) utterance.voice = voice;
   utterance.lang = voice?.lang ?? language;
   utterance.rate = options.rate;
+  utterance.onboundary = (event) => {
+    if (event.name !== "word") return;
+    const [start, end] = wordAt(text, event.charIndex);
+    if (end > start) options.onWord?.(offset + start, offset + end);
+  };
   if (options.onEnd) {
     utterance.onend = options.onEnd;
     utterance.onerror = options.onEnd;
-  }
-  const onWord = options.onWord;
-  if (onWord) {
-    utterance.onboundary = (event) => {
-      if (event.name === "word") onWord(event.charIndex);
-    };
   }
   synthesis.speak(utterance);
   return true;
