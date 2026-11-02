@@ -1682,6 +1682,11 @@
     "space": "スペース"
   },
   "connections": {
+    "windows": {
+      "title": "Windows の単語の候補",
+      "description": "すべてのアプリで、入力中に Windows が次の単語を提案します。入力の設定で「テキストの候補を表示する」をオンにしてください。",
+      "open": "入力の設定を開く"
+    },
     "description": "Novaと連携するアプリ：選択バブルがテキストを送り、時間割が口述を授業ごとに整理します。"
   },
   "bubble": {
@@ -1704,6 +1709,8 @@
       "quiz": "このテキストを理解できたか確かめる質問を3つ出してください："
     },
     "read": "読み上げ",
+    "readInEdge": "Edge で読む",
+    "readInEdgeHint": "Ctrl + Shift + U: 音声で読み上げる。F9: イマーシブ リーダー。",
     "stop": "停止",
     "more": "その他の操作",
     "back": "戻る",

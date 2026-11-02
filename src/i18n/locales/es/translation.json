@@ -1682,6 +1682,11 @@
     "space": "Espacio"
   },
   "connections": {
+    "windows": {
+      "title": "Sugerencias de palabras de Windows",
+      "description": "Windows sugiere la siguiente palabra mientras escribes, en todas las aplicaciones. Activa «Mostrar sugerencias de texto» en la configuración de escritura.",
+      "open": "Abrir la configuración de escritura"
+    },
     "description": "Las aplicaciones conectadas a Nova: la burbuja de selección les envía texto y el horario ordena sus dictados por clase."
   },
   "bubble": {
@@ -1704,6 +1709,8 @@
       "quiz": "Hazme 3 preguntas para comprobar que he entendido este texto:"
     },
     "read": "Leer",
+    "readInEdge": "Leer en Edge",
+    "readInEdgeHint": "Ctrl + Mayús + U: leer en voz alta. F9: Lector inmersivo.",
     "stop": "Detener",
     "more": "Más acciones",
     "back": "Volver",

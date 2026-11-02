@@ -1682,6 +1682,11 @@
     "space": "Phím cách"
   },
   "connections": {
+    "windows": {
+      "title": "Gợi ý từ của Windows",
+      "description": "Windows gợi ý từ tiếp theo khi bạn gõ, trong mọi ứng dụng. Bật “Hiển thị gợi ý văn bản” trong cài đặt nhập liệu.",
+      "open": "Mở cài đặt nhập liệu"
+    },
     "description": "Các ứng dụng liên kết với Nova: bong bóng chọn văn bản gửi văn bản đến chúng, và thời khóa biểu sắp xếp bài đọc chính tả theo môn."
   },
   "bubble": {
@@ -1704,6 +1709,8 @@
       "quiz": "Hãy hỏi tôi 3 câu để kiểm tra xem tôi đã hiểu đoạn văn này chưa:"
     },
     "read": "Đọc to",
+    "readInEdge": "Đọc trong Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: đọc to. F9: Trình đọc chân thực.",
     "stop": "Dừng",
     "more": "Thêm thao tác",
     "back": "Quay lại",

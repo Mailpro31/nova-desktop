@@ -1682,6 +1682,11 @@
     "space": "스페이스"
   },
   "connections": {
+    "windows": {
+      "title": "Windows 단어 제안",
+      "description": "Windows가 모든 앱에서 입력하는 동안 다음 단어를 제안합니다. 입력 설정에서 '텍스트 제안 표시'를 켜세요.",
+      "open": "입력 설정 열기"
+    },
     "description": "Nova와 연결된 앱: 선택 말풍선이 텍스트를 보내고, 시간표가 받아쓰기를 수업별로 정리합니다."
   },
   "bubble": {
@@ -1704,6 +1709,8 @@
       "quiz": "내가 이 글을 이해했는지 확인하는 질문 3개를 내 줘:"
     },
     "read": "읽어 주기",
+    "readInEdge": "Edge에서 읽기",
+    "readInEdgeHint": "Ctrl + Shift + U: 소리 내어 읽기. F9: 몰입형 리더.",
     "stop": "중지",
     "more": "더 보기",
     "back": "뒤로",

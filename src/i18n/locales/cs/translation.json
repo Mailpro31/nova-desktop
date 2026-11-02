@@ -1682,6 +1682,11 @@
     "space": "Mezerník"
   },
   "connections": {
+    "windows": {
+      "title": "Návrhy slov ve Windows",
+      "description": "Windows při psaní navrhuje další slovo ve všech aplikacích. Zapněte „Zobrazovat návrhy textu“ v nastavení psaní.",
+      "open": "Otevřít nastavení psaní"
+    },
     "description": "Aplikace propojené s Novou: bublina výběru do nich posílá text a rozvrh řadí vaše diktáty podle hodin."
   },
   "bubble": {
@@ -1704,6 +1709,8 @@
       "quiz": "Polož mi 3 otázky, abys ověřil, že jsem tomuto textu porozuměl:"
     },
     "read": "Přečíst",
+    "readInEdge": "Číst v Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: čtení nahlas. F9: Asistivní čtečka.",
     "stop": "Zastavit",
     "more": "Další akce",
     "back": "Zpět",
