@@ -26,7 +26,8 @@
     "organization": "Organizzazione",
     "learn": "Impara",
     "novaCommands": "Nova Commands",
-    "connections": "Connessioni"
+    "connections": "Connessioni",
+    "reader": "Lettore"
   },
   "onboarding": {
     "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Seleziona un testo ovunque: questa bolla compare accanto.",
       "later": "Potrai cambiare tutto più tardi in Connessioni."
     }
+  },
+  "reader": {
+    "description": "Apri un PDF del corso o incolla un testo: Nova lo legge con le voci di Windows ed evidenzia la parola letta. Niente lascia questo computer.",
+    "open": "Apri un PDF",
+    "placeholder": "Incolla qui un testo o apri un PDF.",
+    "read": "Leggi",
+    "stop": "Interrompi",
+    "clear": "Nuovo testo",
+    "fromHere": "Fai clic su un paragrafo per leggere da lì.",
+    "noText": "Questo PDF non contiene testo da leggere (un documento scansionato?).",
+    "openError": "Impossibile aprire questo documento."
   }
 }

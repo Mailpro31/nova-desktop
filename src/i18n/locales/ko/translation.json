@@ -26,7 +26,8 @@
     "organization": "조직",
     "learn": "학습",
     "novaCommands": "Nova Commands",
-    "connections": "연결"
+    "connections": "연결",
+    "reader": "리더"
   },
   "onboarding": {
     "subtitle": "시작하려면 음성 인식 모델을 선택하세요",
@@ -1759,5 +1760,16 @@
       "demoCaption": "어디서든 텍스트를 선택하면 옆에 이 말풍선이 나타납니다.",
       "later": "나중에 연결에서 모두 바꿀 수 있습니다."
     }
+  },
+  "reader": {
+    "description": "수업 PDF를 열거나 텍스트를 붙여 넣으세요. Nova가 Windows 음성으로 읽고 읽는 단어를 강조합니다. 아무것도 이 컴퓨터 밖으로 나가지 않습니다.",
+    "open": "PDF 열기",
+    "placeholder": "여기에 텍스트를 붙여 넣거나 PDF를 여세요.",
+    "read": "읽기",
+    "stop": "중지",
+    "clear": "새 텍스트",
+    "fromHere": "단락을 클릭하면 거기서부터 읽습니다.",
+    "noText": "이 PDF에는 읽을 텍스트가 없습니다(스캔한 문서인가요?).",
+    "openError": "이 문서를 열 수 없습니다."
   }
 }

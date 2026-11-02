@@ -26,7 +26,8 @@
     "organization": "Organizacja",
     "learn": "Nauka",
     "novaCommands": "Nova Commands",
-    "connections": "Połączenia"
+    "connections": "Połączenia",
+    "reader": "Lektor"
   },
   "onboarding": {
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Zaznacz tekst w dowolnym miejscu: obok pojawi się ten dymek.",
       "later": "Wszystko możesz później zmienić w Połączeniach."
     }
+  },
+  "reader": {
+    "description": "Otwórz PDF z zajęć lub wklej tekst: Nova czyta go głosami Windows i podświetla czytane słowo. Nic nie opuszcza tego komputera.",
+    "open": "Otwórz PDF",
+    "placeholder": "Wklej tutaj tekst lub otwórz PDF.",
+    "read": "Czytaj",
+    "stop": "Zatrzymaj",
+    "clear": "Nowy tekst",
+    "fromHere": "Kliknij akapit, aby czytać od tego miejsca.",
+    "noText": "Ten PDF nie zawiera tekstu do przeczytania (zeskanowany dokument?).",
+    "openError": "Nie udało się otworzyć tego dokumentu."
   }
 }

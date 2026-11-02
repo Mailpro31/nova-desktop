@@ -26,7 +26,8 @@
     "organization": "Organisatie",
     "learn": "Leren",
     "novaCommands": "Nova Commands",
-    "connections": "Koppelingen"
+    "connections": "Koppelingen",
+    "reader": "Voorlezer"
   },
   "onboarding": {
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Selecteer overal tekst: deze bel verschijnt ernaast.",
       "later": "Je kunt dit later allemaal wijzigen bij Verbindingen."
     }
+  },
+  "reader": {
+    "description": "Open een cursus-pdf of plak een tekst: Nova leest hem voor met de Windows-stemmen en markeert het gelezen woord. Niets verlaat deze computer.",
+    "open": "Een pdf openen",
+    "placeholder": "Plak hier een tekst of open een pdf.",
+    "read": "Voorlezen",
+    "stop": "Stoppen",
+    "clear": "Nieuwe tekst",
+    "fromHere": "Klik op een alinea om vanaf daar te lezen.",
+    "noText": "Deze pdf bevat geen leesbare tekst (een gescand document?).",
+    "openError": "Dit document kon niet worden geopend."
   }
 }

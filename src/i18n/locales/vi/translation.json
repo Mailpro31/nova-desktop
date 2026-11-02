@@ -26,7 +26,8 @@
     "organization": "Tổ chức",
     "learn": "Học",
     "novaCommands": "Nova Commands",
-    "connections": "Kết nối"
+    "connections": "Kết nối",
+    "reader": "Trình đọc"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Chọn văn bản ở bất cứ đâu: bong bóng này xuất hiện bên cạnh.",
       "later": "Bạn có thể thay đổi tất cả sau trong Kết nối."
     }
+  },
+  "reader": {
+    "description": "Mở PDF bài học hoặc dán văn bản: Nova đọc bằng giọng Windows và tô sáng từ đang đọc. Không có gì rời khỏi máy tính này.",
+    "open": "Mở PDF",
+    "placeholder": "Dán văn bản vào đây hoặc mở một PDF.",
+    "read": "Đọc",
+    "stop": "Dừng",
+    "clear": "Văn bản mới",
+    "fromHere": "Nhấp vào một đoạn để đọc từ đó.",
+    "noText": "PDF này không có văn bản để đọc (tài liệu được quét?).",
+    "openError": "Không thể mở tài liệu này."
   }
 }

@@ -26,7 +26,8 @@
     "organization": "Organisation",
     "learn": "Lär dig",
     "novaCommands": "Nova Commands",
-    "connections": "Anslutningar"
+    "connections": "Anslutningar",
+    "reader": "Uppläsare"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -1759,5 +1760,16 @@
       "demoCaption": "Markera text var som helst: den här bubblan visas bredvid.",
       "later": "Du kan ändra allt senare under Anslutningar."
     }
+  },
+  "reader": {
+    "description": "Öppna en kurs-pdf eller klistra in en text: Nova läser upp den med Windows röster och markerar ordet som läses. Inget lämnar den här datorn.",
+    "open": "Öppna en pdf",
+    "placeholder": "Klistra in en text här eller öppna en pdf.",
+    "read": "Läs upp",
+    "stop": "Stoppa",
+    "clear": "Ny text",
+    "fromHere": "Klicka på ett stycke för att läsa därifrån.",
+    "noText": "Den här pdf-filen innehåller ingen text att läsa (ett skannat dokument?).",
+    "openError": "Dokumentet kunde inte öppnas."
   }
 }

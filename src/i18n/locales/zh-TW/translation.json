@@ -26,7 +26,8 @@
     "organization": "組織",
     "learn": "學習",
     "novaCommands": "Nova Commands",
-    "connections": "連結"
+    "connections": "連結",
+    "reader": "閱讀器"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -1759,5 +1760,16 @@
       "demoCaption": "在任何地方選取文字：旁邊會出現這個泡泡。",
       "later": "之後可以在「連結」中變更。"
     }
+  },
+  "reader": {
+    "description": "開啟課程 PDF 或貼上文字：Nova 以 Windows 語音朗讀，並標示正在朗讀的字詞。任何內容都不會離開這台電腦。",
+    "open": "開啟 PDF",
+    "placeholder": "在此貼上文字，或開啟 PDF。",
+    "read": "朗讀",
+    "stop": "停止",
+    "clear": "新文字",
+    "fromHere": "點選段落即可從那裡開始朗讀。",
+    "noText": "此 PDF 沒有可朗讀的文字（是掃描文件嗎？）。",
+    "openError": "無法開啟此文件。"
   }
 }
