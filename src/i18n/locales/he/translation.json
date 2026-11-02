@@ -26,7 +26,8 @@
     "organization": "ארגון",
     "learn": "למידה",
     "novaCommands": "Nova Commands",
-    "connections": "חיבורים"
+    "connections": "חיבורים",
+    "reader": "קורא"
   },
   "onboarding": {
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "נדרש עדכון ידני",
     "portableUpdateMessage": "התקנות ניידות אינן מתעדכנות אוטומטית. כדי לעדכן, הורד את מתקין ה-NSIS האחרון מ-GitHub Releases, התקן לאותה תיקייה, ואז העתק את תיקיית Data/ (הגדרות, מודלים, הקלטות) מהגרסה הישנה לחדשה.",
     "portableUpdateButton": "פתח את GitHub Releases",
-    "updateFailed": "העדכון נכשל — נסה שוב"
+    "updateFailed": "העדכון נכשל — נסה שוב",
+    "updatesManaged": "העדכונים מנוהלים על ידי בית הספר",
+    "updateNotificationTitle": "עדכון של Nova זמין",
+    "updateNotificationBody": "גרסה {{version}} מוכנה. פתחו את Nova ולחצו על „עדכון זמין”."
   },
   "common": {
     "loading": "טוען...",
@@ -1682,6 +1686,11 @@
     "space": "רווח"
   },
   "connections": {
+    "windows": {
+      "title": "הצעות מילים של Windows",
+      "description": "Windows מציע את המילה הבאה בזמן ההקלדה, בכל היישומים. הפעילו את „הצג הצעות טקסט” בהגדרות ההקלדה.",
+      "open": "פתיחת הגדרות ההקלדה"
+    },
     "description": "האפליקציות המקושרות ל-Nova: בועת הבחירה שולחת אליהן טקסט, ומערכת השעות ממיינת את ההכתבות לפי שיעור."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "שאל אותי 3 שאלות כדי לבדוק שהבנתי את הטקסט הזה:"
     },
     "read": "הקרא",
+    "readInEdge": "קריאה ב-Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: הקראה בקול. F9: קורא סוחף.",
     "stop": "עצור",
     "more": "פעולות נוספות",
     "back": "חזרה",
@@ -1749,5 +1760,16 @@
       "demoCaption": "בחרו טקסט בכל מקום: הבועה הזו תופיע לצידו.",
       "later": "אפשר לשנות הכול אחר כך בחיבורים."
     }
+  },
+  "reader": {
+    "description": "פתחו PDF של שיעור או הדביקו טקסט: Nova מקריא אותו בקולות של Windows ומדגיש את המילה הנקראת. שום דבר לא יוצא מהמחשב הזה.",
+    "open": "פתיחת PDF",
+    "placeholder": "הדביקו כאן טקסט או פתחו PDF.",
+    "read": "הקראה",
+    "stop": "עצירה",
+    "clear": "טקסט חדש",
+    "fromHere": "לחצו על פסקה כדי לקרוא ממנה.",
+    "noText": "ב-PDF הזה אין טקסט לקריאה (מסמך סרוק?).",
+    "openError": "לא ניתן היה לפתוח את המסמך."
   }
 }

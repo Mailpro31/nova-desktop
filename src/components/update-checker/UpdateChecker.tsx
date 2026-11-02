@@ -3,10 +3,23 @@ import { useTranslation } from "react-i18next";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { listen } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/core";
+import {
+  isPermissionGranted,
+  requestPermission,
+  sendNotification,
+} from "@tauri-apps/plugin-notification";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { ProgressBar } from "../shared";
 import { useSettings } from "../../hooks/useSettings";
 import { commands } from "../../bindings";
+import {
+  shouldNotify,
+  UPDATE_CHECK_INTERVAL_MS,
+  updatesAllowedByPolicy,
+} from "../../lib/updatePolicy";
+
+const NOTIFIED_VERSION_KEY = "nova.update.notifiedVersion";
 
 interface UpdateCheckerProps {
   className?: string;
@@ -28,8 +41,21 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     useState(false);
 
   const { settings, isLoading } = useSettings();
-  const settingsLoaded = !isLoading && settings !== null;
-  const updateChecksEnabled = settings?.update_checks_enabled ?? false;
+  // La politique de la DSI (stratégie machine) passe avant le réglage de
+  // l'élève : en `manual`, l'école déploie elle-même chaque version.
+  const [policyAllows, setPolicyAllows] = useState<boolean | null>(null);
+  useEffect(() => {
+    invoke<{ update_policy?: string | null }>("get_deployment_state")
+      .then((state) =>
+        setPolicyAllows(updatesAllowedByPolicy(state?.update_policy)),
+      )
+      // Sans état de déploiement lisible, le poste n'est pas géré : il prévient.
+      .catch(() => setPolicyAllows(true));
+  }, []);
+  const settingsLoaded =
+    !isLoading && settings !== null && policyAllows !== null;
+  const updateChecksEnabled =
+    (settings?.update_checks_enabled ?? false) && policyAllows === true;
 
   const upToDateTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const isManualCheckRef = useRef(false);
@@ -52,6 +78,10 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     }
 
     checkForUpdates();
+    const periodic = setInterval(
+      () => checkForUpdates(),
+      UPDATE_CHECK_INTERVAL_MS,
+    );
 
     // Listen for update check events
     const updateUnlisten = listen("check-for-updates", () => {
@@ -59,6 +89,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     });
 
     return () => {
+      clearInterval(periodic);
       if (upToDateTimeoutRef.current) {
         clearTimeout(upToDateTimeoutRef.current);
       }
@@ -98,6 +129,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       if (update) {
         setUpdateAvailable(true);
         setShowUpToDate(false);
+        if (!isManualCheckRef.current) void announceUpdate(update.version);
       } else {
         setUpdateAvailable(false);
 
@@ -122,6 +154,35 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     } finally {
       setIsChecking(false);
       isManualCheckRef.current = false;
+    }
+  };
+
+  // Nova vit dans la zone de notification : sans notification, l'élève ne
+  // verrait la mise à jour qu'en ouvrant la fenêtre, ce qu'il fait rarement.
+  const announceUpdate = async (version: string) => {
+    try {
+      let last: string | null = null;
+      try {
+        last = localStorage.getItem(NOTIFIED_VERSION_KEY);
+      } catch {
+        // Stockage indisponible : prévenir quand même.
+      }
+      if (!shouldNotify(version, last)) return;
+      const granted =
+        (await isPermissionGranted()) ||
+        (await requestPermission()) === "granted";
+      if (!granted) return;
+      sendNotification({
+        title: t("footer.updateNotificationTitle"),
+        body: t("footer.updateNotificationBody", { version }),
+      });
+      try {
+        localStorage.setItem(NOTIFIED_VERSION_KEY, version);
+      } catch {
+        // Sans mémoire, la notification reviendra : c'est sans danger.
+      }
+    } catch (error) {
+      console.error("Failed to announce update:", error);
     }
   };
 
@@ -200,6 +261,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
 
   // Update status functions
   const getUpdateStatusText = () => {
+    if (policyAllows === false) return t("footer.updatesManaged");
     if (!updateChecksEnabled) {
       return t("footer.updateCheckingDisabled");
     }

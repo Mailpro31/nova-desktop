@@ -8,6 +8,7 @@ pub mod models;
 pub mod organization;
 pub mod timetable;
 pub mod transcription;
+pub mod windows_tools;
 
 use crate::settings::{get_settings, write_settings, AppSettings, LogLevel};
 use crate::utils::cancel_current_operation;

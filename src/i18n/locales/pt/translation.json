@@ -26,7 +26,8 @@
     "organization": "Organização",
     "learn": "Aprender",
     "novaCommands": "Nova Commands",
-    "connections": "Ligações"
+    "connections": "Ligações",
+    "reader": "Leitor"
   },
   "onboarding": {
     "subtitle": "Para começar, escolha um modelo de transcrição",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Atualização manual necessária",
     "portableUpdateMessage": "Instalações portáteis não podem ser atualizadas automaticamente. Para atualizar: baixe o instalador NSIS mais recente do GitHub Releases, instale-o na mesma pasta e, em seguida, copie sua pasta Data/ (configurações, modelos, gravações) da versão antiga para a nova.",
     "portableUpdateButton": "Abrir GitHub Releases",
-    "updateFailed": "Falha na atualização — repetir"
+    "updateFailed": "Falha na atualização — repetir",
+    "updatesManaged": "Atualizações geridas pela sua escola",
+    "updateNotificationTitle": "Atualização do Nova disponível",
+    "updateNotificationBody": "A versão {{version}} está pronta. Abra o Nova e clique em «Atualização disponível»."
   },
   "common": {
     "loading": "Carregando...",
@@ -1682,6 +1686,11 @@
     "space": "Espaço"
   },
   "connections": {
+    "windows": {
+      "title": "Sugestões de palavras do Windows",
+      "description": "O Windows sugere a próxima palavra enquanto você digita, em todos os aplicativos. Ative “Mostrar sugestões de texto” nas configurações de digitação.",
+      "open": "Abrir configurações de digitação"
+    },
     "description": "As aplicações ligadas ao Nova: a bolha de seleção envia-lhes texto e o horário organiza os seus ditados por aula."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Faz-me 3 perguntas para verificar se percebi este texto:"
     },
     "read": "Ler",
+    "readInEdge": "Ler no Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: ler em voz alta. F9: Leitura Avançada.",
     "stop": "Parar",
     "more": "Mais ações",
     "back": "Voltar",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Selecione um texto em qualquer lado: esta bolha aparece ao lado.",
       "later": "Pode mudar tudo mais tarde em Ligações."
     }
+  },
+  "reader": {
+    "description": "Abra um PDF do curso ou cole um texto: o Nova lê com as vozes do Windows e destaca a palavra lida. Nada sai deste computador.",
+    "open": "Abrir um PDF",
+    "placeholder": "Cole um texto aqui ou abra um PDF.",
+    "read": "Ler",
+    "stop": "Parar",
+    "clear": "Novo texto",
+    "fromHere": "Clique num parágrafo para ler a partir daí.",
+    "noText": "Este PDF não contém texto para ler (um documento digitalizado?).",
+    "openError": "Não foi possível abrir este documento."
   }
 }

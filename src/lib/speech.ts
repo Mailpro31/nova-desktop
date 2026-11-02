@@ -89,7 +89,13 @@ export function speechChunks(text: string, max = 300): string[] {
   return chunks;
 }
 
-type SpeakOptions = { uiLanguage: string; rate: number; onEnd?: () => void };
+type SpeakOptions = {
+  uiLanguage: string;
+  rate: number;
+  onEnd?: () => void;
+  /** Début du mot que la voix prononce, dans `text` (voix Windows seulement). */
+  onWord?: (charIndex: number) => void;
+};
 
 /** Faux dès que le serveur dit ne pas avoir de voix : inutile de redemander. */
 let schoolVoice = true;
@@ -131,7 +137,11 @@ async function speakWithSchool(
     if (run !== reading) return;
     if (!audio) {
       // Voix de l'école absente ou en panne : la voix Windows lit la suite.
-      speakWithSystem(chunks.slice(index).join(" "), options);
+      // Sans surlignage : ses indices ne porteraient que sur la suite du texte.
+      speakWithSystem(chunks.slice(index).join(" "), {
+        ...options,
+        onWord: undefined,
+      });
       return;
     }
     if (index + 1 < chunks.length)
@@ -166,6 +176,12 @@ function speakWithSystem(text: string, options: SpeakOptions): boolean {
   if (options.onEnd) {
     utterance.onend = options.onEnd;
     utterance.onerror = options.onEnd;
+  }
+  const onWord = options.onWord;
+  if (onWord) {
+    utterance.onboundary = (event) => {
+      if (event.name === "word") onWord(event.charIndex);
+    };
   }
   synthesis.speak(utterance);
   return true;

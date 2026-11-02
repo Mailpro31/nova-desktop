@@ -26,7 +26,8 @@
     "organization": "组织",
     "learn": "学习",
     "novaCommands": "Nova Commands",
-    "connections": "连接"
+    "connections": "连接",
+    "reader": "阅读器"
   },
   "onboarding": {
     "subtitle": "请选择一个转录模型以开始使用",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "需要手动更新",
     "portableUpdateMessage": "便携版无法自动更新。更新方法：从 GitHub Releases 下载最新的 NSIS 安装程序，安装到同一文件夹，然后将旧版本的 Data/ 文件夹（设置、模型、录音）复制到新版本。",
     "portableUpdateButton": "打开 GitHub Releases",
-    "updateFailed": "更新失败 — 重试"
+    "updateFailed": "更新失败 — 重试",
+    "updatesManaged": "更新由你的学校管理",
+    "updateNotificationTitle": "Nova 有可用更新",
+    "updateNotificationBody": "版本 {{version}} 已就绪。打开 Nova 并点击“有可用更新”。"
   },
   "common": {
     "loading": "加载中...",
@@ -1682,6 +1686,11 @@
     "space": "空格"
   },
   "connections": {
+    "windows": {
+      "title": "Windows 字词建议",
+      "description": "在所有应用中键入时，Windows 会建议下一个字词。请在键入设置中打开“显示文本建议”。",
+      "open": "打开键入设置"
+    },
     "description": "与 Nova 关联的应用：选区气泡把文字发送给它们，课表按课程整理你的听写。"
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "请问我 3 个问题，检查我是否理解了这段文字："
     },
     "read": "朗读",
+    "readInEdge": "在 Edge 中阅读",
+    "readInEdgeHint": "Ctrl + Shift + U：大声朗读。F9：沉浸式阅读器。",
     "stop": "停止",
     "more": "更多操作",
     "back": "返回",
@@ -1749,5 +1760,16 @@
       "demoCaption": "在任何地方选中文字：旁边会出现这个气泡。",
       "later": "之后可以在“连接”中更改。"
     }
+  },
+  "reader": {
+    "description": "打开课程 PDF 或粘贴文本：Nova 用 Windows 语音朗读，并高亮正在朗读的词。任何内容都不会离开这台电脑。",
+    "open": "打开 PDF",
+    "placeholder": "在此粘贴文本，或打开一个 PDF。",
+    "read": "朗读",
+    "stop": "停止",
+    "clear": "新文本",
+    "fromHere": "点击某一段落即可从那里开始朗读。",
+    "noText": "此 PDF 中没有可朗读的文本（是扫描文档吗？）。",
+    "openError": "无法打开此文档。"
   }
 }

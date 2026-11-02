@@ -26,7 +26,8 @@
     "organization": "組織",
     "learn": "学ぶ",
     "novaCommands": "Nova Commands",
-    "connections": "連携"
+    "connections": "連携",
+    "reader": "リーダー"
   },
   "onboarding": {
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "手動での更新が必要です",
     "portableUpdateMessage": "ポータブル版は自動的に更新できません。更新するには、GitHub Releases から最新の NSIS インストーラーをダウンロードし、同じフォルダーにインストールしてから、古いバージョンの Data フォルダー(設定、モデル、録音)を新しいバージョンにコピーしてください。",
     "portableUpdateButton": "GitHub Releases を開く",
-    "updateFailed": "更新に失敗しました — 再試行"
+    "updateFailed": "更新に失敗しました — 再試行",
+    "updatesManaged": "アップデートは学校が管理しています",
+    "updateNotificationTitle": "Nova のアップデートがあります",
+    "updateNotificationBody": "バージョン {{version}} の準備ができました。Nova を開いて「アップデートあり」をクリックしてください。"
   },
   "common": {
     "loading": "読み込み中…",
@@ -1682,6 +1686,11 @@
     "space": "スペース"
   },
   "connections": {
+    "windows": {
+      "title": "Windows の単語の候補",
+      "description": "すべてのアプリで、入力中に Windows が次の単語を提案します。入力の設定で「テキストの候補を表示する」をオンにしてください。",
+      "open": "入力の設定を開く"
+    },
     "description": "Novaと連携するアプリ：選択バブルがテキストを送り、時間割が口述を授業ごとに整理します。"
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "このテキストを理解できたか確かめる質問を3つ出してください："
     },
     "read": "読み上げ",
+    "readInEdge": "Edge で読む",
+    "readInEdgeHint": "Ctrl + Shift + U: 音声で読み上げる。F9: イマーシブ リーダー。",
     "stop": "停止",
     "more": "その他の操作",
     "back": "戻る",
@@ -1749,5 +1760,16 @@
       "demoCaption": "どこでもテキストを選択すると、横にこのバブルが表示されます。",
       "later": "あとで「接続」からすべて変更できます。"
     }
+  },
+  "reader": {
+    "description": "授業のPDFを開くか、テキストを貼り付けてください。NovaがWindowsの音声で読み上げ、読んでいる単語を強調表示します。このパソコンの外には何も送られません。",
+    "open": "PDFを開く",
+    "placeholder": "ここにテキストを貼り付けるか、PDFを開いてください。",
+    "read": "読み上げ",
+    "stop": "停止",
+    "clear": "新しいテキスト",
+    "fromHere": "段落をクリックすると、そこから読み上げます。",
+    "noText": "このPDFには読み上げるテキストがありません（スキャンした文書ですか？）。",
+    "openError": "この文書を開けませんでした。"
   }
 }

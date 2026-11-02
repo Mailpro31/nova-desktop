@@ -26,7 +26,8 @@
     "organization": "Organización",
     "learn": "Aprender",
     "novaCommands": "Nova Commands",
-    "connections": "Conexiones"
+    "connections": "Conexiones",
+    "reader": "Lector"
   },
   "onboarding": {
     "subtitle": "Para comenzar, elige un modelo de transcripción",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Actualización manual necesaria",
     "portableUpdateMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Para actualizar: descarga el instalador NSIS más reciente desde GitHub Releases, instálalo en la misma carpeta y luego copia tu carpeta Data/ (ajustes, modelos, grabaciones) de la versión anterior a la nueva.",
     "portableUpdateButton": "Abrir GitHub Releases",
-    "updateFailed": "Error de actualización — reintentar"
+    "updateFailed": "Error de actualización — reintentar",
+    "updatesManaged": "Actualizaciones gestionadas por tu centro",
+    "updateNotificationTitle": "Actualización de Nova disponible",
+    "updateNotificationBody": "La versión {{version}} está lista. Abre Nova y haz clic en «Actualización disponible»."
   },
   "common": {
     "loading": "Cargando...",
@@ -1682,6 +1686,11 @@
     "space": "Espacio"
   },
   "connections": {
+    "windows": {
+      "title": "Sugerencias de palabras de Windows",
+      "description": "Windows sugiere la siguiente palabra mientras escribes, en todas las aplicaciones. Activa «Mostrar sugerencias de texto» en la configuración de escritura.",
+      "open": "Abrir la configuración de escritura"
+    },
     "description": "Las aplicaciones conectadas a Nova: la burbuja de selección les envía texto y el horario ordena sus dictados por clase."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Hazme 3 preguntas para comprobar que he entendido este texto:"
     },
     "read": "Leer",
+    "readInEdge": "Leer en Edge",
+    "readInEdgeHint": "Ctrl + Mayús + U: leer en voz alta. F9: Lector inmersivo.",
     "stop": "Detener",
     "more": "Más acciones",
     "back": "Volver",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Seleccione un texto en cualquier lugar: esta burbuja aparece al lado.",
       "later": "Podrá cambiarlo todo más tarde en Conexiones."
     }
+  },
+  "reader": {
+    "description": "Abra un PDF del curso o pegue un texto: Nova lo lee con las voces de Windows y resalta la palabra leída. Nada sale de este equipo.",
+    "open": "Abrir un PDF",
+    "placeholder": "Pegue un texto aquí o abra un PDF.",
+    "read": "Leer",
+    "stop": "Detener",
+    "clear": "Nuevo texto",
+    "fromHere": "Haga clic en un párrafo para leer desde ahí.",
+    "noText": "Este PDF no contiene texto para leer (¿un documento escaneado?).",
+    "openError": "No se pudo abrir este documento."
   }
 }
