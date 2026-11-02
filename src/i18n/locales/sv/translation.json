@@ -1685,6 +1685,11 @@
     "space": "Mellanslag"
   },
   "connections": {
+    "windows": {
+      "title": "Ordförslag i Windows",
+      "description": "Windows föreslår nästa ord medan du skriver, i alla appar. Aktivera ”Visa textförslag” i inställningarna för skrivning.",
+      "open": "Öppna inställningar för skrivning"
+    },
     "description": "Appar kopplade till Nova: markeringsbubblan skickar text till dem, och schemat sorterar dina dikteringar per lektion."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Ställ 3 frågor till mig för att kontrollera att jag har förstått texten:"
     },
     "read": "Läs upp",
+    "readInEdge": "Läs i Edge",
+    "readInEdgeHint": "Ctrl + Skift + U: högläsning. F9: Avancerad läsare.",
     "stop": "Stoppa",
     "more": "Fler åtgärder",
     "back": "Tillbaka",

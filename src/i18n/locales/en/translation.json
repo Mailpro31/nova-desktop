@@ -1685,6 +1685,11 @@
     "space": "Space"
   },
   "connections": {
+    "windows": {
+      "title": "Windows word suggestions",
+      "description": "Windows suggests the next word as you type, in every app. Turn on “Show text suggestions” in the typing settings.",
+      "open": "Open typing settings"
+    },
     "description": "Apps linked to Nova: the selection bubble sends text to them, and your timetable sorts your dictations by class."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Ask me 3 questions to check that I understood this text:"
     },
     "read": "Read aloud",
+    "readInEdge": "Read in Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: read aloud. F9: Immersive Reader.",
     "stop": "Stop",
     "more": "More actions",
     "back": "Back",

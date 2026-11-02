@@ -1685,6 +1685,11 @@
     "space": "空格"
   },
   "connections": {
+    "windows": {
+      "title": "Windows 字词建议",
+      "description": "在所有应用中键入时，Windows 会建议下一个字词。请在键入设置中打开“显示文本建议”。",
+      "open": "打开键入设置"
+    },
     "description": "与 Nova 关联的应用：选区气泡把文字发送给它们，课表按课程整理你的听写。"
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "请问我 3 个问题，检查我是否理解了这段文字："
     },
     "read": "朗读",
+    "readInEdge": "在 Edge 中阅读",
+    "readInEdgeHint": "Ctrl + Shift + U：大声朗读。F9：沉浸式阅读器。",
     "stop": "停止",
     "more": "更多操作",
     "back": "返回",

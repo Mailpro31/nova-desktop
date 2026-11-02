@@ -1685,6 +1685,11 @@
     "space": "Espaço"
   },
   "connections": {
+    "windows": {
+      "title": "Sugestões de palavras do Windows",
+      "description": "O Windows sugere a próxima palavra enquanto você digita, em todos os aplicativos. Ative “Mostrar sugestões de texto” nas configurações de digitação.",
+      "open": "Abrir configurações de digitação"
+    },
     "description": "As aplicações ligadas ao Nova: a bolha de seleção envia-lhes texto e o horário organiza os seus ditados por aula."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Faz-me 3 perguntas para verificar se percebi este texto:"
     },
     "read": "Ler",
+    "readInEdge": "Ler no Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: ler em voz alta. F9: Leitura Avançada.",
     "stop": "Parar",
     "more": "Mais ações",
     "back": "Voltar",

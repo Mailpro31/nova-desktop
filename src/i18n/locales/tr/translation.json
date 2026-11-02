@@ -1685,6 +1685,11 @@
     "space": "Boşluk"
   },
   "connections": {
+    "windows": {
+      "title": "Windows kelime önerileri",
+      "description": "Windows, tüm uygulamalarda siz yazarken sonraki kelimeyi önerir. Yazma ayarlarında “Metin önerilerini göster”i açın.",
+      "open": "Yazma ayarlarını aç"
+    },
     "description": "Nova'ya bağlı uygulamalar: seçim balonu onlara metin gönderir, ders programı da dikte kayıtlarınızı derse göre sıralar."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Bu metni anladığımı kontrol etmek için bana 3 soru sor:"
     },
     "read": "Sesli oku",
+    "readInEdge": "Edge'de oku",
+    "readInEdgeHint": "Ctrl + Shift + U: sesli okuma. F9: Tam Ekran Okuyucu.",
     "stop": "Durdur",
     "more": "Daha fazla işlem",
     "back": "Geri",

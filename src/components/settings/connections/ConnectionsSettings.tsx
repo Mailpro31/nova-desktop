@@ -1,6 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Blocks, Star, TextSelect } from "lucide-react";
+import { Blocks, Keyboard, Star, TextSelect } from "lucide-react";
+
+import { commands } from "@/bindings";
 
 import { PageHeader } from "../../shell/PageHeader";
 import {
@@ -45,6 +47,19 @@ export const ConnectionsSettings: React.FC = () => {
           description={t("bubble.apps.description")}
         >
           <ConnectedApps />
+        </SectionCard>
+        <SectionCard
+          icon={Keyboard}
+          title={t("connections.windows.title")}
+          description={t("connections.windows.description")}
+        >
+          <button
+            type="button"
+            onClick={() => void commands.openWindowsTypingSettings()}
+            className="rounded-control border border-hairline px-3 py-1.5 text-sm text-text transition-colors duration-[120ms] hover:bg-mid-gray/10 cursor-pointer"
+          >
+            {t("connections.windows.open")}
+          </button>
         </SectionCard>
         <OrganizationPersonalizationSection section="timetable" />
       </div>

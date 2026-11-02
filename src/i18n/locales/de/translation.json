@@ -1685,6 +1685,11 @@
     "space": "Leertaste"
   },
   "connections": {
+    "windows": {
+      "title": "Wortvorschläge von Windows",
+      "description": "Windows schlägt beim Tippen in allen Apps das nächste Wort vor. Aktivieren Sie „Textvorschläge anzeigen“ in den Eingabeeinstellungen.",
+      "open": "Eingabeeinstellungen öffnen"
+    },
     "description": "Mit Nova verbundene Apps: Die Auswahlblase sendet Text an sie, und der Stundenplan ordnet Ihre Diktate nach Kurs."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Stelle mir 3 Fragen, um zu prüfen, ob ich diesen Text verstanden habe:"
     },
     "read": "Vorlesen",
+    "readInEdge": "In Edge lesen",
+    "readInEdgeHint": "Strg + Umschalt + U: Vorlesen. F9: Plastischer Reader.",
     "stop": "Stopp",
     "more": "Weitere Aktionen",
     "back": "Zurück",

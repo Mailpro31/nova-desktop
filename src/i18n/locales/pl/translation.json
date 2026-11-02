@@ -1685,6 +1685,11 @@
     "space": "Spacja"
   },
   "connections": {
+    "windows": {
+      "title": "Sugestie słów systemu Windows",
+      "description": "Windows podpowiada następne słowo podczas pisania we wszystkich aplikacjach. Włącz „Pokaż sugestie tekstu” w ustawieniach pisania.",
+      "open": "Otwórz ustawienia pisania"
+    },
     "description": "Aplikacje połączone z Nova: dymek zaznaczenia wysyła do nich tekst, a plan zajęć porządkuje dyktowania według zajęć."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Zadaj mi 3 pytania, aby sprawdzić, czy zrozumiałem ten tekst:"
     },
     "read": "Czytaj",
+    "readInEdge": "Czytaj w Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: czytanie na głos. F9: Czytnik immersyjny.",
     "stop": "Zatrzymaj",
     "more": "Więcej działań",
     "back": "Wstecz",

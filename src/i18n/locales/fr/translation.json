@@ -1685,6 +1685,11 @@
     "space": "Espace"
   },
   "connections": {
+    "windows": {
+      "title": "Suggestions de mots de Windows",
+      "description": "Windows propose le mot suivant pendant que vous tapez, dans toutes les applications. Activez « Afficher les suggestions de texte » dans les réglages de saisie.",
+      "open": "Ouvrir les réglages de saisie"
+    },
     "description": "Les applications reliées à Nova : la bulle de sélection leur envoie un texte, et l'emploi du temps range vos dictées par cours."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Pose-moi 3 questions pour vérifier que j'ai compris ce texte :"
     },
     "read": "Lire",
+    "readInEdge": "Lire dans Edge",
+    "readInEdgeHint": "Ctrl + Maj + U : lecture à voix haute. F9 : Lecteur immersif.",
     "stop": "Arrêter",
     "more": "Plus d'actions",
     "back": "Retour",

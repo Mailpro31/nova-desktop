@@ -1685,6 +1685,11 @@
     "space": "Spazio"
   },
   "connections": {
+    "windows": {
+      "title": "Suggerimenti di parole di Windows",
+      "description": "Windows suggerisce la parola successiva mentre scrivi, in tutte le app. Attiva «Mostra suggerimenti di testo» nelle impostazioni di digitazione.",
+      "open": "Apri le impostazioni di digitazione"
+    },
     "description": "Le app collegate a Nova: la bolla di selezione invia loro il testo e l'orario ordina le tue dettature per corso."
   },
   "bubble": {
@@ -1707,6 +1712,8 @@
       "quiz": "Fammi 3 domande per verificare che ho capito questo testo:"
     },
     "read": "Leggi",
+    "readInEdge": "Leggi in Edge",
+    "readInEdgeHint": "Ctrl + Maiusc + U: lettura ad alta voce. F9: Strumento di lettura immersiva.",
     "stop": "Ferma",
     "more": "Altre azioni",
     "back": "Indietro",
