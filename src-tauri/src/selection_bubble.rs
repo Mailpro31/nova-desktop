@@ -77,7 +77,11 @@ mod platform {
     }
 
     pub fn start(app: &AppHandle) {
-        create_window(app);
+        // Bulle éteinte : pas de fenêtre, ≈ 40 Mo de WebView économisés (point 0.2).
+        set_window(
+            app,
+            crate::settings::get_settings(app).selection_bubble_enabled,
+        );
         let (tx, rx) = mpsc::channel::<Signal>();
         let worker_app = app.clone();
         std::thread::spawn(move || worker(worker_app, rx));
@@ -127,6 +131,18 @@ mod platform {
                 warn!("Bulle de sélection : écoute de la souris impossible ({error:?})");
             }
         });
+    }
+
+    /// Crée la fenêtre de la bulle, ou la détruit, selon le réglage.
+    pub fn set_window(app: &AppHandle, enabled: bool) {
+        match app.get_webview_window(LABEL) {
+            None if enabled => create_window(app),
+            Some(window) if !enabled => {
+                hide(app);
+                let _ = window.destroy();
+            }
+            _ => {}
+        }
     }
 
     fn create_window(app: &AppHandle) {
@@ -369,6 +385,8 @@ mod platform {
 
     pub fn start(_app: &AppHandle) {}
 
+    pub fn set_window(_app: &AppHandle, _enabled: bool) {}
+
     pub fn hide(_app: &AppHandle) {}
 
     pub fn still_selected(_app: &AppHandle, _original: &str) -> bool {
@@ -446,8 +464,7 @@ pub fn change_selection_bubble_enabled_setting(
     let mut settings = crate::settings::get_settings(&app);
     settings.selection_bubble_enabled = enabled;
     crate::settings::write_settings(&app, settings);
-    if !enabled {
-        selection_bubble_hide(app);
-    }
+    // Créer une fenêtre dans une commande synchrone bloque sous Windows.
+    std::thread::spawn(move || platform::set_window(&app, enabled));
     Ok(())
 }
