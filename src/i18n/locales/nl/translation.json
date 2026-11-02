@@ -767,7 +767,10 @@
     "portableUpdateTitle": "Handmatige update vereist",
     "portableUpdateMessage": "Draagbare (portable) installaties kunnen niet automatisch worden bijgewerkt. Om bij te werken: download het nieuwste NSIS-installatiebestand van GitHub Releases, installeer het in dezelfde map en kopieer vervolgens je Data/-map (instellingen, modellen, opnames) van de oude versie naar de nieuwe.",
     "portableUpdateButton": "GitHub Releases openen",
-    "updateFailed": "Update mislukt — opnieuw"
+    "updateFailed": "Update mislukt — opnieuw",
+    "updatesManaged": "Updates worden beheerd door je school",
+    "updateNotificationTitle": "Nova-update beschikbaar",
+    "updateNotificationBody": "Versie {{version}} is klaar. Open Nova en klik op ‘Update beschikbaar’."
   },
   "whatsNew": {
     "updatedNotice": "Nova is bijgewerkt",

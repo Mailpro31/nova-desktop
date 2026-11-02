@@ -767,7 +767,10 @@
     "portableUpdateTitle": "Требуется ручное обновление",
     "portableUpdateMessage": "Портативные установки нельзя обновить автоматически. Чтобы обновить: скачайте последний установщик NSIS со страницы GitHub Releases, установите его в ту же папку, затем скопируйте папку Data/ (настройки, модели, записи) из старой версии в новую.",
     "portableUpdateButton": "Открыть GitHub Releases",
-    "updateFailed": "Не удалось обновить — повторить"
+    "updateFailed": "Не удалось обновить — повторить",
+    "updatesManaged": "Обновлениями управляет ваше учебное заведение",
+    "updateNotificationTitle": "Доступно обновление Nova",
+    "updateNotificationBody": "Версия {{version}} готова. Откройте Nova и нажмите «Доступно обновление»."
   },
   "common": {
     "loading": "Загрузка...",

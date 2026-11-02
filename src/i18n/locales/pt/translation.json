@@ -767,7 +767,10 @@
     "portableUpdateTitle": "Atualização manual necessária",
     "portableUpdateMessage": "Instalações portáteis não podem ser atualizadas automaticamente. Para atualizar: baixe o instalador NSIS mais recente do GitHub Releases, instale-o na mesma pasta e, em seguida, copie sua pasta Data/ (configurações, modelos, gravações) da versão antiga para a nova.",
     "portableUpdateButton": "Abrir GitHub Releases",
-    "updateFailed": "Falha na atualização — repetir"
+    "updateFailed": "Falha na atualização — repetir",
+    "updatesManaged": "Atualizações geridas pela sua escola",
+    "updateNotificationTitle": "Atualização do Nova disponível",
+    "updateNotificationBody": "A versão {{version}} está pronta. Abra o Nova e clique em «Atualização disponível»."
   },
   "common": {
     "loading": "Carregando...",

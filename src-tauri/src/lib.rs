@@ -1126,7 +1126,9 @@ pub fn run(cli_args: CliArgs) {
     // silencieusement en binaire de production sous son identité de test.
     #[cfg(not(feature = "lab"))]
     {
-        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+        builder = builder
+            .plugin(tauri_plugin_updater::Builder::new().build())
+            .plugin(tauri_plugin_notification::init());
     }
 
     builder

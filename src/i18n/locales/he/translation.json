@@ -767,7 +767,10 @@
     "portableUpdateTitle": "נדרש עדכון ידני",
     "portableUpdateMessage": "התקנות ניידות אינן מתעדכנות אוטומטית. כדי לעדכן, הורד את מתקין ה-NSIS האחרון מ-GitHub Releases, התקן לאותה תיקייה, ואז העתק את תיקיית Data/ (הגדרות, מודלים, הקלטות) מהגרסה הישנה לחדשה.",
     "portableUpdateButton": "פתח את GitHub Releases",
-    "updateFailed": "העדכון נכשל — נסה שוב"
+    "updateFailed": "העדכון נכשל — נסה שוב",
+    "updatesManaged": "העדכונים מנוהלים על ידי בית הספר",
+    "updateNotificationTitle": "עדכון של Nova זמין",
+    "updateNotificationBody": "גרסה {{version}} מוכנה. פתחו את Nova ולחצו על „עדכון זמין”."
   },
   "common": {
     "loading": "טוען...",
