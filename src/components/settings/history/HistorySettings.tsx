@@ -98,7 +98,8 @@ export const HistorySettings: React.FC<HistorySettingsProps> = ({
   const shortcut =
     (
       getSetting("bindings") as
-        Record<string, { current_binding?: string }> | undefined
+        | Record<string, { current_binding?: string }>
+        | undefined
     )?.transcribe?.current_binding ?? null;
 
   const load = useCallback(async () => {
