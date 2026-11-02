@@ -26,7 +26,8 @@
     "organization": "Tổ chức",
     "learn": "Học",
     "novaCommands": "Nova Commands",
-    "connections": "Kết nối"
+    "connections": "Kết nối",
+    "reader": "Trình đọc"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Cần cập nhật thủ công",
     "portableUpdateMessage": "Bản cài đặt di động không thể cập nhật tự động. Để cập nhật: tải trình cài đặt NSIS mới nhất từ GitHub Releases, cài đặt vào cùng thư mục, sau đó sao chép thư mục Data/ (cài đặt, mô hình, bản ghi) từ phiên bản cũ sang phiên bản mới.",
     "portableUpdateButton": "Mở GitHub Releases",
-    "updateFailed": "Cập nhật thất bại — thử lại"
+    "updateFailed": "Cập nhật thất bại — thử lại",
+    "updatesManaged": "Bản cập nhật do trường của bạn quản lý",
+    "updateNotificationTitle": "Đã có bản cập nhật Nova",
+    "updateNotificationBody": "Phiên bản {{version}} đã sẵn sàng. Mở Nova và nhấp vào “Có bản cập nhật”."
   },
   "common": {
     "loading": "Đang tải...",
@@ -1682,6 +1686,11 @@
     "space": "Phím cách"
   },
   "connections": {
+    "windows": {
+      "title": "Gợi ý từ của Windows",
+      "description": "Windows gợi ý từ tiếp theo khi bạn gõ, trong mọi ứng dụng. Bật “Hiển thị gợi ý văn bản” trong cài đặt nhập liệu.",
+      "open": "Mở cài đặt nhập liệu"
+    },
     "description": "Các ứng dụng liên kết với Nova: bong bóng chọn văn bản gửi văn bản đến chúng, và thời khóa biểu sắp xếp bài đọc chính tả theo môn."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Hãy hỏi tôi 3 câu để kiểm tra xem tôi đã hiểu đoạn văn này chưa:"
     },
     "read": "Đọc to",
+    "readInEdge": "Đọc trong Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: đọc to. F9: Trình đọc chân thực.",
     "stop": "Dừng",
     "more": "Thêm thao tác",
     "back": "Quay lại",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Chọn văn bản ở bất cứ đâu: bong bóng này xuất hiện bên cạnh.",
       "later": "Bạn có thể thay đổi tất cả sau trong Kết nối."
     }
+  },
+  "reader": {
+    "description": "Mở PDF bài học hoặc dán văn bản: Nova đọc bằng giọng Windows và tô sáng từ đang đọc. Không có gì rời khỏi máy tính này.",
+    "open": "Mở PDF",
+    "placeholder": "Dán văn bản vào đây hoặc mở một PDF.",
+    "read": "Đọc",
+    "stop": "Dừng",
+    "clear": "Văn bản mới",
+    "fromHere": "Nhấp vào một đoạn để đọc từ đó.",
+    "noText": "PDF này không có văn bản để đọc (tài liệu được quét?).",
+    "openError": "Không thể mở tài liệu này."
   }
 }

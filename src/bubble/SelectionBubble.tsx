@@ -13,6 +13,7 @@ import {
   Square,
   Volume2,
   X,
+  BookOpenText,
 } from "lucide-react";
 
 import { commands, type TargetWindow } from "@/bindings";
@@ -310,6 +311,21 @@ export const SelectionBubble: React.FC = () => {
                     />
                   )}
                   <span>{speaking ? t("bubble.stop") : t("bubble.read")}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void commands.readInEdge(text, t("bubble.readInEdgeHint"));
+                    void commands.selectionBubbleHide();
+                  }}
+                  className="flex flex-col items-center gap-1 rounded-chip px-1 py-2 text-[12px] leading-tight text-text transition-colors duration-[120ms] hover:bg-accent/10 cursor-pointer"
+                >
+                  <BookOpenText
+                    size={18}
+                    strokeWidth={1.75}
+                    className="text-accent"
+                  />
+                  <span>{t("bubble.readInEdge")}</span>
                 </button>
               </div>
               {GROUP_ORDER.map((group) => {

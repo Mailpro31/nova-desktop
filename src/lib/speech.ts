@@ -65,8 +65,13 @@ export function pickVoice(
  * Le texte en morceaux d'au plus `max` caractères, coupés après une phrase
  * quand c'est possible : la voix de l'école lit le premier pendant qu'elle
  * prépare le suivant, et la lecture commence sans attendre tout le texte.
+ *
+ * 300 caractères : la voix de l'école (Kokoro, processeur du PC fixe, 02/11)
+ * rend 88 caractères en 2,5 s et lit environ 1,9 fois plus vite que le temps
+ * réel ; au-delà, le premier son se fait attendre (8,6 s pour 255 caractères
+ * en deux longues phrases).
  */
-export function speechChunks(text: string, max = 900): string[] {
+export function speechChunks(text: string, max = 300): string[] {
   const sentences = text.match(/[^.!?…\n]+[.!?…]*\s*|\n+/g) ?? [];
   const chunks: string[] = [];
   let current = "";

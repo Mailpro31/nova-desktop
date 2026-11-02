@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BookOpen,
+  BookOpenText,
   Building2,
   Cog,
   GraduationCap,
@@ -25,6 +26,11 @@ import { useCapability } from "../hooks/useOrganizationContext";
 const ConnectionsSettings = lazy(() =>
   import("./settings/connections/ConnectionsSettings").then((module) => ({
     default: module.ConnectionsSettings,
+  })),
+);
+const ReaderSettings = lazy(() =>
+  import("./settings/reader/ReaderSettings").then((module) => ({
+    default: module.ReaderSettings,
   })),
 );
 const HomeSettings = lazy(() =>
@@ -224,6 +230,14 @@ export const SECTIONS_CONFIG = {
     component: ConnectionsSettings,
     enabled: always,
   },
+  reader: {
+    // Le Lecteur Nova (1.6) : un document lu à voix haute, le mot surligné.
+    labelKey: "sidebar.reader",
+    campusLabelKey: undefined,
+    icon: BookOpenText,
+    component: ReaderSettings,
+    enabled: always,
+  },
   history: {
     labelKey: "sidebar.history",
     campusLabelKey: undefined,
@@ -260,6 +274,7 @@ const ORGANIZATION_PRIMARY: SidebarSection[] = [
   "history",
   "postprocessing",
   "connections",
+  "reader",
   "learn",
   "aiskilltools",
   "aiskills",

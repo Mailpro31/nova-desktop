@@ -26,7 +26,8 @@
     "organization": "Organisation",
     "learn": "Lär dig",
     "novaCommands": "Nova Commands",
-    "connections": "Anslutningar"
+    "connections": "Anslutningar",
+    "reader": "Uppläsare"
   },
   "onboarding": {
     "subtitle": "För att komma igång, välj en transkriptionsmodell",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Manuell uppdatering krävs",
     "portableUpdateMessage": "Portabla installationer kan inte uppdateras automatiskt. Så här uppdaterar du: ladda ner den senaste NSIS-installeraren från GitHub Releases, installera den i samma mapp och kopiera sedan din Data/-mapp (inställningar, modeller, inspelningar) från den gamla versionen till den nya.",
     "portableUpdateButton": "Öppna GitHub Releases",
-    "updateFailed": "Uppdateringen misslyckades — försök igen"
+    "updateFailed": "Uppdateringen misslyckades — försök igen",
+    "updatesManaged": "Uppdateringar hanteras av din skola",
+    "updateNotificationTitle": "Nova-uppdatering tillgänglig",
+    "updateNotificationBody": "Version {{version}} är klar. Öppna Nova och klicka på ”Uppdatering tillgänglig”."
   },
   "common": {
     "loading": "Laddar...",
@@ -1682,6 +1686,11 @@
     "space": "Mellanslag"
   },
   "connections": {
+    "windows": {
+      "title": "Ordförslag i Windows",
+      "description": "Windows föreslår nästa ord medan du skriver, i alla appar. Aktivera ”Visa textförslag” i inställningarna för skrivning.",
+      "open": "Öppna inställningar för skrivning"
+    },
     "description": "Appar kopplade till Nova: markeringsbubblan skickar text till dem, och schemat sorterar dina dikteringar per lektion."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Ställ 3 frågor till mig för att kontrollera att jag har förstått texten:"
     },
     "read": "Läs upp",
+    "readInEdge": "Läs i Edge",
+    "readInEdgeHint": "Ctrl + Skift + U: högläsning. F9: Avancerad läsare.",
     "stop": "Stoppa",
     "more": "Fler åtgärder",
     "back": "Tillbaka",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Markera text var som helst: den här bubblan visas bredvid.",
       "later": "Du kan ändra allt senare under Anslutningar."
     }
+  },
+  "reader": {
+    "description": "Öppna en kurs-pdf eller klistra in en text: Nova läser upp den med Windows röster och markerar ordet som läses. Inget lämnar den här datorn.",
+    "open": "Öppna en pdf",
+    "placeholder": "Klistra in en text här eller öppna en pdf.",
+    "read": "Läs upp",
+    "stop": "Stoppa",
+    "clear": "Ny text",
+    "fromHere": "Klicka på ett stycke för att läsa därifrån.",
+    "noText": "Den här pdf-filen innehåller ingen text att läsa (ett skannat dokument?).",
+    "openError": "Dokumentet kunde inte öppnas."
   }
 }

@@ -771,6 +771,8 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::audio::get_microphone_mode,
                 commands::audio::get_windows_microphone_permission_status,
                 commands::audio::open_microphone_privacy_settings,
+                commands::windows_tools::open_windows_typing_settings,
+                commands::windows_tools::read_in_edge,
                 commands::audio::get_available_microphones,
                 commands::audio::set_selected_microphone,
                 commands::audio::get_selected_microphone,
@@ -1127,7 +1129,9 @@ pub fn run(cli_args: CliArgs) {
     // silencieusement en binaire de production sous son identité de test.
     #[cfg(not(feature = "lab"))]
     {
-        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+        builder = builder
+            .plugin(tauri_plugin_updater::Builder::new().build())
+            .plugin(tauri_plugin_notification::init());
     }
 
     builder

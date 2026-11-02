@@ -26,7 +26,8 @@
     "organization": "Kuruluş",
     "learn": "Öğren",
     "novaCommands": "Nova Commands",
-    "connections": "Bağlantılar"
+    "connections": "Bağlantılar",
+    "reader": "Okuyucu"
   },
   "onboarding": {
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Manuel güncelleme gerekli",
     "portableUpdateMessage": "Taşınabilir kurulumlar otomatik olarak güncellenemez. Güncellemek için: GitHub Releases’ten en son NSIS yükleyicisini indirin, aynı klasöre kurun ve ardından Data/ klasörünüzü (ayarlar, modeller, kayıtlar) eski sürümden yenisine kopyalayın.",
     "portableUpdateButton": "GitHub Releases’i aç",
-    "updateFailed": "Güncelleme başarısız — yeniden dene"
+    "updateFailed": "Güncelleme başarısız — yeniden dene",
+    "updatesManaged": "Güncellemeler okulunuz tarafından yönetiliyor",
+    "updateNotificationTitle": "Nova güncellemesi mevcut",
+    "updateNotificationBody": "{{version}} sürümü hazır. Nova'yı açın ve “Güncelleme mevcut” seçeneğine tıklayın."
   },
   "common": {
     "loading": "Yükleniyor...",
@@ -1682,6 +1686,11 @@
     "space": "Boşluk"
   },
   "connections": {
+    "windows": {
+      "title": "Windows kelime önerileri",
+      "description": "Windows, tüm uygulamalarda siz yazarken sonraki kelimeyi önerir. Yazma ayarlarında “Metin önerilerini göster”i açın.",
+      "open": "Yazma ayarlarını aç"
+    },
     "description": "Nova'ya bağlı uygulamalar: seçim balonu onlara metin gönderir, ders programı da dikte kayıtlarınızı derse göre sıralar."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Bu metni anladığımı kontrol etmek için bana 3 soru sor:"
     },
     "read": "Sesli oku",
+    "readInEdge": "Edge'de oku",
+    "readInEdgeHint": "Ctrl + Shift + U: sesli okuma. F9: Tam Ekran Okuyucu.",
     "stop": "Durdur",
     "more": "Daha fazla işlem",
     "back": "Geri",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Herhangi bir yerde metin seçin: bu balon yanında görünür.",
       "later": "Hepsini daha sonra Bağlantılar'dan değiştirebilirsiniz."
     }
+  },
+  "reader": {
+    "description": "Bir ders PDF'si açın veya metin yapıştırın: Nova onu Windows sesleriyle okur ve okunan kelimeyi vurgular. Hiçbir şey bu bilgisayardan çıkmaz.",
+    "open": "PDF aç",
+    "placeholder": "Buraya bir metin yapıştırın veya bir PDF açın.",
+    "read": "Oku",
+    "stop": "Durdur",
+    "clear": "Yeni metin",
+    "fromHere": "Oradan okumak için bir paragrafa tıklayın.",
+    "noText": "Bu PDF'de okunacak metin yok (taranmış bir belge mi?).",
+    "openError": "Bu belge açılamadı."
   }
 }

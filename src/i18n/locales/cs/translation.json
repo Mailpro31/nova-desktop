@@ -26,7 +26,8 @@
     "organization": "Organizace",
     "learn": "Učit se",
     "novaCommands": "Nova Commands",
-    "connections": "Propojení"
+    "connections": "Propojení",
+    "reader": "Čtečka"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Vyžadována ruční aktualizace",
     "portableUpdateMessage": "Přenosné instalace nelze aktualizovat automaticky. Postup aktualizace: stáhněte nejnovější instalátor NSIS z GitHub Releases, nainstalujte jej do stejné složky a poté zkopírujte svou složku Data/ (nastavení, modely, nahrávky) ze staré verze do nové.",
     "portableUpdateButton": "Otevřít GitHub Releases",
-    "updateFailed": "Aktualizace selhala — zkusit znovu"
+    "updateFailed": "Aktualizace selhala — zkusit znovu",
+    "updatesManaged": "Aktualizace spravuje vaše škola",
+    "updateNotificationTitle": "K dispozici je aktualizace Nova",
+    "updateNotificationBody": "Verze {{version}} je připravena. Otevřete Nova a klikněte na „K dispozici aktualizace“."
   },
   "common": {
     "loading": "Načítání...",
@@ -1682,6 +1686,11 @@
     "space": "Mezerník"
   },
   "connections": {
+    "windows": {
+      "title": "Návrhy slov ve Windows",
+      "description": "Windows při psaní navrhuje další slovo ve všech aplikacích. Zapněte „Zobrazovat návrhy textu“ v nastavení psaní.",
+      "open": "Otevřít nastavení psaní"
+    },
     "description": "Aplikace propojené s Novou: bublina výběru do nich posílá text a rozvrh řadí vaše diktáty podle hodin."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Polož mi 3 otázky, abys ověřil, že jsem tomuto textu porozuměl:"
     },
     "read": "Přečíst",
+    "readInEdge": "Číst v Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: čtení nahlas. F9: Asistivní čtečka.",
     "stop": "Zastavit",
     "more": "Další akce",
     "back": "Zpět",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Vyberte text kdekoli: vedle se objeví tato bublina.",
       "later": "Vše můžete později změnit v Propojeních."
     }
+  },
+  "reader": {
+    "description": "Otevřete PDF z kurzu nebo vložte text: Nova ho přečte hlasy Windows a zvýrazní čtené slovo. Nic neopustí tento počítač.",
+    "open": "Otevřít PDF",
+    "placeholder": "Sem vložte text nebo otevřete PDF.",
+    "read": "Číst",
+    "stop": "Zastavit",
+    "clear": "Nový text",
+    "fromHere": "Klikněte na odstavec a čtěte od něj.",
+    "noText": "Toto PDF neobsahuje text ke čtení (naskenovaný dokument?).",
+    "openError": "Tento dokument nelze otevřít."
   }
 }

@@ -26,7 +26,8 @@
     "organization": "Organizacja",
     "learn": "Nauka",
     "novaCommands": "Nova Commands",
-    "connections": "Połączenia"
+    "connections": "Połączenia",
+    "reader": "Lektor"
   },
   "onboarding": {
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Wymagana ręczna aktualizacja",
     "portableUpdateMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Aby zaktualizować: pobierz najnowszy instalator NSIS z GitHub Releases, zainstaluj go w tym samym folderze, a następnie skopiuj swój folder Data/ (ustawienia, modele, nagrania) ze starej wersji do nowej.",
     "portableUpdateButton": "Otwórz GitHub Releases",
-    "updateFailed": "Aktualizacja nie powiodła się — ponów"
+    "updateFailed": "Aktualizacja nie powiodła się — ponów",
+    "updatesManaged": "Aktualizacjami zarządza Twoja szkoła",
+    "updateNotificationTitle": "Dostępna aktualizacja Nova",
+    "updateNotificationBody": "Wersja {{version}} jest gotowa. Otwórz Nova i kliknij „Dostępna aktualizacja”."
   },
   "common": {
     "loading": "Wczytywanie...",
@@ -1682,6 +1686,11 @@
     "space": "Spacja"
   },
   "connections": {
+    "windows": {
+      "title": "Sugestie słów systemu Windows",
+      "description": "Windows podpowiada następne słowo podczas pisania we wszystkich aplikacjach. Włącz „Pokaż sugestie tekstu” w ustawieniach pisania.",
+      "open": "Otwórz ustawienia pisania"
+    },
     "description": "Aplikacje połączone z Nova: dymek zaznaczenia wysyła do nich tekst, a plan zajęć porządkuje dyktowania według zajęć."
   },
   "bubble": {
@@ -1704,6 +1713,8 @@
       "quiz": "Zadaj mi 3 pytania, aby sprawdzić, czy zrozumiałem ten tekst:"
     },
     "read": "Czytaj",
+    "readInEdge": "Czytaj w Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: czytanie na głos. F9: Czytnik immersyjny.",
     "stop": "Zatrzymaj",
     "more": "Więcej działań",
     "back": "Wstecz",
@@ -1749,5 +1760,16 @@
       "demoCaption": "Zaznacz tekst w dowolnym miejscu: obok pojawi się ten dymek.",
       "later": "Wszystko możesz później zmienić w Połączeniach."
     }
+  },
+  "reader": {
+    "description": "Otwórz PDF z zajęć lub wklej tekst: Nova czyta go głosami Windows i podświetla czytane słowo. Nic nie opuszcza tego komputera.",
+    "open": "Otwórz PDF",
+    "placeholder": "Wklej tutaj tekst lub otwórz PDF.",
+    "read": "Czytaj",
+    "stop": "Zatrzymaj",
+    "clear": "Nowy tekst",
+    "fromHere": "Kliknij akapit, aby czytać od tego miejsca.",
+    "noText": "Ten PDF nie zawiera tekstu do przeczytania (zeskanowany dokument?).",
+    "openError": "Nie udało się otworzyć tego dokumentu."
   }
 }
