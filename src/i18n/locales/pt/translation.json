@@ -1307,7 +1307,10 @@
       "refusedTitle": "Resultado descartado",
       "refused": "O resultado alterava o seu texto (um número, uma data, a língua ou o sentido), por isso o Nova não o propõe.",
       "refusedFormulaTitle": "Releia a fórmula no curso",
-      "refusedFormula": "Este texto contém uma fórmula que o Nova não conseguiu retomar sem a deformar. Releia-a tal como está no seu curso."
+      "refusedFormula": "Este texto contém uma fórmula que o Nova não conseguiu retomar sem a deformar. Releia-a tal como está no seu curso.",
+      "pausedTitle": "Em pausa na sua escola",
+      "paused": "A licença Nova da sua escola terminou, por isso esta função está em pausa. O ditado continua a funcionar. A escola pode renovar a licença.",
+      "budgetPaused": "O orçamento de IA da sua instituição esgotou-se este mês: esta função está em pausa até ao próximo mês. O ditado continua a funcionar."
     },
     "original": "Original",
     "generatedNote": "Produzido por IA: releia antes de o utilizar."
@@ -1381,6 +1384,13 @@
       "done": "Feito",
       "todo": "Por fazer",
       "organization": "Conta da organização associada"
+    },
+    "survey": {
+      "question": "Quanto é que o Nova o ajuda a tirar apontamentos?",
+      "score": "Nota {{score}} em 5",
+      "later": "Mais tarde",
+      "scale": "1 = nada, 5 = muito. Anónimo: a sua instituição só vê a média.",
+      "thanks": "Obrigado."
     }
   },
   "styles": {

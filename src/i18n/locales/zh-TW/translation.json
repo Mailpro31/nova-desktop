@@ -1307,7 +1307,10 @@
       "refusedTitle": "結果已被捨棄",
       "refused": "結果改變了你的文字（數字、日期、語言或含義），因此 Nova 不提供該結果。",
       "refusedFormulaTitle": "請在課程中查看公式",
-      "refusedFormula": "這段文字包含一個 Nova 無法不失真地複述的公式。請依課程中的原樣閱讀它。"
+      "refusedFormula": "這段文字包含一個 Nova 無法不失真地複述的公式。請依課程中的原樣閱讀它。",
+      "pausedTitle": "已被學校暫停",
+      "paused": "你所在學校的 Nova 授權已到期，因此此功能已暫停。聽寫仍可正常使用。學校可以續訂授權。",
+      "budgetPaused": "你所在機構本月的 AI 預算已用完：此功能暫停至下個月。聽寫仍可正常使用。"
     },
     "original": "原文",
     "generatedNote": "由 AI 產生：使用前請再讀一遍。"
@@ -1381,6 +1384,13 @@
       "done": "已完成",
       "todo": "待完成",
       "organization": "已連結組織帳戶"
+    },
+    "survey": {
+      "question": "Nova 對你做筆記有多大幫助？",
+      "score": "{{score}} 分（滿分 5 分）",
+      "later": "稍後",
+      "scale": "1 = 完全沒有，5 = 很大。匿名：你的機構只能看到平均分。",
+      "thanks": "謝謝。"
     }
   },
   "styles": {

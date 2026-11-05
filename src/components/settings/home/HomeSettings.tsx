@@ -5,6 +5,7 @@ import { Check, ChevronRight, FileAudio } from "lucide-react";
 import NovaOrb from "./NovaOrb";
 import { useHomeState, type HeroSituation } from "./useHomeState";
 import { OrganizationFileTranscribeModal } from "./OrganizationFileTranscribeModal";
+import { PilotSurvey } from "./PilotSurvey";
 import { Button } from "../../ui/Button";
 import { KeyboardShortcut } from "../../ui/KeyboardShortcut";
 import { announcedTypeFrom } from "@/lib/organization/wording";
@@ -48,6 +49,7 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
   const externalAi = useOrganizationStore(
     (state) => state.config?.processing_location === "external_ai_provider",
   );
+  const connected = useOrganizationStore((state) => state.session !== null);
   const [fileModalOpen, setFileModalOpen] = useState(false);
 
   const compact = !home.isNewUser;
@@ -183,6 +185,8 @@ export const HomeSettings: React.FC<HomeSettingsProps> = ({ onNavigate }) => {
           />
         </button>
       </section>
+
+      {connected && !home.isNewUser && <PilotSurvey />}
 
       <OrganizationFileTranscribeModal
         isOpen={fileModalOpen}
