@@ -273,7 +273,9 @@ describe("le message d'une commande qui échoue côté serveur", () => {
   test("enveloppe d'IA épuisée : une pause jusqu'au mois suivant", () => {
     expect(
       serverFailure(
-        new Error('HTTP 403 : {"detail":{"code":"AI_ENVELOPE_EMPTY","feature":"voice_commands"}}'),
+        new Error(
+          'HTTP 403 : {"detail":{"code":"AI_ENVELOPE_EMPTY","feature":"voice_commands"}}',
+        ),
       ),
     ).toBe("budgetPaused");
     expectTranslated("novaCommands.error.budgetPaused");
