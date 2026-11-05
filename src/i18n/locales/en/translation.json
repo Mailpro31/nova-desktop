@@ -1307,7 +1307,10 @@
       "refusedTitle": "Result set aside",
       "refused": "The result changed your text (a number, a date, the language or the meaning), so Nova does not offer it.",
       "refusedFormulaTitle": "Check the formula in your course",
-      "refusedFormula": "This text contains a formula that Nova could not reuse without distorting it. Read it as it appears in your course."
+      "refusedFormula": "This text contains a formula that Nova could not reuse without distorting it. Read it as it appears in your course.",
+      "pausedTitle": "Paused by your school",
+      "paused": "Your school's Nova licence has ended, so this feature is paused. Dictation keeps working. Your school can renew the licence.",
+      "budgetPaused": "Your school's AI budget for this month is used up: this feature is paused until next month. Dictation keeps working."
     },
     "original": "Original",
     "generatedNote": "Produced by AI: read it over before you use it."

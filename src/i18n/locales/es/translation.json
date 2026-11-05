@@ -1307,7 +1307,10 @@
       "refusedTitle": "Resultado descartado",
       "refused": "El resultado cambiaba tu texto (un número, una fecha, el idioma o el sentido), así que Nova no lo propone.",
       "refusedFormulaTitle": "Revisa la fórmula en el curso",
-      "refusedFormula": "Este texto contiene una fórmula que Nova no ha podido retomar sin deformarla. Léela tal como aparece en tu curso."
+      "refusedFormula": "Este texto contiene una fórmula que Nova no ha podido retomar sin deformarla. Léela tal como aparece en tu curso.",
+      "pausedTitle": "En pausa en su centro",
+      "paused": "La licencia de Nova de su centro ha terminado, por lo que esta función está en pausa. El dictado sigue funcionando. Su centro puede renovar la licencia.",
+      "budgetPaused": "El presupuesto de IA de tu centro se ha agotado este mes: esta función está en pausa hasta el mes que viene. El dictado sigue funcionando."
     },
     "original": "Original",
     "generatedNote": "Generado por IA: revísalo antes de usarlo."
