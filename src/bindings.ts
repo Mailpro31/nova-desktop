@@ -543,6 +543,13 @@ async cancelOperation() : Promise<void> {
     await TAURI_INVOKE("cancel_operation");
 },
 /**
+ * Une erreur de l'interface (exception non rattrapée, rendu cassé), rapportée
+ * comme un plantage Rust : même nettoyage, même interrupteur de l'école.
+ */
+async reportUiError(name: string, message: string) : Promise<void> {
+    await TAURI_INVOKE("report_ui_error", { name, message });
+},
+/**
  * Déclenche une dictée comme si le raccourci correspondant avait été pressé
  * (par exemple depuis un bouton de l'écran d'accueil d'organisation).
  */
@@ -2098,7 +2105,12 @@ closed_capabilities?: string[] | null;
  * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
  * aucun Style n'est alors désactivé.
  */
-style_policy?: OrganizationStylePolicy | null }
+style_policy?: OrganizationStylePolicy | null; 
+/**
+ * Rapports de plantage (5.2). Absent d'un serveur plus ancien : ouverts.
+ */
+crash_reports?: OrganizationCrashReports | null }
+export type OrganizationCrashReports = { enabled: boolean }
 export type OrganizationLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.

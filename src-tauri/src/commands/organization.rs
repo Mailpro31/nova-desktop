@@ -930,6 +930,14 @@ pub struct OrganizationMeResponse {
     /// aucun Style n'est alors désactivé.
     #[serde(default)]
     pub style_policy: Option<OrganizationStylePolicy>,
+    /// Rapports de plantage (5.2). Absent d'un serveur plus ancien : ouverts.
+    #[serde(default)]
+    pub crash_reports: Option<OrganizationCrashReports>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct OrganizationCrashReports {
+    pub enabled: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -1526,6 +1534,7 @@ pub async fn logout_organization_session(app: AppHandle) -> Result<(), String> {
     }
     crate::dictation_limit::set_limit(None);
     crate::style_policy::set_disabled(None);
+    crate::telemetry::set_allowed(true);
     clear_organization_session(app)
 }
 
@@ -1557,6 +1566,7 @@ pub async fn get_organization_me(app: AppHandle) -> Result<OrganizationMeRespons
             .as_ref()
             .map(|policy| policy.disabled_style_ids.clone()),
     );
+    crate::telemetry::set_allowed(me.crash_reports.as_ref().is_none_or(|c| c.enabled));
     Ok(me)
 }
 
