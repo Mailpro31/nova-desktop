@@ -2098,12 +2098,22 @@ closed_capabilities?: string[] | null;
  * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
  * aucun Style n'est alors désactivé.
  */
-style_policy?: OrganizationStylePolicy | null }
+style_policy?: OrganizationStylePolicy | null; 
+/**
+ * Durée de conservation des dictées sur le poste, fixée par l'école.
+ * Absente d'un serveur plus ancien : chacun choisit.
+ */
+past_dictations?: OrganizationPastDictations | null }
 export type OrganizationLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.
  */
 max_dictation_seconds?: number | null }
+export type OrganizationPastDictations = { 
+/**
+ * Jours de conservation, dictées gardées comprises ; 0 : chacun choisit.
+ */
+days?: number | null }
 export type OrganizationStylePolicy = { 
 /**
  * Identifiants des Styles désactivés — intégrés ou d'organisation.
