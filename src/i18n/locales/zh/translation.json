@@ -1381,6 +1381,13 @@
       "done": "已完成",
       "todo": "待完成",
       "organization": "已关联组织账户"
+    },
+    "survey": {
+      "question": "Nova 对你做笔记有多大帮助？",
+      "score": "{{score}} 分（满分 5 分）",
+      "later": "稍后",
+      "scale": "1 = 完全没有，5 = 很大。匿名：你的机构只能看到平均分。",
+      "thanks": "谢谢。"
     }
   },
   "styles": {

@@ -1853,6 +1853,22 @@ pub async fn add_organization_snippet(
         .map_err(|e| format!("invalid response: {}", e))
 }
 
+/// Le mini-sondage du bilan de pilote : une note de 1 à 5, sans nom côté serveur.
+#[tauri::command]
+#[specta::specta]
+pub async fn answer_organization_survey(app: AppHandle, score: u8) -> Result<(), String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .post(format!("{}/api/survey", base_url))
+        .json(&serde_json::json!({ "score": score }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    handle_authed_response(&app, response).await?;
+
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub async fn delete_organization_snippet(app: AppHandle, snippet_id: i64) -> Result<(), String> {

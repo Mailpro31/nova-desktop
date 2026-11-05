@@ -918,6 +918,17 @@ async addOrganizationSnippet(trigger: string, content: string) : Promise<Result<
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Le mini-sondage du bilan de pilote : une note de 1 à 5, sans nom côté serveur.
+ */
+async answerOrganizationSurvey(score: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("answer_organization_survey", { score }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async deleteOrganizationSnippet(snippetId: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("delete_organization_snippet", { snippetId }) };

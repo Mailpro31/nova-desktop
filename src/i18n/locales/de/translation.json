@@ -1381,6 +1381,13 @@
       "done": "Erledigt",
       "todo": "Offen",
       "organization": "Organisationskonto verknüpft"
+    },
+    "survey": {
+      "question": "Wie sehr hilft Ihnen Nova beim Mitschreiben?",
+      "score": "Bewertung {{score}} von 5",
+      "later": "Später",
+      "scale": "1 = gar nicht, 5 = sehr. Anonym: Ihre Einrichtung sieht nur den Durchschnitt.",
+      "thanks": "Danke."
     }
   },
   "styles": {

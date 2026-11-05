@@ -1381,6 +1381,13 @@
       "done": "Zrobione",
       "todo": "Do zrobienia",
       "organization": "Konto organizacji połączone"
+    },
+    "survey": {
+      "question": "Na ile Nova pomaga Ci robić notatki?",
+      "score": "Ocena {{score}} na 5",
+      "later": "Później",
+      "scale": "1 = wcale, 5 = bardzo. Anonimowo: placówka widzi tylko średnią.",
+      "thanks": "Dziękujemy."
     }
   },
   "styles": {

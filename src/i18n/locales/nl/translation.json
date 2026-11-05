@@ -1381,6 +1381,13 @@
       "done": "Klaar",
       "todo": "Te doen",
       "organization": "Organisatieaccount gekoppeld"
+    },
+    "survey": {
+      "question": "Hoeveel helpt Nova je bij het maken van aantekeningen?",
+      "score": "Score {{score}} van 5",
+      "later": "Later",
+      "scale": "1 = helemaal niet, 5 = veel. Anoniem: je instelling ziet alleen het gemiddelde.",
+      "thanks": "Bedankt."
     }
   },
   "styles": {
