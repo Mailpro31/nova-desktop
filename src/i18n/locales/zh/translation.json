@@ -1309,7 +1309,8 @@
       "refusedFormulaTitle": "请在课程中查看公式",
       "refusedFormula": "这段文本包含一个 Nova 无法不失真地复述的公式。请按课程中的原样阅读它。",
       "pausedTitle": "已被学校暂停",
-      "paused": "你所在学校的 Nova 许可已到期，因此此功能已暂停。听写仍可正常使用。学校可以续订许可。"
+      "paused": "你所在学校的 Nova 许可已到期，因此此功能已暂停。听写仍可正常使用。学校可以续订许可。",
+      "budgetPaused": "你所在机构本月的 AI 预算已用完：此功能暂停至下个月。听写仍可正常使用。"
     },
     "original": "原文",
     "generatedNote": "由 AI 生成：使用前请再读一遍。"

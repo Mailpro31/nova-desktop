@@ -1309,7 +1309,8 @@
       "refusedFormulaTitle": "Formule à relire dans le cours",
       "refusedFormula": "Ce texte contient une formule que Nova n’a pas su reprendre sans la déformer. Relisez-la telle qu’elle est dans votre cours.",
       "pausedTitle": "En pause dans votre établissement",
-      "paused": "La licence Nova de votre établissement est terminée : cette fonction est en pause. La dictée fonctionne toujours. Votre établissement peut renouveler la licence."
+      "paused": "La licence Nova de votre établissement est terminée : cette fonction est en pause. La dictée fonctionne toujours. Votre établissement peut renouveler la licence.",
+      "budgetPaused": "L'enveloppe d'IA de votre établissement est épuisée pour ce mois : cette fonction est en pause jusqu'au mois prochain. La dictée fonctionne toujours."
     },
     "original": "Original",
     "generatedNote": "Produit par l’IA : relisez-le avant de vous en servir."

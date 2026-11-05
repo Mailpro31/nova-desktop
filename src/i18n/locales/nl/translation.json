@@ -1309,7 +1309,8 @@
       "refusedFormulaTitle": "Lees de formule na in de cursus",
       "refusedFormula": "Deze tekst bevat een formule die Nova niet kon overnemen zonder haar te vervormen. Lees haar na zoals ze in je cursus staat.",
       "pausedTitle": "Gepauzeerd door je school",
-      "paused": "De Nova-licentie van je school is verlopen, dus deze functie is gepauzeerd. Dicteren blijft werken. Je school kan de licentie verlengen."
+      "paused": "De Nova-licentie van je school is verlopen, dus deze functie is gepauzeerd. Dicteren blijft werken. Je school kan de licentie verlengen.",
+      "budgetPaused": "Het AI-budget van je instelling is deze maand op: deze functie is gepauzeerd tot volgende maand. Dicteren blijft werken."
     },
     "original": "Origineel",
     "generatedNote": "Gemaakt door AI: lees het na voordat je het gebruikt."

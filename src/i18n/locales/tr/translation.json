@@ -1309,7 +1309,8 @@
       "refusedFormulaTitle": "Formülü derste kontrol edin",
       "refusedFormula": "Bu metin, Nova'nın bozmadan aktaramadığı bir formül içeriyor. Formülü dersinizde yazıldığı gibi okuyun.",
       "pausedTitle": "Okulunuz tarafından duraklatıldı",
-      "paused": "Okulunuzun Nova lisansı sona erdi, bu yüzden bu özellik duraklatıldı. Dikte çalışmaya devam ediyor. Okulunuz lisansı yenileyebilir."
+      "paused": "Okulunuzun Nova lisansı sona erdi, bu yüzden bu özellik duraklatıldı. Dikte çalışmaya devam ediyor. Okulunuz lisansı yenileyebilir.",
+      "budgetPaused": "Kurumunuzun bu ayki yapay zekâ bütçesi tükendi: bu özellik gelecek aya kadar duraklatıldı. Dikte çalışmaya devam ediyor."
     },
     "original": "Özgün",
     "generatedNote": "Yapay zekâ tarafından üretildi: kullanmadan önce okuyun."

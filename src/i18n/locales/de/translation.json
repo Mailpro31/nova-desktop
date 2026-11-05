@@ -1309,7 +1309,8 @@
       "refusedFormulaTitle": "Formel im Kurs nachlesen",
       "refusedFormula": "Dieser Text enthält eine Formel, die Nova nicht unverfälscht übernehmen konnte. Lesen Sie sie so nach, wie sie in Ihrem Kurs steht.",
       "pausedTitle": "Von Ihrer Schule pausiert",
-      "paused": "Die Nova-Lizenz Ihrer Schule ist abgelaufen, daher ist diese Funktion pausiert. Das Diktieren funktioniert weiterhin. Ihre Schule kann die Lizenz verlängern."
+      "paused": "Die Nova-Lizenz Ihrer Schule ist abgelaufen, daher ist diese Funktion pausiert. Das Diktieren funktioniert weiterhin. Ihre Schule kann die Lizenz verlängern.",
+      "budgetPaused": "Das KI-Budget Ihrer Einrichtung ist für diesen Monat aufgebraucht: Diese Funktion ist bis zum nächsten Monat pausiert. Das Diktieren funktioniert weiterhin."
     },
     "original": "Original",
     "generatedNote": "Von KI erstellt: Lesen Sie es durch, bevor Sie es verwenden."

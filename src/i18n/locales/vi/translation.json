@@ -1309,7 +1309,8 @@
       "refusedFormulaTitle": "Hãy xem lại công thức trong bài học",
       "refusedFormula": "Văn bản này có một công thức mà Nova không thể viết lại mà không làm sai lệch. Hãy đọc công thức đúng như trong bài học của bạn.",
       "pausedTitle": "Trường của bạn đã tạm dừng",
-      "paused": "Giấy phép Nova của trường bạn đã hết hạn nên tính năng này đang tạm dừng. Đọc chính tả vẫn hoạt động. Trường có thể gia hạn giấy phép."
+      "paused": "Giấy phép Nova của trường bạn đã hết hạn nên tính năng này đang tạm dừng. Đọc chính tả vẫn hoạt động. Trường có thể gia hạn giấy phép.",
+      "budgetPaused": "Ngân sách AI của cơ sở bạn trong tháng này đã hết: tính năng này tạm dừng đến tháng sau. Đọc chính tả vẫn hoạt động."
     },
     "original": "Bản gốc",
     "generatedNote": "Do AI tạo ra: hãy đọc lại trước khi sử dụng."
