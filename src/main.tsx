@@ -10,6 +10,7 @@ import {
 } from "./lib/utils/theme";
 import { initOrbTheme } from "./lib/orbTheme";
 import { initReadingComfort } from "./lib/readingComfort";
+import { reportUiError } from "./lib/reportUiError";
 
 // Set platform before render so CSS can scope per-platform (e.g. scrollbar styles)
 document.documentElement.dataset.platform = platform();
@@ -26,6 +27,12 @@ initOrbTheme();
 // Réglages de lecture (taille, espacement, police) avant le premier rendu : un
 // élève qui a choisi un texte espacé ne doit pas voir l'interface sauter.
 initReadingComfort();
+
+// Les exceptions que rien n'a rattrapées partent comme les plantages Rust (5.2).
+window.addEventListener("error", (event) => reportUiError(event.error));
+window.addEventListener("unhandledrejection", (event) =>
+  reportUiError(event.reason),
+);
 
 // Initialize i18n
 import "./i18n";

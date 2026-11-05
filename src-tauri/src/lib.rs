@@ -677,6 +677,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 trigger_update_check,
                 show_main_window_command,
                 commands::cancel_operation,
+                telemetry::report_ui_error,
                 commands::trigger_transcription,
                 commands::finish_recording,
                 commands::copy_transcription,
