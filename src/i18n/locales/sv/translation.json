@@ -1384,6 +1384,13 @@
       "done": "Klart",
       "todo": "Kvar",
       "organization": "Organisationskonto länkat"
+    },
+    "survey": {
+      "question": "Hur mycket hjälper Nova dig att anteckna?",
+      "score": "Betyg {{score}} av 5",
+      "later": "Senare",
+      "scale": "1 = inte alls, 5 = mycket. Anonymt: din skola ser bara medelvärdet.",
+      "thanks": "Tack."
     }
   },
   "styles": {

@@ -1384,6 +1384,13 @@
       "done": "Done",
       "todo": "To do",
       "organization": "Organization account linked"
+    },
+    "survey": {
+      "question": "How much does Nova help you take your notes?",
+      "score": "Rate {{score}} out of 5",
+      "later": "Later",
+      "scale": "1 = not at all, 5 = a lot. Anonymous: your school only sees the average.",
+      "thanks": "Thank you."
     }
   },
   "styles": {

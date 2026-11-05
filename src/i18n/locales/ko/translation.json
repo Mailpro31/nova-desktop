@@ -1384,6 +1384,13 @@
       "done": "완료",
       "todo": "할 일",
       "organization": "조직 계정 연결됨"
+    },
+    "survey": {
+      "question": "Nova가 필기에 얼마나 도움이 되나요?",
+      "score": "5점 중 {{score}}점",
+      "later": "나중에",
+      "scale": "1 = 전혀, 5 = 매우. 익명: 기관에는 평균만 보입니다.",
+      "thanks": "감사합니다."
     }
   },
   "styles": {

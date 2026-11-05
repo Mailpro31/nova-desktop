@@ -1384,6 +1384,13 @@
       "done": "Xong",
       "todo": "Còn lại",
       "organization": "Đã liên kết tài khoản tổ chức"
+    },
+    "survey": {
+      "question": "Nova giúp bạn ghi chép đến mức nào?",
+      "score": "Điểm {{score}} trên 5",
+      "later": "Để sau",
+      "scale": "1 = không chút nào, 5 = rất nhiều. Ẩn danh: cơ sở của bạn chỉ thấy điểm trung bình.",
+      "thanks": "Cảm ơn bạn."
     }
   },
   "styles": {

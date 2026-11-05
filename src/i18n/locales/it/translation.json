@@ -1384,6 +1384,13 @@
       "done": "Fatto",
       "todo": "Da fare",
       "organization": "Account dell'organizzazione collegato"
+    },
+    "survey": {
+      "question": "Quanto ti aiuta Nova a prendere appunti?",
+      "score": "Voto {{score}} su 5",
+      "later": "Più tardi",
+      "scale": "1 = per niente, 5 = molto. Anonimo: il tuo istituto vede solo la media.",
+      "thanks": "Grazie."
     }
   },
   "styles": {

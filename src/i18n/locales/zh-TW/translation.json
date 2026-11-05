@@ -1384,6 +1384,13 @@
       "done": "已完成",
       "todo": "待完成",
       "organization": "已連結組織帳戶"
+    },
+    "survey": {
+      "question": "Nova 對你做筆記有多大幫助？",
+      "score": "{{score}} 分（滿分 5 分）",
+      "later": "稍後",
+      "scale": "1 = 完全沒有，5 = 很大。匿名：你的機構只能看到平均分。",
+      "thanks": "謝謝。"
     }
   },
   "styles": {

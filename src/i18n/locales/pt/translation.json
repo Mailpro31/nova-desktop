@@ -1384,6 +1384,13 @@
       "done": "Feito",
       "todo": "Por fazer",
       "organization": "Conta da organização associada"
+    },
+    "survey": {
+      "question": "Quanto é que o Nova o ajuda a tirar apontamentos?",
+      "score": "Nota {{score}} em 5",
+      "later": "Mais tarde",
+      "scale": "1 = nada, 5 = muito. Anónimo: a sua instituição só vê a média.",
+      "thanks": "Obrigado."
     }
   },
   "styles": {

@@ -1384,6 +1384,13 @@
       "done": "Fait",
       "todo": "À faire",
       "organization": "Compte d’organisation lié"
+    },
+    "survey": {
+      "question": "Nova vous aide-t-il à prendre vos notes ?",
+      "score": "Note {{score}} sur 5",
+      "later": "Plus tard",
+      "scale": "1 = pas du tout, 5 = beaucoup. Anonyme : votre établissement ne voit que la moyenne.",
+      "thanks": "Merci."
     }
   },
   "styles": {

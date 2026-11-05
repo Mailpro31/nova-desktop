@@ -1384,6 +1384,13 @@
       "done": "Hecho",
       "todo": "Pendiente",
       "organization": "Cuenta de la organización vinculada"
+    },
+    "survey": {
+      "question": "¿Cuánto te ayuda Nova a tomar apuntes?",
+      "score": "Nota {{score}} de 5",
+      "later": "Más tarde",
+      "scale": "1 = nada, 5 = mucho. Anónimo: tu centro solo ve la media.",
+      "thanks": "Gracias."
     }
   },
   "styles": {

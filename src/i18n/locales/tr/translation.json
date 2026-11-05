@@ -1384,6 +1384,13 @@
       "done": "Tamam",
       "todo": "Yapılacak",
       "organization": "Kuruluş hesabı bağlandı"
+    },
+    "survey": {
+      "question": "Nova not almanıza ne kadar yardımcı oluyor?",
+      "score": "5 üzerinden {{score}} puan",
+      "later": "Sonra",
+      "scale": "1 = hiç, 5 = çok. Anonim: kurumunuz yalnızca ortalamayı görür.",
+      "thanks": "Teşekkürler."
     }
   },
   "styles": {

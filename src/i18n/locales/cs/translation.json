@@ -1384,6 +1384,13 @@
       "done": "Hotovo",
       "todo": "Zbývá",
       "organization": "Účet organizace propojen"
+    },
+    "survey": {
+      "question": "Jak moc vám Nova pomáhá při psaní poznámek?",
+      "score": "Hodnocení {{score}} z 5",
+      "later": "Později",
+      "scale": "1 = vůbec, 5 = hodně. Anonymně: vaše instituce vidí jen průměr.",
+      "thanks": "Děkujeme."
     }
   },
   "styles": {
