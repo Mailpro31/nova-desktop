@@ -774,6 +774,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::audio::open_microphone_privacy_settings,
                 commands::windows_tools::open_windows_typing_settings,
                 commands::windows_tools::read_in_edge,
+                commands::windows_tools::open_installed_app,
                 commands::audio::get_available_microphones,
                 commands::audio::set_selected_microphone,
                 commands::audio::get_selected_microphone,

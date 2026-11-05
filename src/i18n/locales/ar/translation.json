@@ -1696,6 +1696,13 @@
     "space": "مسافة"
   },
   "connections": {
+    "local": {
+      "title": "Antidote و Lexibar",
+      "description": "إذا ثبّتتهما مدرستك، يفتحهما Nova بنقرة واحدة: التدقيق والقواميس وشريط المساعدة على الكتابة.",
+      "antidote": "فتح Antidote",
+      "lexibar": "فتح Lexibar",
+      "missing": "{{app}} غير مثبّت على هذا الحاسوب."
+    },
     "windows": {
       "title": "اقتراحات الكلمات في Windows",
       "description": "يقترح Windows الكلمة التالية أثناء الكتابة في جميع التطبيقات. شغّل «إظهار اقتراحات النص» في إعدادات الكتابة.",

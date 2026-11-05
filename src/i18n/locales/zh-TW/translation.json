@@ -1696,6 +1696,13 @@
     "space": "空白鍵"
   },
   "connections": {
+    "local": {
+      "title": "Antidote 與 Lexibar",
+      "description": "若學校已安裝，Nova 一鍵開啟它們：校對、字典與寫作輔助列。",
+      "antidote": "開啟 Antidote",
+      "lexibar": "開啟 Lexibar",
+      "missing": "此電腦未安裝 {{app}}。"
+    },
     "windows": {
       "title": "Windows 文字建議",
       "description": "在所有應用程式中輸入時，Windows 會建議下一個字。請在輸入設定中開啟「顯示文字建議」。",

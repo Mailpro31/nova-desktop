@@ -1696,6 +1696,13 @@
     "space": "Leertaste"
   },
   "connections": {
+    "local": {
+      "title": "Antidote und Lexibar",
+      "description": "Wenn Ihre Schule sie installiert hat, öffnet Nova sie mit einem Klick: Korrektur, Wörterbücher und Schreibhilfe-Leiste.",
+      "antidote": "Antidote öffnen",
+      "lexibar": "Lexibar öffnen",
+      "missing": "{{app}} ist auf diesem Computer nicht installiert."
+    },
     "windows": {
       "title": "Wortvorschläge von Windows",
       "description": "Windows schlägt beim Tippen in allen Apps das nächste Wort vor. Aktivieren Sie „Textvorschläge anzeigen“ in den Eingabeeinstellungen.",
