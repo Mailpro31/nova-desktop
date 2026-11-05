@@ -1696,6 +1696,13 @@
     "space": "Phím cách"
   },
   "connections": {
+    "local": {
+      "title": "Antidote và Lexibar",
+      "description": "Nếu trường đã cài đặt, Nova mở chúng chỉ với một cú nhấp: sửa lỗi, từ điển và thanh hỗ trợ viết.",
+      "antidote": "Mở Antidote",
+      "lexibar": "Mở Lexibar",
+      "missing": "{{app}} chưa được cài đặt trên máy tính này."
+    },
     "windows": {
       "title": "Gợi ý từ của Windows",
       "description": "Windows gợi ý từ tiếp theo khi bạn gõ, trong mọi ứng dụng. Bật “Hiển thị gợi ý văn bản” trong cài đặt nhập liệu.",

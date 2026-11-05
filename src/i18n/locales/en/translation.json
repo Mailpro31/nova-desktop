@@ -1696,6 +1696,13 @@
     "space": "Space"
   },
   "connections": {
+    "local": {
+      "title": "Antidote and Lexibar",
+      "description": "If your school installed them, Nova opens them in one click: proofreading, dictionaries and the writing aid bar.",
+      "antidote": "Open Antidote",
+      "lexibar": "Open Lexibar",
+      "missing": "{{app}} is not installed on this computer."
+    },
     "windows": {
       "title": "Windows word suggestions",
       "description": "Windows suggests the next word as you type, in every app. Turn on “Show text suggestions” in the typing settings.",

@@ -1696,6 +1696,13 @@
     "space": "Spatie"
   },
   "connections": {
+    "local": {
+      "title": "Antidote en Lexibar",
+      "description": "Als je school ze heeft geïnstalleerd, opent Nova ze met één klik: correctie, woordenboeken en de schrijfhulpbalk.",
+      "antidote": "Antidote openen",
+      "lexibar": "Lexibar openen",
+      "missing": "{{app}} is niet geïnstalleerd op deze computer."
+    },
     "windows": {
       "title": "Woordsuggesties van Windows",
       "description": "Windows stelt tijdens het typen het volgende woord voor, in alle apps. Schakel ‘Tekstsuggesties weergeven’ in bij de type-instellingen.",

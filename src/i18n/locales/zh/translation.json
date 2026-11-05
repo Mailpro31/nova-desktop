@@ -1696,6 +1696,13 @@
     "space": "空格"
   },
   "connections": {
+    "local": {
+      "title": "Antidote 和 Lexibar",
+      "description": "如果学校已安装，Nova 一键打开它们：校对、词典和写作辅助栏。",
+      "antidote": "打开 Antidote",
+      "lexibar": "打开 Lexibar",
+      "missing": "此电脑未安装 {{app}}。"
+    },
     "windows": {
       "title": "Windows 字词建议",
       "description": "在所有应用中键入时，Windows 会建议下一个字词。请在键入设置中打开“显示文本建议”。",

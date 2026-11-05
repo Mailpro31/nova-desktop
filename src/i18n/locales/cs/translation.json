@@ -1696,6 +1696,13 @@
     "space": "Mezerník"
   },
   "connections": {
+    "local": {
+      "title": "Antidote a Lexibar",
+      "description": "Pokud je škola nainstalovala, Nova je otevře jedním kliknutím: korektura, slovníky a lišta pomoci při psaní.",
+      "antidote": "Otevřít Antidote",
+      "lexibar": "Otevřít Lexibar",
+      "missing": "{{app}} není na tomto počítači nainstalován."
+    },
     "windows": {
       "title": "Návrhy slov ve Windows",
       "description": "Windows při psaní navrhuje další slovo ve všech aplikacích. Zapněte „Zobrazovat návrhy textu“ v nastavení psaní.",

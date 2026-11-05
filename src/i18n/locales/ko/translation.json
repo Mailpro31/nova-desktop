@@ -1696,6 +1696,13 @@
     "space": "스페이스"
   },
   "connections": {
+    "local": {
+      "title": "Antidote 및 Lexibar",
+      "description": "학교에서 설치했다면 Nova가 한 번의 클릭으로 엽니다: 교정, 사전, 글쓰기 도움 막대.",
+      "antidote": "Antidote 열기",
+      "lexibar": "Lexibar 열기",
+      "missing": "{{app}}이(가) 이 컴퓨터에 설치되어 있지 않습니다."
+    },
     "windows": {
       "title": "Windows 단어 제안",
       "description": "Windows가 모든 앱에서 입력하는 동안 다음 단어를 제안합니다. 입력 설정에서 '텍스트 제안 표시'를 켜세요.",

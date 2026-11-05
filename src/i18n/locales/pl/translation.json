@@ -1696,6 +1696,13 @@
     "space": "Spacja"
   },
   "connections": {
+    "local": {
+      "title": "Antidote i Lexibar",
+      "description": "Jeśli szkoła je zainstalowała, Nova otwiera je jednym kliknięciem: korekta, słowniki i pasek pomocy w pisaniu.",
+      "antidote": "Otwórz Antidote",
+      "lexibar": "Otwórz Lexibar",
+      "missing": "{{app}} nie jest zainstalowany na tym komputerze."
+    },
     "windows": {
       "title": "Sugestie słów systemu Windows",
       "description": "Windows podpowiada następne słowo podczas pisania we wszystkich aplikacjach. Włącz „Pokaż sugestie tekstu” w ustawieniach pisania.",

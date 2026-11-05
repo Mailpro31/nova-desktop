@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Blocks, Keyboard, Star, TextSelect } from "lucide-react";
+import { Blocks, Keyboard, SpellCheck, Star, TextSelect } from "lucide-react";
 
 import { commands } from "@/bindings";
 
@@ -18,8 +18,16 @@ import { ConnectedApps } from "./ConnectedApps";
  * la bulle de sélection, les applications choisies pour chaque usage, toutes
  * celles qu'elle atteint, et l'emploi du temps.
  */
+const LOCAL_APPS = ["antidote", "lexibar"] as const;
+type LocalApp = (typeof LOCAL_APPS)[number];
+
 export const ConnectionsSettings: React.FC = () => {
   const { t } = useTranslation();
+  const [missing, setMissing] = React.useState<LocalApp | null>(null);
+  const openLocal = async (app: LocalApp) => {
+    const result = await commands.openInstalledApp(app);
+    setMissing(result.status === "ok" && !result.data ? app : null);
+  };
   return (
     <>
       <PageHeader
@@ -60,6 +68,31 @@ export const ConnectionsSettings: React.FC = () => {
           >
             {t("connections.windows.open")}
           </button>
+        </SectionCard>
+        <SectionCard
+          icon={SpellCheck}
+          title={t("connections.local.title")}
+          description={t("connections.local.description")}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            {LOCAL_APPS.map((app) => (
+              <button
+                key={app}
+                type="button"
+                onClick={() => void openLocal(app)}
+                className="rounded-control border border-hairline px-3 py-1.5 text-sm text-text transition-colors duration-[120ms] hover:bg-mid-gray/10 cursor-pointer"
+              >
+                {t(`connections.local.${app}`)}
+              </button>
+            ))}
+          </div>
+          {missing && (
+            <p role="status" className="mt-2 text-sm text-mid-gray">
+              {t("connections.local.missing", {
+                app: t(`connections.local.${missing}`),
+              })}
+            </p>
+          )}
         </SectionCard>
         <OrganizationPersonalizationSection section="timetable" />
       </div>

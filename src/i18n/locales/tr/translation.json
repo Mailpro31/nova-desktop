@@ -1696,6 +1696,13 @@
     "space": "Boşluk"
   },
   "connections": {
+    "local": {
+      "title": "Antidote ve Lexibar",
+      "description": "Okulunuz yüklediyse Nova bunları tek tıkla açar: düzeltme, sözlükler ve yazma yardım çubuğu.",
+      "antidote": "Antidote'u aç",
+      "lexibar": "Lexibar'ı aç",
+      "missing": "{{app}} bu bilgisayarda yüklü değil."
+    },
     "windows": {
       "title": "Windows kelime önerileri",
       "description": "Windows, tüm uygulamalarda siz yazarken sonraki kelimeyi önerir. Yazma ayarlarında “Metin önerilerini göster”i açın.",

@@ -1696,6 +1696,13 @@
     "space": "Mellanslag"
   },
   "connections": {
+    "local": {
+      "title": "Antidote och Lexibar",
+      "description": "Om skolan har installerat dem öppnar Nova dem med ett klick: korrektur, ordböcker och skrivhjälpsfältet.",
+      "antidote": "Öppna Antidote",
+      "lexibar": "Öppna Lexibar",
+      "missing": "{{app}} är inte installerat på den här datorn."
+    },
     "windows": {
       "title": "Ordförslag i Windows",
       "description": "Windows föreslår nästa ord medan du skriver, i alla appar. Aktivera ”Visa textförslag” i inställningarna för skrivning.",

@@ -1696,6 +1696,13 @@
     "space": "スペース"
   },
   "connections": {
+    "local": {
+      "title": "Antidote と Lexibar",
+      "description": "学校がインストールしていれば、Nova がワンクリックで開きます：校正、辞書、作文支援バー。",
+      "antidote": "Antidote を開く",
+      "lexibar": "Lexibar を開く",
+      "missing": "{{app}} はこのコンピューターにインストールされていません。"
+    },
     "windows": {
       "title": "Windows の単語の候補",
       "description": "すべてのアプリで、入力中に Windows が次の単語を提案します。入力の設定で「テキストの候補を表示する」をオンにしてください。",
