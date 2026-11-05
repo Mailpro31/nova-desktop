@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicU32, Ordering};
 use tauri::AppHandle;
 use tauri_specta::Event;
 
@@ -332,6 +333,19 @@ impl HistoryManager {
         let removed = delete_audio_before(&self.get_connection()?, &self.recordings_dir, cutoff)?;
         if removed > 0 {
             debug!("Deleted {} recordings older than 7 days", removed);
+        }
+
+        let school_days = SCHOOL_KEPT_DAYS.load(Ordering::Relaxed);
+        if school_days > 0 {
+            let cutoff = Utc::now().timestamp() - i64::from(school_days) * 24 * 60 * 60;
+            let removed =
+                delete_entries_before(&self.get_connection()?, &self.recordings_dir, cutoff)?;
+            if removed > 0 {
+                debug!(
+                    "Deleted {} dictations past the school's {} days",
+                    removed, school_days
+                );
+            }
         }
 
         let retention_period = crate::settings::get_recording_retention_period(&self.app_handle);
@@ -694,6 +708,26 @@ fn delete_audio_before(conn: &Connection, recordings_dir: &Path, cutoff: i64) ->
     Ok(removed)
 }
 
+/// Jours de conservation fixés par l'école (`past_dictations.days` de
+/// `/api/me`) ; 0 laisse chacun choisir. Le réglage du membre s'applique en
+/// plus : le plus strict l'emporte.
+static SCHOOL_KEPT_DAYS: AtomicU32 = AtomicU32::new(0);
+
+/// Retient la durée annoncée par l'école ; `None` l'efface.
+pub fn set_school_kept_days(days: Option<u32>) {
+    SCHOOL_KEPT_DAYS.store(days.unwrap_or(0), Ordering::Relaxed);
+}
+
+/// Supprime les dictées antérieures à `cutoff`, gardées comprises, et leur
+/// enregistrement. Rend le nombre de dictées supprimées.
+fn delete_entries_before(conn: &Connection, recordings_dir: &Path, cutoff: i64) -> Result<usize> {
+    delete_audio_before(conn, recordings_dir, cutoff)?;
+    Ok(conn.execute(
+        "DELETE FROM transcription_history WHERE timestamp < ?1",
+        params![cutoff],
+    )?)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -721,6 +755,34 @@ mod tests {
             })
             .expect("count");
         assert_eq!(texts, 2);
+    }
+
+    #[test]
+    fn the_school_duration_deletes_old_dictations_saved_ones_included() {
+        let conn = setup_conn();
+        let dir = tempfile::tempdir().expect("temp dir");
+        insert_entry(&conn, 100, "ancienne dictée", None);
+        insert_entry(&conn, 200, "ancienne gardée", None);
+        insert_entry(&conn, 900, "dictée récente", None);
+        conn.execute(
+            "UPDATE transcription_history SET saved = 1 WHERE timestamp = 200",
+            [],
+        )
+        .expect("save");
+        fs::write(dir.path().join("handy-100.wav"), b"wav").expect("write wav");
+
+        let removed = delete_entries_before(&conn, dir.path(), 500).expect("delete entries");
+
+        assert_eq!(removed, 2);
+        assert!(!dir.path().join("handy-100.wav").exists());
+        let left: Vec<i64> = conn
+            .prepare("SELECT timestamp FROM transcription_history")
+            .expect("prepare")
+            .query_map([], |row| row.get(0))
+            .expect("query")
+            .collect::<rusqlite::Result<_>>()
+            .expect("rows");
+        assert_eq!(left, vec![900]);
     }
 
     fn setup_conn() -> Connection {
