@@ -18,8 +18,7 @@ import {
 import {
   clientCommandMessage,
   commandMessage,
-  isCommandRefusal,
-  refusalMessage,
+  serverFailure,
   type CommandMessage,
 } from "@/lib/commands/errors";
 import { markMilestone } from "@/lib/milestones";
@@ -101,9 +100,7 @@ export const NovaCommandPalette: React.FC<NovaCommandPaletteProps> = ({
         // résultat écarté par le serveur est nommé : ce n'est pas une panne.
         setPhase({
           name: "error",
-          message: clientCommandMessage(
-            isCommandRefusal(error) ? refusalMessage(error) : "failed",
-          ),
+          message: clientCommandMessage(serverFailure(error)),
         });
       }
     },

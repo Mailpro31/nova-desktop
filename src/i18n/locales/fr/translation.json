@@ -1307,7 +1307,9 @@
       "refusedTitle": "Résultat écarté",
       "refused": "Le résultat changeait votre texte (un nombre, une date, la langue ou le sens) : Nova ne le propose pas.",
       "refusedFormulaTitle": "Formule à relire dans le cours",
-      "refusedFormula": "Ce texte contient une formule que Nova n’a pas su reprendre sans la déformer. Relisez-la telle qu’elle est dans votre cours."
+      "refusedFormula": "Ce texte contient une formule que Nova n’a pas su reprendre sans la déformer. Relisez-la telle qu’elle est dans votre cours.",
+      "pausedTitle": "En pause dans votre établissement",
+      "paused": "La licence Nova de votre établissement est terminée : cette fonction est en pause. La dictée fonctionne toujours. Votre établissement peut renouveler la licence."
     },
     "original": "Original",
     "generatedNote": "Produit par l’IA : relisez-le avant de vous en servir."

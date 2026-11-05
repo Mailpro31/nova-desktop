@@ -25,7 +25,8 @@ export type ClientCommandError =
   | "failed"
   | "emptyResult"
   | "refused"
-  | "refusedFormula";
+  | "refusedFormula"
+  | "paused";
 
 const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
   offline: {
@@ -48,7 +49,21 @@ const CLIENT_MESSAGES: Record<ClientCommandError, CommandMessage> = {
     titleKey: "novaCommands.error.refusedFormulaTitle",
     bodyKey: "novaCommands.error.refusedFormula",
   },
+  paused: {
+    titleKey: "novaCommands.error.pausedTitle",
+    bodyKey: "novaCommands.error.paused",
+  },
 };
+
+/**
+ * Le message d'une commande que le serveur n'a pas rendue. La licence de
+ * l'école échue (`LICENCE_EXPIRED`, nova-server#173) met la bulle et les
+ * commandes en pause : ce n'est ni une panne ni un refus.
+ */
+export function serverFailure(error: unknown): ClientCommandError {
+  if (errorText(error).includes("LICENCE_EXPIRED")) return "paused";
+  return isCommandRefusal(error) ? refusalMessage(error) : "failed";
+}
 
 /**
  * Le serveur a écarté le résultat : il changeait un nombre, une date, la

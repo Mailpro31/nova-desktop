@@ -37,8 +37,7 @@ import {
 import {
   clientCommandMessage,
   commandMessage,
-  isCommandRefusal,
-  refusalMessage,
+  serverFailure,
   type CommandMessage,
 } from "@/lib/commands/errors";
 import { OrganizationApi } from "@/lib/organizationApi";
@@ -162,9 +161,7 @@ export const SelectionBubble: React.FC = () => {
       setView({
         name: "error",
         action,
-        message: clientCommandMessage(
-          isCommandRefusal(error) ? refusalMessage(error) : "failed",
-        ),
+        message: clientCommandMessage(serverFailure(error)),
       });
     }
   };
