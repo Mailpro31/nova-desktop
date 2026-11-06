@@ -60,7 +60,13 @@ export function pickVoice(
 /** Lit un texte ; arrête toute lecture en cours d'abord. */
 export function speak(
   text: string,
-  options: { uiLanguage: string; rate: number; onEnd?: () => void },
+  options: {
+    uiLanguage: string;
+    rate: number;
+    onEnd?: () => void;
+    /** Début du mot que la voix prononce, dans `text`. */
+    onWord?: (charIndex: number) => void;
+  },
 ): boolean {
   const synthesis = window.speechSynthesis;
   if (!synthesis || !text.trim()) return false;
@@ -74,6 +80,12 @@ export function speak(
   if (options.onEnd) {
     utterance.onend = options.onEnd;
     utterance.onerror = options.onEnd;
+  }
+  const onWord = options.onWord;
+  if (onWord) {
+    utterance.onboundary = (event) => {
+      if (event.name === "word") onWord(event.charIndex);
+    };
   }
   synthesis.speak(utterance);
   return true;

@@ -26,7 +26,8 @@
     "organization": "Tổ chức",
     "learn": "Học",
     "novaCommands": "Nova Commands",
-    "connections": "Kết nối"
+    "connections": "Kết nối",
+    "reader": "Trình đọc"
   },
   "onboarding": {
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Cần cập nhật thủ công",
     "portableUpdateMessage": "Bản cài đặt di động không thể cập nhật tự động. Để cập nhật: tải trình cài đặt NSIS mới nhất từ GitHub Releases, cài đặt vào cùng thư mục, sau đó sao chép thư mục Data/ (cài đặt, mô hình, bản ghi) từ phiên bản cũ sang phiên bản mới.",
     "portableUpdateButton": "Mở GitHub Releases",
-    "updateFailed": "Cập nhật thất bại — thử lại"
+    "updateFailed": "Cập nhật thất bại — thử lại",
+    "updatesManaged": "Bản cập nhật do trường của bạn quản lý",
+    "updateNotificationTitle": "Đã có bản cập nhật Nova",
+    "updateNotificationBody": "Phiên bản {{version}} đã sẵn sàng. Mở Nova và nhấp vào “Có bản cập nhật”."
   },
   "common": {
     "loading": "Đang tải...",
@@ -1303,7 +1307,10 @@
       "refusedTitle": "Kết quả đã bị gạt bỏ",
       "refused": "Kết quả làm thay đổi văn bản của bạn (một con số, một ngày, ngôn ngữ hoặc ý nghĩa), nên Nova không đề xuất.",
       "refusedFormulaTitle": "Hãy xem lại công thức trong bài học",
-      "refusedFormula": "Văn bản này có một công thức mà Nova không thể viết lại mà không làm sai lệch. Hãy đọc công thức đúng như trong bài học của bạn."
+      "refusedFormula": "Văn bản này có một công thức mà Nova không thể viết lại mà không làm sai lệch. Hãy đọc công thức đúng như trong bài học của bạn.",
+      "pausedTitle": "Trường của bạn đã tạm dừng",
+      "paused": "Giấy phép Nova của trường bạn đã hết hạn nên tính năng này đang tạm dừng. Đọc chính tả vẫn hoạt động. Trường có thể gia hạn giấy phép.",
+      "budgetPaused": "Ngân sách AI của cơ sở bạn trong tháng này đã hết: tính năng này tạm dừng đến tháng sau. Đọc chính tả vẫn hoạt động."
     },
     "original": "Bản gốc",
     "generatedNote": "Do AI tạo ra: hãy đọc lại trước khi sử dụng."
@@ -1377,6 +1384,13 @@
       "done": "Xong",
       "todo": "Còn lại",
       "organization": "Đã liên kết tài khoản tổ chức"
+    },
+    "survey": {
+      "question": "Nova giúp bạn ghi chép đến mức nào?",
+      "score": "Điểm {{score}} trên 5",
+      "later": "Để sau",
+      "scale": "1 = không chút nào, 5 = rất nhiều. Ẩn danh: cơ sở của bạn chỉ thấy điểm trung bình.",
+      "thanks": "Cảm ơn bạn."
     }
   },
   "styles": {
@@ -1682,6 +1696,18 @@
     "space": "Phím cách"
   },
   "connections": {
+    "local": {
+      "title": "Antidote và Lexibar",
+      "description": "Nếu trường đã cài đặt, Nova mở chúng chỉ với một cú nhấp: sửa lỗi, từ điển và thanh hỗ trợ viết.",
+      "antidote": "Mở Antidote",
+      "lexibar": "Mở Lexibar",
+      "missing": "{{app}} chưa được cài đặt trên máy tính này."
+    },
+    "windows": {
+      "title": "Gợi ý từ của Windows",
+      "description": "Windows gợi ý từ tiếp theo khi bạn gõ, trong mọi ứng dụng. Bật “Hiển thị gợi ý văn bản” trong cài đặt nhập liệu.",
+      "open": "Mở cài đặt nhập liệu"
+    },
     "description": "Các ứng dụng liên kết với Nova: bong bóng chọn văn bản gửi văn bản đến chúng, và thời khóa biểu sắp xếp bài đọc chính tả theo môn."
   },
   "bubble": {
@@ -1704,6 +1730,8 @@
       "quiz": "Hãy hỏi tôi 3 câu để kiểm tra xem tôi đã hiểu đoạn văn này chưa:"
     },
     "read": "Đọc to",
+    "readInEdge": "Đọc trong Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: đọc to. F9: Trình đọc chân thực.",
     "stop": "Dừng",
     "more": "Thêm thao tác",
     "back": "Quay lại",
@@ -1749,5 +1777,16 @@
       "demoCaption": "Chọn văn bản ở bất cứ đâu: bong bóng này xuất hiện bên cạnh.",
       "later": "Bạn có thể thay đổi tất cả sau trong Kết nối."
     }
+  },
+  "reader": {
+    "description": "Mở PDF bài học hoặc dán văn bản: Nova đọc bằng giọng Windows và tô sáng từ đang đọc. Không có gì rời khỏi máy tính này.",
+    "open": "Mở PDF",
+    "placeholder": "Dán văn bản vào đây hoặc mở một PDF.",
+    "read": "Đọc",
+    "stop": "Dừng",
+    "clear": "Văn bản mới",
+    "fromHere": "Nhấp vào một đoạn để đọc từ đó.",
+    "noText": "PDF này không có văn bản để đọc (tài liệu được quét?).",
+    "openError": "Không thể mở tài liệu này."
   }
 }

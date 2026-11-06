@@ -26,7 +26,8 @@
     "organization": "組織",
     "learn": "學習",
     "novaCommands": "Nova Commands",
-    "connections": "連結"
+    "connections": "連結",
+    "reader": "閱讀器"
   },
   "onboarding": {
     "subtitle": "首先，請選擇一種模型",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "需要手動更新",
     "portableUpdateMessage": "可攜式安裝無法自動更新。更新方法：從 GitHub Releases 下載最新的 NSIS 安裝程式，安裝到相同資料夾，然後將舊版本的 Data/ 資料夾（設定、模型、錄音）複製到新版本。",
     "portableUpdateButton": "開啟 GitHub Releases",
-    "updateFailed": "更新失敗 — 重試"
+    "updateFailed": "更新失敗 — 重試",
+    "updatesManaged": "更新由你的學校管理",
+    "updateNotificationTitle": "Nova 有可用更新",
+    "updateNotificationBody": "版本 {{version}} 已就緒。開啟 Nova 並點選「有可用更新」。"
   },
   "common": {
     "loading": "載入中...",
@@ -1303,7 +1307,10 @@
       "refusedTitle": "結果已被捨棄",
       "refused": "結果改變了你的文字（數字、日期、語言或含義），因此 Nova 不提供該結果。",
       "refusedFormulaTitle": "請在課程中查看公式",
-      "refusedFormula": "這段文字包含一個 Nova 無法不失真地複述的公式。請依課程中的原樣閱讀它。"
+      "refusedFormula": "這段文字包含一個 Nova 無法不失真地複述的公式。請依課程中的原樣閱讀它。",
+      "pausedTitle": "已被學校暫停",
+      "paused": "你所在學校的 Nova 授權已到期，因此此功能已暫停。聽寫仍可正常使用。學校可以續訂授權。",
+      "budgetPaused": "你所在機構本月的 AI 預算已用完：此功能暫停至下個月。聽寫仍可正常使用。"
     },
     "original": "原文",
     "generatedNote": "由 AI 產生：使用前請再讀一遍。"
@@ -1377,6 +1384,13 @@
       "done": "已完成",
       "todo": "待完成",
       "organization": "已連結組織帳戶"
+    },
+    "survey": {
+      "question": "Nova 對你做筆記有多大幫助？",
+      "score": "{{score}} 分（滿分 5 分）",
+      "later": "稍後",
+      "scale": "1 = 完全沒有，5 = 很大。匿名：你的機構只能看到平均分。",
+      "thanks": "謝謝。"
     }
   },
   "styles": {
@@ -1682,6 +1696,18 @@
     "space": "空白鍵"
   },
   "connections": {
+    "local": {
+      "title": "Antidote 與 Lexibar",
+      "description": "若學校已安裝，Nova 一鍵開啟它們：校對、字典與寫作輔助列。",
+      "antidote": "開啟 Antidote",
+      "lexibar": "開啟 Lexibar",
+      "missing": "此電腦未安裝 {{app}}。"
+    },
+    "windows": {
+      "title": "Windows 文字建議",
+      "description": "在所有應用程式中輸入時，Windows 會建議下一個字。請在輸入設定中開啟「顯示文字建議」。",
+      "open": "開啟輸入設定"
+    },
     "description": "與 Nova 連結的應用程式：選取泡泡把文字傳送給它們，課表依課程整理你的聽寫。"
   },
   "bubble": {
@@ -1704,6 +1730,8 @@
       "quiz": "請問我 3 個問題，確認我是否理解這段文字："
     },
     "read": "朗讀",
+    "readInEdge": "在 Edge 中閱讀",
+    "readInEdgeHint": "Ctrl + Shift + U：大聲朗讀。F9：沉浸式閱讀程式。",
     "stop": "停止",
     "more": "更多動作",
     "back": "返回",
@@ -1749,5 +1777,16 @@
       "demoCaption": "在任何地方選取文字：旁邊會出現這個泡泡。",
       "later": "之後可以在「連結」中變更。"
     }
+  },
+  "reader": {
+    "description": "開啟課程 PDF 或貼上文字：Nova 以 Windows 語音朗讀，並標示正在朗讀的字詞。任何內容都不會離開這台電腦。",
+    "open": "開啟 PDF",
+    "placeholder": "在此貼上文字，或開啟 PDF。",
+    "read": "朗讀",
+    "stop": "停止",
+    "clear": "新文字",
+    "fromHere": "點選段落即可從那裡開始朗讀。",
+    "noText": "此 PDF 沒有可朗讀的文字（是掃描文件嗎？）。",
+    "openError": "無法開啟此文件。"
   }
 }

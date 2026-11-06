@@ -26,7 +26,8 @@
     "organization": "Organisation",
     "learn": "Lernen",
     "novaCommands": "Nova Commands",
-    "connections": "Verbindungen"
+    "connections": "Verbindungen",
+    "reader": "Vorleser"
   },
   "onboarding": {
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Manuelles Update erforderlich",
     "portableUpdateMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Zum Aktualisieren: Lade den neuesten NSIS-Installer von GitHub Releases herunter, installiere ihn im selben Ordner und kopiere dann deinen Data/-Ordner (Einstellungen, Modelle, Aufnahmen) von der alten Version in die neue.",
     "portableUpdateButton": "GitHub Releases öffnen",
-    "updateFailed": "Update fehlgeschlagen — erneut versuchen"
+    "updateFailed": "Update fehlgeschlagen — erneut versuchen",
+    "updatesManaged": "Updates werden von Ihrer Schule verwaltet",
+    "updateNotificationTitle": "Nova-Update verfügbar",
+    "updateNotificationBody": "Version {{version}} ist bereit. Öffnen Sie Nova und klicken Sie auf „Update verfügbar“."
   },
   "common": {
     "loading": "Wird geladen...",
@@ -1303,7 +1307,10 @@
       "refusedTitle": "Ergebnis verworfen",
       "refused": "Das Ergebnis hat Ihren Text verändert (eine Zahl, ein Datum, die Sprache oder den Sinn), daher schlägt Nova es nicht vor.",
       "refusedFormulaTitle": "Formel im Kurs nachlesen",
-      "refusedFormula": "Dieser Text enthält eine Formel, die Nova nicht unverfälscht übernehmen konnte. Lesen Sie sie so nach, wie sie in Ihrem Kurs steht."
+      "refusedFormula": "Dieser Text enthält eine Formel, die Nova nicht unverfälscht übernehmen konnte. Lesen Sie sie so nach, wie sie in Ihrem Kurs steht.",
+      "pausedTitle": "Von Ihrer Schule pausiert",
+      "paused": "Die Nova-Lizenz Ihrer Schule ist abgelaufen, daher ist diese Funktion pausiert. Das Diktieren funktioniert weiterhin. Ihre Schule kann die Lizenz verlängern.",
+      "budgetPaused": "Das KI-Budget Ihrer Einrichtung ist für diesen Monat aufgebraucht: Diese Funktion ist bis zum nächsten Monat pausiert. Das Diktieren funktioniert weiterhin."
     },
     "original": "Original",
     "generatedNote": "Von KI erstellt: Lesen Sie es durch, bevor Sie es verwenden."
@@ -1377,6 +1384,13 @@
       "done": "Erledigt",
       "todo": "Offen",
       "organization": "Organisationskonto verknüpft"
+    },
+    "survey": {
+      "question": "Wie sehr hilft Ihnen Nova beim Mitschreiben?",
+      "score": "Bewertung {{score}} von 5",
+      "later": "Später",
+      "scale": "1 = gar nicht, 5 = sehr. Anonym: Ihre Einrichtung sieht nur den Durchschnitt.",
+      "thanks": "Danke."
     }
   },
   "styles": {
@@ -1682,6 +1696,18 @@
     "space": "Leertaste"
   },
   "connections": {
+    "local": {
+      "title": "Antidote und Lexibar",
+      "description": "Wenn Ihre Schule sie installiert hat, öffnet Nova sie mit einem Klick: Korrektur, Wörterbücher und Schreibhilfe-Leiste.",
+      "antidote": "Antidote öffnen",
+      "lexibar": "Lexibar öffnen",
+      "missing": "{{app}} ist auf diesem Computer nicht installiert."
+    },
+    "windows": {
+      "title": "Wortvorschläge von Windows",
+      "description": "Windows schlägt beim Tippen in allen Apps das nächste Wort vor. Aktivieren Sie „Textvorschläge anzeigen“ in den Eingabeeinstellungen.",
+      "open": "Eingabeeinstellungen öffnen"
+    },
     "description": "Mit Nova verbundene Apps: Die Auswahlblase sendet Text an sie, und der Stundenplan ordnet Ihre Diktate nach Kurs."
   },
   "bubble": {
@@ -1704,6 +1730,8 @@
       "quiz": "Stelle mir 3 Fragen, um zu prüfen, ob ich diesen Text verstanden habe:"
     },
     "read": "Vorlesen",
+    "readInEdge": "In Edge lesen",
+    "readInEdgeHint": "Strg + Umschalt + U: Vorlesen. F9: Plastischer Reader.",
     "stop": "Stopp",
     "more": "Weitere Aktionen",
     "back": "Zurück",
@@ -1749,5 +1777,16 @@
       "demoCaption": "Markieren Sie überall Text: Diese Blase erscheint daneben.",
       "later": "Sie können alles später unter Verbindungen ändern."
     }
+  },
+  "reader": {
+    "description": "Öffnen Sie ein Kurs-PDF oder fügen Sie einen Text ein: Nova liest ihn mit den Windows-Stimmen vor und markiert das gelesene Wort. Nichts verlässt diesen Computer.",
+    "open": "PDF öffnen",
+    "placeholder": "Fügen Sie hier einen Text ein oder öffnen Sie ein PDF.",
+    "read": "Vorlesen",
+    "stop": "Stoppen",
+    "clear": "Neuer Text",
+    "fromHere": "Klicken Sie auf einen Absatz, um ab dort zu lesen.",
+    "noText": "Dieses PDF enthält keinen lesbaren Text (ein gescanntes Dokument?).",
+    "openError": "Dieses Dokument konnte nicht geöffnet werden."
   }
 }

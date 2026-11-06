@@ -13,6 +13,7 @@ import {
   commandMessage,
   isCommandRefusal,
   refusalMessage,
+  serverFailure,
   leavesDocumentUntouched,
   type ClientCommandError,
 } from "./errors";
@@ -253,5 +254,43 @@ describe("une formule déformée a son propre message (RTX, 06/10)", () => {
       ),
     ).toBe("refused");
     expect(refusalMessage(undefined)).toBe("refused");
+  });
+});
+
+describe("le message d'une commande qui échoue côté serveur", () => {
+  test("licence de l'école échue : une pause, pas une panne", () => {
+    expect(
+      serverFailure(
+        new Error(
+          'Compte suspendu : {"detail":{"code":"LICENCE_EXPIRED","feature":"voice_commands"}}',
+        ),
+      ),
+    ).toBe("paused");
+    expectTranslated("novaCommands.error.pausedTitle");
+    expectTranslated("novaCommands.error.paused");
+  });
+
+  test("enveloppe d'IA épuisée : une pause jusqu'au mois suivant", () => {
+    expect(
+      serverFailure(
+        new Error(
+          'HTTP 403 : {"detail":{"code":"AI_ENVELOPE_EMPTY","feature":"voice_commands"}}',
+        ),
+      ),
+    ).toBe("budgetPaused");
+    expectTranslated("novaCommands.error.budgetPaused");
+  });
+
+  test("un refus et une panne gardent leur message", () => {
+    expect(
+      serverFailure(
+        new Error(
+          'HTTP 422: {"detail":{"code":"COMMAND_REFUSED","reason":"formula-changed"}}',
+        ),
+      ),
+    ).toBe("refusedFormula");
+    expect(serverFailure(new Error("HTTP 503: AI_RUNTIME_UNAVAILABLE"))).toBe(
+      "failed",
+    );
   });
 });

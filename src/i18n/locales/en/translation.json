@@ -26,7 +26,8 @@
     "organization": "Organization",
     "learn": "Learn",
     "novaCommands": "Nova Commands",
-    "connections": "Connections"
+    "connections": "Connections",
+    "reader": "Reader"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Manual update required",
     "portableUpdateMessage": "Portable installs cannot be updated automatically. To update: download the latest NSIS installer from GitHub Releases, install it to the same folder, then copy your Data/ folder (settings, models, recordings) from the old version to the new one.",
     "portableUpdateButton": "Open GitHub Releases",
-    "updateFailed": "Update failed — retry"
+    "updateFailed": "Update failed — retry",
+    "updatesManaged": "Updates managed by your school",
+    "updateNotificationTitle": "Nova update available",
+    "updateNotificationBody": "Version {{version}} is ready. Open Nova and click “Update available”."
   },
   "whatsNew": {
     "updatedNotice": "Nova has been updated",
@@ -1303,7 +1307,10 @@
       "refusedTitle": "Result set aside",
       "refused": "The result changed your text (a number, a date, the language or the meaning), so Nova does not offer it.",
       "refusedFormulaTitle": "Check the formula in your course",
-      "refusedFormula": "This text contains a formula that Nova could not reuse without distorting it. Read it as it appears in your course."
+      "refusedFormula": "This text contains a formula that Nova could not reuse without distorting it. Read it as it appears in your course.",
+      "pausedTitle": "Paused by your school",
+      "paused": "Your school's Nova licence has ended, so this feature is paused. Dictation keeps working. Your school can renew the licence.",
+      "budgetPaused": "Your school's AI budget for this month is used up: this feature is paused until next month. Dictation keeps working."
     },
     "original": "Original",
     "generatedNote": "Produced by AI: read it over before you use it."
@@ -1377,6 +1384,13 @@
       "done": "Done",
       "todo": "To do",
       "organization": "Organization account linked"
+    },
+    "survey": {
+      "question": "How much does Nova help you take your notes?",
+      "score": "Rate {{score}} out of 5",
+      "later": "Later",
+      "scale": "1 = not at all, 5 = a lot. Anonymous: your school only sees the average.",
+      "thanks": "Thank you."
     }
   },
   "styles": {
@@ -1682,6 +1696,18 @@
     "space": "Space"
   },
   "connections": {
+    "local": {
+      "title": "Antidote and Lexibar",
+      "description": "If your school installed them, Nova opens them in one click: proofreading, dictionaries and the writing aid bar.",
+      "antidote": "Open Antidote",
+      "lexibar": "Open Lexibar",
+      "missing": "{{app}} is not installed on this computer."
+    },
+    "windows": {
+      "title": "Windows word suggestions",
+      "description": "Windows suggests the next word as you type, in every app. Turn on “Show text suggestions” in the typing settings.",
+      "open": "Open typing settings"
+    },
     "description": "Apps linked to Nova: the selection bubble sends text to them, and your timetable sorts your dictations by class."
   },
   "bubble": {
@@ -1704,6 +1730,8 @@
       "quiz": "Ask me 3 questions to check that I understood this text:"
     },
     "read": "Read aloud",
+    "readInEdge": "Read in Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: read aloud. F9: Immersive Reader.",
     "stop": "Stop",
     "more": "More actions",
     "back": "Back",
@@ -1749,5 +1777,16 @@
       "demoCaption": "Select text anywhere: this bubble appears next to it.",
       "later": "You can change all of this later in Connections."
     }
+  },
+  "reader": {
+    "description": "Open a course PDF or paste a text: Nova reads it with the Windows voices and highlights the word being read. Nothing leaves this computer.",
+    "open": "Open a PDF",
+    "placeholder": "Paste a text here, or open a PDF.",
+    "read": "Read",
+    "stop": "Stop",
+    "clear": "New text",
+    "fromHere": "Click a paragraph to read from there.",
+    "noText": "This PDF has no text to read (a scanned document?).",
+    "openError": "This document could not be opened."
   }
 }

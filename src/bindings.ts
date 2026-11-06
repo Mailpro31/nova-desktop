@@ -543,6 +543,13 @@ async cancelOperation() : Promise<void> {
     await TAURI_INVOKE("cancel_operation");
 },
 /**
+ * Une erreur de l'interface (exception non rattrapée, rendu cassé), rapportée
+ * comme un plantage Rust : même nettoyage, même interrupteur de l'école.
+ */
+async reportUiError(name: string, message: string) : Promise<void> {
+    await TAURI_INVOKE("report_ui_error", { name, message });
+},
+/**
  * Déclenche une dictée comme si le raccourci correspondant avait été pressé
  * (par exemple depuis un bouton de l'écran d'accueil d'organisation).
  */
@@ -913,6 +920,17 @@ async analyzeOrganizationDocument(content: number[], filename: string | null) : 
 async addOrganizationSnippet(trigger: string, content: string) : Promise<Result<OrganizationIdResponse, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("add_organization_snippet", { trigger, content }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Le mini-sondage du bilan de pilote : une note de 1 à 5, sans nom côté serveur.
+ */
+async answerOrganizationSurvey(score: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("answer_organization_survey", { score }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1391,6 +1409,30 @@ async getWindowsMicrophonePermissionStatus() : Promise<WindowsMicrophonePermissi
 async openMicrophonePrivacySettings() : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("open_microphone_privacy_settings") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async openWindowsTypingSettings() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("open_windows_typing_settings") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async readInEdge(text: string, hint: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("read_in_edge", { text, hint }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async openInstalledApp(app: string) : Promise<Result<boolean, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("open_installed_app", { app }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -2082,12 +2124,27 @@ closed_capabilities?: string[] | null;
  * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
  * aucun Style n'est alors désactivé.
  */
-style_policy?: OrganizationStylePolicy | null }
+style_policy?: OrganizationStylePolicy | null; 
+/**
+ * Durée de conservation des dictées sur le poste, fixée par l'école.
+ * Absente d'un serveur plus ancien : chacun choisit.
+ */
+past_dictations?: OrganizationPastDictations | null;
+/**
+ * Rapports de plantage (5.2). Absent d'un serveur plus ancien : ouverts.
+ */
+crash_reports?: OrganizationCrashReports | null }
+export type OrganizationCrashReports = { enabled: boolean }
 export type OrganizationLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.
  */
 max_dictation_seconds?: number | null }
+export type OrganizationPastDictations = { 
+/**
+ * Jours de conservation, dictées gardées comprises ; 0 : chacun choisit.
+ */
+days?: number | null }
 export type OrganizationStylePolicy = { 
 /**
  * Identifiants des Styles désactivés — intégrés ou d'organisation.

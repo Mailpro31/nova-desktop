@@ -1,6 +1,7 @@
 import React from "react";
 import i18next from "i18next";
 import { relaunch } from "@tauri-apps/plugin-process";
+import { reportUiError } from "@/lib/reportUiError";
 
 /**
  * Le dernier filet entre une exception de rendu et une fenêtre blanche.
@@ -43,6 +44,7 @@ export class AppErrorBoundary extends React.Component<Props, State> {
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     // Visible dans nova.log via le pont de logs, et dans la console de dev.
     console.error("Nova a échoué au rendu:", error, info.componentStack);
+    reportUiError(error);
   }
 
   render() {

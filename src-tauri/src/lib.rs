@@ -677,6 +677,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 trigger_update_check,
                 show_main_window_command,
                 commands::cancel_operation,
+                telemetry::report_ui_error,
                 commands::trigger_transcription,
                 commands::finish_recording,
                 commands::copy_transcription,
@@ -721,6 +722,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::organization::analyze_organization_document,
                 commands::organization::add_organization_snippet,
                 commands::organization::delete_organization_snippet,
+                commands::organization::answer_organization_survey,
                 commands::organization::get_organization_formatting_rules,
                 commands::organization::add_organization_formatting_rule,
                 commands::organization::delete_organization_formatting_rule,
@@ -770,6 +772,9 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::audio::get_microphone_mode,
                 commands::audio::get_windows_microphone_permission_status,
                 commands::audio::open_microphone_privacy_settings,
+                commands::windows_tools::open_windows_typing_settings,
+                commands::windows_tools::read_in_edge,
+                commands::windows_tools::open_installed_app,
                 commands::audio::get_available_microphones,
                 commands::audio::set_selected_microphone,
                 commands::audio::get_selected_microphone,
@@ -1126,7 +1131,9 @@ pub fn run(cli_args: CliArgs) {
     // silencieusement en binaire de production sous son identité de test.
     #[cfg(not(feature = "lab"))]
     {
-        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+        builder = builder
+            .plugin(tauri_plugin_updater::Builder::new().build())
+            .plugin(tauri_plugin_notification::init());
     }
 
     builder

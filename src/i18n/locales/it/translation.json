@@ -26,7 +26,8 @@
     "organization": "Organizzazione",
     "learn": "Impara",
     "novaCommands": "Nova Commands",
-    "connections": "Connessioni"
+    "connections": "Connessioni",
+    "reader": "Lettore"
   },
   "onboarding": {
     "subtitle": "Per cominciare, scegli un modello di riconoscimento vocale",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Aggiornamento manuale necessario",
     "portableUpdateMessage": "Le installazioni portatili non possono essere aggiornate automaticamente. Per aggiornare: scarica l'ultima versione del programma di installazione NSIS da GitHub Releases, installala nella stessa cartella, quindi copia la cartella Data/ (impostazioni, modelli, registrazioni) dalla vecchia versione a quella nuova..",
     "portableUpdateButton": "Apri i rilasci su GitHub",
-    "updateFailed": "Aggiornamento non riuscito — riprova"
+    "updateFailed": "Aggiornamento non riuscito — riprova",
+    "updatesManaged": "Aggiornamenti gestiti dalla tua scuola",
+    "updateNotificationTitle": "Aggiornamento di Nova disponibile",
+    "updateNotificationBody": "La versione {{version}} è pronta. Apri Nova e fai clic su «Aggiornamento disponibile»."
   },
   "common": {
     "loading": "Caricamento...",
@@ -1303,7 +1307,10 @@
       "refusedTitle": "Risultato scartato",
       "refused": "Il risultato cambiava il tuo testo (un numero, una data, la lingua o il senso), quindi Nova non lo propone.",
       "refusedFormulaTitle": "Rileggi la formula nel corso",
-      "refusedFormula": "Questo testo contiene una formula che Nova non è riuscito a riprendere senza deformarla. Rileggila così com'è nel tuo corso."
+      "refusedFormula": "Questo testo contiene una formula che Nova non è riuscito a riprendere senza deformarla. Rileggila così com'è nel tuo corso.",
+      "pausedTitle": "In pausa nella tua scuola",
+      "paused": "La licenza Nova della tua scuola è scaduta: questa funzione è in pausa. La dettatura continua a funzionare. La scuola può rinnovare la licenza.",
+      "budgetPaused": "Il budget IA del tuo istituto è esaurito per questo mese: questa funzione è in pausa fino al mese prossimo. La dettatura continua a funzionare."
     },
     "original": "Originale",
     "generatedNote": "Prodotto dall'IA: rileggilo prima di usarlo."
@@ -1377,6 +1384,13 @@
       "done": "Fatto",
       "todo": "Da fare",
       "organization": "Account dell'organizzazione collegato"
+    },
+    "survey": {
+      "question": "Quanto ti aiuta Nova a prendere appunti?",
+      "score": "Voto {{score}} su 5",
+      "later": "Più tardi",
+      "scale": "1 = per niente, 5 = molto. Anonimo: il tuo istituto vede solo la media.",
+      "thanks": "Grazie."
     }
   },
   "styles": {
@@ -1682,6 +1696,18 @@
     "space": "Spazio"
   },
   "connections": {
+    "local": {
+      "title": "Antidote e Lexibar",
+      "description": "Se la scuola li ha installati, Nova li apre con un clic: correzione, dizionari e barra di aiuto alla scrittura.",
+      "antidote": "Apri Antidote",
+      "lexibar": "Apri Lexibar",
+      "missing": "{{app}} non è installato su questo computer."
+    },
+    "windows": {
+      "title": "Suggerimenti di parole di Windows",
+      "description": "Windows suggerisce la parola successiva mentre scrivi, in tutte le app. Attiva «Mostra suggerimenti di testo» nelle impostazioni di digitazione.",
+      "open": "Apri le impostazioni di digitazione"
+    },
     "description": "Le app collegate a Nova: la bolla di selezione invia loro il testo e l'orario ordina le tue dettature per corso."
   },
   "bubble": {
@@ -1704,6 +1730,8 @@
       "quiz": "Fammi 3 domande per verificare che ho capito questo testo:"
     },
     "read": "Leggi",
+    "readInEdge": "Leggi in Edge",
+    "readInEdgeHint": "Ctrl + Maiusc + U: lettura ad alta voce. F9: Strumento di lettura immersiva.",
     "stop": "Ferma",
     "more": "Altre azioni",
     "back": "Indietro",
@@ -1749,5 +1777,16 @@
       "demoCaption": "Seleziona un testo ovunque: questa bolla compare accanto.",
       "later": "Potrai cambiare tutto più tardi in Connessioni."
     }
+  },
+  "reader": {
+    "description": "Apri un PDF del corso o incolla un testo: Nova lo legge con le voci di Windows ed evidenzia la parola letta. Niente lascia questo computer.",
+    "open": "Apri un PDF",
+    "placeholder": "Incolla qui un testo o apri un PDF.",
+    "read": "Leggi",
+    "stop": "Interrompi",
+    "clear": "Nuovo testo",
+    "fromHere": "Fai clic su un paragrafo per leggere da lì.",
+    "noText": "Questo PDF non contiene testo da leggere (un documento scansionato?).",
+    "openError": "Impossibile aprire questo documento."
   }
 }

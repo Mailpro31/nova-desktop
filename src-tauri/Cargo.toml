@@ -1,6 +1,6 @@
 [package]
 name = "handy"
-version = "1.0.70"
+version = "1.0.73"
 description = "Nova"
 authors = ["Nova"]
 edition = "2021"
@@ -160,6 +160,8 @@ tauri-plugin-autostart = "2.5.1"
 tauri-plugin-global-shortcut = "2.3.1"
 tauri-plugin-single-instance = "2.3.2"
 tauri-plugin-updater = "2.10.0"
+# Prévenir l'élève d'une mise à jour : Nova vit dans la zone de notification.
+tauri-plugin-notification = "2.4.0"
 
 [target.'cfg(windows)'.dependencies]
 # ONNX Runtime on Windows is CPU-only (no ort-directml), matching macOS/Linux.

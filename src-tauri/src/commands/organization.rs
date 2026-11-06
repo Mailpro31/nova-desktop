@@ -930,6 +930,25 @@ pub struct OrganizationMeResponse {
     /// aucun Style n'est alors désactivé.
     #[serde(default)]
     pub style_policy: Option<OrganizationStylePolicy>,
+    /// Durée de conservation des dictées sur le poste, fixée par l'école.
+    /// Absente d'un serveur plus ancien : chacun choisit.
+    #[serde(default)]
+    pub past_dictations: Option<OrganizationPastDictations>,
+    /// Rapports de plantage (5.2). Absent d'un serveur plus ancien : ouverts.
+    #[serde(default)]
+    pub crash_reports: Option<OrganizationCrashReports>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct OrganizationPastDictations {
+    /// Jours de conservation, dictées gardées comprises ; 0 : chacun choisit.
+    #[serde(default)]
+    pub days: Option<u32>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct OrganizationCrashReports {
+    pub enabled: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -1526,6 +1545,8 @@ pub async fn logout_organization_session(app: AppHandle) -> Result<(), String> {
     }
     crate::dictation_limit::set_limit(None);
     crate::style_policy::set_disabled(None);
+    crate::managers::history::set_school_kept_days(None);
+    crate::telemetry::set_allowed(true);
     clear_organization_session(app)
 }
 
@@ -1557,6 +1578,17 @@ pub async fn get_organization_me(app: AppHandle) -> Result<OrganizationMeRespons
             .as_ref()
             .map(|policy| policy.disabled_style_ids.clone()),
     );
+    crate::managers::history::set_school_kept_days(
+        me.past_dictations.as_ref().and_then(|past| past.days),
+    );
+    if let Some(history) =
+        app.try_state::<std::sync::Arc<crate::managers::history::HistoryManager>>()
+    {
+        if let Err(e) = history.cleanup_old_entries() {
+            log::warn!("history cleanup after the school's duration failed: {}", e);
+        }
+    }
+    crate::telemetry::set_allowed(me.crash_reports.as_ref().is_none_or(|c| c.enabled));
     Ok(me)
 }
 
@@ -1851,6 +1883,22 @@ pub async fn add_organization_snippet(
         .json::<OrganizationIdResponse>()
         .await
         .map_err(|e| format!("invalid response: {}", e))
+}
+
+/// Le mini-sondage du bilan de pilote : une note de 1 à 5, sans nom côté serveur.
+#[tauri::command]
+#[specta::specta]
+pub async fn answer_organization_survey(app: AppHandle, score: u8) -> Result<(), String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .post(format!("{}/api/survey", base_url))
+        .json(&serde_json::json!({ "score": score }))
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    handle_authed_response(&app, response).await?;
+
+    Ok(())
 }
 
 #[tauri::command]

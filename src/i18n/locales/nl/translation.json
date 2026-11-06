@@ -26,7 +26,8 @@
     "organization": "Organisatie",
     "learn": "Leren",
     "novaCommands": "Nova Commands",
-    "connections": "Koppelingen"
+    "connections": "Koppelingen",
+    "reader": "Voorlezer"
   },
   "onboarding": {
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
@@ -767,7 +768,10 @@
     "portableUpdateTitle": "Handmatige update vereist",
     "portableUpdateMessage": "Draagbare (portable) installaties kunnen niet automatisch worden bijgewerkt. Om bij te werken: download het nieuwste NSIS-installatiebestand van GitHub Releases, installeer het in dezelfde map en kopieer vervolgens je Data/-map (instellingen, modellen, opnames) van de oude versie naar de nieuwe.",
     "portableUpdateButton": "GitHub Releases openen",
-    "updateFailed": "Update mislukt — opnieuw"
+    "updateFailed": "Update mislukt — opnieuw",
+    "updatesManaged": "Updates worden beheerd door je school",
+    "updateNotificationTitle": "Nova-update beschikbaar",
+    "updateNotificationBody": "Versie {{version}} is klaar. Open Nova en klik op ‘Update beschikbaar’."
   },
   "whatsNew": {
     "updatedNotice": "Nova is bijgewerkt",
@@ -1303,7 +1307,10 @@
       "refusedTitle": "Resultaat terzijde gelegd",
       "refused": "Het resultaat veranderde je tekst (een getal, een datum, de taal of de betekenis), dus Nova stelt het niet voor.",
       "refusedFormulaTitle": "Lees de formule na in de cursus",
-      "refusedFormula": "Deze tekst bevat een formule die Nova niet kon overnemen zonder haar te vervormen. Lees haar na zoals ze in je cursus staat."
+      "refusedFormula": "Deze tekst bevat een formule die Nova niet kon overnemen zonder haar te vervormen. Lees haar na zoals ze in je cursus staat.",
+      "pausedTitle": "Gepauzeerd door je school",
+      "paused": "De Nova-licentie van je school is verlopen, dus deze functie is gepauzeerd. Dicteren blijft werken. Je school kan de licentie verlengen.",
+      "budgetPaused": "Het AI-budget van je instelling is deze maand op: deze functie is gepauzeerd tot volgende maand. Dicteren blijft werken."
     },
     "original": "Origineel",
     "generatedNote": "Gemaakt door AI: lees het na voordat je het gebruikt."
@@ -1377,6 +1384,13 @@
       "done": "Klaar",
       "todo": "Te doen",
       "organization": "Organisatieaccount gekoppeld"
+    },
+    "survey": {
+      "question": "Hoeveel helpt Nova je bij het maken van aantekeningen?",
+      "score": "Score {{score}} van 5",
+      "later": "Straks",
+      "scale": "1 = helemaal niet, 5 = veel. Anoniem: je instelling ziet alleen het gemiddelde.",
+      "thanks": "Bedankt."
     }
   },
   "styles": {
@@ -1682,6 +1696,18 @@
     "space": "Spatie"
   },
   "connections": {
+    "local": {
+      "title": "Antidote en Lexibar",
+      "description": "Als je school ze heeft geïnstalleerd, opent Nova ze met één klik: correctie, woordenboeken en de schrijfhulpbalk.",
+      "antidote": "Antidote openen",
+      "lexibar": "Lexibar openen",
+      "missing": "{{app}} is niet geïnstalleerd op deze computer."
+    },
+    "windows": {
+      "title": "Woordsuggesties van Windows",
+      "description": "Windows stelt tijdens het typen het volgende woord voor, in alle apps. Schakel ‘Tekstsuggesties weergeven’ in bij de type-instellingen.",
+      "open": "Type-instellingen openen"
+    },
     "description": "Apps gekoppeld aan Nova: de selectiebel stuurt er tekst naartoe, en het rooster ordent je dictaten per les."
   },
   "bubble": {
@@ -1704,6 +1730,8 @@
       "quiz": "Stel me 3 vragen om te controleren of ik deze tekst begrepen heb:"
     },
     "read": "Voorlezen",
+    "readInEdge": "Lezen in Edge",
+    "readInEdgeHint": "Ctrl + Shift + U: voorlezen. F9: Insluitende lezer.",
     "stop": "Stoppen",
     "more": "Meer acties",
     "back": "Terug",
@@ -1749,5 +1777,16 @@
       "demoCaption": "Selecteer overal tekst: deze bel verschijnt ernaast.",
       "later": "Je kunt dit later allemaal wijzigen bij Verbindingen."
     }
+  },
+  "reader": {
+    "description": "Open een cursus-pdf of plak een tekst: Nova leest hem voor met de Windows-stemmen en markeert het gelezen woord. Niets verlaat deze computer.",
+    "open": "Een pdf openen",
+    "placeholder": "Plak hier een tekst of open een pdf.",
+    "read": "Voorlezen",
+    "stop": "Stoppen",
+    "clear": "Nieuwe tekst",
+    "fromHere": "Klik op een alinea om vanaf daar te lezen.",
+    "noText": "Deze pdf bevat geen leesbare tekst (een gescand document?).",
+    "openError": "Dit document kon niet worden geopend."
   }
 }
