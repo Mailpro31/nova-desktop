@@ -365,6 +365,8 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
   const text = entry.transcription_text.trim();
   const hasText = text.length > 0;
+  // Absent d'une entrée venue d'une version plus ancienne du poste.
+  const doubtful = entry.doubtful_words ?? [];
   // L'audio est supprimé après 7 jours (`AUDIO_KEPT_SECONDS`, history.rs).
   const hasRecording = Date.now() / 1000 - entry.timestamp < AUDIO_KEPT_SECONDS;
   // Ce que Nova a collé, quand ce n'est pas mot pour mot ce que l'élève a
@@ -479,19 +481,18 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
             {retrying
               ? t("settings.history.transcribing")
               : hasText
-                ? splitDoubtful(text, entry.doubtful_words).map(
-                    (part, index) =>
-                      part.doubtful ? (
-                        // Souligné, pas seulement coloré : la liste écrite suit, dépliée.
-                        <mark
-                          key={index}
-                          className="bg-transparent text-text underline decoration-wavy decoration-danger underline-offset-2"
-                        >
-                          {part.text}
-                        </mark>
-                      ) : (
-                        part.text
-                      ),
+                ? splitDoubtful(text, doubtful).map((part, index) =>
+                    part.doubtful ? (
+                      // Souligné, pas seulement coloré : la liste écrite suit, dépliée.
+                      <mark
+                        key={index}
+                        className="bg-transparent text-text underline decoration-wavy decoration-danger underline-offset-2"
+                      >
+                        {part.text}
+                      </mark>
+                    ) : (
+                      part.text
+                    ),
                   )
                 : t("settings.history.transcriptionFailed")}
           </span>
@@ -541,10 +542,10 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
       {expanded && (
         <div className="flex flex-col gap-3 px-2 pb-3">
-          {entry.doubtful_words.length > 0 && (
+          {doubtful.length > 0 && (
             <p className="text-sm text-text">
               {t("settings.history.doubtfulWords", {
-                words: entry.doubtful_words.join(", "),
+                words: doubtful.join(", "),
               })}
             </p>
           )}
