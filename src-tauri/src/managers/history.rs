@@ -258,7 +258,9 @@ impl HistoryManager {
                 &post_processed_text,
                 &post_process_prompt,
                 post_process_requested,
-                (!doubtful_words.is_empty()).then(|| serde_json::to_string(&doubtful_words).ok()).flatten(),
+                (!doubtful_words.is_empty())
+                    .then(|| serde_json::to_string(&doubtful_words).ok())
+                    .flatten(),
             ],
         )?;
 
