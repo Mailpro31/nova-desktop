@@ -2276,7 +2276,7 @@ pub async fn transcribe_organization_audio_file(
 
     // Meme assemblage que la dictee : un seul endroit ou l'enveloppe est ecrite,
     // donc un seul endroit ou elle peut etre mal comptee.
-    let multipart = build_audio_multipart("file", &filename, mime, &file_bytes);
+    let multipart = build_audio_multipart("file", &filename, mime, &file_bytes, &[]);
 
     let response = client
         .post(format!("{}/api/transcribe", base_url))
@@ -2343,11 +2343,30 @@ struct TranscribeResponse {
 }
 
 /// Ce que le serveur a transcrit, et s'il l'a compris.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug)]
 pub struct OrganizationTranscript {
     pub text: String,
     pub unclear: bool,
+    /// Le texte du Style, quand la dictée est partie avec son Style
+    /// (`/api/dictate`, un seul appel) : à vérifier comme une reformulation.
+    pub styled: Option<Result<String, OrganizationError>>,
 }
+
+/// Ce que `/api/dictate` répond : la transcription et le texte du Style.
+#[derive(Deserialize, Debug)]
+struct DictateResponse {
+    relue: String,
+    #[serde(rename = "final")]
+    final_text: String,
+    #[serde(default)]
+    unclear: bool,
+    #[serde(default)]
+    style_error: Option<String>,
+}
+
+/// Le serveur n'a pas `/api/dictate` (version antérieure) : on ne le redemande
+/// plus jusqu'au redémarrage.
+static DICTATE_MISSING: AtomicBool = AtomicBool::new(false);
 
 /// Ce que `/api/reformulate` repond : `{ "text": "..." }`.
 #[derive(Deserialize, Debug)]
@@ -2505,10 +2524,19 @@ pub(crate) fn build_audio_multipart(
     file_name: &str,
     mime: &str,
     audio: &[u8],
+    fields: &[(&str, &str)],
 ) -> AudioMultipart {
     let boundary = multipart_boundary(audio.len());
+    let fields: String = fields
+        .iter()
+        .map(|(name, value)| {
+            format!(
+                "--{boundary}\r\nContent-Disposition: form-data; name=\"{name}\"\r\n\r\n{value}\r\n"
+            )
+        })
+        .collect();
     let header = format!(
-        "--{boundary}\r\n\
+        "{fields}--{boundary}\r\n\
          Content-Disposition: form-data; name=\"{field_name}\"; filename=\"{file_name}\"\r\n\
          Content-Type: {mime}\r\n\
          \r\n"
@@ -2565,7 +2593,7 @@ pub async fn transcribe_organization(
     session: &OrganizationCredentials,
     language: Option<&str>,
 ) -> Result<String, OrganizationError> {
-    transcribe_organization_detailed(wav_path, session, language)
+    transcribe_organization_detailed(wav_path, session, language, None)
         .await
         .map(|transcript| transcript.text)
 }
@@ -2589,6 +2617,7 @@ pub async fn transcribe_organization_detailed(
     wav_path: &Path,
     session: &OrganizationCredentials,
     language: Option<&str>,
+    style: Option<(&str, &str)>,
 ) -> Result<OrganizationTranscript, OrganizationError> {
     let base_url = normalize_base_url(&session.server_url);
     let client = organization_client(&session.token);
@@ -2597,7 +2626,20 @@ pub async fn transcribe_organization_detailed(
         .await
         .map_err(|e| OrganizationError::Other(format!("failed to read wav: {}", e)))?;
 
-    let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes);
+    // Avec un Style, l'audio et le Style partent ensemble (n° 39) : un seul
+    // aller-retour. La consigne est nettoyée comme pour `/api/reformulate`.
+    let instruction =
+        style.map(|(_, prompt)| crate::rewrite::prompt::without_transcript_template(prompt));
+    let fields: Vec<(&str, &str)> = match (style, instruction.as_deref()) {
+        (Some((id, _)), Some(instruction)) if !DICTATE_MISSING.load(Ordering::Relaxed) => {
+            vec![("style_id", id), ("style_prompt", instruction)]
+        }
+        _ => Vec::new(),
+    };
+    let mut dictating = !fields.is_empty();
+    // Un ancien serveur ignore ces champs sur `/api/transcribe`.
+    let multipart =
+        build_audio_multipart("file", "recording.wav", "audio/wav", &file_bytes, &fields);
     let audio_bytes = multipart.audio_bytes as u64;
     let declared = multipart.body.len() as u64;
     #[cfg(not(feature = "lab"))]
@@ -2619,8 +2661,14 @@ pub async fn transcribe_organization_detailed(
         #[cfg(not(feature = "lab"))]
         let body = reqwest::Body::from(multipart.body.clone());
 
+        let url = transcribe_url(&base_url, language);
+        let url = if dictating {
+            url.replace("/api/transcribe", "/api/dictate")
+        } else {
+            url
+        };
         let request = client
-            .post(transcribe_url(&base_url, language))
+            .post(url)
             .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
             .body(body)
             .build()
@@ -2643,6 +2691,16 @@ pub async fn transcribe_organization_detailed(
         }
 
         let response = response?;
+        if dictating && response.status() == reqwest::StatusCode::NOT_FOUND {
+            let text = response.text().await.unwrap_or_default();
+            if parse_error_detail(&text) == "Not Found" {
+                log::info!("Campus server has no /api/dictate, using /api/transcribe");
+                DICTATE_MISSING.store(true, Ordering::Relaxed);
+                dictating = false;
+                continue;
+            }
+            return Err(OrganizationError::Other(format!("HTTP 404: {text}")));
+        }
         if !retried && response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
             let text = response.text().await.unwrap_or_default();
             let delay = busy_retry_delay(&text);
@@ -2654,11 +2712,23 @@ pub async fn transcribe_organization_detailed(
         break response;
     };
 
+    if dictating {
+        let parsed: DictateResponse = handle_organization_response(response).await?;
+        return Ok(OrganizationTranscript {
+            text: parsed.relue,
+            unclear: parsed.unclear,
+            styled: Some(match parsed.style_error {
+                Some(code) => Err(OrganizationError::Other(format!("style: {code}"))),
+                None => Ok(parsed.final_text),
+            }),
+        });
+    }
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
     let parsed: TranscribeResponse = handle_organization_response(response).await?;
     Ok(OrganizationTranscript {
         text: parsed.text,
         unclear: parsed.unclear,
+        styled: None,
     })
 }
 
@@ -3874,7 +3944,7 @@ mod multipart_wire_tests {
     #[test]
     fn le_corps_encadre_exactement_laudio() {
         let audio = b"des octets d'audio".to_vec();
-        let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &audio);
+        let multipart = build_audio_multipart("file", "recording.wav", "audio/wav", &audio, &[]);
 
         let rendered = String::from_utf8_lossy(&multipart.body);
         assert!(rendered
@@ -3894,9 +3964,28 @@ mod multipart_wire_tests {
     #[test]
     fn deux_envois_ne_partagent_pas_leur_frontiere() {
         let audio = vec![0u8; 32];
-        let first = build_audio_multipart("file", "a.wav", "audio/wav", &audio);
-        let second = build_audio_multipart("file", "a.wav", "audio/wav", &audio);
+        let first = build_audio_multipart("file", "a.wav", "audio/wav", &audio, &[]);
+        let second = build_audio_multipart("file", "a.wav", "audio/wav", &audio, &[]);
         assert_ne!(first.content_type, second.content_type);
+    }
+
+    #[test]
+    fn le_style_part_avant_l_audio_et_ne_compte_pas_dans_l_audio() {
+        let audio = vec![7u8; 16];
+        let multipart = build_audio_multipart(
+            "file",
+            "a.wav",
+            "audio/wav",
+            &audio,
+            &[("style_id", "notes"), ("style_prompt", "Écris des notes.")],
+        );
+        let body = String::from_utf8_lossy(&multipart.body);
+        let style = body
+            .find("name=\"style_prompt\"\r\n\r\nÉcris des notes.\r\n")
+            .expect("le Style est envoyé");
+        assert!(style < body.find("name=\"file\"").expect("l'audio est envoyé"));
+        assert!(body.starts_with("--nova") && body.contains("name=\"style_id\"\r\n\r\nnotes\r\n"));
+        assert_eq!(multipart.audio_bytes, audio.len());
     }
 }
 
