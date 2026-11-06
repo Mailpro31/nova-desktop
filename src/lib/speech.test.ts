@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { pickVoice, speechLanguage } from "./speech";
+import { pickVoice, speechChunks, speechLanguage } from "./speech";
 
 /**
  * La lecture à voix haute des notes — l'aide la mieux établie pour un élève
@@ -24,6 +24,29 @@ describe("la langue lue", () => {
   test("sinon, c'est celle de l'interface", () => {
     expect(speechLanguage("Pythagore", "fr")).toBe("fr");
     expect(speechLanguage("OK", "en")).toBe("en");
+  });
+});
+
+describe("les morceaux lus par la voix de l'école", () => {
+  test("coupés après une phrase, sans rien perdre", () => {
+    const text = "Première phrase. Deuxième phrase ! Troisième ?";
+    const chunks = speechChunks(text, 20);
+    expect(chunks).toEqual([
+      "Première phrase.",
+      "Deuxième phrase !",
+      "Troisième ?",
+    ]);
+  });
+
+  test("une phrase trop longue est coupée, jamais au-delà du maximum", () => {
+    const text = "a".repeat(25) + ". Fin.";
+    const chunks = speechChunks(text, 10);
+    expect(chunks.every((chunk) => chunk.length <= 10)).toBe(true);
+    expect(chunks.join("")).toBe(text.replace(/\s+/g, ""));
+  });
+
+  test("un texte court reste en un morceau", () => {
+    expect(speechChunks("Bonjour à tous.")).toEqual(["Bonjour à tous."]);
   });
 });
 

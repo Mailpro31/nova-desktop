@@ -976,6 +976,14 @@ async executeOrganizationCommand(instruction: string, text: string) : Promise<Re
     else return { status: "error", error: e  as any };
 }
 },
+async organizationSpeech(text: string, speed: number) : Promise<Result<string | null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("organization_speech", { text, speed }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async getOrganizationAiSkills() : Promise<Result<OrganizationAiSkillsResponse, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_organization_ai_skills") };
