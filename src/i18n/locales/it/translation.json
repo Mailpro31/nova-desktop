@@ -618,6 +618,7 @@
         "error": "Impossibile salvare lo snippet."
       },
       "pastedVersion": "Versione incollata da Nova",
+      "doubtfulWords": "Parole da verificare (modificate dalla revisione): {{words}}",
       "replayVoice": "Riascolta la mia voce"
     },
     "debug": {

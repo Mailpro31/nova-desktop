@@ -618,6 +618,7 @@
         "error": "No se pudo guardar el snippet."
       },
       "pastedVersion": "Versión pegada por Nova",
+      "doubtfulWords": "Palabras que revisar (cambiadas por la revisión): {{words}}",
       "replayVoice": "Volver a escuchar mi voz"
     },
     "debug": {

@@ -618,6 +618,7 @@
         "error": "スニペットを保存できませんでした。"
       },
       "pastedVersion": "Nova が貼り付けたバージョン",
+      "doubtfulWords": "確認する語（見直しで変更）：{{words}}",
       "replayVoice": "自分の声を聞き直す"
     },
     "debug": {

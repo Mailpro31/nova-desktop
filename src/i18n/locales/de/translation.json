@@ -618,6 +618,7 @@
         "error": "Das Snippet konnte nicht gespeichert werden."
       },
       "pastedVersion": "Von Nova eingefügte Version",
+      "doubtfulWords": "Zu prüfende Wörter (von der Überprüfung geändert): {{words}}",
       "replayVoice": "Meine Stimme anhören"
     },
     "debug": {

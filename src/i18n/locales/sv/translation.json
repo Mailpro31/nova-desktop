@@ -618,6 +618,7 @@
         "error": "Det gick inte att spara snippetet."
       },
       "pastedVersion": "Version inklistrad av Nova",
+      "doubtfulWords": "Ord att kontrollera (ändrade av granskningen): {{words}}",
       "replayVoice": "Lyssna på min röst igen"
     },
     "debug": {

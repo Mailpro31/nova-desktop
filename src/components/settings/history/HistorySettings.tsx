@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { speak, stopSpeaking } from "@/lib/speech";
 import { loadReadingComfort } from "@/lib/readingComfort";
+import { splitDoubtful } from "@/lib/doubtfulWords";
 import { toast } from "sonner";
 
 import { PageHeader } from "../../shell/PageHeader";
@@ -364,6 +365,8 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
   const text = entry.transcription_text.trim();
   const hasText = text.length > 0;
+  // Absent d'une entrée venue d'une version plus ancienne du poste.
+  const doubtful = entry.doubtful_words ?? [];
   // L'audio est supprimé après 7 jours (`AUDIO_KEPT_SECONDS`, history.rs).
   const hasRecording = Date.now() / 1000 - entry.timestamp < AUDIO_KEPT_SECONDS;
   // Ce que Nova a collé, quand ce n'est pas mot pour mot ce que l'élève a
@@ -478,7 +481,19 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
             {retrying
               ? t("settings.history.transcribing")
               : hasText
-                ? text
+                ? splitDoubtful(text, doubtful).map((part, index) =>
+                    part.doubtful ? (
+                      // Souligné, pas seulement coloré : la liste écrite suit, dépliée.
+                      <mark
+                        key={index}
+                        className="bg-transparent text-text underline decoration-wavy decoration-danger underline-offset-2"
+                      >
+                        {part.text}
+                      </mark>
+                    ) : (
+                      part.text
+                    ),
+                  )
                 : t("settings.history.transcriptionFailed")}
           </span>
         </button>
@@ -527,6 +542,13 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
 
       {expanded && (
         <div className="flex flex-col gap-3 px-2 pb-3">
+          {doubtful.length > 0 && (
+            <p className="text-sm text-text">
+              {t("settings.history.doubtfulWords", {
+                words: doubtful.join(", "),
+              })}
+            </p>
+          )}
           {showPasted && (
             <div className="rounded-card border border-hairline px-3 py-2">
               <p className="text-xs font-medium text-text-secondary">

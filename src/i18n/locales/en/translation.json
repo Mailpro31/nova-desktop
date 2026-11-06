@@ -618,6 +618,7 @@
         "error": "The snippet could not be saved."
       },
       "pastedVersion": "Formatted by AI",
+      "doubtfulWords": "Words to check (changed by the review): {{words}}",
       "replayVoice": "Replay my voice"
     },
     "debug": {

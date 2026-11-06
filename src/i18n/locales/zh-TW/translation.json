@@ -618,6 +618,7 @@
         "error": "無法儲存片段。"
       },
       "pastedVersion": "Nova 貼上的版本",
+      "doubtfulWords": "需檢查的詞（複核時更改）：{{words}}",
       "replayVoice": "重聽我的聲音"
     },
     "debug": {

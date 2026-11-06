@@ -618,6 +618,7 @@
         "error": "Le snippet n’a pas pu être enregistré."
       },
       "pastedVersion": "Mise en forme par l’IA",
+      "doubtfulWords": "Mots à vérifier (corrigés par la relecture) : {{words}}",
       "replayVoice": "Réécouter ma voix"
     },
     "debug": {

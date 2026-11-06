@@ -618,6 +618,7 @@
         "error": "无法保存片段。"
       },
       "pastedVersion": "Nova 粘贴的版本",
+      "doubtfulWords": "需检查的词（复核时更改）：{{words}}",
       "replayVoice": "重听我的声音"
     },
     "debug": {
