@@ -2470,6 +2470,8 @@ impl ShortcutAction for TranscribeAction {
                     // Le serveur n'a pas compris la dictée : rien n'est collé,
                     // et la bulle demande de parler plus fort.
                     let mut organization_unclear = false;
+                    // Les mots que la relecture du serveur a changés, gardés dans l'historique (1.2).
+                    let mut organization_doubtful: Vec<String> = Vec::new();
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
                         if let Some(session) = organization::should_use_organization(&ah).await {
@@ -2492,6 +2494,7 @@ impl ShortcutAction for TranscribeAction {
                                 Ok(transcript) => {
                                     let text = transcript.text;
                                     organization_unclear = transcript.unclear;
+                                    organization_doubtful = transcript.doubtful;
                                     organization_used = true;
                                     organization::invalidate_server_reachability_cache(
                                         &session.server_url,
@@ -2725,6 +2728,7 @@ impl ShortcutAction for TranscribeAction {
                                     post_process,
                                     processed.post_processed_text.clone(),
                                     processed.post_process_prompt.clone(),
+                                    organization_doubtful.clone(),
                                 ) {
                                     error!("Failed to save history entry: {}", err);
                                 }
@@ -2823,6 +2827,7 @@ impl ShortcutAction for TranscribeAction {
                                     post_process,
                                     None,
                                     None,
+                                    Vec::new(),
                                 ) {
                                     error!("Failed to save failed history entry: {}", save_err);
                                 }

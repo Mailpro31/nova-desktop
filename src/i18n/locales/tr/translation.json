@@ -618,6 +618,7 @@
         "error": "Snippet kaydedilemedi."
       },
       "pastedVersion": "Nova'nın yapıştırdığı sürüm",
+      "doubtfulWords": "Kontrol edilecek kelimeler (gözden geçirmede değişti): {{words}}",
       "replayVoice": "Sesimi yeniden dinle"
     },
     "debug": {

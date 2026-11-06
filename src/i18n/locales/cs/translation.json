@@ -618,6 +618,7 @@
         "error": "Snippet se nepodařilo uložit."
       },
       "pastedVersion": "Verze vložená Novou",
+      "doubtfulWords": "Slova ke kontrole (změněná korekturou): {{words}}",
       "replayVoice": "Přehrát můj hlas"
     },
     "debug": {

@@ -618,6 +618,7 @@
         "error": "Không thể lưu đoạn mẫu."
       },
       "pastedVersion": "Phiên bản Nova đã dán",
+      "doubtfulWords": "Từ cần kiểm tra (đã được sửa khi rà soát): {{words}}",
       "replayVoice": "Nghe lại giọng của tôi"
     },
     "debug": {

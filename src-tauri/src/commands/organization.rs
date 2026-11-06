@@ -2340,6 +2340,9 @@ struct TranscribeResponse {
     /// boucle) : rien à coller. Absent sur un serveur plus ancien.
     #[serde(default)]
     unclear: bool,
+    /// Les mots que la relecture a changés (1.2). Absent sur un serveur plus ancien.
+    #[serde(default)]
+    doubtful: Vec<String>,
 }
 
 /// Ce que le serveur a transcrit, et s'il l'a compris.
@@ -2350,6 +2353,8 @@ pub struct OrganizationTranscript {
     /// Le texte du Style, quand la dictée est partie avec son Style
     /// (`/api/dictate`, un seul appel) : à vérifier comme une reformulation.
     pub styled: Option<Result<String, OrganizationError>>,
+    /// Les mots que la relecture du serveur a changés : à vérifier (1.2).
+    pub doubtful: Vec<String>,
 }
 
 /// Ce que `/api/dictate` répond : la transcription et le texte du Style.
@@ -2362,6 +2367,8 @@ struct DictateResponse {
     unclear: bool,
     #[serde(default)]
     style_error: Option<String>,
+    #[serde(default)]
+    doubtful: Vec<String>,
 }
 
 /// Le serveur n'a pas `/api/dictate` (version antérieure) : on ne le redemande
@@ -2721,6 +2728,7 @@ pub async fn transcribe_organization_detailed(
                 Some(code) => Err(OrganizationError::Other(format!("style: {code}"))),
                 None => Ok(parsed.final_text),
             }),
+            doubtful: parsed.doubtful,
         });
     }
     // La reponse est un objet `{ "text": ... }`, pas une chaine.
@@ -2729,6 +2737,7 @@ pub async fn transcribe_organization_detailed(
         text: parsed.text,
         unclear: parsed.unclear,
         styled: None,
+        doubtful: parsed.doubtful,
     })
 }
 

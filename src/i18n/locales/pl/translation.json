@@ -618,6 +618,7 @@
         "error": "Nie udało się zapisać snippetu."
       },
       "pastedVersion": "Wersja wklejona przez Nova",
+      "doubtfulWords": "Słowa do sprawdzenia (zmienione przez korektę): {{words}}",
       "replayVoice": "Odsłuchaj mój głos"
     },
     "debug": {

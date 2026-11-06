@@ -618,6 +618,7 @@
         "error": "Het snippet kon niet worden opgeslagen."
       },
       "pastedVersion": "Door Nova geplakte versie",
+      "doubtfulWords": "Te controleren woorden (gewijzigd door de controle): {{words}}",
       "replayVoice": "Mijn stem opnieuw beluisteren"
     },
     "debug": {

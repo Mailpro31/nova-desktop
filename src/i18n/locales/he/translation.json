@@ -618,6 +618,7 @@
         "error": "לא ניתן היה לשמור את הקטע."
       },
       "pastedVersion": "הגרסה ש-Nova הדביק",
+      "doubtfulWords": "מילים לבדיקה (שונו בבדיקה): {{words}}",
       "replayVoice": "להאזין שוב לקול שלי"
     },
     "debug": {

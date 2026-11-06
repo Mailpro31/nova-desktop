@@ -618,6 +618,7 @@
         "error": "스니펫을 저장할 수 없습니다."
       },
       "pastedVersion": "Nova가 붙여 넣은 버전",
+      "doubtfulWords": "확인할 단어(검토에서 변경됨): {{words}}",
       "replayVoice": "내 목소리 다시 듣기"
     },
     "debug": {
