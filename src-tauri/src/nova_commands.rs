@@ -228,6 +228,9 @@ pub fn capture_selection(app: &AppHandle) -> Result<SelectionCapture, CommandErr
     // La fenêtre est relevée AVANT toute interaction : c'est elle qui détient
     // la sélection, et l'interface Nova prendra le focus juste après.
     let target = current_target_window();
+    // Retenue aussi par son handle, pour pouvoir la remettre devant au moment
+    // de « Remplacer » : cliquer dans la bulle donne le focus à Nova.
+    input::remember_text_target();
 
     let snapshot = snapshot_clipboard(app);
     if !snapshot.is_safe_to_overwrite() {
@@ -294,7 +297,12 @@ pub fn paste_preserving_clipboard(
 ) -> Result<(), CommandError> {
     let _guard = CommandGuard::acquire().ok_or(CommandError::Busy)?;
 
-    let current = current_target_window();
+    // Le clic sur « Remplacer » a mis la bulle de Nova au premier plan : on
+    // ramène la fenêtre de la sélection avant de vérifier que c'est bien elle.
+    let mut current = current_target_window();
+    if !same_target(&current, expected) && input::restore_text_target() {
+        current = current_target_window();
+    }
     if !same_target(&current, expected) {
         return Err(CommandError::TargetChanged);
     }
