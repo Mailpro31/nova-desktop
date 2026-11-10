@@ -968,9 +968,9 @@ async deleteOrganizationFormattingRule(ruleId: number) : Promise<Result<null, st
     else return { status: "error", error: e  as any };
 }
 },
-async executeOrganizationCommand(instruction: string, text: string) : Promise<Result<OrganizationCommandResponse, string>> {
+async executeOrganizationCommand(instruction: string, text: string, language: string | null) : Promise<Result<OrganizationCommandResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("execute_organization_command", { instruction, text }) };
+    return { status: "ok", data: await TAURI_INVOKE("execute_organization_command", { instruction, text, language }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
