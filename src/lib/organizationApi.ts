@@ -216,7 +216,8 @@ export class OrganizationApi {
         "add_organization_dictionary_entry",
         {
           term,
-          replacement,
+          // La correction est facultative : sans elle, le serveur exige quand même un remplacement.
+          replacement: replacement || term,
         },
       );
     } catch (err) {
