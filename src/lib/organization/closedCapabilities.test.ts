@@ -115,3 +115,37 @@ describe("navigation", () => {
     expect(rust).toContain("pub closed_capabilities: Option<Vec<String>>");
   });
 });
+
+describe("hors ligne, les catégories fermées restent fermées", () => {
+  // Tournage du 10/11 : serveur injoignable, Apprendre et Prompts réapparaissaient.
+  const offline = (closedFallback?: readonly string[]) =>
+    resolveOrganizationContext({
+      edition: "organization",
+      organizationType: "education",
+      campus: null,
+      server: null,
+      closedFallback,
+    }).capabilities;
+
+  test("la dernière liste connue s'applique sans identité serveur", () => {
+    const capabilities = offline(["learning", "prompts"]);
+    expect(capabilities.learning).toBe(false);
+    expect(capabilities.prompts).toBe(false);
+    expect(capabilities.dictation).toBe(true);
+  });
+
+  test("sans liste mémorisée, rien ne se ferme", () => {
+    expect(offline().learning).toBe(true);
+  });
+
+  test("le serveur joignable fait foi, pas la mémoire", () => {
+    const { capabilities } = resolveOrganizationContext({
+      edition: "organization",
+      organizationType: "education",
+      campus: null,
+      server: parseServerIdentity(me()),
+      closedFallback: ["learning"],
+    });
+    expect(capabilities.learning).toBe(true);
+  });
+});
