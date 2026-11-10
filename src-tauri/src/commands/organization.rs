@@ -1978,6 +1978,7 @@ pub async fn execute_organization_command(
     app: AppHandle,
     instruction: String,
     text: String,
+    language: Option<String>,
 ) -> Result<OrganizationCommandResponse, String> {
     let credentials = load_organization_credentials(&app)?
         .ok_or_else(|| "campus session is missing".to_string())?;
@@ -1989,7 +1990,13 @@ pub async fn execute_organization_command(
 
     let response = client
         .post(format!("{}/api/command", base_url))
-        .json(&serde_json::json!({ "instruction": instruction, "text": text }))
+        // La langue de l'application : le serveur y écrit une explication ou un
+        // résumé (capture de Sash, 10/11 : une explication rendue en anglais).
+        .json(&serde_json::json!({
+            "instruction": instruction,
+            "text": text,
+            "language": language,
+        }))
         .send()
         .await
         .map_err(|e| format!("network error: {}", e))?;

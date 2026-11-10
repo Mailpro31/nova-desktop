@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import i18n from "i18next";
 import { z } from "zod";
 
 export const HealthResponseSchema = z.object({
@@ -358,6 +359,8 @@ export class OrganizationApi {
         {
           instruction,
           text,
+          // La langue de l'application, pour une explication ou un résumé.
+          language: i18n.language || null,
         },
       );
     } catch (err) {
