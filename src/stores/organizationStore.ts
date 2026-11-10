@@ -20,8 +20,10 @@ import {
   type ResolvedOrganization,
 } from "@/lib/organizationConfig";
 import {
+  forgetClosedCapabilities,
   forgetOrganizationType,
   parseServerIdentity,
+  rememberClosedCapabilities,
   rememberOrganizationType,
   type ServerIdentitySnapshot,
 } from "@/lib/organization";
@@ -109,6 +111,7 @@ export const useOrganizationStore = create<OrganizationStoreState>(
           // l'organisation qu'il servait pour quelqu'un qui n'y appartient plus.
           void invoke("clear_organization_packages").catch(() => {});
           forgetOrganizationType();
+          forgetClosedCapabilities();
           tellBackendSuspended(false);
           set({
             config,
@@ -161,6 +164,7 @@ export const useOrganizationStore = create<OrganizationStoreState>(
         const identity = profile ? parseServerIdentity(profile) : null;
         rememberOrganizationType(effectiveConfig?.organization_type);
         rememberOrganizationType(identity?.organizationType);
+        if (identity) rememberClosedCapabilities(identity.closedCapabilities);
 
         set({
           config: effectiveConfig,
@@ -186,6 +190,7 @@ export const useOrganizationStore = create<OrganizationStoreState>(
     reset: () => {
       void invoke("clear_organization_packages").catch(() => {});
       forgetOrganizationType();
+      forgetClosedCapabilities();
       tellBackendSuspended(false);
       set({
         config: null,

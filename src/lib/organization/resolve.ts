@@ -281,6 +281,12 @@ export interface ResolveOrganizationContextInput {
    * perdre. Ignorée en édition Personal, qui ne reçoit aucune gouvernance.
    */
   policy?: OrganizationPolicy | null;
+  /**
+   * Catégories fermées lors de la dernière réponse du serveur. Ne sert que
+   * sans identité serveur (hors ligne) : sans elle, Apprendre et Prompts
+   * réapparaissaient dès que le serveur était injoignable.
+   */
+  closedFallback?: readonly string[];
 }
 
 /**
@@ -321,7 +327,7 @@ export function resolveOrganizationContext(
           : capabilities,
         input.policy ?? DEFAULT_ORGANIZATION_POLICY,
       ),
-      server?.closedCapabilities ?? [],
+      server?.closedCapabilities ?? input.closedFallback ?? [],
     ),
   };
 }

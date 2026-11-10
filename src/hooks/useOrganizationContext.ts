@@ -4,6 +4,7 @@ import { useOrganizationStore } from "@/stores/organizationStore";
 import {
   currentEdition,
   currentOrganizationType,
+  rememberedClosedCapabilities,
   resolveOrganizationContext,
   type CapabilityId,
   type OrganizationContext,
@@ -38,6 +39,10 @@ export function useOrganizationContext(): OrganizationContext {
         // Ordre de priorité : identité annoncée par le serveur, puis
         // compatibilité Campus, puis repli d'affichage. Jamais l'inverse.
         server: serverIdentity,
+        // Hors ligne : les catégories que l'école a fermées restent fermées.
+        closedFallback: serverIdentity
+          ? undefined
+          : rememberedClosedCapabilities(),
       }),
     [edition, organizationType, initialized, campus, serverIdentity],
   );
