@@ -84,6 +84,11 @@ export function speechChunks(text: string, max = 300): string[] {
       }
       current += piece;
     }
+    // La première phrase part seule : le son commence sans attendre tout un morceau.
+    if (!chunks.length && current.trim()) {
+      chunks.push(current.trim());
+      current = "";
+    }
   }
   if (current.trim()) chunks.push(current.trim());
   return chunks;
