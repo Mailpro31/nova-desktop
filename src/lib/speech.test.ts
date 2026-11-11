@@ -45,6 +45,11 @@ describe("les morceaux lus par la voix de l'école", () => {
     expect(chunks.join("")).toBe(text.replace(/\s+/g, ""));
   });
 
+  test("la première phrase part seule : la voix de l'école commence plus tôt", () => {
+    // Kokoro sur le RTX (11/11) : 4,3 s pour 132 caractères, rien avant la fin du morceau.
+    expect(speechChunks("Un. Deux. Trois.")).toEqual(["Un.", "Deux. Trois."]);
+  });
+
   test("un texte court reste en un morceau", () => {
     expect(speechChunks("Bonjour à tous.")).toEqual(["Bonjour à tous."]);
   });
