@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { paragraphsFromPdfLines, textParagraphs, wordRange } from "./reader";
+import { paragraphsFromPdfLines, textParagraphs } from "./reader";
 
 describe("paragraphsFromPdfLines", () => {
   test("rejoint les lignes d'une phrase coupée par la mise en page", () => {
@@ -41,10 +41,4 @@ test("textParagraphs : un paragraphe par ligne non vide", () => {
     "Deux.",
     "Trois.",
   ]);
-});
-
-test("wordRange : le mot qui commence à l'indice donné", () => {
-  const text = "La portance augmente.";
-  expect(wordRange(text, 3)).toEqual([3, 11]);
-  expect(wordRange(text, 12)).toEqual([12, 21]);
 });

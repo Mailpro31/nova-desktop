@@ -45,12 +45,6 @@ export function textParagraphs(text: string): string[] {
     .filter(Boolean);
 }
 
-/** Le mot que la voix commence à `index` : jusqu'à l'espace suivante. */
-export function wordRange(text: string, index: number): [number, number] {
-  const length = text.slice(index).search(/\s/);
-  return [index, length < 0 ? text.length : index + length];
-}
-
 /** Les paragraphes d'un PDF ; vide pour un PDF scanné, sans texte. */
 export async function pdfParagraphs(data: ArrayBuffer): Promise<string[]> {
   // Chargé à l'ouverture d'un PDF seulement : pdf.js pèse plus que le reste.

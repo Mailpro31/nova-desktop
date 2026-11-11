@@ -362,6 +362,8 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
   const [copied, setCopied] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [reading, setReading] = useState(false);
+  // Le mot que la voix lit, surligné pour suivre des yeux (1.2).
+  const [spoken, setSpoken] = useState<[number, number] | null>(null);
 
   const text = entry.transcription_text.trim();
   const hasText = text.length > 0;
@@ -394,12 +396,17 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
     if (reading) {
       stopSpeaking();
       setReading(false);
+      setSpoken(null);
       return;
     }
     const started = speak(text, {
       uiLanguage: i18n.language,
       rate: loadReadingComfort().speechRate,
-      onEnd: () => setReading(false),
+      onEnd: () => {
+        setReading(false);
+        setSpoken(null);
+      },
+      onWord: (start, end) => setSpoken([start, end]),
     });
     if (started) setReading(true);
     else toast.error(t("settings.history.readAloudUnavailable"));
@@ -475,25 +482,36 @@ const HistoryRow: React.FC<HistoryRowProps> = ({
             // `line-clamp` impose son propre `display` : lui adjoindre `block`
             // annulerait la troncature, l'ordre des classes n'y changeant rien.
             className={`mt-0.5 whitespace-pre-wrap break-words text-sm ${
-              expanded ? "block" : "line-clamp-3"
+              expanded || spoken ? "block" : "line-clamp-3"
             } ${hasText ? "text-text" : "italic text-text-secondary"}`}
           >
             {retrying
               ? t("settings.history.transcribing")
               : hasText
-                ? splitDoubtful(text, doubtful).map((part, index) =>
-                    part.doubtful ? (
-                      // Souligné, pas seulement coloré : la liste écrite suit, dépliée.
+                ? spoken
+                  ? [
+                      text.slice(0, spoken[0]),
                       <mark
-                        key={index}
-                        className="bg-transparent text-text underline decoration-wavy decoration-danger underline-offset-2"
+                        key="spoken"
+                        className="rounded-sm bg-accent/30 text-text"
                       >
-                        {part.text}
-                      </mark>
-                    ) : (
-                      part.text
-                    ),
-                  )
+                        {text.slice(spoken[0], spoken[1])}
+                      </mark>,
+                      text.slice(spoken[1]),
+                    ]
+                  : splitDoubtful(text, doubtful).map((part, index) =>
+                      part.doubtful ? (
+                        // Souligné, pas seulement coloré : la liste écrite suit, dépliée.
+                        <mark
+                          key={index}
+                          className="bg-transparent text-text underline decoration-wavy decoration-danger underline-offset-2"
+                        >
+                          {part.text}
+                        </mark>
+                      ) : (
+                        part.text
+                      ),
+                    )
                 : t("settings.history.transcriptionFailed")}
           </span>
         </button>

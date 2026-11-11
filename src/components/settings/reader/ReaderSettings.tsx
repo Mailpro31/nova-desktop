@@ -4,7 +4,7 @@ import { FileText, Square, Volume2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { loadReadingComfort } from "@/lib/readingComfort";
-import { pdfParagraphs, textParagraphs, wordRange } from "@/lib/reader";
+import { pdfParagraphs, textParagraphs } from "@/lib/reader";
 import { speak, stopSpeaking } from "@/lib/speech";
 
 import { PageHeader } from "../../shell/PageHeader";
@@ -50,7 +50,7 @@ export const ReaderSettings: React.FC = () => {
     const started = speak(text, {
       uiLanguage: i18n.language,
       rate: loadReadingComfort().speechRate,
-      onWord: (charIndex) => setWord(wordRange(text, charIndex)),
+      onWord: (start, end) => setWord([start, end]),
       onEnd: () => readFrom(list, index + 1, token),
     });
     if (!started) {
