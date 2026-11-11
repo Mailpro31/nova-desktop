@@ -712,6 +712,11 @@
         "title": "Khởi động lại Nova",
         "description": "Đóng và mở lại ứng dụng. Hữu ích sau khi tổ chức của bạn xuất bản nội dung mới.",
         "button": "Khởi động lại"
+      },
+      "credits": {
+        "title": "Ghi công",
+        "description": "Các thành phần mở mà Nova sử dụng",
+        "voice": "Giọng của trường: công cụ Kokoro (Apache 2.0), giọng tiếng Pháp “ff_siwis” từ kho ngữ liệu SIWIS (CC BY 4.0)."
       }
     },
     "home": {

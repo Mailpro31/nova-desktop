@@ -91,6 +91,17 @@ export const OrganizationAboutSettings: React.FC = () => {
       </SectionCard>
 
       <SectionCard
+        icon={Info}
+        title={t("settings.about.credits.title")}
+        description={t("settings.about.credits.description")}
+      >
+        {/* CC BY 4.0 : la voix SIWIS doit être citée (serveur #169). */}
+        <p className="px-4 py-3 text-sm text-text-secondary">
+          {t("settings.about.credits.voice")}
+        </p>
+      </SectionCard>
+
+      <SectionCard
         icon={FolderOpen}
         title={t("settings.about.appDataDirectory.title")}
         description={t("settings.about.appDataDirectory.description")}

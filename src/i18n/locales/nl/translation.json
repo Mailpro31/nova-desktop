@@ -712,6 +712,11 @@
         "title": "Nova opnieuw starten",
         "description": "Sluit de applicatie en opent deze opnieuw. Handig nadat uw organisatie nieuwe inhoud publiceert.",
         "button": "Opnieuw starten"
+      },
+      "credits": {
+        "title": "Vermeldingen",
+        "description": "Open onderdelen die Nova gebruikt",
+        "voice": "Stem van de school: Kokoro-engine (Apache 2.0), Franse stem ‘ff_siwis’ uit het SIWIS-corpus (CC BY 4.0)."
       }
     },
     "home": {

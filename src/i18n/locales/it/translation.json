@@ -712,6 +712,11 @@
         "title": "Riavvia Nova",
         "description": "Chiude e riapre l'applicazione. Utile dopo che la tua organizzazione ha pubblicato nuovi contenuti.",
         "button": "Riavvia"
+      },
+      "credits": {
+        "title": "Riconoscimenti",
+        "description": "Componenti aperti usati da Nova",
+        "voice": "Voce della scuola: motore Kokoro (Apache 2.0), voce francese «ff_siwis» dal corpus SIWIS (CC BY 4.0)."
       }
     },
     "home": {

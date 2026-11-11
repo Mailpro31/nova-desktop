@@ -712,6 +712,11 @@
         "title": "Reiniciar Nova",
         "description": "Cierra y vuelve a abrir la aplicación. Útil después de que tu organización publique contenido nuevo.",
         "button": "Reiniciar"
+      },
+      "credits": {
+        "title": "Créditos",
+        "description": "Componentes abiertos que utiliza Nova",
+        "voice": "Voz del centro: motor Kokoro (Apache 2.0), voz francesa «ff_siwis» del corpus SIWIS (CC BY 4.0)."
       }
     },
     "home": {

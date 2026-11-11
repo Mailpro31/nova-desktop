@@ -712,6 +712,11 @@
         "title": "Nova neu starten",
         "description": "Schließt die Anwendung und öffnet sie erneut. Nützlich, nachdem Ihre Organisation neue Inhalte veröffentlicht hat.",
         "button": "Neu starten"
+      },
+      "credits": {
+        "title": "Danksagungen",
+        "description": "Offene Komponenten, die Nova verwendet",
+        "voice": "Stimme der Schule: Kokoro-Engine (Apache 2.0), französische Stimme „ff_siwis“ aus dem SIWIS-Korpus (CC BY 4.0)."
       }
     },
     "home": {

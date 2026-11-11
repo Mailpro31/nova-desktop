@@ -712,6 +712,11 @@
         "title": "Nova'yı yeniden başlat",
         "description": "Uygulamayı kapatıp yeniden açar. Kurumunuz yeni içerik yayımladıktan sonra kullanışlıdır.",
         "button": "Yeniden başlat"
+      },
+      "credits": {
+        "title": "Katkıda bulunanlar",
+        "description": "Nova'nın kullandığı açık bileşenler",
+        "voice": "Okulun sesi: Kokoro motoru (Apache 2.0), SIWIS derleminden Fransızca “ff_siwis” sesi (CC BY 4.0)."
       }
     },
     "home": {

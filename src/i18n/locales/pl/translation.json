@@ -712,6 +712,11 @@
         "title": "Uruchom ponownie Nova",
         "description": "Zamyka i ponownie otwiera aplikację. Przydatne po opublikowaniu nowych treści przez Twoją organizację.",
         "button": "Uruchom ponownie"
+      },
+      "credits": {
+        "title": "Podziękowania",
+        "description": "Otwarte komponenty używane przez Nova",
+        "voice": "Głos szkoły: silnik Kokoro (Apache 2.0), francuski głos „ff_siwis” z korpusu SIWIS (CC BY 4.0)."
       }
     },
     "home": {

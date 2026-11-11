@@ -712,6 +712,11 @@
         "title": "Nova を再起動",
         "description": "アプリケーションを終了して開き直します。組織が新しいコンテンツを公開したあとに便利です。",
         "button": "再起動"
+      },
+      "credits": {
+        "title": "クレジット",
+        "description": "Nova が使用しているオープンなコンポーネント",
+        "voice": "学校の音声：Kokoro エンジン（Apache 2.0）、SIWIS コーパスのフランス語音声「ff_siwis」（CC BY 4.0）。"
       }
     },
     "home": {

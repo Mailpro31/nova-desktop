@@ -712,6 +712,11 @@
         "title": "Starta om Nova",
         "description": "Stänger och öppnar programmet igen. Användbart efter att din organisation har publicerat nytt innehåll.",
         "button": "Starta om"
+      },
+      "credits": {
+        "title": "Erkännanden",
+        "description": "Öppna komponenter som Nova använder",
+        "voice": "Skolans röst: Kokoro-motorn (Apache 2.0), fransk röst ”ff_siwis” från SIWIS-korpusen (CC BY 4.0)."
       }
     },
     "home": {

@@ -712,6 +712,11 @@
         "title": "重启 Nova",
         "description": "关闭并重新打开应用。在你的组织发布新内容后很有用。",
         "button": "重启"
+      },
+      "credits": {
+        "title": "致谢",
+        "description": "Nova 使用的开源组件",
+        "voice": "学校语音：Kokoro 引擎（Apache 2.0），来自 SIWIS 语料库的法语语音“ff_siwis”（CC BY 4.0）。"
       }
     },
     "home": {
