@@ -652,6 +652,18 @@ fn without_list_numbering(text: &str) -> String {
 
 /// Les nombres et les dates de la sortie face à ceux de la dictée.
 ///
+/// Des chiffres dits par groupes (« 21 45 87 32 ») : le modèle les écrit souvent
+/// collés (21458732, banc du 11/11). Chaque suite, collée, avec ses nombres.
+fn joined_digit_runs(text: &str) -> Vec<(String, HashSet<String>)> {
+    static RUN: Lazy<Regex> = Lazy::new(|| Regex::new(r"\d+(?:[ \u{00A0}\u{202F}]+\d+)+").unwrap());
+    RUN.find_iter(text)
+        .map(|m| {
+            let joined = m.as_str().chars().filter(char::is_ascii_digit).collect();
+            (joined, numbers_in(m.as_str()))
+        })
+        .collect()
+}
+
 /// Un nombre ou une date que la personne n'a pas dits est refusé partout.
 /// Un nombre ou une date dits et absents de la sortie l'est quand
 /// `lost_matters` — partout sauf dans un compte rendu, qui résume. Ce qu'une
@@ -662,15 +674,23 @@ fn facts_refusal(input: &str, output: &str, lost_matters: bool) -> Option<&'stat
     static MARKER: Lazy<Regex> = Lazy::new(|| Regex::new(r"\{\{[^{}]*\}\}").unwrap());
     let input = &MARKER.replace_all(input, " ").into_owned();
     let output = without_list_numbering(&MARKER.replace_all(output, " "));
-    let written_numbers = numbers_in(&output);
+    let mut written_numbers = numbers_in(&output);
     let written_dates = dates_in(&output);
+    let said = numbers_in(input);
+    let runs = joined_digit_runs(input);
     if written_numbers
-        .difference(&numbers_in(input))
-        .next()
-        .is_some()
+        .iter()
+        .any(|number| !said.contains(number) && !runs.iter().any(|(joined, _)| joined == number))
     {
         return Some("number-changed");
     }
+    // Une suite écrite collée contient les nombres dits.
+    let parts: Vec<String> = runs
+        .iter()
+        .filter(|(joined, _)| written_numbers.contains(joined))
+        .flat_map(|(_, parts)| parts.iter().cloned())
+        .collect();
+    written_numbers.extend(parts);
     if written_dates.difference(&dates_in(input)).next().is_some() {
         return Some("date-changed");
     }
@@ -1839,6 +1859,34 @@ Par exemple, un avion au décollage cabre pour gagner de la portance avant de ri
             ),
             Err("number-changed")
         );
+    }
+
+    #[test]
+    fn digits_said_in_pairs_may_be_written_together() {
+        // Banc du 11/11 (Vertex 3.5 Flash) : « 21 45 87 32 » écrit 21458732.
+        let said = "mon numéro étudiant c'est 21 45 87 32";
+        for style in [
+            "nova_style_everyday",
+            "default_improve_transcriptions",
+            "nova_style_email",
+        ] {
+            assert_eq!(
+                check(said, "Mon numéro étudiant c'est 21458732.", style),
+                Ok(())
+            );
+        }
+        assert!(check(
+            said,
+            "Mon numéro étudiant c'est 21458733.",
+            "nova_style_everyday"
+        )
+        .is_err());
+        assert!(check(
+            said,
+            "Mon numéro étudiant c'est 214587.",
+            "nova_style_everyday"
+        )
+        .is_err());
     }
 
     #[test]
