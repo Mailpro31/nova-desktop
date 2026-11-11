@@ -2470,20 +2470,31 @@ impl ShortcutAction for TranscribeAction {
                     // Le serveur n'a pas compris la dictée : rien n'est collé,
                     // et la bulle demande de parler plus fort.
                     let mut organization_unclear = false;
+                    // Les mots que la relecture du serveur a changés, gardés dans l'historique (1.2).
+                    let mut organization_doubtful: Vec<String> = Vec::new();
 
                     let transcription_result: Result<String, anyhow::Error> = if wav_saved {
                         if let Some(session) = organization::should_use_organization(&ah).await {
                             let dictation_language = get_settings(&ah).selected_language;
+                            let style = if post_process {
+                                resolve_effective_style(&ah, auto_style_override.as_deref())
+                            } else {
+                                None
+                            };
                             match organization::transcribe_organization_detailed(
                                 &wav_path_for_verify,
                                 &session,
                                 Some(&dictation_language),
+                                style
+                                    .as_ref()
+                                    .map(|style| (style.id.as_str(), style.prompt.as_str())),
                             )
                             .await
                             {
                                 Ok(transcript) => {
                                     let text = transcript.text;
                                     organization_unclear = transcript.unclear;
+                                    organization_doubtful = transcript.doubtful;
                                     organization_used = true;
                                     organization::invalidate_server_reachability_cache(
                                         &session.server_url,
@@ -2497,18 +2508,30 @@ impl ShortcutAction for TranscribeAction {
                                         && !prepared.body.trim().is_empty()
                                         && !prepared.is_formula()
                                     {
-                                        if let Some(style) = resolve_effective_style(
-                                            &ah,
-                                            auto_style_override.as_deref(),
-                                        ) {
-                                            match organization::reformulate_organization(
-                                                &prepared.body,
-                                                &style.id,
-                                                &style.prompt,
-                                                &session,
-                                            )
-                                            .await
-                                            {
+                                        if let Some(style) = style.as_ref() {
+                                            // Le serveur a appliqué le Style à la dictée
+                                            // entière : valable seulement si `prepare`
+                                            // n'en a rien mis de côté (repère, mise en page).
+                                            // shortcut: sinon le Style est payé deux fois,
+                                            // à revoir si les repères deviennent fréquents.
+                                            let reformulated = match transcript.styled {
+                                                Some(styled)
+                                                    if !prepared.needs_finish()
+                                                        && prepared.body == text.trim_start() =>
+                                                {
+                                                    styled
+                                                }
+                                                _ => {
+                                                    organization::reformulate_organization(
+                                                        &prepared.body,
+                                                        &style.id,
+                                                        &style.prompt,
+                                                        &session,
+                                                    )
+                                                    .await
+                                                }
+                                            };
+                                            match reformulated {
                                                 Ok(reformulated) => {
                                                     match checked_organization_rewrite(
                                                         &prepared.body,
@@ -2705,6 +2728,7 @@ impl ShortcutAction for TranscribeAction {
                                     post_process,
                                     processed.post_processed_text.clone(),
                                     processed.post_process_prompt.clone(),
+                                    organization_doubtful.clone(),
                                 ) {
                                     error!("Failed to save history entry: {}", err);
                                 }
@@ -2803,6 +2827,7 @@ impl ShortcutAction for TranscribeAction {
                                     post_process,
                                     None,
                                     None,
+                                    Vec::new(),
                                 ) {
                                     error!("Failed to save failed history entry: {}", save_err);
                                 }

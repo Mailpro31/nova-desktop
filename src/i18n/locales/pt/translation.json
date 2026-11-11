@@ -618,6 +618,7 @@
         "error": "Não foi possível guardar o snippet."
       },
       "pastedVersion": "Versão colada pelo Nova",
+      "doubtfulWords": "Palavras a verificar (alteradas pela revisão): {{words}}",
       "replayVoice": "Ouvir novamente a minha voz"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Resultado descartado",
       "refused": "O resultado alterava o seu texto (um número, uma data, a língua ou o sentido), por isso o Nova não o propõe.",
       "refusedFormulaTitle": "Releia a fórmula no curso",
-      "refusedFormula": "Este texto contém uma fórmula que o Nova não conseguiu retomar sem a deformar. Releia-a tal como está no seu curso."
+      "refusedFormula": "Este texto contém uma fórmula que o Nova não conseguiu retomar sem a deformar. Releia-a tal como está no seu curso.",
+      "pausedTitle": "Em pausa na sua escola",
+      "paused": "A licença Nova da sua escola terminou, por isso esta função está em pausa. O ditado continua a funcionar. A escola pode renovar a licença.",
+      "budgetPaused": "O orçamento de IA da sua instituição esgotou-se este mês: esta função está em pausa até ao próximo mês. O ditado continua a funcionar."
     },
     "original": "Original",
     "generatedNote": "Produzido por IA: releia antes de o utilizar."
@@ -1381,6 +1385,13 @@
       "done": "Feito",
       "todo": "Por fazer",
       "organization": "Conta da organização associada"
+    },
+    "survey": {
+      "question": "Quanto é que o Nova o ajuda a tirar apontamentos?",
+      "score": "Nota {{score}} em 5",
+      "later": "Mais tarde",
+      "scale": "1 = nada, 5 = muito. Anónimo: a sua instituição só vê a média.",
+      "thanks": "Obrigado."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Espaço"
   },
   "connections": {
+    "local": {
+      "title": "Antidote e Lexibar",
+      "description": "Se a escola os instalou, o Nova abre-os com um clique: correção, dicionários e barra de ajuda à escrita.",
+      "antidote": "Abrir Antidote",
+      "lexibar": "Abrir Lexibar",
+      "missing": "{{app}} não está instalado neste computador."
+    },
     "windows": {
       "title": "Sugestões de palavras do Windows",
       "description": "O Windows sugere a próxima palavra enquanto você digita, em todos os aplicativos. Ative “Mostrar sugestões de texto” nas configurações de digitação.",

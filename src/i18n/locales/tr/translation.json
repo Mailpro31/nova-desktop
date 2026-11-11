@@ -618,6 +618,7 @@
         "error": "Snippet kaydedilemedi."
       },
       "pastedVersion": "Nova'nın yapıştırdığı sürüm",
+      "doubtfulWords": "Kontrol edilecek kelimeler (gözden geçirmede değişti): {{words}}",
       "replayVoice": "Sesimi yeniden dinle"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Sonuç kenara bırakıldı",
       "refused": "Sonuç metninizi değiştiriyordu (bir sayı, bir tarih, dil ya da anlam), bu yüzden Nova onu önermiyor.",
       "refusedFormulaTitle": "Formülü derste kontrol edin",
-      "refusedFormula": "Bu metin, Nova'nın bozmadan aktaramadığı bir formül içeriyor. Formülü dersinizde yazıldığı gibi okuyun."
+      "refusedFormula": "Bu metin, Nova'nın bozmadan aktaramadığı bir formül içeriyor. Formülü dersinizde yazıldığı gibi okuyun.",
+      "pausedTitle": "Okulunuz tarafından duraklatıldı",
+      "paused": "Okulunuzun Nova lisansı sona erdi, bu yüzden bu özellik duraklatıldı. Dikte çalışmaya devam ediyor. Okulunuz lisansı yenileyebilir.",
+      "budgetPaused": "Kurumunuzun bu ayki yapay zekâ bütçesi tükendi: bu özellik gelecek aya kadar duraklatıldı. Dikte çalışmaya devam ediyor."
     },
     "original": "Özgün",
     "generatedNote": "Yapay zekâ tarafından üretildi: kullanmadan önce okuyun."
@@ -1381,6 +1385,13 @@
       "done": "Tamam",
       "todo": "Yapılacak",
       "organization": "Kuruluş hesabı bağlandı"
+    },
+    "survey": {
+      "question": "Nova not almanıza ne kadar yardımcı oluyor?",
+      "score": "5 üzerinden {{score}} puan",
+      "later": "Sonra",
+      "scale": "1 = hiç, 5 = çok. Anonim: kurumunuz yalnızca ortalamayı görür.",
+      "thanks": "Teşekkürler."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Boşluk"
   },
   "connections": {
+    "local": {
+      "title": "Antidote ve Lexibar",
+      "description": "Okulunuz yüklediyse Nova bunları tek tıkla açar: düzeltme, sözlükler ve yazma yardım çubuğu.",
+      "antidote": "Antidote'u aç",
+      "lexibar": "Lexibar'ı aç",
+      "missing": "{{app}} bu bilgisayarda yüklü değil."
+    },
     "windows": {
       "title": "Windows kelime önerileri",
       "description": "Windows, tüm uygulamalarda siz yazarken sonraki kelimeyi önerir. Yazma ayarlarında “Metin önerilerini göster”i açın.",

@@ -618,6 +618,7 @@
         "error": "Das Snippet konnte nicht gespeichert werden."
       },
       "pastedVersion": "Von Nova eingefügte Version",
+      "doubtfulWords": "Zu prüfende Wörter (von der Überprüfung geändert): {{words}}",
       "replayVoice": "Meine Stimme anhören"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Ergebnis verworfen",
       "refused": "Das Ergebnis hat Ihren Text verändert (eine Zahl, ein Datum, die Sprache oder den Sinn), daher schlägt Nova es nicht vor.",
       "refusedFormulaTitle": "Formel im Kurs nachlesen",
-      "refusedFormula": "Dieser Text enthält eine Formel, die Nova nicht unverfälscht übernehmen konnte. Lesen Sie sie so nach, wie sie in Ihrem Kurs steht."
+      "refusedFormula": "Dieser Text enthält eine Formel, die Nova nicht unverfälscht übernehmen konnte. Lesen Sie sie so nach, wie sie in Ihrem Kurs steht.",
+      "pausedTitle": "Von Ihrer Schule pausiert",
+      "paused": "Die Nova-Lizenz Ihrer Schule ist abgelaufen, daher ist diese Funktion pausiert. Das Diktieren funktioniert weiterhin. Ihre Schule kann die Lizenz verlängern.",
+      "budgetPaused": "Das KI-Budget Ihrer Einrichtung ist für diesen Monat aufgebraucht: Diese Funktion ist bis zum nächsten Monat pausiert. Das Diktieren funktioniert weiterhin."
     },
     "original": "Original",
     "generatedNote": "Von KI erstellt: Lesen Sie es durch, bevor Sie es verwenden."
@@ -1381,6 +1385,13 @@
       "done": "Erledigt",
       "todo": "Offen",
       "organization": "Organisationskonto verknüpft"
+    },
+    "survey": {
+      "question": "Wie sehr hilft Ihnen Nova beim Mitschreiben?",
+      "score": "Bewertung {{score}} von 5",
+      "later": "Später",
+      "scale": "1 = gar nicht, 5 = sehr. Anonym: Ihre Einrichtung sieht nur den Durchschnitt.",
+      "thanks": "Danke."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Leertaste"
   },
   "connections": {
+    "local": {
+      "title": "Antidote und Lexibar",
+      "description": "Wenn Ihre Schule sie installiert hat, öffnet Nova sie mit einem Klick: Korrektur, Wörterbücher und Schreibhilfe-Leiste.",
+      "antidote": "Antidote öffnen",
+      "lexibar": "Lexibar öffnen",
+      "missing": "{{app}} ist auf diesem Computer nicht installiert."
+    },
     "windows": {
       "title": "Wortvorschläge von Windows",
       "description": "Windows schlägt beim Tippen in allen Apps das nächste Wort vor. Aktivieren Sie „Textvorschläge anzeigen“ in den Eingabeeinstellungen.",

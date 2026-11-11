@@ -618,6 +618,7 @@
         "error": "无法保存片段。"
       },
       "pastedVersion": "Nova 粘贴的版本",
+      "doubtfulWords": "需检查的词（复核时更改）：{{words}}",
       "replayVoice": "重听我的声音"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "结果已被舍弃",
       "refused": "结果改变了你的文本（数字、日期、语言或含义），因此 Nova 不提供该结果。",
       "refusedFormulaTitle": "请在课程中查看公式",
-      "refusedFormula": "这段文本包含一个 Nova 无法不失真地复述的公式。请按课程中的原样阅读它。"
+      "refusedFormula": "这段文本包含一个 Nova 无法不失真地复述的公式。请按课程中的原样阅读它。",
+      "pausedTitle": "已被学校暂停",
+      "paused": "你所在学校的 Nova 许可已到期，因此此功能已暂停。听写仍可正常使用。学校可以续订许可。",
+      "budgetPaused": "你所在机构本月的 AI 预算已用完：此功能暂停至下个月。听写仍可正常使用。"
     },
     "original": "原文",
     "generatedNote": "由 AI 生成：使用前请再读一遍。"
@@ -1381,6 +1385,13 @@
       "done": "已完成",
       "todo": "待完成",
       "organization": "已关联组织账户"
+    },
+    "survey": {
+      "question": "Nova 对你做笔记有多大帮助？",
+      "score": "{{score}} 分（满分 5 分）",
+      "later": "稍后",
+      "scale": "1 = 完全没有，5 = 很大。匿名：你的机构只能看到平均分。",
+      "thanks": "谢谢。"
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "空格"
   },
   "connections": {
+    "local": {
+      "title": "Antidote 和 Lexibar",
+      "description": "如果学校已安装，Nova 一键打开它们：校对、词典和写作辅助栏。",
+      "antidote": "打开 Antidote",
+      "lexibar": "打开 Lexibar",
+      "missing": "此电脑未安装 {{app}}。"
+    },
     "windows": {
       "title": "Windows 字词建议",
       "description": "在所有应用中键入时，Windows 会建议下一个字词。请在键入设置中打开“显示文本建议”。",

@@ -618,6 +618,7 @@
         "error": "Le snippet n’a pas pu être enregistré."
       },
       "pastedVersion": "Mise en forme par l’IA",
+      "doubtfulWords": "Mots à vérifier (corrigés par la relecture) : {{words}}",
       "replayVoice": "Réécouter ma voix"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Résultat écarté",
       "refused": "Le résultat changeait votre texte (un nombre, une date, la langue ou le sens) : Nova ne le propose pas.",
       "refusedFormulaTitle": "Formule à relire dans le cours",
-      "refusedFormula": "Ce texte contient une formule que Nova n’a pas su reprendre sans la déformer. Relisez-la telle qu’elle est dans votre cours."
+      "refusedFormula": "Ce texte contient une formule que Nova n’a pas su reprendre sans la déformer. Relisez-la telle qu’elle est dans votre cours.",
+      "pausedTitle": "En pause dans votre établissement",
+      "paused": "La licence Nova de votre établissement est terminée : cette fonction est en pause. La dictée fonctionne toujours. Votre établissement peut renouveler la licence.",
+      "budgetPaused": "L'enveloppe d'IA de votre établissement est épuisée pour ce mois : cette fonction est en pause jusqu'au mois prochain. La dictée fonctionne toujours."
     },
     "original": "Original",
     "generatedNote": "Produit par l’IA : relisez-le avant de vous en servir."
@@ -1381,6 +1385,13 @@
       "done": "Fait",
       "todo": "À faire",
       "organization": "Compte d’organisation lié"
+    },
+    "survey": {
+      "question": "Nova vous aide-t-il à prendre vos notes ?",
+      "score": "Note {{score}} sur 5",
+      "later": "Plus tard",
+      "scale": "1 = pas du tout, 5 = beaucoup. Anonyme : votre établissement ne voit que la moyenne.",
+      "thanks": "Merci."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Espace"
   },
   "connections": {
+    "local": {
+      "title": "Antidote et Lexibar",
+      "description": "Si l'école les a installés, Nova les ouvre d'un clic : correction, dictionnaires et barre d'aide à l'écriture.",
+      "antidote": "Ouvrir Antidote",
+      "lexibar": "Ouvrir Lexibar",
+      "missing": "{{app}} n'est pas installé sur ce poste."
+    },
     "windows": {
       "title": "Suggestions de mots de Windows",
       "description": "Windows propose le mot suivant pendant que vous tapez, dans toutes les applications. Activez « Afficher les suggestions de texte » dans les réglages de saisie.",

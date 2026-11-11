@@ -326,6 +326,8 @@ mod platform {
                     }
                     PINNED.store(false, Ordering::Relaxed);
                     TARGET_PID.store(pid, Ordering::Relaxed);
+                    // Retenue pour « Remplacer » : le clic dans la bulle peut lui donner le focus.
+                    crate::input::remember_text_target();
                     let payload = ShowPayload {
                         text,
                         editable,
@@ -535,6 +537,9 @@ pub fn selection_bubble_replace(
     original: String,
     target: TargetWindow,
 ) -> Result<(), CommandError> {
+    // Avant de relire la sélection : ramener la fenêtre de l'élève si la bulle a pris le
+    // focus au clic (sinon on lisait la bulle et on affichait « Fenêtre changée »).
+    crate::input::restore_text_target();
     if !platform::still_selected(&app, &original) {
         return Err(CommandError::TargetChanged);
     }

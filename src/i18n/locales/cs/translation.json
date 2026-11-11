@@ -618,6 +618,7 @@
         "error": "Snippet se nepodařilo uložit."
       },
       "pastedVersion": "Verze vložená Novou",
+      "doubtfulWords": "Slova ke kontrole (změněná korekturou): {{words}}",
       "replayVoice": "Přehrát můj hlas"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Výsledek odložen",
       "refused": "Výsledek měnil váš text (číslo, datum, jazyk nebo smysl), proto ho Nova nenabízí.",
       "refusedFormulaTitle": "Formuli si přečtěte v kurzu",
-      "refusedFormula": "Tento text obsahuje vzorec, který Nova nedokázala převzít bez zkreslení. Přečtěte si ho tak, jak je ve vašem kurzu."
+      "refusedFormula": "Tento text obsahuje vzorec, který Nova nedokázala převzít bez zkreslení. Přečtěte si ho tak, jak je ve vašem kurzu.",
+      "pausedTitle": "Pozastaveno vaší školou",
+      "paused": "Licence Nova vaší školy skončila, proto je tato funkce pozastavena. Diktování funguje dál. Škola může licenci obnovit.",
+      "budgetPaused": "Rozpočet na AI vaší instituce je pro tento měsíc vyčerpán: tato funkce je pozastavena do příštího měsíce. Diktování dál funguje."
     },
     "original": "Originál",
     "generatedNote": "Vytvořeno AI: před použitím si to přečtěte."
@@ -1381,6 +1385,13 @@
       "done": "Hotovo",
       "todo": "Zbývá",
       "organization": "Účet organizace propojen"
+    },
+    "survey": {
+      "question": "Jak moc vám Nova pomáhá při psaní poznámek?",
+      "score": "Hodnocení {{score}} z 5",
+      "later": "Později",
+      "scale": "1 = vůbec, 5 = hodně. Anonymně: vaše instituce vidí jen průměr.",
+      "thanks": "Děkujeme."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Mezerník"
   },
   "connections": {
+    "local": {
+      "title": "Antidote a Lexibar",
+      "description": "Pokud je škola nainstalovala, Nova je otevře jedním kliknutím: korektura, slovníky a lišta pomoci při psaní.",
+      "antidote": "Otevřít Antidote",
+      "lexibar": "Otevřít Lexibar",
+      "missing": "{{app}} není na tomto počítači nainstalován."
+    },
     "windows": {
       "title": "Návrhy slov ve Windows",
       "description": "Windows při psaní navrhuje další slovo ve všech aplikacích. Zapněte „Zobrazovat návrhy textu“ v nastavení psaní.",

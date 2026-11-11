@@ -618,6 +618,7 @@
         "error": "Nie udało się zapisać snippetu."
       },
       "pastedVersion": "Wersja wklejona przez Nova",
+      "doubtfulWords": "Słowa do sprawdzenia (zmienione przez korektę): {{words}}",
       "replayVoice": "Odsłuchaj mój głos"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Wynik odrzucony",
       "refused": "Wynik zmieniał Twój tekst (liczbę, datę, język lub sens), więc Nova go nie proponuje.",
       "refusedFormulaTitle": "Sprawdź wzór w materiałach",
-      "refusedFormula": "Ten tekst zawiera wzór, którego Nova nie potrafiła przytoczyć bez zniekształcenia. Przeczytaj go tak, jak jest zapisany w materiałach z zajęć."
+      "refusedFormula": "Ten tekst zawiera wzór, którego Nova nie potrafiła przytoczyć bez zniekształcenia. Przeczytaj go tak, jak jest zapisany w materiałach z zajęć.",
+      "pausedTitle": "Wstrzymane przez szkołę",
+      "paused": "Licencja Nova Twojej szkoły wygasła, więc ta funkcja jest wstrzymana. Dyktowanie nadal działa. Szkoła może odnowić licencję.",
+      "budgetPaused": "Budżet AI Twojej placówki na ten miesiąc się wyczerpał: ta funkcja jest wstrzymana do przyszłego miesiąca. Dyktowanie nadal działa."
     },
     "original": "Oryginał",
     "generatedNote": "Wygenerowane przez AI: przeczytaj przed użyciem."
@@ -1381,6 +1385,13 @@
       "done": "Zrobione",
       "todo": "Do zrobienia",
       "organization": "Konto organizacji połączone"
+    },
+    "survey": {
+      "question": "Na ile Nova pomaga Ci robić notatki?",
+      "score": "Ocena {{score}} na 5",
+      "later": "Później",
+      "scale": "1 = wcale, 5 = bardzo. Anonimowo: placówka widzi tylko średnią.",
+      "thanks": "Dziękujemy."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Spacja"
   },
   "connections": {
+    "local": {
+      "title": "Antidote i Lexibar",
+      "description": "Jeśli szkoła je zainstalowała, Nova otwiera je jednym kliknięciem: korekta, słowniki i pasek pomocy w pisaniu.",
+      "antidote": "Otwórz Antidote",
+      "lexibar": "Otwórz Lexibar",
+      "missing": "{{app}} nie jest zainstalowany na tym komputerze."
+    },
     "windows": {
       "title": "Sugestie słów systemu Windows",
       "description": "Windows podpowiada następne słowo podczas pisania we wszystkich aplikacjach. Włącz „Pokaż sugestie tekstu” w ustawieniach pisania.",

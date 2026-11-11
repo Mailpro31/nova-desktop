@@ -543,6 +543,13 @@ async cancelOperation() : Promise<void> {
     await TAURI_INVOKE("cancel_operation");
 },
 /**
+ * Une erreur de l'interface (exception non rattrapée, rendu cassé), rapportée
+ * comme un plantage Rust : même nettoyage, même interrupteur de l'école.
+ */
+async reportUiError(name: string, message: string) : Promise<void> {
+    await TAURI_INVOKE("report_ui_error", { name, message });
+},
+/**
  * Déclenche une dictée comme si le raccourci correspondant avait été pressé
  * (par exemple depuis un bouton de l'écran d'accueil d'organisation).
  */
@@ -918,6 +925,17 @@ async addOrganizationSnippet(trigger: string, content: string) : Promise<Result<
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Le mini-sondage du bilan de pilote : une note de 1 à 5, sans nom côté serveur.
+ */
+async answerOrganizationSurvey(score: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("answer_organization_survey", { score }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async deleteOrganizationSnippet(snippetId: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("delete_organization_snippet", { snippetId }) };
@@ -950,9 +968,9 @@ async deleteOrganizationFormattingRule(ruleId: number) : Promise<Result<null, st
     else return { status: "error", error: e  as any };
 }
 },
-async executeOrganizationCommand(instruction: string, text: string) : Promise<Result<OrganizationCommandResponse, string>> {
+async executeOrganizationCommand(instruction: string, text: string, language: string | null) : Promise<Result<OrganizationCommandResponse, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("execute_organization_command", { instruction, text }) };
+    return { status: "ok", data: await TAURI_INVOKE("execute_organization_command", { instruction, text, language }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1415,6 +1433,14 @@ async openWindowsTypingSettings() : Promise<Result<null, string>> {
 async readInEdge(text: string, hint: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("read_in_edge", { text, hint }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async openInstalledApp(app: string) : Promise<Result<boolean, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("open_installed_app", { app }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -2106,12 +2132,27 @@ closed_capabilities?: string[] | null;
  * Styles que l'organisation a désactivés. Absent d'un serveur plus ancien :
  * aucun Style n'est alors désactivé.
  */
-style_policy?: OrganizationStylePolicy | null }
+style_policy?: OrganizationStylePolicy | null; 
+/**
+ * Durée de conservation des dictées sur le poste, fixée par l'école.
+ * Absente d'un serveur plus ancien : chacun choisit.
+ */
+past_dictations?: OrganizationPastDictations | null;
+/**
+ * Rapports de plantage (5.2). Absent d'un serveur plus ancien : ouverts.
+ */
+crash_reports?: OrganizationCrashReports | null }
+export type OrganizationCrashReports = { enabled: boolean }
 export type OrganizationLimits = {
 /**
  * Durée maximale d'une dictée, en secondes.
  */
 max_dictation_seconds?: number | null }
+export type OrganizationPastDictations = { 
+/**
+ * Jours de conservation, dictées gardées comprises ; 0 : chacun choisit.
+ */
+days?: number | null }
 export type OrganizationStylePolicy = { 
 /**
  * Identifiants des Styles désactivés — intégrés ou d'organisation.
@@ -2255,7 +2296,11 @@ export type EngineType =
  */
 "TranscribeCpp" | "Parakeet" | "Moonshine" | "MoonshineStreaming" | "SenseVoice" | "GigaAM" | "Canary" | "Cohere"
 export type GpuDeviceOption = { id: number; name: string; total_vram_mb: number }
-export type HistoryEntry = { id: number; file_name: string; timestamp: number; saved: boolean; title: string; transcription_text: string; post_processed_text: string | null; post_process_prompt: string | null; post_process_requested: boolean }
+export type HistoryEntry = { id: number; file_name: string; timestamp: number; saved: boolean; title: string; transcription_text: string; post_processed_text: string | null; post_process_prompt: string | null; post_process_requested: boolean; 
+/**
+ * Les mots que la relecture du serveur a changés : à vérifier (1.2).
+ */
+doubtful_words: string[] }
 export type HistoryUpdatePayload = { action: "added"; entry: HistoryEntry } | { action: "updated"; entry: HistoryEntry } | { action: "deleted"; id: number } | { action: "toggled"; id: number }
 /**
  * Result of changing keyboard implementation

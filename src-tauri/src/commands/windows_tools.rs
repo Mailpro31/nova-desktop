@@ -26,6 +26,49 @@ pub fn open_windows_typing_settings() -> Result<(), String> {
     start(&["ms-settings:typing"])
 }
 
+/// Le filtre du menu Démarrer pour une aide installée par l'école ; aucun autre
+/// nom n'atteint PowerShell.
+fn start_menu_pattern(app: &str) -> Option<&'static str> {
+    match app {
+        "antidote" => Some("Antidote*"),
+        "lexibar" => Some("Lexibar*"),
+        _ => None,
+    }
+}
+
+/// Ouvre Antidote ou Lexibar par son raccourci du menu Démarrer, sans deviner
+/// son dossier d'installation. `false` : l'application n'est pas sur le poste.
+#[tauri::command]
+#[specta::specta]
+pub fn open_installed_app(app: String) -> Result<bool, String> {
+    let pattern = start_menu_pattern(&app).ok_or_else(|| format!("unknown app {app}"))?;
+    let id = app_id(pattern)?;
+    if id.is_empty() {
+        return Ok(false);
+    }
+    start(&["explorer", &format!("shell:AppsFolder\\{id}")]).map(|_| true)
+}
+
+#[cfg(target_os = "windows")]
+fn app_id(pattern: &str) -> Result<String, String> {
+    use std::os::windows::process::CommandExt;
+    const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+    let script = format!(
+        "(Get-StartApps | Where-Object Name -like '{pattern}' | Select-Object -First 1).AppID"
+    );
+    let output = std::process::Command::new("powershell")
+        .args(["-NoProfile", "-NonInteractive", "-Command", &script])
+        .creation_flags(CREATE_NO_WINDOW)
+        .output()
+        .map_err(|e| format!("cannot list Start apps: {e}"))?;
+    Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn app_id(_pattern: &str) -> Result<String, String> {
+    Err("Windows only".to_string())
+}
+
 /// La page lue par Edge : le texte, échappé, et le rappel des raccourcis.
 fn reading_page(text: &str, hint: &str) -> String {
     let escape = |value: &str| {
@@ -69,7 +112,14 @@ pub fn read_in_edge(text: String, hint: String) -> Result<(), String> {
 
 #[cfg(test)]
 mod tests {
-    use super::reading_page;
+    use super::{reading_page, start_menu_pattern};
+
+    #[test]
+    fn seules_antidote_et_lexibar_sont_ouvertes() {
+        assert_eq!(start_menu_pattern("antidote"), Some("Antidote*"));
+        assert_eq!(start_menu_pattern("lexibar"), Some("Lexibar*"));
+        assert_eq!(start_menu_pattern("x'; Remove-Item C:\\ -Recurse; '"), None);
+    }
 
     #[test]
     fn le_texte_est_echappe_et_coupe_en_paragraphes() {

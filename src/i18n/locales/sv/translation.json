@@ -618,6 +618,7 @@
         "error": "Det gick inte att spara snippetet."
       },
       "pastedVersion": "Version inklistrad av Nova",
+      "doubtfulWords": "Ord att kontrollera (ändrade av granskningen): {{words}}",
       "replayVoice": "Lyssna på min röst igen"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Resultatet lades åt sidan",
       "refused": "Resultatet ändrade din text (ett tal, ett datum, språket eller innebörden), så Nova föreslår det inte.",
       "refusedFormulaTitle": "Läs formeln i kursen",
-      "refusedFormula": "Texten innehåller en formel som Nova inte kunde återge utan att förvränga den. Läs den som den står i din kurs."
+      "refusedFormula": "Texten innehåller en formel som Nova inte kunde återge utan att förvränga den. Läs den som den står i din kurs.",
+      "pausedTitle": "Pausad av din skola",
+      "paused": "Din skolas Nova-licens har gått ut, så den här funktionen är pausad. Diktering fungerar fortfarande. Skolan kan förnya licensen.",
+      "budgetPaused": "Din skolas AI-budget för den här månaden är slut: funktionen är pausad till nästa månad. Diktering fungerar fortfarande."
     },
     "original": "Original",
     "generatedNote": "Skapat av AI: läs igenom det innan du använder det."
@@ -1381,6 +1385,13 @@
       "done": "Klart",
       "todo": "Kvar",
       "organization": "Organisationskonto länkat"
+    },
+    "survey": {
+      "question": "Hur mycket hjälper Nova dig att anteckna?",
+      "score": "Betyg {{score}} av 5",
+      "later": "Senare",
+      "scale": "1 = inte alls, 5 = mycket. Anonymt: din skola ser bara medelvärdet.",
+      "thanks": "Tack."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Mellanslag"
   },
   "connections": {
+    "local": {
+      "title": "Antidote och Lexibar",
+      "description": "Om skolan har installerat dem öppnar Nova dem med ett klick: korrektur, ordböcker och skrivhjälpsfältet.",
+      "antidote": "Öppna Antidote",
+      "lexibar": "Öppna Lexibar",
+      "missing": "{{app}} är inte installerat på den här datorn."
+    },
     "windows": {
       "title": "Ordförslag i Windows",
       "description": "Windows föreslår nästa ord medan du skriver, i alla appar. Aktivera ”Visa textförslag” i inställningarna för skrivning.",

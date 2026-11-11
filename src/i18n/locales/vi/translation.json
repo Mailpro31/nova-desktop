@@ -618,6 +618,7 @@
         "error": "Không thể lưu đoạn mẫu."
       },
       "pastedVersion": "Phiên bản Nova đã dán",
+      "doubtfulWords": "Từ cần kiểm tra (đã được sửa khi rà soát): {{words}}",
       "replayVoice": "Nghe lại giọng của tôi"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Kết quả đã bị gạt bỏ",
       "refused": "Kết quả làm thay đổi văn bản của bạn (một con số, một ngày, ngôn ngữ hoặc ý nghĩa), nên Nova không đề xuất.",
       "refusedFormulaTitle": "Hãy xem lại công thức trong bài học",
-      "refusedFormula": "Văn bản này có một công thức mà Nova không thể viết lại mà không làm sai lệch. Hãy đọc công thức đúng như trong bài học của bạn."
+      "refusedFormula": "Văn bản này có một công thức mà Nova không thể viết lại mà không làm sai lệch. Hãy đọc công thức đúng như trong bài học của bạn.",
+      "pausedTitle": "Trường của bạn đã tạm dừng",
+      "paused": "Giấy phép Nova của trường bạn đã hết hạn nên tính năng này đang tạm dừng. Đọc chính tả vẫn hoạt động. Trường có thể gia hạn giấy phép.",
+      "budgetPaused": "Ngân sách AI của cơ sở bạn trong tháng này đã hết: tính năng này tạm dừng đến tháng sau. Đọc chính tả vẫn hoạt động."
     },
     "original": "Bản gốc",
     "generatedNote": "Do AI tạo ra: hãy đọc lại trước khi sử dụng."
@@ -1381,6 +1385,13 @@
       "done": "Xong",
       "todo": "Còn lại",
       "organization": "Đã liên kết tài khoản tổ chức"
+    },
+    "survey": {
+      "question": "Nova giúp bạn ghi chép đến mức nào?",
+      "score": "Điểm {{score}} trên 5",
+      "later": "Để sau",
+      "scale": "1 = không chút nào, 5 = rất nhiều. Ẩn danh: cơ sở của bạn chỉ thấy điểm trung bình.",
+      "thanks": "Cảm ơn bạn."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Phím cách"
   },
   "connections": {
+    "local": {
+      "title": "Antidote và Lexibar",
+      "description": "Nếu trường đã cài đặt, Nova mở chúng chỉ với một cú nhấp: sửa lỗi, từ điển và thanh hỗ trợ viết.",
+      "antidote": "Mở Antidote",
+      "lexibar": "Mở Lexibar",
+      "missing": "{{app}} chưa được cài đặt trên máy tính này."
+    },
     "windows": {
       "title": "Gợi ý từ của Windows",
       "description": "Windows gợi ý từ tiếp theo khi bạn gõ, trong mọi ứng dụng. Bật “Hiển thị gợi ý văn bản” trong cài đặt nhập liệu.",

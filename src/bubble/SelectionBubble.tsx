@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
+import ReactMarkdown from "react-markdown";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -37,8 +38,7 @@ import {
 import {
   clientCommandMessage,
   commandMessage,
-  isCommandRefusal,
-  refusalMessage,
+  serverFailure,
   type CommandMessage,
 } from "@/lib/commands/errors";
 import { OrganizationApi } from "@/lib/organizationApi";
@@ -162,9 +162,7 @@ export const SelectionBubble: React.FC = () => {
       setView({
         name: "error",
         action,
-        message: clientCommandMessage(
-          isCommandRefusal(error) ? refusalMessage(error) : "failed",
-        ),
+        message: clientCommandMessage(serverFailure(error)),
       });
     }
   };
@@ -395,9 +393,24 @@ export const SelectionBubble: React.FC = () => {
           <Card wide>
             {cardHeader(view.action)}
             <div className="max-h-[min(300px,var(--bubble-max-h))] overflow-y-auto px-4 py-3">
-              <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-text">
-                {view.result}
-              </p>
+              {/* Les modèles répondent en markdown : afficher le gras et les listes, pas les ** (tournage 10/11). */}
+              <div className="text-[15px] leading-relaxed text-text [&_li]:mt-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_p+*]:mt-2 [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-5">
+                <ReactMarkdown
+                  allowedElements={[
+                    "p",
+                    "strong",
+                    "em",
+                    "ul",
+                    "ol",
+                    "li",
+                    "br",
+                    "code",
+                  ]}
+                  unwrapDisallowed
+                >
+                  {view.result}
+                </ReactMarkdown>
+              </div>
               <p className="mt-3 text-xs text-text-secondary">
                 {t("novaCommands.generatedNote")}
               </p>

@@ -618,6 +618,7 @@
         "error": "스니펫을 저장할 수 없습니다."
       },
       "pastedVersion": "Nova가 붙여 넣은 버전",
+      "doubtfulWords": "확인할 단어(검토에서 변경됨): {{words}}",
       "replayVoice": "내 목소리 다시 듣기"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "결과를 제외했습니다",
       "refused": "결과가 텍스트(숫자, 날짜, 언어 또는 의미)를 바꾸어 Nova가 제안하지 않습니다.",
       "refusedFormulaTitle": "수식은 강의 자료에서 확인하세요",
-      "refusedFormula": "이 텍스트에는 Nova가 왜곡 없이 옮기지 못한 수식이 있습니다. 강의 자료에 적힌 그대로 확인하세요."
+      "refusedFormula": "이 텍스트에는 Nova가 왜곡 없이 옮기지 못한 수식이 있습니다. 강의 자료에 적힌 그대로 확인하세요.",
+      "pausedTitle": "학교에서 일시 중지됨",
+      "paused": "학교의 Nova 라이선스가 끝나 이 기능이 일시 중지되었습니다. 받아쓰기는 계속 작동합니다. 학교에서 라이선스를 갱신할 수 있습니다.",
+      "budgetPaused": "기관의 이번 달 AI 예산이 모두 소진되었습니다. 이 기능은 다음 달까지 일시 중지됩니다. 받아쓰기는 계속 작동합니다."
     },
     "original": "원문",
     "generatedNote": "AI가 만든 내용입니다. 사용하기 전에 다시 읽어 보세요."
@@ -1381,6 +1385,13 @@
       "done": "완료",
       "todo": "할 일",
       "organization": "조직 계정 연결됨"
+    },
+    "survey": {
+      "question": "Nova가 필기에 얼마나 도움이 되나요?",
+      "score": "5점 중 {{score}}점",
+      "later": "나중에",
+      "scale": "1 = 전혀, 5 = 매우. 익명: 기관에는 평균만 보입니다.",
+      "thanks": "감사합니다."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "스페이스"
   },
   "connections": {
+    "local": {
+      "title": "Antidote 및 Lexibar",
+      "description": "학교에서 설치했다면 Nova가 한 번의 클릭으로 엽니다: 교정, 사전, 글쓰기 도움 막대.",
+      "antidote": "Antidote 열기",
+      "lexibar": "Lexibar 열기",
+      "missing": "{{app}}이(가) 이 컴퓨터에 설치되어 있지 않습니다."
+    },
     "windows": {
       "title": "Windows 단어 제안",
       "description": "Windows가 모든 앱에서 입력하는 동안 다음 단어를 제안합니다. 입력 설정에서 '텍스트 제안 표시'를 켜세요.",

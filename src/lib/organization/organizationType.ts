@@ -117,3 +117,34 @@ export const FALLBACK_ORGANIZATION_TYPE: OrganizationType = "education";
 export function resolvedOrganizationType(): OrganizationType {
   return announcedOrganizationType() ?? FALLBACK_ORGANIZATION_TYPE;
 }
+
+const CLOSED_KEY = "nova.organization.closedCapabilities";
+
+/** Mémorise les catégories fermées annoncées par le serveur, pour le hors-ligne. */
+export function rememberClosedCapabilities(closed: readonly string[]): void {
+  try {
+    localStorage.setItem(CLOSED_KEY, JSON.stringify(closed));
+  } catch {
+    // Mode privé, quota : seul le hors-ligne repartira sans mémoire.
+  }
+}
+
+export function forgetClosedCapabilities(): void {
+  try {
+    localStorage.removeItem(CLOSED_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+/** La dernière liste mémorisée, `[]` si aucune (ou illisible). */
+export function rememberedClosedCapabilities(): string[] {
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(CLOSED_KEY) ?? "[]");
+    return Array.isArray(value)
+      ? value.filter((v): v is string => typeof v === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}

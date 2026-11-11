@@ -618,6 +618,7 @@
         "error": "Het snippet kon niet worden opgeslagen."
       },
       "pastedVersion": "Door Nova geplakte versie",
+      "doubtfulWords": "Te controleren woorden (gewijzigd door de controle): {{words}}",
       "replayVoice": "Mijn stem opnieuw beluisteren"
     },
     "debug": {
@@ -1307,7 +1308,10 @@
       "refusedTitle": "Resultaat terzijde gelegd",
       "refused": "Het resultaat veranderde je tekst (een getal, een datum, de taal of de betekenis), dus Nova stelt het niet voor.",
       "refusedFormulaTitle": "Lees de formule na in de cursus",
-      "refusedFormula": "Deze tekst bevat een formule die Nova niet kon overnemen zonder haar te vervormen. Lees haar na zoals ze in je cursus staat."
+      "refusedFormula": "Deze tekst bevat een formule die Nova niet kon overnemen zonder haar te vervormen. Lees haar na zoals ze in je cursus staat.",
+      "pausedTitle": "Gepauzeerd door je school",
+      "paused": "De Nova-licentie van je school is verlopen, dus deze functie is gepauzeerd. Dicteren blijft werken. Je school kan de licentie verlengen.",
+      "budgetPaused": "Het AI-budget van je instelling is deze maand op: deze functie is gepauzeerd tot volgende maand. Dicteren blijft werken."
     },
     "original": "Origineel",
     "generatedNote": "Gemaakt door AI: lees het na voordat je het gebruikt."
@@ -1381,6 +1385,13 @@
       "done": "Klaar",
       "todo": "Te doen",
       "organization": "Organisatieaccount gekoppeld"
+    },
+    "survey": {
+      "question": "Hoeveel helpt Nova je bij het maken van aantekeningen?",
+      "score": "Score {{score}} van 5",
+      "later": "Straks",
+      "scale": "1 = helemaal niet, 5 = veel. Anoniem: je instelling ziet alleen het gemiddelde.",
+      "thanks": "Bedankt."
     }
   },
   "styles": {
@@ -1686,6 +1697,13 @@
     "space": "Spatie"
   },
   "connections": {
+    "local": {
+      "title": "Antidote en Lexibar",
+      "description": "Als je school ze heeft geïnstalleerd, opent Nova ze met één klik: correctie, woordenboeken en de schrijfhulpbalk.",
+      "antidote": "Antidote openen",
+      "lexibar": "Lexibar openen",
+      "missing": "{{app}} is niet geïnstalleerd op deze computer."
+    },
     "windows": {
       "title": "Woordsuggesties van Windows",
       "description": "Windows stelt tijdens het typen het volgende woord voor, in alle apps. Schakel ‘Tekstsuggesties weergeven’ in bij de type-instellingen.",
