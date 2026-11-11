@@ -37,7 +37,10 @@ export const showAttentionToast = (
   };
   const persistentOptions: AttentionOptions = {
     ...options,
-    duration: Infinity,
+    // Seule une erreur attend qu'on la ferme (n° 91). Une info ou un
+    // avertissement (« Nova a été mis à jour ») part seul après 12 s : la
+    // pastille de la bulle garde la trace tant qu'il n'a pas été vu.
+    duration: variant === "error" ? Infinity : 12_000,
     closeButton: true,
     icon: createElement(Icon, {
       size: 18,

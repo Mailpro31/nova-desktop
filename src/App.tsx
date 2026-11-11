@@ -505,13 +505,17 @@ function App() {
         unstyled: true,
         classNames: {
           toast:
-            "bg-background border border-mid-gray/20 rounded-lg shadow-lg px-4 py-3 flex items-center gap-3 text-sm",
+            "bg-background border border-mid-gray/20 rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 text-sm",
+          // Le bouton d'action (« Voir les nouveautés ») restait du texte nu :
+          // une pastille accentuée, comme « Essayer » sur la bulle.
+          actionButton:
+            "shrink-0 rounded-full border-0 bg-logo-primary px-3 py-1 text-xs font-semibold text-white hover:brightness-110",
           title: "font-medium",
           description: "text-mid-gray",
           // Sans style (`unstyled`), la croix de fermeture restait un carré
           // noir par défaut (capture de Sash, 20/10).
           closeButton:
-            "order-last ml-auto shrink-0 rounded border-0 bg-transparent p-1 text-mid-gray hover:text-text hover:bg-mid-gray/10 [&>svg]:size-3.5",
+            "order-last ml-auto shrink-0 rounded-full border-0 bg-transparent p-1 text-mid-gray hover:text-text hover:bg-mid-gray/10 [&>svg]:size-3.5",
         },
       }}
     />
