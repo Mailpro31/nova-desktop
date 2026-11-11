@@ -1,11 +1,20 @@
-import { describe, expect, mock, test } from "bun:test";
+import { afterAll, describe, expect, test } from "bun:test";
+import { toast } from "sonner";
 
-mock.module("@tauri-apps/api/event", () => ({ emit: async () => {} }));
-const { toast } = await import("sonner");
-const { showAttentionToast } = await import("./attentionNotifications");
+import { showAttentionToast } from "./attentionNotifications";
 
 const lastDuration = () =>
   (toast.getHistory().at(-1) as { duration?: number }).duration;
+
+// `emit` (pastille de la bulle) passe par Tauri, absent hors de l'application.
+const hadWindow = "window" in globalThis;
+if (!hadWindow)
+  Object.assign(globalThis, {
+    window: { __TAURI_INTERNALS__: { invoke: async () => {} } },
+  });
+afterAll(() => {
+  if (!hadWindow) delete (globalThis as { window?: unknown }).window;
+});
 
 describe("attention notifications", () => {
   test("an update notice leaves on its own", () => {
