@@ -712,6 +712,11 @@
         "title": "Nova 다시 시작",
         "description": "애플리케이션을 닫았다가 다시 엽니다. 조직이 새 콘텐츠를 게시한 후에 유용합니다.",
         "button": "다시 시작"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

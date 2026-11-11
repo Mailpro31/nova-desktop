@@ -712,6 +712,11 @@
         "title": "Redémarrer Nova",
         "description": "Ferme et rouvre Nova. Utile si votre organisation vient de changer les réglages.",
         "button": "Redémarrer"
+      },
+      "credits": {
+        "title": "Crédits",
+        "description": "Composants libres utilisés par Nova",
+        "voice": "Voix de l’école : moteur Kokoro (Apache 2.0), voix française « ff_siwis » issue du corpus SIWIS (CC BY 4.0)."
       }
     },
     "home": {

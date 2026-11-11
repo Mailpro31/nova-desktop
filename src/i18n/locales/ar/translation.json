@@ -691,6 +691,11 @@
         "title": "إعادة تشغيل Nova",
         "description": "يغلق التطبيق ويعيد فتحه. مفيد بعد أن تنشر مؤسستك محتوى جديدًا.",
         "button": "إعادة التشغيل"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "modelSettings": {

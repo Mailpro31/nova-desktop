@@ -712,6 +712,11 @@
         "title": "Nova を再起動",
         "description": "アプリケーションを終了して開き直します。組織が新しいコンテンツを公開したあとに便利です。",
         "button": "再起動"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

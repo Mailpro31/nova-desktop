@@ -712,6 +712,11 @@
         "title": "Nova opnieuw starten",
         "description": "Sluit de applicatie en opent deze opnieuw. Handig nadat uw organisatie nieuwe inhoud publiceert.",
         "button": "Opnieuw starten"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

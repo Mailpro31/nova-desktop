@@ -712,6 +712,11 @@
         "title": "Khởi động lại Nova",
         "description": "Đóng và mở lại ứng dụng. Hữu ích sau khi tổ chức của bạn xuất bản nội dung mới.",
         "button": "Khởi động lại"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

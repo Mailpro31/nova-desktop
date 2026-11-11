@@ -712,6 +712,11 @@
         "title": "Nova पुनः सुरु गर्नुहोस्",
         "description": "एप्लिकेसन बन्द गरेर फेरि खोल्छ। तपाईंको संस्थाले नयाँ सामग्री प्रकाशित गरेपछि उपयोगी।",
         "button": "पुनः सुरु"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

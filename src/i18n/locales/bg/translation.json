@@ -712,6 +712,11 @@
         "title": "Рестартиране на Nova",
         "description": "Затваря и отваря отново приложението. Полезно, след като организацията ви публикува ново съдържание.",
         "button": "Рестартиране"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

@@ -712,6 +712,11 @@
         "title": "Restartovat Nova",
         "description": "Zavře a znovu otevře aplikaci. Užitečné poté, co vaše organizace zveřejní nový obsah.",
         "button": "Restartovat"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {

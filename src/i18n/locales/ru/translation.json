@@ -712,6 +712,11 @@
         "title": "Перезапустить Nova",
         "description": "Закрывает и снова открывает приложение. Полезно после того, как ваша организация опубликовала новое содержимое.",
         "button": "Перезапустить"
+      },
+      "credits": {
+        "title": "Credits",
+        "description": "Open components used by Nova",
+        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
       }
     },
     "home": {
