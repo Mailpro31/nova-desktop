@@ -714,9 +714,9 @@
         "button": "Neu starten"
       },
       "credits": {
-        "title": "Credits",
-        "description": "Open components used by Nova",
-        "voice": "School voice: Kokoro engine (Apache 2.0), French voice “ff_siwis” from the SIWIS corpus (CC BY 4.0)."
+        "title": "Danksagungen",
+        "description": "Offene Komponenten, die Nova verwendet",
+        "voice": "Stimme der Schule: Kokoro-Engine (Apache 2.0), französische Stimme „ff_siwis“ aus dem SIWIS-Korpus (CC BY 4.0)."
       }
     },
     "home": {
