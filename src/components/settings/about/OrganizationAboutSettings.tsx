@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { Info, Globe, FolderOpen, FileText, Bug } from "lucide-react";
+import { Info, Globe, FolderOpen, FileText, Bug, Compass } from "lucide-react";
 import { ReportProblem } from "./ReportProblem";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
@@ -10,6 +10,7 @@ import { RestartApp } from "../RestartApp";
 import { Button } from "../../ui/Button";
 import { PageHeader } from "../../ui/PageHeader";
 import { useOrganizationWording } from "../../../hooks/useOrganizationWording";
+import { requestTourReplay } from "../../../lib/featureTour";
 
 interface SectionCardProps {
   icon: React.ElementType;
@@ -72,6 +73,18 @@ export const OrganizationAboutSettings: React.FC = () => {
         <div className="px-4 py-3">
           {/* eslint-disable-next-line i18next/no-literal-string */}
           <span className="text-sm font-mono">v{version}</span>
+        </div>
+      </SectionCard>
+
+      <SectionCard
+        icon={Compass}
+        title={t("featureTour.replay.title")}
+        description={t("featureTour.replay.description")}
+      >
+        <div className="px-4 py-3">
+          <Button variant="secondary" size="md" onClick={requestTourReplay}>
+            {t("featureTour.replay.button")}
+          </Button>
         </div>
       </SectionCard>
 
