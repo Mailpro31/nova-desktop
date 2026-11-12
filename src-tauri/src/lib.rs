@@ -724,6 +724,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 commands::organization::add_organization_snippet,
                 commands::organization::delete_organization_snippet,
                 commands::organization::answer_organization_survey,
+                commands::organization::send_support_report,
                 commands::organization::get_organization_formatting_rules,
                 commands::organization::add_organization_formatting_rule,
                 commands::organization::delete_organization_formatting_rule,

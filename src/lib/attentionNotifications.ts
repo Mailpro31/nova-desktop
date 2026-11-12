@@ -8,6 +8,11 @@ type AttentionOptions = NonNullable<Parameters<typeof toast.error>[1]>;
 
 const unread = new Set<string | number>();
 
+// Dernier code d'erreur affiché (l'`id` du toast, une clé i18n) : « Signaler un
+// problème » l'envoie, jamais le texte affiché.
+let lastErrorCode = "";
+export const getLastErrorCode = () => lastErrorCode;
+
 const syncBadge = () => {
   void emit("notification-attention", unread.size > 0);
 };
@@ -23,6 +28,9 @@ export const showAttentionToast = (
   options: AttentionOptions = {},
 ) => {
   let id: string | number = "pending";
+  if (variant === "error" && typeof options.id === "string") {
+    lastErrorCode = options.id;
+  }
   const Icon =
     variant === "error"
       ? CircleAlert

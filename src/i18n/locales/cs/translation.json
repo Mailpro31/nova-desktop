@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Nic nebylo smazáno. Nova se znovu otevře, jakmile bude přístup obnoven.",
       "checkAgain": "Zkontrolovat znovu"
     },
+    "reportProblem": {
+      "title": "Nahlásit problém",
+      "description": "Odešle diagnostickou zprávu na server vaší školy. Neobsahuje žádný nadiktovaný text, historii ani e-mailovou adresu.",
+      "descriptionLabel": "Co se stalo? (nepovinné)",
+      "warning": "To, co sem napíšete, se odešle týmu Nova. Nepište nadiktovaný text ani osobní údaje.",
+      "send": "Odeslat zprávu",
+      "sending": "Odesílání…",
+      "sent": "Děkujeme, zpráva byla odeslána.",
+      "failed": "Zprávu se nepodařilo odeslat. Zkontrolujte připojení ke škole a zkuste to znovu."
+    },
     "diagnostic": {
       "title": "Diagnostická zpráva",
       "description": "Soubor, který předáte svému správci. Popisuje verzi, počítač, spojení se serverem a naměřené časy. Neobsahuje žádné diktování, žádnou historii, žádné osobní hodnoty ani token relační.",

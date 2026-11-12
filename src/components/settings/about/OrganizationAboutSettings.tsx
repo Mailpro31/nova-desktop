@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { Info, Globe, FolderOpen, FileText, Bug } from "lucide-react";
+import { ReportProblem } from "./ReportProblem";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
 import { RestartApp } from "../RestartApp";
@@ -99,6 +100,14 @@ export const OrganizationAboutSettings: React.FC = () => {
         <p className="px-4 py-3 text-sm text-text-secondary">
           {t("settings.about.credits.voice")}
         </p>
+      </SectionCard>
+
+      <SectionCard
+        icon={Bug}
+        title={t("organization.reportProblem.title")}
+        description={t("organization.reportProblem.description")}
+      >
+        <ReportProblem />
       </SectionCard>
 
       <SectionCard

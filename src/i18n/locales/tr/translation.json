@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Hiçbir şey silinmedi. Erişiminiz geri verildiğinde Nova yeniden açılır.",
       "checkAgain": "Yeniden kontrol et"
     },
+    "reportProblem": {
+      "title": "Sorun bildir",
+      "description": "Okulunuzun sunucusuna bir tanılama raporu gönderir. Dikte edilmiş metin, geçmiş veya e-posta adresi içermez.",
+      "descriptionLabel": "Ne oldu? (isteğe bağlı)",
+      "warning": "Buraya yazdığınız Nova ekibine gönderilir. Dikte edilmiş metin veya kişisel bilgi yazmayın.",
+      "send": "Raporu gönder",
+      "sending": "Gönderiliyor…",
+      "sent": "Teşekkürler, rapor gönderildi.",
+      "failed": "Rapor gönderilemedi. Okulunuzla bağlantınızı kontrol edip yeniden deneyin."
+    },
     "diagnostic": {
       "title": "Tanılama raporu",
       "description": "Yöneticinize vereceğiniz bir dosya. Sürümü, bilgisayarı, sunucu bağlantısını ve ölçülen süreleri anlatır. Hiçbir dikte, geçmiş, kişisel değer veya oturum belirteci içermez.",

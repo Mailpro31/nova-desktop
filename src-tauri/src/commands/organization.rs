@@ -1901,6 +1901,34 @@ pub async fn answer_organization_survey(app: AppHandle, score: u8) -> Result<(),
     Ok(())
 }
 
+/// Rapport « Signaler un problème » : des codes et des mesures, jamais de dictée.
+/// La description libre (500 caractères) est caviardée côté serveur.
+#[derive(Serialize, Deserialize, Debug, Clone, Type)]
+pub struct SupportReport {
+    pub app_version: String,
+    pub os: String,
+    pub memory_mb: Option<u32>,
+    pub engines: std::collections::HashMap<String, String>,
+    pub last_error: String,
+    pub reported_at: String,
+    pub description: String,
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn send_support_report(app: AppHandle, report: SupportReport) -> Result<(), String> {
+    let (base_url, client) = authenticated_client(&app)?;
+    let response = client
+        .post(format!("{}/api/support/report", base_url))
+        .json(&report)
+        .send()
+        .await
+        .map_err(|e| format!("network error: {}", e))?;
+    handle_authed_response(&app, response).await?;
+
+    Ok(())
+}
+
 #[tauri::command]
 #[specta::specta]
 pub async fn delete_organization_snippet(app: AppHandle, snippet_id: i64) -> Result<(), String> {

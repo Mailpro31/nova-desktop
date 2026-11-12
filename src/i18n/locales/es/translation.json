@@ -1206,6 +1206,16 @@
       "nothingDeleted": "No se ha eliminado nada. Nova vuelve a abrirse en cuanto se restablece tu acceso.",
       "checkAgain": "Comprobar de nuevo"
     },
+    "reportProblem": {
+      "title": "Informar de un problema",
+      "description": "Envía un informe de diagnóstico al servidor de su centro. No contiene texto dictado, historial ni dirección de correo.",
+      "descriptionLabel": "¿Qué ha pasado? (opcional)",
+      "warning": "Lo que escriba aquí se envía al equipo de Nova. No escriba texto dictado ni datos personales.",
+      "send": "Enviar el informe",
+      "sending": "Enviando…",
+      "sent": "Gracias, informe enviado.",
+      "failed": "No se pudo enviar el informe. Compruebe su conexión con su centro e inténtelo de nuevo."
+    },
     "diagnostic": {
       "title": "Informe de diagnóstico",
       "description": "Un archivo para entregar a su administrador. Describe la versión, el equipo, la conexión con el servidor y los tiempos medidos. No contiene ningún dictado, ningún historial, ningún valor personal ni ningún token de sesión.",

@@ -948,6 +948,14 @@ async answerOrganizationSurvey(score: number) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async sendSupportReport(report: SupportReport) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("send_support_report", { report }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async deleteOrganizationSnippet(snippetId: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("delete_organization_snippet", { snippetId }) };
@@ -2178,6 +2186,7 @@ export type ConfiguredOrganization = { id: string; name: string; shortName?: str
 export type OrganizationPersonalDictEntry = { id: number; term: string; replacement: string; source: string }
 export type OrganizationPrivacyConfig = { verified?: boolean | null; contentRetention?: string | null; usageCounters?: string | null; infrastructure?: string | null }
 export type OrganizationRuleEntry = { id: number; rule: string }
+export type SupportReport = { app_version: string; os: string; memory_mb: number | null; engines: Partial<{ [key in string]: string }>; last_error: string; reported_at: string; description: string }
 export type OrganizationSession = { server_url: string; email: string; 
 /**
  * Identifiant d'organisation, quand il est connu.

@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Er is niets verwijderd. Nova opent weer zodra je toegang is hersteld.",
       "checkAgain": "Opnieuw controleren"
     },
+    "reportProblem": {
+      "title": "Een probleem melden",
+      "description": "Stuurt een diagnoserapport naar de server van uw school. Het bevat geen gedicteerde tekst, geschiedenis of e-mailadres.",
+      "descriptionLabel": "Wat is er gebeurd? (optioneel)",
+      "warning": "Wat u hier schrijft, wordt naar het Nova-team gestuurd. Schrijf geen gedicteerde tekst of persoonlijke gegevens.",
+      "send": "Rapport verzenden",
+      "sending": "Verzenden…",
+      "sent": "Bedankt, rapport verzonden.",
+      "failed": "Het rapport kon niet worden verzonden. Controleer uw verbinding met uw school en probeer het opnieuw."
+    },
     "diagnostic": {
       "title": "Diagnoserapport",
       "description": "Een bestand om aan uw beheerder te geven. Het beschrijft de versie, de machine, de verbinding met de server en de gemeten tijden. Het bevat geen dictaat, geen geschiedenis, geen persoonlijke waarden en geen sessietoken.",
