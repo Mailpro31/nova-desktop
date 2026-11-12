@@ -24,7 +24,7 @@ export const TOUR_CARDS: TourCard[] = [
   { id: "aiSkills", section: "aiskilltools" },
   { id: "reader", section: "reader" },
   { id: "dictionary", section: "configuration" },
-  { id: "courseNotes", section: "configuration" },
+  { id: "courseNotes", section: "history" },
   { id: "notes", section: "notes" },
   { id: "prompts", section: "prompts" },
   { id: "meeting", section: "meeting" },
