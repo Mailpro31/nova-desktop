@@ -316,15 +316,23 @@ fn diagnostic_checks(app: &AppHandle, device: &DeviceProfile) -> Vec<DiagnosticC
     });
     checks.push(DiagnosticCheck {
         id: "transcription_model".to_string(),
-        status: if transcription_manager.get_current_model().is_some() {
+        // Le modèle se décharge après quelques minutes d'inactivité : seul un
+        // modèle ni chargé ni choisi mérite l'avertissement.
+        status: if transcription_manager.get_current_model().is_some()
+            || !settings.selected_model.is_empty()
+        {
             DiagnosticStatus::Ok
         } else {
             DiagnosticStatus::Warning
         },
-        detail: transcription_manager
-            .get_current_model()
-            .map(|model| format!("Selected model: {model}"))
-            .unwrap_or_else(|| "No transcription model selected".to_string()),
+        detail: match transcription_manager.get_current_model() {
+            Some(model) => format!("Loaded model: {model}"),
+            None if !settings.selected_model.is_empty() => format!(
+                "Selected model: {} (unloaded while idle)",
+                settings.selected_model
+            ),
+            None => "No transcription model selected".to_string(),
+        },
     });
     checks.push(DiagnosticCheck {
         id: "online_rewrite".to_string(),
