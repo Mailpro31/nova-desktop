@@ -250,7 +250,7 @@ describe("Organization navigation", () => {
     // `visible` s'y ajoute sans le remplacer : `enabled` dit si l'entree
     // existe pour ce poste, `visible` si la capacite qui la porte est ouverte.
     expect(code(SIDEBAR).replace(/\s+/g, " ")).toContain(
-      "ORGANIZATION_PRIMARY.filter( (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),",
+      "ORGANIZATION_PRIMARY.filter(isVisible)",
     );
   });
 });

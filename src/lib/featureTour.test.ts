@@ -12,7 +12,9 @@ import {
   isTourSeen,
   markTourSeen,
   requestTourReplay,
+  tourCardsFor,
 } from "./featureTour";
+import { sectionOpen } from "./sectionVisibility";
 
 const realLocalStorage = Object.getOwnPropertyDescriptor(
   globalThis,
@@ -75,5 +77,63 @@ describe("visite guidée", () => {
         expect(featureTour.cards[c.id].text).toBeTruthy();
       }
     }
+  });
+});
+
+describe("visite filtrée par les sections visibles", () => {
+  // Poste testé : seules ces cinq sections sont dans la navigation.
+  const visibles = new Set([
+    "home",
+    "history",
+    "postprocessing",
+    "connections",
+    "reader",
+  ]);
+  const ids = (open: (s: never) => boolean) =>
+    tourCardsFor(open as never).map((c) => c.id);
+
+  it("ne garde que les cartes dont la section est visible", () => {
+    const cartes = ids((s) => visibles.has(s as string));
+    expect(cartes).toEqual([
+      "dictation",
+      "voiceCommands",
+      "styles",
+      "reader",
+      "dictionary",
+      "courseNotes",
+      "history",
+      "connections",
+    ]);
+  });
+
+  it("les capacités fermées retirent leurs cartes (Réunion jamais montrée)", () => {
+    const fermees = {
+      learning: false,
+      meeting: false,
+      engineeringNotes: false,
+      writingStyles: true,
+      prompts: false,
+      history: true,
+      commands: false,
+      aiSkills: false,
+    };
+    const toutes = [
+      ...new Set(TOUR_CARDS.map((c) => c.section!).filter(Boolean)),
+    ];
+    const cartes = ids((s) => sectionOpen(s as never, fermees));
+    for (const absent of [
+      "meeting",
+      "learn",
+      "notes",
+      "prompts",
+      "commands",
+      "aiSkills",
+    ])
+      expect(cartes).not.toContain(absent);
+    expect(toutes.length).toBeGreaterThan(0);
+  });
+
+  it("tout ouvert, la visite est complète", () => {
+    expect(ids(() => true)).toHaveLength(TOUR_CARDS.length);
   });
 });

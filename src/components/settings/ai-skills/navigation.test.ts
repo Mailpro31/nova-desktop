@@ -49,8 +49,9 @@ describe("entrée Nova Commands", () => {
 
   test("elle se ferme sur la capacité que l'organisation gouverne", () => {
     const code = source(SIDEBAR);
-    expect(code).toContain('useCapability("commands")');
-    expect(code).toContain('(id !== "aiskills" || commandsOpen)');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'aiskills: "commands"',
+    );
   });
 
   test("elle reste alignée sur les AI Skills exécutables d'à côté", () => {

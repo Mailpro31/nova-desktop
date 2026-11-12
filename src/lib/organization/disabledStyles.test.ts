@@ -90,13 +90,15 @@ describe("La barre latérale", () => {
   const sidebar = code("src/components/Sidebar.tsx");
 
   test("Nova Commands suit la capacité des commandes", () => {
-    expect(sidebar).toContain('useCapability("commands")');
-    expect(sidebar).toContain('id !== "aiskills"');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'aiskills: "commands"',
+    );
   });
 
   test("AI Skills suit la capacité des AI Skills", () => {
-    expect(sidebar).toContain('useCapability("aiSkills")');
-    expect(sidebar).toContain('id !== "aiskilltools"');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'aiskilltools: "aiSkills"',
+    );
   });
 });
 

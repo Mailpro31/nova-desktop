@@ -84,7 +84,9 @@ describe("navigation du mode réunion", () => {
 
   test("sa visibilité vient de la capacité, jamais de l'édition", () => {
     const code = source(SIDEBAR);
-    expect(code).toContain('useCapability("meeting")');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'meeting: "meeting"',
+    );
 
     const section = code.slice(
       code.indexOf("meeting: {"),

@@ -41,7 +41,9 @@ describe("navigation Learn", () => {
 
   test("sa visibilité vient de la capacité, jamais de l'édition", () => {
     const code = source(SIDEBAR);
-    expect(code).toContain('useCapability("learning")');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'learn: "learning"',
+    );
 
     // La section elle-même ne doit pas se conditionner à l'édition.
     const section = code.slice(
@@ -54,7 +56,7 @@ describe("navigation Learn", () => {
   test("le filtre s'applique à la barre latérale", () => {
     const code = source(SIDEBAR);
     expect(code.replace(/\s+/g, " ")).toContain(
-      "ORGANIZATION_PRIMARY.filter( (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),",
+      "ORGANIZATION_PRIMARY.filter(isVisible)",
     );
   });
 
