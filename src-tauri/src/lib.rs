@@ -701,6 +701,7 @@ fn build_specta_builder() -> Builder<tauri::Wry> {
                 organization_sso::sign_in_with_organization,
                 organization_sso::organization_auth_providers,
                 email_discovery::discover_organization_by_email,
+                email_discovery::discover_managed_organization,
                 organization_discovery::discover_organization,
                 deployment::get_deployment_state,
                 commands::organization::load_organization_session,

@@ -770,6 +770,18 @@ async discoverOrganizationByEmail(email: string, allowInsecureEndpoint: boolean)
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Découverte sans saisie : le domaine de l'école posé par la DSI
+ * (`HKLM\SOFTWARE\Policies\Nova`, valeur `EmailDomain`). `null` = aucun domaine imposé.
+ */
+async discoverManagedOrganization() : Promise<Result<EmailDiscovery | null, EmailDiscoveryError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("discover_managed_organization") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async discoverOrganization(discoveryBaseUrl: string, organization: string, allowInsecureEndpoint: boolean) : Promise<Result<OrganizationBootstrap, DiscoveryError>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("discover_organization", { discoveryBaseUrl, organization, allowInsecureEndpoint }) };
