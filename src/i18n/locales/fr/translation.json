@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Rien n’a été supprimé. Nova se rouvre dès que votre accès est rétabli.",
       "checkAgain": "Vérifier à nouveau"
     },
+    "reportProblem": {
+      "title": "Signaler un problème",
+      "description": "Envoie un rapport de diagnostic au serveur de votre école. Il ne contient aucune dictée, aucun historique ni adresse e-mail.",
+      "descriptionLabel": "Que s’est-il passé ? (facultatif)",
+      "warning": "Ce que vous écrivez ici est transmis à l’équipe Nova. N’y mettez ni texte dicté ni information personnelle.",
+      "send": "Envoyer le rapport",
+      "sending": "Envoi…",
+      "sent": "Merci, envoyé.",
+      "failed": "Le rapport n’a pas pu être envoyé. Vérifiez votre connexion à votre école, puis réessayez."
+    },
     "diagnostic": {
       "title": "Rapport de diagnostic",
       "description": "Un fichier pour votre administrateur. Il ne contient aucune dictée ni donnée personnelle.",

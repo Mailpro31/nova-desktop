@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Es wurde nichts gelöscht. Nova öffnet sich wieder, sobald Ihr Zugang wiederhergestellt ist.",
       "checkAgain": "Erneut prüfen"
     },
+    "reportProblem": {
+      "title": "Problem melden",
+      "description": "Sendet einen Diagnosebericht an den Server Ihrer Schule. Er enthält weder diktierten Text noch Verlauf oder E-Mail-Adresse.",
+      "descriptionLabel": "Was ist passiert? (optional)",
+      "warning": "Was Sie hier schreiben, geht an das Nova-Team. Schreiben Sie keinen diktierten Text und keine persönlichen Daten.",
+      "send": "Bericht senden",
+      "sending": "Wird gesendet…",
+      "sent": "Danke, der Bericht wurde gesendet.",
+      "failed": "Der Bericht konnte nicht gesendet werden. Prüfen Sie Ihre Verbindung zur Schule und versuchen Sie es erneut."
+    },
     "diagnostic": {
       "title": "Diagnosebericht",
       "description": "Eine Datei für Ihre Administration. Sie beschreibt die Version, den Rechner, die Verbindung zum Server und die gemessenen Zeiten. Sie enthält kein Diktat, keinen Verlauf, keine persönlichen Werte und kein Sitzungstoken.",

@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Non è stato eliminato nulla. Nova si riapre non appena il tuo accesso viene ripristinato.",
       "checkAgain": "Verifica di nuovo"
     },
+    "reportProblem": {
+      "title": "Segnala un problema",
+      "description": "Invia un rapporto diagnostico al server della tua scuola. Non contiene testo dettato, cronologia né indirizzo e-mail.",
+      "descriptionLabel": "Cosa è successo? (facoltativo)",
+      "warning": "Ciò che scrivi qui viene inviato al team di Nova. Non scrivere testo dettato né dati personali.",
+      "send": "Invia il rapporto",
+      "sending": "Invio…",
+      "sent": "Grazie, rapporto inviato.",
+      "failed": "Impossibile inviare il rapporto. Controlla la connessione alla tua scuola e riprova."
+    },
     "diagnostic": {
       "title": "Rapporto di diagnostica",
       "description": "Un file da consegnare al proprio amministratore. Descrive la versione, la macchina, il collegamento al server e i tempi misurati. Non contiene alcuna dettatura, nessuna cronologia, nessun valore personale e nessun token di sessione.",

@@ -210,6 +210,55 @@ pub fn parse_doh_response(body: &str) -> Result<Vec<String>, EmailDiscoveryError
         .collect())
 }
 
+/// L'adresse de service lue dans une réponse DNS-over-HTTPS, après les deux
+/// premiers contrôles (HTTPS, hôte sous le domaine). Pur : testable sans réseau.
+pub fn endpoint_from_dns_answer(
+    domain: &str,
+    body: &str,
+    allow_insecure_endpoint: bool,
+) -> Result<String, EmailDiscoveryError> {
+    let endpoint =
+        record_endpoint(&parse_doh_response(body)?).ok_or(EmailDiscoveryError::RecordNotFound)?;
+    service_endpoint_is_allowed(&endpoint, allow_insecure_endpoint)
+        .map_err(|_| EmailDiscoveryError::EndpointInvalid)?;
+    if !allow_insecure_endpoint && !endpoint_belongs_to_domain(&endpoint, domain) {
+        return Err(EmailDiscoveryError::EndpointOutsideDomain);
+    }
+    Ok(endpoint)
+}
+
+/// Le domaine imposé par la DSI, s'il y en a un : valeur `EmailDomain` de
+/// `HKLM\SOFTWARE\Policies\Nova`. Tolère un `@` ou une casse de trop.
+pub fn managed_domain(raw: Option<&str>) -> Option<String> {
+    email_domain(&format!("x@{}", raw?.trim().trim_start_matches('@')))
+}
+
+#[cfg(windows)]
+fn read_managed_domain() -> Option<String> {
+    use winreg::enums::{HKEY_LOCAL_MACHINE, KEY_READ, KEY_WOW64_64KEY};
+    let key = winreg::RegKey::predef(HKEY_LOCAL_MACHINE)
+        .open_subkey_with_flags(r"SOFTWARE\Policies\Nova", KEY_READ | KEY_WOW64_64KEY)
+        .ok()?;
+    managed_domain(key.get_value::<String, _>("EmailDomain").ok().as_deref())
+}
+
+#[cfg(not(windows))]
+fn read_managed_domain() -> Option<String> {
+    None
+}
+
+/// Découverte sans saisie : le poste a reçu le domaine de l'école de la DSI.
+/// `Ok(None)` = aucun domaine imposé, l'écran de connexion habituel s'applique.
+#[tauri::command]
+#[specta::specta]
+pub async fn discover_managed_organization() -> Result<Option<EmailDiscovery>, EmailDiscoveryError>
+{
+    match read_managed_domain() {
+        Some(domain) => discover_domain(domain, false).await.map(Some),
+        None => Ok(None),
+    }
+}
+
 /// Résout une adresse e-mail en adresse de service, en trois contrôles.
 #[tauri::command]
 #[specta::specta]
@@ -218,6 +267,13 @@ pub async fn discover_organization_by_email(
     allow_insecure_endpoint: bool,
 ) -> Result<EmailDiscovery, EmailDiscoveryError> {
     let domain = email_domain(&email).ok_or(EmailDiscoveryError::EmailInvalid)?;
+    discover_domain(domain, allow_insecure_endpoint).await
+}
+
+async fn discover_domain(
+    domain: String,
+    allow_insecure_endpoint: bool,
+) -> Result<EmailDiscovery, EmailDiscoveryError> {
     let client = reqwest::Client::builder()
         .timeout(Duration::from_secs(12))
         .build()
@@ -248,14 +304,7 @@ pub async fn discover_organization_by_email(
         .text()
         .await
         .map_err(|_| EmailDiscoveryError::DnsUnavailable)?;
-    let endpoint =
-        record_endpoint(&parse_doh_response(&body)?).ok_or(EmailDiscoveryError::RecordNotFound)?;
-
-    service_endpoint_is_allowed(&endpoint, allow_insecure_endpoint)
-        .map_err(|_| EmailDiscoveryError::EndpointInvalid)?;
-    if !allow_insecure_endpoint && !endpoint_belongs_to_domain(&endpoint, &domain) {
-        return Err(EmailDiscoveryError::EndpointOutsideDomain);
-    }
+    let endpoint = endpoint_from_dns_answer(&domain, &body, allow_insecure_endpoint)?;
 
     confirm(&client, &endpoint, domain).await
 }
@@ -408,6 +457,94 @@ mod tests {
     #[test]
     fn the_record_name_is_the_one_the_console_publishes() {
         assert_eq!(record_name("ecole.fr"), "_nova.ecole.fr");
+    }
+
+    const DNS_ECOLE: &str = r#"{"Status":0,"Answer":[{"name":"_nova.ecole.fr","type":16,"data":"v=spf1 -all"},{"name":"_nova.ecole.fr","type":16,"data":"v=nova1; endpoint=https://nova.ecole.fr"}]}"#;
+
+    #[test]
+    fn an_address_finds_the_right_server_through_the_txt_record() {
+        let domain = email_domain("prenom.nom@Ecole.fr").unwrap();
+        assert_eq!(record_name(&domain), "_nova.ecole.fr");
+        assert_eq!(
+            endpoint_from_dns_answer(&domain, DNS_ECOLE, false).unwrap(),
+            "https://nova.ecole.fr"
+        );
+    }
+
+    #[test]
+    fn a_record_pointing_outside_the_domain_or_absent_is_refused() {
+        let elsewhere = DNS_ECOLE.replace(
+            "endpoint=https://nova.ecole.fr",
+            "endpoint=https://nova.ailleurs.test",
+        );
+        assert_eq!(
+            endpoint_from_dns_answer("ecole.fr", &elsewhere, false),
+            Err(EmailDiscoveryError::EndpointOutsideDomain)
+        );
+        assert_eq!(
+            endpoint_from_dns_answer("ecole.fr", r#"{"Status":3}"#, false),
+            Err(EmailDiscoveryError::RecordNotFound)
+        );
+        let http = DNS_ECOLE.replace("endpoint=https://", "endpoint=http://");
+        assert_eq!(
+            endpoint_from_dns_answer("ecole.fr", &http, false),
+            Err(EmailDiscoveryError::EndpointInvalid)
+        );
+    }
+
+    /// Serveur HTTP minimal : répond une fois, puis s'arrête.
+    fn serve_once(body: &'static str) -> String {
+        use std::io::{Read, Write};
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+        let address = listener.local_addr().unwrap();
+        std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut request = [0u8; 2048];
+            let _ = stream.read(&mut request);
+            let _ = write!(
+                stream,
+                "HTTP/1.1 200 OK\r\ncontent-type: application/json\r\ncontent-length: {}\r\nconnection: close\r\n\r\n{body}",
+                body.len()
+            );
+        });
+        format!("http://{address}")
+    }
+
+    #[test]
+    fn the_server_found_must_confirm_it_serves_the_domain() {
+        let client = reqwest::Client::new();
+        let endpoint = serve_once(r#"{"serves":true,"organization":{"name":"École"}}"#);
+        let found =
+            tauri::async_runtime::block_on(confirm(&client, &endpoint, "ecole.fr".into())).unwrap();
+        assert_eq!(found.organization_name, "École");
+        assert_eq!(found.service_endpoint, endpoint);
+
+        let endpoint = serve_once(r#"{"serves":false}"#);
+        assert_eq!(
+            tauri::async_runtime::block_on(confirm(&client, &endpoint, "ecole.fr".into())),
+            Err(EmailDiscoveryError::DomainNotServed)
+        );
+    }
+
+    #[test]
+    fn the_domain_set_by_the_it_department_is_read_leniently() {
+        assert_eq!(
+            managed_domain(Some("Ecole.FR")).as_deref(),
+            Some("ecole.fr")
+        );
+        assert_eq!(
+            managed_domain(Some(" @ecole.fr ")).as_deref(),
+            Some("ecole.fr")
+        );
+        for bad in [
+            None,
+            Some(""),
+            Some("ecole"),
+            Some("a@ecole.fr"),
+            Some("ec ole.fr"),
+        ] {
+            assert!(managed_domain(bad).is_none(), "{bad:?}");
+        }
     }
 
     #[test]

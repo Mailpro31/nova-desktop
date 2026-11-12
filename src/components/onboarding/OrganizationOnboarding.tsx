@@ -344,6 +344,23 @@ const OrganizationOnboarding: React.FC<OrganizationOnboardingProps> = ({
         return;
       }
 
+      // Domaine de l'école posé par la DSI : le serveur se trouve par le DNS,
+      // sans rien demander à l'élève. Un échec laisse l'écran habituel.
+      if (!loadedConfig?.server_url && !labServer()) {
+        const managed = await commands
+          .discoverManagedOrganization()
+          .catch(() => null);
+        if (!mounted) return;
+        if (managed?.status === "ok" && managed.data) {
+          bootConfig.current = loadedConfig;
+          setConfig(loadedConfig);
+          setServerUrl(managed.data.service_endpoint);
+          setServerProvisioned(true);
+          setConfigLoaded(true);
+          return;
+        }
+      }
+
       setManagedBootstrap(false);
       bootConfig.current = loadedConfig;
       setConfig(loadedConfig);
