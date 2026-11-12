@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "Görünüm",
-    "orb": "Küre",
-    "overlay": "Katman"
+    "orb": "Küre"
   },
   "aiSkillTools": {
     "title": "AI Skills",

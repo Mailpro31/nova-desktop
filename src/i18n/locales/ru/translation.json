@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "Оформление",
-    "orb": "Сфера",
-    "overlay": "Наложение"
+    "orb": "Сфера"
   },
   "aiSkillTools": {
     "title": "AI Skills",

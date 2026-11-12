@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "Weergave",
-    "orb": "Orb",
-    "overlay": "Overlay"
+    "orb": "Orb"
   },
   "aiSkillTools": {
     "title": "AI Skills",

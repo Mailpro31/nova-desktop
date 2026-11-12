@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "外观",
-    "orb": "光球",
-    "overlay": "浮层"
+    "orb": "光球"
   },
   "aiSkillTools": {
     "title": "AI Skills",

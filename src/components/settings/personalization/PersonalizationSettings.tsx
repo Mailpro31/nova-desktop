@@ -111,9 +111,6 @@ export const PersonalizationSettings: React.FC = () => {
             </div>
           </div>
         </SettingContainer>
-      </SettingsGroup>
-
-      <SettingsGroup title={t("personalization.overlay")}>
         <ToggleSwitch
           checked={persistentOverlay}
           onChange={togglePersistentOverlay}

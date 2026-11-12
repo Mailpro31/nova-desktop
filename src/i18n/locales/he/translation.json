@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "מראה",
-    "orb": "ספירה",
-    "overlay": "שכבה"
+    "orb": "ספירה"
   },
   "aiSkillTools": {
     "title": "AI Skills",

@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "Wygląd",
-    "orb": "Kula",
-    "overlay": "Nakładka"
+    "orb": "Kula"
   },
   "aiSkillTools": {
     "title": "AI Skills",
