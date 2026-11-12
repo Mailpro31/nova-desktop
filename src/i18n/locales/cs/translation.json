@@ -1207,14 +1207,14 @@
       "checkAgain": "Zkontrolovat znovu"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "Nahlásit problém",
+      "description": "Odešle diagnostickou zprávu na server vaší školy. Neobsahuje žádný nadiktovaný text, historii ani e-mailovou adresu.",
+      "descriptionLabel": "Co se stalo? (nepovinné)",
+      "warning": "To, co sem napíšete, se odešle týmu Nova. Nepište nadiktovaný text ani osobní údaje.",
+      "send": "Odeslat zprávu",
+      "sending": "Odesílání…",
+      "sent": "Děkujeme, zpráva byla odeslána.",
+      "failed": "Zprávu se nepodařilo odeslat. Zkontrolujte připojení ke škole a zkuste to znovu."
     },
     "diagnostic": {
       "title": "Diagnostická zpráva",

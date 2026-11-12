@@ -255,7 +255,9 @@ function App() {
         });
       } else {
         console.warn("Recording failed:", detail);
-        showAttentionToast("error", t("errors.recordingUnavailableTitle"), { id: "errors.recordingUnavailableTitle" });
+        showAttentionToast("error", t("errors.recordingUnavailableTitle"), {
+          id: "errors.recordingUnavailableTitle",
+        });
       }
     });
     return () => {
@@ -270,7 +272,7 @@ function App() {
   useEffect(() => {
     const unlisten = listen("paste-error", () => {
       showAttentionToast("error", t("errors.pasteFailedTitle"), {
-          id: "errors.pasteFailedTitle",
+        id: "errors.pasteFailedTitle",
         description: t("errors.pasteFailed"),
       });
     });
@@ -284,7 +286,9 @@ function App() {
   useEffect(() => {
     const unlisten = listen<string>("transcription-error", (event) => {
       console.warn("Transcription failed:", event.payload);
-      showAttentionToast("error", t("errors.transcriptionFailedTitle"), { id: "errors.transcriptionFailedTitle" });
+      showAttentionToast("error", t("errors.transcriptionFailedTitle"), {
+        id: "errors.transcriptionFailedTitle",
+      });
     });
     return () => {
       unlisten.then((fn) => fn());
@@ -338,7 +342,7 @@ function App() {
         .then(() => {
           refreshOrganizationStatus();
           showAttentionToast("error", t("organization.sessionExpiredTitle"), {
-          id: "organization.sessionExpiredTitle",
+            id: "organization.sessionExpiredTitle",
             description,
           });
         })
@@ -419,7 +423,9 @@ function App() {
   useEffect(() => {
     const unlisten = listen<ModelStateEvent>("model-state-changed", (event) => {
       if (event.payload.event_type === "loading_failed") {
-        showAttentionToast("error", t("errors.privateEngineUnavailable"), { id: "errors.privateEngineUnavailable" });
+        showAttentionToast("error", t("errors.privateEngineUnavailable"), {
+          id: "errors.privateEngineUnavailable",
+        });
       }
     });
     return () => {

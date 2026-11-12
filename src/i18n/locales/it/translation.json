@@ -1207,14 +1207,14 @@
       "checkAgain": "Verifica di nuovo"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "Segnala un problema",
+      "description": "Invia un rapporto diagnostico al server della tua scuola. Non contiene testo dettato, cronologia né indirizzo e-mail.",
+      "descriptionLabel": "Cosa è successo? (facoltativo)",
+      "warning": "Ciò che scrivi qui viene inviato al team di Nova. Non scrivere testo dettato né dati personali.",
+      "send": "Invia il rapporto",
+      "sending": "Invio…",
+      "sent": "Grazie, rapporto inviato.",
+      "failed": "Impossibile inviare il rapporto. Controlla la connessione alla tua scuola e riprova."
     },
     "diagnostic": {
       "title": "Rapporto di diagnostica",

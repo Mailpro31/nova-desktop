@@ -1207,14 +1207,14 @@
       "checkAgain": "重新檢查"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "回報問題",
+      "description": "向您學校的伺服器傳送診斷報告。報告不含聽寫文字、歷程記錄或電子郵件地址。",
+      "descriptionLabel": "發生了什麼事？（選填）",
+      "warning": "您在此輸入的內容會傳送給 Nova 團隊。請勿填寫聽寫文字或個人資訊。",
+      "send": "傳送報告",
+      "sending": "傳送中…",
+      "sent": "謝謝，報告已傳送。",
+      "failed": "報告傳送失敗。請檢查與學校的連線後再試一次。"
     },
     "diagnostic": {
       "title": "診斷報告",

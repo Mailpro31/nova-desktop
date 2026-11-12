@@ -1207,14 +1207,14 @@
       "checkAgain": "다시 확인"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "문제 신고",
+      "description": "학교 서버로 진단 보고서를 보냅니다. 받아쓴 텍스트, 기록, 이메일 주소는 포함되지 않습니다.",
+      "descriptionLabel": "무슨 일이 있었나요? (선택)",
+      "warning": "여기에 입력한 내용은 Nova 팀에 전송됩니다. 받아쓴 텍스트나 개인 정보는 쓰지 마세요.",
+      "send": "보고서 보내기",
+      "sending": "보내는 중…",
+      "sent": "감사합니다. 보고서를 보냈습니다.",
+      "failed": "보고서를 보내지 못했습니다. 학교와의 연결을 확인한 후 다시 시도하세요."
     },
     "diagnostic": {
       "title": "진단 보고서",

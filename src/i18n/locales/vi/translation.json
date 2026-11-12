@@ -1207,14 +1207,14 @@
       "checkAgain": "Kiểm tra lại"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "Báo cáo sự cố",
+      "description": "Gửi báo cáo chẩn đoán đến máy chủ của trường bạn. Báo cáo không chứa văn bản đọc chính tả, lịch sử hay địa chỉ email.",
+      "descriptionLabel": "Đã xảy ra chuyện gì? (không bắt buộc)",
+      "warning": "Nội dung bạn nhập ở đây sẽ được gửi đến nhóm Nova. Đừng viết văn bản đọc chính tả hoặc thông tin cá nhân.",
+      "send": "Gửi báo cáo",
+      "sending": "Đang gửi…",
+      "sent": "Cảm ơn, đã gửi báo cáo.",
+      "failed": "Không thể gửi báo cáo. Hãy kiểm tra kết nối với trường rồi thử lại."
     },
     "diagnostic": {
       "title": "Báo cáo chẩn đoán",

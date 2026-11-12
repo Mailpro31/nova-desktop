@@ -1207,14 +1207,14 @@
       "checkAgain": "Yeniden kontrol et"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "Sorun bildir",
+      "description": "Okulunuzun sunucusuna bir tanılama raporu gönderir. Dikte edilmiş metin, geçmiş veya e-posta adresi içermez.",
+      "descriptionLabel": "Ne oldu? (isteğe bağlı)",
+      "warning": "Buraya yazdığınız Nova ekibine gönderilir. Dikte edilmiş metin veya kişisel bilgi yazmayın.",
+      "send": "Raporu gönder",
+      "sending": "Gönderiliyor…",
+      "sent": "Teşekkürler, rapor gönderildi.",
+      "failed": "Rapor gönderilemedi. Okulunuzla bağlantınızı kontrol edip yeniden deneyin."
     },
     "diagnostic": {
       "title": "Tanılama raporu",

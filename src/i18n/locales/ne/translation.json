@@ -1207,14 +1207,14 @@
       "checkAgain": "फेरि जाँच गर्नुहोस्"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "समस्याको रिपोर्ट गर्नुहोस्",
+      "description": "तपाईंको विद्यालयको सर्भरमा निदान रिपोर्ट पठाउँछ। यसमा बोलेर लेखाइएको पाठ, इतिहास वा इमेल ठेगाना हुँदैन।",
+      "descriptionLabel": "के भयो? (ऐच्छिक)",
+      "warning": "यहाँ लेखेको कुरा Nova टोलीलाई पठाइन्छ। बोलेर लेखाइएको पाठ वा व्यक्तिगत जानकारी नलेख्नुहोस्।",
+      "send": "रिपोर्ट पठाउनुहोस्",
+      "sending": "पठाउँदै…",
+      "sent": "धन्यवाद, रिपोर्ट पठाइयो।",
+      "failed": "रिपोर्ट पठाउन सकिएन। विद्यालयसँगको जडान जाँच गरेर फेरि प्रयास गर्नुहोस्।"
     },
     "diagnostic": {
       "title": "निदान प्रतिवेदन",

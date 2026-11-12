@@ -1207,14 +1207,14 @@
       "checkAgain": "もう一度確認"
     },
     "reportProblem": {
-      "title": "Report a problem",
-      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
-      "descriptionLabel": "What happened? (optional)",
-      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
-      "send": "Send the report",
-      "sending": "Sending…",
-      "sent": "Thank you, report sent.",
-      "failed": "The report could not be sent. Check your connection to your school, then try again."
+      "title": "問題を報告",
+      "description": "学校のサーバーに診断レポートを送信します。口述テキスト、履歴、メールアドレスは含まれません。",
+      "descriptionLabel": "何が起きましたか？（任意）",
+      "warning": "ここに入力した内容は Nova チームに送信されます。口述したテキストや個人情報は書かないでください。",
+      "send": "レポートを送信",
+      "sending": "送信中…",
+      "sent": "ありがとうございます。レポートを送信しました。",
+      "failed": "レポートを送信できませんでした。学校への接続を確認して、もう一度お試しください。"
     },
     "diagnostic": {
       "title": "診断レポート",
