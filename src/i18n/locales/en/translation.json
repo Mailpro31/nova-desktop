@@ -1187,7 +1187,8 @@
       "appName": "Name of the app in front",
       "onDevice": "This device",
       "note": "Your organization's server counts how many transcriptions and rewrites you run each day. It does not store their content.",
-      "onServer": "Organization server"
+      "onServer": "Organization server",
+      "thenOnlineAi": ", then an online AI service"
     },
     "updates": {
       "title": "New content from your organisation",

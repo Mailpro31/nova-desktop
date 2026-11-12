@@ -1187,7 +1187,8 @@
       "appName": "Name der Anwendung im Vordergrund",
       "onDevice": "Dieses Gerät",
       "note": "Der Server Ihrer Organisation zählt, wie viele Transkriptionen und Umformulierungen Sie täglich ausführen. Er speichert deren Inhalt nicht.",
-      "onServer": "Server der Organisation"
+      "onServer": "Server der Organisation",
+      "thenOnlineAi": ", dann ein Online-KI-Dienst"
     },
     "updates": {
       "title": "Neues von Ihrer Organisation",

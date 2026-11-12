@@ -1187,7 +1187,8 @@
       "appName": "Nombre de la aplicación en primer plano",
       "onDevice": "Este dispositivo",
       "note": "El servidor de tu organización cuenta cuántas transcripciones y reformulaciones haces cada día. No guarda su contenido.",
-      "onServer": "Servidor de la organización"
+      "onServer": "Servidor de la organización",
+      "thenOnlineAi": ", luego un servicio de IA en línea"
     },
     "updates": {
       "title": "Novedades de tu organización",

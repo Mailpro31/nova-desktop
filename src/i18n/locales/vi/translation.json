@@ -1187,7 +1187,8 @@
       "appName": "Tên ứng dụng đang ở phía trước",
       "onDevice": "Máy này",
       "note": "Máy chủ của tổ chức đếm số lần phiên âm và viết lại bạn thực hiện mỗi ngày. Máy chủ không lưu nội dung.",
-      "onServer": "Máy chủ của tổ chức"
+      "onServer": "Máy chủ của tổ chức",
+      "thenOnlineAi": ", sau đó là một dịch vụ AI trực tuyến"
     },
     "updates": {
       "title": "Nội dung mới từ tổ chức của bạn",

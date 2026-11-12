@@ -1187,7 +1187,8 @@
       "appName": "앞에 있는 앱 이름",
       "onDevice": "이 기기",
       "note": "조직 서버는 하루에 실행하는 전사 및 다시 쓰기 횟수를 셉니다. 내용은 저장하지 않습니다.",
-      "onServer": "조직 서버"
+      "onServer": "조직 서버",
+      "thenOnlineAi": ", 그다음 온라인 AI 서비스"
     },
     "updates": {
       "title": "조직의 새 소식",

@@ -1187,7 +1187,8 @@
       "appName": "前台应用的名称",
       "onDevice": "本机",
       "note": "组织服务器会统计你每天进行的转写和改写次数，但不保存其内容。",
-      "onServer": "组织服务器"
+      "onServer": "组织服务器",
+      "thenOnlineAi": "，然后是在线 AI 服务"
     },
     "updates": {
       "title": "来自你的组织的新内容",

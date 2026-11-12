@@ -1187,7 +1187,8 @@
       "appName": "Název aplikace v popředí",
       "onDevice": "Toto zařízení",
       "note": "Server vaší organizace počítá, kolik přepisů a přeformulování denně provedete. Jejich obsah neukládá.",
-      "onServer": "Server organizace"
+      "onServer": "Server organizace",
+      "thenOnlineAi": ", poté online služba AI"
     },
     "updates": {
       "title": "Novinky od vaší organizace",

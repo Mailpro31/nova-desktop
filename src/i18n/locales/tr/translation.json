@@ -1187,7 +1187,8 @@
       "appName": "Öndeki uygulamanın adı",
       "onDevice": "Bu aygıt",
       "note": "Kuruluşunuzun sunucusu günde kaç transkripsiyon ve yeniden yazma yaptığınızı sayar. İçeriklerini saklamaz.",
-      "onServer": "Kuruluş sunucusu"
+      "onServer": "Kuruluş sunucusu",
+      "thenOnlineAi": ", ardından çevrimiçi bir yapay zekâ hizmeti"
     },
     "updates": {
       "title": "Kurumunuzdan yenilikler",
