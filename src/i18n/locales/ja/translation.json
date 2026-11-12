@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "外観",
-    "orb": "オーブ",
-    "overlay": "オーバーレイ"
+    "orb": "オーブ"
   },
   "aiSkillTools": {
     "title": "AI Skills",

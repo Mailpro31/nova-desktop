@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "Apparence",
-    "orb": "Bulle",
-    "overlay": "Bulle"
+    "orb": "Bulle"
   },
   "aiSkillTools": {
     "title": "AI Skills",

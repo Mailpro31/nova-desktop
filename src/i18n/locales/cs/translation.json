@@ -1521,8 +1521,7 @@
   },
   "personalization": {
     "appearance": "Vzhled",
-    "orb": "Koule",
-    "overlay": "Překryv"
+    "orb": "Koule"
   },
   "aiSkillTools": {
     "title": "AI Skills",
