@@ -9,6 +9,8 @@ import {
   ListFilter,
   Bookmark,
   CalendarDays,
+  Bug,
+  Compass,
 } from "lucide-react";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -31,6 +33,8 @@ import { Button } from "../../ui/Button";
 import { AppDataDirectory } from "../AppDataDirectory";
 import { LogDirectory } from "../debug";
 import { RestartApp } from "../RestartApp";
+import { ReportProblem } from "../about/ReportProblem";
+import { requestTourReplay } from "../../../lib/featureTour";
 import { type } from "@tauri-apps/plugin-os";
 
 interface SectionCardProps {
@@ -187,9 +191,32 @@ export const OrganizationPersonalizationSection: React.FC<{
  * L'identité campus et la déconnexion **n'y sont plus** : elles vivent une
  * seule fois, sur la page Établissement.
  */
-export const OrganizationAdvancedSections: React.FC = () => (
-  <AboutSectionCard />
-);
+export const OrganizationAdvancedSections: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-5">
+      <AboutSectionCard />
+      <SectionCard
+        icon={Compass}
+        title={t("featureTour.replay.title")}
+        description={t("featureTour.replay.description")}
+      >
+        <div className="px-4 py-3">
+          <Button variant="secondary" size="md" onClick={requestTourReplay}>
+            {t("featureTour.replay.button")}
+          </Button>
+        </div>
+      </SectionCard>
+      <SectionCard
+        icon={Bug}
+        title={t("organization.reportProblem.title")}
+        description={t("organization.reportProblem.description")}
+      >
+        <ReportProblem />
+      </SectionCard>
+    </div>
+  );
+};
 
 const AboutSectionCard: React.FC = () => {
   const { t } = useTranslation();
@@ -228,6 +255,10 @@ const AboutSectionCard: React.FC = () => {
             {t("settings.about.sourceCode.button")}
           </Button>
         </div>
+        {/* CC BY 4.0 : la voix SIWIS doit être citée (serveur #169). */}
+        <p className="px-4 py-3 text-sm text-text-secondary border-b border-hairline">
+          {t("settings.about.credits.voice")}
+        </p>
         <AppDataDirectory descriptionMode="tooltip" grouped={true} />
         <LogDirectory grouped={true} />
         <RestartApp grouped={true} />

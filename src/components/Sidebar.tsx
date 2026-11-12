@@ -8,7 +8,6 @@ import {
   GraduationCap,
   History,
   House,
-  Info,
   Link2,
   MessageSquareText,
   NotebookPen,
@@ -21,7 +20,8 @@ import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
 import { useOrganizationStatus } from "../hooks/useOrganizationStatus";
 import { useOrganization } from "../hooks/useOrganization";
-import { useCapability } from "../hooks/useOrganizationContext";
+import { useOrganizationContext } from "../hooks/useOrganizationContext";
+import { sectionOpen } from "../lib/sectionVisibility";
 
 const ConnectionsSettings = lazy(() =>
   import("./settings/connections/ConnectionsSettings").then((module) => ({
@@ -68,11 +68,6 @@ const StructuredNotesSettings = lazy(() =>
 const MeetingSettings = lazy(() =>
   import("./settings/meeting/MeetingSettings").then((module) => ({
     default: module.MeetingSettings,
-  })),
-);
-const AboutSettings = lazy(() =>
-  import("./settings/about/OrganizationAboutSettings").then((module) => ({
-    default: module.OrganizationAboutSettings,
   })),
 );
 const OrganizationAiSkills = lazy(() =>
@@ -245,13 +240,6 @@ export const SECTIONS_CONFIG = {
     component: HistorySettings,
     enabled: always,
   },
-  about: {
-    labelKey: "sidebar.about",
-    campusLabelKey: undefined,
-    icon: Info,
-    component: AboutSettings,
-    enabled: always,
-  },
 } as const satisfies Record<string, SectionConfig>;
 
 /**
@@ -325,39 +313,31 @@ interface SidebarProps {
   onSectionChange: (section: SidebarSection) => void;
 }
 
+/**
+ * Vrai quand la section figure dans la navigation de ce poste : listée, prévue
+ * pour les réglages courants, et sa capacité ouverte par l'organisation. La
+ * barre latérale et la visite guidée lisent ce seul prédicat.
+ */
+export function useIsSectionVisible(): (id: SidebarSection) => boolean {
+  const { settings } = useSettings();
+  const { capabilities } = useOrganizationContext();
+  return (id) =>
+    ORGANIZATION_PRIMARY.includes(id) &&
+    SECTIONS_CONFIG[id].enabled(settings) &&
+    sectionOpen(id, capabilities);
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({
   activeSection,
   onSectionChange,
 }) => {
   const { t } = useTranslation();
-  const { settings } = useSettings();
+  const isVisible = useIsSectionVisible();
   // La barre latérale gérée vaut pour toute organisation — école comme
   // entreprise. Ce qui reste propre à l'une ou l'autre se décide entrée par
   // entrée, dans `SECTIONS_CONFIG.enabled`.
   const organization = useOrganization();
   const { connection } = useOrganizationStatus();
-  // Chaque entrée se masque quand l'organisation ferme la capacité qui la porte.
-  const learningOpen = useCapability("learning");
-  const notesOpen = useCapability("engineeringNotes");
-  const stylesOpen = useCapability("writingStyles");
-  const promptsOpen = useCapability("prompts");
-  const historyOpen = useCapability("history");
-  const meetingOpen = useCapability("meeting");
-  // Nova Commands et AI Skills : fermés quand l'organisation ferme la capacité
-  // correspondante. Le serveur refusait déjà de les exécuter ; les laisser dans
-  // la barre promettait une fonction qui ne répondait plus.
-  const commandsOpen = useCapability("commands");
-  const aiSkillsOpen = useCapability("aiSkills");
-  const visible = (id: SidebarSection) =>
-    (id !== "learn" || learningOpen) &&
-    (id !== "meeting" || meetingOpen) &&
-    (id !== "notes" || notesOpen) &&
-    (id !== "postprocessing" || stylesOpen) &&
-    (id !== "prompts" || promptsOpen) &&
-    (id !== "history" || historyOpen) &&
-    (id !== "aiskills" || commandsOpen) &&
-    (id !== "aiskilltools" || aiSkillsOpen);
-
   return (
     <nav className="flex flex-col w-[208px] shrink-0 h-full bg-sidebar border-e border-hairline px-3 py-4 gap-1">
       <div className="flex items-center gap-2.5 px-2.5 pb-4">
@@ -373,9 +353,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             organisation ; `visible` dit si la capacite qui la porte est
             ouverte. Learn passe le premier partout et se ferme sur le second
             quand la policy le decide. */}
-      {ORGANIZATION_PRIMARY.filter(
-        (id) => SECTIONS_CONFIG[id].enabled(settings) && visible(id),
-      ).map((id) => {
+      {ORGANIZATION_PRIMARY.filter(isVisible).map((id) => {
         const config = SECTIONS_CONFIG[id];
         const Icon = config.icon;
         return (

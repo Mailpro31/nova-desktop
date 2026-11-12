@@ -17,9 +17,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Button, Dialog } from "@/components/ui";
-import type { SidebarSection } from "@/components/Sidebar";
+import { useIsSectionVisible, type SidebarSection } from "@/components/Sidebar";
 import {
-  TOUR_CARDS,
+  tourCardsFor,
   TOUR_REPLAY_EVENT,
   isTourSeen,
   markTourSeen,
@@ -56,8 +56,9 @@ export const FeatureTour: React.FC<FeatureTourProps> = ({
 }) => {
   const { t } = useTranslation();
   const [index, setIndex] = useState(0);
-  const total = TOUR_CARDS.length;
-  const card = TOUR_CARDS[index];
+  const cards = tourCardsFor(useIsSectionVisible());
+  const total = cards.length;
+  const card = cards[Math.min(index, total - 1)];
   const last = index === total - 1;
   const Icon = ICONS[card.id] ?? Sparkles;
 
@@ -68,13 +69,12 @@ export const FeatureTour: React.FC<FeatureTourProps> = ({
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight")
-        setIndex((i) => Math.min(i + 1, TOUR_CARDS.length - 1));
+      if (e.key === "ArrowRight") setIndex((i) => Math.min(i + 1, total - 1));
       else if (e.key === "ArrowLeft") setIndex((i) => Math.max(i - 1, 0));
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, total]);
 
   return (
     <Dialog

@@ -105,9 +105,15 @@ describe("navigation", () => {
   const sidebar = readFileSync("src/components/Sidebar.tsx", "utf8");
 
   test("Styles, Prompts et Historique suivent leur capacité", () => {
-    expect(sidebar).toContain('useCapability("writingStyles")');
-    expect(sidebar).toContain('useCapability("prompts")');
-    expect(sidebar).toContain('useCapability("history")');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'postprocessing: "writingStyles"',
+    );
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'prompts: "prompts"',
+    );
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'history: "history"',
+    );
   });
 
   test("le poste lit la liste que le serveur envoie", () => {

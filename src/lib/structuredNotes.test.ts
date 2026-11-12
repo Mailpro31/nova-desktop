@@ -93,7 +93,9 @@ describe("navigation", () => {
   });
 
   test("une organisation qui ferme la fonction la retire de la barre", () => {
-    expect(sidebar).toContain('useCapability("engineeringNotes")');
+    expect(readFileSync("src/lib/sectionVisibility.ts", "utf8")).toContain(
+      'notes: "engineeringNotes"',
+    );
   });
 
   test("Réglages n'a plus d'onglet de notes", () => {

@@ -33,6 +33,18 @@ export const TOUR_CARDS: TourCard[] = [
   { id: "connections", section: "connections" },
 ];
 
+/**
+ * Les cartes dont la section est présente sur ce poste. Sans section, ou sur
+ * « configuration » (Réglages, toujours atteignable), la carte reste.
+ */
+export function tourCardsFor(
+  isVisible: (section: SidebarSection) => boolean,
+): TourCard[] {
+  return TOUR_CARDS.filter(
+    (c) => !c.section || c.section === "configuration" || isVisible(c.section),
+  );
+}
+
 export function isTourSeen(): boolean {
   try {
     return localStorage.getItem(KEY) === "seen";
