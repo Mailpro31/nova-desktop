@@ -1794,5 +1794,78 @@
     "fromHere": "Nhấp vào một đoạn để đọc từ đó.",
     "noText": "PDF này không có văn bản để đọc (tài liệu được quét?).",
     "openError": "Không thể mở tài liệu này."
+  },
+  "featureTour": {
+    "title": "Nova tour",
+    "progress": "Step {{current}} of {{total}}",
+    "next": "Next",
+    "previous": "Back",
+    "skip": "Skip",
+    "finish": "Finish",
+    "open": "Open",
+    "close": "Close the tour",
+    "replay": {
+      "title": "Nova tour",
+      "description": "Go through Nova’s features again, one by one.",
+      "button": "Replay the tour"
+    },
+    "cards": {
+      "dictation": {
+        "title": "Dictate",
+        "text": "Press your shortcut and speak. The text appears where your cursor is."
+      },
+      "voiceCommands": {
+        "title": "Voice commands",
+        "text": "Say “new line” or “question mark”. Nova adds the punctuation and layout for you."
+      },
+      "styles": {
+        "title": "Styles",
+        "text": "Nova rewrites what you say: email, message, clear text. Pick the Style that suits you."
+      },
+      "commands": {
+        "title": "Nova Commands",
+        "text": "Select some text: Nova explains it, summarizes it, fixes it or translates it."
+      },
+      "aiSkills": {
+        "title": "AI Skills",
+        "text": "Ready-made actions on the text you select."
+      },
+      "reader": {
+        "title": "Reader",
+        "text": "Open a PDF or paste a text. Nova reads it aloud and highlights the word being read."
+      },
+      "dictionary": {
+        "title": "Dictionary and shortcuts",
+        "text": "Add your hard words. Link a short phrase to a long text."
+      },
+      "courseNotes": {
+        "title": "Course notes",
+        "text": "Mark what matters by saying it. Each dictation is filed under its course."
+      },
+      "notes": {
+        "title": "Structured notes",
+        "text": "Paste or dictate rough notes. Nova sorts them without losing a single fact."
+      },
+      "prompts": {
+        "title": "Prompts",
+        "text": "Nova keeps the prompts written from your dictations, ready to reuse."
+      },
+      "meeting": {
+        "title": "Meeting mode",
+        "text": "Nova listens to the meeting and writes a summary at the end."
+      },
+      "learn": {
+        "title": "Learn",
+        "text": "Short lessons to get better with AI, a few minutes at a time."
+      },
+      "history": {
+        "title": "History",
+        "text": "Find everything you dictated, to copy or reread."
+      },
+      "connections": {
+        "title": "Connections",
+        "text": "Link Nova to your other apps, like your timetable."
+      }
+    }
   }
 }
