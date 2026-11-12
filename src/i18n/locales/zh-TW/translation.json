@@ -1187,7 +1187,8 @@
       "appName": "前景應用程式的名稱",
       "onDevice": "本機",
       "note": "組織伺服器會統計你每天進行的轉錄與改寫次數，但不保存其內容。",
-      "onServer": "組織伺服器"
+      "onServer": "組織伺服器",
+      "thenOnlineAi": "，然後是線上 AI 服務"
     },
     "updates": {
       "title": "來自您的組織的新內容",

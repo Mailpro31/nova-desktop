@@ -1187,7 +1187,8 @@
       "appName": "Nome dell'applicazione in primo piano",
       "onDevice": "Questo dispositivo",
       "note": "Il server della tua organizzazione conta quante trascrizioni e riformulazioni esegui ogni giorno. Non ne conserva il contenuto.",
-      "onServer": "Server dell'organizzazione"
+      "onServer": "Server dell'organizzazione",
+      "thenOnlineAi": ", poi un servizio di IA online"
     },
     "updates": {
       "title": "Novità dalla tua organizzazione",

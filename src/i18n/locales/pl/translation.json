@@ -1187,7 +1187,8 @@
       "appName": "Nazwa aplikacji na pierwszym planie",
       "onDevice": "To urządzenie",
       "note": "Serwer organizacji zlicza, ile transkrypcji i przeredagowań wykonujesz dziennie. Nie przechowuje ich treści.",
-      "onServer": "Serwer organizacji"
+      "onServer": "Serwer organizacji",
+      "thenOnlineAi": ", następnie usługa AI online"
     },
     "updates": {
       "title": "Nowości od Twojej organizacji",

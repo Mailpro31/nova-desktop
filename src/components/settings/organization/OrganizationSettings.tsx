@@ -55,6 +55,11 @@ const CAPABILITY_WORDING: Record<string, WordingId> = {
 export const OrganizationSettings: React.FC = () => {
   const { t } = useTranslation();
   const word = useOrganizationWording();
+  // Le texte et l'audio partent aussi chez le fournisseur d'IA en ligne de l'école :
+  // « serveur de l'établissement » seul serait faux (dossier RGPD).
+  const externalAi = useOrganizationStore(
+    (state) => state.config?.processing_location === "external_ai_provider",
+  );
   const { session, connection, serverName, refresh } = useOrganizationStatus();
   const organization = useOrganization();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -223,7 +228,8 @@ export const OrganizationSettings: React.FC = () => {
               value={
                 row.location === "device"
                   ? t("organization.data.onDevice")
-                  : word("dataOnServer")
+                  : word("dataOnServer") +
+                    (externalAi ? t("organization.data.thenOnlineAi") : "")
               }
             />
           ))}

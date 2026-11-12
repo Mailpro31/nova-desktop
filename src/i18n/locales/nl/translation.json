@@ -1187,7 +1187,8 @@
       "appName": "Naam van de toepassing op de voorgrond",
       "onDevice": "Dit apparaat",
       "note": "De server van je organisatie telt hoeveel transcripties en herschrijvingen je per dag uitvoert. De inhoud wordt niet bewaard.",
-      "onServer": "Server van de organisatie"
+      "onServer": "Server van de organisatie",
+      "thenOnlineAi": ", daarna een online AI-dienst"
     },
     "updates": {
       "title": "Nieuw van uw organisatie",

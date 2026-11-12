@@ -1187,7 +1187,8 @@
       "appName": "Namnet på programmet i förgrunden",
       "onDevice": "Den här enheten",
       "note": "Din organisations server räknar hur många transkriberingar och omformuleringar du gör per dag. Innehållet sparas inte.",
-      "onServer": "Organisationens server"
+      "onServer": "Organisationens server",
+      "thenOnlineAi": ", sedan en AI-tjänst online"
     },
     "updates": {
       "title": "Nytt från din organisation",
