@@ -1794,5 +1794,78 @@
     "fromHere": "Cliquez sur un paragraphe pour lire à partir de là.",
     "noText": "Ce PDF ne contient pas de texte à lire (un document scanné ?).",
     "openError": "Ce document n'a pas pu être ouvert."
+  },
+  "featureTour": {
+    "title": "Visite de Nova",
+    "progress": "Étape {{current}} sur {{total}}",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "skip": "Passer",
+    "finish": "Terminer",
+    "open": "Ouvrir",
+    "close": "Fermer la visite",
+    "replay": {
+      "title": "Visite de Nova",
+      "description": "Revoir les fonctions de Nova, une par une.",
+      "button": "Revoir la visite"
+    },
+    "cards": {
+      "dictation": {
+        "title": "Dictez",
+        "text": "Appuyez sur votre raccourci et parlez. Le texte s’écrit là où se trouve votre curseur."
+      },
+      "voiceCommands": {
+        "title": "Commandes vocales",
+        "text": "Dites « à la ligne » ou « point d’interrogation ». Nova met la ponctuation et la mise en page pour vous."
+      },
+      "styles": {
+        "title": "Styles",
+        "text": "Nova reformule ce que vous dites : mail, message, texte clair. Choisissez le Style qui vous convient."
+      },
+      "commands": {
+        "title": "Nova Commands",
+        "text": "Sélectionnez un texte : Nova l’explique, le résume, le corrige ou le traduit."
+      },
+      "aiSkills": {
+        "title": "AI Skills",
+        "text": "Des actions prêtes à l’emploi sur le texte que vous sélectionnez."
+      },
+      "reader": {
+        "title": "Lecteur",
+        "text": "Ouvrez un PDF ou collez un texte. Nova le lit à voix haute et surligne le mot lu."
+      },
+      "dictionary": {
+        "title": "Dictionnaire et raccourcis",
+        "text": "Ajoutez vos mots difficiles. Associez une phrase courte à un long texte."
+      },
+      "courseNotes": {
+        "title": "Notes de cours",
+        "text": "Marquez ce qui compte en le disant. Chaque dictée est rangée sous son cours."
+      },
+      "notes": {
+        "title": "Notes structurées",
+        "text": "Collez ou dictez des notes en vrac. Nova les range sans perdre un seul fait."
+      },
+      "prompts": {
+        "title": "Prompts",
+        "text": "Nova garde les prompts écrits à partir de vos dictées, prêts à réutiliser."
+      },
+      "meeting": {
+        "title": "Mode réunion",
+        "text": "Nova écoute la réunion et écrit un compte rendu à la fin."
+      },
+      "learn": {
+        "title": "Apprendre",
+        "text": "De petites leçons pour progresser avec l’IA, quelques minutes à la fois."
+      },
+      "history": {
+        "title": "Historique",
+        "text": "Retrouvez tout ce que vous avez dicté, pour le copier ou le relire."
+      },
+      "connections": {
+        "title": "Connexions",
+        "text": "Reliez Nova à vos autres applications, comme l’emploi du temps."
+      }
+    }
   }
 }

@@ -30,6 +30,7 @@ import {
   CustomizeStep,
   SmartSetupStep,
   TutorialOnboarding,
+  FeatureTourGate,
   VoiceCalibrationStep,
 } from "./components/onboarding";
 import { SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
@@ -41,6 +42,7 @@ import { useSystemReadiness } from "./hooks/useSystemReadiness";
 import { useOnboardingFlow } from "./hooks/useOnboardingFlow";
 import { useOrganizationUpdates } from "./hooks/useOrganizationUpdates";
 import { reconcileWithLegacySetting } from "./lib/onboarding/progress";
+import { markTourSeen } from "./lib/featureTour";
 import { useSettingsStore } from "./stores/settingsStore";
 import { refreshOrganizationConfig } from "./stores/organizationStore";
 import { currentOrganizationWordingKey } from "./hooks/useOrganizationWording";
@@ -452,6 +454,8 @@ function App() {
       // après le SSO, Nova reprend donc à la préparation de la première dictée.
       const alreadyConfigured = hasCompletedOnboarding;
       reconcileWithLegacySetting(alreadyConfigured);
+      // Un poste déjà configuré n'a pas besoin de la visite d'accueil.
+      if (alreadyConfigured) markTourSeen();
       setIsFirstRun(!alreadyConfigured);
 
       // Une permission révoquée doit pouvoir être réaccordée : sur un
@@ -682,6 +686,7 @@ function App() {
           </>
         }
       >
+        <FeatureTourGate onNavigate={setCurrentSection} />
         <Suspense
           fallback={
             <div className="flex justify-center py-16" role="status">
