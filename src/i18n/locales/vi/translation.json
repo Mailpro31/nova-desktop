@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Không có gì bị xóa. Nova sẽ mở lại ngay khi quyền truy cập được khôi phục.",
       "checkAgain": "Kiểm tra lại"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "Báo cáo chẩn đoán",
       "description": "Một tệp để giao cho quản trị viên của bạn. Nó mô tả phiên bản, máy tính, kết nối tới máy chủ và các thời gian đo được. Nó không chứa bất kỳ nội dung đọc chính tả, lịch sử, giá trị cá nhân hay mã phiên nào.",

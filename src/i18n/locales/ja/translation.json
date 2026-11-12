@@ -1206,6 +1206,16 @@
       "nothingDeleted": "何も削除されていません。アクセスが復元されると Nova は再び開きます。",
       "checkAgain": "もう一度確認"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "診断レポート",
       "description": "管理者に渡すファイルです。バージョン、端末、サーバーとの接続、測定された時間を記載します。口述内容、履歴、個人情報、セッショントークンは一切含みません。",

@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Нічого не видалено. Nova знову відкриється, щойно доступ буде відновлено.",
       "checkAgain": "Перевірити знову"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "Діагностичний звіт",
       "description": "Файл, який слід передати адміністратору. Він описує версію, комп’ютер, з’єднання із сервером та виміряні часи. Він не містить жодного диктування, історії, особистих значень чи токена сеансу.",

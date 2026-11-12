@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Nic nie zostało usunięte. Nova otworzy się ponownie, gdy dostęp zostanie przywrócony.",
       "checkAgain": "Sprawdź ponownie"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "Raport diagnostyczny",
       "description": "Plik do przekazania administratorowi. Opisuje wersję, komputer, połączenie z serwerem i zmierzone czasy. Nie zawiera żadnego dyktowania, historii, wartości osobistych ani tokenu sesji.",

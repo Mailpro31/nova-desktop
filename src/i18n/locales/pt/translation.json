@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Nada foi excluído. O Nova abre novamente assim que seu acesso for restaurado.",
       "checkAgain": "Verificar novamente"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "Relatório de diagnóstico",
       "description": "Um ficheiro para entregar ao seu administrador. Descreve a versão, a máquina, a ligação ao servidor e os tempos medidos. Não contém qualquer ditado, histórico, valor pessoal nem token de sessão.",

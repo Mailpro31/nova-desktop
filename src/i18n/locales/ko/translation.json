@@ -1206,6 +1206,16 @@
       "nothingDeleted": "삭제된 것은 없습니다. 액세스가 복원되면 Nova가 다시 열립니다.",
       "checkAgain": "다시 확인"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "진단 보고서",
       "description": "관리자에게 전달할 파일입니다. 버전, 기기, 서버 연결, 측정된 시간을 설명합니다. 받아쓴 내용, 기록, 개인 정보, 세션 토큰은 전햘 포함되지 않습니다.",

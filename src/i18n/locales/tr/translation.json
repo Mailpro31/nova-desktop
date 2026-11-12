@@ -1206,6 +1206,16 @@
       "nothingDeleted": "Hiçbir şey silinmedi. Erişiminiz geri verildiğinde Nova yeniden açılır.",
       "checkAgain": "Yeniden kontrol et"
     },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Sends a diagnostic report to your school's server. It contains no dictated text, history or email address.",
+      "descriptionLabel": "What happened? (optional)",
+      "warning": "What you type here is sent to the Nova team. Do not write dictated text or personal information.",
+      "send": "Send the report",
+      "sending": "Sending…",
+      "sent": "Thank you, report sent.",
+      "failed": "The report could not be sent. Check your connection to your school, then try again."
+    },
     "diagnostic": {
       "title": "Tanılama raporu",
       "description": "Yöneticinize vereceğiniz bir dosya. Sürümü, bilgisayarı, sunucu bağlantısını ve ölçülen süreleri anlatır. Hiçbir dikte, geçmiş, kişisel değer veya oturum belirteci içermez.",
