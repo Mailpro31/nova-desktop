@@ -1226,6 +1226,11 @@ pub fn run(cli_args: CliArgs) {
 
             win_builder.build()?;
 
+            // Journal de l'ancien nom (avant le passage à nova.log) : plus jamais écrit.
+            if let Ok(log_dir) = app.path().app_log_dir() {
+                let _ = std::fs::remove_file(log_dir.join("handy.log"));
+            }
+
             let mut settings = get_settings(app.handle());
 
             // Apply the persisted appearance theme to the Windows title bar before
