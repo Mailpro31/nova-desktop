@@ -34,7 +34,7 @@ function normalizeBaseUrl(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
-function parseCommandError(err: unknown): OrganizationApiError {
+export function parseCommandError(err: unknown): OrganizationApiError {
   if (err instanceof OrganizationApiError) return err;
 
   let message = "Unknown error";
@@ -58,8 +58,11 @@ function parseCommandError(err: unknown): OrganizationApiError {
     }
   }
 
-  // Les commandes Rust renvoient les erreurs HTTP sous la forme "HTTP N: ...".
-  const httpMatch = message.match(/^HTTP\s+(\d+):\s*(.*)$/);
+  // Les commandes Rust renvoient "HTTP 403 Forbidden: ..." (le `StatusCode`
+  // s'affiche avec sa raison), ou "HTTP 404 Not Found" sans détail.
+  const httpMatch = message.match(
+    /^HTTP\s+(\d{3})(?:\s[^:]*)?(?::\s*([\s\S]*))?$/,
+  );
   if (httpMatch) {
     status = parseInt(httpMatch[1], 10);
     message = httpMatch[2] || message;

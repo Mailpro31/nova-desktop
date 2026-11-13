@@ -1507,7 +1507,7 @@ pub async fn request_learning_feedback(
     exercise_id: String,
     text: String,
 ) -> Result<LearningExerciseFeedback, String> {
-    let (base_url, client) = authenticated_client(&app)?;
+    let (base_url, client) = authenticated_inference_client(&app)?;
     let response = client
         .post(format!(
             "{}/api/learning/exercises/{}/feedback",
@@ -1529,6 +1529,16 @@ fn authenticated_client(app: &AppHandle) -> Result<(String, reqwest::Client), St
         .ok_or_else(|| "campus session is missing".to_string())?;
     let base_url = normalize_base_url(&credentials.session.server_url);
     let client = organization_client_with_token(&credentials.token);
+    Ok((base_url, client))
+}
+
+/// Comme `authenticated_client`, avec le délai d'une inférence.
+fn authenticated_inference_client(app: &AppHandle) -> Result<(String, reqwest::Client), String> {
+    let credentials = load_organization_credentials(app)?
+        .ok_or_else(|| "campus session is missing".to_string())?;
+    let base_url = normalize_base_url(&credentials.session.server_url);
+    let client =
+        organization_request_client_with_timeout(Some(&credentials.token), INFERENCE_TIMEOUT);
     Ok((base_url, client))
 }
 
@@ -2202,7 +2212,7 @@ pub async fn run_organization_skill(
     skill_id: String,
     text: String,
 ) -> Result<OrganizationCommandResponse, String> {
-    let (base_url, client) = authenticated_client(&app)?;
+    let (base_url, client) = authenticated_inference_client(&app)?;
     let response = client
         .post(format!("{}/api/skills/run", base_url))
         .json(&serde_json::json!({ "skill_id": skill_id, "text": text }))
@@ -2337,7 +2347,8 @@ pub async fn transcribe_organization_audio_file(
     let base_url = normalize_base_url(&credentials.session.server_url);
     let client = organization_request_client_with_timeout(
         Some(&credentials.token),
-        Duration::from_secs(300),
+        // Le serveur s'accorde 300 s pour un fichier, envoi non compris.
+        Duration::from_secs(360),
     );
 
     let mime = if filename.ends_with(".mp3") {
@@ -2355,7 +2366,7 @@ pub async fn transcribe_organization_audio_file(
     let multipart = build_audio_multipart("file", &filename, mime, &file_bytes, &[]);
 
     let response = client
-        .post(format!("{}/api/transcribe", base_url))
+        .post(file_transcription_url(&base_url))
         .header(reqwest::header::CONTENT_TYPE, &multipart.content_type)
         .body(multipart.body)
         .send()
@@ -2370,6 +2381,18 @@ pub async fn transcribe_organization_audio_file(
 
     Ok(resp.text)
 }
+
+/// Un fichier importé va à la route d'import : `/api/transcribe` est celle de
+/// la dictée, bornée à sa durée (10 min par défaut) et à 25 Mo.
+fn file_transcription_url(base_url: &str) -> String {
+    format!("{base_url}/api/import/transcribe")
+}
+
+/// Ce que le poste attend une réponse d'inférence : au moins le budget du
+/// serveur (ai_runtime.py : transcription 45 s + relecture 12 s + Style 45 s
+/// pour `/api/dictate`, AI Skill 90 s). À 30 s, le poste abandonnait un
+/// travail que le serveur menait encore, et annonçait « serveur injoignable ».
+const INFERENCE_TIMEOUT: Duration = Duration::from_secs(120);
 
 #[derive(Debug)]
 pub enum OrganizationError {
@@ -2399,7 +2422,7 @@ pub(crate) fn normalize_base_url(url: &str) -> String {
 }
 
 fn organization_client(token: &str) -> reqwest::Client {
-    organization_request_client(Some(token))
+    organization_request_client_with_timeout(Some(token), INFERENCE_TIMEOUT)
 }
 
 /// Ce que `/api/transcribe` repond : `{ "text": "..." }`.
@@ -3036,6 +3059,24 @@ pub fn invalidate_server_reachability_cache(base_url: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn an_audio_file_goes_to_the_import_route() {
+        // `/api/transcribe` borne la dictée (10 min par défaut, 25 Mo) :
+        // un cours enregistré y était refusé (413).
+        assert_eq!(
+            file_transcription_url("https://nova.test"),
+            "https://nova.test/api/import/transcribe"
+        );
+    }
+
+    #[test]
+    fn the_poste_waits_at_least_the_server_budget() {
+        // ai_runtime.py : transcription 45 s + relecture 12 s + Style 45 s
+        // (`/api/dictate`), AI Skill 90 s. Le poste coupait à 30 s.
+        assert!(INFERENCE_TIMEOUT >= Duration::from_secs(45 + 12 + 45));
+        assert!(INFERENCE_TIMEOUT >= Duration::from_secs(90));
+    }
 
     #[test]
     fn a_busy_server_is_retried_after_the_delay_it_gives() {
