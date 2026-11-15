@@ -131,3 +131,46 @@ jobs:
       no-cache: true
       nova_mode: "campus"
     secrets: inherit
+
+  # Même build pour Windows ARM64 (runner windows-11-arm). Il publie
+  # Nova-Setup-arm64.exe + .sig ; latest.json vient du job suivant.
+  publish-windows-organization-arm64:
+    needs: preflight
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "windows-11-arm"
+      target: "aarch64-pc-windows-msvc"
+      build-args: '--target aarch64-pc-windows-msvc --config src-tauri/tauri.campus.conf.json --config {"bundle":{"createUpdaterArtifacts":true}}'
+      sign-binaries: false
+      asset-prefix: "nova-organization-arm64"
+      upload-artifacts: false
+      releases-repo: "Mailpro31/nova-organization-releases"
+      no-cache: true
+      nova_mode: "campus"
+    secrets: inherit
+
+  # Seul écrivain de latest.json : il liste les deux plateformes, à partir des
+  # .sig publiés par les deux builds. Il ne tourne que si les deux ont réussi,
+  # donc jamais de latest.json (ni de mise à jour auto) pour une release à moitié publiée.
+  latest-json:
+    needs: [publish-windows-organization, publish-windows-organization-arm64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ecrire latest.json avec windows-x86_64 et windows-aarch64
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          RELEASES_REPO: "Mailpro31/nova-organization-releases"
+        run: |
+          set -euo pipefail
+          VERSION="$(jq -r .version src-tauri/tauri.conf.json)"
+          TAG="v$VERSION"
+          BASE="https://github.com/$RELEASES_REPO/releases/download/$TAG"
+          gh release download "$TAG" -R "$RELEASES_REPO" -D "$RUNNER_TEMP/sigs"             -p 'Nova-Setup.exe.sig' -p 'Nova-Setup-arm64.exe.sig'
+          jq -n             --arg v "$VERSION"             --arg d "$(date -u +%Y-%m-%dT%H:%M:%SZ)"             --arg sx "$(cat "$RUNNER_TEMP/sigs/Nova-Setup.exe.sig")"             --arg sa "$(cat "$RUNNER_TEMP/sigs/Nova-Setup-arm64.exe.sig")"             --arg ux "$BASE/Nova-Setup.exe"             --arg ua "$BASE/Nova-Setup-arm64.exe"             '{version: $v, pub_date: $d, platforms: {
+               "windows-x86_64": {signature: $sx, url: $ux},
+               "windows-aarch64": {signature: $sa, url: $ua}}}'             > "$RUNNER_TEMP/latest.json"
+          jq -e '.platforms | to_entries | all(.value.signature != "" and .value.url != "")' "$RUNNER_TEMP/latest.json"
+          gh release upload "$TAG" "$RUNNER_TEMP/latest.json" -R "$RELEASES_REPO" --clobber

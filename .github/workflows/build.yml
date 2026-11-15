@@ -979,22 +979,23 @@ jobs:
             find src-tauri/target -path '*/bundle/nsis/*' >&2 || true
             exit 1
           fi
-          STABLE="$RUNNER_TEMP/Nova-Setup.exe"
+          # x64 garde son nom historique ; ARM64 a le sien. latest.json n'est PAS
+          # écrit ici : un seul job (voir nova-release-organization.yml) le
+          # produit, avec les deux plateformes, à partir des .sig publiés.
+          case "${{ inputs.target }}" in
+            aarch64*) NAME="Nova-Setup-arm64.exe" ;;
+            *) NAME="Nova-Setup.exe" ;;
+          esac
+          STABLE="$RUNNER_TEMP/$NAME"
           cp "$SETUP" "$STABLE"
-          DL_URL="https://github.com/$RELEASES_REPO/releases/download/$TAG/Nova-Setup.exe"
-          PUB_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          jq -n \
-            --arg v "$VERSION" \
-            --arg d "$PUB_DATE" \
-            --arg s "$(cat "$SIG")" \
-            --arg u "$DL_URL" \
-            '{version: $v, pub_date: $d, platforms: {"windows-x86_64": {signature: $s, url: $u}}}' \
-            > "$RUNNER_TEMP/latest.json"
+          cp "$SIG" "$STABLE.sig"
+          # Deux jobs peuvent créer la release en même temps : le perdant relit.
           if ! gh release view "$TAG" -R "$RELEASES_REPO" >/dev/null 2>&1; then
             gh release create "$TAG" -R "$RELEASES_REPO" \
               --title "Nova $VERSION" \
-              --notes "Installeur Windows de Nova $VERSION."
+              --notes "Installeur Windows de Nova $VERSION." \
+              || gh release view "$TAG" -R "$RELEASES_REPO" >/dev/null
           fi
-          gh release upload "$TAG" "$STABLE" "$RUNNER_TEMP/latest.json" \
+          gh release upload "$TAG" "$STABLE" "$STABLE.sig" \
             -R "$RELEASES_REPO" --clobber
-          echo "Publié Nova-Setup.exe + latest.json sur $RELEASES_REPO ($TAG)."
+          echo "Publié $NAME + .sig sur $RELEASES_REPO ($TAG)."
