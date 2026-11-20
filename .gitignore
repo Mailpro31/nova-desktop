@@ -66,3 +66,6 @@ ds-bundle/
 
 # Graphe local Graphify (outil de travail, non commitable)
 graphify-out/
+
+# Cache local du hook Impeccable (outil de travail, non commitable)
+.impeccable/
