@@ -28,7 +28,7 @@ jobs:
     # `personal` n'est pas une valeur passée au build : l'édition personnelle
     # est ce que donne l'absence de mode déclaré, comme auparavant.
     name: playwright (${{ matrix.edition }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright ne gère pas encore Chromium sur ubuntu-latest (26.04)
     strategy:
       fail-fast: false
       matrix:
