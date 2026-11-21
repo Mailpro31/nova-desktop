@@ -118,10 +118,12 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $ORT_VERSION = "1.24.2"
-          $url = "https://github.com/microsoft/onnxruntime/releases/download/v$ORT_VERSION/onnxruntime-win-x64-$ORT_VERSION.zip"
+          # Paquet NuGet officiel de Microsoft : github.com/microsoft/onnxruntime répond 404 depuis le 20/11/2026.
+          $url = "https://api.nuget.org/v3-flatcontainer/microsoft.ml.onnxruntime/$ORT_VERSION/microsoft.ml.onnxruntime.$ORT_VERSION.nupkg"
           Invoke-WebRequest -Uri $url -OutFile ort.zip
+          if ((Get-FileHash ort.zip -Algorithm SHA256).Hash -ne "782564D3D68E87269EA1812CC94710AD06FE014FAF093F01A6F89D0BD58719D3") { throw "ONNX Runtime : empreinte SHA256 inattendue" }
           Expand-Archive -Path ort.zip -DestinationPath ort-dist -Force
-          $ortLib = (Resolve-Path "ort-dist/onnxruntime-win-x64-$ORT_VERSION/lib").Path
+          $ortLib = (Resolve-Path "ort-dist/runtimes/win-x64/native").Path
           Add-Content -Path $env:GITHUB_ENV -Value "ORT_LIB_LOCATION=$ortLib"
           Add-Content -Path $env:GITHUB_ENV -Value "ORT_PREFER_DYNAMIC_LINK=1"
 
