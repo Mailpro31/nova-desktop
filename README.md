@@ -211,7 +211,7 @@ mise à jour dont la signature ne correspond pas à sa clé publique intégrée 
 impossible de lui pousser un binaire falsifié.
 
 La chaîne de publication (compilation Windows, signature, `latest.json`) est
-entièrement automatisée par GitHub Actions (`.github/workflows/nova-release.yml`).
+entièrement automatisée par GitHub Actions (`.github/workflows/nova-release-organization.yml`).
 
 ---
 
