@@ -482,8 +482,8 @@ jobs:
       # onnxruntime.dll into transcribe-libs/, which tauri.windows.conf.json bundles
       # beside Handy.exe. ARM64 uses the same dynamic posture since 15/11/2026:
       # its static pyke download now pulls DirectML and breaks the build.
-      # NOTE: sourced from Microsoft's GitHub release; can be re-hosted on
-      # blob.handy.computer to match the macOS/Linux steps.
+      # NOTE: sourced from Microsoft's official NuGet package (same 1.24.2 build):
+      # github.com/microsoft/onnxruntime answers 404 since 20/11/2026.
       - name: Install ONNX Runtime (Windows)
         if: contains(inputs.platform, 'windows')
         shell: pwsh
@@ -491,10 +491,11 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $ORT_VERSION = "1.24.2"
           $arch = if ("${{ inputs.target }}" -like "aarch64*") { "arm64" } else { "x64" }
-          $url = "https://github.com/microsoft/onnxruntime/releases/download/v$ORT_VERSION/onnxruntime-win-$arch-$ORT_VERSION.zip"
+          $url = "https://api.nuget.org/v3-flatcontainer/microsoft.ml.onnxruntime/$ORT_VERSION/microsoft.ml.onnxruntime.$ORT_VERSION.nupkg"
           Invoke-WebRequest -Uri $url -OutFile ort.zip
+          if ((Get-FileHash ort.zip -Algorithm SHA256).Hash -ne "782564D3D68E87269EA1812CC94710AD06FE014FAF093F01A6F89D0BD58719D3") { throw "ONNX Runtime : empreinte SHA256 inattendue" }
           Expand-Archive -Path ort.zip -DestinationPath ort-dist -Force
-          $ortLib = (Resolve-Path "ort-dist/onnxruntime-win-$arch-$ORT_VERSION/lib").Path
+          $ortLib = (Resolve-Path "ort-dist/runtimes/win-$arch/native").Path
           Write-Host "ORT_LIB_LOCATION=$ortLib"
           Add-Content -Path $env:GITHUB_ENV -Value "ORT_LIB_LOCATION=$ortLib"
           Add-Content -Path $env:GITHUB_ENV -Value "ORT_PREFER_DYNAMIC_LINK=1"
