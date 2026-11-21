@@ -990,13 +990,8 @@ jobs:
           STABLE="$RUNNER_TEMP/$NAME"
           cp "$SETUP" "$STABLE"
           cp "$SIG" "$STABLE.sig"
-          # Deux jobs peuvent créer la release en même temps : le perdant relit.
-          if ! gh release view "$TAG" -R "$RELEASES_REPO" >/dev/null 2>&1; then
-            gh release create "$TAG" -R "$RELEASES_REPO" \
-              --title "Nova $VERSION" \
-              --notes "Nova $VERSION pour Windows. Nova-Setup.exe : PC Intel ou AMD (le plus courant). Nova-Setup-arm64.exe : PC à processeur ARM. Au premier lancement, Windows peut afficher « Windows a protégé votre ordinateur » : Informations complémentaires, puis Exécuter quand même." \
-              || gh release view "$TAG" -R "$RELEASES_REPO" >/dev/null
-          fi
+          # La release existe déjà, en brouillon : le preflight de
+          # nova-release-organization.yml la crée, latest-json la publie.
           gh release upload "$TAG" "$STABLE" "$STABLE.sig" \
             -R "$RELEASES_REPO" --clobber
           echo "Publié $NAME + .sig sur $RELEASES_REPO ($TAG)."

@@ -107,6 +107,27 @@ jobs:
               exit 1 ;;
           esac
 
+      # La release nait en brouillon, avant les deux builds : invisible au public
+      # et jamais « latest » tant que latest-json ne l'a pas publiee. Si un build
+      # echoue, la version precedente reste servie par le lien de mise a jour.
+      # Un seul createur : les deux builds en parallele creaient sinon deux brouillons.
+      - uses: actions/checkout@v4
+      - name: Creer la release en brouillon
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          RELEASES_REPO: "Mailpro31/nova-organization-releases"
+        run: |
+          set -euo pipefail
+          VERSION="$(jq -r .version src-tauri/tauri.conf.json)"
+          TAG="v$VERSION"
+          if gh release view "$TAG" -R "$RELEASES_REPO" >/dev/null 2>&1; then
+            echo "Release $TAG deja presente : les builds y deposent leurs fichiers."
+          else
+            gh release create "$TAG" -R "$RELEASES_REPO" --draft \
+              --title "Nova $VERSION" \
+              --notes "Nova $VERSION pour Windows. Nova-Setup.exe : PC Intel ou AMD (le plus courant). Nova-Setup-arm64.exe : PC à processeur ARM. Au premier lancement, Windows peut afficher « Windows a protégé votre ordinateur » : Informations complémentaires, puis Exécuter quand même."
+          fi
+
   publish-windows-organization:
     needs: preflight
     permissions:
@@ -174,3 +195,5 @@ jobs:
                "windows-aarch64": {signature: $sa, url: $ua}}}'             > "$RUNNER_TEMP/latest.json"
           jq -e '.platforms | to_entries | all(.value.signature != "" and .value.url != "")' "$RUNNER_TEMP/latest.json"
           gh release upload "$TAG" "$RUNNER_TEMP/latest.json" -R "$RELEASES_REPO" --clobber
+          # Seul moment ou la release devient publique et « latest » : les deux builds ont reussi.
+          gh release edit "$TAG" -R "$RELEASES_REPO" --draft=false --latest
